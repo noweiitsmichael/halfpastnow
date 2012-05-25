@@ -1,5 +1,7 @@
 Myapp::Application.routes.draw do
   
+  resources :feedbacks
+
   get "info/about"
 
   get "info/contact"
