@@ -44,7 +44,9 @@ $(function() {
     $(this).parent().parent().find('.custom-select').removeClass('selected');
     $(this).parent().parent().find('.custom-select:nth-child(' + ($(this).index() + 1) +  ')').addClass('selected');
   });
-
+  $('#content .sidebar .inner .filter.day span').click(function() {
+    $('#content .sidebar .inner .filter.date span.custom').click();
+  });
   $('#content .sidebar .inner .filter.price span').click(toggleSelection);
   $('#content .sidebar .inner .filter.day span').click(toggleSelection);
   $('#content .main .inner .header .sort span').click(radioSelection);  
@@ -53,6 +55,7 @@ $(function() {
   $('#content .sidebar .inner .filter.day span').click(filterChange);
   $('#content .sidebar .inner .filter.date .filters span').click(filterChange);
   $('#content .main .inner .header .sort span').click(filterChange);  
+  $('#content .sidebar .inner .filter.date .custom-select input.date').blur(filterChange);
 
   $('#content .sidebar .inner .filter.date .date ').datetimepicker({
     ampm: true,
@@ -292,15 +295,13 @@ function pullEvents() {
       li.find(".one .name").html(events[i].title);
       li.find(".one .venue").html(events[i].venue.name);
       li.find(".one .venue").attr("href",events[i].venue_id);
-      if(events[i].price != null) 
-      {
-        if(events[i].price != 0)
-          li.find(".one .description").html("<span ><strong>$" + parseFloat(events[i].price).toFixed(2) + "</strong></span> " + events[i].description);
-        else 
-          li.find(".one .description").html("<span ><strong>FREE</strong></span> " + events[i].description);
-      } else { 
-        li.find(".one .description").html(events[i].description);
-      }
+      li.find(".one .description").html(strip(events[i].description));
+
+      if(events[i].price == 0)
+        li.find(".one .description").prepend("<span><strong>FREE</strong></span> ");
+      else if(events[i].price > 0)
+        li.find(".one .description").prepend("<span><strong>$" + parseFloat(events[i].price).toFixed(2) + "</strong></span> ");
+        
       li.prependTo('#content .main .inner .events-seed');
       locations.push({lat: events[i].venue.latitude, long: events[i].venue.longitude});
     }
@@ -393,6 +394,13 @@ function to_ordinal(num) {
     return num.toString() + ordinal[num%10];
 }
 
+function strip(html)
+{
+  var tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText;
+}
+
 function modal(thing) {
   if(!thing) {
     $('.mode').hide();
@@ -401,9 +409,8 @@ function modal(thing) {
   
   if(thing.type === "event") {
     $.getJSON('/events/show/' + thing.id + '.json', function(event) {
-
-      start = new Date(event.occurrences[0].start);
-      end = event.occurrences[0].end ? new Date(event.occurrences[0].end) : null;
+      start = Date.parse(event.occurrences[0].start.substr(0,19));
+      end = event.occurrences[0].end ? Date.parse(event.occurrences[0].end.substr(0,19)) : null;
       $('.mode.event .time.one').html(start.toString("dddd, MMMM d"));
       $('.mode.event .time.two').html((start.toString("h:mmtt") + (end ? " to " + end.toString('h:mmtt') : "")).toLowerCase());
       $('.mode.event h1').html(event.title);
@@ -459,7 +466,7 @@ function modal(thing) {
           li.find(".time").html(time);
           li.find(".name").attr("href", event.id);
           li.find(".name").html(event.title);
-          li.find(".one .description").html(event.description);
+          li.find(".one .description").html(strip(event.description));
           li.appendTo('.venue.mode .overlay .window .inner .menu .selected .events-seed1');
         }
       
@@ -481,7 +488,7 @@ function modal(thing) {
           li.find(".time").html(startTime.toString("hh:mmtt").toLowerCase());
           li.find(".name").attr("href", event.id);
           li.find(".name").html(event.title);
-          li.find(".one .description").html(event.description);
+          li.find(".one .description").html(strip(event.description));
           li.appendTo('.venue.mode .overlay .window .inner .menu .selected .events-seed2');
         }
         
@@ -496,18 +503,13 @@ function modal(thing) {
       $('.mode.venue .map').attr("src","http://maps.googleapis.com/maps/api/staticmap?size=430x170&zoom=15&maptype=roadmap&markers=color:red%7C" + venue.latitude  +  "," + venue.longitude + "&style=feature:all|hue:0x000001|saturation:-50&sensor=false");
       $('.mode.venue .map-link').attr("href","http://maps.google.com/maps?q=" + venue.latitude  + "," + venue.longitude);
       $('.mode.venue .menu > .description').html(venue.description);
-      if (venue.phonenumber=="") { 
-        $('.mode.venue .phone span').html("Not Available");
-      } else {
-        $('.mode.venue .phone span').html(venue.phonenumber);
+      if (venue.phonenumber) { 
+        $('.mode.venue .phone').html("<strong>Phone:</strong> <span>" + venue.phonenumber + "</span>");
       }
       //$('.mode.venue .url a').html(venue.name);
       //$('.mode.venue .url a').attr("href", venue.url);
-      if (venue.url=="") { 
-        $('.mode.venue .url a').html("Not Available");
-      } 
-        else {
-          $('.mode.venue .url a').html(venue.name);
+      if (venue.url) {
+          $('.mode.venue .url').html("<strong>Website:</strong> <a href='' linkto='venue'>" + venue.name + "</a>");
           $('.mode.venue .url a').attr("href", venue.url);
         }
       $('.mode').hide();

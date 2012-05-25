@@ -16,9 +16,8 @@ class EventsController < ApplicationController
 
 def index
 
-    #amount, offset, lat_min, lon_min, lat_max, lon_max, price, start, end, [tags]
-    params[:amount] = params[:amount] || 10
-    params[:offset] = params[:offset] || 0
+    @amount = params[:amount] || 20
+    @offset = params[:offset] || 0
 
     # @events = Event.search params[:search]
     @events = Event.all.select { |event| event.occurrences.length > 0 }
@@ -93,8 +92,8 @@ def index
     if(params[:tags])
       @tagIDs = params[:tags].split(",").collect { |str| str.to_i }
       
-      @events.each { |e| puts e.tags.collect { |tag| tag.id} }
-      @events.select! { |e| !((e.tags.collect { |tag| tag.id } & @tagIDs).empty?) }
+      # @events.each { |e| puts e.tags.collect { |tag| tag.id} }
+      @events.select! { |e| (e.tags.collect { |tag| tag.id } & @tagIDs).size == @tagIDs.size }
     end
 
     @priceRanges = [0,0.01,10,25,50]
@@ -117,6 +116,8 @@ def index
         event.score
       end.reverse
     end
+
+    # @events = @events.drop(@offset).take(@amount)
 
     @events.each do |event| 
       event.views += 1 

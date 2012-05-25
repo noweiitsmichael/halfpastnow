@@ -1,5 +1,6 @@
 class Event < ActiveRecord::Base
   belongs_to :venue
+  belongs_to :user
   has_and_belongs_to_many :tags
   has_many :recurrences, :dependent => :destroy
   has_many :occurrences, :dependent => :destroy
@@ -49,4 +50,5 @@ class Event < ActiveRecord::Base
     puts (phat*(1-phat)+z*z/(4*n))/n
     return (phat + z*z/(2*n) - z * Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)
   end
+
 end

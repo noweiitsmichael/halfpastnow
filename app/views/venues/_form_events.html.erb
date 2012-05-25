@@ -62,7 +62,9 @@
     <% @iStrId = "venue_events_attributes_" + @i.to_s + "_tag_ids_" %>
     <%= f.fields_for :events, event do |e| %>
       <div class="main event<%= event.id ? "" : " new"%>">
+
 	<%= event.id.nil? ? raw("<h4>New Event</h4>") : "" %>
+	<%= event.user_id ? raw("<em>created by " + event.user.email + "</em><br /><br />") : "" %>
 	<div class="field">
 	  <%= e.label :title %>
 	  <%= e.text_field :title, :class => "title required" %>

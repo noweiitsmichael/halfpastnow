@@ -58,7 +58,14 @@
 				$("#tag-input").tokenInput(tags, {theme: "facebook", onAdd: filterChange, onDelete: filterChange });
 
 				$(".tag-library div").click(function() {
-					$("#tag-input").tokenInput("add", {id: parseInt($(this).attr("tagID")), name: $(this).html()});
+
+					var tagObj = {id: parseInt($(this).attr("tagID")), name: $(this).html()};
+					var selectedTags = $("#tag-input").tokenInput("get");
+					for(var i in selectedTags) {
+						if(selectedTags[i]["id"] == tagObj["id"])
+							return;
+					}
+					$("#tag-input").tokenInput("add", tagObj);
 				});
 			});
 
@@ -167,7 +174,7 @@
 					<div class="filter date">
 						<!--<h5>date + time</h5>-->
 						<div class="filters">
-							<span>today</span><span>tomorrow</span><span class="selected">custom</span>
+							<span class="today">today</span><span class="tomorrow">tomorrow</span><span class="custom selected">custom</span>
 						</div>
 						<div>
 							<div class="custom-select"><div class="today time-range"></div><div class="today time-display">all day</div></div>
@@ -262,8 +269,8 @@
 						<div class="address one"></div>
 						<div class="address two"></div>
 						<br />
-						<div class="phone"><strong>Phone:</strong> <span></span></div>
-						<div class="url"><strong>Website:</strong><a linkto="venue" href=""  ></a></div>
+						<div class="phone"></div>
+						<div class="url"></div>
 						<!--div class="price"><strong>Hours:</strong> Daily 5am-10pm</div-->
 					</div>
 					<div class="menu">

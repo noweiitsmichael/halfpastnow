@@ -27,13 +27,16 @@
           }); 
 
       $(selector).submit(function() { 
-      var obj = $(this);
+            var obj = $(this);
+            $(this).find("[type='submit']").after("<img src='/assets/admin-load.gif' class='form-load'/>");
             obj.ajaxSubmit({
                 beforeSubmit: function() {
                                 return validators[selector].numberOfInvalids() == 0;
                               },
                 success: function() {
-                          obj.remove();
+                          // obj.remove();
+                          obj.find('.form-load').remove();
+                          obj.slideUp();
                         }
             }); 
             return false; 

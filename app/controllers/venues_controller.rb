@@ -7,7 +7,6 @@ class VenuesController < ApplicationController
   # GET /venues
   # GET /venues.json
   def index
-    
     # authorize! :index, @user, :message => 'Not authorized as an administrator.'
     
     # @venues = Venue.all
@@ -123,6 +122,7 @@ class VenuesController < ApplicationController
             params_event[1].delete("recurrences_attributes")
           end
         end
+
         if params_event[1]["occurrences_attributes"]
           params_event[1]["occurrences_attributes"].each_with_index do |params_occurrence, index|
             # puts "start(4i): " + params_occurrence[1]["start(4i)"]
@@ -136,6 +136,7 @@ class VenuesController < ApplicationController
             end
           end
         end
+
         if params_event[1]["recurrences_attributes"]
           params_event[1]["recurrences_attributes"].each do |params_recurrence|
             # puts "start(4i): " + params_recurrence[1]["start(4i)"]
@@ -147,6 +148,11 @@ class VenuesController < ApplicationController
             end
           end
         end
+
+        if params_event[1]["id"].nil?
+          params_event[1]["user_id"] = current_user.id
+        end
+        
         params_event[1].delete("recurring")
       end
     end
@@ -176,8 +182,8 @@ class VenuesController < ApplicationController
     @raw_event.submitted = true
     #pp @raw_event
     @raw_event.save
+    @event.user_id = current_user.id
     @event.save
-
     redirect_to :action => :edit, :id => @venue.id
   end
 

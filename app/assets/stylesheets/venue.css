@@ -174,3 +174,9 @@ select.interval {
 .main .field label.error[generated="true"] {
     display: none !important;
 }
+
+.form-load {
+ position:relative;
+ top:2px;
+ left:10px;
+}

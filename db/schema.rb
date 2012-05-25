@@ -11,8 +11,6 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120525142152) do
-
   create_table "events", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -22,8 +20,10 @@ ActiveRecord::Schema.define(:version => 20120525142152) do
     t.integer  "venue_id"
     t.integer  "clicks",      :default => 0
     t.integer  "views",       :default => 0
+    t.integer  "user_id"
   end
 
+  add_index "events", ["user_id"], :name => "index_events_on_user_id"
   add_index "events", ["venue_id"], :name => "index_events_on_venue_id"
 
   create_table "events_tags", :id => false, :force => true do |t|
