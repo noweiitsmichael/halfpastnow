@@ -11,6 +11,8 @@
 <% @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}) %>
 <% @venue.raw_events.each do |raw_event| %>
 	<% event = @venue.events.build(:title => raw_event.title, :description => raw_event.description) 
+	   event.occurrences.push(Occurrence.new(:start => raw_event.start, :end => raw_event.end))
+	   event.recurrences.push(Recurrence.new(:start => raw_event.start, :end => raw_event.end))
 	   occurrence = Occurrence.new(:start => raw_event.start, :end => raw_event.end) %>
 	<%= form_for event, :url => "/venues/fromRaw/" + @venue.id.to_s, :html => { :id => "new_event_" + raw_event.id.to_s } do |e| %>
 		<% @iStrName = "event[tag_ids][]" %>
@@ -33,6 +35,12 @@
 			  <%= e.label :price %>
 			  <%= e.text_field :price %>
 			</div>
+
+			<%= render :partial => "tags", :locals => { :event => event } %>
+
+			<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => event } %>
+
+			<% if false %>
 			<div class="tags field">
 				<label>Tags</label>
 				<div class="input-tags">
@@ -51,21 +59,24 @@
 					</div>
 			    <% end %>
 		    	</div>
-				<div class="occurrence">
-					<div class="new-occurrence">
-						<%= e.fields_for :occurrences, occurrence do |o| %>
-						    <div class="field">
-						    	<%= o.label :start %><%= o.datetime_select :start, {:prompt => true, :ampm => true}, {:class => "required"} %>
-						    </div>
-						    <div class="field">
-						    	<%= o.label :end %><%= o.datetime_select :end, :prompt => true, :ampm => true %>
-						    </div>
-						<% end %>
-					</div>
+		    </div>
+		    
+
+			<div class="occurrence">
+				<div class="new-occurrence">
+					<%= e.fields_for :occurrences, occurrence do |o| %>
+					    <div class="field">
+					    	<%= o.label :start %><%= o.datetime_select :start, {:prompt => true, :ampm => true}, {:class => "required"} %>
+					    </div>
+					    <div class="field">
+					    	<%= o.label :end %><%= o.datetime_select :end, :prompt => true, :ampm => true %>
+					    </div>
+					<% end %>
 				</div>
-				<div class="actions">
-					<%= e.submit %>
-				</div>
+			</div>
+			<% end %>
+			<div class="actions">
+				<%= e.submit %>
 			</div>
 		</div>
 	<% end %>

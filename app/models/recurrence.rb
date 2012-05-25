@@ -99,11 +99,14 @@ class Recurrence < ActiveRecord::Base
     counter_occurrences = 0
     while (counter_time.to_date <= until_time.to_date && (!(number_of_occurrences >= 0) || counter_occurrences < number_of_occurrences))
       #build occurrence
-      event_length = self.end - self.start
       start_datetime = counter_time.advance(:hours => self.start.to_time.hour, :minutes => self.start.to_time.min).to_datetime
-      end_datetime = start_datetime.to_time.advance(:hours => event_length.to_i/3600, :minutes => (event_length.to_i%3600)/60).to_datetime
-      occurrences.build(:start => start_datetime, :end => end_datetime, :event_id => self.event_id, :day_of_week => start_datetime.to_date.wday)
-
+      if(self.end)
+        event_length = self.end - self.start
+        end_datetime = start_datetime.to_time.advance(:hours => event_length.to_i/3600, :minutes => (event_length.to_i%3600)/60).to_datetime
+        occurrences.build(:start => start_datetime, :end => end_datetime, :event_id => self.event_id, :day_of_week => start_datetime.to_date.wday)
+      else 
+        occurrences.build(:start => start_datetime, :event_id => self.event_id, :day_of_week => start_datetime.to_date.wday)
+      end
       #find next occurrence time
       counter_time = next_occurrence(counter_time)
       if !counter_time
