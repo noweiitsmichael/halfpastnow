@@ -1,0 +1,63 @@
+<h1>User Feedback</h1>
+<br>
+<% @feedbacks.each do |f| %>
+    <% case f.feedback_type %>
+		<% when 0 %>
+			<b>SUGGESTION: <%= f.subject %></b><br>
+		<% when 1 %>
+			<b>QUESTION: <%= f.subject %></b><br>
+		<% when 2 %>
+			<b>BUG: <%= f.subject %></b><br>
+		<% when 3 %>
+			<b>OTHER: <%= f.subject %></b><br>	
+		<% else %>
+			<b>OTHER: <%= f.subject %></b><br>	
+	<% end %>	
+
+	<% if f.user_id == nil %>
+		From Guest
+	<% else %>
+		<% feedback_user = User.find(f.user_id) %>
+		From <%= feedback_user.firstname + " " + feedback_user.lastname %>
+	<% end %>
+	<br><br>
+	
+	<%= f.description %>
+	
+	<br><br>
+	<a href="/feedbacks/destroy/<%= f.id %>" data-confirm="Are you sure?">Destroy</a>
+	<br><br>
+<% end %>
+
+
+
+
+
+
+
+
+<table>
+  <tr>
+    <th>Type</th>
+    <th>Subject</th>
+    <th>Description</th>
+    <th>Status</th>
+    <th>User</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @feedbacks.each do |feedback| %>
+  <tr>
+    <td><%= feedback.feedback_type %></td>
+    <td><%= feedback.subject %></td>
+    <td><%= feedback.description %></td>
+    <td><%= feedback.status %></td>
+    <td><%= feedback.user_id %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
