@@ -25,12 +25,18 @@
       validators[selector] = $(selector).validate(
             { submitHandler: function(form) {
               // do nothing
-              } 
+              }
           }); 
 
       $(selector).submit(function() { 
             var obj = $(this);
-            $(this).find("[type='submit']").after("<img src='/assets/admin-load.gif' class='form-load'/>");
+            if(validators[selector].numberOfInvalids() == 0) {
+              $(this).find("[type='submit']").after("<img src='/assets/admin-load.gif' class='form-load'/>");
+              obj.find("select[name*=4i], select[name*=5i]").each(function() {
+                if($(this).val() === "")
+                  $(this).parent().find("select,input").attr("disabled","disabled");
+              });
+            }
             obj.ajaxSubmit({
                 beforeSubmit: function() {
                                 return validators[selector].numberOfInvalids() == 0;
@@ -44,9 +50,70 @@
             return false; 
       });
     } else {
-      validators[selector] = $(selector).validate();
+      validators[selector] = $(selector).validate(); 
+
+      $(selector).submit(function() { 
+        console.log("reticulating splines");
+        if(validators[selector].numberOfInvalids() == 0) {
+          $(this).find("select[name*=4i], select[name*=5i]").each(function() {
+            if($(this).val() === "")
+              $(this).parent().find("select,input").attr("disabled","disabled");
+          });
+        }
+      });
     }
   }
+
+  $(function() {
+    $(".toggle-recurring input").attr('checked', false);
+    $(".new-recurrence select, .new-recurrence input").attr('disabled','disabled');
+    $(".toggle-recurring input").change(function() {
+      if($(this).attr('checked')) {
+        $(this).parent().siblings(".new-occurrence").find("select, input").attr('disabled','disabled');
+        $(this).parent().siblings(".new-recurrence").find("select, input").removeAttr('disabled');
+      } else {
+        $(this).parent().siblings(".new-recurrence").find("select, input").attr('disabled','disabled');
+        $(this).parent().siblings(".new-occurrence").find("select, input").removeAttr('disabled');
+      }
+      $(this).parent().siblings(".new-occurrence").toggle();
+      $(this).parent().siblings(".new-recurrence").toggle();
+    });
+
+    $("#form_events .new-occurrence .field select[name*=4i], #form_events .new-occurrence .field select[name*=5i]").val("");
+
+    $(".new-recurrence select[name*=interval]").change(function() {
+      $(this).siblings(".recur-parameter").hide();
+      switch($(this).val())
+      {
+        case "0":
+          $(this).siblings(".recur-parameter.day").show(); break;
+        case "1":
+          $(this).siblings(".recur-parameter.day-of-week").show(); break;
+        case "2":
+          $(this).siblings(".recur-parameter.day-of-month").show(); break;
+        case "3":
+          $(this).siblings(".recur-parameter.day-of-week").show();
+          $(this).siblings(".recur-parameter.week-of-month").show(); break;
+      }
+    });
+
+    $(".new-recurrence select[name*=interval]").change();
+
+    $("#form_events .main.event.new input.title").change(function() {
+      if($(this).val() == "") {
+        $(this).removeClass("required");
+        $(this).parent().find(".start-time").removeClass("required");
+        // $("#form_events .main.event.new .start-time").removeClass("required");
+      } else {
+        $(this).addClass("required");
+        $(this).parent().find(".start-time").addClass("required");
+        // $("#form_events .main.event.new .start-time").addClass("required");
+      }
+    });
+
+    $("#form_events .main.event.new input.title").change();
+
+  });
 </script>
 
 <script type="text/javascript">
