@@ -7,6 +7,8 @@
   <%= javascript_include_tag "jquery-ui" %>
   <%= javascript_include_tag "jquery.validate" %>
   <%= javascript_include_tag "jquery.form" %>
+  <%= javascript_include_tag "jquery.tabSlideOut.v1.3" %>
+  <%= stylesheet_link_tag "styles" %>
   <%= stylesheet_link_tag "venue" %>
   <%= stylesheet_link_tag "jquery-ui" %>
   <%= csrf_meta_tags %>
@@ -46,7 +48,29 @@
     }
   }
 </script>
+
+<script type="text/javascript">
+  $(function(){
+      $('.slide-out-div').tabSlideOut({
+          tabHandle: '.handle',                     //class of the element that will become your tab
+          pathToTabImage: 'assets/feedback_tab_v.jpg', //path to the image for the tab //Optionally can be set using css
+          imageHeight: '122px',                     //height of tab image           //Optionally can be set using css
+          imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
+      });
+
+  });
+
+</script>
+
 <%= yield %>
+
+<div class="slide-out-div">
+	<a class="handle" href="http://link-for-non-js-users.html">Content</a>
+	<h3>Got some feedback?</h3>
+	<p>Let us know! We really appreciate it.</p>
+	<%= render 'feedbacks/form' %>
+</div>
+
 
 </body>
 </html>

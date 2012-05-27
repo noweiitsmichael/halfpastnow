@@ -27,12 +27,6 @@
             pathToTabImage: 'assets/feedback_tab_v.jpg', //path to the image for the tab //Optionally can be set using css
             imageHeight: '122px',                     //height of tab image           //Optionally can be set using css
             imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
-            tabLocation: 'right',                      //side of screen where tab lives, top, right, bottom, or left
-            speed: 300,                               //speed of animation
-            action: 'click',                          //options: 'click' or 'hover', action to trigger animation
-            topPos: '300px',                          //position from the top/ use if tabLocation is left or right
-            rightPos: '00px',                          //position from left/ use if tabLocation is bottom or top
-            fixedPosition: true                      //options: true makes it stick(fixed position) on scroll
         });
 
     });
@@ -66,11 +60,12 @@
   </div>
   <%= yield :overlay %>
 
-<div class="slide-out-div">
-            <a class="handle" href="http://link-for-non-js-users.html">Content</a>
-            <h3>Contact me</h3>
-            <p>Please leave us feedback, it's really appreciated.</p>
-			<%= render 'feedbacks/form' %>
-        </div>
+  <div class="slide-out-div">
+	<a class="handle" href="http://link-for-non-js-users.html">Content</a>
+	<h3>Got some feedback?</h3>
+	<p>Let us know! We really appreciate it.</p>
+	<%= render 'feedbacks/form' %>
+  </div>
+
 </body>
 </html>
