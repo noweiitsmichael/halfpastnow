@@ -1,7 +1,7 @@
 <h1>User Feedback</h1>
 <br>
 <% @feedbacks.each do |f| %>
-    <% case f.fdbk_cat %>
+    <% case f.feedback_type %>
 		<% when 0 %>
 			<b>SUGGESTION: <%= f.subject %></b><br>
 		<% when 1 %>
@@ -50,7 +50,7 @@
 
 <% @feedbacks.each do |feedback| %>
   <tr>
-    <td><%= feedback.fdbk_cat %></td>
+    <td><%= feedback.feedback_type %></td>
     <td><%= feedback.subject %></td>
     <td><%= feedback.description %></td>
     <td><%= feedback.status %></td>
@@ -60,4 +60,3 @@
 </table>
 
 <br />
-

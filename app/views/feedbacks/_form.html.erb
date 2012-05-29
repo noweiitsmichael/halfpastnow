@@ -5,13 +5,13 @@
 
   <div class="field">
     <%= f.label :feedback_type %><br />
-    <%= radio_button("feedback", "fdbk_cat", "0".to_s) %> 
+    <%= radio_button("feedback", "feedback_type", "0".to_i) %> 
   	<%= label :feedback_type_s, 'Suggestion' %><br>
-  	<%= radio_button("feedback", "fdbk_cat", "1".to_s) %>
+  	<%= radio_button("feedback", "feedback_type", "1".to_i) %>
   	<%= label :feedback_type_q, 'Question' %><br>
-  	<%= radio_button("feedback", "fdbk_cat", "2") %> 
+  	<%= radio_button("feedback", "feedback_type", "2".to_i) %> 
   	<%= label :feedback_type_b, 'Bug' %><br>
-  	<%= radio_button("feedback", "fdbk_cat", "3") %>
+  	<%= radio_button("feedback", "feedback_type", "3".to_i) %>
   	<%= label :feedback_type_o, 'Other' %>
   </div>
   <br>

@@ -186,6 +186,9 @@ select.interval {
     padding: 20px;
     width: 250px;
     background: #ccc;
-	/* background-image: url('/assets/feedback_tab_v.jpg'); */
     border: 1px solid #29216d;
 }      
+
+.slide-out-div input[type=text], textarea{
+    width: 240px;
+}

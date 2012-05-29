@@ -42,6 +42,7 @@ class FeedbacksController < ApplicationController
   def create
     @feedback = Feedback.new(params[:feedback])
     puts params[:feedback]
+    @feedback.feedback_type = params[:feedback][:feedback_type] ? params[:feedback][:feedback_type].to_i : nil
     respond_to do |format|
       if @feedback.save
         format.html { redirect_to :back }

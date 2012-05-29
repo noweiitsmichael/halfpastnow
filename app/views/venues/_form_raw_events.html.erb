@@ -6,19 +6,6 @@
     });
 </script>
 
-<script type="text/javascript">
-      $(document).ready(function() {
-        $("textarea").cleditor({
-		          controls:     "bold italic underline size " +
-		                        " | bullets numbering | undo redo | " +
-		                        "rule image link unlink | source",   
-		          sizes:        "1,2,3,4,5,6,7",
-		          bodyStyle:    // style to assign to document body contained within the editor
-		                        "margin:4px; font:10pt Arial,Verdana; cursor:text"
-		        });
-      });
-</script>
-
 <% @ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] %>
 <% @week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] %>
 <% @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}) %>
