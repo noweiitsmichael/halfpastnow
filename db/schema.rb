@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120525171333) do
+ActiveRecord::Schema.define(:version => 20120528181613) do
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -36,13 +36,13 @@ ActiveRecord::Schema.define(:version => 20120525171333) do
   end
 
   create_table "feedbacks", :force => true do |t|
-    t.integer  "feedback_type"
     t.string   "subject"
     t.string   "description"
     t.integer  "status"
     t.integer  "user_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "fdbk_cat"
   end
 
   create_table "occurrences", :force => true do |t|
