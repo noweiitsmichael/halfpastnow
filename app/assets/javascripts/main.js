@@ -403,6 +403,7 @@ function strip(html)
 
 function modal(thing) {
   if(!thing) {
+    $('.mode .description').html("");
     $('.mode').hide();
     return;
   }
@@ -411,6 +412,7 @@ function modal(thing) {
     $.getJSON('/events/show/' + thing.id + '.json', function(event) {
       start = Date.parse(event.occurrences[0].start.substr(0,19));
       end = event.occurrences[0].end ? Date.parse(event.occurrences[0].end.substr(0,19)) : null;
+      
       $('.mode.event .time.one').html(start.toString("dddd, MMMM d"));
       $('.mode.event .time.two').html((start.toString("h:mmtt") + (end ? " to " + end.toString('h:mmtt') : "")).toLowerCase());
       $('.mode.event h1').html(event.title);
@@ -423,6 +425,7 @@ function modal(thing) {
       $('.mode.event .map-link').attr("href","http://maps.google.com/maps?q=" + event.venue.latitude  + "," + event.venue.longitude);
       $('.mode.event .description').html(event.description);
       $('.mode').hide();
+      $('.mode.venue .description').html("");
       $('.mode.event').show();
     });
   } else {
@@ -512,7 +515,9 @@ function modal(thing) {
           $('.mode.venue .url').html("<strong>Website:</strong> <a href='' linkto='venue'>" + venue.name + "</a>");
           $('.mode.venue .url a').attr("href", venue.url);
         }
+
       $('.mode').hide();
+      $('.mode.event .description').html("");
       $('.mode.venue').show();    
       $('.venue.mode .overlay .window .inner .menu .selected .events-seed2').hide();
       $('.venue.mode .overlay .window .inner .menu .selected .events-seed1').hide();

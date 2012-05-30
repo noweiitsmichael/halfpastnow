@@ -18,19 +18,19 @@ class VenuesController < ApplicationController
     # @venues.each { |venue| @num_raw_events[venue.id] += 1 }
     # @venues.uniq!
 
-    @venues = ActiveRecord::Base.connection.select_all("
+    @venuesRaw = ActiveRecord::Base.connection.select_all("
       SELECT venue_id,venues.name,COUNT(*) 
         FROM venues,raw_venues,raw_events 
         WHERE venues.id = raw_venues.venue_id AND raw_venues.id = raw_events.raw_venue_id 
         GROUP BY venue_id,venues.name
         ORDER BY COUNT(*) DESC")
 
-    
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @venues }
-    end
-
+    @venuesCooked = ActiveRecord::Base.connection.select_all("
+      SELECT venue_id,venues.name,COUNT(*) 
+        FROM venues,events
+        WHERE venues.id = events.venue_id
+        GROUP BY venue_id,venues.name
+        ORDER BY COUNT(*) DESC")
   end
 
   # GET /venues/1

@@ -202,3 +202,9 @@ input.datetime-input {
 input.time-input {
   width:100px;
 }
+
+.venues-list {
+  float:left;
+  width:400px;
+  margin-right:100px;
+}
