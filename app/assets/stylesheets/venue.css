@@ -9,6 +9,8 @@ input[type="text"], textarea {
   width:500px;
 }
 
+
+
 textarea {
   height: 100px;
 }
@@ -191,4 +193,12 @@ select.interval {
 
 .slide-out-div input[type=text], textarea{
     width: 240px;
+}
+
+input.datetime-input {
+  width:200px;
+}
+
+input.time-input {
+  width:100px;
 }

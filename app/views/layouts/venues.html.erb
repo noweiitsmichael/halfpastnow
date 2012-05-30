@@ -5,6 +5,8 @@
   
   <%= javascript_include_tag "application" %>
   <%= javascript_include_tag "jquery-ui" %>
+  <%= javascript_include_tag "jquery-ui-timepicker-addon" %>
+  <%= javascript_include_tag "date" %>
   <%= javascript_include_tag "jquery.validate" %>
   <%= javascript_include_tag "jquery.form" %>
   <%= javascript_include_tag "jquery.tabSlideOut.v1.3" %>
@@ -37,6 +39,10 @@
                 if($(this).val() === "")
                   $(this).parent().find("select,input").attr("disabled","disabled");
               });
+              obj.find(".datetime-hidden").each(function() {
+                if($(this).val() === "")
+                  $(this).attr("disabled","disabled");
+              });
             }
             obj.ajaxSubmit({
                 beforeSubmit: function() {
@@ -59,6 +65,10 @@
           $(this).find("select[name*=4i], select[name*=5i]").each(function() {
             if($(this).val() === "")
               $(this).parent().find("select,input").attr("disabled","disabled");
+          });
+          $(this).find(".datetime-hidden").each(function() {
+            if($(this).val() === "")
+              $(this).attr("disabled","disabled");
           });
         }
       });
@@ -114,7 +124,36 @@
 
     $("#form_events .main.event.new input.title").change();
 
+    $(".datetime-input").datetimepicker({
+      ampm: true,
+      dateFormat: 'D M d, yy',
+      timeFormat: 'h:mm tt',
+      separator: ' at '
+    });
+
+    $(".time-input").timepicker({
+      ampm: true,
+      timeFormat: 'h:mm tt'
+    });
+
+    $(".datetime-input").change(dateTimeChange);
+    $(".datetime-input").blur(dateTimeChange);
+
+    $(".time-input").change(timeChange);
+    $(".time-input").blur(timeChange);
   });
+
+  function dateTimeChange() {
+    var date = $(this).datetimepicker("getDate");
+    $(this).siblings(".datetime-hidden").val(date ? date.toString("yyyy-MM-ddTHH:mm:ss") : "");
+  }
+
+  function timeChange() {
+    var date = $(this).datetimepicker("getDate");
+    $(this).siblings(".time-hidden").val(date ? date.toString("yyyy-MM-ddTHH:mm:ss") : "");
+  }
+
+
 </script>
 
 <script type="text/javascript">

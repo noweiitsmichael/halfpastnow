@@ -86,15 +86,13 @@ class VenuesController < ApplicationController
 
   # GET /venues/edit/1
   def edit
-    @venue = Venue.includes(:tags, :events, :raw_venues => :raw_events).find(params[:id])
+    @venue = Venue.includes(:tags, :events => :tags, :raw_venues => :raw_events).find(params[:id])
 
     @venue.events.build
     @venue.events.each do |event| 
-      event.occurrences.build(:start => Date.today.to_datetime, :end => Date.today.to_datetime)
+      event.occurrences.build
       event.recurrences.build
     end
-
-    pp @venue
 
     @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
     

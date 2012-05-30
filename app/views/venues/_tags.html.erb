@@ -3,9 +3,9 @@
 	<div class="input-tags">
 		<% @parentTags.each do |tag| %>
 			<div class="parent tag">
-			<%= check_box_tag @iStrName, tag.id, event.tags.include?(tag) || (event.id.nil? && @venue.tags.include?(tag)), :id => (@iStrId + tag.id.to_s) %>
-			<%= label_tag @iStrName, tag.name, :for => (@iStrId + tag.id.to_s) %>
-		</div>
+				<%= check_box_tag @iStrName, tag.id, event.tags.include?(tag) || (event.id.nil? && @venue.tags.include?(tag)), :id => (@iStrId + tag.id.to_s) %>
+				<%= label_tag @iStrName, tag.name, :for => (@iStrId + tag.id.to_s) %>
+			</div>
 			<div class="children">
 			<% tag.childTags.each do |childTag| %>
 				<div class="child tag">
