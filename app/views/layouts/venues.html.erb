@@ -121,7 +121,7 @@
   $(function(){
       $('.slide-out-div').tabSlideOut({
           tabHandle: '.handle',                     //class of the element that will become your tab
-          pathToTabImage: '/assets/feedback_tab_v.jpg', //path to the image for the tab //Optionally can be set using css
+          pathToTabImage: 'assets/feedback_tab_v.jpg', //path to the image for the tab //Optionally can be set using css
           imageHeight: '122px',                     //height of tab image           //Optionally can be set using css
           imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
       });
@@ -130,11 +130,24 @@
 
 </script>
 
+<script type="text/javascript">
+      $(document).ready(function() {
+        $(".tab textarea").cleditor({
+		          controls:     "bold italic underline size " +
+		                        " | bullets numbering | undo redo | " +
+		                        "rule image link unlink | source",   
+		          sizes:        "1,2,3,4,5,6,7",
+		          bodyStyle:    // style to assign to document body contained within the editor
+		                        "margin:4px; font:10pt Arial,Verdana; cursor:text"
+		        });
+      });
+</script>
+
 <%= yield %>
 
 <div class="slide-out-div">
 	<a class="handle" href="http://link-for-non-js-users.html">Content</a>
-	<h3>Got some feedbacka?</h3>
+	<h3>Got some feedback?</h3>
 	<p>Let us know! We really appreciate it.</p>
 	<%= render 'feedbacks/form' %>
 </div>
