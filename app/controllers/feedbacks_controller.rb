@@ -41,7 +41,7 @@ class FeedbacksController < ApplicationController
   # POST /feedbacks.json
   def create
     @feedback = Feedback.new(params[:feedback])
-    puts params[:feedback]
+    
     respond_to do |format|
       if @feedback.save
         format.html { redirect_to :back }

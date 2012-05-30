@@ -36,45 +36,12 @@
 			  <%= e.text_field :price %>
 			</div>
 
+			<% if false %>
 			<%= render :partial => "tags", :locals => { :event => event } %>
-
+			<% end %>
 			<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => event } %>
 
-			<% if false %>
-			<div class="tags field">
-				<label>Tags</label>
-				<div class="input-tags">
-				<% @parentTags.each do |tag| %>
-					<div class="parent tag">
-					<%= check_box_tag @iStrName, tag.id, (event.tags.include?(tag) || @venue.tags.include?(tag)), :id => (@iStrId + tag.id.to_s) %>
-					<%= label_tag @iStrName, tag.name, :for => (@iStrId + tag.id.to_s) %>
-					</div>
-					<div class="children">
-					<% tag.childTags.each do |childTag| %>
-						<div class="child tag">
-						<%= check_box_tag @iStrName, childTag.id, (event.tags.include?(childTag) || @venue.tags.include?(childTag)), :id => (@iStrId + childTag.id.to_s) %>
-						<%= label_tag @iStrName, childTag.name, :for => (@iStrId + childTag.id.to_s) %>
-						</div>
-					<% end %>
-					</div>
-			    <% end %>
-		    	</div>
-		    </div>
-		    
 
-			<div class="occurrence">
-				<div class="new-occurrence">
-					<%= e.fields_for :occurrences, occurrence do |o| %>
-					    <div class="field">
-					    	<%= o.label :start %><%= o.datetime_select :start, {:prompt => true, :ampm => true}, {:class => "required"} %>
-					    </div>
-					    <div class="field">
-					    	<%= o.label :end %><%= o.datetime_select :end, :prompt => true, :ampm => true %>
-					    </div>
-					<% end %>
-				</div>
-			</div>
-			<% end %>
 			<div class="actions">
 				<%= e.submit %>
 			</div>

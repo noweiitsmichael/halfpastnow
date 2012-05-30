@@ -48,5 +48,5 @@ group :test do
   gem 'turn', '~> 0.8.3', :require => false
 end
 
-gem 'whenever', require: false
+gem "ruby-prof", "~> 0.11.2"
 

@@ -27,12 +27,14 @@
 <% end %>
 <h3><a href='#' class='menu settings selected'>Settings</a> | <a href='#' class='menu events'>Events</a> | <a href='#' class='menu raw_events'>Raw Events</a></h3>
 
+<% if false %>
 <div class="tab settings selected">
   <%= render 'form_settings' %>
 </div>
 <div class="tab events">
   <%= render 'form_events' %>
 </div>
+<% end %>
 <div class="tab raw_events">
-  <%= render 'form_raw_events' %>
+  <%= render 'form_raw_events_test' %>
 </div>
