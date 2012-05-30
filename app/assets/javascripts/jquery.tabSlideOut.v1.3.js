@@ -28,7 +28,7 @@
             speed: 300, 
             action: 'click',
             tabLocation: 'right',
-            topPos: '300px',
+            topPos: '99px',
             rightPos: '0px',
             fixedPosition: true,
             positioning: 'absolute',
