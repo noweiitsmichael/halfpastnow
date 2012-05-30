@@ -8,9 +8,10 @@
   <%= javascript_include_tag "jquery.validate" %>
   <%= javascript_include_tag "jquery.form" %>
   <%= javascript_include_tag "jquery.tabSlideOut.v1.3" %>
-  <%= stylesheet_link_tag "styles" %>
+  <%= javascript_include_tag "jquery.cleditor.min" %>
   <%= stylesheet_link_tag "venue" %>
   <%= stylesheet_link_tag "jquery-ui" %>
+  <%= stylesheet_link_tag "jquery.cleditor" %>
   <%= csrf_meta_tags %>
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCuX99Cn10qLVF0AQNRzduy012YqkaIXgk&sensor=false"></script>
 </head>
@@ -120,7 +121,7 @@
   $(function(){
       $('.slide-out-div').tabSlideOut({
           tabHandle: '.handle',                     //class of the element that will become your tab
-          pathToTabImage: 'assets/feedback_tab_v.jpg', //path to the image for the tab //Optionally can be set using css
+          pathToTabImage: '/assets/feedback_tab_v.jpg', //path to the image for the tab //Optionally can be set using css
           imageHeight: '122px',                     //height of tab image           //Optionally can be set using css
           imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
       });
@@ -133,7 +134,7 @@
 
 <div class="slide-out-div">
 	<a class="handle" href="http://link-for-non-js-users.html">Content</a>
-	<h3>Got some feedback?</h3>
+	<h3>Got some feedbacka?</h3>
 	<p>Let us know! We really appreciate it.</p>
 	<%= render 'feedbacks/form' %>
 </div>

@@ -180,3 +180,15 @@ select.interval {
  top:2px;
  left:10px;
 }
+
+/* feedback tab */
+.slide-out-div {
+    padding: 20px;
+    width: 250px;
+    background: #ccc;
+    border: 1px solid #29216d;
+}      
+
+.slide-out-div input[type=text], textarea{
+    width: 240px;
+}
