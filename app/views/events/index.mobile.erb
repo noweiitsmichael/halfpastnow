@@ -1,0 +1,466 @@
+
+<% @now = DateTime.now.change(:hour => 0) %>
+<% @day_of_week = ['SUN','MON','TUE','WED','THU','FRI','SAT'] %>
+<% @tags = Tag.all %>
+
+<% def eventListElement (event, index) %>
+      <li>
+        <a href="<%= event ? "#event?event_id=" + event.id.to_s : "" %>" data-transition="slidedown">
+        <!--a a href="<%= event ? "#event"  : "" %>" data-transition="slidedown"--> 
+          <div class="index">
+            <%= index ? (index + 1) : "" %>
+          </div>
+          
+          <div class="when sun">
+            <div class="mod">
+              <%# (event.date < now) ? event.date.strftime("%m/%e") : (event.date < (now + 7)) ? 'THIS' : (event.date < (now + 14)) ? 'NEXT' : event.date.strftime("%-m/%e") %>
+              <%= event ? event.occurrences.first.start.to_time.strftime("%^b%d") : "" %>
+            </div>
+            <div class="day">
+              <%= event ? @day_of_week[event.occurrences.first.start.wday] : "" %>
+            </div>
+            <div class="time">
+              <%= event ? event.occurrences.first.start.to_time.strftime("%I:%M%P") : "" %>
+            </div>
+          </div>
+
+          <!--div class="one">
+              <span href="event.html" linkto="event" class="linkto name">Thursday Night Social Club</span>
+
+              <div class="price";  style="color:#2E2EFE"><strong>Price:</strong><span>$10.00 </span>
+              </div>
+
+              <div class="description"<span style="color:#888">Thurday night movie of the month</span>
+              </div-->
+            
+          <div class="one">
+            <!--span href="<%= event ? event.id : "" %>" linkto="event" class="linkto name"><%= event ? event.title : "" %></span-->
+            <!--a class="venue linkto" linkto="venue" href="<%= event ? event.venue.id : "" %>"><%= event ? event.venue.name : "" %></a-->
+             
+            <span href="<%= event ? event.id : "" %>" linkto="event" class="linkto name"><%= event ? event.title : "" %></span>
+
+            
+            <div class="description"><span="price";  style="color:#2E2EFE"><strong><%= event ? (event.price!=nil)? ((event.price.to_f!=0.0) ? "Price: "+ number_to_currency(event.price,:unit=>"$").to_s+" " : "Free ") : "" : "" %></strong></span><span style="color:#888"><%= event ? truncate(strip_tags(event.description), :length => 300) : "" %></span>
+            </div>
+          </div>
+          
+        </a>
+      </li>
+<% end %>
+
+<% def venueEventListElement (event, index) %>
+    <li>
+      <!--a href="<%= event ? "#event?event_id=" + event.id.to_s : "" %>" data-transition="slidedown"--> 
+      <div class="when sun">
+        <div class="mod">
+          <%# (event.date < now) ? event.date.strftime("%m/%e") : (event.date < (now + 7)) ? 'THIS' : (event.date < (now + 14)) ? 'NEXT' : event.date.strftime("%-m/%e") %>
+          <%= event ? event.occurrences.first.start.to_time.strftime("%m/%d") : "" %>
+        </div>
+        <div class="day">
+          <%= event ? @day_of_week[event.occurrences.first.start.wday] : "" %>
+        </div>
+        <div class="time">
+          <%= event ? event.occurrences.first.start.to_time.strftime("%I:%M%P") : "" %>
+        </div>
+      </div>
+      <div class="one">
+        
+        <!--div class="venue mode event"><a linkto="event" href=""  class="linkto"></a></div-->
+        <!--span href="<%= event ? event.id : "" %>" linkto="event" class="linkto-name"><%= event ? event.title : "" %></span-->
+        <a linkto="linkto-name" href="http://events.austin360.com/austin_tx/venues/show/448999-coldtowne-theater">ColdTowne Theater</a>
+       
+        <div class="description"><%= event ? truncate(strip_tags(event.description), :length => 300) : "" %></div>
+        
+      </div>
+      <div style="display:none;">
+        <div class="latitude"><%= event ? event.venue.latitude : "" %></div>
+        <div class="longitude"><%= event ? event.venue.longitude : "" %></div>
+      </div>
+    </li>
+<% end %>
+
+<div data-role="page" id="home">
+    <div data-role="header" data-theme="b" data-position="fixed">
+      <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
+      <h1>half past now.</h1>
+      <hr/>
+
+      <div data-inline="true">
+
+
+      <div data-role="fieldSearch" >
+        
+        <!-- <form accept-charset="UTF-8" action="/events/indexMobile?format=json" id="search-form" method="get"> -->
+        <form accept-charset="UTF-8" action="/events" id="search-form" method="get"> 
+        
+          <a href="#filter" data-role="button" data-inline="true" data-transition="pop">Filter</a>
+          
+          
+          <input id="search" name="search" placeholder="music, movie .etc" type="text"  data-inline="true" width="60|%">
+          <input name="commit" type="submit" value="Search"  data-inline="true">
+          
+        </form>      
+      </div>
+      
+
+
+
+
+
+      
+      </div>
+    </div>
+    <div data-role="content">
+
+
+
+    <div class="choice_list"> 
+        <h1> Events around you </h1>
+       
+      
+
+        
+        <!--p><a class="map-link" href="http://maps.google.com/maps?q=30.30787,-97.74133" ><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=430x170&amp;zoom=15&amp;maptype=roadmap&amp;markers=color:red%7C30.30787,-97.74133&amp;style=feature:all|hue:0x000001|saturation:-50&amp;sensor=false"></a></p--> 
+        <div class="ui-block-a">
+        
+        <div id="map"></div>
+        </div>
+        
+       
+
+        <div class="ui-block-b">
+
+        <ul class="events" data-role="listview" data-inset="true"  >
+          <%  @events.each_with_index do |event, index| 
+
+              eventListElement(event, index)
+            end %>
+        </ul>
+        <ul class="events-seed" data-role="listview" data-inset="true" style="display:none;">
+        <%
+          eventListElement(nil, nil)
+
+        %>
+
+        </ul>
+      </div>
+
+
+
+    </div>
+    </div>
+    <div data-role="footer" class="ui-bar" data-theme="b" data-position="fixed" data-id="footer">
+      <a href="#about" data-icon="info">About</a>
+    </div>
+  </div>
+
+
+  <div data-role="page" id="event">
+    <div data-role="header" data-theme="b" data-position="fixed">
+      <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
+      <h1>half past now.</h1>
+      <a href="#home" data-icon="arrow-l" data-rel="back">Back</a>
+    </div>
+    <div data-role="content">
+
+  <div class="ui-grid-a" id="event_infos">  
+    <div class="ui-block-a">
+      <div class="event_header"><h1><span>Pancake Breakfast Fundraiser</span></h1></div>
+      <div class="event_description"><p><strong><span>  Cassius, a nobleman, is speaking with his friend, Brutus, and trying to persuade him that, in the best interests of the public, Julius Caesar must be stopped from becoming monarch of Rome. Brutus is aware of Caesar's intentions, and is torn between his love of his friend Caesar and his duty to the republic. Cassius continues by reminding Brutus that Caesar is just a man, not a god, and that they are equal men to Caesar. They were all born equally free, and so why would they suddenly have to bow to another man? On another level this phrase has been interpreted to mean that fate is not what drives men to their decisions and actions, but rather the human condition.</span></strong></p></div>
+      
+      
+    </div>    
+    <div class="ui-block-b">
+      
+      <p><a class="map-link" href="http://maps.google.com/maps?q=30.30787,-97.74133" style="float: left;"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=430x170&amp;zoom=15&amp;maptype=roadmap&amp;markers=color:red%7C30.30787,-97.74133&amp;style=feature:all|hue:0x000001|saturation:-50&amp;sensor=false"></a></p>
+      
+      
+      
+
+      <p><div class="time_one"><strong>Thursday, May 17</strong></div></p>
+      <p><div class="time_two"><strong>3:00AM</strong></div></p>
+      <p><div class="price"> Price: $4.99</div></p>
+      <!--p><div class="phone"> <strong>Phone:</strong> (512) 888 8888</div></p-->
+      <p><div class="add1">906 W. Lynn St.</div></p>
+      <p><div class="add2"> Austin, TX 78703</div></p>
+      <a class="venue-link" href="#venue?venue_id=13225" data-transition="slidedown"> Venue Name </a>
+      
+    </div>
+    <!--div class="ui-block-c">
+      <div id="contact_buttons">  
+    
+        <a href="tel:5128888888"  data-role="button" data-icon="tel"> Call us </a>  
+      </div>  
+      <hr/>
+      
+      <div id="notation"> 
+        <form>
+        <label for="select-choice-0" class="select"><h2> User rating </h2></label>
+          <select name="note_utilisateur" id="note_utilisateur" data-native-menu="false" data-theme="c" >
+             <option value="one" class="one"> Not good at all </option>
+             <option value="two" class="two">Average </option>
+             <option value="three" class="three">Pretty good </option>
+             <option value="four" class="four"> Excellent </option>
+          </select> 
+        </form>
+      </div>
+    </div-->
+  </div><!-- /grid-a -->
+  <hr/>
+  
+  
+
+
+  
+
+  
+
+    </div>
+    <div data-role="footer" class="ui-bar" data-theme="b" data-position="fixed" data-id="footer">
+    <a href="#about" data-icon="info">About</a>
+    </div>
+  </div>
+<!-- Venue -->
+
+<div  data-role="page"  id="venue">
+
+
+  
+   <div data-role="header" data-theme="b" data-position="fixed">
+      <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
+      <h1>half past now.</h1>
+      <a href="#home" data-icon="arrow-l" data-rel="back">Back</a>
+    </div>
+  
+  <div data-role="content">
+  
+  <h1> Venue Page </h1>
+
+        <p><a class="map-link" href="http://maps.google.com/maps?q=30.30787,-97.74133" ><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=430x170&amp;zoom=15&amp;maptype=roadmap&amp;markers=color:red%7C30.30787,-97.74133&amp;style=feature:all|hue:0x000001|saturation:-50&amp;sensor=false"></a></p> 
+        <div class="details">
+          <div class="address onee"><span>2100 Barton Springs Road</span></div>
+          <div class="address two"><span>Austin, TX 78704</span></div>
+          <br />
+          <div class="phone"><strong>Phone:</strong> <span> (512) 524-2807</span></div>
+          <a class="venue-link" href="#venue?venue_id=13225" data-transition="slidedown"> </a>
+          <a class="url" href="http://events.austin360.com/austin_tx/venues/show/448999-coldtowne-theater"data-transition="slidedown">ColdTowne Theater</a>
+          <!--div class="price"><strong>Hours:</strong> Daily 5am-10pm</div-->
+        </div>
+        <ul class="vevents"  >
+          <%  @events.each_with_index do |event, index| 
+
+              venueEventListElement(event, index)
+            end %>
+        </ul>
+        <ul class="vevents-seed1" >
+        <%
+          venueEventListElement(nil, nil)
+
+        %>
+
+        </ul>
+        <ul class="vevents-seed2" >
+        <%
+          venueEventListElement(nil, nil)
+
+        %>
+
+        </ul>
+
+  </div>
+  <div data-role="footer" class="ui-bar" data-theme="b" data-position="fixed" data-id="footer">
+    <a href="#about" data-icon="info">About</a>
+    </div>
+</div>
+
+
+
+
+
+
+
+  <div data-role="page" id="about">
+    <div data-role="header" data-theme="b" data-position="fixed">
+      <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
+      <h1>About</h1>
+      <a href="#home" data-icon="arrow-l" data-rel="back">Back</a> 
+    </div>
+    <div data-role="content">
+      <p>half past now. is your guide to Austin</p>
+    </div>
+    <div data-role="footer" class="ui-bar" data-theme="b" data-position="fixed" data-id="footer">
+      <a href="#about" data-icon="info">About</a>
+    </div>
+  </div>
+
+<!-- Filter -->
+<% @tags = Tag.all %>
+<div  data-role="page"  id="filter">
+
+
+  
+  <div data-role="header" data-theme="b" data-position="fixed">
+    <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
+    <h1>half past now.</h1>
+    <a href="#home" data-icon="arrow-l" data-rel="back">Back</a>
+  </div>
+
+  <div data-role="content">
+  
+    <center><a href="#home" data-role="button" data-inline="true" data-transition="pop">Search</a></center>
+    <div  data-role="fieldcontain">
+        <select name="Services" id="prices" data-native-menu="false" data-mini="true" multiple="multiple" size="6" >
+                        <ul>
+                          <li>
+                            <option >Price</option>
+                            <option class="selected" value="0">Free</option>
+                            <option class="selected" value="1">$</option>
+                            <option class="selected" value="2">$$</option>
+                            <option class="selected" value="3">$$$</option>
+                            <option class="selected" value="4">$$$$</option>
+                          </li>
+                        </ul>
+        </select>
+         <select name="days" id="day" data-native-menu="false" data-mini="true" multiple="multiple" size="8" >
+                        <ul>
+                          <li>
+                            <option >Choose a day</option>
+                            <option class="selected" value="0">Sunday</option>
+                            <option class="selected" value="1">Monday</option>
+                            <option class="selected" value="2">Tuesday</option>
+                            <option class="selected" value="3">Wednesday</option>
+                            <option class="selected" value="4">Thursay</option>
+                            <option class="selected" value="5">Friday</option>
+                            <option class="selected" value="6">Saturday</option>
+                          </li>
+                        </ul>
+        </select>
+      
+        <fieldset data-role="controlgroup" >
+          <legend>Today or Tomorrow</legend>
+              <input type="radio" name="radio-view" id="radio-view-a" value="0"  />
+              <label for="radio-view-a"  >Today</label>
+              <input type="radio" name="radio-view" id="radio-view-b" value="1"  />
+              <label for="radio-view-b"  >Tomorrow</label>
+              <input type="radio" name="radio-view" id="radio-view-c" value="2"  />
+              <label for="radio-view-c"  >None</label>
+              
+        </fieldset>
+  </div>
+        <select name="Services" id="distance" data-native-menu="false" data-mini="true" multiple="multiple" size="5">
+                        <ul data-role="collapsible">
+                          <li>
+                            <option>Distances</option>
+                            <option value="0.5">0.5 mi</option>
+                            <option value="1">1 mi</option>
+                            <option value="2">2 mi</option>
+                            <option value="3">3 mi</option>
+                            <option value="4">4 mi</option>
+                          </li>
+                        </ul>
+        </select>
+     
+      </br>
+        <label>tags</label>
+          <input type="text" class="tags" id="tag-input" />
+          <div class="tag-library">
+            <% @tags.each do |tag| %>
+            <div tagID="<%= tag.id %>"><%= tag.name.downcase %></div>
+            <% end %>
+          </div>
+          <div class="more-tags">
+            &#x25BE; more
+          </div>
+
+       
+
+    </div>
+
+  </div>
+
+
+  <div data-role="footer" class="ui-bar" data-theme="b" data-position="fixed" data-id="footer">
+    <a href="#about" data-icon="info">About</a>
+  </div>
+</div>
+
+
+  <script type="text/javascript">
+  var tags = [];
+  var geocoder;
+  var map; 
+  var map1;
+  var test = "Khoa Le";
+  $("#home .events-seed").hide();
+  function initialize() {
+    // Map
+  geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(30.250000000000025, -97.75);
+        var myOptions = {
+          zoom: 10,
+          center: latlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          disableDefaultUI: true,
+          zoomControl: true,
+          scrollwheel: false,
+          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
+        };
+        map = new google.maps.Map($("#home #map")[0], myOptions);
+
+        var locations = [];
+        google.maps.event.addListener(map, 'idle', boundsChanged);
+  }
+
+
+ $(function() {
+  <% @tags.each do |tag| %>
+        tags.push({id: <%= tag.id %>, name: "<%= tag.name.downcase %>"});
+  <% end %>
+  $("#home .events-seed").hide();
+
+  $("#tag-input").tokenInput(tags, {theme: "facebook", onAdd: filterChange, onDelete: filterChange });
+
+  $(".tag-library div").click(function() {
+    $("#tag-input").tokenInput("add", {id: parseInt($(this).attr("tagID")), name: $(this).html()});
+  });
+  
+  geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(30.250000000000025, -97.75);
+        var myOptions = {
+          zoom: 10,
+          center: latlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          disableDefaultUI: true,
+          zoomControl: true,
+          scrollwheel: false,
+          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
+        };
+        map = new google.maps.Map($("#home #map")[0], myOptions);
+
+        var locations = [];
+        google.maps.event.addListener(map, 'idle', boundsChanged);  
+        
+  $(".home #search-form").click(function() {
+    console.log("Search click");
+  });
+
+ });
+
+ 
+  $( '#event' ).live( 'pageinit',function(event){
+    var SelectedOptionClass = $('option:selected').attr('class');
+    $('div.ui-select').addClass(SelectedOptionClass);
+    
+    $('#note_utilisateur').live('change', function(){  
+      $('div.ui-select').removeClass(SelectedOptionClass);
+      
+      SelectedOptionClass = $('option:selected').attr('class');
+      $('div.ui-select').addClass(SelectedOptionClass);   
+      
+     });
+    
+    
+  });
+
+  </script>
+  

@@ -73,6 +73,7 @@ Myapp::Application.routes.draw do
   match 'events' => 'events#index'
   match 'tags' => 'tags#index'
   match 'info' => 'info#about'
+  # match '/search', to:'events#indexMobile'
 
   match ':controller(/:action(/:id(.:format)))'
 end

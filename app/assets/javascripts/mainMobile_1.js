@@ -14,6 +14,8 @@ $(function() {
     stop: filterChange
   });
 
+  $(".events-seed").hide();
+
   $(".tomorrow.time-range").slider({
     range: true,
     min: 0,
@@ -104,6 +106,11 @@ $(function() {
   $('#content .main .inner .events, .venue.mode .events').on("click", ".linkto", loadModal);
   $(".window .linkto").click(loadModal);
 
+
+
+
+
+
   mapOffset = $("#map").offset().top;
 });
 
@@ -119,6 +126,7 @@ window.addEventListener("popstate", function(e) {
   if(query !== "") {
     modal(parsequery(query));
   } else {
+
 
     demodal();
   }
@@ -287,7 +295,7 @@ function pullEvents() {
     query += "&offset=" + filter.offset;
   if(filter.sort)
     query += "&sort=" + filter.sort;
-  console.log("query "+query);
+
   loading('show');
   $.getJSON("/events/index?format=json" + query, function (events) {
     var locations = [];
@@ -311,7 +319,7 @@ function pullEvents() {
       locations.push({lat: events[i].venue.latitude, long: events[i].venue.longitude});
     }
 
-    placeMarkers({points: locations});
+    //placeMarkers({points: locations});
 
     $('#content .main .inner .events').empty();
     $('#content .main .inner .header .count').html(events.length + " event" + ((events.length == 1) ? "" : "s"));
@@ -373,7 +381,7 @@ function loadModal(event) {
   if($(this).is("#content .main .events li .venue")) {
      event.stopPropagation();
   }
-  modal(thing);
+  //modal(thing);
   return false;
 }
 
@@ -401,14 +409,222 @@ function to_ordinal(num) {
     return num.toString() + ordinal[num%10];
 }
 
+
+
 function modal(thing) {
-  console.log("in modal");
+  console.log("in modal :");
+  var i=0;
+  ///////////////////////
+     console.log("in modal and thing not null - called once ");
+ 
+          $(document).bind("pagebeforechange", function(e, data) {
+  // We only want to handle changePage() calls where the caller is asking to load a page by URL.
+  console.log("url in modal : "+data.toPage);
+   
+     console.log("i : "+i);
+      
+   
+  if (typeof data.toPage === "string") {
+      
+      var u = $.mobile.path.parseUrl(data.toPage);
+      var qrcode = /^#event/;
+      var vcode = /^#venue/;
+      if (data.toPage.localeCompare("/")===0){
+        console.log("home page : " +data.toPage);
+        // try to inject event here
+
+
+
+      }
+      else if (u.hash.search(qrcode) === 0){
+            console.log("else : "+data.toPage);
+      
+         // We only want to handle #qrcode url.
+           
+          console.log("hash :"+u.hash);
+          var title ;
+          var qrUrl = decodeURIComponent(u.hash.replace(/.*event_id=/, ""));
+          $.getJSON('/events/show/' + qrUrl + '.json', function(event) {
+            start = new Date(event.occurrences[0].start);
+            console.log("Json called " + event.title);
+            $('#event_infos h1').html(event.title);
+            $('#event_infos .event_description span').html(event.description);
+            $('#event_infos .map').attr("src","http://maps.googleapis.com/maps/api/staticmap?size=430x170&zoom=15&maptype=roadmap&markers=color:red%7C" + event.venue.latitude  +  "," + event.venue.longitude + "&style=feature:all|hue:0x000001|saturation:-50&sensor=false");
+            $('#event_infos .map-link').attr("href","http://maps.google.com/maps?q=" + event.venue.latitude  + "," + event.venue.longitude);
+            $('#event_infos a.venue-link').html(event.venue.name);
+            //<a href="<%= event ? "#event?event_id=" + event.id.to_s : "" %>" data-transition="slidedown"> 
+            $('#event_infos a.venue-link').attr("href", "#venue?venue_id=" + event.venue.id);
+            $('#event_infos .price').html(event.price ? ((event.price==0)?"<strong>Free</strong>" : "<strong>Price: </strong> <span>$" + parseFloat(event.price).toFixed(2) + "</span>" ): "");
+            $('#event_infos .add1').html(event.venue.address);
+            $('#event_infos .add2').html(event.venue.city + ", " + event.venue.state + " " + event.venue.zip);
+          });
+          console.log("eventID :"+qrUrl);
+          var pageSelector = u.hash.replace(/\?.*$/, "");
+
+
+          var $page = $(pageSelector);
+          console.log("pageSelector :"+pageSelector+" page :"+$page);
+          var options = data.options;
+          // Get the header for the page.
+          var $header = $page.children(":jqmData(role=header)");
+
+          // Find the h1 element in the header and inject the hostname from the url.
+          $header.find("h1").html("Event : "+qrUrl);
+
+          // Get the content area element for the page.
+          var $content = $page.children(":jqmData(role=content)");
+
+         
+          options.dataUrl = u.href;
+
+
+          // Now call changePage() and tell it to switch to the page we just modified.
+          if (i==0){
+
+            $.mobile.changePage($page,  options);
+            //$.mobile.changePage(u.href);
+            console.log("After loadpage");
+            i=i+1;
+           // break;
+          }
+          e.preventDefault();
+      }
+      else if(u.hash.search(vcode) === 0){
+        console.log("Venue mode");
+        var vUrl = decodeURIComponent(u.hash.replace(/.*venue_id=/, ""));
+        $.getJSON('/venues/show/' + vUrl + '.json', function(venueInfo) {
+          venue = $.parseJSON(venueInfo.venue);
+          recurrences = $.parseJSON(venueInfo.recurrences);
+          occurrences = $.parseJSON(venueInfo.occurrences);
+          var li;
+
+          $('#venue .vevents').empty();
+
+          $('#venue h1').html(venue.name);
+          $('#venue .address.onee').html(venue.address);
+          $('#venue .address.two').html(venue.city + ", " + venue.state + " " + venue.zip);
+          $('#venue .map').attr("src","http://maps.googleapis.com/maps/api/staticmap?size=430x170&zoom=15&maptype=roadmap&markers=color:red%7C" + venue.latitude  +  "," + venue.longitude + "&style=feature:all|hue:0x000001|saturation:-50&sensor=false");
+          $('#venue .map-link').attr("href","http://maps.google.com/maps?q=" + venue.latitude  + "," + venue.longitude);
+          $('#venue .description').html(venue.description);
+
+          if (venue.phonenumber=="") { 
+            $('#venue .phone span').html("Not Available");
+          } else {
+            $('#venue .phone span').html(venue.phonenumber);
+          }
+          //$('.mode.venue .url a').html(venue.name);
+          //$('.mode.venue .url a').attr("href", venue.url);
+          if (venue.url=="") { 
+            $('#venue .details a.url').html("Not Available");
+          } 
+            else {
+              $('#venue .details a.url').html(venue.name);
+              $('#venue .details a.url').attr("href", venue.url);
+            }
+
+          //////////////////////////////////////////////////////////////////////////////////////
+
+          var week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] ;
+      
+      
+      
+      $('#venue .vevents-seed1 li:not(:first-child)').each(function() {
+        $(this).remove();
+      });
+    
+      $('#venue .vevents-seed2 li:not(:first-child)').each(function() {
+        $(this).remove();
+      });
+      
+      // For recurrences
+      if(recurrences.length > 0) {
+        for (var i in recurrences) {
+          var event = recurrences[i].event;
+          console.log("event name :"+event.title);
+          var startTime = Date.parse(recurrences[i].start.substr(0,19));
+          
+          var mod = "EVERY " + ((recurrences[i].every_other == 0) ? "" : ((recurrences[i].every_other == 1) ? "OTHER" : to_ordinal(recurrences[i].every_other)));
+          console.log("Mod : " + mod);
+
+          var day = (recurrences[i].day_of_week != null && recurrences[i].week_of_month != null) ? 
+            "<sup>" + to_ordinal(recurrences[i].week_of_month) + "</sup> " + day_of_week[recurrences[i].day_of_week] :
+            ((recurrences[i].day_of_month != null) ? 
+              "<sup class='day-of-month'>" + to_ordinal(recurrences[i].day_of_month) + "</sup>" :
+              ((recurrences[i].day_of_week != null) ? 
+                day_of_week[recurrences[i].day_of_week] : 
+                "DAY"));
+          var time = startTime.toString("hh:mmtt").toLowerCase();
+          
+          li=$($('#venue .vevents-seed1 li:last-child').clone().wrap('<ul>').parent().html());
+          li.addClass("recurrence");
+          li.find(".mod").html(mod);
+          li.find(".day").html(day);
+          li.find(".time").html(time);
+          li.find(" a.linkto-name").attr("href",  "#event?event_id=" +event.id);
+          li.find(" a.linkto-name").html(event.title);
+          li.find(".one .description").html(event.description);
+          li.appendTo('#venue .vevents-seed1');
+        }
+      
+        $('#venue .vevents-seed1 li:not(:first-child)').each(function() {
+          $(this).appendTo('#venue .vevents');
+        });
+      }
+
+      // For occurrences
+      if(occurrences.length > 0) {
+        for (var i in occurrences){
+
+          var event = occurrences[i].event;
+          console.log("event name :"+event.title);
+          var startTime = Date.parse(occurrences[i].start.substr(0,19));
+          var dateString = startTime.toString("MMMdd").toUpperCase();
+          
+          li=$($('#venue .vevents-seed2 li:last-child').clone().wrap('<ul>').parent().html());
+          li.find(".mod").html(dateString);
+          li.find(".day").html(day_of_week[occurrences[i].day_of_week]);
+          li.find(".time").html(startTime.toString("hh:mmtt").toLowerCase());
+          li.find(" a.linkto-name").attr("href",  "#event?event_id=" +event.id);
+          li.find(" a.linkto-name").html(event.title);
+          li.find(".one .description").html(event.description);
+          li.appendTo('#venue .vevents-seed2');
+        }
+        
+        $('#venue .vevents-seed2 li:not(:first-child)').each(function() {
+          $(this).appendTo('#venue .vevents');
+        });
+      }
+
+      $('#venue').show();    
+      $('#venue .vevents-seed2').hide();
+      $('#venue .vevents-seed1').hide(); 
+
+
+
+        });
+
+
+      }
+
+  
+  }
+});
+///////////////////////////////////////////////
+
+
   if(!thing) {
+
+    
     $('.mode').hide();
     return;
   }
+
+// Listen for any attempts to call changePage().
+
   
   if(thing.type === "event") {
+    console.log("thing not null in event");
+ 
     $.getJSON('/events/show/' + thing.id + '.json', function(event) {
 
       start = new Date(event.occurrences[0].start);
@@ -427,6 +643,7 @@ function modal(thing) {
       $('.mode.event').show();
     });
   } else {
+    console.log("thing not null in venue");
     $.getJSON('/venues/show/' + thing.id + '.json', function(venueInfo) {
       venue = $.parseJSON(venueInfo.venue);
       recurrences = $.parseJSON(venueInfo.recurrences);
