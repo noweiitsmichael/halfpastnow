@@ -5,14 +5,192 @@
   
   <%= javascript_include_tag "application" %>
   <%= javascript_include_tag "jquery-ui" %>
-
+  <%= javascript_include_tag "jquery-ui-timepicker-addon" %>
+  <%= javascript_include_tag "date" %>
+  <%= javascript_include_tag "jquery.validate" %>
+  <%= javascript_include_tag "jquery.form" %>
+  <%= javascript_include_tag "jquery.tabSlideOut.v1.3" %>
+  <%= javascript_include_tag "jquery.cleditor.min" %>
   <%= stylesheet_link_tag "venue" %>
   <%= stylesheet_link_tag "jquery-ui" %>
+  <%= stylesheet_link_tag "jquery.cleditor" %>
   <%= csrf_meta_tags %>
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCuX99Cn10qLVF0AQNRzduy012YqkaIXgk&sensor=false"></script>
 </head>
 <body onload="if(typeof initialize !== 'undefined') initialize();">
+<script type="text/javascript">
+  var validators = {};
+
+  function generateValidator(selector, options) {
+    options = options || {};
+
+    if(options["ajax"] == true) {
+      validators[selector] = $(selector).validate(
+            { submitHandler: function(form) {
+              // do nothing
+              }
+          }); 
+
+      $(selector).submit(function() { 
+            var obj = $(this);
+            if(validators[selector].numberOfInvalids() == 0) {
+              $(this).find("[type='submit']").after("<img src='/assets/admin-load.gif' class='form-load'/>");
+              obj.find("select[name*=4i], select[name*=5i]").each(function() {
+                if($(this).val() === "")
+                  $(this).parent().find("select,input").attr("disabled","disabled");
+              });
+              obj.find(".datetime-hidden").each(function() {
+                if($(this).val() === "")
+                  $(this).attr("disabled","disabled");
+              });
+            }
+            obj.ajaxSubmit({
+                beforeSubmit: function() {
+                                return validators[selector].numberOfInvalids() == 0;
+                              },
+                success: function() {
+                          // obj.remove();
+                          obj.find('.form-load').remove();
+                          obj.slideUp();
+                        }
+            }); 
+            return false; 
+      });
+    } else {
+      validators[selector] = $(selector).validate(); 
+
+      $(selector).submit(function() { 
+        console.log("reticulating splines");
+        if(validators[selector].numberOfInvalids() == 0) {
+          $(this).find("select[name*=4i], select[name*=5i]").each(function() {
+            if($(this).val() === "")
+              $(this).parent().find("select,input").attr("disabled","disabled");
+          });
+          $(this).find(".datetime-hidden").each(function() {
+            if($(this).val() === "")
+              $(this).attr("disabled","disabled");
+          });
+        }
+      });
+    }
+  }
+
+  $(function() {
+    $(".toggle-recurring input").attr('checked', false);
+    $(".new-recurrence select, .new-recurrence input").attr('disabled','disabled');
+    $(".toggle-recurring input").change(function() {
+      if($(this).attr('checked')) {
+        $(this).parent().siblings(".new-occurrence").find("select, input").attr('disabled','disabled');
+        $(this).parent().siblings(".new-recurrence").find("select, input").removeAttr('disabled');
+      } else {
+        $(this).parent().siblings(".new-recurrence").find("select, input").attr('disabled','disabled');
+        $(this).parent().siblings(".new-occurrence").find("select, input").removeAttr('disabled');
+      }
+      $(this).parent().siblings(".new-occurrence").toggle();
+      $(this).parent().siblings(".new-recurrence").toggle();
+    });
+
+    $("#form_events .new-occurrence .field select[name*=4i], #form_events .new-occurrence .field select[name*=5i]").val("");
+
+    $(".new-recurrence select[name*=interval]").change(function() {
+      $(this).siblings(".recur-parameter").hide();
+      switch($(this).val())
+      {
+        case "0":
+          $(this).siblings(".recur-parameter.day").show(); break;
+        case "1":
+          $(this).siblings(".recur-parameter.day-of-week").show(); break;
+        case "2":
+          $(this).siblings(".recur-parameter.day-of-month").show(); break;
+        case "3":
+          $(this).siblings(".recur-parameter.day-of-week").show();
+          $(this).siblings(".recur-parameter.week-of-month").show(); break;
+      }
+    });
+
+    $(".new-recurrence select[name*=interval]").change();
+
+    $("#form_events .main.event.new input.title").change(function() {
+      if($(this).val() == "") {
+        $(this).removeClass("required");
+        $(this).parent().find(".start-time").removeClass("required");
+        // $("#form_events .main.event.new .start-time").removeClass("required");
+      } else {
+        $(this).addClass("required");
+        $(this).parent().find(".start-time").addClass("required");
+        // $("#form_events .main.event.new .start-time").addClass("required");
+      }
+    });
+
+    $("#form_events .main.event.new input.title").change();
+
+    $(".datetime-input").datetimepicker({
+      ampm: true,
+      dateFormat: 'D M d, yy',
+      timeFormat: 'h:mm tt',
+      separator: ' at '
+    });
+
+    $(".time-input").timepicker({
+      ampm: true,
+      timeFormat: 'h:mm tt'
+    });
+
+    $(".datetime-input").change(dateTimeChange);
+    $(".datetime-input").blur(dateTimeChange);
+
+    $(".time-input").change(timeChange);
+    $(".time-input").blur(timeChange);
+  });
+
+  function dateTimeChange() {
+    var date = $(this).datetimepicker("getDate");
+    $(this).siblings(".datetime-hidden").val(date ? date.toString("yyyy-MM-ddTHH:mm:ss") : "");
+  }
+
+  function timeChange() {
+    var date = $(this).datetimepicker("getDate");
+    $(this).siblings(".time-hidden").val(date ? date.toString("yyyy-MM-ddTHH:mm:ss") : "");
+  }
+
+
+</script>
+
+<script type="text/javascript">
+  $(function(){
+      $('.slide-out-div').tabSlideOut({
+          tabHandle: '.handle',                     //class of the element that will become your tab
+          pathToTabImage: 'assets/feedback_tab_v.jpg', //path to the image for the tab //Optionally can be set using css
+          imageHeight: '122px',                     //height of tab image           //Optionally can be set using css
+          imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
+      });
+
+  });
+
+</script>
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        $(".tab textarea").cleditor({
+		          controls:     "bold italic underline size " +
+		                        " | bullets numbering | undo redo | " +
+		                        "rule image link unlink | source",   
+		          sizes:        "1,2,3,4,5,6,7",
+		          bodyStyle:    // style to assign to document body contained within the editor
+		                        "margin:4px; font:10pt Arial,Verdana; cursor:text"
+		        });
+      });
+</script>
+
 <%= yield %>
+
+<div class="slide-out-div">
+	<a class="handle" href="http://link-for-non-js-users.html">Content</a>
+	<h3>Got some feedback?</h3>
+	<p>Let us know! We really appreciate it.</p>
+	<%= render 'feedbacks/form' %>
+</div>
+
 
 </body>
 </html>

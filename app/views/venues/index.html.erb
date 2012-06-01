@@ -35,14 +35,22 @@
     });
   });
 </script>
-
 <h1>Find Venue</h1>
 
 Venue name: <input id="venue-name" /> <button id="venue-go">Go</button>
 <br />
 <a href="/venues/new">New Venue</a><br /><br />
-<h2>Some Venues with Raw Events</h2>
-<% @venues.sort_by { |venue| @num_raw_events[venue.id] }.reverse.each do |venue|
-   %>
-  <a href="/venues/edit/<%= venue.id %>"><%= venue.name %></a> (<%= @num_raw_events[venue.id] %>)<br />
+
+<div class="venues-list">
+<h3>Venues (# of Raw Events)</h3>
+
+<% @venuesRaw.each do |venue| %>  
+  <a href="/venues/edit/<%= venue["venue_id"] %>"><%= venue["name"] %></a> (<%= venue["count"] %>)<br />
 <% end %>
+</div>
+<div class="venues-list">
+<h3>Venues (# of Events)</h3>
+<% @venuesCooked.each do |venue| %>  
+  <a href="/venues/edit/<%= venue["venue_id"] %>"><%= venue["name"] %></a> (<%= venue["count"] %>)<br />
+<% end %>
+</div>

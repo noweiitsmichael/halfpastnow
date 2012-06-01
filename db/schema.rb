@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120423203957) do
+ActiveRecord::Schema.define(:version => 20120531175535) do
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -22,8 +22,10 @@ ActiveRecord::Schema.define(:version => 20120423203957) do
     t.integer  "venue_id"
     t.integer  "clicks",      :default => 0
     t.integer  "views",       :default => 0
+    t.integer  "user_id"
   end
 
+  add_index "events", ["user_id"], :name => "index_events_on_user_id"
   add_index "events", ["venue_id"], :name => "index_events_on_venue_id"
 
   create_table "events_tags", :id => false, :force => true do |t|
@@ -31,6 +33,19 @@ ActiveRecord::Schema.define(:version => 20120423203957) do
     t.integer  "tag_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  add_index "events_tags", ["event_id"], :name => "index_events_tags_on_event_id"
+  add_index "events_tags", ["tag_id"], :name => "index_events_tags_on_tag_id"
+
+  create_table "feedbacks", :force => true do |t|
+    t.integer  "feedback_type"
+    t.string   "subject"
+    t.string   "description"
+    t.integer  "status"
+    t.integer  "user_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "occurrences", :force => true do |t|
@@ -139,6 +154,13 @@ ActiveRecord::Schema.define(:version => 20120423203957) do
     t.datetime "updated_at"
   end
 
+  create_table "things", :force => true do |t|
+    t.string   "name"
+    t.integer  "parent_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
     t.string   "encrypted_password",     :default => "", :null => false
@@ -154,6 +176,7 @@ ActiveRecord::Schema.define(:version => 20120423203957) do
     t.datetime "updated_at"
     t.string   "firstname"
     t.string   "lastname"
+    t.string   "username"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

@@ -11,13 +11,10 @@
   <%= javascript_include_tag "main" %>
   <%= javascript_include_tag "tokeninput" %>
 
-  
- 
-  
+  <%= javascript_include_tag "jquery.tabSlideOut.v1.3" %>
 
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCuX99Cn10qLVF0AQNRzduy012YqkaIXgk&sensor=false"></script>
   <%= javascript_include_tag "markerwithlabel" %>
-  
   <%= stylesheet_link_tag    "styles" %>
   <%= stylesheet_link_tag    "jquery-ui" %>
   <%= stylesheet_link_tag "token-input-facebook" %>
@@ -25,6 +22,19 @@
   
   
   <%= csrf_meta_tags %>
+
+  <script type="text/javascript">
+    $(function(){
+        $('.slide-out-div').tabSlideOut({
+            tabHandle: '.handle',                     //class of the element that will become your tab
+            pathToTabImage: 'assets/feedback_tab_v.jpg', //path to the image for the tab //Optionally can be set using css
+            imageHeight: '122px',                     //height of tab image           //Optionally can be set using css
+            imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
+        });
+
+    });
+
+    </script>
 </head>
 <body onload="if(typeof initialize !== 'undefined') initialize();">
 	<%= yield :code %>
@@ -38,16 +48,13 @@
         <a href="/"><img class="logo" src="/assets/halfpastnow.png" /></a>
         <div class="menu-element"><a href="/info/about">about us</a></div>
         <div class="menu-element"><a href="/info/contact">contact us</a></div>
-        <div class="menu-element right"><% if user_signed_in? %>
-                <%= link_to('logout', destroy_user_session_path, :method => 'delete') %>        
-              <% else %>
-                <%= link_to('login', new_user_session_path)  %>  
-              <% end %> / 
+        <div class="menu-element right">
               <% if user_signed_in? %>
-                <%= link_to('edit registration', edit_user_registration_path) %>
-              <% else %>
-                <%= link_to('register', new_user_registration_path)  %>
+                <%= link_to('logout', destroy_user_session_path, :method => 'delete') %>        
+              / 
+                <%= link_to('edit registration', edit_user_registration_path) %> 
               <% end %>
+              <% if false %> <%= link_to('login', new_user_session_path)  %>  <%= link_to('register', new_user_registration_path)  %> <% end %>
         </div>
       </div>
       <%= yield :header%>
@@ -55,5 +62,13 @@
     <%= yield :body %>
   </div>
   <%= yield :overlay %>
+
+  <div class="slide-out-div">
+	<a class="handle" href="http://link-for-non-js-users.html">Content</a>
+	<h3>Got some feedback?</h3>
+	<p>Let us know! We really appreciate it.</p>
+	<%= render 'feedbacks/form' %>
+  </div>
+
 </body>
 </html>

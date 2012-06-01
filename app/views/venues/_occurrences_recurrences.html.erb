@@ -1,0 +1,91 @@
+<div class="occurrence recurrence">
+	<div class="toggle-recurring">
+		<input type="checkbox" /> recurring
+	</div>
+
+	<div class="new-occurrence">
+		<%# TODO fix when we start getting lots of occurrences %> 
+		<% @occurrence = event.occurrences.sort_by{ |occurrence| occurrence.id || 0 }.first %>
+		
+		<%= e.fields_for :occurrences, @occurrence do |o| %>
+			<div class="field">
+		    	<label>Start</label><input type="text" class="datetime-input" value="<%= display_datetime(@occurrence.start) %>"/>
+		    	<%= o.hidden_field :start, :value => hidden_datetime(@occurrence.start), :class => "datetime-hidden" %> 
+		    </div>
+		    <div class="field">
+		    	<label>End</label><input type="text" class="datetime-input" value="<%= display_datetime(@occurrence.end) %>"/>
+		    	<%= o.hidden_field :end, :value => hidden_datetime(@occurrence.end), :class => "datetime-hidden" %>
+		    </div>
+		<% end %>
+	</div>
+	<div class="new-recurrence" style="display:none;">
+		<%# TODO fix when we start getting lots of recurrences %>
+		<% @recurrence = event.recurrences.sort_by{ |recurrence| recurrence.id || 0 }.first %>
+		<%= e.fields_for :recurrences, @recurrence do |r| %>
+			
+			<%= r.select :interval, ["Daily","Weekly","Monthly (by day)", "Monthly (by week/day)"].zip((0..3).to_a) %>:&nbsp;&nbsp;
+			<%= r.select :every_other, ((1..7).to_a.map{|num| "Every " + ((num == 1) ? "" : (num == 2) ? "other" : to_ordinal(num))}).zip((0..6).to_a) %>
+			<div class="recur-parameter day">day</div>
+			<div class="recur-parameter week-of-month"><%= r.select :week_of_month, [["[nth]",nil]] + ((1..4).to_a.map{|day| to_ordinal(day)}).zip((1..4).to_a), :selected => nil %></div>
+			<div class="recur-parameter day-of-week"><%= r.select :day_of_week, [["[nday]",nil]] + Date::DAYNAMES.zip((0..6).to_a), :selected => nil %></div>
+			<div class="recur-parameter day-of-month"><%= r.select :day_of_month, [["[nth]",nil]] + (((1..31).to_a.map{|day| to_ordinal(day)}).zip((1..31).to_a)), :selected => nil %></div>
+			<div class="field">
+		    	<label>Start</label><input type="text" class="time-input" value="<%= display_time(@recurrence.start) %>"/>
+		    	<%= r.hidden_field :start, :value => hidden_datetime(@recurrence.start), :class => "time-hidden" %> 
+		    </div>
+		    <div class="field">
+		    	<label>End</label><input type="text" class="time-input" value="<%= display_time(@recurrence.end) %>"/>
+		    	<%= r.hidden_field :end, :value => hidden_datetime(@recurrence.end), :class => "time-hidden" %>
+		    </div>
+			<% if false %>
+			<div class="field">
+		    	<%= r.label :start %><%= r.time_select :start, {:prompt => true, :ampm => true}, {:class => "start-time"} %>
+		    </div>
+		    <div class="field">
+		    	<%= r.label :end %><%= r.time_select :end, {:prompt => true, :ampm => true} %>
+		    </div>
+		    <% end %>
+		<% end %>
+	</div>
+</div>
+<% event.occurrences.sort_by{ |occurrence| occurrence.id || 0 }.each do |occurrence| %>
+  <%= e.fields_for :occurrences, occurrence do |o| %>
+    <%# TODO fix when we start getting lots of recurrences %> 
+    <% if occurrence.recurrence.nil? && !occurrence.id.nil? %>
+	    <div class="occurrence">
+	    	<div class="field">
+		    	<label>Start</label><input type="text" class="datetime-input" value="<%= display_datetime(occurrence.start) %>"/>
+		    	<%= o.hidden_field :start, :value => hidden_datetime(occurrence.start), :class => "datetime-hidden" %> 
+		    </div>
+		    <div class="field">
+		    	<label>End</label><input type="text" class="datetime-input" value="<%= display_datetime(occurrence.end) %>"/>
+		    	<%= o.hidden_field :end, :value => hidden_datetime(occurrence.end), :class => "datetime-hidden" %>
+		    </div>
+			<div class="remove">
+				<%= o.check_box :_destroy %>
+				<%= o.label :_destroy, "remove occurrence" %>
+			</div>
+		</div>
+	<% end %>
+  <% end %>
+<% end %>
+<% event.recurrences.sort_by{ |recurrence| recurrence.id || 0 }.each do |recurrence| %>
+  <%= e.fields_for :recurrences, recurrence do |r| %>
+    <% unless (recurrence.id.nil?) %>
+	    <div class="recurrence">
+	    	<span><%= "every " + ((recurrence.every_other.nil? || recurrence.every_other == 0) ? "" : ((recurrence.every_other == 1) ? "other" : to_ordinal(recurrence.every_other))) %></span>
+	    	<span><%= (recurrence.day_of_week && recurrence.week_of_month) ? to_ordinal(recurrence.week_of_month) + " " + @week[recurrence.day_of_week] : (recurrence.day_of_month ? to_ordinal(recurrence.day_of_month) : (recurrence.day_of_week ? @week[recurrence.day_of_week] : "day")) %></span>
+	    	<% if recurrence.end %>
+		    	<span>from <%= recurrence.start.to_time.strftime("%I:%M%P") %></span>
+		    	<span>to <%= recurrence.end.to_time.strftime("%I:%M%P") %></span>
+		    <% else %>
+		    	<span>at <%= recurrence.start.to_time.strftime("%I:%M%P") %></span>
+		    <% end %>
+		    <div class="remove">
+				<%= r.check_box :_destroy %>
+				<%= r.label :_destroy, "remove recurrence" %>
+			</div>
+	    </div>
+    <% end %>
+  <% end %>
+<% end %>

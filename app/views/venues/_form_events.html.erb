@@ -1,9 +1,21 @@
 <div id="form_events">
 <script type="text/javascript">
 	 $(function() {
-	 	$("#form_events .toggle-recurring input").attr('checked', false);
+	 	generateValidator("#edit_venue_<%= @venue.id %>");
 
+	 	// toggle recurring disables/enables form elements
+	 	
+	 	/*
+	 	$("#form_events .toggle-recurring input").attr('checked', false);
+	 	$("#form_events .new-recurrence select, #form_events .new-recurrence input").attr('disabled','disabled');
 		$("#form_events .toggle-recurring input").change(function() {
+			if($(this).attr('checked')) {
+				$(this).parent().siblings(".new-occurrence").find("select, input").attr('disabled','disabled');
+				$(this).parent().siblings(".new-recurrence").find("select, input").removeAttr('disabled');
+			} else {
+				$(this).parent().siblings(".new-recurrence").find("select, input").attr('disabled','disabled');
+				$(this).parent().siblings(".new-occurrence").find("select, input").removeAttr('disabled');
+			}
 			$(this).parent().siblings(".new-occurrence").toggle();
 			$(this).parent().siblings(".new-recurrence").toggle();
 		});
@@ -27,13 +39,26 @@
 		});
 
 		$("#form_events .new-recurrence select[name*=interval]").change();
+
+		$("#form_events .main.event.new input.title").change(function() {
+			if($(this).val() == "") {
+				$(this).removeClass("required");
+				$("#form_events .main.event.new .start-time").removeClass("required");
+			} else {
+				$(this).addClass("required");
+				$("#form_events .main.event.new .start-time").addClass("required");
+			}
+		});
+
+		$("#form_events .main.event.new input.title").change();*/
 	 });
 </script>
+
 
 <% @ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] %>
 <% @week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] %>
 
-<%= form_for @venue, :url => "/venues/update/" + @venue.id.to_s do |f| %>
+<%= form_for @venue, :url => "/venues/update/" + @venue.id.to_s , :validate => true do |f| %>
   <% if @venue.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@venue.errors.count, "error") %> prohibited this venue from being saved:</h2>
@@ -49,11 +74,13 @@
     <% @iStrName = "venue[events_attributes][" + @i.to_s + "][tag_ids][]" %>
     <% @iStrId = "venue_events_attributes_" + @i.to_s + "_tag_ids_" %>
     <%= f.fields_for :events, event do |e| %>
-      <div class="main event">
+      <div class="main event<%= event.id ? "" : " new"%>">
+
 	<%= event.id.nil? ? raw("<h4>New Event</h4>") : "" %>
+	<%= event.user_id ? raw("<em>created by " + event.user.email + "</em><br /><br />") : "" %>
 	<div class="field">
 	  <%= e.label :title %>
-	  <%= e.text_field :title %>
+	  <%= e.text_field :title, :class => "title required" %>
 	</div>
 	<div class="field">
 	  <%= e.label :description %>
@@ -63,95 +90,11 @@
 	  <%= e.label :price %>
 	  <%= e.text_field :price, :class => "price" %>
 	</div>
-	<div class="tags field">
-		<label>Tags</label>
-		<div class="input-tags">
-		<% @parentTags.each do |tag| %>
-			<div class="parent tag">
-			<%= check_box_tag @iStrName, tag.id, event.tags.include?(tag) || (event.id.nil? && @venue.tags.include?(tag)), :id => (@iStrId + tag.id.to_s) %>
-			<%= label_tag @iStrName, tag.name, :for => (@iStrId + tag.id.to_s) %>
-		</div>
-			<div class="children">
-			<% tag.childTags.each do |childTag| %>
-				<div class="child tag">
-				<%= check_box_tag @iStrName, childTag.id, event.tags.include?(childTag) || (event.id.nil? && @venue.tags.include?(childTag)), :id => (@iStrId + childTag.id.to_s) %>
-				<%= label_tag @iStrName, childTag.name, :for => (@iStrId + childTag.id.to_s) %>
-				</div>
-			<% end %>
-			</div>
-	    <% end %>
-    </div>
-	</div>
-	<div class="occurrence recurrence">
-		<div class="toggle-recurring">
-			<input type="checkbox" id="venue_events_attributes_<%= @i %>_recurring" name="venue[events_attributes][<%= @i %>][recurring]" /> recurring
-		</div>
-		<div class="new-occurrence">
-			<%# TODO fix when we start getting lots of occurrences %> 
-			<% @occurrence = event.occurrences.sort_by{ |occurrence| occurrence.id || 0 }.first %>
-			<%= e.fields_for :occurrences, @occurrence do |o| %>
-			    <div class="field">
-			    	<%= o.label :start %><%= o.datetime_select :start, :prompt => {:hour => :hour, :minute => :minute} %>
-			    </div>
-			    <div class="field">
-			    	<%= o.label :end %><%= o.datetime_select :end, :prompt => {:hour => :hour, :minute => :minute} %>
-			    </div>
-			<% end %>
-		</div>
-		<div class="new-recurrence" style="display:none;">
-			<%# TODO fix when we start getting lots of recurrences %>
-			<% @recurrence = event.recurrences.sort_by{ |recurrence| recurrence.id || 0 }.first %>
-			<%= e.fields_for :recurrences, @recurrence do |r| %>
-				<%= r.select :interval, ["Daily","Weekly","Monthly (by day)", "Monthly (by week/day)"].zip((0..3).to_a) %>:&nbsp;&nbsp;
-				<%= r.select :every_other, ((1..7).to_a.map{|num| "Every " + ((num == 1) ? "" : (num == 2) ? "other" : to_ordinal(num))}).zip((0..6).to_a) %>
-				<div class="recur-parameter day">day</div>
-				<div class="recur-parameter week-of-month"><%= r.select :week_of_month, [["[nth]",nil]] + ((1..4).to_a.map{|day| to_ordinal(day)}).zip((1..4).to_a), :selected => nil %></div>
-				<div class="recur-parameter day-of-week"><%= r.select :day_of_week, [["[nday]",nil]] + Date::DAYNAMES.zip((0..6).to_a), :selected => nil %></div>
-				<div class="recur-parameter day-of-month"><%= r.select :day_of_month, [["[nth]",nil]] + (((1..31).to_a.map{|day| to_ordinal(day)}).zip((1..31).to_a)), :selected => nil %></div>
-				<div class="field">
-			    	<%= r.label :start %><%= r.time_select :start, :prompt => {:hour => :hour, :minute => :minute} %>
-			    </div>
-			    <div class="field">
-			    	<%= r.label :end %><%= r.time_select :end, :prompt => {:hour => :hour, :minute => :minute} %>
-			    </div>
-			<% end %>
-		</div>
-	</div>
-	<% event.occurrences.sort_by{ |occurrence| occurrence.id || 0 }.each do |occurrence| %>
-	  <%= e.fields_for :occurrences, occurrence do |o| %>
-	    <%# TODO fix when we start getting lots of recurrences %> 
-	    <% if occurrence.recurrence.nil? && !occurrence.id.nil? %>
-		    <div class="occurrence">
-			    <div class="field">
-			    	<%= o.label :start %><%= o.datetime_select :start, :prompt => {:hour => :hour, :minute => :minute}  %>
-			    </div>
-			    <div class="field">
-			    	<%= o.label :end %><%= o.datetime_select :end, :prompt => {:hour => :hour, :minute => :minute}  %>
-			    </div>
-				<div class="remove">
-					<%= o.check_box :_destroy %>
-					<%= o.label :_destroy, "remove occurrence" %>
-				</div>
-			</div>
-		<% end %>
-	  <% end %>
-	<% end %>
-	<% event.recurrences.sort_by{ |recurrence| recurrence.id || 0 }.each do |recurrence| %>
-	  <%= e.fields_for :recurrences, recurrence do |r| %>
-	    <% unless (recurrence.id.nil?) %>
-		    <div class="recurrence">
-		    	<span><%= "every " + ((recurrence.every_other.nil? || recurrence.every_other == 0) ? "" : ((recurrence.every_other == 1) ? "other" : to_ordinal(recurrence.every_other))) %></span>
-		    	<span><%= (recurrence.day_of_week && recurrence.week_of_month) ? to_ordinal(recurrence.week_of_month) + " " + @week[recurrence.day_of_week] : (recurrence.day_of_month ? to_ordinal(recurrence.day_of_month) : (recurrence.day_of_week ? @week[recurrence.day_of_week] : "day")) %></span>
-		    	<span>from <%= recurrence.start.to_time.strftime("%I:%M%P") %></span>
-		    	<span>to <%= recurrence.end.to_time.strftime("%I:%M%P") %></span>
-			    <div class="remove">
-					<%= r.check_box :_destroy %>
-					<%= r.label :_destroy, "remove recurrence" %>
-				</div>
-		    </div>
-	    <% end %>
-	  <% end %>
-	<% end %>
+
+	<%= render :partial => "tags", :locals => { :event => event } %>
+
+	<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => event } %>
+	
 	<% if !event.id.nil? %>
 	  <div class="remove">
 	    <%= e.check_box :_destroy %>

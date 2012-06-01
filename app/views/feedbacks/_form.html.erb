@@ -1,0 +1,39 @@
+<% fb = Feedback.new %>
+
+<%= form_for fb, :url => "/feedbacks/create" do |f| %>
+
+
+  <div class="field">
+    <%= f.label :feedback_type %><br />
+    <%= radio_button("feedback", "feedback_type", "0".to_i) %> 
+  	<%= label :feedback_type_s, 'Suggestion' %><br>
+  	<%= radio_button("feedback", "feedback_type", "1".to_i) %>
+  	<%= label :feedback_type_q, 'Question' %><br>
+  	<%= radio_button("feedback", "feedback_type", "2".to_i) %> 
+  	<%= label :feedback_type_b, 'Bug' %><br>
+  	<%= radio_button("feedback", "feedback_type", "3".to_i) %>
+  	<%= label :feedback_type_o, 'Other' %>
+  </div>
+  <br>
+  <div class="field">
+    <%= f.label :subject %><br />
+    <%= f.text_field :subject %>
+  </div>
+  <br />
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_area :description, :rows => 10, :cols => 30 %>
+  </div>
+
+  <%= f.hidden_field :status, :value => "0" %>
+
+  <% if current_user == nil %>
+	<%= f.hidden_field :user_id, :value => nil %>
+  <% else %>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,5 +1,7 @@
 Myapp::Application.routes.draw do
   
+
+
   get "info/about"
 
   get "info/contact"
@@ -10,7 +12,8 @@ Myapp::Application.routes.draw do
 
   # resources :events
   # resources :venues
-
+  # resources :feedbacks
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -73,7 +76,9 @@ Myapp::Application.routes.draw do
   match 'events' => 'events#index'
   match 'tags' => 'tags#index'
   match 'info' => 'info#about'
-  # match '/search', to:'events#indexMobile'
+
+  match 'feedbacks' => 'feedbacks#index'
+
 
   match ':controller(/:action(/:id(.:format)))'
 end

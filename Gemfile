@@ -1,6 +1,5 @@
 source 'http://rubygems.org'
 
-
 gem 'rails', '3.2.3'
 
 # Bundle edge Rails instead:
@@ -49,9 +48,7 @@ group :test do
   gem 'turn', '~> 0.8.3', :require => false
 end
 
-gem 'whenever', require: false
+gem "ruby-prof", "~> 0.11.2"
 
 gem 'mobile-fu'
-# gem 'jquery_mobile_rails'
-#gem "jquerymobile-rails"
 

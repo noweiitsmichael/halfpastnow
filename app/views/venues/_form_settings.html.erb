@@ -35,36 +35,35 @@
 
   $(function() {
     $(".location").blur(codeAddress);
+    generateValidator("#venue_settings");
   });
 
 </script>
 
+
 <% @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}) %>
 
-<%= form_for @venue, :url => @venue.id ? "/venues/update/" + @venue.id.to_s : "/venues/create" do |f| %>
-  <% if @venue.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@venue.errors.count, "error") %> prohibited this venue from being saved:</h2>
-
-      <ul>
-      <% @venue.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= form_for @venue, :url => @venue.id ? "/venues/update/" + @venue.id.to_s : "/venues/create", :html => { :id => "venue_settings" } do |f| %>
    <div class="main settings">
     <div class="field">
       <%= f.label :name %>
-      <%= f.text_field :name %>
+      <%= f.text_field :name, :class => 'required' %>
+    </div>
+    <div class="field">
+      <%= f.label :url %>
+      <%= f.text_field :url %>
     </div>
     <div class="field">
       <%= f.label :description %>
       <%= f.text_area :description %>
     </div>
     <div class="field">
+      <%= f.label :phonenumber %>
+      <%= f.text_field :phonenumber %>
+    </div>
+    <div class="field">
       <%= f.label :address %>
-      <%= f.text_field :address, :class => 'location' %>
+      <%= f.text_field :address, :class => 'location required' %>
     </div>
     <div class="field">
       <%= f.label :address2 %>
@@ -72,15 +71,15 @@
     </div>
     <div class="field">
       <%= f.label :city %>
-      <%= f.text_field :city, :class => 'location' %>
+      <%= f.text_field :city, :class => 'location required' %>
     </div>
     <div class="field">
       <%= f.label :state %>
-      <%= f.text_field :state, :class => 'location' %>
+      <%= f.text_field :state, :class => 'location required' %>
     </div>
     <div class="field">
       <%= f.label :zip %>
-      <%= f.text_field :zip, :class => 'location' %>
+      <%= f.text_field :zip, :class => 'location required' %>
     </div>
     <div class="tags field">
     <label>Tags</label>

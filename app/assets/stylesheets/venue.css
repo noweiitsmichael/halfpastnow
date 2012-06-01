@@ -9,6 +9,8 @@ input[type="text"], textarea {
   width:500px;
 }
 
+
+
 textarea {
   height: 100px;
 }
@@ -153,4 +155,56 @@ select.interval {
 
 .field .url {
   font-size:14px;
+}
+
+/* Error Messages */
+.field_with_errors {
+  display: inline;
+}
+
+.field_with_errors .message {
+  color: #D00;
+  padding-left: 5px;
+  font-size: 12px;
+}
+
+.error {
+    border: 1px solid red;
+    color:red;
+}
+
+.main .field label.error[generated="true"] {
+    display: none !important;
+}
+
+.form-load {
+ position:relative;
+ top:2px;
+ left:10px;
+}
+
+/* feedback tab */
+.slide-out-div {
+    padding: 20px;
+    width: 250px;
+    background: #ccc;
+    border: 1px solid #29216d;
+}      
+
+.slide-out-div input[type=text], textarea{
+    width: 240px;
+}
+
+input.datetime-input {
+  width:200px;
+}
+
+input.time-input {
+  width:100px;
+}
+
+.venues-list {
+  float:left;
+  width:400px;
+  margin-right:100px;
 }

@@ -1,7 +1,7 @@
 class Occurrence < ActiveRecord::Base
   belongs_to :event
   belongs_to :recurrence
-  # validates :start, :presence => true
+  validates_presence_of :start
   # validates :end, :presence => true
 
   def create

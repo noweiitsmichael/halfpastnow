@@ -1,20 +1,5 @@
 /* Global styles */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @font-face
 {
   font-family: UbuntuMonoBold;
@@ -799,9 +784,20 @@ html,body {
 
 .mode .window .description {
     color: #333349;
-  
     font-size: 14px;
     line-height: 1.5em;
+}
+
+.mode .window .description ul {
+    margin-left: 40px;
+}
+
+.mode .window .description ul li{
+    list-style-type: disc;
+}
+
+.mode .window .description ol li{
+    list-style-type: decimal;
 }
 
 #content .main .inner .events li .description  SPAN{
@@ -866,6 +862,18 @@ overflow: hidden;
   text-align:center;
 }
 
+
+/* Error Messages */
+.field_with_errors {
+  display: inline;
+}
+
+.field_with_errors .message {
+  color: #D00;
+  padding-left: 5px;
+  font-size: 12px;
+}
+
 #loading {
   display:none;
   height:66px;
@@ -886,4 +894,12 @@ overflow: hidden;
   margin:0 auto;
   box-shadow: 0 0 15px #000;
   height:100%;
+}
+
+/* feedback tab */
+.slide-out-div {
+    padding: 20px;
+    width: 250px;
+    background: #ccc;
+    border: 1px solid #29216d;
 }

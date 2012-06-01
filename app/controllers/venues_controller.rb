@@ -1,19 +1,36 @@
 require 'pp'
+require 'ruby-prof'
 
 class VenuesController < ApplicationController
+  before_filter :authenticate_user!
+  skip_before_filter :authenticate_user!, :only => [:show, :find]
+  
   # GET /venues
   # GET /venues.json
   def index
-    # @venues = Venue.all
-    @venues = RawEvent.where(:submitted => nil, :deleted => nil).collect { |raw_event| raw_event.raw_venue ? raw_event.raw_venue.venue : nil }.compact
-    @num_raw_events = Hash.new(0)
-    @venues.each { |venue| @num_raw_events[venue.id] += 1 }
-    @venues.uniq!
+
+
+    # authorize! :index, @user, :message => 'Not authorized as an administrator.'
     
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @venues }
-    end
+    # @venues = Venue.all
+    # @venues = RawEvent.where(:submitted => nil, :deleted => nil).collect { |raw_event| raw_event.raw_venue ? raw_event.raw_venue.venue : nil }.compact
+    # @num_raw_events = Hash.new(0)
+    # @venues.each { |venue| @num_raw_events[venue.id] += 1 }
+    # @venues.uniq!
+
+    @venuesRaw = ActiveRecord::Base.connection.select_all("
+      SELECT venue_id,venues.name,COUNT(*) 
+        FROM venues,raw_venues,raw_events 
+        WHERE venues.id = raw_venues.venue_id AND raw_venues.id = raw_events.raw_venue_id AND raw_events.submitted IS NULL AND raw_events.deleted IS NULL
+        GROUP BY venue_id,venues.name
+        ORDER BY COUNT(*) DESC")
+
+    @venuesCooked = ActiveRecord::Base.connection.select_all("
+      SELECT venue_id,venues.name,COUNT(*) 
+        FROM venues,events
+        WHERE venues.id = events.venue_id
+        GROUP BY venue_id,venues.name
+        ORDER BY COUNT(*) DESC")
   end
 
   # GET /venues/1
@@ -70,14 +87,16 @@ class VenuesController < ApplicationController
 
   # GET /venues/edit/1
   def edit
-    @venue = Venue.find(params[:id])
+    @venue = Venue.includes(:tags, :events => :tags, :raw_venues => :raw_events).find(params[:id])
+
     @venue.events.build
     @venue.events.each do |event| 
-      event.occurrences.build(:start => Date.today.to_datetime, :end => Date.today.to_datetime)
+      event.occurrences.build
       event.recurrences.build
     end
 
-    @parentTags = Tag.all(:conditions => {:parent_tag_id => nil})
+    @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
+    
   end
 
   # POST /venues
@@ -101,55 +120,19 @@ class VenuesController < ApplicationController
   # PUT /venues/1
   # PUT /venues/1.json
   def update
+
     @venue = Venue.find(params[:id])
 
     if(params[:venue][:events_attributes])
       params[:venue][:events_attributes].each do |params_event|
-        if params_event[1]["recurring"]
-          # puts "recurring"
-          params_event[1]["occurrences_attributes"].shift
-          if params_event[1]["occurrences_attributes"].length == 0
-            params_event[1].delete("occurrences_attributes")
-          end
-        else
-          # puts "not recurring"
-          params_event[1]["recurrences_attributes"].shift
-          if params_event[1]["recurrences_attributes"].length == 0
-            params_event[1].delete("recurrences_attributes")
-          end
+        if params_event[1]["id"].nil?
+          params_event[1]["user_id"] = current_user.id
         end
-        if params_event[1]["occurrences_attributes"]
-          params_event[1]["occurrences_attributes"].each_with_index do |params_occurrence, index|
-            # puts "start(4i): " + params_occurrence[1]["start(4i)"]
-            if params_occurrence[1]["start(4i)"] == "" || params_occurrence[1]["start(5i)"] == ""
-              # puts "deleting occurrence:"
-              # puts index
-              # puts params_event[1]["occurrences_attributes"][index.to_s]
-              params_event[1]["occurrences_attributes"].delete(index.to_s)
-            else
-              # params_occurrence[1]["day_of_week"] = Date.parse(params_occurrence[1]["start(1i)"] + "-" + params_occurrence[1]["start(2i)"] + "-" + params_occurrence[1]["start(3i)"]).wday
-            end
-          end
-        end
-        if params_event[1]["recurrences_attributes"]
-          params_event[1]["recurrences_attributes"].each do |params_recurrence|
-            # puts "start(4i): " + params_recurrence[1]["start(4i)"]
-            if params_recurrence[1]["start(4i)"] == "" || params_recurrence[1]["start(5i)"] == ""  
-              # puts "deleting recurrence"
-              params_recurrence.shift(2)
-            else
-              # params_recurrence[1]["day_of_week"] = Date.parse(params_recurrence[1]["start(1i)"] + "-" + params_recurrence[1]["start(2i)"] + "-" + params_recurrence[1]["start(3i)"]).wday
-            end
-          end
-        end
-        params_event[1].delete("recurring")
       end
     end
 
-    puts params[:venue]
-
     respond_to do |format|
-      if @venue.update_attributes(params[:venue])
+      if @venue.update_attributes!(params[:venue])
         format.html { redirect_to :action => :edit, :id => @venue.id, :notice => 'yay' }
         format.json { head :ok }
       else
@@ -159,21 +142,39 @@ class VenuesController < ApplicationController
     end
   end
 
+  
+
   # GET /venues/new
   # GET /venues/new.json
   def fromRaw
+    # result = RubyProf.profile do
+
     @venue = Venue.find(params[:id])
-    puts params
+
     @event = @venue.events.build()
     @event.update_attributes(params[:event])
-    # pp @event
-    @raw_event = RawEvent.find(params[:raw_event_id])
-    @raw_event.submitted = true
-    #pp @raw_event
-    @raw_event.save
-    @event.save
+    @event.user_id = current_user.id
 
-    redirect_to :action => :edit, :id => @venue.id
+
+
+    if @event.save
+      @raw_event = RawEvent.find(params[:raw_event_id])
+      @raw_event.submitted = true
+      if @raw_event.save
+        render json: true
+      else
+        render json: false
+      end
+    else
+      render json: false
+    end
+
+
+    # end
+
+    # File.open "/home/rumblerob/workspace/rails_projects/halfpastnow/tmp/profile-graph.html", 'w' do |file|
+    #   RubyProf::GraphHtmlPrinter.new(result).print(file)
+    # end
   end
 
   # DELETE /venues/1
