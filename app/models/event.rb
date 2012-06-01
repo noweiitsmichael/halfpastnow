@@ -47,7 +47,7 @@ class Event < ActiveRecord::Base
     # puts "p: " + p.to_s
     # puts "z: " + z.to_s
     # puts "phat: " + phat.to_s
-    puts (phat*(1-phat)+z*z/(4*n))/n
+    # puts (phat*(1-phat)+z*z/(4*n))/n
     return (phat + z*z/(2*n) - z * Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)
   end
 

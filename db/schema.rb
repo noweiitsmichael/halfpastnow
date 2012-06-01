@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120525171333) do
+ActiveRecord::Schema.define(:version => 20120531175535) do
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -35,14 +35,17 @@ ActiveRecord::Schema.define(:version => 20120525171333) do
     t.datetime "updated_at"
   end
 
+  add_index "events_tags", ["event_id"], :name => "index_events_tags_on_event_id"
+  add_index "events_tags", ["tag_id"], :name => "index_events_tags_on_tag_id"
+
   create_table "feedbacks", :force => true do |t|
+    t.integer  "feedback_type"
     t.string   "subject"
     t.string   "description"
     t.integer  "status"
     t.integer  "user_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
-    t.integer  "feedback_type"
   end
 
   create_table "occurrences", :force => true do |t|

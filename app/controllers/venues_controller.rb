@@ -21,7 +21,7 @@ class VenuesController < ApplicationController
     @venuesRaw = ActiveRecord::Base.connection.select_all("
       SELECT venue_id,venues.name,COUNT(*) 
         FROM venues,raw_venues,raw_events 
-        WHERE venues.id = raw_venues.venue_id AND raw_venues.id = raw_events.raw_venue_id 
+        WHERE venues.id = raw_venues.venue_id AND raw_venues.id = raw_events.raw_venue_id AND raw_events.submitted IS NULL AND raw_events.deleted IS NULL
         GROUP BY venue_id,venues.name
         ORDER BY COUNT(*) DESC")
 
