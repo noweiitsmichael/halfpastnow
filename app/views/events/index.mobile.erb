@@ -96,7 +96,7 @@
           <a href="#filter" data-role="button" data-inline="true" data-transition="pop">Filter</a>
           
           
-          <input id="search" name="search" placeholder="music, movie .etc" type="text"  data-inline="true" width="60|%">
+          <input id="search" name="search" placeholder=<%= (@searchTerm=="") ? @searchTerm: "music, movie, etc" %>  type="text"  data-inline="true" width="60|%">
           <input name="commit" type="submit" value="Search"  data-inline="true">
           
         </form>      
@@ -398,7 +398,7 @@
           scrollwheel: false,
           zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
         };
-        map = new google.maps.Map($("#home #map")[0], myOptions);
+        map = new google.maps.Map($("#map")[0], myOptions);
 
         var locations = [];
         google.maps.event.addListener(map, 'idle', boundsChanged);
