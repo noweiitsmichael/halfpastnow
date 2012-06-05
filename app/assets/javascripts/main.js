@@ -1,4 +1,4 @@
-ƒ$(function() {
+$(function() {
 
   $(".today.time-range").slider({
     range: true,

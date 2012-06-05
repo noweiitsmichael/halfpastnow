@@ -436,6 +436,14 @@ font-size: 12px;
   overflow: hidden;
   line-height: 1.2em;
 }
+#venue li .one .description {
+font-size: 12px;
+  margin-top: 4px;
+  color: #888888;
+  height: 30px;
+  overflow: hidden;
+  line-height: 1.2em;
+}
 /*Search box and filter layout*/
 input.ui-input-text, textarea.ui-input-text {
 background-image: none;
@@ -500,7 +508,10 @@ width: 62%;
 font-size: 12px;
 color: #2E2EFE;
 }
-
+#venue .one .description span {
+font-size: 12px;
+color: #2E2EFE;
+}
 #home li .one .name {
 font-size: 18px;
 font-weight: bold;
@@ -513,3 +524,38 @@ cursor: pointer;
 font-size: 12px;
 color: #888;
 }
+#home li .one .where  {
+font-size: 14px;
+
+}
+.longitude {
+  position:fixed;
+  left:-1000px;
+  top:0;
+}
+div.ui-loader.ui-overlay-shadow { display: none !important; }
+#home .info
+{
+  float:left;
+}
+#home .count{
+
+}
+/*Marker info window*/
+div.backgroundm
+  {
+  width:250px;
+  height:125px;
+  background:url(klematis.jpg) repeat;
+  border:2px solid black;
+  }
+div.transbox
+  {
+  width:200px;
+  height:90px;
+  margin:15px 25px;
+  background-color:#ffffff;
+  border:1px solid black;
+  opacity:0.6;
+  filter:alpha(opacity=60); /* For IE8 and earlier */
+  }

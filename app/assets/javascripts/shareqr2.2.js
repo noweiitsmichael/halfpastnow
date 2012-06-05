@@ -15,6 +15,8 @@ var filter = {
 };
 var pricesOut=[];
 var radioStatus="off";
+
+
 $(function() {
 
 
@@ -37,6 +39,7 @@ $(function() {
    
   }
    filterChange();
+
 });
 
 $('#day').live( "change", function(event, ui) {
@@ -108,10 +111,15 @@ function boundsChanged() {
   filter.latMax = map.getBounds().getNorthEast().lat();
   filter.longMin = map.getBounds().getSouthWest().lng();
   filter.longMax = map.getBounds().getNorthEast().lng();
+  console.log("filter.latMin "+filter.latMin);
+  console.log("filter.latMax "+filter.latMax);
+  console.log("filter.longMin "+filter.longMin);
+  console.log("filter.longMax "+filter.longMax);
   if(boundsChangedFlag) {
     filterChange();
   }
   boundsChangedFlag = true;
+
 }
 
 
@@ -120,6 +128,7 @@ function filterChange() {
   updateFilter();
   pullEvents();
 
+  
  
   //put events in page
 }
@@ -172,6 +181,7 @@ function pullEvents() {
 
   // loading('show');
   console.log("Query here: "+query);
+
   $.getJSON("/events/indexMobile?format=json" + query, function (events) {
   //$.getJSON("/events/index?format=json" + query, function (events) {
   
@@ -188,43 +198,60 @@ function pullEvents() {
       li.find(".mod").html(start.toString("MMMdd").toUpperCase());
       li.find(".day").html(day_of_week[events[i].occurrences[0].day_of_week]);
       li.find(".time").html(start.toString("hh:mmtt").toLowerCase());
-      li.find(".one .name").html(events[i].title);
+      li.find(".one .name").html(events[i].title.substring(0,25));
+      li.find(".longitude").html(events[i].venue.longitude);
+      li.find(".latitude").html(events[i].venue.latitude);
+      li.find(".eventID").html(events[i].id);
+      li.find(".one .where").html(events[i].venue.name);
      
       if(events[i].price!=null)
         if(events[i].price!=0)
-          li.find(".one .description").html("<span ><strong>Price:  $" + parseFloat(events[i].price).toFixed(2) + "</strong></span> " + events[i].description);
-        else li.find(".one .description").html("<span><strong>Free</strong></span> " +events[i].description);
-      else li.find(".one .description").html(events[i].description);
+          li.find(".one .description").html("<span ><strong>Price:  $" + parseFloat(events[i].price).toFixed(2) + "</strong></span> " + events[i].description.substring(0,25));
+        else li.find(".one .description").html("<span><strong>Free</strong></span> " +events[i].description.substring(0,25));
+      else li.find(".one .description").html(events[i].description.substring(0,25));
       li.prependTo('#home .events-seed');
      
     
     }
-
-   var geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(30.250000000000025, -97.75);
-        var myOptions = {
-          zoom: 10,
-          center: latlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          disableDefaultUI: true,
-          zoomControl: true,
-          scrollwheel: false,
-          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
-        };
-    var    map = new google.maps.Map($("#map")[0], myOptions);
-
-        var locations = [];
-     //   google.maps.event.addListener(map, 'idle', boundsChanged);  
-
+    
+   
+    
 
     $('#home .events').empty();
-    $('#home .header .count').html(events.length + " event" + ((events.length == 1) ? "" : "s"));
+    $('#home .count').html(events.length + " event" + ((events.length == 1) ? "" : "s"));
     $('#home .events-seed li:not(:last-child)').each(function() {
       $(this).prependTo('#home .events');
     });
     // loading('hide');
-    
+    var locations = [];
+    event_ids=[];
+    event_names=[];
+    event_descriptions=[];
+    venue_names=[];
 
+    $("#home .events li").each(function(index) {
+          console.log("should be called after FULLEVENTS ");
+          var latitude = parseFloat($(this).find(".latitude").html());
+          var longitude = parseFloat($(this).find(".longitude").html());
+          console.log("Lat : "+latitude+" Long : "+longitude);
+          locations.push({lat: latitude, long: longitude});
+          var event_id_j=parseFloat($(this).find(".eventID").html());
+          event_ids.push({id:event_id_j});
+          
+          var event_name;
+          event_name=$(this).find(".name").html();
+          event_names.push({name:event_name});
+
+          var event_description;
+          event_description=$(this).find(".one .description").html();
+          event_descriptions.push({description:event_description});
+
+          var venue_name;
+          venue_name=$(this).find(".where").html();
+          venue_names.push({name:venue_name});
+        });
+        placeMarkers({points: locations});
+        google.maps.event.addListener(map, 'idle', boundsChanged);
 
 
   });
@@ -240,9 +267,11 @@ $(document).bind("pagebeforechange", function(e, data) {
     // We only want to handle #qrcode url.
     var u = $.mobile.path.parseUrl(data.toPage);
 
+
+   
     var qrcode = /^#event/;
     var vcode = /^#venue/;
-    console.log("toPage : "+ data.toPage);
+    console.log("toPage new : "+ $.mobile.path.parseUrl(data.toPage).href);
     // filter.start = Date.today();
     // filter.end = Date.today().add({days:365});
     if (radioStatus!="off"){
@@ -254,12 +283,15 @@ $(document).bind("pagebeforechange", function(e, data) {
       // Display QR code for the selected URL.
       showQRCode(u, data.options);
       e.preventDefault();
+      console.log("List Events");
     }
-    if (u.hash.search(vcode) !== -1) {
+    else if (u.hash.search(vcode) !== -1) {
       // Display QR code for the selected URL.
       showVenue(u, data.options);
       e.preventDefault();
     }
+
+    // window.location.reload();
   }
 });
 var hours = ['midnight','1 am','2 am','3 am','4 am','5 am','6 am','7 am','8 am','9 am','10 am','11 am','noon','1 pm','2 pm','3 pm','4 pm','5 pm','6 pm','7 pm','8 pm','9 pm','10 pm','11 pm','midnight'];
@@ -270,6 +302,79 @@ function to_ordinal(num) {
     var ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] ;
     return num.toString() + ordinal[num%10];
 }
+function placeMarkers(params) {
+  if (typeof params.clear === 'undefined' || params.clear === true)
+    clearMarkers();
+  for(var i in params.points) {
+    placeMarker(params.points[i].lat, params.points[i].long);
+  }
+
+//  showPageMarkers();
+}
+
+function clearMarkers() {
+  for(var i in markers) {
+    markers[i].setMap(null);
+  }
+  markers = [];
+}
+
+function placeMarker(lat, long) {
+  var i = markers.length;
+
+  var marker = new google.maps.Marker({ //MarkerWithLabel({
+    map: map,
+    position: new google.maps.LatLng(lat,long),
+    icon: "/assets/markers/marker_" + (i + 1) + ".png",
+    index: i + 1
+  });
+
+  var boxText = document.createElement("div");
+        boxText.style.cssText = "border: 1px solid black; margin-top: 8px; background: black;font-size: small; font-color: white;font-family: arial,sans-serif, padding: 5px;";
+        boxText.innerHTML = '<font color="white"><strong>'+event_names[marker.index-1].name.toString().substring(0,25)+'</strong><br><i>'+venue_names[marker.index-1].name.substring(0,25)+'</i>'+'<br><i>'+event_descriptions[marker.index-1].description+'  '+'<button onclick="openSite('+event_ids[marker.index-1].id+')">Visit</button></i>';
+                
+        var myOptions = {
+                 content: boxText
+                ,disableAutoPan: true
+                ,maxWidth: 0
+                ,pixelOffset: new google.maps.Size(-140, 0)
+                ,zIndex: null
+                ,boxStyle: { 
+                  background: "url('http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/examples/tipbox.gif') no-repeat"
+                  ,opacity: 0.75
+                  ,width: "280px"
+                 }
+                ,closeBoxMargin: "10px 2px 2px 2px"
+                ,closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif"
+                ,infoBoxClearance: new google.maps.Size(1, 1)
+                ,isHidden: false
+                ,pane: "floatPane"
+                ,enableEventPropagation: false
+        };
+
+        var ib = new InfoBox(myOptions);
+        //ib.open(map, marker);
+
+  google.maps.event.addListener(marker, 'click', function() {
+    ib.open(map, marker);
+    console.log("Event name "+event_names[marker.index-1].name.toString());
+    console.log("Event description "+event_descriptions[marker.index-1].description.toString());
+    console.log("Venue name "+venue_names[marker.index-1].name.toString());
+
+  });
+  google.maps.event.addListener(marker, 'dclick', function() {
+   // $("#home .main .inner .events LI:nth-child(" + marker.index + ") .name").click();
+   console.log("Marker double clicked "+event_ids[marker.index-1].id);
+   
+   window.open ('#event?event_id='+event_ids[marker.index-1].id,'_self',false);
+  });
+   markers.push(marker);
+}
+
+function openSite(event_id){
+   window.open ('#event?event_id='+event_id,'_self',false);
+}
+
 function showVenue(urlObj, options) {
   var qrUrl = decodeURIComponent(urlObj.hash.replace(/.*event_id=/, ""));
 
@@ -351,12 +456,18 @@ function showVenue(urlObj, options) {
               
               li=$($('#venue .vevents-seed1 li:last-child').clone().wrap('<ul>').parent().html());
               li.addClass("recurrence");
+              li.find("a").attr("href", "#event?event_id=" + event.id );
               li.find(".mod").html(mod);
               li.find(".day").html(day);
               li.find(".time").html(time);
-              li.find(".one a").attr("href",  "#event?event_id=" +event.id);
-              li.find(".one a").html(event.title);
-              li.find(".one .description").html(event.description);
+              // li.find(".one a").attr("href",  "#event?event_id=" +event.id);
+              li.find(".one span").html(event.title);
+              //li.find(".one .description").html(event.description);
+              if(event.price!=null)
+                if(event.price!=0)
+                  li.find(".one .description").html("<span ><strong>Price:  $" + parseFloat(event.price).toFixed(2) + "</strong></span> " + event.description.substring(0,25));
+                else li.find(".one .description").html("<span><strong>Free</strong></span> " +event.description.substring(0,25));
+              else li.find(".one .description").html(event.description.substring(0,25));
               li.appendTo('#venue .vevents-seed1');
             }
           
@@ -375,12 +486,18 @@ function showVenue(urlObj, options) {
               var dateString = startTime.toString("MMMdd").toUpperCase();
               
               li=$($('#venue .vevents-seed2 li:last-child').clone().wrap('<ul>').parent().html());
+              li.find("a").attr("href", "#event?event_id=" + event.id );
               li.find(".mod").html(dateString);
               li.find(".day").html(day_of_week[occurrences[i].day_of_week]);
               li.find(".time").html(startTime.toString("hh:mmtt").toLowerCase());
-              li.find(".one a").attr("href",  "#event?event_id=" +event.id);
-              li.find(".one a").html(event.title);
-              li.find(".one .description").html(event.description);
+              // li.find(".one a").attr("href",  "#event?event_id=" +event.id);
+              li.find(".one span").html(event.title);
+              //li.find(".one .description").html(event.description);
+              if(event.price!=null)
+                if(event.price!=0)
+                  li.find(".one .description").html("<span ><strong>Price:  $" + parseFloat(event.price).toFixed(2) + "</strong></span> " + event.description.substring(0,25));
+                else li.find(".one .description").html("<span><strong>Free</strong></span> " +event.description.substring(0,25));
+              else li.find(".one .description").html(event.description.substring(0,25));
               li.appendTo('#venue .vevents-seed2');
             }
             

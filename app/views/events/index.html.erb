@@ -33,6 +33,7 @@
 				
 				
 				$("#content .main .inner .events li").each(function(index) {
+					console.log("still running after Initialization? ");
 					var latitude = parseFloat($(this).find(".latitude").html());
 					var longitude = parseFloat($(this).find(".longitude").html());
 					locations.push({lat: latitude, long: longitude});

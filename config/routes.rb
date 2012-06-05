@@ -78,6 +78,7 @@ Myapp::Application.routes.draw do
   match 'info' => 'info#about'
 
   match 'feedbacks' => 'feedbacks#index'
+  match '/search' => 'events#search'
 
 
   match ':controller(/:action(/:id(.:format)))'
