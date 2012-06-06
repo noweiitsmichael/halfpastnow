@@ -177,20 +177,20 @@
  });
 
  
-  $( '#event' ).live( 'pageinit',function(event){
-    var SelectedOptionClass = $('option:selected').attr('class');
-    $('div.ui-select').addClass(SelectedOptionClass);
+  // $( '#event' ).live( 'pageinit',function(event){
+  //   var SelectedOptionClass = $('option:selected').attr('class');
+  //   $('div.ui-select').addClass(SelectedOptionClass);
     
-    $('#note_utilisateur').live('change', function(){  
-      $('div.ui-select').removeClass(SelectedOptionClass);
+  //   $('#note_utilisateur').live('change', function(){  
+  //     $('div.ui-select').removeClass(SelectedOptionClass);
       
-      SelectedOptionClass = $('option:selected').attr('class');
-      $('div.ui-select').addClass(SelectedOptionClass);   
+  //     SelectedOptionClass = $('option:selected').attr('class');
+  //     $('div.ui-select').addClass(SelectedOptionClass);   
       
-     });
+  //    });
     
     
-  });
+  // });
 
   </script>
 
