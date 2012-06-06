@@ -182,7 +182,7 @@ function pullEvents() {
   // loading('show');
   console.log("Query here: "+query);
 
-  $.getJSON("/events/index?format=json" + query, function (events) {
+  $.getJSON("/events/indexMobile?format=json" + query, function (events) {
   //$.getJSON("/events/index?format=json" + query, function (events) {
   
     for(var i in events) {
@@ -239,7 +239,8 @@ function pullEvents() {
           event_ids.push({id:event_id_j});
           
           var event_name;
-          event_name=$(this).find(".name").html();
+          event_name=$(this).find(".one .nameEvent").html();
+          console.log("Event name: ? "+event_name);
           event_names.push({name:event_name});
 
           var event_description;
@@ -247,10 +248,11 @@ function pullEvents() {
           event_descriptions.push({description:event_description});
 
           var venue_name;
-          venue_name=$(this).find(".where").html();
+          venue_name=$(this).find(".one .where").html();
           venue_names.push({name:venue_name});
         });
-        placeMarkers({points: locations});
+    console.log("locations : "+locations.length);
+    placeMarkers({points: locations});
         //google.maps.event.addListener(map, 'idle', boundsChanged);
 
 
@@ -305,7 +307,9 @@ function to_ordinal(num) {
 function placeMarkers(params) {
   if (typeof params.clear === 'undefined' || params.clear === true)
     clearMarkers();
+  console.log("locations inside ?"+params.points.length);
   for(var i in params.points) {
+
     placeMarker(params.points[i].lat, params.points[i].long);
   }
 
@@ -321,7 +325,7 @@ function clearMarkers() {
 
 function placeMarker(lat, long) {
   var i = markers.length;
-
+  console.log("Marker index "+i);
   var marker = new google.maps.Marker({ //MarkerWithLabel({
     map: map,
     position: new google.maps.LatLng(lat,long),
