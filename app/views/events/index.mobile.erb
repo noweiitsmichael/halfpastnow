@@ -416,21 +416,21 @@
     $("#tag-input").tokenInput("add", {id: parseInt($(this).attr("tagID")), name: $(this).html()});
   });
   
-  geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(30.250000000000025, -97.75);
-        var myOptions = {
-          zoom: 10,
-          center: latlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          disableDefaultUI: true,
-          zoomControl: true,
-          scrollwheel: false,
-          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
-        };
-        map = new google.maps.Map($("#home #map")[0], myOptions);
+  // geocoder = new google.maps.Geocoder();
+  //       var latlng = new google.maps.LatLng(30.250000000000025, -97.75);
+  //       var myOptions = {
+  //         zoom: 10,
+  //         center: latlng,
+  //         mapTypeId: google.maps.MapTypeId.ROADMAP,
+  //         disableDefaultUI: true,
+  //         zoomControl: true,
+  //         scrollwheel: false,
+  //         zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
+  //       };
+  //       map = new google.maps.Map($("#home #map")[0], myOptions);
 
-        var locations = [];
-        google.maps.event.addListener(map, 'idle', boundsChanged);  
+  //       var locations = [];
+  //       google.maps.event.addListener(map, 'idle', boundsChanged);  
         
   $(".home #search-form").click(function() {
     console.log("Search click");
