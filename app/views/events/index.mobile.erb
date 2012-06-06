@@ -367,6 +367,24 @@
         
        
 
+        <div class="ui-block-c" >
+
+        <!-- <ul class="events" data-role="listview" data-inset="true"  >
+          
+          <%  puts "Data after search goes here"
+              @events.each_with_index do |event, index| 
+
+              eventListElement(event, index)
+            end %>
+        </ul> -->
+        <ul class="events-seed" data-role="listview" data-inset="true" style="display:none;">
+        <%
+          eventListElement(nil, nil)
+
+        %>
+
+        </ul>
+      </div>
 
 
 
