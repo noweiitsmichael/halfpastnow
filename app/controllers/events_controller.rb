@@ -145,8 +145,8 @@ def index
         SET views = views + 1
         WHERE id IN (#{@venue_ids * ','})")
     end
-    puts "Json output in controller regular site"
-    puts @events.to_json(:include => [:occurrences, :venue])
+    
+    # puts @events.to_json(:include => [:occurrences, :venue])
     respond_to do |format|
       format.html # index.html.erb
 
@@ -284,10 +284,9 @@ def indexMobile
 
     # @events = Event.search params[:search]
     @events = Event.all.select { |event| event.occurrences.length > 0 }
-    puts "in search mobile: searchTerm "
-    puts params[:search] =@@searchTerm
+    params[:search] =@@searchTerm
    
-    puts params
+    
 
     if (params[:search] && params[:search] != "")
       @events.select! { |event| event.matches? params[:search] }
@@ -392,8 +391,8 @@ def indexMobile
       event.save
       event.venue.save
     end
-     puts "Json output in controller mobile site"
-    puts @events.to_json(:include => [:occurrences, :venue])
+     
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @events.to_json(:include => [:occurrences, :venue]) }
@@ -407,7 +406,7 @@ def indexMobile
     @event = Event.find(params[:id])
     @event.clicks += 1
     @event.save
-    puts @event.to_json(:include => [:occurrences, :venue])
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @event.to_json(:include => [:occurrences, :venue]) }
@@ -438,8 +437,7 @@ def indexMobile
   def create
     @event = Event.new(params[:event])
     @occurrence = Occurrence.new(:start => params[:start], :end => params[:end], :event_id => @event.id)
-    puts params[:start]
-    puts params[:end]
+    
     respond_to do |format|
       if @event.save && @occurrence.save
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
