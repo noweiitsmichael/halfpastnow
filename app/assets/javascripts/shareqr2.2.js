@@ -198,7 +198,7 @@ function pullEvents() {
       li.find(".mod").html(start.toString("MMMdd").toUpperCase());
       li.find(".day").html(day_of_week[events[i].occurrences[0].day_of_week]);
       li.find(".time").html(start.toString("hh:mmtt").toLowerCase());
-      li.find(".one .name").html(events[i].title.substring(0,25));
+      li.find(".one .nameEvent").html(events[i].title.substring(0,25));
       li.find(".longitude").html(events[i].venue.longitude);
       li.find(".latitude").html(events[i].venue.latitude);
       li.find(".eventID").html(events[i].id);
