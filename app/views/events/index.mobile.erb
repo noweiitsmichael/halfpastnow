@@ -35,37 +35,37 @@
         };
         map = new google.maps.Map($("#home #map")[0], myOptions);
        
-        var locations = [];
-        $("#home li:not(:last-child)").each(function(index) {
-          console.log("still running after Initialization? ");
-          var latitude = parseFloat($(this).find(".latitude").html());
-          var longitude = parseFloat($(this).find(".longitude").html());
-          console.log("Lat : "+latitude+" Long : "+longitude);
-          locations.push({lat: latitude, long: longitude});
-          var event_id_j=parseFloat($(this).find(".eventID").html());
-          event_ids.push({id:event_id_j});
+        // var locations = [];
+        // $("#home li:not(:last-child)").each(function(index) {
+        //   console.log("still running after Initialization? ");
+        //   var latitude = parseFloat($(this).find(".latitude").html());
+        //   var longitude = parseFloat($(this).find(".longitude").html());
+        //   console.log("Lat : "+latitude+" Long : "+longitude);
+        //   locations.push({lat: latitude, long: longitude});
+        //   var event_id_j=parseFloat($(this).find(".eventID").html());
+        //   event_ids.push({id:event_id_j});
 
-          var event_name;
-          event_name=$(this).find(".one .nameEvent").html();
-          event_names.push({name:event_name});
+        //   var event_name;
+        //   event_name=$(this).find(".one .nameEvent").html();
+        //   event_names.push({name:event_name});
 
-          var event_description;
-          event_description=$(this).find(".one .description").html();
-          event_descriptions.push({description:event_description});
+        //   var event_description;
+        //   event_description=$(this).find(".one .description").html();
+        //   event_descriptions.push({description:event_description});
 
-          var venue_name;
-          venue_name=$(this).find(".one .where").html();
-          venue_names.push({name:venue_name});
+        //   var venue_name;
+        //   venue_name=$(this).find(".one .where").html();
+        //   venue_names.push({name:venue_name});
 
 
-        });
-        console.log("locations ? "+locations.length);
-        var homeControlDiv = document.createElement('div');
-        var homeControl = new HomeControl(homeControlDiv);
+        // });
+        // console.log("locations ? "+locations.length);
+        // var homeControlDiv = document.createElement('div');
+        // var homeControl = new HomeControl(homeControlDiv);
 
-        homeControlDiv.index = 1;
-        map.controls[google.maps.ControlPosition.LEFT_TOP].push(homeControlDiv);
-        placeMarkers({points: locations});
+        // homeControlDiv.index = 1;
+        // map.controls[google.maps.ControlPosition.LEFT_TOP].push(homeControlDiv);
+        // placeMarkers({points: locations});
         //google.maps.event.addListener(map, 'idle', boundsChanged);
   }
 
@@ -221,24 +221,20 @@
            <!--   <div class="nameEvent">event name</div>
              <div class="where">event location</div>
              <div class="description">description event description</div> -->
-            <%= 
-            
-            @tempName = event ? truncate(strip_tags(event.title), :length => 25)  : ""
+           
 
-            %>
-
-            <div class="nameEvent"><%= event ? @tempName : "" %></div>
+            <!-- <div class="nameEvent"><%= event ? @tempName : "" %></div>
             <div class="where"> at <%= event ? "venue name" : "" %> </div>
               
             <div class="description"> <%= event ? "event description stuffs" : "" %>
-            </div>
+            </div> -->
 
            
-            <!-- <div class="nameEvent"><%= event ? truncate(strip_tags(event.title), :length => 25)  : "" %></div>
+            <div class="nameEvent"><%= event ? truncate(strip_tags(event.title), :length => 25)  : "" %></div>
             <div class="where"> at <%= event ? event.venue.name : "" %> </div>
               
             <div class="description"><span="price";  style="color:#2E2EFE"><strong><%= event ? (event.price!=nil)? ((event.price.to_f!=0.0) ? "Price: "+ number_to_currency(event.price,:unit=>"$").to_s+" " : "FREE ") : "" : "" %></strong></span><span style="color:#888"><%= event ? truncate(strip_tags(event.description), :length => 25) : "" %></span>
-            </div> -->
+            </div>
             
           </div>
           <div style="display:none;">
