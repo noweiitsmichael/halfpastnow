@@ -306,40 +306,17 @@
 
     <div data-role="header" data-theme="b" >
       <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
-      <h1>half past now.</h1>
-      <hr/>
-
-      <div data-inline="true">
-
-
-      <div data-role="fieldSearch" >
-        
-        <!-- <form accept-charset="UTF-8" action="/events/indexMobile?format=json" id="search-form" method="get"> -->
-        <form accept-charset="UTF-8" action="search" id="search-form" method="get" onsubmit="submitTest(); return false;" > 
-        
-          <a href="#filter" data-role="button" data-inline="true" data-transition="pop">Filter</a>
-
-          
-          
-          <input id="search" name="search" placeholder="music, movie .etc" type="text"  data-inline="true" width="40|%">
-          <!-- <input name="commit" type="submit" value="Search"  data-inline="true"  > --> 
-          <a id="testBtn" data-role="button" data-inline="true" data-transition="pop">Search</a>
-          <a id="btnMap" data-role="button" data-inline="true" data-transition="pop">Map</a>
-
-
-
-          
-          
-          
-        </form>      
-      </div>
-      
-
-
-
-
-
-      
+        <h1>half past now.</h1>
+        <hr/>
+        <div data-inline="true">
+          <div data-role="fieldSearch" >
+            <form accept-charset="UTF-8" action="search" id="search-form" method="get" onsubmit="submitTest(); return false;" >
+              <a href="#filter" data-role="button" data-inline="true" data-transition="pop">Filter</a>
+              <input id="search" name="search" placeholder="music, movie .etc" type="text"  data-inline="true" width="45|%">
+              <a id="testBtn" data-role="button" data-inline="true" data-transition="pop">Search</a>
+              <a id="btnMap" data-role="button" data-inline="true" data-transition="pop">Map</a>
+            </form>      
+        </div>
       </div>
     </div>
       
@@ -476,25 +453,36 @@
 
 
 
-
-  <div data-role="page" id="about">
-    <div data-role="header" data-theme="b" >
-      <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
-      <h1>About</h1>
-      <a href="#home" data-icon="arrow-l" data-rel="back">Back</a> 
-    </div>
-    <div data-role="content">
-      <p>half past now. is your guide to Austin</p>
-    </div>
-    
+<!-- About -->
+<div data-role="page" id="about">
+  <div data-role="header" data-theme="b" >
+    <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
+    <h1>About</h1>
+    <a href="#home" data-icon="arrow-l" data-rel="back">Back</a> 
   </div>
-
+  <div data-role="content">
+    <p>half past now. is your guide to Austin</p>
+  </div>
+  
+</div>
+<!-- Map -->
 <div data-role="page" id="mapShow">
     <div data-role="header" data-theme="b" >
       <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
-      <h1>Map</h1>
-      <a href="#home" data-icon="arrow-l" data-rel="back">Back</a> 
-    </div>
+      
+        <h1>half past now.</h1>
+        <hr/>
+        <div data-inline="true">
+          <div data-role="fieldSearch" >
+            <form accept-charset="UTF-8" action="searchMap" id="search-form-map" method="get" onsubmit="submitMap(); return false;" >
+              <a href="#filter" data-role="button" data-inline="true" data-transition="pop">Filter</a>
+              <input id="searchMap" name="searchMap" placeholder="music, movie .etc" type="text"  data-inline="true" width="62|%">
+              <a id="testBtnMap" data-role="button" data-inline="true" data-transition="pop">Search</a>
+            </form>      
+        </div>
+      </div>
+    </div> 
+   
     <div data-role="content">
       <div id="map"></div>
     </div>

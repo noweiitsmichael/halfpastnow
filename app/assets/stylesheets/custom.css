@@ -451,6 +451,15 @@ padding: .4em;
 line-height: 1.4;
 font-size: 17px;
 display: inline-table;
+width: 45%;
+}
+
+input#searchMap.ui-input-text {
+background-image: none;
+padding: .4em;
+line-height: 1.4;
+font-size: 17px;
+display: inline-table;
 width: 62%;
 }
 
