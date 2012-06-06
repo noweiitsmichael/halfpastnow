@@ -144,19 +144,19 @@
     //$.mobile.changePage("http://localhost:3000/events?search=movie&commit=Search");
     //http://localhost:3000/events?utf8=%E2%9C%93&search=music
     window.location.href = "/events?search="+x+"&commit=Search";
-    window.open ("http://localhost:3000/events?search="+x+"&commit=Search",'_self',false);
-     geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-        var myOptions = {
-          zoom: <%= @zoom %>,
-          center: latlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          disableDefaultUI: true,
-          zoomControl: true,
-          scrollwheel: false,
-          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
-        };
-        map = new google.maps.Map($("#map")[0], myOptions);
+    // window.open ("http://localhost:3000/events?search="+x+"&commit=Search",'_self',false);
+    //  geocoder = new google.maps.Geocoder();
+    //     var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+    //     var myOptions = {
+    //       zoom: <%= @zoom %>,
+    //       center: latlng,
+    //       mapTypeId: google.maps.MapTypeId.ROADMAP,
+    //       disableDefaultUI: true,
+    //       zoomControl: true,
+    //       scrollwheel: false,
+    //       zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
+    //     };
+    //     map = new google.maps.Map($("#map")[0], myOptions);
      //    google.maps.event.addListener(map, 'idle', boundsChanged);
   }
  $(function() {
