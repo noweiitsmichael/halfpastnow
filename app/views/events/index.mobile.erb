@@ -203,14 +203,11 @@
           </div>
           
          <div class="when sun">
-            <!-- <div class="mod">
-              
-              <%= event ? event.occurrences.first.start.to_time.strftime("%^b%d") : "" %>
-            </div> -->
             <div class="mod">
               
-              <%= event ? event.venue.name : "" %> 
+              <%= event ? event.occurrences.first.start.to_time.strftime("%^b%d") : "" %>
             </div>
+           
             <div class="day">
               <%= event ? @day_of_week[event.occurrences.first.start.wday] : "" %>
             </div>
