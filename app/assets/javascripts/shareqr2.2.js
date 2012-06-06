@@ -251,7 +251,7 @@ function pullEvents() {
           venue_names.push({name:venue_name});
         });
         placeMarkers({points: locations});
-        google.maps.event.addListener(map, 'idle', boundsChanged);
+        //google.maps.event.addListener(map, 'idle', boundsChanged);
 
 
   });
