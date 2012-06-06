@@ -220,7 +220,7 @@
           
           <div class="one">
              
-            <div class="nameEvent"> event name</div>
+            <div class="nameEvent"> <%= event ? event.occurrences.first.start.to_time.strftime("%^b%d") : "" %></div>
             <div class="where">event location</div>
             <div class="description">description event description</div>
            
