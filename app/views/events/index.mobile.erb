@@ -34,7 +34,7 @@
           scrollwheel: false,
           zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
         };
-        map = new google.maps.Map($("#map")[0], myOptions);
+        map = new google.maps.Map($("#home #map")[0], myOptions);
        
         var locations = [];
         $("#home li:not(:last-child)").each(function(index) {
@@ -70,35 +70,7 @@
         //google.maps.event.addListener(map, 'idle', boundsChanged);
   }
 
-  function test(){
-    console.log("test on load");
-    geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-        var myOptions = {
-          zoom: <%= @zoom %>,
-          center: latlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          disableDefaultUI: true,
-          zoomControl: true,
-          scrollwheel: false,
-          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
-        };
-        map = new google.maps.Map($("#map")[0], myOptions);
-
-        var locations = [];
-        $("#home li").each(function(index) {
-          console.log("still running after Initialization? ");
-          var latitude = parseFloat($(this).find(".latitude").html());
-          var longitude = parseFloat($(this).find(".longitude").html());
-          console.log("Lat : "+latitude+" Long : "+longitude);
-          locations.push({lat: latitude, long: longitude});
-        });
-        
-        placeMarkers({points: locations});
-        //google.maps.event.addListener(map, 'idle', boundsChanged);
-     
-        
-  }
+  
   function HomeControl(controlDiv) {
 
     // Set CSS styles for the DIV containing the control
@@ -185,18 +157,18 @@
     searchTerm=x;
     //$.mobile.changePage("http://localhost:3000/events?search=movie&commit=Search");
     window.location.href = "/events?search="+x+"&commit=Search";
-     geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-        var myOptions = {
-          zoom: <%= @zoom %>,
-          center: latlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          disableDefaultUI: true,
-          zoomControl: true,
-          scrollwheel: false,
-          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
-        };
-        map = new google.maps.Map($("#map")[0], myOptions);
+     // geocoder = new google.maps.Geocoder();
+     //    var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+     //    var myOptions = {
+     //      zoom: <%= @zoom %>,
+     //      center: latlng,
+     //      mapTypeId: google.maps.MapTypeId.ROADMAP,
+     //      disableDefaultUI: true,
+     //      zoomControl: true,
+     //      scrollwheel: false,
+     //      zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
+     //    };
+     //    map = new google.maps.Map($("#map")[0], myOptions);
     //google.maps.event.addListener(map, 'idle', boundsChanged);
 
     
@@ -360,7 +332,7 @@
           
           <!--p><a class="map-link" href="http://maps.google.com/maps?q=30.30787,-97.74133" ><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=430x170&amp;zoom=15&amp;maptype=roadmap&amp;markers=color:red%7C30.30787,-97.74133&amp;style=feature:all|hue:0x000001|saturation:-50&amp;sensor=false"></a></p--> 
           <div class="ui-block-b">
-            <!-- <div id="map"></div> -->
+            <div id="map"></div>
             
             
           </div>
