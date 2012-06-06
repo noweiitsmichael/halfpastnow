@@ -371,8 +371,7 @@
 
         <ul class="events" data-role="listview" data-inset="true"  >
           
-          <%  puts "Data after search goes here"
-              @events.each_with_index do |event, index| 
+          <%  @events.each_with_index do |event, index| 
 
               eventListElement(event, index)
             end %>
