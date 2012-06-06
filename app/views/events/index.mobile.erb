@@ -216,13 +216,13 @@
             </div>
           </div>
 
-          <!-- <div style="display:none;">
+          <div style="display:none;">
               <div class="latitude"><%= event ? event.venue.latitude : "" %></div>
               <div class="longitude"><%= event ? event.venue.longitude : "" %></div>
               <div class="eventID"><%= event ? event.id : "" %></div>
               
           </div>  
-          <div class="one">
+          <!-- <div class="one">
              
                
             <span href="<%= event ? event.id : "" %>" linkto="event" class="linkto name"><%= event ? truncate(strip_tags(event.title), :length => 25)  : "" %></span>
@@ -231,7 +231,7 @@
             <div class="description"><span="price";  style="color:#2E2EFE"><strong><%= event ? (event.price!=nil)? ((event.price.to_f!=0.0) ? "Price: "+ number_to_currency(event.price,:unit=>"$").to_s+" " : "FREE ") : "" : "" %></strong></span><span style="color:#888"><%= event ? truncate(strip_tags(event.description), :length => 25) : "" %></span>
             </div>
             
-          </div>  -->
+          </div> -->
           
         </a>
       </li>
