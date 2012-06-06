@@ -288,50 +288,41 @@ def indexMobile
    
     
 
-    if (params[:search] && params[:search] != "")
-      @events.select! { |event| event.matches? params[:search] }
-    end
+    search_match = occurrence_match = location_match = tag_match = price_match = "TRUE"
 
-    # TODO: cache earliest occurrence for each event so we don't have to do this
-    # find occurrences that start between params[:start] and params[:end] and are on params[:day] day of the week 
-    #if(params[:start] || params[:end] || params[:day])
-
-      event_start = (params[:start] ? Time.at(params[:start].to_i).to_datetime.to_s : DateTime.now.to_s)
-      event_end = Time.at(params[:end] ? params[:end].to_i : 32513174400).to_datetime.to_s
-
-      event_days = params[:day] ? params[:day].split(",") : nil
+    # search
+    unless(params[:search].to_s.empty?)
+      search = params[:search].gsub(/[^0-9a-z ]/i, '').upcase
+      searches = search.split(' ')
       
-      if event_days
-        @occurrences = Occurrence.where("start >= ? AND start <= ? AND day_of_week IN (?)", event_start, event_end, event_days)
-      else
-        @occurrences = Occurrence.where("start >= ? AND start <= ?", event_start, event_end)
+      search_match_arr = []
+      searches.each do |word|
+        search_match_arr.push("(upper(venues.name) LIKE '%#{word}%' OR upper(events.description) LIKE '%#{word}%' OR upper(events.title) LIKE '%#{word}%')")
       end
 
-      @occurrences.sort_by! { |o| o.start }
-      # puts @occurrences
-      # get events of those occurrences
-      @events = @occurrences.collect{ |o| o.event } & @events
-    #end
+      search_match = search_match_arr * " AND "
+    end
 
-    #filter by location
-    # either lat/long OR (location or nothin')
-    if(params[:lat_min] && params[:long_min] && params[:lat_max] && params[:long_max])
-      @lat_min = params[:lat_min]
-      @lat_max = params[:lat_max]
-      @long_min = params[:long_min]
-      @long_max = params[:long_max]
-    else
+    # occurrence
+    event_start = (params[:start].to_s.empty? ? Date.today.to_datetime.to_s : Time.at(params[:start].to_i).to_datetime.to_s)
+    event_end = Time.at(params[:end].to_s.empty? ? 32513174400 : params[:end].to_i).to_datetime.to_s
+    event_days = params[:day].to_s.empty? ? nil : params[:day]
+
+    occurrence_match = "occurrences.start >= '#{event_start}' AND occurrences.start <= '#{event_end}' AND #{event_days ? "occurrences.day_of_week IN (#{event_days})" : "TRUE" }"
+    
+    # location
+    if(params[:lat_min].to_s.empty? || params[:long_min].to_s.empty? || params[:lat_max].to_s.empty? || params[:long_max].to_s.empty?)
       @ZoomDelta = {
                11 => { :lat => 0.30250564 / 2, :long => 0.20942688 / 2 }, 
                13 => { :lat => 0.0756264644 / 2, :long => 0.05235672 / 2 }, 
-               14 => {:lat => 0.037808182 / 2, :long => 0.02617836 / 2 }
+               14 => { :lat => 0.037808182 / 2, :long => 0.02617836 / 2 }
               }
 
       @lat = 30.25
       @long = -97.75
       @zoom = 11
 
-      if params[:location] && params[:location] != ""
+      unless params[:location].to_s.empty?
         json_object = JSON.parse(open("http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=" + URI::encode(params[:location])).read)
         unless (json_object.nil? || json_object["results"].length == 0)
 
@@ -350,56 +341,83 @@ def indexMobile
       @lat_max = @lat + @lat_delta
       @long_min = @long - @long_delta
       @long_max = @long + @long_delta
+    else
+      @lat_min = params[:lat_min]
+      @lat_max = params[:lat_max]
+      @long_min = params[:long_min]
+      @long_max = params[:long_max]
     end
-    # Lat - long fixit
-    
-    
-    @events.select! {|e| ((@lat_min.to_f)..(@lat_max.to_f)).include?(e.venue.latitude) && ((@long_min.to_f)..(@long_max.to_f)).include?(e.venue.longitude) }
-    
-    # filter by tags
-    if(params[:tags])
+
+    location_match = "venues.id = events.venue_id AND venues.latitude >= #{@lat_min} AND venues.latitude <= #{@lat_max} AND venues.longitude >= #{@long_min} AND venues.longitude <= #{@long_max}"
+
+    # tags
+    unless(params[:tags].to_s.empty?)
       @tagIDs = params[:tags].split(",").collect { |str| str.to_i }
+      tag_match = "events.id IN (
+                    SELECT event_id 
+                      FROM events, tags, events_tags 
+                      WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{params[:tags]}) 
+                      GROUP BY event_id 
+                      HAVING COUNT(tag_id) >= #{@tagIDs.count}
+                  )"
+    end
+
+    # price
+    unless(params[:price].to_s.empty?)
+      price_match_arr = []
       
-      @events.each { |e| puts e.tags.collect { |tag| tag.id} }
-      @events.select! { |e| !((e.tags.collect { |tag| tag.id } & @tagIDs).empty?) }
-    end
-
-    @priceRanges = [0,0.01,10,25,50]
-
-    #filter by price
-    if(params[:price])
+      price_ranges = [0,0.01,10,25,50]
       @prices = params[:price].split(",").collect { |str| str.to_i }
-      @events.select! do |e|
-        if e.price.nil?
-          false
-        else
-          @prices.reduce(false) { |aggregate, i| aggregate || (@priceRanges[i] <= e.price &&
-                                                             ((i == @priceRanges.length - 1) ? true : @priceRanges[i+1] > e.price)) }
-        end
+      @prices.each do |i|
+        price_match_arr.push("events.price >= #{price_ranges[i]} AND #{ (i == price_ranges.length - 1) ? "TRUE" : "events.price < " + price_ranges[i+1].to_s }")
       end
+      price_match = price_match_arr * " OR "
+      price_match = "(" + price_match + ")"
     end
 
-    if(params[:sort].nil? || params[:sort] == "" || params[:sort] == 0)
+    # the big enchilada
+    @ids = ActiveRecord::Base.connection.select_all("
+      SELECT events.id AS event_id, venues.id AS venue_id
+        FROM events 
+          INNER JOIN occurrences ON events.id = occurrences.event_id
+          INNER JOIN venues ON events.venue_id = venues.id
+          LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+          LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
+        WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_match} AND #{price_match}
+        ORDER BY occurrences.start")
+
+    @event_ids = @ids.collect { |e| e["event_id"] }.uniq
+    @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
+
+    @events = Event.includes(:tags, :venue, :occurrences, :recurrences).find(@event_ids)
+
+    if(params[:sort].to_s.empty? || params[:sort] == 0)
       @events = @events.sort_by do |event| 
         event.score
       end.reverse
     end
 
-    @events.each do |event| 
-      event.views += 1 
-      event.venue.views += 1
-      event.save
-      event.venue.save
+    if @events.count > 0 
+      ActiveRecord::Base.connection.update("UPDATE events
+        SET views = views + 1
+        WHERE id IN (#{@event_ids * ','})")
+
+      ActiveRecord::Base.connection.update("UPDATE venues
+        SET views = views + 1
+        WHERE id IN (#{@venue_ids * ','})")
     end
-     
     
+    # puts @events.to_json(:include => [:occurrences, :venue])
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @events.to_json(:include => [:occurrences, :venue]) }
+
+      
       format.mobile { render json: @events.to_json(:include => [:occurrences, :venue]) }
-    end
+
+      format.json { render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
 
   end
+end
   # GET /events/1
   # GET /events/1.json
   def show
