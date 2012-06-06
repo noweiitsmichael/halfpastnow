@@ -180,19 +180,7 @@
 
   $("#btnMap").click(function() {
     window.location.href = "/#mapShow";
-    geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(30.30803, -97.71527);
-        var myOptions = {
-          zoom: 13,
-          center: latlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          disableDefaultUI: true,
-          zoomControl: true,
-          scrollwheel: false,
-          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
-        };
-        //map = new google.maps.Map($("#home #map")[0], myOptions);
-        map = new google.maps.Map($("#map")[0], myOptions);
+    
 
         
 
