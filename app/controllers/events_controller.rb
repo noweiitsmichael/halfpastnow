@@ -143,8 +143,8 @@ def index
       format.json { render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
     end
 
-    # @amount = params[:amount] || 20
-    # @offset = params[:offset] || 0
+    # # @amount = params[:amount] || 20
+    # # @offset = params[:offset] || 0
 
     # # @events = Event.search params[:search]
     # @events = Event.all.select { |event| event.occurrences.length > 0 }

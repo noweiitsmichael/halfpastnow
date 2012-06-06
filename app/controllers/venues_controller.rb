@@ -105,11 +105,9 @@ class VenuesController < ApplicationController
 
     respond_to do |format|
       if @venue.save
-        puts "here save"
         format.html { redirect_to action: :index }
         format.json { render json: @venue, status: :created, location: @venue }
       else
-        puts "here not save"
         format.html { render action: "new" }
         format.json { render json: @venue.errors, status: :unprocessable_entity }
       end
@@ -154,18 +152,12 @@ class VenuesController < ApplicationController
     @event.update_attributes(params[:event])
     @event.user_id = current_user.id
 
-
-
     if @event.save
       @raw_event = RawEvent.find(params[:raw_event_id])
       @raw_event.submitted = true
-      if @raw_event.save
-        render json: true
-      else
-        render json: false
-      end
+      render json: {:event_id => @event.id}
     else
-      render json: false
+      render json: {:event_id => nil}
     end
 
 
@@ -174,6 +166,32 @@ class VenuesController < ApplicationController
     # File.open "/home/rumblerob/workspace/rails_projects/halfpastnow/tmp/profile-graph.html", 'w' do |file|
     #   RubyProf::GraphHtmlPrinter.new(result).print(file)
     # end
+  end
+
+  def editRawVenue
+    @venue = Venue.includes(:raw_venues).find(params[:id])
+
+    events_url = ""
+    if(!params[:rawVenueString].to_s.empty?)
+      events_url = "http://do512.com/venue/#{params[:rawVenueString]}?format=xml"
+    elsif(!params[:rawVenueFullString].to_s.empty?)
+      events_url = params[:rawVenueFullString]
+    else
+      redirect_to :action => :edit, :id => @venue.id, :notice => 'boo'
+    end
+
+    raw_venue = @venue.raw_venues.find { |rv| rv.from == "do512" }
+    if(!raw_venue)
+      raw_venue = @venue.raw_venues.build(:from => "do512", :events_url => events_url)
+    else 
+      raw_venue.events_url = events_url
+    end
+
+    if raw_venue.save
+      redirect_to :action => :edit, :id => @venue.id, :notice => 'yay'
+    else
+      redirect_to :action => :edit, :id => @venue.id, :notice => 'boo'
+    end
   end
 
   # DELETE /venues/1
@@ -186,5 +204,13 @@ class VenuesController < ApplicationController
       format.html { redirect_to venues_url }
       format.json { head :ok }
     end
+  end
+
+  def deleteRawEvent
+    @raw_event = RawEvent.find(params[:id])
+    @raw_event.deleted = true
+    @raw_event.save
+
+    render json: {:event_id => @raw_event.id}
   end
 end

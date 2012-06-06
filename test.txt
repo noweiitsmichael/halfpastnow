@@ -1,0 +1,2000 @@
+<event>
+      <event_id>897703</event_id>
+      <title>David Liebe Hart Band (Tim &amp; Eric's Awesome Show, Adult Swim)</title>
+      <description>&lt;b style=&quot;font-family: arial; font-size: 12px; line-height: 18px; text-align: left; &quot;&gt;&lt;span style=&quot;font-family: verdana, geneva, sans-serif; &quot;&gt;6/4 - David Liebe Hart Band (from Tim &amp;amp; Eric Awesome Show) @MOHAWK&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;font-family: verdana, geneva, sans-serif; &quot;&gt;-&lt;/span&gt;&lt;/b&gt;</description>
+      <link>http://do512.com/event/2012/06/04/david-liebe-hart-band-from-tim-eric-awesome-show-mohawk</link>
+      <xml_link>http://do512.com/event/2012/06/04/david-liebe-hart-band-from-tim-eric-awesome-show-mohawk.xml</xml_link>
+      <date>Monday 06/04/12</date>
+      <google_date>20120605T020000Z/20120605T020000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>7.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Mon, 04 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Mon, 04 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>2</number_of_votes>
+      <weekday>MON</weekday>
+      <ticket_url>http://transmission.frontgatetickets.com/all.php?a=d</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2929686/david_liebe_sq_90.jpg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://transmission.frontgatetickets.com/all.php?a=d</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2929686/david_liebe.jpg</image>
+    </event>
+<event>
+      <event_id>896327</event_id>
+      <title>Mohawk Happy Hours Presents: Mike and the Moonpies</title>
+      <description>@ Indoor
+ 21+ 
+Acoustic Jam. 5 PM - 8 PM. Free!</description>
+      <link>http://do512.com/event/2012/06/05/mike-and-the-moonpies-present-happy-hour</link>
+      <xml_link>http://do512.com/event/2012/06/05/mike-and-the-moonpies-present-happy-hour.xml</xml_link>
+      <date>Tuesday 06/05/12</date>
+      <google_date>20120605T220000Z/20120605T220000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>15.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Tue, 05 Jun 2012 17:00:00 -0500</pubDate>
+      <begin_time>Tue, 05 Jun 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>5</number_of_votes>
+      <weekday>TUE</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2922757/d6474e17363fec1a0106df6093211f91_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2922757/d6474e17363fec1a0106df6093211f91.jpeg</image>
+    </event>
+<event>
+      <event_id>896328</event_id>
+      <title>The Couch, The Sour Notes, Summer Swells</title>
+      <description>&lt;div&gt;&lt;p&gt;&lt;font size=&quot;2&quot; face=&quot;arial&quot; style=&quot;background-color: white;&quot;&gt;The Couch was conceived like many, on a couch in college through a series of parties and the not-so-uncommon noise complaint. Hailing from San Marcos, (specifically Texas State University) a story like this may be expected. Since their early formation in 2007, the band has relocated to Austin and has added Sara Houser to the mix to complete the foursome. After receiving local praise for their first full-length album&amp;nbsp;&lt;em&gt;Old &amp;amp; Touchin' Blue&lt;/em&gt;&amp;nbsp;(December 2011) and live performances, The Couch has continued to play locally while writing new content for their sophomore album.&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font size=&quot;2&quot; face=&quot;arial&quot; style=&quot;background-color: white;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font size=&quot;2&quot; face=&quot;arial&quot; style=&quot;background-color: white;&quot;&gt;The band has fostered a growing reputation, performing regionally and locally at many reputable festivals and venues including Dia De Los Toadies, Stubb&#8217;s outside stage, Texas Music Theater, Wild Frontier Fest, MR. Fest and The Mohawk. They have opened for the Toadies three times (Austin, Houston and Wimberley) and bumped stages with The Bright Light Social Hour, Shwayze, Zlam Dunk, The Happen-Ins and many other Austin-local favorites.&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font size=&quot;2&quot; face=&quot;arial&quot; style=&quot;background-color: white;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font size=&quot;2&quot; face=&quot;arial&quot; style=&quot;background-color: white;&quot;&gt;The band&#8217;s first single &#8220;Close To You&#8221;, a rhythmic, summer anthem track from their EP released in the summer of 2011, was featured as KUT&#8217;s &#8220;song of the day&#8221;. Their second single, &#8220;The Way You Came&#8221; falls into a similar category, melding true rock with blues and soul, while combining a danceable beat with unrelenting lyrics.&amp;nbsp;&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font size=&quot;2&quot; face=&quot;arial&quot; style=&quot;background-color: white;&quot;&gt;The band began as a three-piece comprised of Taylor Wilkins (guitarist, vocals), Jud Johnson (percussion) and Kyle Robarge (bassist). Since recording&amp;nbsp;&lt;em&gt;Old &amp;amp; Touchin&#8217; Blue&lt;/em&gt;, The Couch has added multi-instrumentalist Sara Houser (keys, piano, guitar, vocals) to add to the overall aesthetic of the band&#8217;s developing sound.&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font size=&quot;2&quot; face=&quot;arial&quot; style=&quot;background-color: white;&quot;&gt;&lt;em&gt;Old &amp;amp; Touchin&#8217; Blue&lt;/em&gt;&amp;nbsp;was recorded, mixed and mastered by Lars Goransson at Sounds Outrageous Studio in Austin, Texas. The band recorded in three sessions beginning in February 2010, and released a few songs in the summer of 2011 available via download. After taking the best five tracks from the first two recording sessions, The Couch finished&amp;nbsp;&lt;em&gt;Old &amp;amp; Touchin&#8217; Blue&lt;/em&gt;&amp;nbsp;in October 2011, adding four tracks to complete the final album. The album represents the band&#8217;s developing personality and sound while retaining their original raw elements of roots rock and roll.&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font size=&quot;2&quot; face=&quot;arial&quot; style=&quot;background-color: white;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/p&gt;&lt;p&gt;&lt;font size=&quot;2&quot; face=&quot;arial&quot; style=&quot;background-color: white;&quot;&gt;The Couch is currently working on new material for their next album with plans to tour regionally in the late summer into the early fall of 2012. They will be releasing two new singles &#8220;Oh, Libby&#8221; and &quot;Kaiser&quot; on June 5, 2012 at The Mohawk in Austin, TX. &#8220;Oh, Libby&#8221; &#8211; a track that will also be on their upcoming album &#8211; is an honest, raw approach from the band with no digital edits. Recorded to tape and with little retouching, the songs bring back a classic feel that is paving the way for the band&#8217;s evolving sound and upcoming record.&amp;nbsp;&lt;/font&gt;&lt;/p&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;@ Indoor
+ ALL AGES 
+Doors @ 8 PM, $5, $7 minorsSummer Swells @ 9 PMThe Sour Notes @ 10 PM https://www.facebook.com/TheSourNotesThe Couch @ 11 PM https://www.facebook.com/thecouchmusic</description>
+      <link>http://do512.com/event/2012/06/05/the-couch-the-sour-notes-summer-swells</link>
+      <xml_link>http://do512.com/event/2012/06/05/the-couch-the-sour-notes-summer-swells.xml</xml_link>
+      <date>Tuesday 06/05/12</date>
+      <google_date>20120606T020000Z/20120606T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>35.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Tue, 05 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Tue, 05 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>10</number_of_votes>
+      <weekday>TUE</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2922763/fe7fc2e55944613f32e40c75c17e07eb_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2922763/fe7fc2e55944613f32e40c75c17e07eb.jpeg</image>
+    </event>
+<event>
+      <event_id>885702</event_id>
+      <title>Happy Hour &quot;Bear to Live!&quot; Bike Night</title>
+      <description>@ Indoor
+ 21+ 
+5 - 8pm. Motorcycles Unite and park them inside Mohawk! Free pool, darts, and ping pong. Captain Jim playing Classic Rock, Psych, and METAL. Whiskey Promotions Weekly for Riders. 
+$1 High Life$2 Domestics$2 Wells</description>
+      <link>http://do512.com/event/2012/06/06/happy-hour-bear-to-live-bike-night</link>
+      <xml_link>http://do512.com/event/2012/06/06/happy-hour-bear-to-live-bike-night.xml</xml_link>
+      <date>Wednesday 06/06/12</date>
+      <google_date>20120606T220000Z/20120606T220000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Wed, 06 Jun 2012 17:00:00 -0500</pubDate>
+      <begin_time>Wed, 06 Jun 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2886073/b12b5831e9b3943c8a8ac1bab0e76fb3_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2886073/b12b5831e9b3943c8a8ac1bab0e76fb3.jpeg</image>
+    </event>
+<event>
+      <event_id>821491</event_id>
+      <title>XIU XIU + Yamantaka//Sonic Titan + Father Murphy</title>
+      <description>&lt;div&gt;&lt;font size=&quot;2&quot; face=&quot;arial&quot; style=&quot;background-color: white;&quot;&gt;&lt;span style=&quot;line-height: 16px; text-align: left; &quot;&gt;Xiu Xiu was born on a dance floor, arriving alone at the club and going home alone from the club.&lt;/span&gt;&lt;br style=&quot;line-height: 16px; text-align: left; &quot;&gt;&lt;br style=&quot;line-height: 16px; text-align: left; &quot;&gt;&lt;span style=&quot;line-height: 16px; text-align: left; &quot;&gt;That night the first Xiu Xiu song,&amp;nbsp;&lt;/span&gt;&lt;em style=&quot;line-height: 16px; text-align: left; &quot;&gt;Jennifer Lopez,&amp;nbsp;&lt;/em&gt;&lt;span style=&quot;line-height: 16px; text-align: left; &quot;&gt;was recorded. Its line, &#8220;is it tough to watch, Friday after Friday!?,&#8221; began what &amp;nbsp;Xiu Xiu was going to try to say. The songs would always be about specific events in the personal lives of the band, the people close to them, and about the social and economic politics that effect and deform subjugated life from everywhere in this wobbling, wreck of a solar system.&lt;/span&gt;&lt;br style=&quot;line-height: 16px; text-align: left; &quot;&gt;&lt;br style=&quot;line-height: 16px; text-align: left; &quot;&gt;&lt;span style=&quot;line-height: 16px; text-align: left; &quot;&gt;Over the course of 15 7&quot;s, five EPs, six collaboration albums and eight full lengths Xiu Xiu has never shied away from any topic that is honest and meaningful to them. Their songs are about gender dysphoria, suicide, loneliness, going insane, child soldiers, the tsunami in Indonesia, hideous sex, the Sanrio character Pandapple, abortion politics, incest, cats, queer life, being raped by the police and the individual responsibility of U.S. military personnel for the families they murder.&amp;nbsp;Somehow within all of this, cuteness attempts to find a way to embrace death and horrible emotion.&lt;/span&gt;&lt;br style=&quot;line-height: 16px; text-align: left; &quot;&gt;&lt;br style=&quot;line-height: 16px; text-align: left; &quot;&gt;&lt;span style=&quot;line-height: 16px; text-align: left; &quot;&gt;The music is drawn from British post punk and synth pop, modern Western classical, noise and experimental musics, Asian percussion musics,&lt;/span&gt;&lt;span id=&quot;textDiv1&quot; style=&quot;line-height: 16px; text-align: left; display: inline; &quot;&gt;&amp;nbsp;American folk, torch singers, house, techno, 1950s rock n roll and this second&#8217;s top 40.&amp;nbsp;&lt;br&gt;&lt;br&gt;Starting in isolation in San Jose, California in 2002, Xiu Xiu has relentlessly toured all over the world since. San Jose is a rotten place to be, so relentless touring was a way to get AWAY!&lt;br&gt;&lt;br&gt;There have been a total of seven line-ups with the newest and best being Angela Seo, Bettina Escauriza, Marc Riordan, Devin Hoff, and Jamie Stewart. They are currently cluster bombed around America in New York and Durham, NC.&lt;br&gt;&lt;br&gt;Xiu Xiu have been called &#8220;self flagellating&#8221;, &#8220;harsh&#8221;, &#8220;brutal&#8221;, &#8220;shocking&#8221; and &#8220;perverse&#8221; but also &#8220;genius&#8221;, &#8220;brilliant&#8221;, &#8220;unique&#8221;, &#8220;imaginative&#8221; and &#8220;luminous.&#8221;&lt;/span&gt;
+&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font size=&quot;2&quot; face=&quot;arial&quot; style=&quot;background-color: white;&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;font size=&quot;2&quot; face=&quot;arial&quot; style=&quot;background-color: white;&quot;&gt;@ Outdoor
+ ALL AGES 
+$10 Adva&lt;/font&gt;nce ($12 Day of Show) Doors @ 6:30pm. Show @ 7:30pm.</description>
+      <link>http://do512.com/event/2012/06/06/xiu-xiu-yamantaka-sonic-titan-father-murphy</link>
+      <xml_link>http://do512.com/event/2012/06/06/xiu-xiu-yamantaka-sonic-titan-father-murphy.xml</xml_link>
+      <date>Wednesday 06/06/12</date>
+      <google_date>20120606T233000Z/20120606T233000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>90.0</popularity>
+      <time>06:30 PM</time>
+      <pubDate>Wed, 06 Jun 2012 18:30:00 -0500</pubDate>
+      <begin_time>Wed, 06 Jun 2012 18:30:00 -0500</begin_time>
+      <number_of_votes>45</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=65944&amp;eid=74749</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2656688/5ff5692259f2c0dd5681e1367b8867e8_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=65944&amp;eid=74749</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2656688/5ff5692259f2c0dd5681e1367b8867e8.jpeg</image>
+    </event>
+<event>
+      <event_id>916525</event_id>
+      <title>Happy Hour Presents: &quot;Bear to Live!&quot; Bike Night</title>
+      <description>@ Indoor
+ 21+ 
+5 - 8pm. Motorcycles Unite and park them inside Mohawk! Free pool, darts, and ping pong. Captain Jim playing Classic Rock, Psych, and METAL. Riders get whiskey hook-ups!$1 High Life$2 Domestics$2 Wells</description>
+      <link>http://do512.com/event/2012/06/07/happy-hour-presents-bear-to-live-bike-night</link>
+      <xml_link>http://do512.com/event/2012/06/07/happy-hour-presents-bear-to-live-bike-night.xml</xml_link>
+      <date>Thursday 06/07/12</date>
+      <google_date>20120607T220000Z/20120607T220000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Thu, 07 Jun 2012 17:00:00 -0500</pubDate>
+      <begin_time>Thu, 07 Jun 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>THU</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/3009470/ce9288746081733aaae1fa9a3ad5c4b1_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/3009470/ce9288746081733aaae1fa9a3ad5c4b1.jpeg</image>
+    </event>
+<event>
+      <event_id>907653</event_id>
+      <title>Austin Pets Alive! Date Auction</title>
+      <description>&lt;span style=&quot;font-family: Arial, sans-serif; line-height: 17px; white-space: pre-wrap; font-size: small; &quot;&gt;Come out for a night on the town and meet 11 of our lovely APA! ladies!  Bid on each of these beauties for an exciting pre-paid date that has been donated by some awesome local companies here in Austin.  Some of the dates include; kayaking, zip lining, going to a comedy show, dinner and a movie&#8230; etc.&lt;/span&gt;</description>
+      <link>http://do512.com/event/2012/06/07/austin-pets-alive-date-auction</link>
+      <xml_link>http://do512.com/event/2012/06/07/austin-pets-alive-date-auction.xml</xml_link>
+      <date>Thursday 06/07/12</date>
+      <google_date>20120607T230000Z/20120607T230000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>06:00 PM</time>
+      <pubDate>Thu, 07 Jun 2012 18:00:00 -0500</pubDate>
+      <begin_time>Thu, 07 Jun 2012 18:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>THU</weekday>
+      <ticket_url>http://www.austinpetsalive.org/events/</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2985129/DATE_AUCTION_FLYER_sq_90.png</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://www.austinpetsalive.org/events/</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2985129/DATE_AUCTION_FLYER.png</image>
+    </event>
+<event>
+      <event_id>844614</event_id>
+      <title>UZALA + Mala Suerte</title>
+      <description>&lt;img src=&quot;http://backstabbath.files.wordpress.com/2012/05/ancient-rites-final.png?w=450&amp;amp;h=821&quot;&gt;@ Indoor
+ ALL AGES 
+$6 ($8 minors) Doors @ 9pm. Show @ 10pm.</description>
+      <link>http://do512.com/event/2012/06/07/uzala-mala-suerte</link>
+      <xml_link>http://do512.com/event/2012/06/07/uzala-mala-suerte.xml</xml_link>
+      <date>Thursday 06/07/12</date>
+      <google_date>20120608T020000Z/20120608T020000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>7.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Thu, 07 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Thu, 07 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>2</number_of_votes>
+      <weekday>THU</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2736129/8c865e14f4f1197c69557dadd4103fe1_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2736129/8c865e14f4f1197c69557dadd4103fe1.jpeg</image>
+    </event>
+<event>
+      <event_id>885703</event_id>
+      <title>Happy Hour &quot;Right On!&quot; Funk &amp; Soul Friday</title>
+      <description>@ Indoor
+ 21+ 
+5pm - 8pm. No cover. Captain Jim of Heart &amp; Soul Soundsystem &amp; Skinny Scotty of Apollo 67 Soundsystem spinning all vinyl afro-beat, funk, boogaloo, breaks &amp; rare selections. Bad-ass black cinema playing inside. 
+$4 Big-Ass Beer in a Bag 
+$2 Gin n' Juice 
+$2 Purple Drank</description>
+      <link>http://do512.com/event/2012/06/08/happy-hour-right-on-funk-soul-friday</link>
+      <xml_link>http://do512.com/event/2012/06/08/happy-hour-right-on-funk-soul-friday.xml</xml_link>
+      <date>Friday 06/08/12</date>
+      <google_date>20120608T220000Z/20120608T220000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>8.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Fri, 08 Jun 2012 17:00:00 -0500</pubDate>
+      <begin_time>Fri, 08 Jun 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>3</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/829641/6169496dee464c7281497414466bffa4_poster.jpeg_sq_90.jpg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+    </event>
+<event>
+      <event_id>844615</event_id>
+      <title>Yacht + Onuinu + Love Inks</title>
+      <description>@ Outdoor
+ ALL AGES 
+$10 Advance ($12 Day of Show) Doors @ 8pm.</description>
+      <link>http://do512.com/event/2012/06/08/yacht-love-inks</link>
+      <xml_link>http://do512.com/event/2012/06/08/yacht-love-inks.xml</xml_link>
+      <date>Friday 06/08/12</date>
+      <google_date>20120609T010000Z/20120609T010000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>137.0</popularity>
+      <time>08:00 PM</time>
+      <pubDate>Fri, 08 Jun 2012 20:00:00 -0500</pubDate>
+      <begin_time>Fri, 08 Jun 2012 20:00:00 -0500</begin_time>
+      <number_of_votes>102</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url>http://transmission.frontgatetickets.com/choose.php?lid=66950</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2736135/7f39bd1d0b43584a2b5fc4f7dbfb9b41_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://transmission.frontgatetickets.com/choose.php?lid=66950</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2736135/7f39bd1d0b43584a2b5fc4f7dbfb9b41.jpeg</image>
+    </event>
+<event>
+      <event_id>878945</event_id>
+      <title>YACHT Aftershow: Rickey Jean Francois</title>
+      <description>@ Indoor
+ ALL AGES 
+$5 ($7 minors). Doors @ 11:30pm. Show @ 12am.</description>
+      <link>http://do512.com/event/2012/06/08/yacht-aftershow-rickey-jean-francois</link>
+      <xml_link>http://do512.com/event/2012/06/08/yacht-aftershow-rickey-jean-francois.xml</xml_link>
+      <date>Friday 06/08/12</date>
+      <google_date>20120609T043000Z/20120609T043000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>11:30 PM</time>
+      <pubDate>Fri, 08 Jun 2012 23:30:00 -0500</pubDate>
+      <begin_time>Fri, 08 Jun 2012 23:30:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2863872/75df8e20fbb6595768ec380063aa0a20_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2863872/75df8e20fbb6595768ec380063aa0a20.jpeg</image>
+    </event>
+<event>
+      <event_id>770845</event_id>
+      <title>The Impossibles Return w/ Special Guests Adam and the Bull Shark, Dan Keyes &amp; Oh Look Out (SOLD OUT)</title>
+      <description>&lt;div style=&quot;text-align: center;&quot;&gt;&lt;a href=&quot;http://www.altpress.com/news/entry/exclusive_the_impossibles_fueled_by_ramen_announce_reunion_show&quot;&gt;VIA ALTERNATIVE PRESS&lt;/a&gt;&lt;/div&gt;&lt;div class=&quot;article&quot; style=&quot;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 3px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; outline-width: 0px; outline-style: initial; outline-color: initial; font-size: 12px; vertical-align: baseline; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; height: 1063px; overflow-x: hidden; overflow-y: hidden; color: rgb(0, 16, 32); font-family: Georgia, Times, serif; line-height: 16px; &quot;&gt;&lt;div class=&quot;art-visual&quot; style=&quot;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: -3px; padding-top: 0px; padding-right: 0px; padding-bottom: 10px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; outline-width: 0px; outline-style: initial; outline-color: initial; vertical-align: baseline; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; max-width: 620px; position: relative; &quot;&gt;&lt;img src=&quot;http://www.altpress.com/images/uploads/news/theimpossiblesjersey.jpg&quot; width=&quot;620&quot; height=&quot;414&quot; alt=&quot;Exclusive: The Impossibles (Fueled By Ramen) announce reunion show&quot; style=&quot;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: medium; border-right-width: medium; border-bottom-width: medium; border-left-width: medium; border-style: initial; border-color: initial; border-image: initial; outline-width: 0px; outline-style: initial; outline-color: initial; vertical-align: baseline; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; border-top-style: none; border-right-style: none; border-bottom-style: none; border-left-style: none; border-color: initial; display: block; &quot;&gt;&lt;/div&gt;&lt;p style=&quot;margin-top: 5px; margin-bottom: 15px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; outline-width: 0px; outline-style: initial; outline-color: initial; font-size: 1.1em; vertical-align: baseline; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; line-height: 1.5em; font-family: Georgia, serif; &quot;&gt;&lt;a href=&quot;http://www.altpress.com/news/entry/exclusive_the_impossibles_fueled_by_ramen_announce_reunion_show&quot;&gt;Altpress.com&lt;/a&gt; can exclusively reveal that the Impossibles will be playing a one-off reunion show on June 9 at the Mohawk in Austin, Texas. It'll be the band's first show in ten years; they last performed on&amp;nbsp;June 2, 2002 at Emo's in Austin. Tickets and more info are available on the band's new&amp;nbsp;&lt;a href=&quot;http://theimpossiblesreturn.com/&quot; target=&quot;_blank&quot; style=&quot;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; outline-width: 0px; outline-style: initial; outline-color: initial; vertical-align: baseline; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; color: rgb(255, 109, 9); text-decoration: none; &quot;&gt;website&lt;/a&gt;.&lt;/p&gt;&lt;p style=&quot;margin-top: 5px; margin-bottom: 15px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; outline-width: 0px; outline-style: initial; outline-color: initial; font-size: 1.1em; vertical-align: baseline; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; line-height: 1.5em; font-family: Georgia, serif; &quot;&gt;The Impossibles were initially together from 1994-1998, and were one of the first bands signed to Fueled By Ramen; the band's 1998&amp;nbsp;&lt;em style=&quot;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; outline-width: 0px; outline-style: initial; outline-color: initial; vertical-align: baseline; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; &quot;&gt;Anthology&amp;nbsp;&lt;/em&gt;release is regarded as one of the most seminal pieces of the FBR catalogue, with Hayley Williams from Paramore citing it as her &quot;all time favorite FBR release.&quot; They reunited in 2000 to release&amp;nbsp;&lt;em style=&quot;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; outline-width: 0px; outline-style: initial; outline-color: initial; vertical-align: baseline; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; &quot;&gt;Return&lt;/em&gt;, then disbanded again in 2002 after the release of their final EP&amp;nbsp;&lt;em style=&quot;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; outline-width: 0px; outline-style: initial; outline-color: initial; vertical-align: baseline; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; &quot;&gt;4_Song_Brick_Bomb&lt;/em&gt;. Members of the group went on to perform in the Stereo, Slowreader, the Sword, Recover and others.&lt;/p&gt;&lt;p style=&quot;margin-top: 5px; margin-bottom: 15px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; outline-width: 0px; outline-style: initial; outline-color: initial; font-size: 1.1em; vertical-align: baseline; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; line-height: 1.5em; font-family: Georgia, serif; &quot;&gt;Check out a video announcement from the band below and be sure to stay tuned to Altpress.com for more updates.&lt;/p&gt;&lt;p style=&quot;margin-top: 5px; margin-bottom: 15px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; outline-width: 0px; outline-style: initial; outline-color: initial; font-size: 1.1em; vertical-align: baseline; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; line-height: 1.5em; font-family: Georgia, serif; &quot;&gt;&lt;iframe width=&quot;585&quot; height=&quot;340&quot; src=&quot;http://www.youtube.com/embed/3sxNR6CIxGo&quot; frameborder=&quot;0&quot; allowfullscreen=&quot;&quot; style=&quot;margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; outline-width: 0px; outline-style: initial; outline-color: initial; vertical-align: baseline; background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: transparent; &quot;&gt;&lt;/iframe&gt;&lt;/p&gt;&lt;/div&gt;</description>
+      <link>http://do512.com/event/2012/06/09/the-impossibles-return</link>
+      <xml_link>http://do512.com/event/2012/06/09/the-impossibles-return.xml</xml_link>
+      <date>Saturday 06/09/12</date>
+      <google_date>20120610T000000Z/20120610T000000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>37.0</popularity>
+      <time>07:00 PM</time>
+      <pubDate>Sat, 09 Jun 2012 19:00:00 -0500</pubDate>
+      <begin_time>Sat, 09 Jun 2012 19:00:00 -0500</begin_time>
+      <number_of_votes>12</number_of_votes>
+      <weekday>SAT</weekday>
+      <ticket_url>http://transmission.frontgatetickets.com/choose.php?lid=65127</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2492250/impossib_e_sq_90.jpg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://transmission.frontgatetickets.com/choose.php?lid=65127</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2492250/impossib_e.jpg</image>
+    </event>
+<event>
+      <event_id>853086</event_id>
+      <title>The Impossibles Aftershow: The Del-Vipers + Little Wesley</title>
+      <description>@ Indoor
+ ALL AGES 
+DOORS @ 11:30AM. SHOW @ 12AM.</description>
+      <link>http://do512.com/event/2012/06/09/the-impossibles-aftershow-the-del-vipers-little-wesley</link>
+      <xml_link>http://do512.com/event/2012/06/09/the-impossibles-aftershow-the-del-vipers-little-wesley.xml</xml_link>
+      <date>Saturday 06/09/12</date>
+      <google_date>20120610T043000Z/20120610T043000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>11:30 PM</time>
+      <pubDate>Sat, 09 Jun 2012 23:30:00 -0500</pubDate>
+      <begin_time>Sat, 09 Jun 2012 23:30:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>SAT</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2757099/b2a1b921a55e0a84a8605676bb6901e2_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2757099/b2a1b921a55e0a84a8605676bb6901e2.jpeg</image>
+    </event>
+<event>
+      <event_id>772332</event_id>
+      <title>The Impossibles (Night 2) + 4th Grade Nothing + Built By Snow + Outrage (SOLD OUT)</title>
+      <description>&lt;div style=&quot;text-align: center;&quot;&gt;Tickets on Sale Feb 16, 10 am&amp;nbsp;&lt;/div&gt;</description>
+      <link>http://do512.com/event/2012/06/10/the-impossibles-night-2</link>
+      <xml_link>http://do512.com/event/2012/06/10/the-impossibles-night-2.xml</xml_link>
+      <date>Sunday 06/10/12</date>
+      <google_date>20120610T233000Z/20120610T233000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>50.0</popularity>
+      <time>06:30 PM</time>
+      <pubDate>Sun, 10 Jun 2012 18:30:00 -0500</pubDate>
+      <begin_time>Sun, 10 Jun 2012 18:30:00 -0500</begin_time>
+      <number_of_votes>10</number_of_votes>
+      <weekday>SUN</weekday>
+      <ticket_url>http://transmission.frontgatetickets.com/choose.php?lid=65127</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2498439/impossib_e_sq_90.jpg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://transmission.frontgatetickets.com/choose.php?lid=65127</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2498439/impossib_e.jpg</image>
+    </event>
+<event>
+      <event_id>878946</event_id>
+      <title>The Impossibles Aftershow: My Education + Thieves</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors). Doors @ 10pm. Show @ 10:30pm.</description>
+      <link>http://do512.com/event/2012/06/10/the-impossibles-aftershow-my-education-thieves</link>
+      <xml_link>http://do512.com/event/2012/06/10/the-impossibles-aftershow-my-education-thieves.xml</xml_link>
+      <date>Sunday 06/10/12</date>
+      <google_date>20120611T030000Z/20120611T030000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>23.0</popularity>
+      <time>10:00 PM</time>
+      <pubDate>Sun, 10 Jun 2012 22:00:00 -0500</pubDate>
+      <begin_time>Sun, 10 Jun 2012 22:00:00 -0500</begin_time>
+      <number_of_votes>8</number_of_votes>
+      <weekday>SUN</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2863878/8cd7fa2f24d782a3d2cc323a90f6fa6a_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2863878/8cd7fa2f24d782a3d2cc323a90f6fa6a.jpeg</image>
+    </event>
+<event>
+      <event_id>907840</event_id>
+      <title>Mayeux &amp; Broussard</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors). DOORS @ 9. SHOW @ 10</description>
+      <link>http://do512.com/event/2012/06/12/mayeux-broussard</link>
+      <xml_link>http://do512.com/event/2012/06/12/mayeux-broussard.xml</xml_link>
+      <date>Tuesday 06/12/12</date>
+      <google_date>20120613T020000Z/20120613T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Tue, 12 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Tue, 12 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>TUE</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987397/0f2cc06164ff851b6ec5223b83ba37d5_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987397/0f2cc06164ff851b6ec5223b83ba37d5.jpeg</image>
+    </event>
+<event>
+      <event_id>896329</event_id>
+      <title>Shivery Shakes + Bobby Jealousy (tour kickoff)</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors). DOORS @ 9. SHOW @ 10</description>
+      <link>http://do512.com/event/2012/06/12/shivery-shakes-bobby-jealousy-tour-kickoff</link>
+      <xml_link>http://do512.com/event/2012/06/12/shivery-shakes-bobby-jealousy-tour-kickoff.xml</xml_link>
+      <date>Tuesday 06/12/12</date>
+      <google_date>20120613T020000Z/20120613T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>12.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Tue, 12 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Tue, 12 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>2</number_of_votes>
+      <weekday>TUE</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2922769/00a939774f0143eb5d2a0d0b23eedc7b_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2922769/00a939774f0143eb5d2a0d0b23eedc7b.jpeg</image>
+    </event>
+<event>
+      <event_id>896330</event_id>
+      <title>Southbound Drive</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors). DOORS @ 9. SHOW @ 10</description>
+      <link>http://do512.com/event/2012/06/13/southbound-drive</link>
+      <xml_link>http://do512.com/event/2012/06/13/southbound-drive.xml</xml_link>
+      <date>Wednesday 06/13/12</date>
+      <google_date>20120614T020000Z/20120614T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Wed, 13 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Wed, 13 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2922775/0958a0b2ded42abb7d3cbb59fccd21a9_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2922775/0958a0b2ded42abb7d3cbb59fccd21a9.jpeg</image>
+    </event>
+<event>
+      <event_id>896331</event_id>
+      <title>Knifight + Borrisokane + Shortwave Party + Western Ghost House</title>
+      <description>@ Indoor
+ ALL AGES 
+Doors @ 9pm - $5 ($7 minors) 
+Western Ghost House @ 10 
+Shortwave Party @ 11 
+Borrisokane @ 12 
+Knifight @ 1 am</description>
+      <link>http://do512.com/event/2012/06/14/knifight-borrisokane-shortwave-party-western-ghost-house</link>
+      <xml_link>http://do512.com/event/2012/06/14/knifight-borrisokane-shortwave-party-western-ghost-house.xml</xml_link>
+      <date>Thursday 06/14/12</date>
+      <google_date>20120615T020000Z/20120615T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>12.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Thu, 14 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Thu, 14 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>2</number_of_votes>
+      <weekday>THU</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2922781/3a8454b062423049451f1c84261fb2e9_sq_90.png</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2922781/3a8454b062423049451f1c84261fb2e9.png</image>
+    </event>
+<event>
+      <event_id>896332</event_id>
+      <title>Happy Hour &quot;Right On!&quot; Funk &amp; Soul Friday</title>
+      <description>@ Indoor
+ 21+ 
+5pm - 8pm. No cover. Captain Jim of Heart &amp; Soul Soundsystem &amp; Skinny Scotty of Apollo 67 Soundsystem spinning all vinyl afro-beat, funk, boogaloo, breaks &amp; rare selections. Bad-ass black cinema playing inside. 
+$4 Big-Ass Beer in a Bag 
+$2 Gin n' Juice 
+$2 Purple Drank</description>
+      <link>http://do512.com/event/2012/06/15/happy-hour-right-on-funk-soul-friday</link>
+      <xml_link>http://do512.com/event/2012/06/15/happy-hour-right-on-funk-soul-friday.xml</xml_link>
+      <date>Friday 06/15/12</date>
+      <google_date>20120615T220000Z/20120615T220000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Fri, 15 Jun 2012 17:00:00 -0500</pubDate>
+      <begin_time>Fri, 15 Jun 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2922787/276b0983ef9fcb2af6a2bf454649660c_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2922787/276b0983ef9fcb2af6a2bf454649660c.jpeg</image>
+    </event>
+<event>
+      <event_id>896333</event_id>
+      <title>Belaire + Good Field + Orthy + Feathers</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors). DOORS @ 9. SHOW @ 10</description>
+      <link>http://do512.com/event/2012/06/15/belaire-good-field</link>
+      <xml_link>http://do512.com/event/2012/06/15/belaire-good-field.xml</xml_link>
+      <date>Friday 06/15/12</date>
+      <google_date>20120616T020000Z/20120616T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>28.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Fri, 15 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Fri, 15 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>13</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2922793/579e9270fbd8b6c177cb6d7003e0ef0f_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2922793/579e9270fbd8b6c177cb6d7003e0ef0f.jpeg</image>
+    </event>
+<event>
+      <event_id>896334</event_id>
+      <title>Venomous Maximus + American Sharks</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors) Doors @ 9pm. Show @ 10pm</description>
+      <link>http://do512.com/event/2012/06/16/venomous-maximus-american-sharks</link>
+      <xml_link>http://do512.com/event/2012/06/16/venomous-maximus-american-sharks.xml</xml_link>
+      <date>Saturday 06/16/12</date>
+      <google_date>20120617T020000Z/20120617T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Sat, 16 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Sat, 16 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>SAT</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2922799/a3b32ca9bb0281bc8ed3d3b507709dad_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2922799/a3b32ca9bb0281bc8ed3d3b507709dad.jpeg</image>
+    </event>
+<event>
+      <event_id>907841</event_id>
+      <title>My Jerusalem</title>
+      <description>@ Indoor
+ ALL AGES 
+Doors @ 9pm. Show @ 10pm</description>
+      <link>http://do512.com/event/2012/06/17/my-jerusalem</link>
+      <xml_link>http://do512.com/event/2012/06/17/my-jerusalem.xml</xml_link>
+      <date>Sunday 06/17/12</date>
+      <google_date>20120618T020000Z/20120618T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>11.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Sun, 17 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Sun, 17 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>6</number_of_votes>
+      <weekday>SUN</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987403/787a7169a8293267ac727e933ca94ec7_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987403/787a7169a8293267ac727e933ca94ec7.jpeg</image>
+    </event>
+<event>
+      <event_id>878947</event_id>
+      <title>Scale The Summit + Today I Caught Plague</title>
+      <description>@ Indoor 
+$10. Doors @ 9pm. Show @ 10pm.</description>
+      <link>http://do512.com/event/2012/06/18/scale-the-summit-today-i-caught-plague</link>
+      <xml_link>http://do512.com/event/2012/06/18/scale-the-summit-today-i-caught-plague.xml</xml_link>
+      <date>Monday 06/18/12</date>
+      <google_date>20120619T020000Z/20120619T020000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>7.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Mon, 18 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Mon, 18 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>2</number_of_votes>
+      <weekday>MON</weekday>
+      <ticket_url>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=67769&amp;eid=76713</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2863884/8982b1ac5648ba1c8c8f598935bf64c4_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=67769&amp;eid=76713</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2863884/8982b1ac5648ba1c8c8f598935bf64c4.jpeg</image>
+    </event>
+<event>
+      <event_id>896335</event_id>
+      <title>Northpilot</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors) Doors @ 9pm. Show @ 10pm</description>
+      <link>http://do512.com/event/2012/06/19/northpilot</link>
+      <xml_link>http://do512.com/event/2012/06/19/northpilot.xml</xml_link>
+      <date>Tuesday 06/19/12</date>
+      <google_date>20120620T020000Z/20120620T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>7.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Tue, 19 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Tue, 19 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>2</number_of_votes>
+      <weekday>TUE</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2922805/48a378c355793d691cd205da257d69c6_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2922805/48a378c355793d691cd205da257d69c6.jpeg</image>
+    </event>
+<event>
+      <event_id>896336</event_id>
+      <title>Happy Hour &quot;Bear to Live!&quot; Bike Night</title>
+      <description>@ Indoor
+ 21+ 
+5 - 8pm. Motorcycles Unite and park them inside Mohawk! Free pool, darts, and ping pong. Captain Jim playing Classic Rock, Psych, and METAL. Whiskey Promotions Weekly for Riders.$1 High Life$2 Domestics$2 Wells</description>
+      <link>http://do512.com/event/2012/06/20/happy-hour-bear-to-live-bike-night</link>
+      <xml_link>http://do512.com/event/2012/06/20/happy-hour-bear-to-live-bike-night.xml</xml_link>
+      <date>Wednesday 06/20/12</date>
+      <google_date>20120620T220000Z/20120620T220000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Wed, 20 Jun 2012 17:00:00 -0500</pubDate>
+      <begin_time>Wed, 20 Jun 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2922811/937f4ffd60f57fc7ba959b05f3caf7f0_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2922811/937f4ffd60f57fc7ba959b05f3caf7f0.jpeg</image>
+    </event>
+<event>
+      <event_id>886637</event_id>
+      <title>Stanley Man - Orangutang CD Release Extravaganza</title>
+      <description>&lt;p class=&quot;MsoNormal&quot; style=&quot;&quot;&gt;&lt;!--[if gte mso 9]&gt;&lt;xml&gt;
+ &lt;w:WordDocument&gt;
+  &lt;w:View&gt;Normal&lt;/w:View&gt;
+  &lt;w:Zoom&gt;0&lt;/w:Zoom&gt;
+  &lt;w:TrackMoves/&gt;
+  &lt;w:TrackFormatting/&gt;
+  &lt;w:PunctuationKerning/&gt;
+  &lt;w:ValidateAgainstSchemas/&gt;
+  &lt;w:SaveIfXMLInvalid&gt;false&lt;/w:SaveIfXMLInvalid&gt;
+  &lt;w:IgnoreMixedContent&gt;false&lt;/w:IgnoreMixedContent&gt;
+  &lt;w:AlwaysShowPlaceholderText&gt;false&lt;/w:AlwaysShowPlaceholderText&gt;
+  &lt;w:DoNotPromoteQF/&gt;
+  &lt;w:LidThemeOther&gt;EN-US&lt;/w:LidThemeOther&gt;
+  &lt;w:LidThemeAsian&gt;X-NONE&lt;/w:LidThemeAsian&gt;
+  &lt;w:LidThemeComplexScript&gt;X-NONE&lt;/w:LidThemeComplexScript&gt;
+  &lt;w:Compatibility&gt;
+   &lt;w:BreakWrappedTables/&gt;
+   &lt;w:SnapToGridInCell/&gt;
+   &lt;w:WrapTextWithPunct/&gt;
+   &lt;w:UseAsianBreakRules/&gt;
+   &lt;w:DontGrowAutofit/&gt;
+   &lt;w:SplitPgBreakAndParaMark/&gt;
+   &lt;w:DontVertAlignCellWithSp/&gt;
+   &lt;w:DontBreakConstrainedForcedTables/&gt;
+   &lt;w:DontVertAlignInTxbx/&gt;
+   &lt;w:Word11KerningPairs/&gt;
+   &lt;w:CachedColBalance/&gt;
+   &lt;w:UseFELayout/&gt;
+  &lt;/w:Compatibility&gt;
+  &lt;w:BrowserLevel&gt;MicrosoftInternetExplorer4&lt;/w:BrowserLevel&gt;
+  &lt;m:mathPr&gt;
+   &lt;m:mathFont m:val=&quot;Cambria Math&quot;/&gt;
+   &lt;m:brkBin m:val=&quot;before&quot;/&gt;
+   &lt;m:brkBinSub m:val=&quot;&amp;#45;-&quot;/&gt;
+   &lt;m:smallFrac m:val=&quot;off&quot;/&gt;
+   &lt;m:dispDef/&gt;
+   &lt;m:lMargin m:val=&quot;0&quot;/&gt;
+   &lt;m:rMargin m:val=&quot;0&quot;/&gt;
+   &lt;m:defJc m:val=&quot;centerGroup&quot;/&gt;
+   &lt;m:wrapIndent m:val=&quot;1440&quot;/&gt;
+   &lt;m:intLim m:val=&quot;subSup&quot;/&gt;
+   &lt;m:naryLim m:val=&quot;undOvr&quot;/&gt;
+  &lt;/m:mathPr&gt;&lt;/w:WordDocument&gt;
+&lt;/xml&gt;&lt;![endif]--&gt;&lt;!--[if gte mso 9]&gt;&lt;xml&gt;
+ &lt;w:LatentStyles DefLockedState=&quot;false&quot; DefUnhideWhenUsed=&quot;true&quot;
+  DefSemiHidden=&quot;true&quot; DefQFormat=&quot;false&quot; DefPriority=&quot;99&quot;
+  LatentStyleCount=&quot;267&quot;&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;0&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;Normal&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;heading 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; QFormat=&quot;true&quot; Name=&quot;heading 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; QFormat=&quot;true&quot; Name=&quot;heading 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; QFormat=&quot;true&quot; Name=&quot;heading 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; QFormat=&quot;true&quot; Name=&quot;heading 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; QFormat=&quot;true&quot; Name=&quot;heading 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; QFormat=&quot;true&quot; Name=&quot;heading 7&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; QFormat=&quot;true&quot; Name=&quot;heading 8&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; QFormat=&quot;true&quot; Name=&quot;heading 9&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; Name=&quot;toc 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; Name=&quot;toc 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; Name=&quot;toc 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; Name=&quot;toc 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; Name=&quot;toc 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; Name=&quot;toc 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; Name=&quot;toc 7&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; Name=&quot;toc 8&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; Name=&quot;toc 9&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;35&quot; QFormat=&quot;true&quot; Name=&quot;caption&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;10&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;Title&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;1&quot; Name=&quot;Default Paragraph Font&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;11&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;Subtitle&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;22&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;Strong&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;20&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;Emphasis&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;59&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Table Grid&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; UnhideWhenUsed=&quot;false&quot; Name=&quot;Placeholder Text&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;1&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;No Spacing&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Shading&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light List&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Grid&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Dark List&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Shading&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful List&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Grid&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Shading Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light List Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Grid Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 1 Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 2 Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 1 Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; UnhideWhenUsed=&quot;false&quot; Name=&quot;Revision&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;34&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;List Paragraph&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;29&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;Quote&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;30&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;Intense Quote&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 2 Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 1 Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 2 Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 3 Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Dark List Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Shading Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful List Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Grid Accent 1&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Shading Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light List Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Grid Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 1 Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 2 Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 1 Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 2 Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 1 Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 2 Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 3 Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Dark List Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Shading Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful List Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Grid Accent 2&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Shading Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light List Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Grid Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 1 Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 2 Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 1 Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 2 Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 1 Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 2 Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 3 Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Dark List Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Shading Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful List Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Grid Accent 3&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Shading Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light List Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Grid Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 1 Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 2 Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 1 Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 2 Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 1 Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 2 Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 3 Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Dark List Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Shading Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful List Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Grid Accent 4&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Shading Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light List Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Grid Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 1 Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 2 Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 1 Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 2 Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 1 Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 2 Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 3 Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Dark List Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Shading Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful List Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Grid Accent 5&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Shading Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light List Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Light Grid Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 1 Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Shading 2 Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 1 Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium List 2 Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 1 Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 2 Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Medium Grid 3 Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Dark List Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Shading Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful List Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; Name=&quot;Colorful Grid Accent 6&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;19&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;Subtle Emphasis&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;21&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;Intense Emphasis&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;31&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;Subtle Reference&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;32&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;Intense Reference&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;33&quot; SemiHidden=&quot;false&quot;
+   UnhideWhenUsed=&quot;false&quot; QFormat=&quot;true&quot; Name=&quot;Book Title&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;37&quot; Name=&quot;Bibliography&quot;/&gt;
+  &lt;w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; QFormat=&quot;true&quot; Name=&quot;TOC Heading&quot;/&gt;
+ &lt;/w:LatentStyles&gt;
+&lt;/xml&gt;&lt;![endif]--&gt;&lt;!--[if gte mso 10]&gt;
+&lt;style&gt;
+ /* Style Definitions */
+ table.MsoNormalTable
+	{mso-style-name:&quot;Table Normal&quot;;
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-qformat:yes;
+	mso-style-parent:&quot;&quot;;
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin-top:0in;
+	mso-para-margin-right:0in;
+	mso-para-margin-bottom:10.0pt;
+	mso-para-margin-left:0in;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:&quot;Calibri&quot;,&quot;sans-serif&quot;;
+	mso-ascii-font-family:Calibri;
+	mso-ascii-theme-font:minor-latin;
+	mso-hansi-font-family:Calibri;
+	mso-hansi-theme-font:minor-latin;
+	mso-bidi-font-family:&quot;Times New Roman&quot;;
+	mso-bidi-theme-font:minor-bidi;}
+&lt;/style&gt;
+&lt;![endif]--&gt;
+
+&lt;/p&gt;&lt;p class=&quot;MsoNormal&quot; style=&quot;mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none&quot;&gt;&lt;span style=&quot;mso-ascii-font-family:Calibri;
+mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;mso-ansi-language:
+EN&quot; lang=&quot;EN&quot;&gt;Off-center NYC songwriting on a backbone of hard hitting, guitar-driven
+Texas rock and roll!&lt;/span&gt;&lt;/p&gt;
+
+&lt;p class=&quot;MsoNormal&quot; style=&quot;&quot;&gt;&lt;span style=&quot;&quot; lang=&quot;EN&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/p&gt;&lt;p class=&quot;MsoNormal&quot; style=&quot;mso-pagination:none;mso-layout-grid-align:none;
+text-autospace:none&quot;&gt;&lt;span style=&quot;mso-ascii-font-family:Calibri;
+mso-hansi-font-family:Calibri;mso-bidi-font-family:Calibri;mso-ansi-language:
+EN&quot; lang=&quot;EN&quot;&gt;To mark the end of days, New York City frontman Stanley Man revisits the
+wave of apocalyptic catastrophe that followed him from 9-11 in New York to
+Katrina in New Orleans to last year's wildfires in Central Texas with
+&quot;Orangutang&quot;, a raucous solo debut featuring guitar alchemist Josh
+Zee, veteran bassist Danny G and celebrated power drummer Trinidad Leal. On the
+longest day of the year--dead-center 2K12--this firebrand combo will tap a
+gushing vein of musical fuel unmatched in Texas since drilling went off-shore,
+just in time for our grisly demise! &lt;/span&gt;&lt;/p&gt;
+
+</description>
+      <link>http://do512.com/event/2012/06/20/stanley-man-orangutang-cd-release-extravaganza</link>
+      <xml_link>http://do512.com/event/2012/06/20/stanley-man-orangutang-cd-release-extravaganza.xml</xml_link>
+      <date>Wednesday 06/20/12</date>
+      <google_date>20120621T020000Z/20120621T020000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>21.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Wed, 20 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Wed, 20 Jun 2012 21:00:00 -0500</begin_time>
+      <offer>Click &quot;I Like It!&quot; for a chance to win  free tickets + Free CDs!</offer>
+      <number_of_votes>11</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url>http://www.mohawkaustin.com/events/107001</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2888519/flier_sq_90.png</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://www.mohawkaustin.com/events/107001</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2888519/flier.png</image>
+    </event>
+<event>
+      <event_id>859808</event_id>
+      <title>Bouncing Souls + The Menzingers + Luther</title>
+      <description>@ Indoor
+ ALL AGES 
+$13 ($15 Day of Show). Doors @ 7pm. Show @ 8pm.</description>
+      <link>http://do512.com/event/2012/06/21/bouncing-souls-the-menzingers-luther</link>
+      <xml_link>http://do512.com/event/2012/06/21/bouncing-souls-the-menzingers-luther.xml</xml_link>
+      <date>Thursday 06/21/12</date>
+      <google_date>20120622T000000Z/20120622T000000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>22.0</popularity>
+      <time>07:00 PM</time>
+      <pubDate>Thu, 21 Jun 2012 19:00:00 -0500</pubDate>
+      <begin_time>Thu, 21 Jun 2012 19:00:00 -0500</begin_time>
+      <number_of_votes>12</number_of_votes>
+      <weekday>THU</weekday>
+      <ticket_url>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=67486&amp;eid=76424</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2787652/e4ae9f8dcc30886fe82824cdc9041941_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=67486&amp;eid=76424</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2787652/e4ae9f8dcc30886fe82824cdc9041941.jpeg</image>
+    </event>
+<event>
+      <event_id>907842</event_id>
+      <title>Kingdom of Suicide Lovers + Nervous Curtains + Bipolar Gentlemen</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors) Doors @ 9pm. Show @ 10pm</description>
+      <link>http://do512.com/event/2012/06/21/kingdom-of-suicide-lovers-nervous-curtains-bipolar-gentlemen</link>
+      <xml_link>http://do512.com/event/2012/06/21/kingdom-of-suicide-lovers-nervous-curtains-bipolar-gentlemen.xml</xml_link>
+      <date>Thursday 06/21/12</date>
+      <google_date>20120622T020000Z/20120622T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>10.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Thu, 21 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Thu, 21 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>5</number_of_votes>
+      <weekday>THU</weekday>
+      <ticket_url>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=67486&amp;eid=76424</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987409/590873081ff0ead2ee86a5a196af735f_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=67486&amp;eid=76424</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987409/590873081ff0ead2ee86a5a196af735f.jpeg</image>
+    </event>
+<event>
+      <event_id>905510</event_id>
+      <title>Happy Hour &quot;Right On!&quot; Funk &amp; Soul Friday</title>
+      <description>@ Indoor
+ 21+ 
+5pm - 8pm. No cover. Captain Jim of Heart &amp; Soul Soundsystem &amp; Skinny Scotty of Apollo 67 Soundsystem spinning all vinyl afro-beat, funk, boogaloo, breaks &amp; rare selections. Bad-ass black cinema playing inside. 
+$4 Big-Ass Beer in a Bag 
+$2 Gin n' Juice 
+$2 Purple Drank</description>
+      <link>http://do512.com/event/2012/06/22/happy-hour-right-on-funk-soul-friday</link>
+      <xml_link>http://do512.com/event/2012/06/22/happy-hour-right-on-funk-soul-friday.xml</xml_link>
+      <date>Friday 06/22/12</date>
+      <google_date>20120622T220000Z/20120622T220000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Fri, 22 Jun 2012 17:00:00 -0500</pubDate>
+      <begin_time>Fri, 22 Jun 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=67348&amp;eid=76279</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2976723/def7c9c8763c219d8817b6d6bc37a76b_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=67348&amp;eid=76279</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2976723/def7c9c8763c219d8817b6d6bc37a76b.jpeg</image>
+    </event>
+<event>
+      <event_id>853087</event_id>
+      <title>Jonathan Richman</title>
+      <description>@ Outdoor
+ 18+ 
+$10 Advance ($12 Day of Show) Doors @ 8pm</description>
+      <link>http://do512.com/event/2012/06/22/jonathan-richman</link>
+      <xml_link>http://do512.com/event/2012/06/22/jonathan-richman.xml</xml_link>
+      <date>Friday 06/22/12</date>
+      <google_date>20120623T010000Z/20120623T010000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>25.0</popularity>
+      <time>08:00 PM</time>
+      <pubDate>Fri, 22 Jun 2012 20:00:00 -0500</pubDate>
+      <begin_time>Fri, 22 Jun 2012 20:00:00 -0500</begin_time>
+      <number_of_votes>15</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=67348&amp;eid=76279</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2757105/7cebbfa85ff2cefe49750769162bbcee_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=67348&amp;eid=76279</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2757105/7cebbfa85ff2cefe49750769162bbcee.jpeg</image>
+    </event>
+<event>
+      <event_id>873865</event_id>
+      <title>El-P + Killer Mike + Mr. Muthafuckin' eXquire + Despot (presented by Karmaloop)</title>
+      <description>@ Outdoor
+ ALL AGES 
+Doors @ 8pm. Show @ 9pm.</description>
+      <link>http://do512.com/event/2012/06/23/el-p-killer-mike-mr-muthafuckin-exquire-despot-presented-by-karmaloop</link>
+      <xml_link>http://do512.com/event/2012/06/23/el-p-killer-mike-mr-muthafuckin-exquire-despot-presented-by-karmaloop.xml</xml_link>
+      <date>Saturday 06/23/12</date>
+      <google_date>20120624T010000Z/20120624T010000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>60.0</popularity>
+      <time>08:00 PM</time>
+      <pubDate>Sat, 23 Jun 2012 20:00:00 -0500</pubDate>
+      <begin_time>Sat, 23 Jun 2012 20:00:00 -0500</begin_time>
+      <number_of_votes>45</number_of_votes>
+      <weekday>SAT</weekday>
+      <ticket_url>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=68080&amp;eid=77053</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2842282/6bc3ff40dc8a5c4077063978dbeb6495_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=68080&amp;eid=77053</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2842282/6bc3ff40dc8a5c4077063978dbeb6495.jpeg</image>
+    </event>
+<event>
+      <event_id>907843</event_id>
+      <title>Whitehorse + Phobia</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors) Doors @ 9pm. Show @ 10pm</description>
+      <link>http://do512.com/event/2012/06/23/whitehorse-phobia</link>
+      <xml_link>http://do512.com/event/2012/06/23/whitehorse-phobia.xml</xml_link>
+      <date>Saturday 06/23/12</date>
+      <google_date>20120624T020000Z/20120624T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>9.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Sat, 23 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Sat, 23 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>4</number_of_votes>
+      <weekday>SAT</weekday>
+      <ticket_url>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=68080&amp;eid=77053</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987415/27fa86b2dd2dded8725cb8468eef1e8b_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=68080&amp;eid=77053</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987415/27fa86b2dd2dded8725cb8468eef1e8b.jpeg</image>
+    </event>
+<event>
+      <event_id>905511</event_id>
+      <title>Happy Hour &quot;Bear to Live!&quot; Bike Night</title>
+      <description>@ Indoor
+ 21+ 
+5 - 8pm. Motorcycles Unite and park them inside Mohawk! Free pool, darts, and ping pong. Captain Jim playing Classic Rock, Psych, and METAL. Whiskey Promotions Weekly for Riders. 
+$1 High Life$2 Domestics$2 Wells</description>
+      <link>http://do512.com/event/2012/06/27/happy-hour-bear-to-live-bike-night</link>
+      <xml_link>http://do512.com/event/2012/06/27/happy-hour-bear-to-live-bike-night.xml</xml_link>
+      <date>Wednesday 06/27/12</date>
+      <google_date>20120627T220000Z/20120627T220000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Wed, 27 Jun 2012 17:00:00 -0500</pubDate>
+      <begin_time>Wed, 27 Jun 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2976729/bec6772e43f2ab2f825175a31e9567e4_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2976729/bec6772e43f2ab2f825175a31e9567e4.jpeg</image>
+    </event>
+<event>
+      <event_id>878948</event_id>
+      <title>Broncho + No Future (formerly Leatherbag)</title>
+      <description>@ Indoor
+ ALL AGES 
+$7. Doors @ 9pm. Show @ 10pm.</description>
+      <link>http://do512.com/event/2012/06/27/broncho</link>
+      <xml_link>http://do512.com/event/2012/06/27/broncho.xml</xml_link>
+      <date>Wednesday 06/27/12</date>
+      <google_date>20120628T020000Z/20120628T020000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>9.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Wed, 27 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Wed, 27 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>4</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2863890/076f87135c219266f52a8ca66433b07c_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2863890/076f87135c219266f52a8ca66433b07c.jpeg</image>
+    </event>
+<event>
+      <event_id>878949</event_id>
+      <title>Soft White Sixties</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors). Doors @ 9pm. Show @ 10pm.</description>
+      <link>http://do512.com/event/2012/06/28/soft-white-sixties</link>
+      <xml_link>http://do512.com/event/2012/06/28/soft-white-sixties.xml</xml_link>
+      <date>Thursday 06/28/12</date>
+      <google_date>20120629T020000Z/20120629T020000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>9.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Thu, 28 Jun 2012 21:00:00 -0500</pubDate>
+      <begin_time>Thu, 28 Jun 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>4</number_of_votes>
+      <weekday>THU</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2863896/c685d02b03a82f2ca76078ac44b7aae8_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2863896/c685d02b03a82f2ca76078ac44b7aae8.jpeg</image>
+    </event>
+<event>
+      <event_id>907845</event_id>
+      <title>Scott Lucas &amp; the Married Men</title>
+      <description>@ Indoor
+ ALL AGES 
+$8 ($10 door). Doors @ 9. Show @ 10.</description>
+      <link>http://do512.com/event/2012/06/29/scott-lucas-the-married-men</link>
+      <xml_link>http://do512.com/event/2012/06/29/scott-lucas-the-married-men.xml</xml_link>
+      <date>Friday 06/29/12</date>
+      <google_date>20120629T140000Z/20120629T140000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>10.0</popularity>
+      <time>09:00 AM</time>
+      <pubDate>Fri, 29 Jun 2012 09:00:00 -0500</pubDate>
+      <begin_time>Fri, 29 Jun 2012 09:00:00 -0500</begin_time>
+      <number_of_votes>5</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987427/d11b5695464611d42dfce6fd00a4605a_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987427/d11b5695464611d42dfce6fd00a4605a.jpeg</image>
+    </event>
+<event>
+      <event_id>905512</event_id>
+      <title>Happy Hour &quot;Right On!&quot; Funk &amp; Soul Friday</title>
+      <description>@ Indoor
+ 21+ 
+5pm - 8pm. No cover. Captain Jim of Heart &amp; Soul Soundsystem &amp; Skinny Scotty of Apollo 67 Soundsystem spinning all vinyl afro-beat, funk, boogaloo, breaks &amp; rare selections. Bad-ass black cinema playing inside. 
+$4 Big-Ass Beer in a Bag 
+$2 Gin n' Juice 
+$2 Purple Drank</description>
+      <link>http://do512.com/event/2012/06/29/happy-hour-right-on-funk-soul-friday</link>
+      <xml_link>http://do512.com/event/2012/06/29/happy-hour-right-on-funk-soul-friday.xml</xml_link>
+      <date>Friday 06/29/12</date>
+      <google_date>20120629T220000Z/20120629T220000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Fri, 29 Jun 2012 17:00:00 -0500</pubDate>
+      <begin_time>Fri, 29 Jun 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2976735/a86849efd68ad37a2e55979d69be1182_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2976735/a86849efd68ad37a2e55979d69be1182.jpeg</image>
+    </event>
+<event>
+      <event_id>896338</event_id>
+      <title>LADIES NIGHT with T Bird and The Breaks+ SPEAK + Whitman + Major, Major, Major</title>
+      <description>@ Both Stages
+ ALL AGES</description>
+      <link>http://do512.com/event/2012/06/30/ladies-night-with-t-bird-and-the-breaks-speak-whitman-major-major-major</link>
+      <xml_link>http://do512.com/event/2012/06/30/ladies-night-with-t-bird-and-the-breaks-speak-whitman-major-major-major.xml</xml_link>
+      <date>Saturday 06/30/12</date>
+      <google_date>20120701T000000Z/20120701T000000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>32.0</popularity>
+      <time>07:00 PM</time>
+      <pubDate>Sat, 30 Jun 2012 19:00:00 -0500</pubDate>
+      <begin_time>Sat, 30 Jun 2012 19:00:00 -0500</begin_time>
+      <number_of_votes>17</number_of_votes>
+      <weekday>SAT</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2922823/687eb7ea1e1049bad4da8ce64a263532_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2922823/687eb7ea1e1049bad4da8ce64a263532.jpeg</image>
+    </event>
+<event>
+      <event_id>876099</event_id>
+      <title>Friends</title>
+      <description>@ Indoor
+ ALL AGES 
+$10 Advance ($12 Day of Show) Doors @ 9pm. Show @ 10pm.</description>
+      <link>http://do512.com/event/2012/07/02/friends</link>
+      <xml_link>http://do512.com/event/2012/07/02/friends.xml</xml_link>
+      <date>Monday 07/02/12</date>
+      <google_date>20120703T020000Z/20120703T020000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>46.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Mon, 02 Jul 2012 21:00:00 -0500</pubDate>
+      <begin_time>Mon, 02 Jul 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>41</number_of_votes>
+      <weekday>MON</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2854325/30e1b2183c7e29f0be3a000b601208f0_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2854325/30e1b2183c7e29f0be3a000b601208f0.jpeg</image>
+    </event>
+<event>
+      <event_id>905513</event_id>
+      <title>Mohawk Happy Hours Presents: Mike and the Moonpies</title>
+      <description>@ Indoor
+ 21+ 
+Acoustic Jam. 5-8 PM. Free. 21+</description>
+      <link>http://do512.com/event/2012/07/03/mohawk-happy-hours-presents-mike-and-the-moonpies</link>
+      <xml_link>http://do512.com/event/2012/07/03/mohawk-happy-hours-presents-mike-and-the-moonpies.xml</xml_link>
+      <date>Tuesday 07/03/12</date>
+      <google_date>20120703T220000Z/20120703T220000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>14.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Tue, 03 Jul 2012 17:00:00 -0500</pubDate>
+      <begin_time>Tue, 03 Jul 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>4</number_of_votes>
+      <weekday>TUE</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2976741/75d0c017a12fd595758aa539f449c95d_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2976741/75d0c017a12fd595758aa539f449c95d.jpeg</image>
+    </event>
+<event>
+      <event_id>907846</event_id>
+      <title>Happy Hour Presents: &quot;Bear to Live!&quot; Bike Night</title>
+      <description>@ Indoor
+ 21+ 
+5 - 8pm. Motorcycles Unite and park them inside Mohawk! Free pool, darts, and ping pong. Captain Jim playing Classic Rock, Psych, and METAL. Whiskey Promotions Weekly for Riders. 
+$1 High Life$2 Domestics$2 Wells</description>
+      <link>http://do512.com/event/2012/07/04/happy-hour-presents-bear-to-live-bike-night</link>
+      <xml_link>http://do512.com/event/2012/07/04/happy-hour-presents-bear-to-live-bike-night.xml</xml_link>
+      <date>Wednesday 07/04/12</date>
+      <google_date>20120704T220000Z/20120704T220000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>7.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Wed, 04 Jul 2012 17:00:00 -0500</pubDate>
+      <begin_time>Wed, 04 Jul 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>2</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987433/16a4893ee29ffb67988ac59479d1db03_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987433/16a4893ee29ffb67988ac59479d1db03.jpeg</image>
+    </event>
+<event>
+      <event_id>897716</event_id>
+      <title>King Tuff + Natural Child @ MOHAWK</title>
+      <description>&lt;b style=&quot;font-family: arial; font-size: 12px; line-height: 18px; text-align: left; &quot;&gt;&lt;span style=&quot;font-family: verdana, geneva, sans-serif; &quot;&gt;7/9 - King Tuff + Natural Child @MOHAWK&lt;/span&gt;&lt;/b&gt;</description>
+      <link>http://do512.com/event/2012/07/09/king-tuff-natural-child-mohawk</link>
+      <xml_link>http://do512.com/event/2012/07/09/king-tuff-natural-child-mohawk.xml</xml_link>
+      <date>Monday 07/09/12</date>
+      <google_date>20120710T010000Z/20120710T010000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>45.0</popularity>
+      <time>08:00 PM</time>
+      <pubDate>Mon, 09 Jul 2012 20:00:00 -0500</pubDate>
+      <begin_time>Mon, 09 Jul 2012 20:00:00 -0500</begin_time>
+      <number_of_votes>35</number_of_votes>
+      <weekday>MON</weekday>
+      <ticket_url>http://transmission.frontgatetickets.com/all.php?a=d</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2929758/King-Tuff-1_sq_90.jpg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://transmission.frontgatetickets.com/all.php?a=d</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2929758/King-Tuff-1.jpg</image>
+    </event>
+<event>
+      <event_id>842341</event_id>
+      <title>BASS DRUM OF DEATH + DZ Deathrays</title>
+      <description>&lt;span style=&quot;color: rgb(51, 51, 51); font-family: Arial, Helvetica, sans-serif; text-align: left; font-size: 10pt; &quot;&gt;Following DZ Deathrays' debut US release of the&amp;nbsp;&lt;i&gt;No Sleep&lt;/i&gt;&amp;nbsp;EP, the Brisbane, Australia-based two piece is back with the international release of the band's debut full length,&amp;nbsp;&lt;i&gt;Bloodstreams&lt;/i&gt;. &amp;nbsp;To be released on May 8 via&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(51, 51, 51); font-family: Arial, Helvetica, sans-serif; text-align: left; font-size: 13px; &quot;&gt;&lt;span style=&quot;font-size: 10pt; &quot;&gt;3|4 in the US,&amp;nbsp;&lt;i&gt;Bloodstreams&lt;/i&gt;&amp;nbsp;delivers what fans have come to expect from the band: raw energy packed into melodies and guitar riffs that will catch your attention at first, and will then be difficult to stop thinking about.&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span color=&quot;#333333&quot;&gt;Fresh off a successful trip to SXSW with additional shows in Los Angeles and a sold out show in New York, DZ Deathrays are going back on the road. &amp;nbsp;The band will be touring the UK in May with special guests, Velociraptor, followed by a North American tour in June and July with Bass Drum of Death.&amp;nbsp;&lt;/span&gt;&lt;br&gt;&lt;/span&gt;</description>
+      <link>http://do512.com/event/2012/07/10/dz-deathrays-bass-drum-of-death-north-american-tour</link>
+      <xml_link>http://do512.com/event/2012/07/10/dz-deathrays-bass-drum-of-death-north-american-tour.xml</xml_link>
+      <date>Tuesday 07/10/12</date>
+      <google_date>20120711T020000Z/20120711T020000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>57.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Tue, 10 Jul 2012 21:00:00 -0500</pubDate>
+      <begin_time>Tue, 10 Jul 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>37</number_of_votes>
+      <weekday>TUE</weekday>
+      <ticket_url>http://transmission.frontgatetickets.com/choose.php?lid=66995</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2729883/Bloodstreams_low_sq_90.jpg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://transmission.frontgatetickets.com/choose.php?lid=66995</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2729883/Bloodstreams_low.jpg</image>
+    </event>
+<event>
+      <event_id>907847</event_id>
+      <title>Happy Hour Presents: &quot;Bear to Live!&quot; Bike Night</title>
+      <description>@ Indoor
+ 21+ 
+5 - 8pm. Motorcycles Unite and park them inside Mohawk! Free pool, darts, and ping pong. Captain Jim playing Classic Rock, Psych, and METAL. Whiskey Promotions Weekly for Riders. 
+$1 High Life$2 Domestics$2 Wells</description>
+      <link>http://do512.com/event/2012/07/11/happy-hour-presents-bear-to-live-bike-night</link>
+      <xml_link>http://do512.com/event/2012/07/11/happy-hour-presents-bear-to-live-bike-night.xml</xml_link>
+      <date>Wednesday 07/11/12</date>
+      <google_date>20120711T220000Z/20120711T220000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Wed, 11 Jul 2012 17:00:00 -0500</pubDate>
+      <begin_time>Wed, 11 Jul 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987439/6cf0b6239881dc08ee11de085ce15363_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987439/6cf0b6239881dc08ee11de085ce15363.jpeg</image>
+    </event>
+<event>
+      <event_id>907848</event_id>
+      <title>The Boxing Lesson + Purple + Tiger Waves</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors) Doors @ 9pm. Show @ 10pm</description>
+      <link>http://do512.com/event/2012/07/12/the-boxing-lesson-purple-tiger-waves</link>
+      <xml_link>http://do512.com/event/2012/07/12/the-boxing-lesson-purple-tiger-waves.xml</xml_link>
+      <date>Thursday 07/12/12</date>
+      <google_date>20120713T020000Z/20120713T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>32.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Thu, 12 Jul 2012 21:00:00 -0500</pubDate>
+      <begin_time>Thu, 12 Jul 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>17</number_of_votes>
+      <weekday>THU</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987445/e546b331837f171eeb8fcd27770be73d_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987445/e546b331837f171eeb8fcd27770be73d.jpeg</image>
+    </event>
+<event>
+      <event_id>907849</event_id>
+      <title>Zlam Dunk + Look Mexico + Pswingset</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors) Doors @ 9pm. Show @ 10pm.</description>
+      <link>http://do512.com/event/2012/07/13/zlam-dunk-look-mexico-pswingset</link>
+      <xml_link>http://do512.com/event/2012/07/13/zlam-dunk-look-mexico-pswingset.xml</xml_link>
+      <date>Friday 07/13/12</date>
+      <google_date>20120714T020000Z/20120714T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>18.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Fri, 13 Jul 2012 21:00:00 -0500</pubDate>
+      <begin_time>Fri, 13 Jul 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>8</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987451/3d7e05562902d844476cbc9c1c82d24c_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987451/3d7e05562902d844476cbc9c1c82d24c.jpeg</image>
+    </event>
+<event>
+      <event_id>878950</event_id>
+      <title>Cory Branan w/ special guest Audra Mae</title>
+      <description>@ Indoor
+ ALL AGES 
+Doors @ 9pm. Show @ 10pm.</description>
+      <link>http://do512.com/event/2012/07/14/cory-branan-w-special-guest-audra-mae</link>
+      <xml_link>http://do512.com/event/2012/07/14/cory-branan-w-special-guest-audra-mae.xml</xml_link>
+      <date>Saturday 07/14/12</date>
+      <google_date>20120715T020000Z/20120715T020000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>22.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Sat, 14 Jul 2012 21:00:00 -0500</pubDate>
+      <begin_time>Sat, 14 Jul 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>12</number_of_votes>
+      <weekday>SAT</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2863902/96d4a400b0112bd1a9d922a0fad6293a_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2863902/96d4a400b0112bd1a9d922a0fad6293a.jpeg</image>
+    </event>
+<event>
+      <event_id>907850</event_id>
+      <title>Turnover + Citizen + Lightyears + Illustrations</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors) Doors @ 9pm. Show @ 10pm.</description>
+      <link>http://do512.com/event/2012/07/16/turnover-citizen-lightyears-illustrations</link>
+      <xml_link>http://do512.com/event/2012/07/16/turnover-citizen-lightyears-illustrations.xml</xml_link>
+      <date>Monday 07/16/12</date>
+      <google_date>20120717T020000Z/20120717T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>12.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Mon, 16 Jul 2012 21:00:00 -0500</pubDate>
+      <begin_time>Mon, 16 Jul 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>7</number_of_votes>
+      <weekday>MON</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987457/5e6b6c990ffc0f56a159dce344a9abf0_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987457/5e6b6c990ffc0f56a159dce344a9abf0.jpeg</image>
+    </event>
+<event>
+      <event_id>907851</event_id>
+      <title>She Sir + Shivery Shakes + Dagars</title>
+      <description>@ Indoor
+ ALL AGES 
+From the Mind of Adi presents: She Sir, Shivery Shakes, DagarsDoors at 9 pm / $510pm Dagars / https://www.facebook.com/dagarsband11pm Shivery Shakes / https://www.facebook.com/shiveryshakes12am She Sir / https://www.facebook.com/pages/She-Sir/360917473035</description>
+      <link>http://do512.com/event/2012/07/17/she-sir-shivery-shakes-dagars</link>
+      <xml_link>http://do512.com/event/2012/07/17/she-sir-shivery-shakes-dagars.xml</xml_link>
+      <date>Tuesday 07/17/12</date>
+      <google_date>20120718T020000Z/20120718T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>19.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Tue, 17 Jul 2012 21:00:00 -0500</pubDate>
+      <begin_time>Tue, 17 Jul 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>9</number_of_votes>
+      <weekday>TUE</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987463/04d6dcbd90b599184c1ed6268ecb0ce9_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987463/04d6dcbd90b599184c1ed6268ecb0ce9.jpeg</image>
+    </event>
+<event>
+      <event_id>907852</event_id>
+      <title>Happy Hour Presents: &quot;Bear to Live!&quot; Bike Night</title>
+      <description>@ Indoor
+ 21+ 
+5 - 8pm. Motorcycles Unite and park them inside Mohawk! Free pool, darts, and ping pong. Captain Jim playing Classic Rock, Psych, and METAL. Whiskey Promotions Weekly for Riders. 
+$1 High Life$2 Domestics$2 Wells</description>
+      <link>http://do512.com/event/2012/07/18/happy-hour-presents-bear-to-live-bike-night</link>
+      <xml_link>http://do512.com/event/2012/07/18/happy-hour-presents-bear-to-live-bike-night.xml</xml_link>
+      <date>Wednesday 07/18/12</date>
+      <google_date>20120718T220000Z/20120718T220000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Wed, 18 Jul 2012 17:00:00 -0500</pubDate>
+      <begin_time>Wed, 18 Jul 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987469/8ad36a5d99441d953ad0d7b4b212cbcc_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987469/8ad36a5d99441d953ad0d7b4b212cbcc.jpeg</image>
+    </event>
+<event>
+      <event_id>907853</event_id>
+      <title>Jason Anderson + The Lovely Sparrows + Matt Hines of The Eastern Sea</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors) Doors @ 9pm. Show @ 10pm.</description>
+      <link>http://do512.com/event/2012/07/18/jason-anderson-the-lovely-sparrows-matt-hines-of-the-eastern-sea</link>
+      <xml_link>http://do512.com/event/2012/07/18/jason-anderson-the-lovely-sparrows-matt-hines-of-the-eastern-sea.xml</xml_link>
+      <date>Wednesday 07/18/12</date>
+      <google_date>20120719T020000Z/20120719T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>19.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Wed, 18 Jul 2012 21:00:00 -0500</pubDate>
+      <begin_time>Wed, 18 Jul 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>9</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987475/4dfeb2a1c8869a34a9b87d32866a7b86_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987475/4dfeb2a1c8869a34a9b87d32866a7b86.jpeg</image>
+    </event>
+<event>
+      <event_id>906556</event_id>
+      <title>The Dalles + The Couch + The Baker Family + Power Chief</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors) Doors @ 9pm. Show @ 10pm</description>
+      <link>http://do512.com/event/2012/07/19/the-dalles-the-baker-family-the-couch-power-chief</link>
+      <xml_link>http://do512.com/event/2012/07/19/the-dalles-the-baker-family-the-couch-power-chief.xml</xml_link>
+      <date>Thursday 07/19/12</date>
+      <google_date>20120720T020000Z/20120720T020000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>8.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Thu, 19 Jul 2012 21:00:00 -0500</pubDate>
+      <begin_time>Thu, 19 Jul 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>3</number_of_votes>
+      <weekday>THU</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987483/4a65b45839aef6f5c93d723b76ac33f5_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987483/4a65b45839aef6f5c93d723b76ac33f5.jpeg</image>
+    </event>
+<event>
+      <event_id>907855</event_id>
+      <title>Kingdom of Suicide Lovers + Videoing (album release)</title>
+      <description>@ Indoor
+ ALL AGES 
+$6 ($8 minors) Doors @ 9pm. Show @ 10pm.</description>
+      <link>http://do512.com/event/2012/07/20/kingdom-of-suicide-lovers-videoing-album-release</link>
+      <xml_link>http://do512.com/event/2012/07/20/kingdom-of-suicide-lovers-videoing-album-release.xml</xml_link>
+      <date>Friday 07/20/12</date>
+      <google_date>20120721T020000Z/20120721T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>8.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Fri, 20 Jul 2012 21:00:00 -0500</pubDate>
+      <begin_time>Fri, 20 Jul 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>3</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987493/dac64a0b57b8ba79f5930f58baa4dcef_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987493/dac64a0b57b8ba79f5930f58baa4dcef.jpeg</image>
+    </event>
+<event>
+      <event_id>882978</event_id>
+      <title>QUESOFF 2012</title>
+      <description>&lt;span class=&quot;Apple-style-span&quot; style=&quot;border-collapse: collapse; color: rgb(34, 34, 34); font-family: arial, sans-serif; font-size: 13px; &quot;&gt;The&amp;nbsp;&lt;i&gt;Queso&lt;/i&gt;ff is back! We had such a grand ol&#8217; time&amp;nbsp;&lt;a href=&quot;http://www.transmissionentertainment.com/entry/from_the_mind_of_adi_quesoff_2011_the_mohawk_photo_recap/&quot; target=&quot;_blank&quot; style=&quot;color: rgb(17, 85, 204); &quot;&gt;last year&lt;/a&gt;&amp;nbsp;that there really was no choice but to do it again! Email&amp;nbsp;&lt;a href=&quot;mailto:queso@mohawkaustin.com&quot; target=&quot;_blank&quot; style=&quot;color: rgb(17, 85, 204); &quot;&gt;queso@mohawkaustin.com&lt;/a&gt;&amp;nbsp;to sign up! And look for our&amp;nbsp;&lt;i&gt;Queso&lt;/i&gt;ff booth in the VIP Lounge at this year&#8217;s&lt;a href=&quot;http://pachangafest.com/&quot; target=&quot;_blank&quot; style=&quot;color: rgb(17, 85, 204); &quot;&gt;Pachanga Fest&lt;/a&gt;. The first round of&amp;nbsp;&lt;i&gt;Queso&lt;/i&gt;ff 2012 will take place on&lt;b&gt;&amp;nbsp;July 21st&lt;/b&gt;&amp;nbsp;(5 &#8211; 8 p.m.) at&amp;nbsp;&lt;b&gt;The Mohawk&lt;/b&gt;. All three defending champs (Thomas Lombardi / Veggie,&amp;nbsp;&lt;a href=&quot;http://hotdogscoldbeer.com/&quot; target=&quot;_blank&quot; style=&quot;color: rgb(17, 85, 204); &quot;&gt;Frank&lt;/a&gt;&amp;nbsp;/ Meaty, and April Henshaw &amp;amp; Allison Morgan / Spicy) are returning to defend their crowns; other restaurants already signed up include&amp;nbsp;&lt;a href=&quot;http://papitinos.com/&quot; target=&quot;_blank&quot; style=&quot;color: rgb(17, 85, 204); &quot;&gt;Papi Tino&#8217;s&lt;/a&gt;,&amp;nbsp;&lt;a href=&quot;http://www.kerbeylanecafe.com/&quot; target=&quot;_blank&quot; style=&quot;color: rgb(17, 85, 204); &quot;&gt;Kerbey Lane&lt;/a&gt;, and&amp;nbsp;&lt;a href=&quot;http://www.vivo-austin.com/&quot; target=&quot;_blank&quot; style=&quot;color: rgb(17, 85, 204); &quot;&gt;Vivo Lake Creek&lt;/a&gt;.&lt;/span&gt;</description>
+      <link>http://do512.com/event/2012/07/21/quesoff-2012</link>
+      <xml_link>http://do512.com/event/2012/07/21/quesoff-2012.xml</xml_link>
+      <date>Saturday 07/21/12</date>
+      <google_date>20120721T220000Z/20120721T220000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>12.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Sat, 21 Jul 2012 17:00:00 -0500</pubDate>
+      <begin_time>Sat, 21 Jul 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>2</number_of_votes>
+      <weekday>SAT</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2875716/Sausage_Con_Queso_Dip_sq_90.jpg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2875716/Sausage_Con_Queso_Dip.jpg</image>
+    </event>
+<event>
+      <event_id>907856</event_id>
+      <title>Happy Hour Presents: &quot;Bear to Live!&quot; Bike Night</title>
+      <description>@ Indoor
+ 21+ 
+5 - 8pm. Motorcycles Unite and park them inside Mohawk! Free pool, darts, and ping pong. Captain Jim playing Classic Rock, Psych, and METAL. Whiskey Promotions Weekly for Riders.$1 High Life$2 Domestics$2 Wells</description>
+      <link>http://do512.com/event/2012/07/25/happy-hour-presents-bear-to-live-bike-night</link>
+      <xml_link>http://do512.com/event/2012/07/25/happy-hour-presents-bear-to-live-bike-night.xml</xml_link>
+      <date>Wednesday 07/25/12</date>
+      <google_date>20120726T020000Z/20120726T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Wed, 25 Jul 2012 21:00:00 -0500</pubDate>
+      <begin_time>Wed, 25 Jul 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987499/36384f1fea77cd0079d6640e7ffa65e8_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987499/36384f1fea77cd0079d6640e7ffa65e8.jpeg</image>
+    </event>
+<event>
+      <event_id>907857</event_id>
+      <title>Happy Hour &quot;Right On!&quot; Funk &amp; Soul Friday</title>
+      <description>@ Indoor
+ 21+ 
+5pm - 8pm. No cover. Captain Jim of Heart &amp; Soul Soundsystem &amp; Skinny Scotty of Apollo 67 Soundsystem spinning all vinyl afro-beat, funk, boogaloo, breaks &amp; rare selections. Bad-ass black cinema playing inside. 
+$4 Big-Ass Beer in a Bag 
+$2 Gin n' Juice 
+$2 Purple Drank</description>
+      <link>http://do512.com/event/2012/07/27/happy-hour-right-on-funk-soul-friday</link>
+      <xml_link>http://do512.com/event/2012/07/27/happy-hour-right-on-funk-soul-friday.xml</xml_link>
+      <date>Friday 07/27/12</date>
+      <google_date>20120727T220000Z/20120727T220000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Fri, 27 Jul 2012 17:00:00 -0500</pubDate>
+      <begin_time>Fri, 27 Jul 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=69138&amp;eid=78231</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987505/96e9cdd981fcbf2354d5fd070bcac266_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=69138&amp;eid=78231</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987505/96e9cdd981fcbf2354d5fd070bcac266.jpeg</image>
+    </event>
+<event>
+      <event_id>902770</event_id>
+      <title>Glass Candy + Chromatics + Orthy +  Flying Turns DJs</title>
+      <description>@ Outdoor
+ ALL AGES</description>
+      <link>http://do512.com/event/2012/07/27/glass-candy-chromatics</link>
+      <xml_link>http://do512.com/event/2012/07/27/glass-candy-chromatics.xml</xml_link>
+      <date>Friday 07/27/12</date>
+      <google_date>20120728T010000Z/20120728T010000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>82.0</popularity>
+      <time>08:00 PM</time>
+      <pubDate>Fri, 27 Jul 2012 20:00:00 -0500</pubDate>
+      <begin_time>Fri, 27 Jul 2012 20:00:00 -0500</begin_time>
+      <number_of_votes>62</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url>http://mohawk.frontgatetickets.com/choose.php?lid=69138</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2958938/029c3bd77322c7584522231893bdb996_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://mohawk.frontgatetickets.com/choose.php?lid=69138</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2958938/029c3bd77322c7584522231893bdb996.jpeg</image>
+    </event>
+<event>
+      <event_id>889391</event_id>
+      <title>Murder By Death</title>
+      <description>@ Outdoor
+ ALL AGES 
+$15 Advance ($17 Day of Show). Doors @ 8pm. Show @ 9pm.</description>
+      <link>http://do512.com/event/2012/07/28/murder-by-death</link>
+      <xml_link>http://do512.com/event/2012/07/28/murder-by-death.xml</xml_link>
+      <date>Saturday 07/28/12</date>
+      <google_date>20120729T010000Z/20120729T010000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>27.0</popularity>
+      <time>08:00 PM</time>
+      <pubDate>Sat, 28 Jul 2012 20:00:00 -0500</pubDate>
+      <begin_time>Sat, 28 Jul 2012 20:00:00 -0500</begin_time>
+      <number_of_votes>12</number_of_votes>
+      <weekday>SAT</weekday>
+      <ticket_url>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=68484&amp;eid=77508</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2895803/53df30eb62616b3403cc94af2ef26da9_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=68484&amp;eid=77508</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2895803/53df30eb62616b3403cc94af2ef26da9.jpeg</image>
+    </event>
+<event>
+      <event_id>916526</event_id>
+      <title>Ava Luna</title>
+      <description>@ Indoor
+ ALL AGES 
+Doors @ 9pm. Show @ 10pm.</description>
+      <link>http://do512.com/event/2012/07/31/ava-luna</link>
+      <xml_link>http://do512.com/event/2012/07/31/ava-luna.xml</xml_link>
+      <date>Tuesday 07/31/12</date>
+      <google_date>20120801T020000Z/20120801T020000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>14.0</popularity>
+      <time>09:00 PM</time>
+      <pubDate>Tue, 31 Jul 2012 21:00:00 -0500</pubDate>
+      <begin_time>Tue, 31 Jul 2012 21:00:00 -0500</begin_time>
+      <number_of_votes>9</number_of_votes>
+      <weekday>TUE</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/3009476/f46c3e94ca0abce0ea4b876c2e580a5c_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/3009476/f46c3e94ca0abce0ea4b876c2e580a5c.jpeg</image>
+    </event>
+<event>
+      <event_id>907858</event_id>
+      <title>Happy Hour Presents: &quot;Bear to Live!&quot; Bike Night</title>
+      <description>@ Indoor
+ 21+ 
+5 - 8pm. Motorcycles Unite and park them inside Mohawk! Free pool, darts, and ping pong. Captain Jim playing Classic Rock, Psych, and METAL. Whiskey Promotions Weekly for Riders.$1 High Life$2 Domestics$2 Wells</description>
+      <link>http://do512.com/event/2012/08/01/happy-hour-presents-bear-to-live-bike-night</link>
+      <xml_link>http://do512.com/event/2012/08/01/happy-hour-presents-bear-to-live-bike-night.xml</xml_link>
+      <date>Wednesday 08/01/12</date>
+      <google_date>20120801T220000Z/20120801T220000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>6.0</popularity>
+      <time>05:00 PM</time>
+      <pubDate>Wed, 01 Aug 2012 17:00:00 -0500</pubDate>
+      <begin_time>Wed, 01 Aug 2012 17:00:00 -0500</begin_time>
+      <number_of_votes>1</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2987511/4826b3f1493b717ba0e8129e618d17a2_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2987511/4826b3f1493b717ba0e8129e618d17a2.jpeg</image>
+    </event>
+<event>
+      <event_id>889392</event_id>
+      <title>Aesop Rock w/ Rob Sonic and DJ Big Wiz + Edison + Dark Time Sunshine</title>
+      <description>@ Outdoor
+ ALL AGES 
+On sale Friday @ 10am!</description>
+      <link>http://do512.com/event/2012/08/11/aesop-rock-w-rob-sonic-and-dj-big-wiz-edison-dark-time-sunshine</link>
+      <xml_link>http://do512.com/event/2012/08/11/aesop-rock-w-rob-sonic-and-dj-big-wiz-edison-dark-time-sunshine.xml</xml_link>
+      <date>Saturday 08/11/12</date>
+      <google_date>20120812T010000Z/20120812T010000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>58.0</popularity>
+      <time>08:00 PM</time>
+      <pubDate>Sat, 11 Aug 2012 20:00:00 -0500</pubDate>
+      <begin_time>Sat, 11 Aug 2012 20:00:00 -0500</begin_time>
+      <number_of_votes>38</number_of_votes>
+      <weekday>SAT</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2895809/1f634cbf9bb9590d7cfe8e1fde2004e8_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2895809/1f634cbf9bb9590d7cfe8e1fde2004e8.jpeg</image>
+    </event>
+<event>
+      <event_id>889393</event_id>
+      <title>Twin Shadow + Niki and The Dove</title>
+      <description>@ Outdoor
+ ALL AGES 
+Tickets on sale this Friday @ 10am!</description>
+      <link>http://do512.com/event/2012/09/14/twin-shadow</link>
+      <xml_link>http://do512.com/event/2012/09/14/twin-shadow.xml</xml_link>
+      <date>Friday 09/14/12</date>
+      <google_date>20120915T010000Z/20120915T010000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>110.0</popularity>
+      <time>08:00 PM</time>
+      <pubDate>Fri, 14 Sep 2012 20:00:00 -0500</pubDate>
+      <begin_time>Fri, 14 Sep 2012 20:00:00 -0500</begin_time>
+      <number_of_votes>80</number_of_votes>
+      <weekday>FRI</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2895815/894ca91330981728621f417531860728_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2895815/894ca91330981728621f417531860728.jpeg</image>
+    </event>
+<event>
+      <event_id>885704</event_id>
+      <title>Godspeed You! Black Emperor</title>
+      <description>&lt;p style=&quot;margin-top: 1em; margin-bottom: 1em; color: rgb(51, 51, 51); font-family: 'lucida grande', tahoma, verdana, arial, sans-serif; font-size: 12px; line-height: 12px; text-align: left; &quot;&gt;&lt;b&gt;Godspeed You! Black Emperor&lt;/b&gt;&amp;nbsp;(formerly punctuated&amp;nbsp;&lt;b&gt;Godspeed You Black Emperor!&lt;/b&gt;&amp;nbsp;and commonly abbreviated to&amp;nbsp;&lt;b&gt;GYBE&lt;/b&gt;&amp;nbsp;or&amp;nbsp;&lt;b&gt;GY!BE&lt;/b&gt;) is a&amp;nbsp;&lt;a href=&quot;https://www.facebook.com/pages/w/110583482297023&quot; style=&quot;cursor: pointer; color: rgb(59, 89, 152); text-decoration: none; &quot;&gt;Canadian&lt;/a&gt;&amp;nbsp;&lt;a href=&quot;https://www.facebook.com/pages/w/105963089435860&quot; style=&quot;cursor: pointer; color: rgb(59, 89, 152); text-decoration: none; &quot;&gt;post-rock&lt;/a&gt;&amp;nbsp;band which originated from&lt;a href=&quot;https://www.facebook.com/pages/w/108188429202197&quot; style=&quot;cursor: pointer; color: rgb(59, 89, 152); text-decoration: none; &quot;&gt;Montreal&lt;/a&gt;,&amp;nbsp;&lt;a href=&quot;https://www.facebook.com/pages/w/112993472048134&quot; style=&quot;cursor: pointer; color: rgb(59, 89, 152); text-decoration: none; &quot;&gt;Quebec&lt;/a&gt;&amp;nbsp;in 1994. They were the first outside act to release their recordings through&lt;a href=&quot;https://www.facebook.com/pages/w/103803412991794&quot; style=&quot;cursor: pointer; color: rgb(59, 89, 152); text-decoration: none; &quot;&gt;Constellation&lt;/a&gt;, an influential&amp;nbsp;&lt;a href=&quot;https://www.facebook.com/pages/w/107542465941843&quot; style=&quot;cursor: pointer; color: rgb(59, 89, 152); text-decoration: none; &quot;&gt;independent record label&lt;/a&gt;&amp;nbsp;also located in Montreal.&lt;/p&gt;&lt;p style=&quot;margin-top: 1em; margin-bottom: 1em; color: rgb(51, 51, 51); font-family: 'lucida grande', tahoma, verdana, arial, sans-serif; font-size: 12px; line-height: 12px; text-align: left; &quot;&gt;After the release of their&amp;nbsp;&lt;a href=&quot;https://www.facebook.com/pages/w/112202385463894&quot; style=&quot;cursor: pointer; color: rgb(59, 89, 152); text-decoration: none; &quot;&gt;debut album&lt;/a&gt;&amp;nbsp;in 1997, the group toured regularly from 1998 to 2002. In 2003, the band announced an indefinite hiatus in order for band members to pursue other musical interests. In the intervening period the group was occasionally rumored to have broken up, but the band finally reconvened for a tour in late 2010 and early 2011, and appeared at the 2012&lt;a href=&quot;https://www.facebook.com/pages/w/104089436295456&quot; style=&quot;cursor: pointer; color: rgb(59, 89, 152); text-decoration: none; &quot;&gt;Coachella Valley Music and Arts Festival&lt;/a&gt;.&lt;/p&gt;</description>
+      <link>http://do512.com/event/2012/10/09/godspeed-you-black-emperor</link>
+      <xml_link>http://do512.com/event/2012/10/09/godspeed-you-black-emperor.xml</xml_link>
+      <date>Tuesday 10/09/12</date>
+      <google_date>20121009T233000Z/20121009T233000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>18.0</popularity>
+      <time>06:30 PM</time>
+      <pubDate>Tue, 09 Oct 2012 18:30:00 -0500</pubDate>
+      <begin_time>Tue, 09 Oct 2012 18:30:00 -0500</begin_time>
+      <number_of_votes>8</number_of_votes>
+      <weekday>TUE</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2902865/mohawk_9oct2012_sq_90.jpg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2902865/mohawk_9oct2012.jpg</image>
+    </event>
+<event>
+      <event_id>896339</event_id>
+      <title>Godspeed You! Black Emperor</title>
+      <description>@ Outdoor
+ ALL AGES 
+$20 Advance ($25 Day of Show) Doors @ 6:30.</description>
+      <link>http://do512.com/event/2012/10/10/godspeed-you-black-emperor</link>
+      <xml_link>http://do512.com/event/2012/10/10/godspeed-you-black-emperor.xml</xml_link>
+      <date>Wednesday 10/10/12</date>
+      <google_date>20121010T233000Z/20121010T233000Z</google_date>
+      <is_featured/>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>18.0</popularity>
+      <time>06:30 PM</time>
+      <pubDate>Wed, 10 Oct 2012 18:30:00 -0500</pubDate>
+      <begin_time>Wed, 10 Oct 2012 18:30:00 -0500</begin_time>
+      <number_of_votes>8</number_of_votes>
+      <weekday>WED</weekday>
+      <ticket_url>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=68653&amp;eid=77709</ticket_url>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2922829/e3d0ed6deb8500d8e710cf3228ca7658_sq_90.jpeg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket>http://mohawk.frontgatetickets.com/choose.php?a=1&amp;lid=68653&amp;eid=77709</ticket>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2922829/e3d0ed6deb8500d8e710cf3228ca7658.jpeg</image>
+    </event>
+<event>
+      <event_id>895423</event_id>
+      <title>Misprint 7th Annual Beard &amp; Moustache Competition</title>
+      <description>&lt;div&gt;&lt;span style=&quot;color: rgb(102, 102, 102); font-family: Calibri, 'Lucida Narrow', Arial, Helvetica, sans-serif; font-size: 14px; line-height: 16px; &quot;&gt;The biggest, baddest, funnest and dumbest beard competition of all time.&amp;nbsp;&lt;/span&gt;
+&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;&lt;a href=&quot;http://m.misprintmagazine.com/&quot;&gt;http://m.misprintmagazine.com/&lt;/a&gt;&lt;/b&gt;
+&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;b&gt;&lt;a href=&quot;http://mohawkaustin.com/&quot;&gt;http://mohawkaustin.com&lt;/a&gt;&lt;/b&gt;</description>
+      <link>http://do512.com/event/2013/02/23/misprint-7th-annual-beard-moustache-competition</link>
+      <xml_link>http://do512.com/event/2013/02/23/misprint-7th-annual-beard-moustache-competition.xml</xml_link>
+      <date>Saturday 02/23/13</date>
+      <google_date>20130224T020000Z/20130224T020000Z</google_date>
+      <is_featured>false</is_featured>
+      <requires_rsvp>0</requires_rsvp>
+      <popularity>7.0</popularity>
+      <time>08:00 PM</time>
+      <pubDate>Sat, 23 Feb 2013 20:00:00 -0600</pubDate>
+      <begin_time>Sat, 23 Feb 2013 20:00:00 -0600</begin_time>
+      <number_of_votes>2</number_of_votes>
+      <weekday>SAT</weekday>
+      <ticket_url/>
+      <thumb>http://s3.amazonaws.com/dostuff-production/photos/2918845/dontshave_sq_90.jpg</thumb>
+      <venue_name>Mohawk Austin</venue_name>
+      <ticket/>
+      <win_tickets/>
+      <image>http://s3.amazonaws.com/dostuff-production/photos/2918845/dontshave.jpg</image>
+    </event>

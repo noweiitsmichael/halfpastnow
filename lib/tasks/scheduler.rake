@@ -2,6 +2,8 @@ require 'net/http'
 require 'rexml/document'
 require 'pp'
 require 'htmlentities'
+require 'rubygems'
+require 'sanitize'
 include REXML
 
 namespace :test do 
@@ -170,11 +172,11 @@ namespace :api do
 					next
 				end
 
-				raw_venue = RawVenue.where(:raw_id => item.elements["xCal:x-calconnect-venue"].elements["xCal:x-calconnect-venue-id"].text).first
+				raw_venue = RawVenue.where(:raw_id => item.elements["xCal:x-calconnect-venue"].elements["xCal:x-calconnect-venue-id"].text, :from => "austin360").first
 
 				raw_event = RawEvent.create({
 					:title => html_ent.decode(item.elements["title"].text[from..to]),
-				    # :description => html_ent.decode(item.elements["description"].text),
+				    :description => html_ent.decode(item.elements["description"].text),
 				    :start => d_start,
 				    :end => d_end,
 				    :latitude => item.elements["geo:lat"].text,
@@ -192,4 +194,43 @@ namespace :api do
 			end
 		end until @breakout
 	end
+
+	desc "pull events from api for a venue"
+	task :get_venue_event, [:num_venues]  => [:environment] do |t, args|
+		num_venues = args[:num_venues] || 1
+
+		@raw_venues = RawVenue.includes(:venue).where("events_url IS NOT NULL AND (last_visited IS NULL OR last_visited < '#{ (Date.today - 7).to_datetime }')").take(num_venues)
+
+		# pp @raw_venues
+
+		html_ent = HTMLEntities.new
+
+		@raw_venues.each do |raw_venue|
+			puts raw_venue.venue.name
+			apiURL = URI(raw_venue.events_url)
+			apiXML = Net::HTTP.get(apiURL)
+			doc = Document.new(apiXML)	
+			XPath.each( doc, "//event") do |item|
+
+				if RawEvent.where(:raw_id => item.elements["event_id"].text, :from => "do512").count > 0
+					next
+				end
+
+				raw_event = RawEvent.create({
+					:title => html_ent.decode(item.elements["title"].text),
+				    :description => Sanitize.clean(html_ent.decode(item.elements["description"].text)),
+				    :start => DateTime.parse(item.elements["begin_time"].text),
+				    :url => item.elements["link"].text,
+				    :raw_id => item.elements["event_id"].text,
+				    :from => "do512",
+				    :raw_venue_id => raw_venue.id
+				})
+
+				# pp raw_event
+			end
+			raw_venue.last_visited = DateTime.now
+			raw_venue.save
+		end
+	end
+
 end

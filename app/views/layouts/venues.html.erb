@@ -11,9 +11,11 @@
   <%= javascript_include_tag "jquery.form" %>
   <%= javascript_include_tag "jquery.tabSlideOut.v1.3" %>
   <%= javascript_include_tag "jquery.cleditor.min" %>
+  <!-- javascript_include_tag "jquery.layout" -->
   <%= stylesheet_link_tag "venue" %>
   <%= stylesheet_link_tag "jquery-ui" %>
   <%= stylesheet_link_tag "jquery.cleditor" %>
+  <!-- stylesheet_link_tag "layout-default" -->
   <%= csrf_meta_tags %>
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCuX99Cn10qLVF0AQNRzduy012YqkaIXgk&sensor=false"></script>
 </head>
@@ -48,10 +50,14 @@
                 beforeSubmit: function() {
                                 return validators[selector].numberOfInvalids() == 0;
                               },
-                success: function() {
-                          // obj.remove();
-                          obj.find('.form-load').remove();
-                          obj.slideUp();
+                success: function(data) {
+                          console.log(data);
+                          if(data.event_id) {
+                            // obj.remove();
+                            obj.find('.form-load').remove();
+                            obj.slideUp();
+                            obj.after("<a style='margin:40px 0 0 20px;display:block;' href='/?event_id=" + data.event_id + "'>event created</a>");
+                          }
                         }
             }); 
             return false; 
@@ -153,10 +159,6 @@
     $(this).siblings(".time-hidden").val(date ? date.toString("yyyy-MM-ddTHH:mm:ss") : "");
   }
 
-
-</script>
-
-<script type="text/javascript">
   $(function(){
       $('.slide-out-div').tabSlideOut({
           tabHandle: '.handle',                     //class of the element that will become your tab
@@ -165,21 +167,18 @@
           imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
       });
 
-  });
 
-</script>
+      $(".tab textarea").cleditor({
+	          controls:     "bold italic underline size " +
+	                        " | bullets numbering | undo redo | " +
+	                        "rule image link unlink | source",   
+	          sizes:        "1,2,3,4,5,6,7",
+	          bodyStyle:    // style to assign to document body contained within the editor
+	                        "margin:4px; font:10pt Arial,Verdana; cursor:text"
+	        });
 
-<script type="text/javascript">
-      $(document).ready(function() {
-        $(".tab textarea").cleditor({
-		          controls:     "bold italic underline size " +
-		                        " | bullets numbering | undo redo | " +
-		                        "rule image link unlink | source",   
-		          sizes:        "1,2,3,4,5,6,7",
-		          bodyStyle:    // style to assign to document body contained within the editor
-		                        "margin:4px; font:10pt Arial,Verdana; cursor:text"
-		        });
-      });
+    });
+
 </script>
 
 <%= yield %>
