@@ -220,7 +220,7 @@
           
           <div class="one">
              
-            <div class="nameEvent"> <%= event ? event.title.to_s : "" %></div>
+            <div class="nameEvent"> <%= event ? strip_tags(event.title) : "" %></div>
             <div class="where">event location</div>
             <div class="description">description event description</div>
            
