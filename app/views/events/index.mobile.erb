@@ -350,43 +350,43 @@
      
     <div data-role="content" >
 
-    <div  class="map"></div>
+    
 
-    <div class="choice_list"> 
-        <h1><div class="ui-block-a" style="opacity: 1;"><span class="count"><%= @events.size %> event<%= @events.size == 1 ? "" : "s" %></span> <%= @key.to_s == "" ? "" : " for " %><strong><%= @key.to_s == "" ? "" : @key.to_s %></strong> nearby</div></h1>
-       
-      </br>
+      <div class="choice_list"> 
+          <h1><div class="ui-block-a" style="opacity: 1;"><span class="count"><%= @events.size %> event<%= @events.size == 1 ? "" : "s" %></span> <%= @key.to_s == "" ? "" : " for " %><strong><%= @key.to_s == "" ? "" : @key.to_s %></strong> nearby</div></h1>
+         
+          <br>
 
-        
-        <!--p><a class="map-link" href="http://maps.google.com/maps?q=30.30787,-97.74133" ><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=430x170&amp;zoom=15&amp;maptype=roadmap&amp;markers=color:red%7C30.30787,-97.74133&amp;style=feature:all|hue:0x000001|saturation:-50&amp;sensor=false"></a></p--> 
-        <div class="ui-block-b">
-         <div id="map"></div>
           
+          <!--p><a class="map-link" href="http://maps.google.com/maps?q=30.30787,-97.74133" ><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=430x170&amp;zoom=15&amp;maptype=roadmap&amp;markers=color:red%7C30.30787,-97.74133&amp;style=feature:all|hue:0x000001|saturation:-50&amp;sensor=false"></a></p--> 
+          <div class="ui-block-b">
+            <div id="map"></div>
+            
+            
+          </div>
           
-        </div>
-        
-       
+         
 
-        <div class="ui-block-c" >
+          <div class="ui-block-c" >
 
-        <ul class="events" data-role="listview" data-inset="true"  >
-          
-          <%  @events.each_with_index do |event, index| 
-              eventListElement(event, index)
-            end %>
-        </ul>
-        <ul class="events-seed" data-role="listview" data-inset="true" style="display:none;">
-        <%
-          eventListElement(nil, nil)
+            <ul class="events" data-role="listview" data-inset="true"  >
+              
+              <%  @events.each_with_index do |event, index| 
+                  eventListElement(event, index)
+                end %>
+            </ul>
+            <ul class="events-seed" data-role="listview" data-inset="true" style="display:none;">
+            <%
+              eventListElement(nil, nil)
 
-        %>
+            %>
 
-        </ul>
+            </ul>
+          </div>
+
+
+
       </div>
-
-
-
-    </div>
     </div>
     <!-- <div data-role="footer" class="ui-bar" data-theme="b"  data-id="footer">
       <a href="#about" data-icon="info">About</a>
@@ -445,16 +445,16 @@
       </div>
     </div-->
   </div><!-- /grid-a -->
-  <hr/>
+  
   
   
 
-
-  
 
   
 
-    </div>
+  
+
+  </div>
     
   </div>
 <!-- Venue -->
