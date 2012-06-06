@@ -220,8 +220,8 @@
           
           <div class="one">
              
-            <div class="nameEvent"> <%= event ? strip_tags(event.title) : "" %></div>
-            <div class="where">event location</div>
+            <div class="nameEvent"> event name</div>
+            <div class="where">at <%= event ? event.venue.name : "" %></div>
             <div class="description">description event description</div>
            
 
