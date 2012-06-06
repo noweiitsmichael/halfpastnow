@@ -182,7 +182,7 @@ function pullEvents() {
   // loading('show');
   console.log("Query here: "+query);
 
-  $.getJSON("/events/indexMobile?format=json" + query, function (events) {
+  $.getJSON("/events/index?format=json" + query, function (events) {
   //$.getJSON("/events/index?format=json" + query, function (events) {
   
     for(var i in events) {
