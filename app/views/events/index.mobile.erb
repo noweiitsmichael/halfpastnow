@@ -23,7 +23,8 @@
     // Map
   width = $(window).width();
   geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+        // var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+        var latlng = new google.maps.LatLng(30.30803, -97.71527);
         var myOptions = {
           zoom: <%= @zoom %>,
           center: latlng,
