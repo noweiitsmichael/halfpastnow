@@ -203,9 +203,13 @@
           </div>
           
          <div class="when sun">
-            <div class="mod">
+            <!-- <div class="mod">
               
               <%= event ? event.occurrences.first.start.to_time.strftime("%^b%d") : "" %>
+            </div> -->
+            <div class="mod">
+              
+              <%= event ? event.venue.name : "" %> 
             </div>
             <div class="day">
               <%= event ? @day_of_week[event.occurrences.first.start.wday] : "" %>
@@ -218,9 +222,9 @@
           
           <div class="one">
              
-            <!-- <div class="nameEvent">event name</div>
+            <div class="nameEvent">event name</div>
             <div class="where">event location</div>
-            <div class="description">description event description</div> -->
+            <div class="description">description event description</div>
            
 
             <!-- <div class="nameEvent"><%= event ? @tempName : "" %></div>
@@ -230,11 +234,11 @@
             </div> -->
 
            
-            <div class="nameEvent"><%= event ? truncate(strip_tags(event.title), :length => 25)  : "" %></div>
+            <!-- <div class="nameEvent"><%= event ? truncate(strip_tags(event.title), :length => 25)  : "" %></div>
             <div class="where"> at <%= event ? event.venue.name : "" %> </div>
               
             <div class="description"><span="price";  style="color:#2E2EFE"><strong><%= event ? (event.price!=nil)? ((event.price.to_f!=0.0) ? "Price: "+ number_to_currency(event.price,:unit=>"$").to_s+" " : "FREE ") : "" : "" %></strong></span><span style="color:#888"><%= event ? truncate(strip_tags(event.description), :length => 25) : "" %></span>
-            </div>
+            </div> -->
             
           </div>
           <div style="display:none;">
@@ -323,7 +327,7 @@
     </div>
      
     <div data-role="content" >
-      <div id="map"></div>
+
     
 
       <div class="choice_list"> 
@@ -334,7 +338,7 @@
           
           <!--p><a class="map-link" href="http://maps.google.com/maps?q=30.30787,-97.74133" ><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=430x170&amp;zoom=15&amp;maptype=roadmap&amp;markers=color:red%7C30.30787,-97.74133&amp;style=feature:all|hue:0x000001|saturation:-50&amp;sensor=false"></a></p--> 
           <div class="ui-block-b">
-            
+            <div id="map"></div>
             
             
           </div>
