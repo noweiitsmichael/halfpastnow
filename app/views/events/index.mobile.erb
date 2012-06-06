@@ -65,7 +65,7 @@
 
         homeControlDiv.index = 1;
         map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(homeControlDiv);
-        //placeMarkers({points: locations});
+        placeMarkers({points: locations});
         //google.maps.event.addListener(map, 'idle', boundsChanged);
   }
 
@@ -349,7 +349,7 @@
      
     <div data-role="content" >
 
-    <div  class="map"></div>
+    <!-- <div  class="map"></div> -->
 
     <div class="choice_list"> 
         <h1><div class="ui-block-a" style="opacity: 1;"><span class="count"><%= @events.size %> event<%= @events.size == 1 ? "" : "s" %></span> <%= @key.to_s == "" ? "" : " for " %><strong><%= @key.to_s == "" ? "" : @key.to_s %></strong> nearby</div></h1>
