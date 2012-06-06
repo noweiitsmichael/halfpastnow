@@ -197,7 +197,7 @@
 
 <% def eventListElement (event, index) %>
       <li>
-        <a href="<%= event ? "#event?event_id=" + event.id.to_s : "" %>" data-transition="slidedown">
+        <a href="<%= event ? "http://hollow-stream-3054.herokuapp.com/#event?event_id=" + event.id.to_s : "" %>" data-transition="slidedown">
         <!--a a href="<%= event ? "#event"  : "" %>" data-transition="slidedown"--> 
           <div class="index">
             <%= index ? (index + 1) : "" %>
@@ -365,7 +365,7 @@
     </div> -->
   </div>
   <div data-role="page" id="event">
-    <!-- <div data-role="header" data-theme="b" >
+    <div data-role="header" data-theme="b" >
       <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
       <h1>half past now.</h1>
       <a  data-icon="arrow-l" data-rel="back">Back</a>
@@ -386,8 +386,8 @@
             <a class="venue-link" href="#venue?venue_id=13225" data-transition="slidedown"> Venue Name </a>
           </div>
       </div>
-    </div> -->
-    <h1>half past now.</h1>
+    </div>
+    
   </div>
 <!-- Venue -->
 
