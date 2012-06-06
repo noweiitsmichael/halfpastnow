@@ -1,232 +1,10 @@
-
 <% @now = DateTime.now.change(:hour => 0) %>
 <% @day_of_week = ['SUN','MON','TUE','WED','THU','FRI','SAT'] %>
 <% @tags = Tag.all %>
 
-
-<script type="text/javascript">
-  var tags = [];
-  var geocoder;
-  var map; 
-  var markers = [];
-  var map1;
-  var event_ids=[];
-  var event_names=[];
-  var event_descriptions=[];
-  var venue_names=[];
-  var prices=[];
-  var searchTerm;
-  var width;
-
-  $("#home .events-seed").hide();
-  function initialize() {
-    // Map
-  width = $(window).width();
-  geocoder = new google.maps.Geocoder();
-        // var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-        var latlng = new google.maps.LatLng(30.30803, -97.71527);
-        var myOptions = {
-          // zoom: <%= @zoom %>,
-          zoom: 14,
-          center: latlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          disableDefaultUI: true,
-          zoomControl: true,
-          scrollwheel: false,
-          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
-        };
-        map = new google.maps.Map($("#map")[0], myOptions);
-       
-        // var locations = [];
-        // $("#home li:not(:last-child)").each(function(index) {
-        //   console.log("still running after Initialization? ");
-        //   var latitude = parseFloat($(this).find(".latitude").html());
-        //   var longitude = parseFloat($(this).find(".longitude").html());
-        //   console.log("Lat : "+latitude+" Long : "+longitude);
-        //   locations.push({lat: latitude, long: longitude});
-        //   var event_id_j=parseFloat($(this).find(".eventID").html());
-        //   event_ids.push({id:event_id_j});
-
-        //   var event_name;
-        //   event_name=$(this).find(".name").html();
-        //   event_names.push({name:event_name});
-
-        //   var event_description;
-        //   event_description=$(this).find(".one .description").html();
-        //   event_descriptions.push({description:event_description});
-
-        //   var venue_name;
-        //   venue_name=$(this).find(".where").html();
-        //   venue_names.push({name:venue_name});
-
-
-        // });
-        
-        // var homeControlDiv = document.createElement('div');
-        // var homeControl = new HomeControl(homeControlDiv);
-
-        // homeControlDiv.index = 1;
-        // map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(homeControlDiv);
-        // placeMarkers({points: locations});
-        //google.maps.event.addListener(map, 'idle', boundsChanged);
-  }
-
-  function test(){
-    console.log("test on load");
-    geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-        var myOptions = {
-          zoom: <%= @zoom %>,
-          center: latlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          disableDefaultUI: true,
-          zoomControl: true,
-          scrollwheel: false,
-          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
-        };
-        map = new google.maps.Map($("#map")[0], myOptions);
-
-        var locations = [];
-        $("#home li").each(function(index) {
-          console.log("still running after Initialization? ");
-          var latitude = parseFloat($(this).find(".latitude").html());
-          var longitude = parseFloat($(this).find(".longitude").html());
-          console.log("Lat : "+latitude+" Long : "+longitude);
-          locations.push({lat: latitude, long: longitude});
-        });
-        
-        placeMarkers({points: locations});
-        //google.maps.event.addListener(map, 'idle', boundsChanged);
-     
-        
-  }
-  function HomeControl(controlDiv) {
-
-    // Set CSS styles for the DIV containing the control
-    // Setting padding to 5 px will offset the control
-    // from the edge of the map
-    controlDiv.style.padding = '5px';
-
-    // Set CSS for the control border
-    var controlUI = document.createElement('div');
-    controlUI.style.backgroundColor = 'rgba(122,175,255,0.5)';
-    controlUI.style.borderStyle = 'solid';
-    controlUI.style.borderWidth = '2px';
-    controlUI.style.cursor = 'pointer';
-    controlUI.style.textAlign = 'center';
-    controlUI.title = 'Click to set the map';
-    controlDiv.appendChild(controlUI);
-
-    // Set CSS for the control interior
-    var controlText = document.createElement('div');
-    controlText.style.fontFamily = 'Arial,sans-serif';
-    controlText.style.fontSize = '12px';
-    controlText.style.paddingLeft = '8px';
-    controlText.style.paddingRight = '8px';
-    controlText.innerHTML = '<b>Map it</b>';
-    controlUI.appendChild(controlText);
-
-    // Setup the click event listeners: simply set the map to
-    // Chicago
-
-    google.maps.event.addDomListener(controlUI, 'click', function() {
-    console.log("Called map!!!");
-    boundsChanged();
-    });
-    
-    
-
-  }
-  function submitTest(){
-    console.log("Submit test");
-    var x=document.getElementById("search").value;
-    console.log("Search : "+x);
-    searchTerm=x;
-    //$.mobile.changePage("http://localhost:3000/events?search=movie&commit=Search");
-    //http://localhost:3000/events?utf8=%E2%9C%93&search=music
-    window.location.href = "http://localhost:3000/events?search="+x;
-    //window.open ("http://localhost:3000/events?search="+x+"&commit=Search",'_self',false);
-     // geocoder = new google.maps.Geocoder();
-     //    var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-     //    var myOptions = {
-     //      zoom: <%= @zoom %>,
-     //      center: latlng,
-     //      mapTypeId: google.maps.MapTypeId.ROADMAP,
-     //      disableDefaultUI: true,
-     //      zoomControl: true,
-     //      scrollwheel: false,
-     //      zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
-     //    };
-     //    map = new google.maps.Map($("#map")[0], myOptions);
-     //    google.maps.event.addListener(map, 'idle', boundsChanged);
-  }
- $(function() {
-  <% @tags.each do |tag| %>
-        tags.push({id: <%= tag.id %>, name: "<%= tag.name.downcase %>"});
-  <% end %>
-  $("#home .events-seed").hide();
-
-  $("#tag-input").tokenInput(tags, {theme: "facebook", onAdd: filterChange, onDelete: filterChange });
-
-  $(".tag-library div").click(function() {
-    $("#tag-input").tokenInput("add", {id: parseInt($(this).attr("tagID")), name: $(this).html()});
-  });
-  
-  
-  $("#search-form").click(function() {
-
-    
-    
-  });
-
-  $("#testBtn").click(function() {
-
-    var x=document.getElementById("search").value;
-    console.log("Search : "+x);
-    searchTerm=x;
-    //$.mobile.changePage("http://localhost:3000/events?search=movie&commit=Search");
-    window.location.href = "http://localhost:3000/events?search="+x+"&commit=Search";
-     geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-        var myOptions = {
-          zoom: <%= @zoom %>,
-          center: latlng,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          disableDefaultUI: true,
-          zoomControl: true,
-          scrollwheel: false,
-          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
-        };
-        map = new google.maps.Map($("#map")[0], myOptions);
-    //google.maps.event.addListener(map, 'idle', boundsChanged);
-
-    
-  });
-
- });
-
- 
-  $( '#event' ).live( 'pageinit',function(event){
-    var SelectedOptionClass = $('option:selected').attr('class');
-    $('div.ui-select').addClass(SelectedOptionClass);
-    
-    $('#note_utilisateur').live('change', function(){  
-      $('div.ui-select').removeClass(SelectedOptionClass);
-      
-      SelectedOptionClass = $('option:selected').attr('class');
-      $('div.ui-select').addClass(SelectedOptionClass);   
-      
-     });
-    
-    
-  });
-
-  </script>
-
-
 <% def eventListElement (event, index) %>
-      <li  >
-        <a href="<%= event ? "#event?event_id=" + event.id.to_s : "" %>" data-transition="slidedown"  >
+      <li>
+        <a href="<%= event ? "#event?event_id=" + event.id.to_s : "" %>" data-transition="slidedown">
         <!--a a href="<%= event ? "#event"  : "" %>" data-transition="slidedown"--> 
           <div class="index">
             <%= index ? (index + 1) : "" %>
@@ -253,65 +31,54 @@
 
               <div class="description"<span style="color:#888">Thurday night movie of the month</span>
               </div-->
-          <div style="display:none;">
-              <div class="latitude"><%= event ? event.venue.latitude : "" %></div>
-              <div class="longitude"><%= event ? event.venue.longitude : "" %></div>
-              <div class="eventID"><%= event ? event.id : "" %></div>
-              
-          </div>  
-          <div class="one">
-              <!--span href="<%= event ? event.id : "" %>" linkto="event" class="linkto name"><%= event ? event.title : "" %></span-->
-              <!--a class="venue linkto" linkto="venue" href="<%= event ? event.venue.id : "" %>"><%= event ? event.venue.name : "" %></a-->
-               
-            <span href="<%= event ? event.id : "" %>" linkto="event" class="linkto name"><%= event ? truncate(strip_tags(event.title), :length => 25)  : "" %></span>
-            <div class="where"> at <%= event ? event.venue.name : "" %> </div>
-              
-            <div class="description"><span="price";  style="color:#2E2EFE"><strong><%= event ? (event.price!=nil)? ((event.price.to_f!=0.0) ? "Price: "+ number_to_currency(event.price,:unit=>"$").to_s+" " : "FREE ") : "" : "" %></strong></span><span style="color:#888"><%= event ? truncate(strip_tags(event.description), :length => 25) : "" %></span>
-            </div>
             
+          <div class="one">
+            <!--span href="<%= event ? event.id : "" %>" linkto="event" class="linkto name"><%= event ? event.title : "" %></span-->
+            <!--a class="venue linkto" linkto="venue" href="<%= event ? event.venue.id : "" %>"><%= event ? event.venue.name : "" %></a-->
+             
+            <span href="<%= event ? event.id : "" %>" linkto="event" class="linkto name"><%= event ? event.title : "" %></span>
+
+            
+            <div class="description"><span="price";  style="color:#2E2EFE"><strong><%= event ? (event.price!=nil)? ((event.price.to_f!=0.0) ? "Price: "+ number_to_currency(event.price,:unit=>"$").to_s+" " : "Free ") : "" : "" %></strong></span><span style="color:#888"><%= event ? truncate(strip_tags(event.description), :length => 300) : "" %></span>
+            </div>
           </div>
           
         </a>
       </li>
 <% end %>
 
-
 <% def venueEventListElement (event, index) %>
     <li>
-      <a href="<%= event ? "#event?event_id=" + event.id.to_s : "" %>" data-transition="slidedown"> 
-        <div class="when sun">
-          <div class="mod">
-            <%# (event.date < now) ? event.date.strftime("%m/%e") : (event.date < (now + 7)) ? 'THIS' : (event.date < (now + 14)) ? 'NEXT' : event.date.strftime("%-m/%e") %>
-            <%= event ? event.occurrences.first.start.to_time.strftime("%m/%d") : "" %>
-          </div>
-          <div class="day">
-            <%= event ? @day_of_week[event.occurrences.first.start.wday] : "" %>
-          </div>
-          <div class="time">
-            <%= event ? event.occurrences.first.start.to_time.strftime("%I:%M%P") : "" %>
-          </div>
+      <!--a href="<%= event ? "#event?event_id=" + event.id.to_s : "" %>" data-transition="slidedown"--> 
+      <div class="when sun">
+        <div class="mod">
+          <%# (event.date < now) ? event.date.strftime("%m/%e") : (event.date < (now + 7)) ? 'THIS' : (event.date < (now + 14)) ? 'NEXT' : event.date.strftime("%-m/%e") %>
+          <%= event ? event.occurrences.first.start.to_time.strftime("%m/%d") : "" %>
         </div>
-        <div class="one">
-          
-          <!--div class="venue mode event"><a linkto="event" href=""  class="linkto"></a></div-->
-          <!-- <span href="<%= event ? event.id : "" %>" linkto="event" class="linkto-name"><%= event ? event.title : "" %></span> -->
-         <!--  <a linkto="linkto-name" href="http://events.austin360.com/austin_tx/venues/show/448999-coldtowne-theater">ColdTowne Theater</a> -->
+        <div class="day">
+          <%= event ? @day_of_week[event.occurrences.first.start.wday] : "" %>
+        </div>
+        <div class="time">
+          <%= event ? event.occurrences.first.start.to_time.strftime("%I:%M%P") : "" %>
+        </div>
+      </div>
+      <div class="one">
         
-          <span href="<%= event ? event.id : "" %>" linkto="event" class="linkto name"><%= event ? truncate(strip_tags(event.title), :length => 25) : "" %></span>
-          <!-- <div class="description"><%= event ? truncate(strip_tags(event.description), :length => 25) : "" %></div> -->
-          <div class="description"><span="price";  style="color:#2E2EFE"><strong><%= event ? (event.price!=nil)? ((event.price.to_f!=0.0) ? "Price: "+ number_to_currency(event.price,:unit=>"$").to_s+" " : "FREE ") : "" : "" %></strong></span><span style="color:#888"><%= event ? truncate(strip_tags(event.description), :length => 25) : "" %></span>
-            </div>
-        </div>
-        <div style="display:none;">
-          <div class="latitude"><%= event ? event.venue.latitude : "" %></div>
-          <div class="longitude"><%= event ? event.venue.longitude : "" %></div>
-        </div>
-      </a>
+        <!--div class="venue mode event"><a linkto="event" href=""  class="linkto"></a></div-->
+        <!--span href="<%= event ? event.id : "" %>" linkto="event" class="linkto-name"><%= event ? event.title : "" %></span-->
+        <a linkto="linkto-name" href="http://events.austin360.com/austin_tx/venues/show/448999-coldtowne-theater">ColdTowne Theater</a>
+       
+        <div class="description"><%= event ? truncate(strip_tags(event.description), :length => 300) : "" %></div>
+        
+      </div>
+      <div style="display:none;">
+        <div class="latitude"><%= event ? event.venue.latitude : "" %></div>
+        <div class="longitude"><%= event ? event.venue.longitude : "" %></div>
+      </div>
     </li>
 <% end %>
 
 <div data-role="page" id="home">
-
     <div data-role="header" data-theme="b" >
       <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
       <h1>half past now.</h1>
@@ -323,19 +90,13 @@
       <div data-role="fieldSearch" >
         
         <!-- <form accept-charset="UTF-8" action="/events/indexMobile?format=json" id="search-form" method="get"> -->
-        <form accept-charset="UTF-8" action="search" id="search-form" method="get" onsubmit="submitTest(); return false;" > 
+        <form accept-charset="UTF-8" action="/events" id="search-form" method="get"> 
         
           <a href="#filter" data-role="button" data-inline="true" data-transition="pop">Filter</a>
           
           
-          <input id="search" name="search" placeholder="music, movie .etc" type="text"  data-inline="true" width="60|%">
-          <!-- <input name="commit" type="submit" value="Search"  data-inline="true"  > --> 
-          <a id="testBtn" data-role="button" data-inline="true" data-transition="pop">Test</a>
-
-
-
-          
-          
+          <input id="search" name="search" placeholder=<%= (@searchTerm=="") ? @searchTerm: "music, movie, etc" %>  type="text"  data-inline="true" width="60|%">
+          <input name="commit" type="submit" value="Search"  data-inline="true">
           
         </form>      
       </div>
@@ -348,32 +109,28 @@
       
       </div>
     </div>
-     
-    <div data-role="content" >
+    <div data-role="content">
 
-    <!-- <div  class="map"></div> -->
+
 
     <div class="choice_list"> 
-        <h1><div class="ui-block-a" style="opacity: 1;"><span class="count"><%= @events.size %> event<%= @events.size == 1 ? "" : "s" %></span> <%= @key.to_s == "" ? "" : " for " %><strong><%= @key.to_s == "" ? "" : @key.to_s %></strong> nearby</div></h1>
+        <h1> Events around you </h1>
        
-      </br>
+      
 
         
         <!--p><a class="map-link" href="http://maps.google.com/maps?q=30.30787,-97.74133" ><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=430x170&amp;zoom=15&amp;maptype=roadmap&amp;markers=color:red%7C30.30787,-97.74133&amp;style=feature:all|hue:0x000001|saturation:-50&amp;sensor=false"></a></p--> 
-        <div class="ui-block-b">
-         <div id="map"></div>
-          
-          
+        <div class="ui-block-a">
+        
+        <div id="map"></div>
         </div>
         
        
 
-        <div class="ui-block-c" >
+        <div class="ui-block-b">
 
         <ul class="events" data-role="listview" data-inset="true"  >
-          
-          <%  puts "Data after search goes here"
-              @events.each_with_index do |event, index| 
+          <%  @events.each_with_index do |event, index| 
 
               eventListElement(event, index)
             end %>
@@ -401,7 +158,7 @@
     <div data-role="header" data-theme="b" >
       <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
       <h1>half past now.</h1>
-      <a  data-icon="arrow-l" data-rel="back">Back</a>
+      <a href="#home" data-icon="arrow-l" data-rel="back">Back</a>
     </div>
     <div data-role="content">
 
@@ -475,10 +232,8 @@
   <div data-role="content">
   
   <h1> Venue Page </h1>
-      <div class="ui-block-a">
+
         <p><a class="map-link" href="http://maps.google.com/maps?q=30.30787,-97.74133" ><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=430x170&amp;zoom=15&amp;maptype=roadmap&amp;markers=color:red%7C30.30787,-97.74133&amp;style=feature:all|hue:0x000001|saturation:-50&amp;sensor=false"></a></p> 
-      </div>
-      <div class="ui-block-b">
         <div class="details">
           <div class="address onee"><span>2100 Barton Springs Road</span></div>
           <div class="address two"><span>Austin, TX 78704</span></div>
@@ -488,30 +243,26 @@
           <a class="url" href="http://events.austin360.com/austin_tx/venues/show/448999-coldtowne-theater"data-transition="slidedown">ColdTowne Theater</a>
           <!--div class="price"><strong>Hours:</strong> Daily 5am-10pm</div-->
         </div>
-      </div>
-      <div class="ui-block-c">
-        <ul class="vevents"  data-role="listview" data-inset="true"  >
+        <ul class="vevents"  >
           <%  @events.each_with_index do |event, index| 
 
               venueEventListElement(event, index)
             end %>
-
         </ul>
-        <ul class="vevents-seed1" data-role="listview" data-inset="true" >
+        <ul class="vevents-seed1" >
         <%
           venueEventListElement(nil, nil)
 
         %>
 
         </ul>
-        <ul class="vevents-seed2" data-role="listview" data-inset="true" >
+        <ul class="vevents-seed2" >
         <%
           venueEventListElement(nil, nil)
 
         %>
 
         </ul>
-      </div>
 
   </div>
   
@@ -546,11 +297,12 @@
   <div data-role="header" data-theme="b" >
     <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
     <h1>half past now.</h1>
-    <a href="#home" data-icon="arrow-l" data-rel="back">Search</a>
+    <a href="#home" data-icon="arrow-l" data-rel="back">Back</a>
   </div>
 
   <div data-role="content">
   
+    <center><a href="#home" data-role="button" data-inline="true" data-transition="pop">Search</a></center>
     
         <select name="Services" id="prices" data-native-menu="false" data-mini="true" multiple="multiple" size="6" >
                         <ul>
@@ -625,3 +377,81 @@
 </div>
 
 
+  <script type="text/javascript">
+  var tags = [];
+  var geocoder;
+  var map; 
+  var map1;
+  var test = "Khoa Le";
+  $("#home .events-seed").hide();
+  function initialize() {
+    // Map
+  geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(30.250000000000025, -97.75);
+        var myOptions = {
+          zoom: 10,
+          center: latlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          disableDefaultUI: true,
+          zoomControl: true,
+          scrollwheel: false,
+          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
+        };
+        map = new google.maps.Map($("#map")[0], myOptions);
+
+        var locations = [];
+        google.maps.event.addListener(map, 'idle', boundsChanged);
+  }
+
+
+ $(function() {
+  <% @tags.each do |tag| %>
+        tags.push({id: <%= tag.id %>, name: "<%= tag.name.downcase %>"});
+  <% end %>
+  $("#home .events-seed").hide();
+
+  $("#tag-input").tokenInput(tags, {theme: "facebook", onAdd: filterChange, onDelete: filterChange });
+
+  $(".tag-library div").click(function() {
+    $("#tag-input").tokenInput("add", {id: parseInt($(this).attr("tagID")), name: $(this).html()});
+  });
+  
+  geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(30.250000000000025, -97.75);
+        var myOptions = {
+          zoom: 10,
+          center: latlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          disableDefaultUI: true,
+          zoomControl: true,
+          scrollwheel: false,
+          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
+        };
+        map = new google.maps.Map($("#home #map")[0], myOptions);
+
+        var locations = [];
+        google.maps.event.addListener(map, 'idle', boundsChanged);  
+        
+  $(".home #search-form").click(function() {
+    console.log("Search click");
+  });
+
+ });
+
+ 
+  $( '#event' ).live( 'pageinit',function(event){
+    var SelectedOptionClass = $('option:selected').attr('class');
+    $('div.ui-select').addClass(SelectedOptionClass);
+    
+    $('#note_utilisateur').live('change', function(){  
+      $('div.ui-select').removeClass(SelectedOptionClass);
+      
+      SelectedOptionClass = $('option:selected').attr('class');
+      $('div.ui-select').addClass(SelectedOptionClass);   
+      
+     });
+    
+    
+  });
+
+  </script>
