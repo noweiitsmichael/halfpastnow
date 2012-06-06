@@ -16,6 +16,7 @@
   var prices=[];
   var searchTerm;
   var width;
+  var start=false;
 
   $("#home .events-seed").hide();
   function initialize() {
@@ -220,8 +221,13 @@
            <!--   <div class="nameEvent">event name</div>
              <div class="where">event location</div>
              <div class="description">description event description</div> -->
+            <%= 
+            
+            @tempName = event ? truncate(strip_tags(event.title), :length => 25)  : ""
 
-             <div class="nameEvent"><%= event ? "Event name"  : "" %></div>
+            %>
+
+            <div class="nameEvent"><%= event ? @tempName : "" %></div>
             <div class="where"> at <%= event ? "venue name" : "" %> </div>
               
             <div class="description"> <%= event ? "event description stuffs" : "" %>
