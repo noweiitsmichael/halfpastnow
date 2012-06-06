@@ -63,7 +63,7 @@
         var homeControl = new HomeControl(homeControlDiv);
 
         homeControlDiv.index = 1;
-        map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(homeControlDiv);
+        map.controls[google.maps.ControlPosition.LEFT_TOP].push(homeControlDiv);
         placeMarkers({points: locations});
         //google.maps.event.addListener(map, 'idle', boundsChanged);
   }
