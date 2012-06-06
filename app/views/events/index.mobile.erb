@@ -22,11 +22,13 @@
   function initialize() {
     // Map
  
-  geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-        //var latlng = new google.maps.LatLng(30.30803, -97.71527);
+  
+        //google.maps.event.addListener(map, 'idle', boundsChanged);
+  
+      geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(30.30803, -97.71527);
         var myOptions = {
-          zoom: <%= @zoom %>,
+          zoom: 13,
           center: latlng,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           disableDefaultUI: true,
@@ -36,38 +38,56 @@
         };
         //map = new google.maps.Map($("#home #map")[0], myOptions);
         map = new google.maps.Map($("#map")[0], myOptions);
-        var locations = [];
-        $("#home li:not(:last-child)").each(function(index) {
-          console.log("still running after Initialization? ");
-          var latitude = parseFloat($(this).find(".latitude").html());
-          var longitude = parseFloat($(this).find(".longitude").html());
-          console.log("Lat : "+latitude+" Long : "+longitude);
-          locations.push({lat: latitude, long: longitude});
-          var event_id_j=parseFloat($(this).find(".eventID").html());
-          event_ids.push({id:event_id_j});
+        
 
-          var event_name;
-          event_name=$(this).find(".one .nameEvent").html();
-          event_names.push({name:event_name});
+    // geocoder = new google.maps.Geocoder();
+    //     var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+    //     //var latlng = new google.maps.LatLng(30.30803, -97.71527);
+    //     var myOptions = {
+    //       zoom: <%= @zoom %>,
+    //       center: latlng,
+    //       mapTypeId: google.maps.MapTypeId.ROADMAP,
+    //       disableDefaultUI: true,
+    //       zoomControl: true,
+    //       scrollwheel: false,
+    //       zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
+    //     };
+    //     //map = new google.maps.Map($("#home #map")[0], myOptions);
+    //     map = new google.maps.Map($("#map")[0], myOptions);
+    //     var locations = [];
+    //     $("#home li:not(:last-child)").each(function(index) {
+    //       console.log("still running after Initialization? ");
+    //       var latitude = parseFloat($(this).find(".latitude").html());
+    //       var longitude = parseFloat($(this).find(".longitude").html());
+    //       console.log("Lat : "+latitude+" Long : "+longitude);
+    //       locations.push({lat: latitude, long: longitude});
+    //       var event_id_j=parseFloat($(this).find(".eventID").html());
+    //       event_ids.push({id:event_id_j});
 
-          var event_description;
-          event_description=$(this).find(".one .description").html();
-          event_descriptions.push({description:event_description});
+    //       var event_name;
+    //       event_name=$(this).find(".one .nameEvent").html();
+    //       event_names.push({name:event_name});
 
-          var venue_name;
-          venue_name=$(this).find(".one .where").html();
-          venue_names.push({name:venue_name});
+    //       var event_description;
+    //       event_description=$(this).find(".one .description").html();
+    //       event_descriptions.push({description:event_description});
+
+    //       var venue_name;
+    //       venue_name=$(this).find(".one .where").html();
+    //       venue_names.push({name:venue_name});
 
 
-        });
-        console.log("locations ? "+locations.length);
-        var homeControlDiv = document.createElement('div');
-        var homeControl = new HomeControl(homeControlDiv);
+    //     });
+    //     console.log("locations ? "+locations.length);
+    //     var homeControlDiv = document.createElement('div');
+    //     var homeControl = new HomeControl(homeControlDiv);
 
-        homeControlDiv.index = 1;
-        map.controls[google.maps.ControlPosition.LEFT_TOP].push(homeControlDiv);
-        placeMarkers({points: locations});
-        //google.maps.event.addListener(map, 'idle', boundsChanged);
+    //     homeControlDiv.index = 1;
+    //     map.controls[google.maps.ControlPosition.LEFT_TOP].push(homeControlDiv);
+    //     placeMarkers({points: locations});
+
+
+
   }
 
   
@@ -131,6 +151,12 @@
     //     map = new google.maps.Map($("#map")[0], myOptions);
      //    google.maps.event.addListener(map, 'idle', boundsChanged);
   }
+
+  
+
+  
+
+
  $(function() {
   <% @tags.each do |tag| %>
         tags.push({id: <%= tag.id %>, name: "<%= tag.name.downcase %>"});
@@ -143,13 +169,6 @@
     $("#tag-input").tokenInput("add", {id: parseInt($(this).attr("tagID")), name: $(this).html()});
   });
   
-  
-  $("#search-form").click(function() {
-
-    
-    
-  });
-
   $("#testBtn").click(function() {
 
     var x=document.getElementById("search").value;
@@ -157,24 +176,34 @@
     searchTerm=x;
     //$.mobile.changePage("http://localhost:3000/events?search=movie&commit=Search");
     window.location.href = "/events?search="+x+"&commit=Search";
-     // geocoder = new google.maps.Geocoder();
-     //    var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-     //    var myOptions = {
-     //      zoom: <%= @zoom %>,
-     //      center: latlng,
-     //      mapTypeId: google.maps.MapTypeId.ROADMAP,
-     //      disableDefaultUI: true,
-     //      zoomControl: true,
-     //      scrollwheel: false,
-     //      zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
-     //    };
-     //    map = new google.maps.Map($("#map")[0], myOptions);
-    //google.maps.event.addListener(map, 'idle', boundsChanged);
+  });
+
+  $("#btnMap").click(function() {
+    window.location.href = "/#mapShow";
+    geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(30.30803, -97.71527);
+        var myOptions = {
+          zoom: 13,
+          center: latlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          disableDefaultUI: true,
+          zoomControl: true,
+          scrollwheel: false,
+          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
+        };
+        //map = new google.maps.Map($("#home #map")[0], myOptions);
+        map = new google.maps.Map($("#map")[0], myOptions);
+
+        
+
+    
+  });
+  
 
     
   });
 
- });
+
 
  
   // $( '#event' ).live( 'pageinit',function(event){
@@ -301,11 +330,13 @@
         <form accept-charset="UTF-8" action="search" id="search-form" method="get" onsubmit="submitTest(); return false;" > 
         
           <a href="#filter" data-role="button" data-inline="true" data-transition="pop">Filter</a>
+
           
           
-          <input id="search" name="search" placeholder="music, movie .etc" type="text"  data-inline="true" width="60|%">
+          <input id="search" name="search" placeholder="music, movie .etc" type="text"  data-inline="true" width="40|%">
           <!-- <input name="commit" type="submit" value="Search"  data-inline="true"  > --> 
-          <a id="testBtn" data-role="button" data-inline="true" data-transition="pop">Test</a>
+          <a id="testBtn" data-role="button" data-inline="true" data-transition="pop">Search</a>
+          <a id="btnMap" data-role="button" data-inline="true" data-transition="pop">Map</a>
 
 
 
@@ -336,7 +367,7 @@
           
           <!--p><a class="map-link" href="http://maps.google.com/maps?q=30.30787,-97.74133" ><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=430x170&amp;zoom=15&amp;maptype=roadmap&amp;markers=color:red%7C30.30787,-97.74133&amp;style=feature:all|hue:0x000001|saturation:-50&amp;sensor=false"></a></p--> 
           <div class="ui-block-b">
-            <div id="map" style="display:none;"></div>
+            
             
             
           </div>
@@ -467,10 +498,20 @@
     <div data-role="content">
       <p>half past now. is your guide to Austin</p>
     </div>
-    <div data-role="footer" class="ui-bar" data-theme="b"  data-id="footer">
-      <a href="#about" data-icon="info">About</a>
-    </div>
+    
   </div>
+
+<div data-role="page" id="mapShow">
+    <div data-role="header" data-theme="b" >
+      <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
+      <h1>Map</h1>
+      <a href="#home" data-icon="arrow-l" data-rel="back">Back</a> 
+    </div>
+    <div data-role="content">
+      <div id="map"></div>
+    </div>
+    
+</div>
 
 <!-- Filter -->
 <% @tags = Tag.all %>
