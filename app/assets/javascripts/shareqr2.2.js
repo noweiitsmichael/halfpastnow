@@ -15,6 +15,7 @@ var filter = {
 };
 var pricesOut=[];
 var radioStatus="off";
+var searchReg = "true";
 
 
 $(function() {
@@ -159,7 +160,9 @@ function pullEvents() {
   if(filter.end)
     query += "&end=" + (filter.end.getTime() / 1000);
   if(filter.search)
-    query += "&search"+filter.search;
+    query += "&search="+filter.search;
+  if(filter.search)
+    query += "&search1="+filter.search;
   if(filter.latMin)
     query += "&lat_min=" + filter.latMin;
   if(filter.latMax)
@@ -178,11 +181,12 @@ function pullEvents() {
     query += "&offset=" + filter.offset;
   if(filter.sort)
     query += "&sort=" + filter.sort;
+  query += "&searchReg=" + searchReg;
 
   // loading('show');
   console.log("Query here: "+query);
 
-  $.getJSON("/events/indexMobile?format=json" + query, function (events) {
+  $.getJSON("/events/indexMobile?format=mobile" + query, function (events) {
   //$.getJSON("/events/index?format=json" + query, function (events) {
   
     for(var i in events) {

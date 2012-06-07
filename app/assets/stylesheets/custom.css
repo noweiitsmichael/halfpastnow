@@ -542,7 +542,7 @@ font-size: 14px;
   left:-1000px;
   top:0;
 }
-/*div.ui-loader.ui-overlay-shadow { display: none !important; }*/
+div.ui-loader.ui-overlay-shadow { display: none !important; }
 #home .info
 {
   float:left;

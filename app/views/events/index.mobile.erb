@@ -38,6 +38,12 @@
         };
         //map = new google.maps.Map($("#home #map")[0], myOptions);
         map = new google.maps.Map($("#map")[0], myOptions);
+
+        var homeControlDiv = document.createElement('div');
+        var homeControl = new HomeControl(homeControlDiv);
+
+        homeControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.LEFT_TOP].push(homeControlDiv);
         
 
     // geocoder = new google.maps.Geocoder();
@@ -122,17 +128,29 @@
 
     google.maps.event.addDomListener(controlUI, 'click', function() {
     console.log("Called map!!!");
+    searchReg="false";
     boundsChanged();
+    mapVariables();
     });
     
     
 
   }
+
+  function runScript(e) {
+    if (e.keyCode == 13) {
+      searchReg="false";
+        mapVariables();
+        return false;
+    }
+  }
+
   function submitTest(){
     console.log("Submit test");
     var x=document.getElementById("search").value;
     console.log("Search : "+x);
     searchTerm=x;
+    searchReg="true";
     //$.mobile.changePage("http://localhost:3000/events?search=movie&commit=Search");
     //http://localhost:3000/events?utf8=%E2%9C%93&search=music
     window.location.href = "/events?search="+x+"&commit=Search";
@@ -153,9 +171,18 @@
   }
 
   
-
+  function mapVariables(){
+    filter.search=document.getElementById("scriptBox").value;
+    searchReg="false";
+    console.log("filter.search = "+filter.search);
+    console.log("Tags : "+filter.tags.reduce(function(a,b) { return a + "," + b; },"").substring(1));
+    console.log("Price (indeed) : "+filter.price);
+    console.log("Day (indeed) : "+filter.day);
+    filterChange() ;
   
-
+  }
+  
+ 
 
  $(function() {
   <% @tags.each do |tag| %>
@@ -170,7 +197,7 @@
   });
   
   $("#testBtn").click(function() {
-
+    searchReg = "true";
     var x=document.getElementById("search").value;
     console.log("Search : "+x);
     searchTerm=x;
@@ -180,16 +207,16 @@
 
   $("#btnMap").click(function() {
     window.location.href = "/#mapShow";
-    
+  });
 
-        
+  // Map stuffs
+  $("#testBtnMap").click(function() {
+    searchReg="false";
+    mapVariables();
 
     
   });
-  
-
-    
-  });
+});
 
 
 
@@ -313,6 +340,7 @@
             <form accept-charset="UTF-8" action="search" id="search-form" method="get" onsubmit="submitTest(); return false;" >
               <a href="#filter" data-role="button" data-inline="true" data-transition="pop">Filter</a>
               <input id="search" name="search" placeholder="music, movie .etc" type="text"  data-inline="true" width="45|%">
+              <input type="hidden" name="searchReg" value="true">
               <a id="testBtn" data-role="button" data-inline="true" data-transition="pop">Search</a>
               <a id="btnMap" data-role="button" data-inline="true" data-transition="pop">Map</a>
             </form>      
@@ -465,6 +493,10 @@
   </div>
   
 </div>
+
+
+
+
 <!-- Map -->
 <div data-role="page" id="mapShow">
     <div data-role="header" data-theme="b" >
@@ -473,13 +505,14 @@
         <h1>half past now.</h1>
         <hr/>
         <div data-inline="true">
-          <div data-role="fieldSearch" >
-            <form accept-charset="UTF-8" action="searchMap" id="search-form-map" method="get" onsubmit="submitMap(); return false;" >
+          <!-- <div data-role="fieldSearch" >
+            <form accept-charset="UTF-8"  id="search-form-map" method="post" onsubmit="event.preventDefault(); mapVariables(); return false;" > -->
+              
               <a href="#filter" data-role="button" data-inline="true" data-transition="pop">Filter</a>
-              <input id="searchMap" name="searchMap" placeholder="music, movie .etc" type="text"  data-inline="true" width="62|%">
+              <input id="scriptBox" type="text" onkeypress="return runScript(event)" />
               <a id="testBtnMap" data-role="button" data-inline="true" data-transition="pop">Search</a>
-            </form>      
-        </div>
+            <!-- </form>      
+        </div> -->
       </div>
     </div> 
    
