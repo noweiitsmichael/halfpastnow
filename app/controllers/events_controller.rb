@@ -291,7 +291,7 @@ def indexMobile
 
     puts "In MOBILE comtroller - search Term"
     puts params[:search]
-    params[:search] = "khoa"
+    #params[:search] = "khoa"
     # @events = Event.search params[:search]
     
     
@@ -417,7 +417,7 @@ def indexMobile
         WHERE id IN (#{@venue_ids * ','})")
     end
     
-    # puts @events.to_json(:include => [:occurrences, :venue])
+    puts @events.to_json(:include => [:occurrences, :venue])
     respond_to do |format|
       format.html # index.html.erb
 
