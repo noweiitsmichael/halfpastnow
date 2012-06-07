@@ -177,10 +177,10 @@ function pullEvents() {
   var query = "";
   var test ="test";
   
-  if(filter.start)
-    query += "&start=" + (filter.start.getTime() / 1000);
-  if(filter.end)
-    query += "&end=" + (filter.end.getTime() / 1000);
+  // if(filter.start)
+  //   query += "&start=" + (filter.start.getTime() / 1000);
+  // if(filter.end)
+  //   query += "&end=" + (filter.end.getTime() / 1000);
   if(filter.search)
     query += "&search="+filter.search;
   if(filter.search)
