@@ -421,9 +421,8 @@ def indexMobile
       format.html # index.html.erb
 
       
-      format.mobile { render json: @events.to_json(:include => [:occurrences, :venue]) }
-
-      format.json { render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+      format.mobile { render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+      format.json   { render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
 
   end
 end
