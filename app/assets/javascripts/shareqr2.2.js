@@ -39,7 +39,13 @@ $(function() {
 
    
   }
-   filterChange();
+  // filterChange();
+  console.log("Tags : "+filter.tags.reduce(function(a,b) { return a + "," + b; },"").substring(1));
+  console.log("Price (indeed) : "+filter.price);
+  console.log("Day (indeed) : "+filter.day);
+  console.log("searchReg : "+searchReg);
+  console.log("searchTerm : "+filter.searchTerm);
+
 
 });
 
@@ -61,7 +67,12 @@ $('#day').live( "change", function(event, ui) {
 
     
   }
-  filterChange();
+ // filterChange();
+ console.log("Tags : "+filter.tags.reduce(function(a,b) { return a + "," + b; },"").substring(1));
+  console.log("Price (indeed) : "+filter.price);
+  console.log("Day (indeed) : "+filter.day);
+  console.log("searchReg : "+searchReg);
+  console.log("searchTerm : "+filter.searchTerm);
 });
 
   $('#distance').live( "change", function(event, ui) {
@@ -85,7 +96,12 @@ $("#filter input[type='radio']").bind( "change", function(event, ui) {
     filter.end = Date.today().add({days:365});
   }
 
-  filterChange();
+  //filterChange();
+  console.log("Tags : "+filter.tags.reduce(function(a,b) { return a + "," + b; },"").substring(1));
+  console.log("Price (indeed) : "+filter.price);
+  console.log("Day (indeed) : "+filter.day);
+  console.log("searchReg : "+searchReg);
+  console.log("searchTerm : "+filter.searchTerm);
  
 
 
@@ -118,6 +134,7 @@ function boundsChanged() {
   console.log("filter.longMax "+filter.longMax);
   if(boundsChangedFlag) {
     filterChange();
+
   }
   boundsChangedFlag = true;
 
@@ -125,7 +142,12 @@ function boundsChanged() {
 
 
 function filterChange() {
-  console.log("Filter change");
+  console.log("Filter change aover all");
+  console.log("Tags : "+filter.tags.reduce(function(a,b) { return a + "," + b; },"").substring(1));
+  console.log("Price (indeed) : "+filter.price);
+  console.log("Day (indeed) : "+filter.day);
+  console.log("searchReg : "+searchReg);
+  console.log("searchTerm : "+filter.searchTerm);
   updateFilter();
   pullEvents();
 
@@ -311,12 +333,17 @@ function to_ordinal(num) {
 function placeMarkers(params) {
   if (typeof params.clear === 'undefined' || params.clear === true)
     clearMarkers();
+  var latitude = 30.25,longitude = -97.75;
   console.log("locations inside ?"+params.points.length);
   for(var i in params.points) {
-
+    latitude = params.points[i].lat;
+    longitude = params.points[i].long;
     placeMarker(params.points[i].lat, params.points[i].long);
+
   }
 
+
+  map.panTo(new google.maps.LatLng(latitude, longitude));
 //  showPageMarkers();
 }
 

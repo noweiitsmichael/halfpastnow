@@ -568,3 +568,12 @@ div.transbox
   opacity:0.6;
   filter:alpha(opacity=60); /* For IE8 and earlier */
   }
+
+input#scriptBox.ui-input-text{
+background-image: none;
+padding: .4em;
+line-height: 1.4;
+font-size: 17px;
+display: inline-table;
+width: 62%;
+}

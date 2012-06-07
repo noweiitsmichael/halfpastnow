@@ -23,7 +23,9 @@ def index
 
 
     @@searchTerm = params[:search]
-    puts "In REGULAR controller"
+    puts "In REGULAR controller -search term"
+    puts @@searchTerm
+
     # @amount = params[:amount] || 20
     # @offset = params[:offset] || 0
 
@@ -287,7 +289,8 @@ def indexMobile
       params[:search] = params[:search1]
     end
 
-    puts "In MOBILE comtroller"
+    puts "In MOBILE comtroller - search Term"
+    puts params[:search]
     # @events = Event.search params[:search]
     @events = Event.all.select { |event| event.occurrences.length > 0 }
     

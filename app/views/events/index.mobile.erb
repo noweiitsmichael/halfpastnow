@@ -26,9 +26,9 @@
         //google.maps.event.addListener(map, 'idle', boundsChanged);
   
       geocoder = new google.maps.Geocoder();
-        var latlng = new google.maps.LatLng(30.30803, -97.71527);
+        var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
         var myOptions = {
-          zoom: 13,
+          zoom: <%= @zoom %>,
           center: latlng,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           disableDefaultUI: true,
@@ -109,6 +109,8 @@
     controlUI.style.backgroundColor = 'rgba(122,175,255,0.5)';
     controlUI.style.borderStyle = 'solid';
     controlUI.style.borderWidth = '2px';
+    controlUI.style.width = '210';
+    controlUI.style.height = '30';
     controlUI.style.cursor = 'pointer';
     controlUI.style.textAlign = 'center';
     controlUI.title = 'Click to set the map';
@@ -117,10 +119,10 @@
     // Set CSS for the control interior
     var controlText = document.createElement('div');
     controlText.style.fontFamily = 'Arial,sans-serif';
-    controlText.style.fontSize = '12px';
+    controlText.style.fontSize = '20px';
     controlText.style.paddingLeft = '4px';
     controlText.style.paddingRight = '4px';
-    controlText.innerHTML = '<b>Map it</b>';
+    controlText.innerHTML = '<center><b>Resize your map</b></center>';
     controlUI.appendChild(controlText);
 
     // Setup the click event listeners: simply set the map to
@@ -213,6 +215,12 @@
   $("#testBtnMap").click(function() {
     searchReg="false";
     mapVariables();
+
+    
+  });
+  $("#filterSearch").click(function() {
+    
+    filterChange();
 
     
   });
@@ -328,6 +336,10 @@
       </a>
     </li>
 <% end %>
+
+
+<!-- Home -->
+
 
 <div data-role="page" id="home">
 
@@ -531,12 +543,12 @@
   <div data-role="header" data-theme="b" >
     <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
     <h1>half past now.</h1>
-    <a href="#home" data-icon="arrow-l" data-rel="back">Search</a>
+    <a href="#home" data-icon="arrow-l" data-rel="back">Back</a>
   </div>
 
   <div data-role="content">
   
-    
+        <center><a id="filterSearch" data-role="button" data-inline="true" data-transition="pop" style="width: 280px">Search</a></center>
         <select name="Services" id="prices" data-native-menu="false" data-mini="true" multiple="multiple" size="6" >
                         <ul>
                           <li>
