@@ -147,7 +147,7 @@ function filterChange() {
   console.log("Price (indeed) : "+filter.price);
   console.log("Day (indeed) : "+filter.day);
   console.log("searchReg : "+searchReg);
-  console.log("searchTerm : "+filter.searchTerm);
+  console.log("searchTerm : "+filter.search);
   updateFilter();
   pullEvents();
 

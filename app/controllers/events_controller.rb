@@ -285,7 +285,7 @@ def indexMobile
     if params[:searchReg]=="true"
       puts "search from regular"
       params[:search] =@@searchTerm
-    elsif params[:searchReg]=="false"
+    else params[:searchReg]=="false"
       params[:search] = params[:search1]
     end
 
