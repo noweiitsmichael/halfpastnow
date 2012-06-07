@@ -282,11 +282,11 @@ def indexMobile
     params[:amount] = params[:amount] || 10
     params[:offset] = params[:offset] || 0
 
-    if params[:searchReg]=="true"
-      params[:search] =@@searchTerm
-    else 
-      params[:search] = params[:search1]
-    end
+    # if params[:searchReg]=="true"
+    #   params[:search] =@@searchTerm
+    # else 
+    #   params[:search] = params[:search1]
+    # end
 
     puts "In MOBILE comtroller - search Term"
     puts params[:search]
