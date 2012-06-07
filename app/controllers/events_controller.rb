@@ -283,14 +283,15 @@ def indexMobile
     # params[:amount] = params[:amount] || 10
     # params[:offset] = params[:offset] || 0
     puts params
-    # if params[:searchReg]=="true"
-    #   params[:search] =@@searchTerm
+    if params[:searchReg]=="true" 
+      params[:search] =@@searchTerm
+    end
     # else 
     #   params[:search] = params[:search1]
     # end
 
     puts "In MOBILE comtroller - search Term"
-    puts params[:search]
+    puts params
     #params[:search] = "khoa"
     # @events = Event.search params[:search]
     
