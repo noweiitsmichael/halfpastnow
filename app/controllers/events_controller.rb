@@ -290,7 +290,7 @@ def indexMobile
 
     puts "In MOBILE comtroller - search Term"
     puts params[:search]
-    params[:search] = "khoa"
+    #params[:search] = "khoa"
     # @events = Event.search params[:search]
     
     
