@@ -25,6 +25,7 @@ def index
     @@searchTerm = params[:search]
     puts "In REGULAR controller -search term"
     puts @@searchTerm
+    puts params
 
     # @amount = params[:amount] || 20
     # @offset = params[:offset] || 0
@@ -279,9 +280,9 @@ def index
 def indexMobile
 
     #amount, offset, lat_min, lon_min, lat_max, lon_max, price, start, end, [tags]
-    params[:amount] = params[:amount] || 10
-    params[:offset] = params[:offset] || 0
-
+    # params[:amount] = params[:amount] || 10
+    # params[:offset] = params[:offset] || 0
+    puts params
     # if params[:searchReg]=="true"
     #   params[:search] =@@searchTerm
     # else 
