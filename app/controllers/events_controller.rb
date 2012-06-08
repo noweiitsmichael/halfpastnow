@@ -326,7 +326,7 @@ def indexMobile
 
       search_match = search_match_arr * " AND "
     end
-    search_match="FALSE"
+    search_match="TRUE"
     # occurrence
     event_start = (params[:start].to_s.empty? ? Date.today.to_datetime.to_s : Time.at(params[:start].to_i).to_datetime.to_s)
     event_end = Time.at(params[:end].to_s.empty? ? 32513174400 : params[:end].to_i).to_datetime.to_s
@@ -407,7 +407,7 @@ def indexMobile
           INNER JOIN venues ON events.venue_id = venues.id
           LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
           LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-        WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_match} AND #{price_match}
+        WHERE #{"FALSE"} AND #{occurrence_match} AND #{location_match} AND #{tag_match} AND #{price_match}
         ORDER BY occurrences.start")
 
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
