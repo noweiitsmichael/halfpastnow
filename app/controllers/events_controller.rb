@@ -315,18 +315,18 @@ def indexMobile
     # end
 
     # search
-    unless("khoa".to_s.empty?)
-      search = "khoa".gsub(/[^0-9a-z ]/i, '').upcase
+    unless("movie".to_s.empty?)
+      search = "movie".gsub(/[^0-9a-z ]/i, '').upcase
       searches = search.split(' ')
       
       search_match_arr = []
       searches.each do |word|
         search_match_arr.push("(upper(venues.name) LIKE '%#{word}%' OR upper(events.description) LIKE '%#{word}%' OR upper(events.title) LIKE '%#{word}%')")
       end
-      search_match_arr = []
+
       search_match = search_match_arr * " AND "
     end
-
+    search_match="FALSE"
     # occurrence
     event_start = (params[:start].to_s.empty? ? Date.today.to_datetime.to_s : Time.at(params[:start].to_i).to_datetime.to_s)
     event_end = Time.at(params[:end].to_s.empty? ? 32513174400 : params[:end].to_i).to_datetime.to_s
