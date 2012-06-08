@@ -323,7 +323,7 @@ def indexMobile
       searches.each do |word|
         search_match_arr.push("(upper(venues.name) LIKE '%#{word}%' OR upper(events.description) LIKE '%#{word}%' OR upper(events.title) LIKE '%#{word}%')")
       end
-
+      search_match_arr = []
       search_match = search_match_arr * " AND "
     end
 
