@@ -315,8 +315,8 @@ def indexMobile
     # end
 
     # search
-    unless(test.to_s.empty?)
-      search = test.gsub(/[^0-9a-z ]/i, '').upcase
+    unless("khoa".to_s.empty?)
+      search = "khoa".gsub(/[^0-9a-z ]/i, '').upcase
       searches = search.split(' ')
       
       search_match_arr = []
