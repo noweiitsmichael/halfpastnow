@@ -173,6 +173,13 @@ function updateFilter() {
   console.log("Day (indeed) : "+filter.day);
 }
 
+function pullSearch() {
+  console.log("pullSearch called - json");
+  $.getJSON('/events/show/51.json', function(event) {
+
+    console.log(event);
+  });
+}
 function pullEvents() {
   var query = "";
   var test ="test";
@@ -208,7 +215,7 @@ function pullEvents() {
   // loading('show');
   console.log("Query here: "+query);
 
-  $.getJSON("/events/indexMobile?format=mobile" + query, function (events) {
+  $.getJSON("/events/index?format=json" + query, function (events) {
   //$.getJSON("/events/index?format=json" + query, function (events) {
   
     for(var i in events) {

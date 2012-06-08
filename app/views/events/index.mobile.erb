@@ -143,6 +143,9 @@
     if (e.keyCode == 13) {
       searchReg="false";
         mapVariables();
+        // set up the filter 
+        updateFilter();
+        // call this window.location.href = "/events?search="+x+"&commit=Search";
         return false;
     }
   }
@@ -153,23 +156,7 @@
     console.log("Search : "+x);
     searchTerm=x;
     searchReg="true";
-    //$.mobile.changePage("http://localhost:3000/events?search=movie&commit=Search");
-    //http://localhost:3000/events?utf8=%E2%9C%93&search=music
     window.location.href = "/events?search="+x+"&commit=Search";
-    // window.open ("http://localhost:3000/events?search="+x+"&commit=Search",'_self',false);
-    //  geocoder = new google.maps.Geocoder();
-    //     var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-    //     var myOptions = {
-    //       zoom: <%= @zoom %>,
-    //       center: latlng,
-    //       mapTypeId: google.maps.MapTypeId.ROADMAP,
-    //       disableDefaultUI: true,
-    //       zoomControl: true,
-    //       scrollwheel: false,
-    //       zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
-    //     };
-    //     map = new google.maps.Map($("#map")[0], myOptions);
-     //    google.maps.event.addListener(map, 'idle', boundsChanged);
   }
 
   
@@ -203,7 +190,6 @@
     var x=document.getElementById("search").value;
     console.log("Search : "+x);
     searchTerm=x;
-    //$.mobile.changePage("http://localhost:3000/events?search=movie&commit=Search");
     window.location.href = "/events?search="+x+"&commit=Search";
   });
 
@@ -214,8 +200,13 @@
   // Map stuffs
   $("#testBtnMap").click(function() {
     searchReg="false";
-    mapVariables();
+    //mapVariables();
+    // Set up the filter
+    //updateFilter();
+    // call this window.location.href = "/events?search="+x+"&commit=Search";
+    console.log("testBtnMap");
 
+    pullSearch();
     
   });
   $("#filterSearch").click(function() {

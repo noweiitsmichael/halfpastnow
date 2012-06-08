@@ -18,13 +18,13 @@ end
 
 
 class EventsController < ApplicationController
-@@searchTerm=""
+@searchTerm=""
 def index
 
 
     @@searchTerm = params[:search]
     puts "In REGULAR controller -search term"
-    puts @@searchTerm
+    puts @searchTerm
     puts params
 
     # @amount = params[:amount] || 20
@@ -282,14 +282,14 @@ def indexMobile
     #amount, offset, lat_min, lon_min, lat_max, lon_max, price, start, end, [tags]
     # params[:amount] = params[:amount] || 10
     # params[:offset] = params[:offset] || 0
-    puts params
-    if params[:searchReg]=="true" 
-      params[:search] =@@searchTerm
-    end
+    # puts params
+    # if params[:searchReg]=="true" 
+    #   params[:search] =@searchTerm
+    # end
     # else 
     #   params[:search] = params[:search1]
     # end
-
+    params[:search] =@searchTerm
     puts "In MOBILE comtroller - search Term"
     puts params
     #params[:search] = "khoa"
