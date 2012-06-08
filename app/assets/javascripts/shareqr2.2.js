@@ -179,7 +179,7 @@ function pullSearch() {
 
   //   console.log(event);
   // });
-  $.getJSON('/events/indexMobile?search=movie&format=json', function(event) {
+  $.getJSON('/events/indexMobile?search=movie&format=mobile', function(event) {
 
     console.log(event);
   });

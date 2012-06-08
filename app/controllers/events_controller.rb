@@ -297,13 +297,26 @@ def indexMobile
     
     
    
-    
+    test = "khoa"
 
     search_match = occurrence_match = location_match = tag_match = price_match = "TRUE"
 
+    # # search
+    # unless(params[:search].to_s.empty?)
+    #   search = params[:search].gsub(/[^0-9a-z ]/i, '').upcase
+    #   searches = search.split(' ')
+      
+    #   search_match_arr = []
+    #   searches.each do |word|
+    #     search_match_arr.push("(upper(venues.name) LIKE '%#{word}%' OR upper(events.description) LIKE '%#{word}%' OR upper(events.title) LIKE '%#{word}%')")
+    #   end
+
+    #   search_match = search_match_arr * " AND "
+    # end
+
     # search
-    unless(params[:search].to_s.empty?)
-      search = params[:search].gsub(/[^0-9a-z ]/i, '').upcase
+    unless(test.to_s.empty?)
+      search = test.gsub(/[^0-9a-z ]/i, '').upcase
       searches = search.split(' ')
       
       search_match_arr = []
