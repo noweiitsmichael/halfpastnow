@@ -289,7 +289,7 @@ def indexMobile
     # else 
     #   params[:search] = params[:search1]
     # end
-    params[:search] =@searchTerm
+    #params[:search] =@searchTerm
     puts "In MOBILE comtroller - search Term"
     puts params
     #params[:search] = "khoa"

@@ -175,10 +175,16 @@ function updateFilter() {
 
 function pullSearch() {
   console.log("pullSearch called - json");
-  $.getJSON('/events/show/51.json', function(event) {
+  // $.getJSON('/events/show/51.json', function(event) {
+
+  //   console.log(event);
+  // });
+  $.getJSON('/events/indexMobile?search=saxon&commit=Search&format=mobile', function(event) {
 
     console.log(event);
   });
+
+  
 }
 function pullEvents() {
   var query = "";
