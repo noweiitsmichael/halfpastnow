@@ -126,9 +126,10 @@ def index
           INNER JOIN venues ON events.venue_id = venues.id
           LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
           LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-        WHERE #{TRUE} AND #{occurrence_match} AND #{location_match} AND #{tag_match} AND #{price_match}
+        WHERE #{TRUE} AND #{TRUE} AND #{TRUE} AND #{TRUE} AND #{TRUE}
         ORDER BY occurrences.start")
 
+    # WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_match} AND #{price_match}
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
 
