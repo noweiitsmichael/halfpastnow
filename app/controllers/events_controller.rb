@@ -19,6 +19,7 @@ end
 
 class EventsController < ApplicationController
 @searchTerm=""
+
 def index
 
 
@@ -125,7 +126,7 @@ def index
           INNER JOIN venues ON events.venue_id = venues.id
           LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
           LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-        WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_match} AND #{price_match}
+        WHERE #{TRUE} AND #{occurrence_match} AND #{location_match} AND #{tag_match} AND #{price_match}
         ORDER BY occurrences.start")
 
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
