@@ -44,6 +44,7 @@
 
         homeControlDiv.index = 1;
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(homeControlDiv);
+        google.maps.event.trigger(map, "resize");
         
 
     // geocoder = new google.maps.Geocoder();
