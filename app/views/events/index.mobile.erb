@@ -17,12 +17,24 @@
   var searchTerm;
   var width;
   var start=false;
+  var currentLocation;
+  
 
   $("#home .events-seed").hide();
   function initialize() {
     // Map
  
   
+       if (navigator.geolocation) {
+  
+         navigator.geolocation.getCurrentPosition(function(position) {  
+          var currentLat = position.coords.latitude;
+          var currentLong= position.coords.longitude;
+          var s = currentLat+","+currentLong;
+          currentLocation = new google.maps.LatLng(currentLat, currentLong);
+          console.log("Current locations toString "+currentLocation.toString());
+         }); 
+       }
         //google.maps.event.addListener(map, 'idle', boundsChanged);
   
       geocoder = new google.maps.Geocoder();
@@ -207,7 +219,10 @@
     // Set up the filter
     //updateFilter();
     // call this window.location.href = "/events?search="+x+"&commit=Search";
-    console.log("testBtnMap");
+   
+    console.log("testBtnMap"+ currentLocation.toString());
+
+        
 
      mapVariables();
     
@@ -587,16 +602,17 @@
               <label for="radio-view-c"  >None</label>
               
         </fieldset>
- 
-        <select name="Services" id="distance" data-native-menu="false" data-mini="true" multiple="multiple" size="5">
-                        <ul data-role="collapsible">
+        <legend >Distances</legend>
+        <select name="distances" id="distance" data-native-menu="false" data-mini="true"  size="6">
+                        <ul>
                           <li>
-                            <option>Distances</option>
+                            
+                            <option value="0">none</option>
                             <option value="0.5">0.5 mi</option>
                             <option value="1">1 mi</option>
                             <option value="2">2 mi</option>
                             <option value="3">3 mi</option>
-                            <option value="4">4 mi</option>
+                            <option value="4">> 3 mi</option>
                           </li>
                         </ul>
         </select>

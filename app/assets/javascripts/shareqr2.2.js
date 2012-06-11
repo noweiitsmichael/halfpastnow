@@ -17,6 +17,9 @@ var pricesOut=[];
 var radioStatus="off";
 var searchReg = "true";
 var latitude = 30.25,longitude = -97.75;
+var distLocation = 0;
+var dist;
+
 
 
 $(function() {
@@ -78,7 +81,12 @@ $('#day').live( "change", function(event, ui) {
 
   $('#distance').live( "change", function(event, ui) {
   localStorage['activity'] = $(this).val();
+  distLocation = $(this).val();
   console.log("Distance : "+localStorage['activity']);
+
+
+
+
 });
 
 $("#filter input[type='radio']").bind( "change", function(event, ui) {
@@ -103,6 +111,7 @@ $("#filter input[type='radio']").bind( "change", function(event, ui) {
   console.log("Day (indeed) : "+filter.day);
   console.log("searchReg : "+searchReg);
   console.log("searchTerm : "+filter.searchTerm);
+
  
 
 
@@ -149,6 +158,7 @@ function filterChange() {
   console.log("Day (indeed) : "+filter.day);
   console.log("searchReg : "+searchReg);
   console.log("searchTerm : "+filter.search);
+  console.log("Distance : "+distLocation);
   updateFilter();
   pullEvents();
 
@@ -292,6 +302,7 @@ function pullEvents() {
           venue_names.push({name:venue_name});
         });
     console.log("locations : "+locations.length);
+    
     placeMarkers({points: locations});
         //google.maps.event.addListener(map, 'idle', boundsChanged);
 
@@ -362,12 +373,38 @@ function to_ordinal(num) {
 function placeMarkers(params) {
   if (typeof params.clear === 'undefined' || params.clear === true)
     clearMarkers();
+  var point;
+  var currentLong;
+  var currentLat;
+ 
+  console.log("inside placeMarkers "+ currentLocation.toString());
+
   
+                 
   console.log("locations inside ?"+params.points.length);
   for(var i in params.points) {
     latitude = params.points[i].lat;
     longitude = params.points[i].long;
-    placeMarker(params.points[i].lat, params.points[i].long);
+
+    // console.log("current point in placeMarkers "+ currentLocation.latitude+","+currentLocation.longitude);
+    
+
+    if ( distLocation == 0) placeMarker(params.points[i].lat, params.points[i].long,0);
+    else {
+      point = new google.maps.LatLng(latitude, longitude);
+      ////// Distance /////
+
+      dist = google.maps.geometry.spherical.computeDistanceBetween(currentLocation, point )/1609;
+
+      console.log("Distance "+ dist);
+
+      if( distLocation == 0.5 && dist < 0.5 ) placeMarker(params.points[i].lat, params.points[i].long,dist);
+      if( distLocation == 1 && dist < 1 ) placeMarker(params.points[i].lat, params.points[i].long,dist);
+      if( distLocation == 2 && dist < 2 ) placeMarker(params.points[i].lat, params.points[i].long,dist);
+      if( distLocation == 3 && dist < 3 ) placeMarker(params.points[i].lat, params.points[i].long,dist);
+      if( distLocation == 4 && dist > 4 ) placeMarker(params.points[i].lat, params.points[i].long,dist);
+
+    }
 
   }
 
@@ -384,7 +421,7 @@ function clearMarkers() {
   markers = [];
 }
 
-function placeMarker(lat, long) {
+function placeMarker(lat, long,dist) {
   var i = markers.length;
   console.log("Marker index "+i);
   var marker = new google.maps.Marker({ //MarkerWithLabel({
@@ -396,7 +433,9 @@ function placeMarker(lat, long) {
 
   var boxText = document.createElement("div");
         boxText.style.cssText = "border: 1px solid black; margin-top: 8px; background: black;font-size: small; font-color: white;font-family: arial,sans-serif, padding: 5px;";
-        boxText.innerHTML = '<font color="white"><strong>'+event_names[marker.index-1].name.toString().substring(0,25)+'</strong><br><i>'+venue_names[marker.index-1].name.substring(0,25)+'</i>'+'<br><i>'+event_descriptions[marker.index-1].description+'  '+'<button onclick="openSite('+event_ids[marker.index-1].id+')">Visit</button></i>';
+        
+        if(dist == 0) boxText.innerHTML = '<font color="white"><strong>'+event_names[marker.index-1].name.toString().substring(0,25)+'</strong><br><i>'+venue_names[marker.index-1].name.substring(0,25)+'</i>'+'<br><i>'+event_descriptions[marker.index-1].description+'  '+'<button onclick="openSite('+event_ids[marker.index-1].id+')">Visit</button></i>';
+        else boxText.innerHTML = '<font color="white"><strong>'+event_names[marker.index-1].name.toString().substring(0,25)+'</strong><br><i>'+venue_names[marker.index-1].name.substring(0,25)+'</i>'+'<br><i>'+event_descriptions[marker.index-1].description+'  Distance '+dist.toFixed(1)+'<button onclick="openSite('+event_ids[marker.index-1].id+')">Visit</button></i>';
                 
         var myOptions = {
                  content: boxText
