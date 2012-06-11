@@ -358,6 +358,7 @@ function placeMarkers(params) {
 
 
   map.panTo(new google.maps.LatLng(latitude, longitude));
+  google.maps.event.trigger(map,'resize');
 //  showPageMarkers();
 }
 
