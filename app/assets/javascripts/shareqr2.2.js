@@ -16,6 +16,7 @@ var filter = {
 var pricesOut=[];
 var radioStatus="off";
 var searchReg = "true";
+var latitude = 30.25,longitude = -97.75;
 
 
 $(function() {
@@ -338,6 +339,7 @@ $(document).bind("pagebeforechange", function(e, data) {
       console.log("to map page");
       //boundsChanged();
       mapVariables();
+      map.panTo(new google.maps.LatLng(latitude, longitude));
      // e.preventDefault();
     }
 
@@ -355,7 +357,7 @@ function to_ordinal(num) {
 function placeMarkers(params) {
   if (typeof params.clear === 'undefined' || params.clear === true)
     clearMarkers();
-  var latitude = 30.25,longitude = -97.75;
+  
   console.log("locations inside ?"+params.points.length);
   for(var i in params.points) {
     latitude = params.points[i].lat;
