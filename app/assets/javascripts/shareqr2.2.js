@@ -338,9 +338,14 @@ $(document).bind("pagebeforechange", function(e, data) {
       // Map
       console.log("to map page");
       //boundsChanged();
+
       mapVariables();
+      latitude = 30.25;
+      longitude = -97.75;
       map.panTo(new google.maps.LatLng(latitude, longitude));
+      // map.panTo(new google.maps.LatLng(latitude, longitude));
      // e.preventDefault();
+     
     }
 
     // window.location.reload();
