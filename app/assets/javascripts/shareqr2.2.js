@@ -315,6 +315,7 @@ $(document).bind("pagebeforechange", function(e, data) {
     console.log("toPage new : "+ $.mobile.path.parseUrl(data.toPage).href);
     // filter.start = Date.today();
     // filter.end = Date.today().add({days:365});
+    google.maps.event.trigger(map, "resize");
     if (radioStatus!="off"){
       
       // filter.start = Date.today();
