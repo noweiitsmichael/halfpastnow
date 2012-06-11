@@ -312,6 +312,7 @@ $(document).bind("pagebeforechange", function(e, data) {
    
     var qrcode = /^#event/;
     var vcode = /^#venue/;
+    var mcode = /^#mapShow/;
     console.log("toPage new : "+ $.mobile.path.parseUrl(data.toPage).href);
     // filter.start = Date.today();
     // filter.end = Date.today().add({days:365});
@@ -331,6 +332,13 @@ $(document).bind("pagebeforechange", function(e, data) {
       // Display QR code for the selected URL.
       showVenue(u, data.options);
       e.preventDefault();
+    }
+    else if (u.hash.search(mcode) !== -1) {
+      // Map
+      console.log("to map page");
+      //boundsChanged();
+      mapVariables();
+     // e.preventDefault();
     }
 
     // window.location.reload();
