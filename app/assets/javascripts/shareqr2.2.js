@@ -352,7 +352,8 @@ $(document).bind("pagebeforechange", function(e, data) {
       //boundsChanged();
 
       mapVariables();
-      //map.panTo(new google.maps.LatLng(30.2673, -97.73963));
+      
+      map.panTo(new google.maps.LatLng(30.2673, -97.73963));
 
       //map.panTo(new google.maps.LatLng(latitude, longitude));
      
