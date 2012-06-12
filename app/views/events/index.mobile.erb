@@ -39,8 +39,8 @@
   
       geocoder = new google.maps.Geocoder();
         // Lat : 30.2673 Long : -97.73963
-        var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-        //var latlng = new google.maps.LatLng(30.2673, -97.73963);
+        //var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+        var latlng = new google.maps.LatLng(30.268037,-97.742722);
         var myOptions = {
           zoom: <%= @zoom %>,
           center: latlng,
@@ -52,6 +52,8 @@
         };
         //map = new google.maps.Map($("#home #map")[0], myOptions);
         map = new google.maps.Map($("#map")[0], myOptions);
+        // 30.270632,-97.74004
+       
 
         var homeControlDiv = document.createElement('div');
         var homeControl = new HomeControl(homeControlDiv);
