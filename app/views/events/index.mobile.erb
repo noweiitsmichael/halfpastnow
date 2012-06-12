@@ -39,8 +39,8 @@
   
       geocoder = new google.maps.Geocoder();
         // Lat : 30.2673 Long : -97.73963
-        //var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-        var latlng = new google.maps.LatLng(30.2673, -97.73963);
+        var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+        //var latlng = new google.maps.LatLng(30.2673, -97.73963);
         var myOptions = {
           zoom: <%= @zoom %>,
           center: latlng,
