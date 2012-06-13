@@ -346,18 +346,20 @@ $(document).bind("pagebeforechange", function(e, data) {
       showVenue(u, data.options);
       e.preventDefault();
     }
-    // else if (u.hash.search(mcode) !== -1) {
-    //   // Map
-    //   console.log("to map page "+latitude+","+longitude);
-    //   //boundsChanged();
+    else if (u.hash.search(mcode) !== -1) {
+      // Map
+      console.log("to map page "+latitude+","+longitude);
+      //boundsChanged();
 
-    //   mapVariables();
+      // mapVariables();
       
-    //   map.panTo(new google.maps.LatLng(latitude, longitude));
+      // map.panTo(new google.maps.LatLng(latitude, longitude));
+
+      showMapp(u, data.options);
      
-    //   e.preventDefault();
+      e.preventDefault();
      
-    // }
+    }
 
     // window.location.reload();
   }
@@ -637,6 +639,43 @@ function showVenue(urlObj, options) {
 
 
 }
+
+function showMapp (urlObj, options){
+   // Get the url parameter
+  var qrUrl = decodeURIComponent(urlObj.hash.replace(/.*showMap/, ""));
+
+  // The page we use to display QR code is already in the DOM. 
+  // The id of the page we are going to write the content into is specified in the hash before the '?'.
+  var pageSelector = urlObj.hash.replace(/\?.*$/, "");
+
+  if (qrUrl) {
+    var $page = $(pageSelector);
+     // Get the header for the page.
+    var $header = $page.children(":jqmData(role=header)");
+
+    // Find the h1 element in the header and inject the hostname from the url.
+    $header.find("h1").html(getHostname(qrUrl));
+
+    // Get the content area element for the page.
+
+    var $content = $page.children(":jqmData(role=content)");
+
+    filterChange();
+    // mapVariables();
+
+    
+    // Inject the QR code markup into the content element.
+    //$content.html("markup");
+    // Make sure the url displayed in the the browser's location field includes parameters
+    options.dataUrl = urlObj.href;
+
+
+    // Now call changePage() and tell it to switch to the page we just modified.
+    $.mobile.changePage($page, options);
+
+  }
+  
+}
 // Load the QR Code for a specific url passed in as a parameter.
 // Generate markup for the page, and then make that page the current active page.
 function showQRCode(urlObj, options) {
@@ -686,7 +725,7 @@ function showQRCode(urlObj, options) {
     // Make sure the url displayed in the the browser's location field includes parameters
     options.dataUrl = urlObj.href;
 
-    mapVariables();
+
     // Now call changePage() and tell it to switch to the page we just modified.
     $.mobile.changePage($page, options);
   }
