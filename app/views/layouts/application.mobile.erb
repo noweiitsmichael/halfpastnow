@@ -16,17 +16,15 @@
  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0,  minimum-scale=1.0, user-scalable=no"> 
 
 
-  <%= stylesheet_link_tag    "jQmin.css" %> 
-  <%= javascript_include_tag "jQmobile" %>
-  <%= javascript_include_tag "jQmin" %>
+  <%= stylesheet_link_tag    "jQmin.css" %>  <!--1-->
+  
+  <%= javascript_include_tag "jQmin" %> <!--2-->
 
   
-  
+  <%= javascript_include_tag "jQmobile" %> <!--3-->
 
 
-  <!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
-  <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-  <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>-->
+ 
 
   <%= stylesheet_link_tag    "custom.css" %>
  
