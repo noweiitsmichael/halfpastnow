@@ -357,7 +357,7 @@
 <!-- Home -->
 
 
-<div data-role="page" id="home">
+<div data-role="page" id="home" data-mini="true">
 
     <div data-role="header" data-theme="b" >
       <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
@@ -424,7 +424,7 @@
   </div>
 
   <!-- Event -->
-  <div data-role="page" id="event">
+  <div data-role="page" id="event" data-mini="true">
     <div data-role="header" data-theme="b" >
       <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
       <h1>half past now.</h1>
@@ -451,7 +451,7 @@
   </div>
 <!-- Venue -->
 
-<div  data-role="page"  id="venue">
+<div  data-role="page"  id="venue" data-mini="true">
 
 
   
@@ -512,7 +512,7 @@
 
 
 <!-- About -->
-<div data-role="page" id="about">
+<div data-role="page" id="about" data-mini="true">
   <div data-role="header" data-theme="b" >
     <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
     <h1>About</h1>
@@ -528,7 +528,7 @@
 
 
 <!-- Map -->
-<div data-role="page" id="mapShow">
+<div data-role="page" id="mapShow" data-mini="true">
     <div data-role="header" data-theme="b" >
       <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
       
@@ -552,7 +552,7 @@
 
 <!-- Filter -->
 <% @tags = Tag.all %>
-<div  data-role="page"  id="filter">
+<div  data-role="page"  id="filter" data-mini="true">
 
 
   
@@ -562,7 +562,7 @@
     <a href="#home" data-icon="arrow-l" data-rel="back">Back</a>
   </div>
 
-  <div data-role="content">
+  <div data-role="content" data-mini="true">
   
         <center><a id="filterSearch" data-role="button" data-inline="true" data-transition="pop" style="width: 280px">Search</a></center>
         <select name="Services" id="prices" data-native-menu="false" data-mini="true" multiple="multiple" size="6" >
