@@ -230,7 +230,12 @@
     
   });
   $("#filterSearch").click(function() {
-    
+    filter.tags = [];
+    var selectedTags = $('#tag-input').tokenInput("get");
+    for(var i in selectedTags) {
+     
+      filter.tags.push(selectedTags[i].id);
+    }
     filterChange();
 
     

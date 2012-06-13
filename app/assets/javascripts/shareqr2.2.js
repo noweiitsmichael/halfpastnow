@@ -171,12 +171,7 @@ function filterChange() {
 
 function updateFilter() {
   console.log("Update filter");
-  filter.tags = [];
-  var selectedTags = $('#tag-input').tokenInput("get");
-  for(var i in selectedTags) {
-   
-    filter.tags.push(selectedTags[i].id);
-  }
+  
   
  
   
@@ -350,7 +345,7 @@ $(document).bind("pagebeforechange", function(e, data) {
       // Map
       console.log("to map page "+latitude+","+longitude);
       //boundsChanged();
-
+      //window.location.href = "/#mapShow";
       // mapVariables();
       
       // map.panTo(new google.maps.LatLng(latitude, longitude));
@@ -725,7 +720,7 @@ function showQRCode(urlObj, options) {
     // Make sure the url displayed in the the browser's location field includes parameters
     options.dataUrl = urlObj.href;
 
-
+    mapVariables();
     // Now call changePage() and tell it to switch to the page we just modified.
     $.mobile.changePage($page, options);
   }
