@@ -663,9 +663,9 @@ function showMapp (urlObj, options){
     //$content.html("markup");
     // Make sure the url displayed in the the browser's location field includes parameters
     options.dataUrl = urlObj.href;
-    // 30.268037,-97.742722 latitude, longitude
+    // 30.268037,-97.742722
 
-    map.panTo(new google.maps.LatLng(30.268037,-97.742722));
+    //map.panTo(new google.maps.LatLng(latitude, longitude));
     // Now call changePage() and tell it to switch to the page we just modified.
     $.mobile.changePage($page, options);
 
