@@ -406,8 +406,9 @@ function placeMarkers(params) {
   }
 
   console.log("Panning to ...");
-  map.panTo(new google.maps.LatLng(latitude, longitude));
+ 
   google.maps.event.trigger(map,'resize');
+  map.panTo(new google.maps.LatLng(latitude, longitude));
 //  showPageMarkers();
 }
 
