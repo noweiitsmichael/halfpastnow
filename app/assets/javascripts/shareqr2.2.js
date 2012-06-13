@@ -17,7 +17,7 @@ var pricesOut=[];
 var radioStatus="off";
 var searchReg = "true";
 // 30.268093,-97.742808
-var latitude =  30.268093 ,longitude = -97.742808;
+var latitude =  30.268093 ,longitude = -97.6980537;
 var distLocation = 0;
 var dist;
 
@@ -353,7 +353,7 @@ $(document).bind("pagebeforechange", function(e, data) {
 
       mapVariables();
       
-    //  map.panTo(new google.maps.LatLng(latitude, longitude));
+      map.panTo(new google.maps.LatLng(latitude, longitude));
      
      // e.preventDefault();
      
@@ -410,7 +410,7 @@ function placeMarkers(params) {
 
   console.log("Panning to ...");
   map.panTo(new google.maps.LatLng(latitude, longitude));
-//  google.maps.event.trigger(map,'resize');
+  google.maps.event.trigger(map,'resize');
 //  showPageMarkers();
 }
 
