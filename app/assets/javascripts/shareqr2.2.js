@@ -686,6 +686,7 @@ function showQRCode(urlObj, options) {
     // Make sure the url displayed in the the browser's location field includes parameters
     options.dataUrl = urlObj.href;
 
+    mapVariables();
     // Now call changePage() and tell it to switch to the page we just modified.
     $.mobile.changePage($page, options);
   }
