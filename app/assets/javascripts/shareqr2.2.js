@@ -353,7 +353,7 @@ $(document).bind("pagebeforechange", function(e, data) {
 
       mapVariables();
       
-      map.panTo(new google.maps.LatLng(latitude, longitude));
+    //  map.panTo(new google.maps.LatLng(latitude, longitude));
      
      // e.preventDefault();
      
@@ -410,7 +410,7 @@ function placeMarkers(params) {
 
   console.log("Panning to ...");
   map.panTo(new google.maps.LatLng(latitude, longitude));
-  google.maps.event.trigger(map,'resize');
+//  google.maps.event.trigger(map,'resize');
 //  showPageMarkers();
 }
 
