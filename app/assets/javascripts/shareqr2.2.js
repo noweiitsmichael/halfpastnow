@@ -321,7 +321,7 @@ $(document).bind("pagebeforechange", function(e, data) {
     // We only want to handle #qrcode url.
     var u = $.mobile.path.parseUrl(data.toPage);
 
-
+    //mapVariables();
    
     var qrcode = /^#event/;
     var vcode = /^#venue/;
@@ -346,18 +346,18 @@ $(document).bind("pagebeforechange", function(e, data) {
       showVenue(u, data.options);
       e.preventDefault();
     }
-    else if (u.hash.search(mcode) !== -1) {
-      // Map
-      console.log("to map page "+latitude+","+longitude);
-      //boundsChanged();
+    // else if (u.hash.search(mcode) !== -1) {
+    //   // Map
+    //   console.log("to map page "+latitude+","+longitude);
+    //   //boundsChanged();
 
-      mapVariables();
+    //   mapVariables();
       
-      map.panTo(new google.maps.LatLng(latitude, longitude));
+    //   map.panTo(new google.maps.LatLng(latitude, longitude));
      
-     // e.preventDefault();
+    //   e.preventDefault();
      
-    }
+    // }
 
     // window.location.reload();
   }
