@@ -397,13 +397,13 @@
 
           <div class="ui-block-c" >
 
-            <ul class="events" data-role="listview" data-inset="true"  >
+            <ul class="events" data-role="listview" data-inset="true" data-theme="c" >
               
               <%  @events.each_with_index do |event, index| 
                   eventListElement(event, index)
                 end %>
             </ul>
-            <ul class="events-seed" data-role="listview" data-inset="true" style="display:none;">
+            <ul class="events-seed" data-role="listview" data-inset="true" data-theme="c" style="display:none;">
             <%
               eventListElement(nil, nil)
 
