@@ -61,57 +61,7 @@
         homeControlDiv.index = 1;
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(homeControlDiv);
         google.maps.event.trigger(map, "resize");
-        
-
-    // geocoder = new google.maps.Geocoder();
-    //     var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-    //     //var latlng = new google.maps.LatLng(30.30803, -97.71527);
-    //     var myOptions = {
-    //       zoom: <%= @zoom %>,
-    //       center: latlng,
-    //       mapTypeId: google.maps.MapTypeId.ROADMAP,
-    //       disableDefaultUI: true,
-    //       zoomControl: true,
-    //       scrollwheel: false,
-    //       zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
-    //     };
-    //     //map = new google.maps.Map($("#home #map")[0], myOptions);
-    //     map = new google.maps.Map($("#map")[0], myOptions);
-    //     var locations = [];
-    //     $("#home li:not(:last-child)").each(function(index) {
-    //       console.log("still running after Initialization? ");
-    //       var latitude = parseFloat($(this).find(".latitude").html());
-    //       var longitude = parseFloat($(this).find(".longitude").html());
-    //       console.log("Lat : "+latitude+" Long : "+longitude);
-    //       locations.push({lat: latitude, long: longitude});
-    //       var event_id_j=parseFloat($(this).find(".eventID").html());
-    //       event_ids.push({id:event_id_j});
-
-    //       var event_name;
-    //       event_name=$(this).find(".one .nameEvent").html();
-    //       event_names.push({name:event_name});
-
-    //       var event_description;
-    //       event_description=$(this).find(".one .description").html();
-    //       event_descriptions.push({description:event_description});
-
-    //       var venue_name;
-    //       venue_name=$(this).find(".one .where").html();
-    //       venue_names.push({name:venue_name});
-
-
-    //     });
-    //     console.log("locations ? "+locations.length);
-    //     var homeControlDiv = document.createElement('div');
-    //     var homeControl = new HomeControl(homeControlDiv);
-
-    //     homeControlDiv.index = 1;
-    //     map.controls[google.maps.ControlPosition.LEFT_TOP].push(homeControlDiv);
-    //     placeMarkers({points: locations});
-
-
-
-  }
+      }
 
   
   function HomeControl(controlDiv) {
@@ -403,7 +353,7 @@
                   eventListElement(event, index)
                 end %>
             </ul>
-            <ul class="events-seed" data-role="listview" data-inset="true" data-theme="c" style="display:none;">
+            <ul class="events-seed" data-role="listview" data-inset="true" style="display:none;">
             <%
               eventListElement(nil, nil)
 
