@@ -470,6 +470,12 @@ function placeMarker(lat, long,dist) {
 
 
   });
+
+  google.maps.event.addListener(ib, 'click', function() {
+   window.open ('#event?event_id='+event_id,'_self',false);
+
+
+  });
   google.maps.event.addListener(marker, 'mouseout', function() {
     ib.close(map, marker);
   });
