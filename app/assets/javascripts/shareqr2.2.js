@@ -447,8 +447,9 @@ function placeMarker(lat, long,dist) {
                   ,opacity: 0.75
                   ,width: "200px"
                  }
-                ,closeBoxMargin: "10px 2px 2px 2px"
-                ,closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif"
+                //,closeBoxMargin: "10px 2px 2px 2px"
+                //,closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif"
+                ,closeBoxURL: ""
                 ,infoBoxClearance: new google.maps.Size(1, 1)
                 ,isHidden: false
                 ,pane: "floatPane"
