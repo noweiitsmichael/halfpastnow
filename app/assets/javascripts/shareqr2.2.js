@@ -474,7 +474,7 @@ function placeMarker(lat, long,dist) {
   google.maps.event.addListener(marker, 'mouseout', function() {
     ib.close(map, marker);
   });
-  google.maps.event.addDomListener(boxText,'click',function(){ 
+  google.maps.event.addListener(marker,'click',function(){ 
     openSite(event_ids[marker.index-1].id);
   });
 
