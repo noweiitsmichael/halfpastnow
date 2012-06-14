@@ -20,6 +20,7 @@ var searchReg = "true";
 var latitude =  30.268093 ,longitude = -97.6980537;
 var distLocation = 0;
 var dist;
+var currentMarker=0;
 
 
 
@@ -457,13 +458,24 @@ function placeMarker(lat, long,dist) {
         var ib = new InfoBox(myOptions);
         //ib.open(map, marker);
 
-  google.maps.event.addListener(marker, 'click', function() {
+  google.maps.event.addListener(marker, 'mouseover', function() {
+    
+   
+
     ib.open(map, marker);
     console.log("Event name "+event_names[marker.index-1].name.toString());
     console.log("Event description "+event_descriptions[marker.index-1].description.toString());
     console.log("Venue name "+venue_names[marker.index-1].name.toString());
 
+
   });
+  google.maps.event.addListener(marker, 'mouseout', function() {
+    ib.close(map, marker);
+  });
+  google.maps.event.addListener(marker, 'click', function() {
+    ib.open(map, marker);
+  });
+
   google.maps.event.addListener(marker, 'dclick', function() {
    // $("#home .main .inner .events LI:nth-child(" + marker.index + ") .name").click();
    console.log("Marker double clicked "+event_ids[marker.index-1].id);
