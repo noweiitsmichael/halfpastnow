@@ -474,16 +474,11 @@ function placeMarker(lat, long,dist) {
   google.maps.event.addListener(marker, 'mouseout', function() {
     ib.close(map, marker);
   });
-  google.maps.event.addListener(marker, 'click', function() {
+  google.maps.event.addDomListener(boxText,'click',function(){ 
     window.open ('#event?event_id='+event_id,'_self',false);
-});
-
-  google.maps.event.addListener(marker, 'dclick', function() {
-   // $("#home .main .inner .events LI:nth-child(" + marker.index + ") .name").click();
-   console.log("Marker double clicked "+event_ids[marker.index-1].id);
-   
-   window.open ('#event?event_id='+event_ids[marker.index-1].id,'_self',false);
   });
+
+  
    markers.push(marker);
 }
 
