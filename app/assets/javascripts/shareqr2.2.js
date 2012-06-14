@@ -161,6 +161,9 @@ function filterChange() {
   console.log("searchReg : "+searchReg);
   console.log("searchTerm : "+filter.search);
   console.log("Distance : "+distLocation);
+   for(var i in markers) {
+      markers[i].ib.close(map,markers[i]);
+    }
   updateFilter();
   pullEvents();
 
@@ -477,6 +480,13 @@ function placeMarker(lat, long,dist) {
     console.log("Venue name "+venue_names[marker.index-1].name.toString());
 
 
+  });
+
+  google.maps.event.addListener(map, 'mouseover', function() {
+    
+    for(var i in markers) {
+      markers[i].ib.close(map,markers[i]);
+    }
   });
 
  
