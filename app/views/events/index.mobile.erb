@@ -32,8 +32,7 @@
           var currentLong= position.coords.longitude;
           var s = currentLat+","+currentLong;
           currentLocation = new google.maps.LatLng(currentLat, currentLong);
-          console.log("Current locations toString "+currentLocation.toString());
-         }); 
+          }); 
        }
         //google.maps.event.addListener(map, 'idle', boundsChanged);
   
@@ -96,7 +95,6 @@
     // Chicago
 
     google.maps.event.addDomListener(controlUI, 'click', function() {
-    console.log("Called map!!!");
     searchReg="false";
     boundsChanged();
     mapVariables();
@@ -118,9 +116,7 @@
   }
 
   function submitTest(){
-    console.log("Submit test");
     var x=document.getElementById("search").value;
-    console.log("Search : "+x);
     searchTerm=x;
     searchReg="true";
     window.location.href = "/events?search="+x+"&commit=Search";
@@ -130,10 +126,6 @@
   function mapVariables(){
     filter.search=document.getElementById("scriptBox").value;
     searchReg="false";
-    console.log("filter.search = "+filter.search);
-    console.log("Tags : "+filter.tags.reduce(function(a,b) { return a + "," + b; },"").substring(1));
-    console.log("Price (indeed) : "+filter.price);
-    console.log("Day (indeed) : "+filter.day);
     filterChange() ;
   
   }
