@@ -472,12 +472,10 @@ function placeMarker(lat, long,dist) {
   });
 
   google.maps.event.addListener(marker, 'mouseout', function() {
-    //ib.close(map, marker);
+    ib.close(map, marker);
   });
   google.maps.event.addDomListener(boxText,'click',function(){ 
-    //window.open ('#event?event_id='+event_id,'_self',false);
     openSite(event_ids[marker.index-1].id);
-    console.log("Cliekd");
   });
 
   
