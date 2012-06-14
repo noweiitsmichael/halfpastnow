@@ -427,7 +427,8 @@ function placeMarker(lat, long,dist) {
     map: map,
     position: new google.maps.LatLng(lat,long),
     icon: "/assets/markers/marker_" + (i + 1) + ".png",
-    index: i + 1
+    index: i + 1,
+    ib: null
   });
 
   var boxText = document.createElement("div");
@@ -459,11 +460,18 @@ function placeMarker(lat, long,dist) {
         var ib = new InfoBox(myOptions);
         //ib.open(map, marker);
 
+        marker.ib=ib;
+
   google.maps.event.addListener(marker, 'mouseover', function() {
     
-   
+    for(var i in markers) {
+      markers[i].ib.close(map,markers[i]);
+    }
+    
+        
 
     ib.open(map, marker);
+    currentMarker = marker.index;
     console.log("Event name "+event_names[marker.index-1].name.toString());
     console.log("Event description "+event_descriptions[marker.index-1].description.toString());
     console.log("Venue name "+venue_names[marker.index-1].name.toString());
@@ -471,10 +479,9 @@ function placeMarker(lat, long,dist) {
 
   });
 
-  google.maps.event.addListener(marker, 'mouseout', function() {
+ 
+  google.maps.event.addDomListener(boxText,'click',function(){ 
     ib.close(map, marker);
-  });
-  google.maps.event.addListener(marker,'click',function(){ 
     openSite(event_ids[marker.index-1].id);
   });
 
