@@ -434,7 +434,7 @@ function placeMarker(lat, long,dist) {
         boxText.style.cssText = "border: 1px solid black; margin-top: 8px; background: black;font-size: small; font-color: white;font-family: arial,sans-serif, padding: 5px;";
         
         if(dist == 0) boxText.innerHTML = '<font color="white"><strong>'+event_names[marker.index-1].name.toString().substring(0,25)+'</strong><br><i>'+venue_names[marker.index-1].name.substring(0,25)+'</i>'+'<br><i>'+event_descriptions[marker.index-1].description+'  '+'<button onclick="openSite('+event_ids[marker.index-1].id+')">Visit</button></i>';
-        else boxText.innerHTML = '<font color="white"><strong>'+event_names[marker.index-1].name.toString().substring(0,25)+'</strong><br><i>'+venue_names[marker.index-1].name.substring(0,25)+'</i>'+'<br><i>'+event_descriptions[marker.index-1].description+'  Distance '+dist.toFixed(1)+'<button onclick="openSite('+event_ids[marker.index-1].id+')">Visit</button></i>';
+        else boxText.innerHTML = '<font color="white"><strong>'+event_names[marker.index-1].name.toString().substring(0,25)+'</strong><br><i>'+venue_names[marker.index-1].name.substring(0,25)+'</i>'+'<br><i>'+event_descriptions[marker.index-1].description+'  Distance '+dist.toFixed(1)+'<button style="margin-left:100px;"onclick="openSite('+event_ids[marker.index-1].id+')">Visit</button></i>';
                 
         var myOptions = {
                  content: boxText
@@ -471,17 +471,12 @@ function placeMarker(lat, long,dist) {
 
   });
 
-  google.maps.event.addListener(ib, 'click', function() {
-   window.open ('#event?event_id='+event_id,'_self',false);
-
-
-  });
   google.maps.event.addListener(marker, 'mouseout', function() {
     ib.close(map, marker);
   });
   google.maps.event.addListener(marker, 'click', function() {
-    ib.open(map, marker);
-  });
+    window.open ('#event?event_id='+event_id,'_self',false);
+});
 
   google.maps.event.addListener(marker, 'dclick', function() {
    // $("#home .main .inner .events LI:nth-child(" + marker.index + ") .name").click();
