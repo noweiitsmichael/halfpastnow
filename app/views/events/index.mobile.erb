@@ -509,18 +509,27 @@
   <div data-role="content" data-mini="true">
   
         <center><a id="filterSearch" data-role="button" data-inline="true" data-transition="pop" style="width: 280px">Set Filter</a></center>
-        <select name="Services" id="prices" data-native-menu="false" data-mini="true" multiple="multiple" size="6" >
-                        <ul>
-                          <li>
-                            <option >Price</option>
-                            <option class="selected" value="0">Free</option>
-                            <option class="selected" value="1">$</option>
-                            <option class="selected" value="2">$$</option>
-                            <option class="selected" value="3">$$$</option>
-                            <option class="selected" value="4">$$$$</option>
-                          </li>
-                        </ul>
-        </select>
+       
+
+
+        <fieldset data-role="controlgroup" data-type="horizontal">
+          <legend>Choose your price options</legend>
+          <input type="checkbox" name="price-1a" id="price-1a" class="selected" value="0"/>
+          <label for="price-1a">Free</label>
+
+          <input type="checkbox" name="price-2a" id="price-2a" class="selected" value="1"/>
+          <label for="price-2a">$</label>
+          
+          <input type="checkbox" name="price-3a" id="price-3a" class="selected" value="2"/>
+          <label for="price-3a">$$</label>
+
+          <input type="checkbox" name="price-4a" id="price-4a" class="selected" value="3"/>
+          <label for="price-4a">$$$</label>
+
+          <input type="checkbox" name="price-5a" id="price-5a" class="selected" value="4"/>
+          <label for="price-5a">$$$$</label>
+        </fieldset>
+      
          <select name="days" id="day" data-native-menu="false" data-mini="true" multiple="multiple" size="8" >
                         <ul>
                           <li>
@@ -535,8 +544,10 @@
                           </li>
                         </ul>
         </select>
+
+        
       
-        <fieldset data-role="controlgroup" >
+        <fieldset data-role="controlgroup" data-type="horizontal">
           <legend>Today or Tomorrow</legend>
               <input type="radio" name="radio-view" id="radio-view-a" value="0"  />
               <label for="radio-view-a"  >Today</label>
@@ -546,24 +557,26 @@
               <label for="radio-view-c"  >None</label>
               
         </fieldset>
-        <legend >Distances</legend>
-        <select name="distances" id="distance" data-native-menu="false" data-mini="true"  size="6">
-                        <ul>
-                          <li>
-                            
-                            <option value="0">none</option>
-                            <option value="0.5">0.5 mi</option>
-                            <option value="1">1 mi</option>
-                            <option value="2">2 mi</option>
-                            <option value="3">3 mi</option>
-                            <option value="4">> 3 mi</option>
-                          </li>
-                        </ul>
-        </select>
+
+
+         <fieldset data-role="controlgroup" data-type="horizontal">
+          <legend>Within</legend>
+              <input type="radio" name="radio-distance" id="radio-distance-a" value="0"  />
+              <label for="radio-distance-a"  >none</label>
+              <input type="radio" name="radio-distance" id="radio-distance-b" value="0.5"  />
+              <label for="radio-distance-b"  >0.5 mi</label>
+              <input type="radio" name="radio-distance" id="radio-distance-c" value="2"  />
+              <label for="radio-distance-c"  >2 mi</label>
+              <input type="radio" name="radio-distance" id="radio-distance-d" value="3"  />
+              <label for="radio-distance-d"  >>2 mi</label>
+              
+        </fieldset>
+
+        
      
       </br>
         <label>tags</label>
-          <input type="text" class="tags" id="tag-input" />
+          <input type="text" class="tags" id="tag-input" style="width: 100px;"/>
           <div class="tag-library">
             <% @tags.each do |tag| %>
             <div tagID="<%= tag.id %>"><%= tag.name.downcase %></div>

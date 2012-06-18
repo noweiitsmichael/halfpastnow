@@ -29,31 +29,7 @@ $(function() {
 
 
   $("#home .events-seed").hide();
-  $('#prices').live( "change", function(event, ui) {
-  localStorage['activity'] = $(this).val();
-  pricesOut = localStorage['activity'];
-  console.log("Price : "+localStorage['activity']);
-  filter.price=[];
-  if(localStorage['activity']!="null")
-  for(var i in localStorage['activity']) {
-   console.log("In Array out "+localStorage['activity'][i]);
-   if((i%2)==0)
-    {
-      console.log("In Array "+localStorage['activity'][i]);
-      filter.price.push(localStorage['activity'][i]);
-    }
-
-   
-  }
-  // filterChange();
-  console.log("Tags : "+filter.tags.reduce(function(a,b) { return a + "," + b; },"").substring(1));
-  console.log("Price (indeed) : "+filter.price);
-  console.log("Day (indeed) : "+filter.day);
-  console.log("searchReg : "+searchReg);
-  console.log("searchTerm : "+filter.searchTerm);
-
-
-});
+  
 
 $('#day').live( "change", function(event, ui) {
   localStorage['activity'] = $(this).val();
@@ -91,7 +67,14 @@ $('#day').live( "change", function(event, ui) {
 
 });
 
-$("#filter input[type='radio']").bind( "change", function(event, ui) {
+$("#filter input[name='radio-distance']").bind( "change", function(event, ui) {
+  distLocation = $(this).val();
+  console.log("radio distance clicked : " + $(this).val());
+
+
+});
+
+$("#filter input[name='radio-view']").bind( "change", function(event, ui) {
   console.log("radio clicked : " + $(this).val());
   radioStatus=$(this).val();
   if (radioStatus=="0"){
@@ -116,6 +99,22 @@ $("#filter input[type='radio']").bind( "change", function(event, ui) {
 
  
 
+
+});
+
+
+
+$("#filter input[type='checkbox']").bind( "change", function(event, ui) {
+  //
+  var allVals = [];
+  
+
+  $("#filter input[type='checkbox']:checked").each(function() {
+    allVals.push(this.value);
+});
+
+  filter.price=allVals;
+  console.log("chek clicked : " + allVals);
 
 });
 
@@ -402,8 +401,8 @@ function placeMarkers(params) {
       if( distLocation == 0.5 && dist < 0.5 ) placeMarker(params.points[i].lat, params.points[i].long,dist);
       if( distLocation == 1 && dist < 1 ) placeMarker(params.points[i].lat, params.points[i].long,dist);
       if( distLocation == 2 && dist < 2 ) placeMarker(params.points[i].lat, params.points[i].long,dist);
-      if( distLocation == 3 && dist < 3 ) placeMarker(params.points[i].lat, params.points[i].long,dist);
-      if( distLocation == 4 && dist > 4 ) placeMarker(params.points[i].lat, params.points[i].long,dist);
+      if( distLocation == 3 && dist > 2 ) placeMarker(params.points[i].lat, params.points[i].long,dist);
+      
 
     }
 
