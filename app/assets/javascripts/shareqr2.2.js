@@ -233,13 +233,23 @@ function pullEvents() {
 
   $.getJSON("/events/indexMobile?format=mobile" + query, function (events) {
   //$.getJSON("/events/index?format=json" + query, function (events) {
-  
+   var count = 0;
     for(var i in events) {
       console.log("Event title here : "+events[i].title);
       var start = Date.parse(events[i].occurrences[0].start.substr(0,19));
      
       var li = $($('#home .events-seed li:last-child').clone().wrap('<ul>').parent().html());
 
+      latitude = events[i].venue.latitude;
+      longitude = events[i].venue.longitude;
+
+      var  point = new google.maps.LatLng(latitude, longitude);
+      dist = google.maps.geometry.spherical.computeDistanceBetween(currentLocation, point )/1609;
+
+      console.log("Distance infull events "+ dist);
+
+      if ( distLocation == 0 || ( distLocation == 0.5 && dist < 0.5 ) || ( distLocation == 2 && dist < 2 ) || ( distLocation == 3 && dist > 2 ) ) {
+      count =  count + 1;
       li.find("a").attr("href", "#event?event_id=" + events[i].id );
       
       li.find(".name").attr("href", events[i].id);
@@ -259,6 +269,7 @@ function pullEvents() {
         else li.find(".one .description").html("<span><strong>Free</strong></span> " +events[i].description.substring(0,25));
       else li.find(".one .description").html(events[i].description.substring(0,25));
       li.prependTo('#home .events-seed');
+    }
      
     
     }
@@ -267,7 +278,7 @@ function pullEvents() {
     
 
     $('#home .events').empty();
-    $('#home .count').html(events.length + " event" + ((events.length == 1) ? "" : "s"));
+    $('#home .count').html(count + " event" + ((count == 1) ? "" : "s"));
     $('#home .events-seed li:not(:last-child)').each(function() {
       $(this).prependTo('#home .events');
     });

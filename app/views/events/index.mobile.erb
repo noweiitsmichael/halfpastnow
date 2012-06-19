@@ -173,6 +173,59 @@
      mapVariables();
     
   });
+
+  $("#resetFilter").click(function() {
+    console.log("Reset filter "+distLocation);
+   $("#filter input[name='radio-distance']").each(function() 
+    { 
+            this.checked = false; 
+            distLocation = 0;
+    }); 
+   $("#filter input[name='radio-distance']").checkboxradio("refresh");
+
+   $("#filter input[type='checkbox']").each(function() {
+
+      this.checked = false; 
+   });
+   
+   filter.price=[0,1,2,3,4];
+   $("#filter input[type='checkbox']").checkboxradio("refresh");
+
+   $('#day-menu li  div.ui-btn-inner.ui-li span').each(function() {
+   
+    console.log("Span here ");
+   $(this).removeClass('ui-icon-checkbox-on ui-icon ui-icon-shadow');
+   $(this).addClass('ui-icon  ui-icon-shadow ui-icon-checkbox-off');
+   //$(this).getElementById('span').class = "ui-icon ui-icon-checkbox-off ui-icon-shadow";
+   
+   });
+    
+   
+    $("#filter input[name='radio-view']").each(function() {
+
+      this.checked = false; 
+   });
+     $("#filter input[name='radio-view']").checkboxradio("refresh");
+
+    filter.start = Date.today();
+    filter.end = Date.today().add({days:365});
+
+    $('#day').val('none').selectmenu('refresh');
+    
+   filter.day=[0,1,2,3,4,5,6];
+   
+
+
+   $('ul.token-input-list-facebook li:not(:last-child)').each(function() {
+      $(this).remove();
+   });
+   filter.tags = [];
+
+    console.log("Reset filter "+distLocation);
+    filterChange();
+
+    
+  });
   $("#filterSearch").click(function() {
     filter.tags = [];
     var selectedTags = $('#tag-input').tokenInput("get");
@@ -381,7 +434,7 @@
             <div class="event_description"><p><strong><span></span></strong></p></div>
           </div>    
           <div class="ui-block-b">
-            <p><a class="map-link" href=""></a></p>
+             <p><a class="map-link" href="" style="float: left;"><img class="map" /></a></p> 
             <p><div class="time_one"><strong></strong></div></p>
             <p><div class="time_two"><strong></strong></div></p>
             <p><div class="price"> </div></p>
@@ -409,7 +462,7 @@
   
   <h1> Venue Page </h1>
       <div class="ui-block-a">
-        <p><a class="map-link" href=""></a></p> 
+        <p><a class="map-link" href="" style="float: left;"><img class="map" /></a></p> 
       </div>
       <div class="ui-block-b">
         <div class="details">
@@ -507,8 +560,9 @@
   </div>
 
   <div data-role="content" data-mini="true">
-  
-        <center><a id="filterSearch" data-role="button" data-inline="true" data-transition="pop" style="width: 280px">Set Filter</a></center>
+      <div data-role="controlgroup" data-type="horizontal">  
+        <center><a id="filterSearch" data-role="button" data-inline="true" >Set Filter</a><a id="resetFilter" data-role="button" data-inline="true">Reset Filter</a></center>
+      </div>
        
 
 
