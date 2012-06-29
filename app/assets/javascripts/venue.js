@@ -64,18 +64,18 @@ var validators = {};
     } else {
       validators[selector] = $(selector).validate(); 
 
-      $(selector).submit(function() { 
-        if(validators[selector].numberOfInvalids() == 0) {
-          $(this).find("select[name*=4i], select[name*=5i]").each(function() {
-            if($(this).val() === "")
-              $(this).parent().find("select,input").attr("disabled","disabled");
-          });
-          $(this).find(".datetime-hidden").each(function() {
-            if($(this).val() === "")
-              $(this).attr("disabled","disabled");
-          });
-        }
-      });
+      // $(selector).submit(function() { 
+      //   if(validators[selector].numberOfInvalids() == 0) {
+      //     $(this).find("select[name*=4i], select[name*=5i]").each(function() {
+      //       if($(this).val() === "")
+      //         $(this).parent().find("select,input").attr("disabled","disabled");
+      //     });
+      //     $(this).find(".datetime-hidden").each(function() {
+      //       if($(this).val() === "")
+      //         $(this).attr("disabled","disabled");
+      //     });
+      //   }
+      // });
     }
   }
 

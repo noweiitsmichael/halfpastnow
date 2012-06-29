@@ -39,7 +39,6 @@ label {
 
 .main.settings {
   margin-top:40px;
-  padding-bottom:40px;
   clear:left;
   float:left;
 }
@@ -54,7 +53,6 @@ input.price {
 
 .actions {
   clear:both;
-  padding-top:40px;
 }
 
 .remove {
@@ -330,4 +328,8 @@ html,body {
   right:10px;
   cursor:pointer;
   font-size: 16px;
+}
+
+.main.settings .input-tags {
+  width: 512px;
 }
