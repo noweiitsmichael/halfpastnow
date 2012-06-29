@@ -1,0 +1,43 @@
+<script type="text/javascript">
+	$(function() {
+		$('#events .event-element .toggler').click(function() {
+			var toggler = $(this);
+			var obj = $(this).parent('.event-element');
+			if(obj.hasClass('compact')) {
+				obj.removeClass('compact').addClass('expanded');
+				var form = obj.find("form.new_event");
+				if(form.length > 0) {
+					form.show();
+				} else {
+					$.get('/venues/event/' + obj.attr("objectID") + "?venue_id=<%=@venue.id%>", function(data) {
+						obj.append(data);
+						obj.incomingForm();
+					});
+				}
+				toggler.html("&ndash;");
+			} else {
+				obj.removeClass('expanded').addClass('compact');
+				obj.find("form.edit_event").hide();
+				toggler.html("+");
+			}
+			return false;
+		});
+	});
+</script>
+<div id="events">
+<% @venue.events.each do |event| %>
+	<% if event.id %>
+		<div class="compact event-element" objectID="<%= event.id %>">
+			<div class="time"></div>
+			<div class="title"><%= event.title %></div>
+			<div class="description"><%= event.description %></div>
+			<a href="" class="toggler">+</a>
+		</div>
+	<% else %>
+		<div class="compact event-element" objectID="">
+			New Event
+			<a href="" class="toggler">+</a>
+		</div>
+	<% end %>
+<% end %>
+</div>

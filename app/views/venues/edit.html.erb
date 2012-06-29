@@ -1,4 +1,4 @@
-
+<div id="body">
   <script type="text/javascript">
     var win;
     $(function() {
@@ -33,15 +33,24 @@
   <% if @venue.url && @venue.url != "" %>
     <h3>(<a href="<%= @venue.url %>"><%= @venue.url %></a>)</h3>
   <% end %>
-  <h3><a href='#' class='menu settings selected'>Settings</a> | <a href='#' class='menu events'>Events</a> | <a href='#' class='menu raw_events'>Raw Events</a></h3>
+  <h3><a href='#' class='menu settings'>Settings</a> | <a href='#' class='menu events'>Events</a> | <a href='#' class='menu raw_events selected'>Raw Events</a></h3>
 
 
-  <div class="tab settings selected">
-    <%= render 'form_settings' %>
+  <div class="tab settings ">
+    <% if false %><%= render 'form_settings' %><% end %>
   </div>
   <div class="tab events">
-    <%= render 'form_events' %>
+    <%= render 'form_events2' %>
   </div>
-  <div class="tab raw_events">
-    <%= render 'form_raw_events' %>
+  <div class="tab raw_events selected">
+    <%= render 'form_raw_events2' %>
+  </div>
+</div>
+
+  <div class="acts mode">
+    <div class="overlay">
+      <div class="window">
+        <% if false %><%= render :partial => "acts_mode" %><% end %>
+      </div>
+    </div>
   </div>

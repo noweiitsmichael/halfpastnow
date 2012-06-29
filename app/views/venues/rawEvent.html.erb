@@ -1,0 +1,57 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+	    generateValidator("#new_event_<%= @rawEvent.id %>",{"ajax":true});
+
+	    /*$('.delete-raw-event').click(function() {
+	    	var obj = $(this);
+	    	$.getJSON("/venues/deleteRawEvent/" + obj.attr('rawEventId'), function() {
+	    		console.log("deleted");
+	    		obj.parents(".new_event").slideUp();
+	    	});
+	    	return false;
+	    });*/
+    });
+</script>
+
+<% @ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] %>
+<% @week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] %>
+<% event = @venue.events.build(:title => @rawEvent.title, :description => @rawEvent.description) 
+   event.occurrences.push(Occurrence.new(:start => @rawEvent.start, :end => @rawEvent.end))
+   event.recurrences.push(Recurrence.new(:start => @rawEvent.start, :end => @rawEvent.end))
+   occurrence = Occurrence.new(:start => @rawEvent.start, :end => @rawEvent.end) %>
+<%= form_for event, :url => "/venues/fromRaw/" + @venue.id.to_s, :html => { :id => "new_event_" + @rawEvent.id.to_s } do |e| %>
+	<% @iStrName = "event[tag_ids][]" %>
+	<% @iStrId = "event_1#{@rawEvent.id.to_s}_tag_ids_" %>
+	<%= hidden_field_tag :raw_event_id, @rawEvent.id %>
+	<div class="main event">
+		<% if false %>
+		<div class="field">
+		  <%= label_tag :URL %>
+		  <a class="url" href="<%= @rawEvent.url %>"><%= @rawEvent.from %> link</a>
+		</div>
+		<% end %>
+		<div class="field">
+		  <%= e.label :title %>
+		  <%= e.text_field :title, :class => "required" %>
+		</div>
+		<div class="field">
+		  <label>Description<br /><em style="font-size:small;color:gray;">(make sure to rewrite pre-populated descriptions)</em></label>
+		  <%= e.text_area :description, :class => "cleditor" %>
+		</div>
+		<div class="field" minlength="2">
+		  <%= e.label :price %>
+		  <%= e.text_field :price, :class => "price" %>
+		</div>
+
+		<%= render :partial => "acts", :locals => { :event => event, :rawEvent => @rawEvent } %>
+
+		<%= render :partial => "tags", :locals => { :element => event } %>
+
+		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => event } %>
+
+		<div class="actions">
+			<%= e.submit %>
+			<a href="" class="delete-raw-event" rawEventId="<%=@rawEvent.id%>">Delete Raw Event</a>
+		</div>
+	</div>
+<% end %>

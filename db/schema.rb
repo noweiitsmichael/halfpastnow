@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120605002356) do
+ActiveRecord::Schema.define(:version => 20120626180208) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -23,21 +23,28 @@ ActiveRecord::Schema.define(:version => 20120605002356) do
 
   add_index "acts", ["event_id"], :name => "index_acts_on_event_id"
 
+  create_table "acts_events", :id => false, :force => true do |t|
+    t.integer "act_id"
+    t.integer "event_id"
+  end
+
+  add_index "acts_events", ["act_id"], :name => "index_acts_events_on_act_id"
+  add_index "acts_events", ["event_id"], :name => "index_acts_events_on_event_id"
+
   create_table "acts_tags", :id => false, :force => true do |t|
-    t.integer  "act_id"
-    t.integer  "tag_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer "act_id"
+    t.integer "tag_id"
   end
 
   add_index "acts_tags", ["act_id"], :name => "index_acts_tags_on_act_id"
   add_index "acts_tags", ["tag_id"], :name => "index_acts_tags_on_tag_id"
 
   create_table "embeds", :force => true do |t|
-    t.string   "source"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "act_id"
+    t.boolean  "primary"
+    t.text     "source"
   end
 
   add_index "embeds", ["act_id"], :name => "index_embeds_on_act_id"

@@ -1,15 +1,18 @@
+
 <div class="tags field">
 	<label>Tags</label>
 	<div class="input-tags">
 		<% @parentTags.each do |tag| %>
+
 			<div class="parent tag">
-				<%= check_box_tag @iStrName, tag.id, event.tags.include?(tag) || (event.id.nil? && @venue.tags.include?(tag)), :id => (@iStrId + tag.id.to_s) %>
+				<%= check_box_tag @iStrName, tag.id, element.id.nil? ? false : element.tags.include?(tag), :id => (@iStrId + tag.id.to_s) %>
 				<%= label_tag @iStrName, tag.name, :for => (@iStrId + tag.id.to_s) %>
 			</div>
+
 			<div class="children">
 			<% tag.childTags.each do |childTag| %>
 				<div class="child tag">
-				<%= check_box_tag @iStrName, childTag.id, event.tags.include?(childTag) || (event.id.nil? && @venue.tags.include?(childTag)), :id => (@iStrId + childTag.id.to_s) %>
+				<%= check_box_tag @iStrName, childTag.id, element.id.nil? ? false : element.tags.include?(childTag), :id => (@iStrId + childTag.id.to_s) %>
 				<%= label_tag @iStrName, childTag.name, :for => (@iStrId + childTag.id.to_s) %>
 				</div>
 			<% end %>

@@ -103,7 +103,6 @@
     <div class="tags field">
     <label>Tags</label>
     <div class="input-tags">
-
     <% @parentTags.each do |tag| %>
       <div class="parent tag">
         <%= check_box_tag "venue[tag_ids][]", tag.id, @venue.tags.include?(tag), :id => "venue_tag_ids_" + tag.id.to_s %>
