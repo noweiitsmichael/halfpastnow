@@ -6,6 +6,8 @@ var actsInfo = {};
 
 var validators = {};
 
+var eventActs = {};
+
   function generateValidator(selector, options) {
     options = options || {};
 
@@ -204,33 +206,42 @@ var validators = {};
       actsChange(this);
     });
 
+    eventActs[actNames.attr("event-id")] = actNames.val();
+
     return this;
 
   };
 
   function actsChange(obj) {
-
+    // console.log("actsChange");
     var newActs = $(obj).val().split(",");
     if(newActs[0] == "")
       newActs = [];
 
-    var oldActs = (typeof obj.acts === "undefined" ? "" : $(obj).val()).split(",");
-    
+    var oldActs = eventActs[$(obj).attr("event-id")].split("");
+
     var addedActs = [];
     for(var i in newActs) {
       if($.inArray(newActs[i], oldActs) === -1)
         addedActs.push(newActs[i]);
     }
 
+    // console.log("oldActs");
+    // console.log(oldActs);
+    // console.log("newActs");
+    // console.log(newActs);
+    // console.log("addedActs");
+    // console.log(addedActs);
+
     for(var i in addedActs) {
       var actTags = actsInfo[parseInt(addedActs[i])].tags.split(",");
-      console.log("actTags");
-      console.log(actTags);
+      // console.log("actTags");
+      // console.log(actTags);
       for(var j in actTags) {
         $(obj).parents(".event-element").find("#event_" + $(obj).attr("event-id") + "_tag_ids_" + actTags[j]).prop("checked", true);
       }
     }
-    obj.acts = $(obj).val();
+    eventActs[$(obj).attr("event-id")] = $(obj).val();
   }
 
   function showActsMode(eventID,actID) {
@@ -275,4 +286,28 @@ var validators = {};
       console.log(actID);
       showActsMode(eventID,actID);
     });
+
+    $('body').on("click", ".delete-raw-event", function() {
+        var obj = $(this);
+        $.getJSON("/venues/deleteRawEvent/" + obj.attr('rawEventId'), function() {
+          console.log("deleted");
+          obj.parents(".event-element").slideUp();
+          return false;
+        });
+        return false;
+      });
+
+    $('body').on("click", ".delete-event", function() {
+        if(confirm("Are you sure you want to delete this event?")) {
+          var obj = $(this);
+          $.getJSON("/venues/deleteEvent/" + obj.attr('eventId'), function() {
+            console.log("deleted");
+            obj.parents(".event-element").slideUp();
+            return false;
+          });
+          return false;
+        } else {
+          return false;
+        }
+      });
   });

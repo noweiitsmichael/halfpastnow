@@ -100,6 +100,7 @@
       <%= f.label :zip %>
       <%= f.text_field :zip, :class => 'location required' %>
     </div>
+    <% if false %>
     <div class="tags field">
     <label>Tags</label>
     <div class="input-tags">
@@ -119,6 +120,7 @@
     <% end %>
     </div>
   </div>
+  <% end %>
     <%= f.hidden_field :latitude %>
     <%= f.hidden_field :longitude %>
   </div>

@@ -52,4 +52,20 @@ class Event < ActiveRecord::Base
     return (phat + z*z/(2*n) - z * Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)
   end
 
+  def firstOccurrence
+    if self.occurrences.length == 0
+      return nil
+    end
+
+    occurrenceTime = DateTime.new(3000,1,1)
+    occurrence = nil
+    self.occurrences.each do |occ|
+      if(occ.start && occ.start < occurrenceTime)
+        occurrence = occ
+        occurrenceTime = occ.start
+      end
+    end
+    
+    return occurrence
+  end
 end

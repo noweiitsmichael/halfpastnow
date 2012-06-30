@@ -37,8 +37,7 @@ class VenuesController < ApplicationController
   # GET /venues/1.json
   def show
     @venue = Venue.find(params[:id])
-    puts "venue_id "
-    puts  params[:id]
+
     @venue.clicks += 1
     @venue.save
     @jsonOccs  = []
@@ -54,8 +53,6 @@ class VenuesController < ApplicationController
         end
       end
     end
-    puts "jsonrecs:"
-    pp @jsonRecs
 
     respond_to do |format|
       format.json { render json: { :occurrences => @jsonOccs.to_json(:include => :event), :recurrences => @jsonRecs.to_json(:include => :event), :venue => @venue.to_json } } 
@@ -95,7 +92,7 @@ class VenuesController < ApplicationController
     end
 
     @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
-    
+
   end
 
   # POST /venues
@@ -147,9 +144,7 @@ class VenuesController < ApplicationController
     @event = @venue.events.build()
     @event.update_attributes(params[:event])
     @event.user_id = current_user.id
-    pp params
-    puts "event's acts:"
-    pp @event.acts
+    
     if @event.save
       @raw_event = RawEvent.find(params[:raw_event_id])
       @raw_event.submitted = true
@@ -206,6 +201,13 @@ class VenuesController < ApplicationController
     render json: {:event_id => @raw_event.id }
   end
 
+  def deleteEvent
+    @event = Event.find(params[:id])
+    @event.destroy
+
+    render json: {:event_id => @event.id }
+  end
+
   def rawEvent
     @rawEvent = RawEvent.find(params[:id])
 
@@ -243,8 +245,6 @@ class VenuesController < ApplicationController
       params[:event]["user_id"] = current_user.id
     end
 
-    pp params
-
     respond_to do |format|
       if @event.update_attributes!(params[:event])
         format.html { redirect_to :action => :edit, :id => @venue.id, :notice => 'yay' }
@@ -269,7 +269,6 @@ class VenuesController < ApplicationController
   end
 
   def actCreate
-    pp params
     
     if (params[:act][:id].to_s.empty?)
       @act = Act.new()
@@ -278,8 +277,6 @@ class VenuesController < ApplicationController
     end
 
     @act.update_attributes!(params[:act])
-    
-    pp @act.embeds
 
     respond_to do |format|
       if @act.save

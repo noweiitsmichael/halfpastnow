@@ -1,15 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function(){
 	    generateValidator("#new_event_<%= @rawEvent.id %>",{"ajax":true});
-
-	    /*$('.delete-raw-event').click(function() {
-	    	var obj = $(this);
-	    	$.getJSON("/venues/deleteRawEvent/" + obj.attr('rawEventId'), function() {
-	    		console.log("deleted");
-	    		obj.parents(".new_event").slideUp();
-	    	});
-	    	return false;
-	    });*/
     });
 </script>
 

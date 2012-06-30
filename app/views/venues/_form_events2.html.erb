@@ -17,7 +17,7 @@
 				toggler.html("&ndash;");
 			} else {
 				obj.removeClass('expanded').addClass('compact');
-				obj.find("form.edit_event").hide();
+				obj.find("form.edit_event, form.new_event").hide();
 				toggler.html("+");
 			}
 			return false;
@@ -25,10 +25,10 @@
 	});
 </script>
 <div id="events">
-<% @venue.events.each do |event| %>
+<% @venue.events.sort_by { |event| event.firstOccurrence ? event.firstOccurrence.start : DateTime.new(1970,1,1) }.each do |event| %>
 	<% if event.id %>
 		<div class="compact event-element" objectID="<%= event.id %>">
-			<div class="time"></div>
+			<div class="time"><%= event.firstOccurrence.start.to_time.strftime("%b %-d @ %-I:%M%P") %></div>
 			<div class="title"><%= event.title %></div>
 			<div class="description"><%= event.description %></div>
 			<a href="" class="toggler">+</a>
