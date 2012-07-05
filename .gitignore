@@ -6,6 +6,7 @@
 
 # Ignore bundler config
 /.bundle
+/Gemfile.lock
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
@@ -20,3 +21,4 @@
 /db/sphinx/
 
 /.sublime-project*
+/config/s3.yml

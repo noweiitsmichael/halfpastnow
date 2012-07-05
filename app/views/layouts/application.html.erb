@@ -24,7 +24,7 @@
     $(function(){
         $('.slide-out-div').tabSlideOut({
             tabHandle: '.handle',                     //class of the element that will become your tab
-            pathToTabImage: 'assets/feedback_tab_v.jpg', //path to the image for the tab //Optionally can be set using css
+            pathToTabImage: '/assets/feedback_tab_v.jpg', //path to the image for the tab //Optionally can be set using css
             imageHeight: '122px',                     //height of tab image           //Optionally can be set using css
             imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
         });
@@ -32,6 +32,10 @@
     });
 
     </script>
+
+  <!-- for cropper -->
+  <%= yield :head %>
+
 </head>
 <body onload="if(typeof initialize !== 'undefined') initialize();">
 	<%= yield :code %>
@@ -47,11 +51,10 @@
         <div class="menu-element"><a href="/info/contact">contact us</a></div>
         <div class="menu-element right">
               <% if user_signed_in? %>
-                <%= link_to('logout', destroy_user_session_path, :method => 'delete') %>        
-              / 
-                <%= link_to('edit registration', edit_user_registration_path) %> 
+                <%= link_to('my profile', :controller => "users", :action => "show")  %> / <%= link_to('logout', destroy_user_session_path, :method => 'delete') %> / <%= link_to('edit registration', edit_user_registration_path) %> 
+              <% else %>
+                <%= link_to('login', new_user_session_path)  %> / <%= link_to('register', new_user_registration_path)  %> 
               <% end %>
-              <% if false %> <%= link_to('login', new_user_session_path)  %>  <%= link_to('register', new_user_registration_path)  %> <% end %>
         </div>
       </div>
       <%= yield :header%>

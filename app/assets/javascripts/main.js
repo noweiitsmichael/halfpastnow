@@ -100,7 +100,9 @@ $(function() {
   $('#content .main .inner .events, .venue.mode .events').on("click", ".linkto", loadModal);
   $(".window .linkto").click(loadModal);
 
-  mapOffset = $("#map").offset().top;
+
+  if($("#map").length > 0)
+    mapOffset = $("#map").offset().top;
 });
 
 var mapOffset;

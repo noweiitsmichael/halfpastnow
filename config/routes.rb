@@ -2,11 +2,13 @@ Myapp::Application.routes.draw do
   
 
 
+  resources :bookmarks
+
   get "info/about"
 
   get "info/contact"
 
-  devise_for :users
+  devise_for :users, :controllers => {:registrations => "registrations"}
 
   get "tag/index"
 
@@ -77,6 +79,7 @@ Myapp::Application.routes.draw do
   match 'tags' => 'tags#index'
   match 'info' => 'info#about'
   match 'feedbacks' => 'feedbacks#index'
+  match 'users' => 'users#index', :as => "user"
 
   match ':controller(/:action(/:id(.:format)))'
 end

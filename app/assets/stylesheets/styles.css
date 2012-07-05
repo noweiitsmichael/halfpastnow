@@ -896,6 +896,10 @@ overflow: hidden;
   height:100%;
 }
 
+#city-name {
+  float: right;
+  line-height: 1;
+}
 /* feedback tab */
 .slide-out-div {
     padding: 20px;
