@@ -1,0 +1,25 @@
+<% options = options || { :venue => true, :description => true } %>
+<ul class="events">
+	<% if false %>
+	<% recurrences.each do |rec| %>
+		<%= rec.start.to_time.strftime("%a %B %d at %I:%M%p") %> <br />
+	<% end %>
+	<% end %>
+<% occurrences.each do |occ| %>
+	<li>
+		<div class="datetime-wrapper">
+			<div class="occurrence datetime"><%= occ.start.to_time.strftime("%B %-d at %-l:%M%P") %></div>
+			<div class="datetime-flag"></div>
+		</div>
+	<% unless options[:datetime_only] %>
+		<div class="details">
+			<span class="linkto event-name" href="<%= occ.id %>" linkto="event"><%= occ.event.title %></span>
+		<% if options[:venue] %>
+			<span class="linkto venue-name" href="<%= occ.event.venue.id %>" linkto="venue">at <%= occ.event.venue.name %></span>
+		<% end %>
+		</div>
+		<div class="description"><span><strong><%= occ.event.price ? ((occ.event.price != 0) ? number_to_currency(occ.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span><%= occ.event.description %></span></div>
+	<% end %>
+	</li>
+<% end %>
+</ul>
