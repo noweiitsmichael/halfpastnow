@@ -42,11 +42,15 @@
 			$(function() {
 				var event_id = <%= params[:event_id] || 0 %>;
 				var venue_id = <%= params[:venue_id] || 0 %>;
+				var act_id = <%= params[:act_id] || 0 %>;
 				if(event_id != 0) {
 					modal({type: "event", id: event_id});
 				}
 				if(venue_id != 0) {
 					modal({type: "venue", id: venue_id});      
+				}
+				if(act_id != 0) {
+					modal({type: "act", id: act_id});      
 				}
 
 				filter.search = "<%= params[:search] %>";
@@ -90,9 +94,9 @@
 					</div>
 				</div>
 				<div class="one">
-					<span href="<%= event ? event.id : "" %>" linkto="event" class="linkto name"><%= event ? event.title : "" %></span>
+					<span href="<%= event ? event.occurrences.first.id : "" %>" linkto="event" class="linkto name"><%= event ? event.title : "" %></span>
 					<a class="venue linkto" linkto="venue" href="<%= event ? event.venue.id : "" %>"><%= event ? event.venue.name : "" %></a>
-					<div class="description"><span="price";  style="color:#2E2EFE"><strong><%= event ? (event.price!=nil)? ((event.price.to_f!=0.0) ? number_to_currency(event.price,:unit=>"$").to_s + " " : "FREE ") : "" : "" %></strong></span><span style="color:#888"><%= event ? truncate(strip_tags(event.description), :length => 300) : "" %></span>
+					<div class="description"><span style="color:#2E2EFE"><strong><%= event ? (event.price!=nil)? ((event.price.to_f!=0.0) ? number_to_currency(event.price,:unit=>"$").to_s + " " : "FREE ") : "" : "" %></strong></span><span style="color:#888"><%= event ? truncate(strip_tags(event.description), :length => 300) : "" %></span>
 					</div>
 				</div>
 				<div style="display:none;">
@@ -105,35 +109,6 @@
 				</div>
 			</li>
 	<% end %>
-
-	<% def venueEventListElement (event, index)	%>
-		<li>
-			<div class="when sun">
-				<div class="mod">
-					<%# (event.date < now) ? event.date.strftime("%m/%e") : (event.date < (now + 7)) ? 'THIS' : (event.date < (now + 14)) ? 'NEXT' : event.date.strftime("%-m/%e") %>
-					<%= event ? event.occurrences.first.start.to_time.strftime("%m/%d") : "" %>
-				</div>
-				<div class="day">
-					<%= event ? @day_of_week[event.occurrences.first.start.wday] : "" %>
-				</div>
-				<div class="time">
-					<%= event ? event.occurrences.first.start.to_time.strftime("%I:%M%P") : "" %>
-				</div>
-			</div>
-			<div class="one">
-				
-				<!--div class="venue mode event"><a linkto="event" href=""  class="linkto"></a></div>
-				<!--span href="<%= event ? event.id : "" %>" linkto="event" class="linkto name"><%= event ? event.title : "" %></span-->
-				<span href="" linkto="event" class="linkto name"><%= event ? event.title : "" %></span>
-				<div class="description"><%= event ? truncate(strip_tags(event.description), :length => 300) : "" %></div>
-				
-			</div>
-			<div style="display:none;">
-				<div class="latitude"><%= event ? event.venue.latitude : "" %></div>
-				<div class="longitude"><%= event ? event.venue.longitude : "" %></div>
-			</div>
-		</li>
-	<% end %>
 <% end %>
 
 <% content_for :header do %>
@@ -143,7 +118,7 @@
 				<%= form_tag("/events", :method => "get", :id => "search-form") do %>
 				<%= label_tag(:q, "find") %>
 				<%= text_field_tag :search, params[:search], :placeholder => "things to do", :class => "terms" %>
-				around
+				<%= label_tag(:qtwo, "around") %>
 				<%= text_field_tag :location, params[:location], :placeholder => "a point in space", :class => "location" %>
 				<%= hidden_field_tag :latitude, params[:latitude] %>
 				<%= hidden_field_tag :longitude, params[:longitude] %>
@@ -182,14 +157,16 @@
 							<div class="custom-select selected"><input type="text" class="start date" placeholder=" from now"/><input type="text" class="end date" placeholder="to forever"/></div>
 						</div>
 					</div>
-					<div class="filter day">
-						<!--<h5>day of the week</h5>-->
+					<div class="filter price">
+						<span class="selected" title="free">free</span><span class="selected" title="1¢ to $10">$</span><span class="selected" title="$10 to $25">$$</span><span class="selected" title="$25 to $50">$$$</span><span class="selected" title="$50 and up">$$$$</span>
+					</div>
+					<div class="filter day" style="display:none;">
 						<span class="selected">sun</span><span class="selected">mon</span><span class="selected">tue</span><span class="selected">wed</span><span class="selected">thu</span><span class="selected">fri</span><span class="selected">sat</span>
 					</div>
 				</div>
-				<div class="filter price">
-					<!--<h5>price</h5>-->
-					<span class="selected" title="free">free</span><span class="selected" title="1¢ to $10">$</span><span class="selected" title="$10 to $25">$$</span><span class="selected" title="$25 to $50">$$$</span><span class="selected" title="$50 and up">$$$$</span>
+				<div class="col-3">
+					<div class="filter empty">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -222,83 +199,20 @@
 
 <% content_for :overlay do %>
 	<div class="event mode">
-		<div class="overlay">
+		<div class="overlay">			
 			<div class="window">
-				<span class="close-btn"><div  >X</div></span>
-				<div class="h1under left"></div>
-				<div class="h1under right"></div>
-				<h1></h1>
-				<div class="inner">
-					<a class="map-link" href="" style="float: left;"><img class="map" /></a>
-					<div class="details">	
-						<div class="time one"></div>
-						<div class="time two"></div>
-						<br />
-						<div class="venue"><a linkto="venue" href=""  class="linkto"></a></div>
-						<div class="address one"></div>
-						<div class="address two"></div>
-						<br />
-						<div class="price"></div>
-					</div>
-					<div class="menu">
-						<!--<ul>
-							<li class="selected">description</li>
-							<!li>details</li>
-							<!li>gallery</li>
-							<!li>comments <strong>(5)</strong></li>
-						</ul>-->
-						<div class="selected description"></div>
-						<!--div>details</div-->
-						<!--div>gallery</div-->
-						<!--div>comments</div-->
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
 	<div class="venue mode">
 		<div class="overlay">
 			<div class="window">
-				<span class="close-btn"><div  >X</div></span>
-				<div class="h1under left"></div>
-				<div class="h1under right"></div>
-				<h1></h1>
-				<div class="inner">
-					<a class="map-link" href="" style="float: left;"><img class="map" /></a>
-					<div class="details">
-						<div class="address one"></div>
-						<div class="address two"></div>
-						<br />
-						<div class="phone"></div>
-						<div class="url"></div>
-						<!--div class="price"><strong>Hours:</strong> Daily 5am-10pm</div-->
-					</div>
-					<div class="menu">
-
-						<ul class="tabs">
-							<li class="selected">events</li>
-							<li>description</li>
-							<!--li>details</li-->
-							<!--li>gallery</li-->
-							<!--li>comments <strong>(2)</strong></li-->
-						</ul>
-						<div class="events-list selected">
-							<ul class="events">
-								<% eventListElement(nil, nil) %>
-							</ul>
-							<ul class="events-seed1">
-								<% venueEventListElement(nil, nil) %>
-							</ul>
-							<ul class="events-seed2">
-								<% venueEventListElement(nil, nil) %>
-							</ul>
-						</div>
-						<div class="description"></div>
-						<!--div>details</div-->
-						<!--div>gallery</div-->
-						<!--div>comments</div-->
-					</div>
-				</div>
+			</div>
+		</div>
+	</div>
+	<div class="act mode">
+		<div class="overlay">
+			<div class="window">
 			</div>
 		</div>
 	</div>

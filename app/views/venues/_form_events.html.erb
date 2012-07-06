@@ -10,17 +10,6 @@
 <% @week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] %>
 
 <%= form_for @venue, :url => "/venues/update/" + @venue.id.to_s , :validate => true do |f| %>
-  <% if @venue.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@venue.errors.count, "error") %> prohibited this venue from being saved:</h2>
-
-      <ul>
-      <% @venue.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
   <% @i = 0; @venue.events.sort_by{ |event| event.id || 0 }.each do |event| %>
     <% @iStrName = "venue[events_attributes][" + @i.to_s + "][tag_ids][]" %>
     <% @iStrId = "venue_events_attributes_" + @i.to_s + "_tag_ids_" %>

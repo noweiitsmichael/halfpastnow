@@ -61,8 +61,9 @@
     </div>
     <%= yield :body %>
   </div>
-  <%= yield :overlay %>
-
+  <div id="overlays">
+    <%= yield :overlay %>
+  </div>
   <div class="slide-out-div">
 	<a class="handle" href="http://link-for-non-js-users.html">Content</a>
 	<h3>Got some feedback?</h3>

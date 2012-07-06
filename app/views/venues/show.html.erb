@@ -1,14 +1,37 @@
-<p id="notice"><%= notice %></p>
+<% @day_of_week = ['SUN','MON','TUE','WED','THU','FRI','SAT'] %>
+<% content_for :title do %><%= @venue.name %><% end %>
 
-<p>
-  <b>Name:</b>
-  <%= @venue.name %>
-</p>
-
-<p>
-  <b>Description:</b>
-  <%= @venue.description %>
-</p>
-
-<%= link_to 'Edit', edit_venue_path(@venue) %> |
-<%= link_to 'Back', venues_path %>
+<% content_for :body do %>
+	<div class="col-1">
+		<% unless @venue.description.to_s.empty? %>
+			<div class="description block">
+				<h2>Details</h2>
+				<div class="block-inner">
+					<%= raw(@venue.description) %>
+				</div>
+			</div>
+		<% end %>
+		<% unless @occurrences.length == 0 && @recurrences.length == 0 %>
+			<div class="calendar block">
+				<h2>Calendar</h2>
+				<div class="block-inner">
+					<%= render :partial => "events/calendar", :locals => { :occurrences => @occurrences, :recurrences => @recurrences, :options => { :venue => false } } %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<div class="col-2">
+		<div class="block">
+			<a class="map-link" href="http://maps.google.com/maps?q=<%= @venue.latitude %>,<%= @venue.longitude %>" style="float: left;"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=402x300&zoom=15&maptype=roadmap&markers=color:red%7C<%= @venue.latitude %>,<%= @venue.longitude %>&style=feature:all|hue:0x000001|saturation:-50&sensor=false"/></a>
+			<div class="block-inner">
+				<div><strong><%= @venue.name %></strong></div>				
+				<div><%= @venue.address %></div>
+				<div><%= @venue.city + ", " + @venue.state + " " + @venue.zip.to_s %></div>
+				<% unless @venue.phonenumber.to_s.empty? && @venue.url.to_s.empty? %><br /><% end %>
+				<div><%= @venue.phonenumber %></div>
+				<div><a href="<%= @venue.url %>"><%= @venue.url %></a></div>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+<% end %>

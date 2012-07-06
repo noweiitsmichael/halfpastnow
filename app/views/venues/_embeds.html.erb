@@ -1,0 +1,45 @@
+<script type="text/javascript">
+	$(function() {
+		$("#add-embed").click(function() {
+			var embedIndex = ((typeof $('.embeds.field').last().attr("index") !== 'undefined') ? parseInt($('.embeds.field').last().attr("index")) + 1 : 0);
+			var firstEmbed = $('.embeds.field').first();
+			$('.embeds.field').last().after(firstEmbed.clone());
+			$('.embeds.field').last().find("input").attr('name','act[embeds_attributes][' + embedIndex + '][primary]');
+			$('.embeds.field').last().find("textarea").attr('name','act[embeds_attributes][' + embedIndex + '][source]');
+			$('.embeds.field').last().show();
+			return false;
+		});
+
+		$('.acts.mode .window').on("click", ".remove-embed", function() {
+			var index = $(this).parents(".embeds.field").attr("index");
+			if(typeof index !== 'undefined') {
+				$(this).after("<input type='hidden' name='act[embeds_attributes][" + index + "][_destroy]' value='1' />");
+				$(this).parents(".embeds.field").hide();
+			} else {
+				$(this).parents(".embeds.field").remove();
+			}
+			return false;
+		});
+	});
+</script>
+<div class="field">
+	<button id="add-embed">Add Embed</button>
+</div>
+<div class="embeds field" style="display:none;">
+	<label>
+		<input type="checkbox" />
+		<div class="remove-embed">&#10799;</div>
+	</label>
+	<textarea></textarea>
+</div>
+<% act.embeds.each_with_index do |embed, index| %>
+<div class="embeds field" index="<%= index %>">
+	<input type="hidden" name="act[embeds_attributes][<%= index %>][id]" value="<%= embed.id %>" />
+	<label>
+		<input type="hidden" name="act[embeds_attributes][<%= index %>][primary]" value="0"/>
+		<input type="checkbox" name="act[embeds_attributes][<%= index %>][primary]" <%= embed.primary ? "checked='checked'" : "" %> value="1"/>
+		<div href="" class="remove-embed">&#10799;</div>
+	</label>
+	<textarea name="act[embeds_attributes][<%= index %>][source]"><%= embed.source %></textarea>
+</div>
+<% end %>

@@ -1,0 +1,36 @@
+<script type="text/javascript">
+	$(function() {
+		$('#raw-events .event-element .toggler').click(function() {
+			var toggler = $(this);
+			var obj = $(this).parent('.event-element');
+			if(obj.hasClass('compact')) {
+				obj.removeClass('compact').addClass('expanded');
+				var form = obj.find("form.new_event");
+				if(form.length > 0) {
+					form.show();
+				} else {
+					$.get('/venues/rawEvent/' + obj.attr("objectID"), function(data) {
+						obj.append(data);
+						obj.incomingForm();
+					});
+				}
+				toggler.html("&ndash;");
+			} else {
+				obj.removeClass('expanded').addClass('compact');
+				obj.find("form.new_event").hide();
+				toggler.html("+");
+			}
+			return false;
+		});
+	});
+</script>
+<div id="raw-events">
+<% @venue.raw_venues.collect { |rv| rv.raw_events }.flatten.select{ |re| !(re.deleted || re.submitted) }.sort_by{ |re| re.start }.each do |raw_event| %>
+	<div class="compact event-element" objectID="<%= raw_event.id %>">
+		<div class="time"><%= raw_event.start.to_time.strftime("%b %-d @ %-I:%M%P") %></div>
+		<div class="title"><%= raw_event.title %><a href="<%= raw_event.url %>" class="from">[<%= raw_event.from %>]</a></div>
+		<div class="description"><%= raw_event.description %></div>
+		<a href="" class="toggler">+</a>
+	</div>
+<% end %>
+</div>

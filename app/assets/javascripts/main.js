@@ -68,7 +68,6 @@ $(function() {
   });
 
   $('.mode .overlay').click(closeMode);
-  $('.mode .close-btn').click(closeMode);
 
   $('.mode .overlay .window').click(function(event) {
     event.stopPropagation();
@@ -96,9 +95,11 @@ $(function() {
   $(window).resize(showPageMarkers);
   $(window).resize(lockMap);
 
-  // oh god what a grody hack. TODO: find out why this happens and fixitfixitfixit
-  $('#content .main .inner .events, .venue.mode .events').on("click", ".linkto", loadModal);
-  $(".window .linkto").click(loadModal);
+  // // oh god what a grody hack. TODO: find out why this happens and fixitfixitfixit
+  // $('#content .main .inner .events, .venue.mode .events').on("click", ".linkto", loadModal);
+  // $(".window .linkto").click(loadModal);
+  $("#content .main .inner .events").on("click", ".linkto", loadModal);
+  // $("#overlays").on("click", ".linkto", loadModal);
 
 
   if($("#map").length > 0)
@@ -289,7 +290,7 @@ function pullEvents() {
     for(var i in events) {
       var start = Date.parse(events[i].occurrences[0].start.substr(0,19));
       var li = $($('#content .main .inner .events-seed li:last-child').clone().wrap('<ul>').parent().html());
-      li.find(".name").attr("href", events[i].id);
+      li.find(".name").attr("href", events[i].occurrences[0].id);
       li.find(".index").html(parseInt(i) + 1);
       li.find(".mod").html(start.toString("MMMdd").toUpperCase());
       li.find(".day").html(day_of_week[events[i].occurrences[0].day_of_week]);
@@ -364,6 +365,7 @@ function lockMap() {
 }
 
 function loadModal(event) {
+  console.log("loadModal");
   var thing = {type:$(this).attr("linkto"), id: $(this).attr("href")};
   history.pushState(thing, thing.type + " mode", "?" + thing.type + "_id=" + thing.id);
   if($(this).is("#content .main .events li .venue")) {
@@ -381,6 +383,8 @@ function parsequery(query) {
     return { type: "venue", id: queryArr[1] };
   } else if(queryArr[0] == "event_id") {
     return { type: "event", id: queryArr[1] };
+  } else if(queryArr[0] == "act_id") {
+    return { type: "act", id: queryArr[1] };
   } else {
     return null;
   }
@@ -411,118 +415,31 @@ function modal(thing) {
   }
   
   if(thing.type === "event") {
-    $.getJSON('/events/show/' + thing.id + '.json', function(event) {
-      start = Date.parse(event.occurrences[0].start.substr(0,19));
-      end = event.occurrences[0].end ? Date.parse(event.occurrences[0].end.substr(0,19)) : null;
-      
-      $('.mode.event .time.one').html(start.toString("dddd, MMMM d"));
-      $('.mode.event .time.two').html((start.toString("h:mmtt") + (end ? " to " + end.toString('h:mmtt') : "")).toLowerCase());
-      $('.mode.event h1').html(event.title);
-      $('.mode.event .venue a').html(event.venue.name);
-      $('.mode.event .venue a').attr("href", event.venue.id);
-      $('.mode.event .address.one').html(event.venue.address);
-      $('.mode.event .address.two').html(event.venue.city + ", " + event.venue.state + " " + event.venue.zip);
-      $('.mode.event .price').html(event.price ? "<strong>Price: </strong> <span>" + (event.price > 0 ? "$" + parseFloat(event.price).toFixed(2) : "FREE") + "</span>" : "");
-      $('.mode.event .map').attr("src","http://maps.googleapis.com/maps/api/staticmap?size=430x170&zoom=15&maptype=roadmap&markers=color:red%7C" + event.venue.latitude  +  "," + event.venue.longitude + "&style=feature:all|hue:0x000001|saturation:-50&sensor=false");
-      $('.mode.event .map-link').attr("href","http://maps.google.com/maps?q=" + event.venue.latitude  + "," + event.venue.longitude);
-      $('.mode.event .description').html(event.description);
+    $.get('/events/show/' + thing.id , function(data) {
+      $(".mode .linkto, .mode .close-btn").off();
       $('.mode').hide();
-      $('.mode.venue .description').html("");
+      $('.mode.event .window').html(data);
+      $('.mode .linkto').click(loadModal);
+      $('.mode .close-btn').click(closeMode);
       $('.mode.event').show();
     });
-  } else {
-    $.getJSON('/venues/show/' + thing.id + '.json', function(venueInfo) {
-      venue = $.parseJSON(venueInfo.venue);
-      recurrences = $.parseJSON(venueInfo.recurrences);
-      occurrences = $.parseJSON(venueInfo.occurrences);
-      var week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] ;
-      
-      var li;
-      $('.venue.mode .overlay .window .inner .menu .selected .events').empty();
-      
-      $('.venue.mode .overlay .window .inner .menu .selected .events-seed1 li:not(:first-child)').each(function() {
-        $(this).remove();
-      });
-    
-      $('.venue.mode .overlay .window .inner .menu .selected .events-seed2 li:not(:first-child)').each(function() {
-        $(this).remove();
-      });
-      console.log(recurrences);
-      // For recurrences
-      if(recurrences.length > 0) {
-        for (var i in recurrences) {
-          var event = recurrences[i].event;
-          var startTime = Date.parse(recurrences[i].start.substr(0,19));
-          
-          var mod = "EVERY " + ((recurrences[i].every_other == 0) ? "" : ((recurrences[i].every_other == 1) ? "OTHER" : to_ordinal(recurrences[i].every_other)));
-          var day = (recurrences[i].day_of_week != null && recurrences[i].week_of_month != null) ? 
-            "<sup>" + to_ordinal(recurrences[i].week_of_month) + "</sup> " + day_of_week[recurrences[i].day_of_week] :
-            ((recurrences[i].day_of_month != null) ? 
-              "<sup class='day-of-month'>" + to_ordinal(recurrences[i].day_of_month) + "</sup>" :
-              ((recurrences[i].day_of_week != null) ? 
-                day_of_week[recurrences[i].day_of_week] : 
-                "DAY"));
-          var time = startTime.toString("hh:mmtt").toLowerCase();
-          
-          li=$($('.venue.mode .overlay .window .inner .menu .selected .events-seed1 li:last-child').clone().wrap('<ul>').parent().html());
-          li.addClass("recurrence");
-          li.find(".mod").html(mod);
-          li.find(".day").html(day);
-          li.find(".time").html(time);
-          li.find(".name").attr("href", event.id);
-          li.find(".name").html(event.title);
-          li.find(".one .description").html(strip(event.description));
-          li.appendTo('.venue.mode .overlay .window .inner .menu .selected .events-seed1');
-        }
-      
-        $('.venue.mode .overlay .window .inner .menu .selected .events-seed1 li:not(:first-child)').each(function() {
-          $(this).appendTo('.venue.mode .overlay .window .inner .menu .selected .events');
-        });
-      }
-
-      // For occurrences
-      if(occurrences.length > 0) {
-        for (var i in occurrences){
-          var event = occurrences[i].event;
-          var startTime = Date.parse(occurrences[i].start.substr(0,19));
-          var dateString = startTime.toString("MMMdd").toUpperCase();
-          
-          li=$($('.venue.mode .overlay .window .inner .menu .selected .events-seed2 li:last-child').clone().wrap('<ul>').parent().html());
-          li.find(".mod").html(dateString);
-          li.find(".day").html(day_of_week[occurrences[i].day_of_week]);
-          li.find(".time").html(startTime.toString("hh:mmtt").toLowerCase());
-          li.find(".name").attr("href", event.id);
-          li.find(".name").html(event.title);
-          li.find(".one .description").html(strip(event.description));
-          li.appendTo('.venue.mode .overlay .window .inner .menu .selected .events-seed2');
-        }
-        
-        $('.venue.mode .overlay .window .inner .menu .selected .events-seed2 li:not(:first-child)').each(function() {
-          $(this).appendTo('.venue.mode .overlay .window .inner .menu .selected .events');
-        });
-      }
-
-      $('.mode.venue h1').html(venue.name);
-      $('.mode.venue .address.one').html(venue.address);
-      $('.mode.venue .address.two').html(venue.city + ", " + venue.state + " " + venue.zip);
-      $('.mode.venue .map').attr("src","http://maps.googleapis.com/maps/api/staticmap?size=430x170&zoom=15&maptype=roadmap&markers=color:red%7C" + venue.latitude  +  "," + venue.longitude + "&style=feature:all|hue:0x000001|saturation:-50&sensor=false");
-      $('.mode.venue .map-link').attr("href","http://maps.google.com/maps?q=" + venue.latitude  + "," + venue.longitude);
-      $('.mode.venue .menu > .description').html(venue.description);
-      if (venue.phonenumber) { 
-        $('.mode.venue .phone').html("<strong>Phone:</strong> <span>" + venue.phonenumber + "</span>");
-      }
-      //$('.mode.venue .url a').html(venue.name);
-      //$('.mode.venue .url a').attr("href", venue.url);
-      if (venue.url) {
-          $('.mode.venue .url').html("<strong>Website:</strong> <a href='' linkto='venue'>" + venue.name + "</a>");
-          $('.mode.venue .url a').attr("href", venue.url);
-        }
-
+  } else if (thing.type === "venue") {
+    $.get('/venues/show/' + thing.id, function(data) {
+      $(".mode .linkto, .mode .close-btn").off();
       $('.mode').hide();
-      $('.mode.event .description').html("");
+      $('.mode.venue .window').html(data);
+      $('.mode .linkto').click(loadModal);
+      $('.mode .close-btn').click(closeMode);
       $('.mode.venue').show();    
-      $('.venue.mode .overlay .window .inner .menu .selected .events-seed2').hide();
-      $('.venue.mode .overlay .window .inner .menu .selected .events-seed1').hide();
+    });
+  } else if (thing.type === "act") {
+    $.get('/acts/show/' + thing.id, function(data) {
+      $(".mode .linkto, .mode .close-btn").off();
+      $('.mode').hide();
+      $('.mode.act .window').html(data);
+      $('.mode .linkto').click(loadModal);
+      $('.mode .close-btn').click(closeMode);
+      $('.mode.act').show();
     });
   }
 }

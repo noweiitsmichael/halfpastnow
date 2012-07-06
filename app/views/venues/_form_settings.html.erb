@@ -74,7 +74,7 @@
     </div>
     <div class="field">
       <%= f.label :description %>
-      <%= f.text_area :description %>
+      <%= f.text_area :description, :class => 'cleditor' %>
     </div>
     <div class="field">
       <%= f.label :phonenumber %>
@@ -100,10 +100,10 @@
       <%= f.label :zip %>
       <%= f.text_field :zip, :class => 'location required' %>
     </div>
+    <% if false %>
     <div class="tags field">
     <label>Tags</label>
     <div class="input-tags">
-
     <% @parentTags.each do |tag| %>
       <div class="parent tag">
         <%= check_box_tag "venue[tag_ids][]", tag.id, @venue.tags.include?(tag), :id => "venue_tag_ids_" + tag.id.to_s %>
@@ -120,6 +120,7 @@
     <% end %>
     </div>
   </div>
+  <% end %>
     <%= f.hidden_field :latitude %>
     <%= f.hidden_field :longitude %>
   </div>

@@ -1,0 +1,60 @@
+<% content_for :title do %><%= @event.title %><% end %>
+
+<% content_for :body do %>
+	<ul class="sub-header">
+		<li><%= @occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
+		<% if @event.price %>
+			<li><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 2) : "FREE" %></li>
+		<% end %>
+		<% unless @event.tags.length == 0 %>
+			<li><%= @event.tags.collect { |tag| tag.name } * " / " %></li>
+		<% end %>
+	</ul>
+	<div class="col-1">
+		<% unless @event.description.to_s.empty? %>
+			<div class="description block">
+				<h2>Details</h2>
+				<div class="block-inner">
+					<%= raw(@event.description) %>
+				</div>
+			</div>
+		<% end %>
+		<% unless @event.acts.length == 0 %>
+			<div class="featuring block">
+				<h2>Featuring</h2>
+				<div class="block-inner">
+					<% @event.acts.each_with_index do |act,index| %>
+						<span href="<%= act.id %>" linkto="act" class="linkto act-name"><%= act.name %></span><%= (index != @event.acts.length - 1) ? ", " : "" %>
+					<% end %>
+					<div class="embeds">
+					<% @event.acts.each do |act| %>
+						<% act.embeds.select { |e| e.primary }.each do |embed| %>
+							<div class="embed-act-name"><%= act.name %></div>
+							<%= raw(embed.source) %>
+						<% end %>
+					<% end %>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<div class="col-2">
+		<div class="block">
+			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=402x300&zoom=15&maptype=roadmap&markers=color:red%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&style=feature:all|hue:0x000001|saturation:-50&sensor=false"/></a>
+			<div class="block-inner">
+				<div class="venue"><a linkto="venue" href="<%= @event.venue.id %>" class="linkto"><%= @event.venue.name %></a></div>
+				<div class="address one"><%= @event.venue.address %></div>
+				<div class="address two"><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></div>
+			</div>
+		</div>
+		<% unless @occurrences.length == 0 && @recurrences.length == 0 %>
+		<div class="calendar block">
+			<h2>Other Times</h2>
+			<div class="block-inner">
+				<%= render :partial => "events/calendar", :locals => { :occurrences => @occurrences, :recurrences => @recurrences, :options => { :datetime_only => true } } %>
+			</div>
+		</div>
+		<% end %>
+	</div>
+	<div class="clear"></div>
+<% end %>

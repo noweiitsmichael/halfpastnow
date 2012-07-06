@@ -1,0 +1,38 @@
+<% @day_of_week = ['SUN','MON','TUE','WED','THU','FRI','SAT'] %>
+<% content_for :title do %><%= @act.name %><% end %>
+
+<% content_for :body do %>
+	<ul class="sub-header">
+		<% unless @act.tags.length == 0 %>
+			<li><%= @act.tags.collect { |tag| tag.name } * " / " %></li>
+		<% end %>
+	</ul>
+	<div class="col-1">
+		<% unless @act.description.to_s.empty? %>
+			<div class="description block">
+				<h2>Details</h2>
+				<div class="block-inner">
+					<%= raw(@act.description) %>
+				</div>
+			</div>
+		<% end %>
+		<% unless @act.embeds.length == 0 %>
+			<div class="embeds block">
+				<div class="block-inner">
+					<% @act.embeds.select { |e| e.primary }.each do |embed| %>
+						<%= raw(embed.source) %>
+					<% end %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<div class="col-2">
+		<div class="calendar block">
+			<h2>Calendar</h2>
+			<div class="block-inner">
+				<%= render :partial => "events/calendar", :locals => { :occurrences => @occurrences, :recurrences => @recurrences } %>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+<% end %>
