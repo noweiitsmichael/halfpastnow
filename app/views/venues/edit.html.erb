@@ -1,40 +1,55 @@
-<script type="text/javascript">
-  $(function() {
-    $('.menu').click(function() {
-      $(this).parent().children('.menu').removeClass('selected');
-      $(this).addClass('selected');
+<div id="body">
+  <script type="text/javascript">
+    var win;
+    $(function() {
+      $('.menu').click(function() {
+        $(this).parent().children('.menu').removeClass('selected');
+        $(this).addClass('selected');
 
-      $('.tab').removeClass('selected');
-      if($(this).hasClass('events')) {
-      	$('.tab.events').addClass('selected');
-      } else if($(this).hasClass('settings')) {
-        $('.tab.settings').addClass('selected');
-      } else {
-        $('.tab.raw_events').addClass('selected');
-      }
-	  return false;
+        $('.tab').removeClass('selected');
+        if($(this).hasClass('events')) {
+        	$('.tab.events').addClass('selected');
+        } else if($(this).hasClass('settings')) {
+          $('.tab.settings').addClass('selected');
+        } else {
+          $('.tab.raw_events').addClass('selected');
+        }
+  	  return false;
+      });
+
+
+      //$('body').layout({ applyDefaultStyles: true });
+
+      //win = window.open("<%= @venue.events_url %>", "Window", "width=900,height=1000,left=1100,toolbar=1,scrollbars=1");
     });
-  });
-</script>
-<style type="text/css">
-  .tab { display: none; margin-bottom:50px; }
-  .tab.selected { display: block; }
-  .menu.selected { color: black; text-decoration: none; }
-</style>
-<a href="/venues">&lt; Back</a>
-<h1><%= @venue.name %></h1>
-<% if @venue.url && @venue.url != "" %>
-  <h3>(<a href="<%= @venue.url %>"><%= @venue.url %></a>)</h3>
-<% end %>
-<h3><a href='#' class='menu settings selected'>Settings</a> | <a href='#' class='menu events'>Events</a> | <a href='#' class='menu raw_events'>Raw Events</a></h3>
+  </script>
+  <style type="text/css">
+    .tab { display: none; margin-bottom:50px; }
+    .tab.selected { display: block; }
+    .menu.selected { color: black; text-decoration: none; }
+  </style>
+  <a href="/venues">&lt; Back</a>
+  <h1><%= @venue.name %></h1>
+  <% if @venue.url && @venue.url != "" %>
+    <h3>(<a href="<%= @venue.url %>"><%= @venue.url %></a>)</h3>
+  <% end %>
+  <h3><a href='#' class='menu settings selected'>Settings</a> | <a href='#' class='menu events'>Events</a> | <a href='#' class='menu raw_events'>Raw Events</a></h3>
 
 
-<div class="tab settings selected">
-  <%= render 'form_settings' %>
+  <div class="tab settings selected">
+    <%= render 'form_settings' %>
+  </div>
+  <div class="tab events">
+    <%= render 'form_events2' %>
+  </div>
+  <div class="tab raw_events">
+    <%= render 'form_raw_events2' %>
+  </div>
 </div>
-<div class="tab events">
-  <%= render 'form_events' %>
-</div>
-<div class="tab raw_events">
-  <%= render 'form_raw_events' %>
-</div>
+
+  <div class="acts mode">
+    <div class="overlay">
+      <div class="window">
+      </div>
+    </div>
+  </div>

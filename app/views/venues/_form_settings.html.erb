@@ -43,6 +43,25 @@
 
 <% @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}) %>
 
+<% if @venue.id %>
+ <% @do512RawVenue = @venue.raw_venues.find { |rv| rv.from == "do512" } %>
+ <% if @do512RawVenue %>
+  <a href="" onclick="$(this).hide();$('#do512-form').show();return false;">Edit Do512 RSS feed link</a>
+  <form action="/venues/editRawVenue/<%= @venue.id %>" style="display:none;" id="do512-form">
+    <label>Do512 RSS feed link</label>
+    <input type="text" name="rawVenueFullString" style="width:250px;" value="<%= @do512RawVenue.events_url %>"/>
+    <input type="submit" />
+  </form>
+  <% else %>
+  <a href="" onclick="$(this).hide();$('#do512-form').show();return false;">Link with Do512 RSS feed</a>
+  <form action="/venues/editRawVenue/<%= @venue.id %>" style="display:none;" id="do512-form">
+    <label>Venue URL String</label>
+    <input type="text" name="rawVenueString" style="width:250px;"/>
+    <input type="submit" />
+  </form>
+  <% end %>
+<% end %>
+
 <%= form_for @venue, :url => @venue.id ? "/venues/update/" + @venue.id.to_s : "/venues/create", :html => { :id => "venue_settings" } do |f| %>
    <div class="main settings">
     <div class="field">
@@ -55,7 +74,7 @@
     </div>
     <div class="field">
       <%= f.label :description %>
-      <%= f.text_area :description %>
+      <%= f.text_area :description, :class => 'cleditor' %>
     </div>
     <div class="field">
       <%= f.label :phonenumber %>
@@ -81,10 +100,10 @@
       <%= f.label :zip %>
       <%= f.text_field :zip, :class => 'location required' %>
     </div>
+    <% if false %>
     <div class="tags field">
     <label>Tags</label>
     <div class="input-tags">
-
     <% @parentTags.each do |tag| %>
       <div class="parent tag">
         <%= check_box_tag "venue[tag_ids][]", tag.id, @venue.tags.include?(tag), :id => "venue_tag_ids_" + tag.id.to_s %>
@@ -101,6 +120,7 @@
     <% end %>
     </div>
   </div>
+  <% end %>
     <%= f.hidden_field :latitude %>
     <%= f.hidden_field :longitude %>
   </div>

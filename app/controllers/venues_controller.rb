@@ -37,29 +37,29 @@ class VenuesController < ApplicationController
   # GET /venues/1.json
   def show
     @venue = Venue.find(params[:id])
-    puts "venue_id "
-    puts  params[:id]
+
     @venue.clicks += 1
     @venue.save
-    @jsonOccs  = []
-    @jsonRecs = []
-    @occurrences = @venue.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now }  }.flatten.sort_by { |occ| occ.start }
-    @occurrences.each do |occ|
+    @occurrences  = []
+    @recurrences = []
+    @occs = @venue.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now }  }.flatten.sort_by { |occ| occ.start }
+    @occs.each do |occ|
       # check if occurrence is instance of a recurrence
       if occ.recurrence_id.nil?
-        @jsonOccs << occ
+        @occurrences << occ
       else
-        if @jsonRecs.index(occ.recurrence).nil?
-          @jsonRecs << occ.recurrence
+        if @recurrences.index(occ.recurrence).nil?
+          @recurrences << occ.recurrence
         end
       end
     end
-    puts "jsonrecs:"
-    pp @jsonRecs
 
     respond_to do |format|
-      format.json { render json: { :occurrences => @jsonOccs.to_json(:include => :event), :recurrences => @jsonRecs.to_json(:include => :event), :venue => @venue.to_json } } 
-      format.mobile { render json: { :occurrences => @jsonOccs.to_json(:include => :event), :recurrences => @jsonRecs.to_json(:include => :event), :venue => @venue.to_json } } 
+
+      format.html { render :layout => "mode" }
+      format.json { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), :venue => @venue.to_json } } 
+      format.mobile { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), :venue => @venue.to_json } } 
+
     end
   end
 
@@ -96,7 +96,7 @@ class VenuesController < ApplicationController
     end
 
     @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
-    
+
   end
 
   # POST /venues
@@ -106,11 +106,9 @@ class VenuesController < ApplicationController
 
     respond_to do |format|
       if @venue.save
-        puts "here save"
         format.html { redirect_to action: :index }
         format.json { render json: @venue, status: :created, location: @venue }
       else
-        puts "here not save"
         format.html { render action: "new" }
         format.json { render json: @venue.errors, status: :unprocessable_entity }
       end
@@ -142,39 +140,49 @@ class VenuesController < ApplicationController
     end
   end
 
-  
-
   # GET /venues/new
   # GET /venues/new.json
   def fromRaw
-    # result = RubyProf.profile do
-
     @venue = Venue.find(params[:id])
 
     @event = @venue.events.build()
     @event.update_attributes(params[:event])
     @event.user_id = current_user.id
-
-
-
+    
     if @event.save
       @raw_event = RawEvent.find(params[:raw_event_id])
       @raw_event.submitted = true
-      if @raw_event.save
-        render json: true
-      else
-        render json: false
-      end
+      @raw_event.save
+      render json: {:event_id => @event.id, :event_title => @event.title}
     else
-      render json: false
+      render json: {:event_id => nil}
+    end
+  end
+
+  def editRawVenue
+    @venue = Venue.includes(:raw_venues).find(params[:id])
+
+    events_url = ""
+    if(!params[:rawVenueString].to_s.empty?)
+      events_url = "http://do512.com/venue/#{params[:rawVenueString]}?format=xml"
+    elsif(!params[:rawVenueFullString].to_s.empty?)
+      events_url = params[:rawVenueFullString]
+    else
+      redirect_to :action => :edit, :id => @venue.id, :notice => 'boo'
     end
 
+    raw_venue = @venue.raw_venues.find { |rv| rv.from == "do512" }
+    if(!raw_venue)
+      raw_venue = @venue.raw_venues.build(:from => "do512", :events_url => events_url)
+    else 
+      raw_venue.events_url = events_url
+    end
 
-    # end
-
-    # File.open "/home/rumblerob/workspace/rails_projects/halfpastnow/tmp/profile-graph.html", 'w' do |file|
-    #   RubyProf::GraphHtmlPrinter.new(result).print(file)
-    # end
+    if raw_venue.save
+      redirect_to :action => :edit, :id => @venue.id, :notice => 'yay'
+    else
+      redirect_to :action => :edit, :id => @venue.id, :notice => 'boo'
+    end
   end
 
   # DELETE /venues/1
@@ -187,5 +195,113 @@ class VenuesController < ApplicationController
       format.html { redirect_to venues_url }
       format.json { head :ok }
     end
+  end
+
+  def deleteRawEvent
+    @raw_event = RawEvent.find(params[:id])
+    @raw_event.deleted = true
+    @raw_event.save
+
+    render json: {:event_id => @raw_event.id }
+  end
+
+  def deleteEvent
+    @event = Event.find(params[:id])
+    @event.destroy
+
+    render json: {:event_id => @event.id }
+  end
+
+  def rawEvent
+    @rawEvent = RawEvent.find(params[:id])
+
+    @venue = @rawEvent.raw_venue.venue
+
+    @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
+    
+    render :layout => false
+  end 
+
+  def event
+
+    if(params[:id].to_s.empty?)
+      @venue = Venue.find(params[:venue_id])
+      @event = @venue.events.build
+    else
+      @event = Event.find(params[:id])
+      @venue = @event.venue
+    end
+
+    @event.occurrences.build
+    @event.recurrences.build
+
+    @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
+    
+    render :layout => false
+  end 
+
+  def eventEdit
+    @venue = Venue.find(params[:venue_id])
+    if(params[:id].to_s.empty?)
+      @event = @venue.events.build
+    else
+      @event = Event.find(params[:id])
+      params[:event]["user_id"] = current_user.id
+    end
+
+    respond_to do |format|
+      if @event.update_attributes!(params[:event])
+        format.html { redirect_to :action => :edit, :id => @venue.id, :notice => 'yay' }
+        format.json { render json: { :from => "eventEdit", :result => true } }
+      else
+        format.html { redirect_to :action => :edit, :id => @venue.id, :notice => 'boo' }
+        format.json { render json: { :from => "eventEdit", :result => false } }
+      end
+    end
+  end
+
+  # GET /venues/find
+  def actFind
+
+    if(params[:contains])
+      @acts = Act.where("name ilike ?", "%#{params[:contains]}%").collect {|a| { :name => "#{a.name}", :text => "#{a.name}", :id => a.id, :tags => (a.tags.collect { |t| t.id.to_s } * ",") } }
+    else
+      @acts = []
+    end
+
+    render json: @acts
+  end
+
+  def actCreate
+    
+    if (params[:act][:id].to_s.empty?)
+      @act = Act.new()
+    else
+      @act = Act.find(params[:act][:id])
+    end
+
+    @act.update_attributes!(params[:act])
+
+    respond_to do |format|
+      if @act.save
+        format.html { redirect_to :action => :index, :notice => 'yay' }
+        format.json { render json: { :name => @act.name, :text => @act.name, :id => @act.id, :tags => (@act.tags.collect { |t| t.id.to_s } * ",") } }
+      else
+        format.html { redirect_to :action => :index, :notice => 'boo' }
+        format.json { render json: false }
+      end
+    end
+  end
+
+  def actsMode
+    if(params[:id].to_s.empty?)
+      @act = Act.new
+    else
+      @act = Act.find(params[:id])
+    end
+
+    @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
+
+    render :layout => false
   end
 end

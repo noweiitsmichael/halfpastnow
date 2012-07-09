@@ -5,7 +5,7 @@
 
 	<div class="new-occurrence">
 		<%# TODO fix when we start getting lots of occurrences %> 
-		<% @occurrence = event.occurrences.sort_by{ |occurrence| occurrence.id || 0 }.first %>
+		<% @occurrence = event.occurrences.select { |occ| occ.id.nil? }.first %>
 		
 		<%= e.fields_for :occurrences, @occurrence do |o| %>
 			<div class="field">
@@ -20,7 +20,7 @@
 	</div>
 	<div class="new-recurrence" style="display:none;">
 		<%# TODO fix when we start getting lots of recurrences %>
-		<% @recurrence = event.recurrences.sort_by{ |recurrence| recurrence.id || 0 }.first %>
+		<% @recurrence = event.recurrences.select { |rec| rec.id.nil? }.first %>
 		<%= e.fields_for :recurrences, @recurrence do |r| %>
 			
 			<%= r.select :interval, ["Daily","Weekly","Monthly (by day)", "Monthly (by week/day)"].zip((0..3).to_a) %>:&nbsp;&nbsp;

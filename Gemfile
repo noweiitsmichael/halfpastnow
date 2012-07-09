@@ -27,6 +27,9 @@ gem 'client_side_validations'
 
 gem 'htmlentities'
 
+gem 'nokogiri', '>= 1.4.4'
+gem 'sanitize'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -50,5 +53,9 @@ end
 
 gem "ruby-prof", "~> 0.11.2"
 
+
 gem 'mobile-fu'
+
+
+gem 'delayed_job_active_record'
 

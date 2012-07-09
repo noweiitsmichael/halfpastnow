@@ -3,13 +3,22 @@
 	    <% @venue.raw_events.each do |raw_event| %>
 	    	generateValidator("#new_event_<%= raw_event.id %>",{"ajax":true});
 	    <% end %>
+
+	    $('.delete-raw-event').click(function() {
+	    	var obj = $(this);
+	    	$.getJSON("/venues/deleteRawEvent/" + obj.attr('rawEventId'), function() {
+	    		console.log("deleted");
+	    		obj.parents(".new_event").slideUp();
+	    	});
+	    	return false;
+	    });
     });
 </script>
 
 <% @ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] %>
 <% @week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] %>
 <% @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}) %>
-<% @venue.raw_venues.each do |raw_venue| raw_venue.raw_events.select{ |re| !(re.deleted || re.submitted) }.each do |raw_event| %>
+<% @venue.raw_venues.collect { |rv| rv.raw_events }.flatten.select{ |re| !(re.deleted || re.submitted) }.sort_by{ |re| re.start }.each do |raw_event| %>
 	<% event = @venue.events.build(:title => raw_event.title, :description => raw_event.description) 
 	   event.occurrences.push(Occurrence.new(:start => raw_event.start, :end => raw_event.end))
 	   event.recurrences.push(Recurrence.new(:start => raw_event.start, :end => raw_event.end))
@@ -28,7 +37,7 @@
 			  <%= e.text_field :title, :class => "required" %>
 			</div>
 			<div class="field">
-			  <%= e.label :description %>
+			  <label>Description<br /><em style="font-size:small;color:gray;">(make sure to rewrite pre-populated descriptions)</em></label>
 			  <%= e.text_area :description %>
 			</div>
 			<div class="field" minlength="2">
@@ -40,10 +49,10 @@
 
 			<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => event } %>
 
-
 			<div class="actions">
 				<%= e.submit %>
+				<a href="" class="delete-raw-event" rawEventId="<%=raw_event.id%>">Delete Raw Event</a>
 			</div>
 		</div>
 	<% end %>
-<% end end %>
+<% end %>

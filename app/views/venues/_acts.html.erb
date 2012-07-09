@@ -1,0 +1,15 @@
+<% rawEvent = rawEvent || nil %>
+<div class="acts field">
+	<label>Performers</label>
+    <input class="act-names" type="hidden" style="width:600px;" value="<%= event.acts.collect { |a| a.id } * "," %>" event-id="<%= event && event.id ? ("2" + event.id.to_s) : (rawEvent && rawEvent.id ? "1" + rawEvent.id.to_s : "0") %>" />
+    <ul class="act-inits">
+    	<% event.acts.each do |act| %>
+    		<li><%= act.name %></li>
+    	<% end %>
+    </ul>
+    <div class="act-inputs">
+    	<% event.acts.each do |act| %>
+    		<input checked='checked' type='checkbox' id='event_act_ids_<%= act.id %>' name='event[act_ids][]' value='<%= act.id %>'/>
+    	<% end %>
+    </div>
+</div>

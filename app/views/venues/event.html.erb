@@ -1,0 +1,41 @@
+
+<script type="text/javascript">
+	 $(function() {
+	 	generateValidator("#event_<%= @event.id %>",{"ajax":true});
+	 });
+</script>
+
+
+<% @ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] %>
+<% @week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] %>
+<%= form_for @event, :url => "/venues/eventEdit/" + @event.id.to_s, :html => { :id => "event_" + @event.id.to_s } do |e| %>
+	<% @iStrName = "event[tag_ids][]" %>
+
+	<% @iStrId = @event.id ? "event_2#{@event.id.to_s}_tag_ids_" : "event_0_tag_ids_" %>
+    <div class="main event<%= @event.id ? "" : " new"%>">
+    	<%= hidden_field_tag :venue_id, @venue.id %>
+		<div class="field">
+		  <%= e.label :title %>
+		  <%= e.text_field :title, :class => "title required" %>
+		</div>
+		<div class="field">
+		  <%= e.label :description %>
+		  <%= e.text_area :description, :class => "cleditor" %>
+		</div>
+		<div class="field">
+		  <%= e.label :price %>
+		  <%= e.text_field :price, :class => "price" %>
+		</div>
+
+		<%= render :partial => "acts", :locals => { :event => @event } %>
+
+		<%= render :partial => "tags", :locals => { :element => @event } %>
+
+		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => @event } %>
+
+		<div class="actions">
+    		<%= e.submit %>
+    		<% if @event.id %><a href="" class="delete-event" eventId="<%= @event.id %>">Delete Event</a><% end %>
+  		</div>
+    </div>
+<% end %>
