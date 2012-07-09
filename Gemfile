@@ -54,3 +54,5 @@ end
 gem "ruby-prof", "~> 0.11.2"
 
 gem 'delayed_job_active_record'
+
+gem 'therubyracer'

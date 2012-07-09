@@ -12,9 +12,9 @@ namespace :test do
 		first_occurrence = Occurrence.order("start").first
 		difference_in_days = Date.today - first_occurrence.start.to_date
 		Occurrence.all.each do |occurrence| 
-			occurrence.start = occurrence.start.advance({days: difference_in_days})
+			occurrence.start = occurrence.start.advance({:days => difference_in_days})
 			if(occurrence.end)
-				occurrence.end = occurrence.end.advance({days: difference_in_days})
+				occurrence.end = occurrence.end.advance({:days => difference_in_days})
 			end
 			occurrence.save
 		end
