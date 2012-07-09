@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="vertical"
+    >
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal"
+	style="@style/TitleBar"
+	android:layout_width = "fill_parent"
+	android:layout_height="wrap_content"
+	android:gravity="left|top">
+	
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="34.67"
+    android_gravity="left|vertical_center"
+    android:gravity="left"
+    android:orientation="horizontal" >
+
+    <ImageButton
+        style="@style/TitleBarOperation"
+        android:layout_gravity="center"
+        android:layout_marginBottom="4dip"
+        android:layout_marginLeft="4dip"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="5dip"
+        android:background="@drawable/home_bg"
+        android:onClick="onHome"
+        android:paddingBottom="3dip"
+        android:src="@drawable/home_def" />
+
+    <ImageView
+        android:layout_width="1px"
+        android:layout_height="fill_parent"
+        android:layout_marginRight="5dip"
+        android:background="@drawable/separator" />
+
+    <!--
+              <TextView style="@style/TitleBarText" 
+			  android:text="Action Bar" 
+			  android:paddingLeft="8dip"/>
+    -->
+
+    <EditText
+        android:id="@+id/input_text_main"
+        android:layout_width="171dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="8dip"
+        android:layout_marginTop="2dip"
+        android:layout_weight="0.36"
+        android:text=""
+        android:textSize="10sp" />
+
+    <ImageView
+        android:layout_width="1px"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="7dip"
+        android:background="@drawable/separator" />
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_weight="1.20"
+        android:gravity="right"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/searchmain"
+            style="@style/TitleBarOperation"
+            android:layout_marginBottom="4dip"
+            android:layout_marginRight="5dip"
+            android:layout_marginTop="6dip"
+            android:layout_weight="45.65"
+            android:background="@drawable/home_bg"
+            android:onClick="onSearch"
+            android:src="@drawable/search" />
+    </LinearLayout>
+</LinearLayout>
+
+<ImageButton
+    style="@style/TitleBarOperation"
+    android:layout_marginBottom="4dip"
+    android:layout_marginRight="5dip"
+    android:layout_marginTop="6dip"
+    android:layout_weight="23.37"
+    android:background="@drawable/home_bg"
+    android:onClick="onSearchView"
+    android:src="@drawable/m" />
+
+</LinearLayout>	
+	<LinearLayout	xmlns:android="http://schemas.android.com/apk/res/android" 
+					android:orientation="vertical"
+    				android:layout_width="fill_parent"
+    				android:layout_height="fill_parent"
+    				android:scrollbars="vertical"
+    				android:background="@drawable/background">
+
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" >
+
+		    <TextView
+		        android:id="@+id/TextView01"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="0.57"
+		        android:lineSpacingMultiplier="1.0"
+		        android:padding="20dip"
+		        android:text="Choose your days"
+		        android:textColor="#ff29549f"
+		        android:textSize="17sp"
+		        android:textStyle="bold" />
+
+		    <Button
+		        android:id="@+id/resetBtn"
+		        android:layout_width="wrap_content"
+		        android:layout_height="34dp"
+		        android:layout_weight="0.41"
+		        android:text="Reset" />
+
+		</LinearLayout>
+
+	<LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="right"
+	    android:gravity="right"
+	    android:orientation="horizontal" >
+		
+    	<Button
+    	    android:id="@+id/button1"
+    	   android:layout_width="wrap_content" 
+    	    android:layout_height="34dp"
+    	    android:text="Sun" />
+    	<Button
+    	    android:id="@+id/button2"
+    	    android:layout_width="wrap_content" 
+    	  	
+    	  
+    	    android:layout_height="34dp"
+    	    android:text="Mon" />
+    	<Button
+    	    android:id="@+id/button3"
+    	   android:layout_width="wrap_content" 
+    	    android:layout_height="34dp"
+    	    android:text="Tue" />
+    	<Button
+    	    android:id="@+id/button4"
+    	    android:layout_width="50dp"
+    	    android:layout_height="34dp"
+    	    android:text="Wed" />
+    	<Button
+    	    android:id="@+id/button5"
+    	    android:layout_width="wrap_content" 
+    	    android:layout_height="34dp"
+    	    android:text="Thu" />
+
+    	<Button
+    	    android:id="@+id/button6"
+    	    android:layout_width="44dp"
+    	    android:layout_height="34dp"
+    	    android:text="Fri" />
+
+    	<Button
+    	    android:id="@+id/button7"
+    	    android:layout_width="44dp"
+    	    android:layout_height="34dp"
+    	    android:text="Sat" />
+    	</LinearLayout>	
+    	
+   <LinearLayout	xmlns:android="http://schemas.android.com/apk/res/android" 
+					android:orientation="vertical"
+    				android:layout_width="fill_parent"
+    				android:layout_height="fill_parent"
+    				android:scrollbars="vertical"
+    				android:background="@drawable/background">		
+    	
+    	<TextView
+    	    android:id="@+id/search2"
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:lineSpacingMultiplier="1.0"
+    	    android:padding="20dip"
+    	    android:text="Today or Tomorrow"
+    	    android:textColor="#ff29549f"
+    	    android:textSize="17sp"
+    	    android:textStyle="bold" />
+
+    	<LinearLayout
+    	    xmlns:android="http://schemas.android.com/apk/res/android"
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_gravity="right"
+    	    android:gravity="right"
+    	    android:orientation="horizontal" >
+
+    	    <Button
+    	        android:id="@+id/todayBtn"
+    	        android:layout_width="wrap_content"
+    	        android:layout_height="34dp"
+    	        android:layout_weight="0.32"
+    	        android:text="Today" />
+
+    	    <Button
+    	        android:id="@+id/tomorrowBtn"
+    	        android:layout_width="wrap_content"
+    	        android:layout_height="34dp"
+    	        android:layout_weight="0.18"
+    	        android:text="Tomorrow" />
+
+    	</LinearLayout>
+    	
+  
+    <LinearLayout	xmlns:android="http://schemas.android.com/apk/res/android" 
+					android:orientation="vertical"
+    				android:layout_width="fill_parent"
+    				android:layout_height="fill_parent"
+    				android:scrollbars="vertical"
+    				android:background="@drawable/background">		
+    	
+    	<TextView 
+          android:id="@+id/search3" 
+          android:layout_width="wrap_content" 
+    	  android:layout_height="wrap_content"
+          android:textSize="17sp"
+          android:padding= "20dip"
+	      android:textStyle="bold" 
+	      android:textColor="#ff29549f"
+	      android:lineSpacingMultiplier="1.0"
+	      android:text ="Choose your prices" />
+
+    	 <LinearLayout
+    	     xmlns:android="http://schemas.android.com/apk/res/android"
+    	     android:layout_width="fill_parent"
+    	     android:layout_height="wrap_content"
+    	     android:layout_gravity="right"
+    	     android:gravity="right"
+    	     android:orientation="horizontal" >
+
+    	     <Button
+    	         android:id="@+id/price0"
+    	         android:layout_width="wrap_content"
+    	         android:layout_height="34dp"
+    	         android:layout_weight="0.12"
+    	         android:text="Free" />
+
+    	     <Button
+    	         android:id="@+id/price1"
+    	         android:layout_width="wrap_content"
+    	         android:layout_height="34dp"
+    	         android:layout_weight="0.14"
+    	         android:text="$" />
+
+    	     <Button
+    	         android:id="@+id/price2"
+    	         android:layout_width="wrap_content"
+    	         android:layout_height="34dp"
+    	         android:layout_weight="0.08"
+    	         android:text="$$" />
+
+    	     <Button
+    	         android:id="@+id/price3"
+    	         android:layout_width="wrap_content"
+    	         android:layout_height="34dp"
+    	         android:layout_weight="0.05"
+    	         android:text="$$$" />
+
+    	     <Button
+    	         android:id="@+id/price4"
+    	         android:layout_width="wrap_content"
+    	         android:layout_height="34dp"
+    	         android:text="$$$$" />
+    	 </LinearLayout>
+    	 
+    	  <LinearLayout	xmlns:android="http://schemas.android.com/apk/res/android" 
+					android:orientation="vertical"
+    				android:layout_width="fill_parent"
+    				android:layout_height="fill_parent"
+    				android:scrollbars="vertical"
+    				android:background="@drawable/background">		
+    	
+    	<TextView 
+          android:id="@+id/search4" 
+          android:layout_width="wrap_content" 
+    	  android:layout_height="wrap_content"
+          android:textSize="17sp"
+          android:padding= "20dip"
+	      android:textStyle="bold" 
+	      android:textColor="#ff29549f"
+	      android:lineSpacingMultiplier="1.0"
+	      android:text ="Choose your distance" />
+
+    	 <LinearLayout
+    	     xmlns:android="http://schemas.android.com/apk/res/android"
+    	     android:layout_width="fill_parent"
+    	     android:layout_height="wrap_content"
+    	     android:layout_gravity="right"
+    	     android:gravity="right"
+    	     android:orientation="horizontal" >
+
+    	     <Button
+    	         android:id="@+id/dist0"
+    	         android:layout_width="wrap_content"
+    	         android:layout_height="34dp"
+    	         android:layout_weight="0.12"
+    	         android:text="0.5 mi" />
+
+    	     <Button
+    	         android:id="@+id/dist1"
+    	         android:layout_width="wrap_content"
+    	         android:layout_height="34dp"
+    	         android:layout_weight="0.14"
+    	         android:text=" 1 mi " />
+
+    	     <Button
+    	         android:id="@+id/dist2"
+    	         android:layout_width="wrap_content"
+    	         android:layout_height="34dp"
+    	         android:layout_weight="0.08"
+    	         android:text=" 2 mi " />
+
+    	     <Button
+    	         android:id="@+id/dist3"
+    	         android:layout_width="wrap_content"
+    	         android:layout_height="34dp"
+    	         android:layout_weight="0.05"
+    	         android:text=">2 mi" />
+
+    	     
+    	 </LinearLayout>
+    	
+    </LinearLayout>
+    	
+    </LinearLayout>
+  
+      
+       
+	
+	</LinearLayout>    
+	</LinearLayout>
+	
+</LinearLayout>

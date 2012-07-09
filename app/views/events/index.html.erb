@@ -1,4 +1,5 @@
 <%# TODO: put this stuff in the controller eventually %>
+
 <% content_for :code do %>
 		<% @now = DateTime.now.change(:hour => 0) %>
 		<% @day_of_week = ['SUN','MON','TUE','WED','THU','FRI','SAT'] %>
@@ -12,6 +13,7 @@
 
 			function initialize() {
 
+				console.log("Initialization ");
 				//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
 				geocoder = new google.maps.Geocoder();
 				var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
@@ -27,8 +29,11 @@
 				map = new google.maps.Map($("#map")[0], myOptions);
 
 				var locations = [];
+
+				
 				
 				$("#content .main .inner .events li").each(function(index) {
+					console.log("still running after Initialization? ");
 					var latitude = parseFloat($(this).find(".latitude").html());
 					var longitude = parseFloat($(this).find(".longitude").html());
 					locations.push({lat: latitude, long: longitude});
@@ -38,16 +43,19 @@
 
 				google.maps.event.addListener(map, 'idle', boundsChanged);
 			}
-
+			console.log("going solo");
 			$(function() {
+				console.log("Will it ever go here?");
 				var event_id = <%= params[:event_id] || 0 %>;
 				var venue_id = <%= params[:venue_id] || 0 %>;
 				var act_id = <%= params[:act_id] || 0 %>;
 				if(event_id != 0) {
 					modal({type: "event", id: event_id});
+					
 				}
 				if(venue_id != 0) {
 					modal({type: "venue", id: venue_id});      
+					
 				}
 				if(act_id != 0) {
 					modal({type: "act", id: act_id});      
@@ -72,6 +80,7 @@
 					$("#tag-input").tokenInput("add", tagObj);
 				});
 			});
+			console.log("going out solo");
 
 		</script>
 
@@ -122,6 +131,8 @@
 				<%= text_field_tag :location, params[:location], :placeholder => "a point in space", :class => "location" %>
 				<%= hidden_field_tag :latitude, params[:latitude] %>
 				<%= hidden_field_tag :longitude, params[:longitude] %>
+				<%= puts "outside : " %>
+				<%= puts params %>
 				<%= image_submit_tag("search2.png") %>
 				<% end %>
 			</div>

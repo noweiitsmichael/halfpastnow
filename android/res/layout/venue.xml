@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:scrollbars="vertical" >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal"
+	style="@style/TitleBar"
+	android:layout_width = "fill_parent"
+	android:layout_height="wrap_content"
+	android:gravity="left|top">
+	
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:orientation="horizontal"
+			  android:layout_width = "wrap_content"
+			  android:layout_height="wrap_content"
+			  android:gravity="left"
+			  android_gravity = "left|vertical_center"> 
+			  
+			  <ImageButton style="@style/TitleBarOperation"
+            			   android:src="@drawable/home_def"
+            			   android:onClick="onHome" 
+            			   android:layout_marginTop = "5dip"
+            			   android:layout_marginRight="5dip"
+            			   android:layout_marginLeft="4dip"
+            			   android:layout_marginBottom = "4dip"
+            			   android:paddingBottom = "3dip"
+            			   android:background="@drawable/home_bg"
+            			   android:layout_gravity="center"
+            			    />
+			  
+			  <ImageView android:layout_width="1px"
+			   android:layout_height="fill_parent"
+			   android:background="@drawable/separator"
+			   android:layout_marginRight="5dip"/>
+			  
+			  <!-- <TextView style="@style/TitleBarText" 
+			  android:text="Action Bar" 
+			  android:paddingLeft="8dip"/> -->
+
+			  <EditText
+			      android:id="@+id/input_text_main"
+			      android:layout_width="120dip"
+			      android:layout_height="fill_parent"
+			      android:layout_gravity="center"
+			      android:layout_marginLeft="5dip"
+			      android:layout_marginRight="8dip"
+			      android:layout_marginTop="2dip"
+			      android:text=""
+			      android:textSize="10sp" />
+    		   
+	<ImageView android:layout_width="1px"
+			   android:layout_height="fill_parent"
+			   android:background="@drawable/separator"
+			   android:layout_marginLeft="5dip"
+			   android:layout_marginRight="7dip"/>
+	
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:orientation="horizontal"
+			  android:layout_width = "fill_parent"
+			  android:layout_height="wrap_content"
+			  android:gravity="right"
+			  android:layout_gravity="right">
+
+		<ImageButton
+		    android:id="@+id/searchmain"
+		    style="@style/TitleBarOperation"
+		    android:layout_marginBottom="4dip"
+		    android:layout_marginRight="5dip"
+		    android:layout_marginTop="6dip"
+		    android:background="@drawable/home_bg"
+		    android:onClick="onSearch"
+		    android:src="@drawable/search" />
+			  
+			   <ImageButton style="@style/TitleBarOperation"
+            			   android:src="@drawable/about_click"
+            			   android:onClick="onAbout" 
+            			   android:layout_marginTop = "6dip"
+            			   android:layout_marginBottom = "4dip"
+            			   android:layout_marginLeft="5dip"
+            			   android:background="@null"
+            			   android:layout_marginRight="5dip"/>
+            			   
+			  <ImageView android:layout_width="1px"
+			   android:layout_height="fill_parent"
+			   android:background="@drawable/separator"
+			   android:layout_marginLeft = "5dip"
+			   android:layout_marginRight="5dip"
+			   />
+			  <ImageButton
+			    style="@style/TitleBarOperation"
+			    android:layout_marginBottom="4dip"
+			    android:layout_marginRight="5dip"
+			    android:layout_marginTop="6dip"
+			    android:background="@drawable/home_bg"
+			    android:onClick="onSearchView"
+			    android:src="@drawable/m" />
+	</LinearLayout>
+	</LinearLayout>
+
+
+
+</LinearLayout>
+
+    <TextView
+        android:id="@+id/venueName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingMultiplier="1.1"
+        android:padding="20dip"
+        android:text="Venue name"
+        android:textColor="#ff29549f"
+        android:textSize="20dip"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dip"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="49dp" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="158dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/venueAdd1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="venue Add 1"
+                        android:textColor="#ff29549f" />
+
+                    <TextView
+                        android:id="@+id/venueAdd2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="venue add 2"
+                        android:textColor="#ff29549f" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/venuePhone"
+                    android:layout_width="158dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dip"
+                    android:text="venue phone"
+                    android:textColor="#ff29549f" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.google.android.maps.MapView
+            android:id="@+id/customvenuemapview"
+            android:layout_width="match_parent"
+            android:layout_height="170dip"
+            android:layout_marginTop="5dip"
+            android:layout_weight="0.97"
+            android:apiKey="0rzijVPbvgyiU30tRna5xSlsNDhTvyjXthbDAaQ"
+            android:clickable="true" >
+        </com.google.android.maps.MapView>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listVenue"
+        android:layout_width="fill_parent"
+        android:layout_height="311dp"
+        android:layout_marginTop="5dip" >
+
+    </ListView>
+
+</LinearLayout>

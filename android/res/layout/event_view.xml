@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/layout_root"
+              android:orientation="horizontal"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:padding="10dp"
+              >
+   
+    <ImageView
+  	  android:id="@+id/eventImage"
+	  android:layout_width="60dip"
+	  android:layout_height="60dip" android:src="@drawable/m" android:scaleType="centerCrop"/>
+    
+    <TextView
+        android:id="@+id/textEvent"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:text="Event name"
+        android:textColor="#657383" />
+
+</LinearLayout>
