@@ -13,7 +13,6 @@
 
 ActiveRecord::Schema.define(:version => 20120703225326) do
 
-
   create_table "acts", :force => true do |t|
     t.string   "name"
     t.text     "description"
