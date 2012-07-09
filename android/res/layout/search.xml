@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="vertical"
+    >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	style="@style/TitleBar"
+	android:orientation="horizontal"
+	android:layout_width = "fill_parent"
+	android:layout_height="wrap_content"
+	android:gravity="left|top">
+	
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:orientation="horizontal"
+			  android:layout_width = "wrap_content"
+			  android:layout_height="wrap_content"
+			  android:gravity="left|center_vertical"
+			  android:layout_gravity="left"> 
+			  
+			  <ImageButton style="@style/TitleBarOperation"
+            			   android:src="@drawable/home_def"
+            			   android:background="@drawable/home_bg"
+            			   android:onClick="onHome" 
+            			   android:layout_marginTop = "5dip"
+            			   android:layout_marginRight="5dip"
+            			   android:paddingBottom="3dip"
+            			   android:layout_marginLeft = "4dip"
+            			   android:layout_marginBottom = "4dip"
+            			   android:layout_gravity="center"/>
+              
+              <ImageView android:layout_width="1px"
+			   android:layout_height="fill_parent"
+			   android:background="@drawable/separator"
+			   android:layout_marginRight="5dip"/>
+			   
+              <EditText android:id="@+id/input_text"
+              			android:layout_height="fill_parent"
+              			android:layout_width="180dip"
+              			android:layout_marginTop="2dip"
+              			android:layout_gravity="center"
+              			android:textSize="10sp"
+              			android:text = "" 
+              			android:layout_marginLeft="5dip"
+              			android:layout_marginRight="8dip"/>
+                		   
+			<ImageView android:layout_width="1px"
+			   android:layout_height="fill_parent"
+			   android:background="@drawable/separator"
+			   android:layout_marginLeft="2dip"/>
+	
+	<LinearLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="right"
+	    android:gravity="right"
+	    android:orientation="horizontal" >
+			  
+			   <ImageButton style="@style/TitleBarOperation"
+            			   android:src="@drawable/about_click"
+            			   android:onClick="onAbout"
+						   android:layout_marginLeft="3dip"
+						   android:layout_marginTop = "6dip"
+						   android:background="@null"
+						   android:layout_marginRight="3dip"/>
+            			   
+			  <ImageView android:layout_width="1px"
+			   android:layout_height="fill_parent"
+			   android:background="@drawable/separator"
+			   android:layout_marginRight="5dip"/>
+			   
+			  <ImageButton
+			      android:id="@+id/searchBtn"
+			      style="@style/TitleBarOperation"
+			      android:layout_marginLeft="2dip"
+			      android:layout_marginRight="2dip"
+			      android:layout_marginTop="6dip"
+			      android:background="@drawable/home_bg"
+			      android:onClick="onSearch"
+			      android:src="@drawable/search" />
+
+	</LinearLayout>
+	
+	</LinearLayout>	
+
+</LinearLayout>
+	<com.readystatesoftware.maps.TapControlledMapView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mapview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:clickable="true"
+    android:apiKey="0rzijVPbvgyiU30tRna5xSlsNDhTvyjXthbDAaQ" />
+	<!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/maptablayout" android:orientation="vertical"
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
+	<com.google.android.maps.MapView
+		android:id="@+id/mapview" android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:clickable="true"
+		android:apiKey="0rzijVPbvgyiU30tRna5xSlsNDhTvyjXthbDAaQ" />
+	</LinearLayout> -->
+ 
+
+</LinearLayout>

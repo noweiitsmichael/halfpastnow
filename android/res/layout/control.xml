@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/background"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="top"
+    >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/TitleBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|top"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                style="@style/TitleBarOperation"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dip"
+                android:layout_marginLeft="4dip"
+                android:layout_marginRight="5dip"
+                android:layout_marginTop="5dip"
+                android:background="@drawable/home_bg"
+                android:onClick="onHome"
+                android:paddingBottom="3dip"
+                android:src="@drawable/home_def" />
+
+            <ImageView
+                android:layout_width="1px"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="5dip"
+                android:background="@drawable/separator" />
+
+            <EditText
+                android:id="@+id/input_text_main"
+                android:layout_width="120dip"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="8dip"
+                android:layout_marginTop="2dip"
+                android:layout_weight="1"
+                android:textSize="10sp" >
+
+                <requestFocus />
+            </EditText>
+
+            <ImageView
+                android:layout_width="1px"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="5dip"
+                android:layout_marginRight="7dip"
+                android:background="@drawable/separator" />
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="1.81"
+                android:gravity="right"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/searchmain"
+                    style="@style/TitleBarOperation"
+                    android:layout_marginBottom="4dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginTop="6dip"
+                    android:background="@drawable/home_bg"
+                    android:onClick="onSearch"
+                    android:src="@drawable/search" />
+
+                <ImageView
+                    android:layout_width="1px"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginRight="5dip"
+                    android:background="@drawable/separator" />
+
+                <ImageButton
+                    style="@style/TitleBarOperation"
+                    android:layout_marginBottom="4dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginTop="6dip"
+                    android:layout_weight="2.13"
+                    android:background="@drawable/home_bg"
+                    android:onClick="onSearchView"
+                    android:src="@drawable/m" />
+                <ImageButton
+			        android:id="@+id/takePixBtn"
+			        style="@style/TitleBarOperation"
+			        android:layout_width="32dip"
+			        android:layout_marginLeft="4dip"
+			        android:layout_marginRight="5dip"
+			        android:layout_marginTop="6dip"
+			        android:background="@drawable/home_bg"
+			        android:onClick="take"
+			        android:src="@drawable/camera" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
