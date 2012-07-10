@@ -83,7 +83,5 @@ Myapp::Application.routes.draw do
   match 'users' => 'users#index', :as => "user"
   match '/search' => 'events#search'
 
->>>>>>> fcc6560cb14a6b64129e7032913791d4701b2ef3
-
   match ':controller(/:action(/:id(.:format)))'
 end
