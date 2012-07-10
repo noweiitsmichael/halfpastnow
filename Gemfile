@@ -22,8 +22,10 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+#fancy jquery stuff
 gem 'jquery-rails'
 gem 'client_side_validations'
+gem 'jcrop-rails', '~>1.0.2'
 
 gem 'htmlentities'
 
@@ -42,9 +44,18 @@ gem 'sanitize'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
+#roles and login
 gem 'devise'
 gem 'cancan'
 gem 'rolify'
+
+#file attachments and Amazon S3
+#gem 'paperclip'
+gem 'carrierwave'
+gem 'rmagick'
+gem 'fog'
+#gem 'aws-s3'
+#gem 'aws-sdk'
 
 group :test do
   # Pretty printed test output

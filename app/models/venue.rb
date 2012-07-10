@@ -2,6 +2,7 @@ class Venue < ActiveRecord::Base
   has_and_belongs_to_many :tags
   has_many :events, :dependent => :destroy
   has_many :raw_venues
+  belongs_to :bookmarkable, :polymorphic => true
   accepts_nested_attributes_for :events, :reject_if => lambda { |a| a[:title].blank? }, :allow_destroy => true
   
   validates_presence_of :name, :address, :city

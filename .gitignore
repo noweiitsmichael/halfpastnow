@@ -6,6 +6,7 @@
 
 # Ignore bundler config
 /.bundle
+/Gemfile.lock
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
@@ -15,8 +16,15 @@
 /log/searchd.development.pid*
 /tmp
 
+# Ignore all .DS_Store files
+/.DS_Store
+/*/.DS_Store
+/*/*/.DS_Store
+/*/*/*/.DS_Store
+
 *~
 
 /db/sphinx/
 
 /.sublime-project*
+/config/s3.yml

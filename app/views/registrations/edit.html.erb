@@ -1,6 +1,4 @@
-<% content_for :body do %>
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
-<% puts registration_path(resource_name) %>
+<h2>Edit My Profile</h2>
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :multipart => true }) do |f| %>
   <%= devise_error_messages! %>
 
@@ -18,9 +16,14 @@
 
   <p><div><%= f.label :profilepic %><br />
     <% if resource.profilepic.nil? == false %>
-      <%= image_tag resource.profilepic.url(:small) %><br>
+      <%= image_tag resource.profilepic.url(:thumb).to_s %><br>
     <% end %>
   <%= f.file_field :profilepic %></div></p>
+
+  <p>
+    <%= f.label :remote_profilepic_url, "or image URL:" %>
+    <%= f.text_field :remote_profilepic_url %>
+  </p>
 
   <div><%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
   <%= f.password_field :password, :autocomplete => "off" %></div>
@@ -28,8 +31,9 @@
   <div><%= f.label :password_confirmation %><br />
   <%= f.password_field :password_confirmation %></div>
 
-  <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-  <%= f.password_field :current_password %></div>
+<!-- only need if turning back on password confirm -->
+<!--   <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+  <%= f.password_field :current_password %></div> -->
 
   <div><%= f.submit "Update" %></div>
 <% end %>
@@ -39,4 +43,3 @@
 <p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete %>.</p>
 
 <%= link_to "Back", :back %>
-<% end %>

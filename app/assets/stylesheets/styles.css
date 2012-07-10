@@ -1074,6 +1074,11 @@ overflow: hidden;
   height:100%;
 }
 
+#city-name {
+  float: right;
+  line-height: 1;
+}
+
 .clear {
   clear:both;
   visibility: hidden;

@@ -39,6 +39,13 @@ ActiveRecord::Schema.define(:version => 20120707214356) do
   add_index "acts_tags", ["act_id"], :name => "index_acts_tags_on_act_id"
   add_index "acts_tags", ["tag_id"], :name => "index_acts_tags_on_tag_id"
 
+  create_table "bookmarks", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "event_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "embeds", :force => true do |t|
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -186,8 +193,8 @@ ActiveRecord::Schema.define(:version => 20120707214356) do
   create_table "tags_venues", :id => false, :force => true do |t|
     t.integer  "venue_id"
     t.integer  "tag_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -206,6 +213,7 @@ ActiveRecord::Schema.define(:version => 20120707214356) do
     t.string   "firstname"
     t.string   "lastname"
     t.string   "username"
+    t.string   "profilepic"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

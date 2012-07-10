@@ -108,7 +108,9 @@ $(function() {
   $("#content .main .inner .events").on("click", ".linkto", loadModal);
   // $("#overlays").on("click", ".linkto", loadModal);
 
-  mapOffset = $("#map").offset().top;
+
+  if($("#map").length > 0)
+    mapOffset = $("#map").offset().top;
 });
 
 var mapOffset;
