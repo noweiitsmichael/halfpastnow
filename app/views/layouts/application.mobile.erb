@@ -1,0 +1,60 @@
+<html>
+<head>
+  <title>half past now.</title>
+  <!--<link rel="stylesheet" 
+        href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />-->
+  <!--<script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>-->
+  <!--<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script> -->
+
+ <!--  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script> -->
+
+<!--link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+  <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script-->
+   
+ 
+  
+
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBIYXUslVTKIr8Zmlt_Tva2bHzKNO9ZEJQ&sensor=false"></script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=geometry&sensor=false&language=en"></script>
+
+ 
+
+
+  <%= stylesheet_link_tag    "jQmin.css" %>  <!--1-->
+  
+
+  
+  <%= javascript_include_tag "jQmin" %> <!--2-->
+
+  
+  <%= javascript_include_tag "jQmobile" %> <!--3-->
+
+  
+
+<%= stylesheet_link_tag "token-input-facebook-mobile" %>
+  <%= stylesheet_link_tag    "custom.css" %>
+ 
+  <%= javascript_include_tag "tokeninput" %>
+ 
+  <%= javascript_include_tag "date" %>
+  
+  <%= javascript_include_tag "infobox" %> 
+  <!-- This should be at the endend -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0,  minimum-scale=1.0, user-scalable=no"> 
+  <!--%= csrf_meta_tag %-->
+</head>
+  <body onload="if(typeof initialize !== 'undefined') initialize();">
+
+    <div >
+      
+      <%= yield %>
+      
+    </div>
+    <%= javascript_include_tag "shareqr2.2" %>
+
+  </body>
+
+</html>

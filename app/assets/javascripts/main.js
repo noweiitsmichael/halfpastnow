@@ -37,6 +37,13 @@ $(function() {
     $('.filter.tags').toggleClass('expanded');
   });
 
+  $('.mode.venue .address.one').click(function(){
+     console.log("click on venue addess");
+     $('.mode').hide();
+
+  });
+
+
   $('#content .sidebar .inner .filter.date span').click(function () {
     $(this).siblings('span').removeClass('selected');
     $(this).addClass('selected');
@@ -113,10 +120,12 @@ var hours = ['midnight','1 am','2 am','3 am','4 am','5 am','6 am','7 am','8 am',
 var day_of_week = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 
 window.addEventListener("popstate", function(e) {
+  console.log("in window.addEventListener");
   var query = e.target.location.search;
   if(query !== "") {
     modal(parsequery(query));
   } else {
+
     demodal();
   }
 });
@@ -152,6 +161,7 @@ function boundsChanged() {
 
 function closeMode(){
   history.pushState({}, "main mode", "/");
+  console.log("modal in closeMode");
   demodal();
 }
 
@@ -283,7 +293,7 @@ function pullEvents() {
     query += "&offset=" + filter.offset;
   if(filter.sort)
     query += "&sort=" + filter.sort;
-
+  console.log("query "+query);
   loading('show');
   $.getJSON("/events/index?format=json" + query, function (events) {
     var locations = [];
@@ -365,7 +375,7 @@ function lockMap() {
 }
 
 function loadModal(event) {
-  console.log("loadModal");
+
   var thing = {type:$(this).attr("linkto"), id: $(this).attr("href")};
   history.pushState(thing, thing.type + " mode", "?" + thing.type + "_id=" + thing.id);
   if($(this).is("#content .main .events li .venue")) {
@@ -391,6 +401,7 @@ function parsequery(query) {
 }
 
 function demodal() {
+  console.log("in demodal");
   modal();
 }
 
@@ -408,6 +419,7 @@ function strip(html)
 }
 
 function modal(thing) {
+  console.log("in modal");
   if(!thing) {
     $('.mode .description').html("");
     $('.mode').hide();

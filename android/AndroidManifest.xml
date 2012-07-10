@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="khoa.actionbar"
+    android:versionCode="1"
+    android:versionName="1.0" 
+    android:theme="@android:style/Theme.Dialog">
+
+    <uses-sdk android:minSdkVersion="8" />
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+	<uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.CAMERA"></uses-permission>
+
+	
+    <application
+        android:icon="@drawable/icon"
+        android:label="HPNow"
+        android:theme="@style/Theme.D1" 
+        android:name="MyApplication"
+        >
+        <uses-library android:required="true" android:name="com.google.android.maps"></uses-library>
+        <activity 
+        	android:name=".ActionBarAppActivity" 
+            android:windowSoftInputMode="stateHidden" 
+            android:theme="@style/Theme.D1"
+        />
+        <activity
+            android:name=".HomeActivity"
+            android:label="HPN"
+            android:theme="@style/Theme.D1" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ListEventActivity" />
+        <activity android:name=".FilterActivity" />
+        <activity android:name=".EventViewActivity" />
+        <activity android:name=".EventMapViewActivity" />
+        <activity android:name=".ReloadMapActivity" />
+        <activity android:name=".VenueViewActivity" />
+        <activity android:name=".FindActivity" />
+        <activity android:name=".TakePix" />
+        <activity
+            android:name=".SearchActivity"
+            android:label="your search"
+            android:theme="@style/Theme.D1" 
+            android:windowSoftInputMode="stateHidden" />
+    </application>
+</manifest>

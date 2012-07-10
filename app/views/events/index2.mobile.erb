@@ -1,0 +1,92 @@
+
+<% @now = DateTime.now.change(:hour => 0) %>
+<% @day_of_week = ['SUN','MON','TUE','WED','THU','FRI','SAT'] %>
+<% @tags = Tag.all %>
+
+<% def eventListElement (event, index) %>
+			<li>
+				<!--a href="<%= event ? "?event_id=" + event.id.to_s : "" %>" data-transition="slidedown"--> 
+				<a a href="<%= event ? "#event"  : "" %>" data-transition="slidedown"> 
+					<div class="index">
+						<%= index ? (index + 1) : "" %>
+					</div>
+					
+					<div class="when sun">
+						<div class="mod">
+							<%# (event.date < now) ? event.date.strftime("%m/%e") : (event.date < (now + 7)) ? 'THIS' : (event.date < (now + 14)) ? 'NEXT' : event.date.strftime("%-m/%e") %>
+							<%= event ? event.occurrences.first.start.to_time.strftime("%^b%d") : "" %>
+						</div>
+						<div class="day">
+							<%= event ? @day_of_week[event.occurrences.first.start.wday] : "" %>
+						</div>
+						<div class="time">
+							<%= event ? event.occurrences.first.start.to_time.strftime("%I:%M%P") : "" %>
+						</div>
+					</div>
+
+					<!--div class="one">
+							<span href="event.html" linkto="event" class="linkto name">Thursday Night Social Club</span>
+
+							<div class="price";  style="color:#2E2EFE"><strong>Price:</strong><span>$10.00 </span>
+							</div>
+
+							<div class="description"<span style="color:#888">Thurday night movie of the month</span>
+							</div-->
+						
+					<div class="one">
+						<!--span href="<%= event ? event.id : "" %>" linkto="event" class="linkto name"><%= event ? event.title : "" %></span>
+						<a class="venue linkto" linkto="venue" href="<%= event ? event.venue.id : "" %>"><%= event ? event.venue.name : "" %></a-->
+
+						<span href="<%= event ? event.id : "" %>" linkto="event" class="linkto name"><%= event ? event.title : "" %></span>
+
+						
+						<div class="description"><span="price";  style="color:#2E2EFE"><strong><%= event ? (event.price!=nil)? ((event.price.to_f!=0.0) ? "Price: "+ number_to_currency(event.price,:unit=>"$").to_s+" " : "Free ") : "" : "" %></strong></span><span style="color:#888"><%= event ? truncate(strip_tags(event.description), :length => 300) : "" %></span>
+						</div>
+					</div>
+					
+				</a>
+			</li>
+<% end %>
+
+<div data-role="header"> 
+		<h1> half pass now.</h1>
+</div> 
+<div data-role="content" class="ui-content" role="main" id="home" data-add-back-btn="true">
+	<div class="info"><span class="count"><%= @events.size %> event<%= @events.size == 1 ? "" : "s" %></span> nearby</div>
+	
+		<div class="choice_list"> 
+			
+			<h1> Austin Convention Center </h1>
+
+				<p><a class="map-link" href="http://maps.google.com/maps?q=30.30787,-97.74133" ><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=430x170&amp;zoom=15&amp;maptype=roadmap&amp;markers=color:red%7C30.30787,-97.74133&amp;style=feature:all|hue:0x000001|saturation:-50&amp;sensor=false"></a></p> 
+				<div class="details">
+					<div class="address onee"><span>2100 Barton Springs Road</span></div>
+					<div class="address two"><span>Austin, TX 78704</span></div>
+					<br />
+					<div class="phone"><strong>Phone:</strong> <span> (512) 524-2807</span></div>
+					<div class="url"><strong>Website:</strong><a linkto="venue" href="http://events.austin360.com/austin_tx/venues/show/448999-coldtowne-theater">ColdTowne Theater</a></div>
+					<!--div class="price"><strong>Hours:</strong> Daily 5am-10pm</div-->
+				</div>
+
+				<ul class="events" data-role="listview" data-inset="true"  >
+					<% 	@events.each_with_index do |event, index| 
+
+							eventListElement(event, index)
+						end %>
+				</ul>
+				<ul class="events-seed" data-role="listview" data-inset="true">
+				<%
+					eventListElement(nil, nil)
+
+				%>
+
+				</ul>
+
+		</div>
+</div>
+<div id="event" data-role="page" data-add-back-btn="true">
+	
+<div data-role="header"> 
+		<h1> half pass now.</h1>
+</div>
+</div>
