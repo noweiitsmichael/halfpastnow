@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
 
   # History (attended events)
   has_many :histories, :dependent => :destroy
+  has_many :occurrences, :through => :histories
 
 
   # Cropping function

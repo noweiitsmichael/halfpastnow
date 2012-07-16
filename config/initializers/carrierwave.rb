@@ -6,6 +6,7 @@ CarrierWave.configure do |config|
     :region                 => 'us-east-1'  # optional, defaults to 'us-east-1'
   }
   config.fog_directory  = ENV['S3_BUCKET_NAME'] #'hpn_profile_pics'                    # required
+  config.fog_host = "http://#{config.fog_directory}.s3.amazonaws.com"
 
 end
 

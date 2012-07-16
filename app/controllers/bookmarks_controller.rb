@@ -3,10 +3,10 @@ class BookmarksController < ApplicationController
 	def create
 		@bookmark = Bookmark.new(params[:bookmark])
 		
-		puts "Bookmark Info:"
-		puts params[:bookmark]
-		puts "Bookmark Object:"
-		puts @bookmark
+		# puts "Bookmark Info:"
+		# puts params[:bookmark]
+		# puts "Bookmark Object:"
+		# puts @bookmark
 		respond_to do |format|
 		  if @bookmark.save
 		    format.html { redirect_to :back }
