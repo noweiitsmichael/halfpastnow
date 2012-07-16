@@ -1,9 +1,7 @@
 class Bookmark < ActiveRecord::Base
-  attr_accessible :event_id, :user_id
+  attr_accessible :event_id, :user_id, :bookmarked_id, :bookmarked_type
 
   belongs_to :user
-  has_one :event, :as => :bookmarkable
-  has_one :artist, :as => :bookmarkable
-  has_one :venue, :as => :bookmarkable
-  
+  belongs_to :bookmarked, :polymorphic => true
+
 end
