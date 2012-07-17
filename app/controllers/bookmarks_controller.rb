@@ -1,9 +1,11 @@
+require 'pp'
 class BookmarksController < ApplicationController
 
 	def create
-		@bookmark = Bookmark.new(params)
+		@bookmark = Bookmark.new
+		@bookmark.bookmarked_id = params["bookmarked_id"]
+		@bookmark.bookmarked_type = params["bookmarked_type"]
 		@bookmark.user_id = current_user.id
-
 		respond_to do |format|
 		  if @bookmark.save
 		    format.html { redirect_to :back }

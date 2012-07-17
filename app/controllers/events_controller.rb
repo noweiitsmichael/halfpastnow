@@ -303,7 +303,6 @@ def index
         end
       end
     end
-    pp @recurrences
     respond_to do |format|
       format.html { render :layout => "mode" }
       format.json { render json: @event.to_json(:include => [:occurrences, :venue]) }

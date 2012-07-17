@@ -38,7 +38,6 @@ $(function() {
   });
 
   $('.mode.venue .address.one').click(function(){
-     console.log("click on venue addess");
      $('.mode').hide();
 
   });
@@ -120,7 +119,6 @@ var hours = ['midnight','1 am','2 am','3 am','4 am','5 am','6 am','7 am','8 am',
 var day_of_week = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 
 window.addEventListener("popstate", function(e) {
-  console.log("in window.addEventListener");
   var query = e.target.location.search;
   if(query !== "") {
     modal(parsequery(query));
@@ -161,7 +159,6 @@ function boundsChanged() {
 
 function closeMode(){
   history.pushState({}, "main mode", "/");
-  console.log("modal in closeMode");
   demodal();
 }
 
@@ -293,7 +290,6 @@ function pullEvents() {
     query += "&offset=" + filter.offset;
   if(filter.sort)
     query += "&sort=" + filter.sort;
-  console.log("query "+query);
   loading('show');
   $.getJSON("/events/index?format=json" + query, function (events) {
     var locations = [];
@@ -333,9 +329,7 @@ function pullEvents() {
 function loading(command) {
   if (command === 'show') {
     var top = $('.main .inner .events').scrollTop();
-    console.log("top: " + top);
     var bottom = $('.main .inner .events').height() - Math.max(0,$('.main .inner .events').height() + $('.main .inner .events').offset().top - $(window).height() - $(window).scrollTop());
-    console.log("bottom: " + bottom);
     var y = (top + bottom) / 2 - 33;
     var x = $('.main .inner .events').width() / 2 - 33;
     $('.main .inner .header, .main .inner .events').css('opacity','.5');
@@ -401,7 +395,6 @@ function parsequery(query) {
 }
 
 function demodal() {
-  console.log("in demodal");
   modal();
 }
 
@@ -419,46 +412,23 @@ function strip(html)
 }
 
 function modal(thing) {
-  console.log("in modal");
 
   if(!thing) {
     $('.mode .description').html("");
     $('.mode').hide();
     return;
-  }
-  
-  if(thing.type === "event") {
-    $.get('/events/show/' + thing.id , function(data) {
-      $(".mode, .mode *").off();
-      $('.mode').hide();
-      $('.mode.event .window').html(data);
+  } else {
+    $.get('/' + thing.type + 's/show/' + thing.id, function(data) {
+      $('.mode').hide().removeClass().addClass('mode ' + thing.type);
+      $('.mode .window').html(data);
       $('.mode .linkto').click(loadModal);
       $('.mode .close-btn').click(closeMode);
-      $('.mode.event').show();
-      $('.mode .remove_bookmark').click(function() {
-        $.ajax(['/bookmarks/' + $(this).attr('bookmark-id')],{
-          type: "DELETE",
-          dataType: "json",
-          success: function() {
-            alert("destroyed!");
-          }
-        });
-      });
-    });
-  } else if (thing.type === "venue") {
-    $.get('/venues/show/' + thing.id, function(data) {
-      $(".mode, .mode *").off();
-      $('.mode').hide();
-      $('.mode.venue .window').html(data);
-      $('.mode .linkto').click(loadModal);
-      $('.mode .close-btn').click(closeMode);
-      $('.mode.venue').show(); 
+      $('.mode').show(); 
       $('.mode .add_bookmark').click(function() {
         $.post('/bookmarks/create',{
           bookmarked_id: $(this).attr('bookmarked_id'),
           bookmarked_type: $(this).attr('bookmarked_type')},
           function(data) {
-            console.log(data);
             $('.mode .add_bookmark').hide();
             $('.mode .remove_bookmark').attr("bookmark-id",data.id);
             $('.mode .remove_bookmark').show();
@@ -474,18 +444,6 @@ function modal(thing) {
             $('.mode .add_bookmark').show();
           }
         });
-      });
-    });
-  } else if (thing.type === "act") {
-    $.get('/acts/show/' + thing.id, function(data) {
-      $(".mode, .mode *").off();
-      $('.mode').hide();
-      $('.mode.act .window').html(data);
-      $('.mode .linkto').click(loadModal);
-      $('.mode .close-btn').click(closeMode);
-      $('.mode.act').show();
-      $('.mode #submit').click(function() {
-        $('#form').submit();
       });
     });
   }

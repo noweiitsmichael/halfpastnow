@@ -13,7 +13,6 @@
 
 			function initialize() {
 
-				console.log("Initialization ");
 				//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
 				geocoder = new google.maps.Geocoder();
 				var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
@@ -33,7 +32,6 @@
 				
 				
 				$("#content .main .inner .events li").each(function(index) {
-					console.log("still running after Initialization? ");
 					var latitude = parseFloat($(this).find(".latitude").html());
 					var longitude = parseFloat($(this).find(".longitude").html());
 					locations.push({lat: latitude, long: longitude});
@@ -43,9 +41,8 @@
 
 				google.maps.event.addListener(map, 'idle', boundsChanged);
 			}
-			console.log("going solo");
+
 			$(function() {
-				console.log("Will it ever go here?");
 				var event_id = <%= params[:event_id] || 0 %>;
 				var venue_id = <%= params[:venue_id] || 0 %>;
 				var act_id = <%= params[:act_id] || 0 %>;
@@ -80,7 +77,6 @@
 					$("#tag-input").tokenInput("add", tagObj);
 				});
 			});
-			console.log("going out solo");
 
 		</script>
 
@@ -131,8 +127,6 @@
 				<%= text_field_tag :location, params[:location], :placeholder => "a point in space", :class => "location" %>
 				<%= hidden_field_tag :latitude, params[:latitude] %>
 				<%= hidden_field_tag :longitude, params[:longitude] %>
-				<%= puts "outside : " %>
-				<%= puts params %>
 				<%= image_submit_tag("search2.png") %>
 				<% end %>
 			</div>
@@ -209,20 +203,8 @@
 <% end %>
 
 <% content_for :overlay do %>
-	<div class="event mode">
+	<div class="mode">
 		<div class="overlay">			
-			<div class="window">
-			</div>
-		</div>
-	</div>
-	<div class="venue mode">
-		<div class="overlay">
-			<div class="window">
-			</div>
-		</div>
-	</div>
-	<div class="act mode">
-		<div class="overlay">
 			<div class="window">
 			</div>
 		</div>
