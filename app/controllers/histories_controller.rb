@@ -47,7 +47,7 @@ class HistoriesController < ApplicationController
         format.html { redirect_to :back, notice: 'History was successfully created.' }
         format.json { render json: @history, status: :created, location: @history }
       else
-        format.html { render action: "new" }
+        format.html { redirect_to :back, notice: 'Looks like you\'ve already done this event!' }
         format.json { render json: @history.errors, status: :unprocessable_entity }
       end
     end

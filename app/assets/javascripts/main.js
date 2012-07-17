@@ -420,6 +420,7 @@ function strip(html)
 
 function modal(thing) {
   console.log("in modal");
+
   if(!thing) {
     $('.mode .description').html("");
     $('.mode').hide();
@@ -428,30 +429,66 @@ function modal(thing) {
   
   if(thing.type === "event") {
     $.get('/events/show/' + thing.id , function(data) {
-      $(".mode .linkto, .mode .close-btn").off();
+      $(".mode, .mode *").off();
       $('.mode').hide();
       $('.mode.event .window').html(data);
       $('.mode .linkto').click(loadModal);
       $('.mode .close-btn').click(closeMode);
       $('.mode.event').show();
+      $('.mode .remove_bookmark').click(function() {
+        $.ajax(['/bookmarks/' + $(this).attr('bookmark-id')],{
+          type: "DELETE",
+          dataType: "json",
+          success: function() {
+            alert("destroyed!");
+          }
+        });
+      });
     });
   } else if (thing.type === "venue") {
     $.get('/venues/show/' + thing.id, function(data) {
-      $(".mode .linkto, .mode .close-btn").off();
+      $(".mode, .mode *").off();
       $('.mode').hide();
       $('.mode.venue .window').html(data);
       $('.mode .linkto').click(loadModal);
       $('.mode .close-btn').click(closeMode);
-      $('.mode.venue').show();    
+      $('.mode.venue').show(); 
+      $('.mode .add_bookmark').click(function() {
+        $.post('/bookmarks/create',{
+          bookmarked_id: $(this).attr('bookmarked_id'),
+          bookmarked_type: $(this).attr('bookmarked_type')},
+          function(data) {
+            console.log(data);
+            $('.mode .add_bookmark').hide();
+            $('.mode .remove_bookmark').attr("bookmark-id",data.id);
+            $('.mode .remove_bookmark').show();
+          },"json"
+        );
+      });  
+      $('.mode .remove_bookmark').click(function() {
+        $.ajax('/bookmarks/' + $(this).attr('bookmark-id'),{
+          type: "DELETE",
+          dataType: "json",
+          success: function() {
+            $('.mode .remove_bookmark').hide();
+            $('.mode .add_bookmark').show();
+          }
+        });
+      });
     });
   } else if (thing.type === "act") {
     $.get('/acts/show/' + thing.id, function(data) {
-      $(".mode .linkto, .mode .close-btn").off();
+      $(".mode, .mode *").off();
       $('.mode').hide();
       $('.mode.act .window').html(data);
       $('.mode .linkto').click(loadModal);
       $('.mode .close-btn').click(closeMode);
       $('.mode.act').show();
+      $('.mode #submit').click(function() {
+        $('#form').submit();
+      });
     });
   }
 }
+
+

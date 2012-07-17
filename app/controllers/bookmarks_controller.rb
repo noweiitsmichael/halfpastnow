@@ -1,18 +1,15 @@
 class BookmarksController < ApplicationController
 
 	def create
-		@bookmark = Bookmark.new(params[:bookmark])
-		
-		# puts "Bookmark Info:"
-		# puts params[:bookmark]
-		# puts "Bookmark Object:"
-		# puts @bookmark
+		@bookmark = Bookmark.new(params)
+		@bookmark.user_id = current_user.id
+
 		respond_to do |format|
 		  if @bookmark.save
 		    format.html { redirect_to :back }
 		    format.json { render json: @bookmark, status: :created, location: @bookmark }
 		  else
-		    format.html { render action: "new" }
+		    format.html { redirect_to :back }
 		    format.json { render json: @bookmark.errors, status: :unprocessable_entity }
 		  end
 		end
@@ -26,5 +23,16 @@ class BookmarksController < ApplicationController
 	      format.json { render json: @bookmark }
 	    end
 	end
+
+	  # DELETE /users/1
+  # DELETE /users/1.json
+  def destroy
+    @bookmark = Bookmark.find(params[:id])
+    @bookmark.destroy
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.json { head :no_content }
+    end
+  end
 
 end

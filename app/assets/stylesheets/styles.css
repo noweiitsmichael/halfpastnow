@@ -866,7 +866,7 @@ html,body {
   padding: 8px 10px 10px;
 }
 
-.mode .window h1 {
+.mode .window .title {
   background-image: -moz-linear-gradient(center top , rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0)), url("/assets/scaletake2b.png");
   background-image: -webkit-linear-gradient(top , rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0)), url("/assets/scaletake2b.png");
   border: 1px solid #422043;
@@ -884,14 +884,16 @@ html,body {
   top: 10px;
   width: 980px;
   text-overflow: ellipsis;
-  white-space: pre;
   z-index: 2000;
   font-family: PTSansNarrowBold;
 }
-.mode .window h1 .favorite {
+.mode .window .title .favorite {
   margin-right:10px;
 }
-
+.mode .window h1 {
+  display:inline-block;
+  font-size:1em;
+}
 .mode .window h2 {
   font-size: 20px;
   letter-spacing: -0.03em;
@@ -1092,3 +1094,6 @@ overflow: hidden;
     border: 1px solid #29216d;
 }
 
+.mode form {
+  display: inline-block;
+}

@@ -3,5 +3,6 @@ class Bookmark < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :bookmarked, :polymorphic => true
+  validates_uniqueness_of :bookmarked_id, :scope => [:bookmarked_type, :user_id]
 
 end
