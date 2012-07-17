@@ -7,11 +7,11 @@
 </script>
 <% end %>
 
-<%= image_tag @user.profilepic_url(:large), :id => "cropbox" %>
+<%= image_tag resource.profilepic_url(:large), :id => "cropbox" %>
 
 <h4>Preview</h4>
 <div style="width:100px; height:100px; overflow:hidden;">
-  <%= image_tag @user.profilepic.url(:large), :id => "preview" %>
+  <%= image_tag resource.profilepic.url(:large), :id => "preview" %>
 </div>
 
 <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :multipart => true }) do |f| %>

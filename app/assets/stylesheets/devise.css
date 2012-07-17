@@ -1,0 +1,7 @@
+#body { background-color: white; }
+#profile-nav li { cursor:pointer; }
+#profile-nav li.selected { font-weight:bold; }
+#profile-nav { float:left; width: 300px; margin-top: 10px;}
+#profile-menu { float:left; width: 500px;}
+#profile-menu > div { visibility:hidden;width:0px;height:0px; }
+#profile-menu > div.selected { visibility:visible;width:auto;height:auto; }

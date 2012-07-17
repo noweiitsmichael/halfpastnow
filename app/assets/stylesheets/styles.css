@@ -19,6 +19,8 @@
 
 
 
+
+
 @font-face {
     font-family: PTSansBold;
     src: url('/assets/PTS75F-webfont.eot');
@@ -1067,11 +1069,8 @@ overflow: hidden;
 
 #info-content {
   width:880px;
-  padding:40px;
-  background-color:white;
-  margin:0 auto;
-  box-shadow: 0 0 15px #000;
-  height:100%;
+  padding: 20px;
+  margin: 0;
 }
 
 #city-name {

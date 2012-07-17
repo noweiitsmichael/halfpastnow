@@ -1,45 +1,129 @@
-<h2>Edit My Profile</h2>
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :multipart => true }) do |f| %>
-  <%= devise_error_messages! %>
+<script type="text/javascript">
+  var jcrop_api;
 
-  <p><%= f.label :username %><br />
-  <%= f.text_field :username %></p>
+  $(function() {
+    $('#profile-nav li').click(function() {
+      $('#profile-nav li').removeClass('selected');
+      $(this).addClass('selected');
+      $('#profile-menu > div').removeClass('selected');
+      $('#profile-menu > div:nth-child(' + ($(this).index() + 1) + ')').addClass('selected');
+    });
+    $('.profile .edit_user').ajaxForm({
+      dataType: 'json',
+      success: function() { alert('weeee'); }
+    });
+    $('.update-picture .edit_user').ajaxForm({
+      dataType: 'json',
+      success: function(user) {
+        console.log(user.profilepic.url);
+        $('#cropbox').attr('src',user.profilepic.url);
+        $('#preview').attr('src',user.profilepic.url);
+        $('.update-picture').hide();
+        $('.crop-picture').show();
+        $('#cropbox').Jcrop({
+          aspectRatio: 1,
+          onSelect: updateCrop,
+          onChange: updateCrop
+        },function(){
+          jcrop_api = this;
+        });
+      }
+    });
+    $('.crop-picture .edit_user').ajaxForm({
+      dataType: 'json',
+      success: function(user) {
+        $('#existing-pic').attr('src',user.profilepic.thumb.url);
+        $('.crop-picture').hide();
+        $('.update-picture').show();
+        jcrop_api.destroy();
+      }
+    });
+  });
 
-  <p><%= f.label :firstname %><br />
-  <%= f.text_field :firstname %></p>
+  function updateCrop(coords) {
+      $('#user_crop_x').val(coords.x);
+      $('#user_crop_y').val(coords.y);
+      $('#user_crop_w').val(coords.w);
+      $('#user_crop_h').val(coords.h);
+      $('#preview').css({
+        width: Math.round(150 / coords.w * $('#cropbox').width()) + 'px',
+        height: Math.round(150 / coords.h * $('#cropbox').height()) + 'px',
+        marginLeft: '-' + Math.round(150 / coords.w * coords.x) + 'px',
+        marginTop: '-' + Math.round(150 / coords.h * coords.y) + 'px'
+      });
+    }
+</script>
+<h2>Settings</h2>
+<ul id="profile-nav">
+  <li class="profile selected">Profile</li>
+  <li class="picture">Picture</li>
+  <li class="password">Password</li>
+  <li class="bookmarks">Bookmarks</li>
+</ul>
 
-  <p><%= f.label :lastname %><br />
-  <%= f.text_field :lastname %></p>
+<div id="profile-menu">
+  <div class="profile selected">
+    <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put }) do |f| %>
+      <p><%= f.label :username %><br />
+      <%= f.text_field :username %></p>
 
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email %></div>
+      <p><%= f.label :firstname %><br />
+      <%= f.text_field :firstname %></p>
 
-  <p><div><%= f.label :profilepic %><br />
-    <% if resource.profilepic.nil? == false %>
-      <%= image_tag resource.profilepic.url(:thumb).to_s %><br>
+      <p><%= f.label :lastname %><br />
+      <%= f.text_field :lastname %></p>
+
+      <div><%= f.label :email %><br />
+      <%= f.email_field :email %></div>
+
+      <div><%= f.submit "Update" %></div>
     <% end %>
-  <%= f.file_field :profilepic %></div></p>
+  </div>
+  <div class="picture">
+    <div class="update-picture">
+      <% if resource.profilepic %>
+        <%= image_tag resource.profilepic_url(:thumb), :id => "existing-pic" %>
+      <% end %>
+      <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put, :multipart => true }) do |f| %>
+          <%= f.label :profilepic, "File name" %><%= f.file_field :profilepic %><br />
+          <%= f.label :remote_profilepic_url, "Or image URL" %><%= f.text_field :remote_profilepic_url %>
+        <div><%= f.submit "Update" %></div>
+      <% end %>
+    </div>
+    <div class="crop-picture" style="display:none;">
+      <img src="" id="cropbox" />
 
-  <p>
-    <%= f.label :remote_profilepic_url, "or image URL:" %>
-    <%= f.text_field :remote_profilepic_url %>
-  </p>
+      <h4>Preview</h4>
+      <div style="height:150px;width:150px;overflow:hidden;">
+        <img src="" id="preview" />
+      </div>
 
-  <div><%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-  <%= f.password_field :password, :autocomplete => "off" %></div>
+      <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put, :multipart => true }) do |f| %>
+        <div class="actions">
+          <% %w[x y w h].each do |attribute| %>
+            <%= f.hidden_field "crop_#{attribute}"%>
+          <% end %>
 
-  <div><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></div>
+          <%= f.submit "Update" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="password">
+    <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put }) do |f| %>
+      <div><%= f.label :password %> <em>(leave blank if you don't want to change it)</em><br />
+        <%= f.password_field :password, :autocomplete => "off" %></div>
 
-<!-- only need if turning back on password confirm -->
-<!--   <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-  <%= f.password_field :current_password %></div> -->
+        <div><%= f.label :password_confirmation %><br />
+        <%= f.password_field :password_confirmation %></div>
 
-  <div><%= f.submit "Update" %></div>
-<% end %>
+        <div><%= f.label :current_password %> <em>(we need your current password to confirm your changes)</em><br />
+        <%= f.password_field :current_password %></div>
 
-<h3>Cancel my account</h3>
+        <div><%= f.submit "Update" %></div>
+    <% end %>
+  </div>
+  <div class="bookmarks">
 
-<p>Unhappy? <%= link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete %>.</p>
-
-<%= link_to "Back", :back %>
+  </div>
+</div>

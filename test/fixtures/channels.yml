@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  start: 2012-07-17 11:28:31
+  end: 2012-07-17 11:28:31
+  price: MyString
+  day_of_week: MyString
+
+two:
+  start: 2012-07-17 11:28:31
+  end: 2012-07-17 11:28:31
+  price: MyString
+  day_of_week: MyString

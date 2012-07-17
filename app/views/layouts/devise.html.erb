@@ -1,0 +1,12 @@
+<% content_for :head do %>
+	<%= stylesheet_link_tag "devise" %>
+ 	<%= javascript_include_tag "jquery.form" %>
+ 	<%= stylesheet_link_tag "jcrop" %>
+    <% if false %><%= javascript_include_tag "users" %><% end %>
+<% end %>
+<% content_for :body do %>
+	<div id="info-content">
+		<%= yield %>
+	</div>
+<% end %>
+<%= render :template => 'layouts/application' %>

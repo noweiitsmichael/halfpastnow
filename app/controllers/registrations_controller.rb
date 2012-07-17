@@ -1,34 +1,20 @@
+require 'pp'
 class RegistrationsController < Devise::RegistrationsController
-
-  # New update function to allow for resizing
+  respond_to :html, :xml, :json
   def update
-    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-	    if resource.update_without_password(params[resource_name])
-	      if is_navigational_format?
-	        if resource.respond_to?(:pending_reconfirmation?) && resource.pending_reconfirmation?
-	          flash_key = :update_needs_confirmation
-	        end
-	        set_flash_message :notice, flash_key || :updated
-	      end
-
-	      sign_in resource_name, resource, :bypass => true
-	      # puts "First if stmt:"
-	      # puts params[:user][:profilepic].present?
-
-	      if params[:user][:profilepic].present?
-	    		render :crop
-	   	  else
-	        respond_with resource, :location => after_update_path_for(resource)
-	      end
-	    else
-	      clean_up_passwords resource
-	      	# puts "second if stmt:"
-	      	# puts params[:user][:profilepic].present?
-	        if params[:user][:profilepic].present?
-	    		render :crop
-	   		else
-				respond_with resource, :location => after_update_path_for(resource)
-			end
-	    end
+  	self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+	if params[resource_name][:password].blank? ? resource.update_without_password(params[resource_name]) 
+											   : resource.update_with_password(params[resource_name])
+		puts "update success"			   
+		sign_in resource_name, resource, :bypass => true
+		pp resource	
+		# respond_with resource
+		render json: resource
+	else
+		puts "update fail"
+		clean_up_passwords resource
+		pp resource
+		render json: resource
+	end
   end
 end

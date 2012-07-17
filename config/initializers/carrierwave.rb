@@ -6,7 +6,10 @@ CarrierWave.configure do |config|
     :region                 => 'us-east-1'  # optional, defaults to 'us-east-1'
   }
   config.fog_directory  = ENV['S3_BUCKET_NAME'] #'hpn_profile_pics'                    # required
-
+  config.fog_host = "http://#{config.fog_directory}.s3.amazonaws.com"
+  if ENV['RAILS_ENV'] != 'production'
+      config.delete_tmp_file_after_storage = false
+  end
 end
 
 ## Alternative, using Carrierwave's built-in S3 adapter (which is based on fog???)
