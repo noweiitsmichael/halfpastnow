@@ -41,9 +41,10 @@ ActiveRecord::Schema.define(:version => 20120717162831) do
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id"
-    t.integer  "event_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.integer  "bookmarked_id"
+    t.string   "bookmarked_type"
   end
 
   create_table "channels", :force => true do |t|
@@ -97,6 +98,13 @@ ActiveRecord::Schema.define(:version => 20120717162831) do
     t.string   "subject"
     t.string   "description"
     t.integer  "status"
+    t.integer  "user_id"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  create_table "histories", :force => true do |t|
+    t.integer  "occurrence_id"
     t.integer  "user_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false

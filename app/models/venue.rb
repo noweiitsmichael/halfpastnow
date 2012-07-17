@@ -2,7 +2,13 @@ class Venue < ActiveRecord::Base
   has_and_belongs_to_many :tags
   has_many :events, :dependent => :destroy
   has_many :raw_venues
-  belongs_to :bookmarkable, :polymorphic => true
+
+  # Bi-directional bookmarks association (find a user's bookmarked venues, and users who have bookmarked this venue)
+  has_many :bookmarks, :as => :bookmarked
+  belongs_to :bookmarked, :polymorphic => true
+  # Allows you to search for users that bookmarked this venue by calling "venue.bookmarked_by"
+  has_many :bookmarked_by, :through => :bookmarks, :source => :user
+
   accepts_nested_attributes_for :events, :reject_if => lambda { |a| a[:title].blank? }, :allow_destroy => true
   
   validates_presence_of :name, :address, :city

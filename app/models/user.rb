@@ -6,13 +6,20 @@ class User < ActiveRecord::Base
 
   has_many :events
 
+  # Allows you to search for bookmarked venues/events/acts by calling "user.bookmarked_type"
+  has_many :bookmarks  
+  has_many :bookmarked_venues, :through =>  :bookmarks, :source => :bookmarked, :source_type => "Venue"
+  has_many :bookmarked_events, :through =>  :bookmarks, :source => :bookmarked, :source_type => "Occurrence"
+  has_many :bookmarked_acts, :through =>  :bookmarks, :source => :bookmarked, :source_type => "Act"
+  # has_many :bookmarked_all, :through => :bookmarks, :source => :bookmarked, :source_type => 
 
-  # Cropping functions
+  # History (attended events)
+  has_many :histories, :dependent => :destroy
+  has_many :occurrences, :through => :histories
 
+
+  # Cropping function
   def crop_profilepic
-     # puts "trying to crop...crop_X: "
-     # puts crop_x
-     # puts crop_x.present?
      # might need this line for S3?
     # profilepic.cache_stored_file!
     if crop_x.present?

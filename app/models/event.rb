@@ -1,7 +1,8 @@
 class Event < ActiveRecord::Base
   belongs_to :venue
   belongs_to :user
-  belongs_to :bookmarkable, :polymorphic => true
+  
+
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :acts
   has_many :recurrences, :dependent => :destroy

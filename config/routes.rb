@@ -2,6 +2,8 @@ Myapp::Application.routes.draw do
   
 
 
+  resources :histories
+
   resources :bookmarks
 
   get "info/about"
