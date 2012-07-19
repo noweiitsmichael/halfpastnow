@@ -328,7 +328,7 @@ function pullEvents() {
 
 function loading(command) {
   if (command === 'show') {
-    var top = $('.main .inner .events').scrollTop();
+    var top = $('.main .inner .events').scrollTop() + $('.main .inner .header').height();
     var bottom = $('.main .inner .events').height() - Math.max(0,$('.main .inner .events').height() + $('.main .inner .events').offset().top - $(window).height() - $(window).scrollTop());
     var y = (top + bottom) / 2 - 33;
     var x = $('.main .inner .events').width() / 2 - 33;

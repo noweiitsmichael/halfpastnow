@@ -1,4 +1,6 @@
 class InfoController < ApplicationController
+  layout "devise"
+  
   def about
   end
 

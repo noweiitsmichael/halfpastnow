@@ -40,32 +40,5 @@
 			</div>
 		</div>
 	</div>
-
-
-
-
-	<div class="col-2">
-		<div class="block">
-
-			<% bkmrk = Bookmark.new %>
-
-			<%= form_for bkmrk, :url => "/bookmarks/create" do |f| %>
-				<div><%= f.hidden_field :bookmarked_id, :value => @venue.id %></div>
-				<div><%= f.hidden_field :bookmarked_type, :value => "Venue" %></div>
-				<div><%= f.hidden_field :user_id, :value => current_user.id %></div>
-				<%= f.submit "Bookmark!" %>
-			<% end %>
-
-			<br>Bookmarked by: </br>
-			<% @bookmarked_by = @venue.bookmarks %>
-			<ol>
-				<% @bookmarked_by.each do |b| %>
-					<li><%= b.user_id %></li>
-				<% end %>
-			</ol>
-
-		</div>
-
-	</div>
 	<div class="clear"></div>
 <% end %>

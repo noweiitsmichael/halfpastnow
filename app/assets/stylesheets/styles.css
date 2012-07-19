@@ -1,5 +1,13 @@
 /* Global styles */
 
+
+
+
+
+
+
+
+
 @font-face {
     font-family: PTSansBold;
     src: url('/assets/PTS75F-webfont.eot');
@@ -132,7 +140,7 @@ H6
 }
 #header .two .search
 {
-  margin: 6px 0 0 9px;
+  margin: 6px 0 0 4px;
 }
 #header .two .search label {
   top: 4px;
@@ -213,7 +221,7 @@ input::-webkit-input-placeholder
 #content .sidebar
 {
   width: 100%;
-  height: 141px;
+  height: 138px;
   position: relative;
 }
 #content .sidebar .inner
@@ -243,7 +251,6 @@ input::-webkit-input-placeholder
 #content .sidebar .inner .filter
 {
   font-size: 14px;
-  float:left;
 }
 
 .sidebar .filter SPAN
@@ -295,11 +302,11 @@ input::-webkit-input-placeholder
 #content .sidebar .inner .filter.date SPAN
 {
   font-size: 14px;
-  margin-bottom: 1px;
-  padding: 4px 12px;
+  padding: 5px 16px;
   cursor: pointer;
   display:block;
   width:60px;
+  float: left;
 }
 #content .sidebar .inner .filter.date SPAN.selected {
   margin-right:-1px;
@@ -309,12 +316,12 @@ input::-webkit-input-placeholder
 {
   background-color: rgba(19, 19, 58, .25);
   color: white;
-  padding: 10px 10px 10px 19px;
+  padding: 0px 5px 10px 12px;
   float:left;
   text-align:right;
-  height:60px;
+  height: 44px;
   display:none;
-  width: 166px;
+  width: 262px;
 }
 #content .sidebar .inner .filter.date .custom-select.selected
 {
@@ -352,16 +359,17 @@ input::-webkit-input-placeholder
   color: white;
   font-weight: bold;
   padding: 0 5px 5px 5px;
-  height: 116px;
+  height: 113px;
   z-index: 3;
+  left: 268px;
+  float:left;
 }
 #content .sidebar .inner .filter.tags.expanded
 {
   height:216px;
 }
 
-
-#content .sidebar .inner .filter.tags LABEL
+#content .sidebar .inner .filter LABEL
 {
   margin: 0 3px;
   letter-spacing: -1px;
@@ -381,8 +389,8 @@ input::-webkit-input-placeholder
 #content .sidebar .inner .filter .tag-library
 {
   margin: 7px 0 3px;
-  width: 432px;
-  height: 60px;
+  width: 390px;
+  height: 56px;
   overflow:hidden;
   background-color:transparent;
 }
@@ -410,7 +418,7 @@ input::-webkit-input-placeholder
   content: "+";
   font-weight: bold;
   position: relative;
-  top: 2px;
+  top: 0px;
   left: 2px;
 }
 #content .sidebar .inner .filter .more-tags
@@ -437,7 +445,7 @@ input::-webkit-input-placeholder
 }
 #content .sidebar .inner .col-2 {
   float:left;
-  margin-left: 451px;
+  margin-left: 419px;
 }
 #content .sidebar .inner .col-2 .filter
 {
@@ -447,12 +455,28 @@ input::-webkit-input-placeholder
 #content .sidebar .inner .col-3 {
   float:left;
 }
-#content .sidebar .inner .filter.empty {
-  width: 220px;
-  height: 121px;
-  background: rgba(19, 19, 58, .1);
+#content .sidebar .inner .filter.title {
+  margin-bottom:10px;
 }
-
+#content .sidebar .inner .filter.title LABEL {
+  font-size:28px;
+  height: 16px;
+  line-height: 27px;
+  margin-left: 8px;
+}
+#content .sidebar .inner .filter.channels {
+  width: 248px;
+  height: 79px;
+  background: rgba(19, 19, 58, .25);
+  padding:5px;
+}
+#content .sidebar .inner .filter .channels-select {
+  display:block;
+  width:238px;
+  height: 28px;
+  margin-top: 3px;
+  margin-left: 3px;
+}
 #content .sidebar .inner .filter.day SPAN
 {
   font-size: 14px;
@@ -463,7 +487,7 @@ input::-webkit-input-placeholder
 #content .sidebar .inner .filter.price SPAN
 {
   font-size: 14px;
-  padding: 6px 18px;
+  padding: 6px 17px;
   cursor: pointer;
 }
 
@@ -868,8 +892,21 @@ html,body {
   z-index: 2000;
   font-family: PTSansNarrowBold;
 }
-.mode .window .title .favorite {
+.mode .window .title .bookmark {
   margin-right:10px;
+  cursor:pointer;
+  width: 25px;
+  display: inline-block;
+}
+.mode .window .title .add_bookmark {
+}
+.mode .window .title .remove_bookmark {
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, .9);
+}
+.mode .window .title .add_bookmark:hover {
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, .9);
+}
+.mode .window .title .remove_bookmark:hover {
 }
 .mode .window h1 {
   display:inline-block;

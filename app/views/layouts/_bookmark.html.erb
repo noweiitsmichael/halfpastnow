@@ -1,3 +1,5 @@
+<% if current_user %>
 <% @bookmark = current_user ? Bookmark.where(:bookmarked_id => element.id, :bookmarked_type => element.class.name, :user_id => current_user.id).first : nil %>
-		<span style="<%= @bookmark ? "display:none;" : "" %>" class="favorite add_bookmark" bookmarked_id="<%= element.id%>" bookmarked_type="<%= element.class.name %>">&#10026;</span>
-		<span style="<%= @bookmark ? "" : "display:none;" %>" class="favorite remove_bookmark" bookmark-id="<%= @bookmark ? @bookmark.id : "" %>">&#10004;</span>
+		<span <%= @bookmark ? "style='display:none;'" : "title='add bookmark'" %> class="bookmark add_bookmark" bookmarked_id="<%= element.id%>" bookmarked_type="<%= element.class.name %>">&#10026;</span>
+		<span <%= @bookmark ? "title='remove bookmark'" : "style='display:none;'" %> class="bookmark remove_bookmark" bookmark-id="<%= @bookmark ? @bookmark.id : "" %>">&#9733;</span>
+<% end %>
