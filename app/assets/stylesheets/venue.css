@@ -267,7 +267,7 @@ input.time-input {
     margin-left: 10px;
 }
 
-.event-element.compact { }
+.event-element.compact { cursor:pointer; }
 
 .act-inputs { display:none;}
 .act-inits {display: none;}

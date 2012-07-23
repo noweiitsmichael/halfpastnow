@@ -153,7 +153,7 @@ class VenuesController < ApplicationController
       @raw_event = RawEvent.find(params[:raw_event_id])
       @raw_event.submitted = true
       @raw_event.save
-      render json: {:event_id => @event.id, :event_title => @event.title}
+      render json: {:event_id => @event.occurrences.first.id, :event_title => @event.title}
     else
       render json: {:event_id => nil}
     end

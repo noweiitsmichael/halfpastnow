@@ -22,6 +22,11 @@
 			}
 			return false;
 		});
+
+		$('#raw-events .event-element').click(function() {
+			if($(this).hasClass('compact'))
+				$(this).find('.toggler').click();
+		});
 	});
 </script>
 <div id="raw-events">
