@@ -1,17 +1,22 @@
 class User < ActiveRecord::Base
+  attr_accessible :firstname, :lastname, :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid
   attr_accessible :profilepic, :remote_profilepic_url, :crop_x, :crop_y, :crop_w, :crop_h
   mount_uploader :profilepic, ProfilepicUploader
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   after_update :crop_profilepic
 
+
+  validates_presence_of :firstname, :lastname, :username, :email
+  validates_uniqueness_of :email, :username, :case_sensitive => false
+
   has_many :events
+  has_many :channels
 
   # Allows you to search for bookmarked venues/events/acts by calling "user.bookmarked_type"
   has_many :bookmarks  
   has_many :bookmarked_venues, :through =>  :bookmarks, :source => :bookmarked, :source_type => "Venue"
   has_many :bookmarked_events, :through =>  :bookmarks, :source => :bookmarked, :source_type => "Occurrence"
   has_many :bookmarked_acts, :through =>  :bookmarks, :source => :bookmarked, :source_type => "Act"
-  # has_many :bookmarked_all, :through => :bookmarks, :source => :bookmarked, :source_type => 
 
   # History (attended events)
   has_many :histories, :dependent => :destroy
@@ -27,24 +32,44 @@ class User < ActiveRecord::Base
     end
   end
 
+  rolify
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
-  
-  validates_presence_of :firstname, :lastname, :username, :email
-  validates_uniqueness_of :email, :username, :case_sensitive => false
-  
-  
-	rolify
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :firstname, :lastname, :username, :email, :password, :password_confirmation, :remember_me
+  # def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
+  #   data = access_token.extra.raw_info
+  #   # TODO: if email exists but uid does not, ask user if he wants to merge with existing account
+
+  #   if user = User.where(:email => data.email).first || User.where(:uid => data.id)
+  #     user
+
+  #   # TODO: Check to see if they have signed in before locally?
+  #   else # Create a user with a stub password. 
+  #     User.create!(:email => data.email, 
+  #                  :firstname => data.first_name, 
+  #                  :lastname => data.last_name, 
+  #                  :username => data.username, 
+  #                  :password => Devise.friendly_token[0,20], 
+  #                  :provider => "facebook",
+  #                  :uid => data.id) 
+  #   end
+  # end
+
+  # def self.new_with_session(params, session)
+  #   super.tap do |user|
+  #     if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
+  #       user.email = data["email"]
+
+  #     end
+  #   end
+  # end
+
+  # def password_required?
+  #   super && provider.blank?
+  # end
+  
 end

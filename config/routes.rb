@@ -6,11 +6,13 @@ Myapp::Application.routes.draw do
 
   resources :bookmarks
 
+  resources :channels
+
   get "info/about"
 
   get "info/contact"
 
-  devise_for :users, :controllers => {:registrations => "registrations"}
+  devise_for :users, :controllers => {:registrations => "registrations"} #, :omniauth_callbacks => "omniauth_callbacks"}
 
   get "tag/index"
 
@@ -84,6 +86,8 @@ Myapp::Application.routes.draw do
   match 'feedbacks' => 'feedbacks#index'
   match 'users' => 'users#index', :as => "user"
   match '/search' => 'events#search'
+
+  match '/auth/:provider/callback' => 'authentications#create'
 
   match ':controller(/:action(/:id(.:format)))'
 end
