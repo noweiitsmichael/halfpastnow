@@ -53,6 +53,9 @@ $(function() {
   $('#content .sidebar .inner .filter.day span').click(function() {
     $('#content .sidebar .inner .filter.date span.custom').click();
   });
+
+  $('#content .sidebar .inner .filter.channels .new_channel span').click(addChannel);
+
   $('#content .sidebar .inner .filter.price span').click(toggleSelection);
   $('#content .sidebar .inner .filter.day span').click(toggleSelection);
   $('#content .main .inner .header .sort span').click(radioSelection);  
@@ -291,6 +294,8 @@ function pullEvents() {
   if(filter.sort)
     query += "&sort=" + filter.sort;
   loading('show');
+
+ console.log(query);
   $.getJSON("/events/index?format=json" + query, function (events) {
     var locations = [];
     for(var i in events) {
@@ -325,6 +330,34 @@ function pullEvents() {
     loading('hide');
   });
 }
+
+function addChannel() {
+
+  var start_seconds = filter.start;
+  var end_seconds = filter.end;
+  start_seconds = start_seconds.setHours(0,0,0,0); //Seconds since start of start day
+  end_seconds = end_seconds.setHours(0,0,0,0); //Seconds since start of end day
+
+  $.ajax({
+    url: "/channels",
+    type: "POST",
+    data: {channel: {
+      price: filter.price.reduce(function(a,b) { return a + "," + b; },"").substring(1),
+      tags: filter.tags.reduce(function(a,b) { return a + "," + b; },"").substring(1),
+      day_of_week: filter.day.reduce(function(a,b) { return a + "," + b; },"").substring(1),
+      start_seconds: (filter.start.getTime() - start_seconds)/1000, 
+      end_seconds: (filter.end.getTime() - end_seconds)/1000,
+      start_days: (start_seconds - new Date().setHours(0,0,0,0))/86400000, //1000*60*60*24,
+      end_days: (end_seconds - start_seconds)/86400000 //1000*60*60*24,
+
+    }},
+    success: function() {
+      console.log("pew!");
+    }
+
+  })
+}
+
 
 function loading(command) {
   if (command === 'show') {
