@@ -40,33 +40,33 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
 
-  # def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
-  #   data = access_token.extra.raw_info
-  #   # TODO: if email exists but uid does not, ask user if he wants to merge with existing account
+  def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
+    data = access_token.extra.raw_info
+    # TODO: if email exists but uid does not, ask user if he wants to merge with existing account
 
-  #   if user = User.where(:email => data.email).first || User.where(:uid => data.id)
-  #     user
+    if user = User.where(:email => data.email).first || User.where(:uid => data.id).first
+      user
 
-  #   # TODO: Check to see if they have signed in before locally?
-  #   else # Create a user with a stub password. 
-  #     User.create!(:email => data.email, 
-  #                  :firstname => data.first_name, 
-  #                  :lastname => data.last_name, 
-  #                  :username => data.username, 
-  #                  :password => Devise.friendly_token[0,20], 
-  #                  :provider => "facebook",
-  #                  :uid => data.id) 
-  #   end
-  # end
+    # TODO: Check to see if they have signed in before locally?
+    else # Create a user with a stub password. 
+      User.create!(:email => data.email, 
+                   :firstname => data.first_name, 
+                   :lastname => data.last_name, 
+                   :username => data.username, 
+                   :password => Devise.friendly_token[0,20], 
+                   :provider => "facebook",
+                   :uid => data.id) 
+    end
+  end
 
-  # def self.new_with_session(params, session)
-  #   super.tap do |user|
-  #     if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
-  #       user.email = data["email"]
+  def self.new_with_session(params, session)
+    super.tap do |user|
+      if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
+        user.email = data["email"]
 
-  #     end
-  #   end
-  # end
+      end
+    end
+  end
 
   # def password_required?
   #   super && provider.blank?

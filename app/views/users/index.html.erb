@@ -1,17 +1,11 @@
 <h1>Listing users</h1>
 
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
 
+
+<h3>Home</h3>
 <% @users.each do |user| %>
-  <tr>
-  </tr>
+  <p>User: <%=link_to user.username, edit_user_registration_path(user) %></p>
 <% end %>
-</table>
 
 <br />
 

@@ -12,7 +12,7 @@ Myapp::Application.routes.draw do
 
   get "info/contact"
 
-  devise_for :users, :controllers => {:registrations => "registrations"} #, :omniauth_callbacks => "omniauth_callbacks"}
+  devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"}
 
   get "tag/index"
 
