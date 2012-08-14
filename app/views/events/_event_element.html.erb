@@ -1,0 +1,61 @@
+<% if false %> <!--
+<li>
+	<div class="index">
+		<%= index ? (index + 1) : "" %>
+	</div>
+	<div class="endex"></div>
+	<div class="when sun">
+		<div class="mod">
+			<%# (event.date < now) ? event.date.strftime("%m/%e") : (event.date < (now + 7)) ? 'THIS' : (event.date < (now + 14)) ? 'NEXT' : event.date.strftime("%-m/%e") %>
+			<%= event.occurrences.first.start.to_time.strftime("%^b%d") %>
+		</div>
+		<div class="day">
+			<%= event.occurrences.first.start.to_time.strftime("%^a") %>
+		</div>
+		<div class="time">
+			<%= event.occurrences.first.start.to_time.strftime("%I:%M%P") %>
+		</div>
+	</div>
+	<div class="one">
+		<span href="<%= event ? event.occurrences.first.id : "" %>" linkto="event" class="linkto name"><%= event.title %></span>
+		<a class="venue linkto" linkto="venue" href="<%= event ? event.venue.id : "" %>"><%= event.venue.name %></a>
+		<div class="description"><span style="color:#2E2EFE"><strong><%= (event.price!=nil) ? ((event.price.to_f!=0.0) ? number_to_currency(event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span style="color:#888"><%= event.description %></span>
+		</div>
+	</div>
+	<div style="display:none;">
+		<div class="latitude"><%= event.venue.latitude %></div>
+		<div class="longitude"><%= event.venue.longitude %></div>
+	</div>
+	<div class="marker-caching">
+		<img src="/assets/markers/marker_<%= index || 0 %>.png" />
+		<img src="/assets/markers/marker_hover_<%= index || 0 %>.png" />
+	</div>
+</li> -->
+<% end %>
+
+<li>
+	<div class="index"><%= index ? (index + 1) : "" %></div>
+	<div class="event-inner">
+		<div class="title">
+			<%= event.title %><span class="linkto venue-name" href="<%= event.venue.id %>" linkto="venue">at <%= event.venue.name %></span>
+		</div>
+		<div class="details">
+			<span class="datetime"><%= event.occurrences.first.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></span>
+			<% if event.tags.count > 0 %>
+				tagged as
+				<% event.tags.each do |tag| %>
+					<span class="tag"><%= tag.name %></span>
+				<% end %>
+			<% end %>
+		</div>
+		<div class="description"><span><strong class="price"><%= event.price ? ((event.price != 0) ? number_to_currency(event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span><%= "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world. It is a way I have of driving off the spleen and regulating the circulation." %></span></div>
+		<div style="display:none;">
+			<div class="latitude"><%= event.venue.latitude %></div>
+			<div class="longitude"><%= event.venue.longitude %></div>
+		</div>
+		<div class="marker-caching">
+			<img src="/assets/markers/marker_<%= index %>.png" />
+			<img src="/assets/markers/marker_hover_<%= index %>.png" />
+		</div>
+	</div>
+</li>

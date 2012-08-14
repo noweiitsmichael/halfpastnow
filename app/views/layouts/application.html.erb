@@ -45,23 +45,24 @@
 	<!-- Notifications
 	<p class="notice"><%= notice %></p>
 	<p class="alert"><%= alert %></p>-->
-	
-  <div id="body">
-    <div id="header">
-      <div class="one">
+	<div id="header">
+    <div class="one">
+      <div class="stay-on-target">
         <a href="/"><img class="logo" src="/assets/halfpastnow.png" /></a>
-        <div class="menu-element"><a href="/info/about">about us</a></div>
-        <div class="menu-element"><a href="/info/contact">contact us</a></div>
         <div class="menu-element right">
-              <% if user_signed_in? %>
-                <%= link_to('my profile', :controller => "users", :action => "show")  %> / <%= link_to('logout', destroy_user_session_path, :method => 'delete') %> / <%= link_to('edit registration', edit_user_registration_path) %> 
-              <% else %>
-                <%= link_to('login', new_user_session_path)  %> / <%= link_to('register', new_user_registration_path)  %> 
-              <% end %>
+          <% if user_signed_in? %>
+            <%= link_to('my profile', :controller => "users", :action => "show")  %>  / <%= link_to('settings', edit_user_registration_path) %> / <%= link_to('logout', destroy_user_session_path, :method => 'delete') %>
+          <% else %>
+            <%= link_to('login', new_user_session_path)  %> / <%= link_to('register', new_user_registration_path)  %> 
+          <% end %>
         </div>
+        <div class="menu-element right"><a href="/info/contact">contact us</a></div>
+        <div class="menu-element right"><a href="/info/about">about us</a></div>
       </div>
-      <%= yield :header%>
     </div>
+    <%= yield :header%>
+  </div>
+  <div id="body">
     <%= yield :body %>
   </div>
   <div id="overlays">

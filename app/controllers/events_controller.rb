@@ -127,6 +127,10 @@ def index
       @events = @events.sort_by do |event| 
         event.score
       end.reverse
+    else
+      @events = @events.sort_by do |event|
+        event.occurrences.first.start
+      end
     end
 
     if @events.count > 0 
@@ -140,11 +144,13 @@ def index
     end
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html do
+        unless (params[:ajax].to_s.empty?) 
+          render :partial => "event_list", :locals => { :events => @events }
+        end
+      end
       format.json { render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
     end
-
-
   end
 
 

@@ -1,29 +1,94 @@
-$(function() {
+// (function($) {
+//   var scrollbarWidth = 0;
+//   $.getScrollbarWidth = function() {
+//     if ( !scrollbarWidth ) {
+//       if ( $.browser.msie ) {
+//         var $textarea1 = $('<textarea cols="10" rows="2"></textarea>')
+//             .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body'),
+//           $textarea2 = $('<textarea cols="10" rows="2" style="overflow: hidden;"></textarea>')
+//             .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body');
+//         scrollbarWidth = $textarea1.width() - $textarea2.width();
+//         $textarea1.add($textarea2).remove();
+//       } else {
+//         var $div = $('<div />')
+//           .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
+//           .prependTo('body').append('<div />').find('div')
+//             .css({ width: '100%', height: 200 });
+//         scrollbarWidth = 100 - $div.width();
+//         $div.parent().remove();
+//       }
+//     }
+//     return scrollbarWidth;
+//   };
+// })(jQuery);
 
-  $(".today.time-range").slider({
+// var scrollbarWidth;
+
+$(function() {
+  // scrollbarWidth = $.getScrollbarWidth();
+
+  $(".price-range").slider({
     range: true,
     min: 0,
-    max: 24,
-    values: [ 0, 24 ],
+    max: 50,
+    values: [ 0, 50 ],
     slide: function( event, ui ) {
-      if(ui.values[0] == 0 && ui.values[1] == 24)
-        $(".today.time-display").html("all day");
-      else
-        $(".today.time-display").html("from " + hours[ui.values[0]] + " to " + hours[ui.values[1]]);
+      if(ui.values[0] == 0 && ui.values[1] == 50)
+        $(".price-display").html("all prices");
+      else {
+        var priceOne = (ui.values[0] === 0 ? "free" : (ui.values[0] === 50) ? "$50+" : "$" + ui.values[0]);
+        var priceTwo = (ui.values[1] === 0 ? "free" : (ui.values[1] === 50) ? "$50+" : "$" + ui.values[1]);
+        if (priceOne === priceTwo)
+          $(".price-display").html(priceOne);
+        else
+          $(".price-display").html(priceOne + " - " + priceTwo);
+      }
     },
     stop: filterChange
   });
 
-  $(".tomorrow.time-range").slider({
+  $(".today.time-range, .tomorrow.time-range, .custom.time-range").slider({
     range: true,
     min: 0,
     max: 24,
     values: [ 0, 24 ],
     slide: function( event, ui ) {
       if(ui.values[0] == 0 && ui.values[1] == 24)
-        $(".tomorrow.time-display").html("all day");
+        $(this).siblings(".time-display").html("all day");
       else
-        $(".tomorrow.time-display").html("from " + hours[ui.values[0]] + " to " + hours[ui.values[1]]);
+        $(this).siblings(".time-display").html("from " + hours[ui.values[0]] + " to " + hours[ui.values[1]]);
+    },
+    stop: filterChange
+  });  
+
+  $(".custom.date-range").slider({
+    range: true,
+    min: 0,
+    max: 60,
+    values: [ 0, 60 ],
+    slide: function( event, ui ) {
+      if(ui.values[0] == 0 && ui.values[1] == 60)
+        $(this).siblings(".date-display").html("any day");
+      else {
+        var dateMod = function (dateVal) {
+          switch (dateVal) {
+            case 0:
+              return "today";
+            case 1:
+              return "tomorrow";
+            case 60:
+              return "forever";
+            default:
+              return Date.today().add(dateVal).days().toString("ddd MMM d");
+          }
+        };
+        var dateOne = dateMod(ui.values[0]);
+        var dateTwo = dateMod(ui.values[1]);
+        if (dateOne === dateTwo)
+          $(".date-display").html(dateOne);
+        else
+          $(".date-display").html("from " + dateOne + " to " + dateTwo);
+      }
     },
     stop: filterChange
   });
@@ -43,25 +108,28 @@ $(function() {
   });
 
 
-  $('#content .sidebar .inner .filter.date span').click(function () {
+  $('#header .filter.date span').click(function () {
     $(this).siblings('span').removeClass('selected');
     $(this).addClass('selected');
 
     $(this).parent().parent().find('.custom-select').removeClass('selected');
     $(this).parent().parent().find('.custom-select:nth-child(' + ($(this).index() + 1) +  ')').addClass('selected');
   });
+
   $('#content .sidebar .inner .filter.day span').click(function() {
     $('#content .sidebar .inner .filter.date span.custom').click();
   });
   $('#content .sidebar .inner .filter.price span').click(toggleSelection);
   $('#content .sidebar .inner .filter.day span').click(toggleSelection);
-  $('#content .main .inner .header .sort span').click(radioSelection);  
+  $('#content .header .sort span').click(radioSelection);  
 
-  $('#content .sidebar .inner .filter.price span').click(filterChange);
-  $('#content .sidebar .inner .filter.day span').click(filterChange);
-  $('#content .sidebar .inner .filter.date .filters span').click(filterChange);
-  $('#content .main .inner .header .sort span').click(filterChange);  
-  $('#content .sidebar .inner .filter.date .custom-select input.date').blur(filterChange);
+  //tag filterchange
+  $('#header .tags [tagid]').click(filterChange);
+  //time filterchange
+    //done uppage
+  //price filterchange
+    //done uppage
+  //sort filterchange
 
   $('#content .sidebar .inner .filter.date .date ').datetimepicker({
     ampm: true,
@@ -91,6 +159,7 @@ $(function() {
     google.maps.event.trigger(markers[$(this).index()], 'mouseover');
   });
   
+
   $('#content .main .inner .events').on("mouseleave", "li", function() {
     google.maps.event.trigger(markers[$(this).index()], 'mouseout');
   });
@@ -107,9 +176,54 @@ $(function() {
   $("#content .main .inner .events").on("click", ".linkto", loadModal);
   // $("#overlays").on("click", ".linkto", loadModal);
 
+  // $('.inner-toggle').click(function() {
+  //   $(this).siblings('.inner').slideToggle();
+  // });
 
-  if($("#map").length > 0)
-    mapOffset = $("#map").offset().top;
+  $('.filter-text').click(function(event) {
+
+    var thisToggle = $(this).parents('.filter-toggle');
+    
+    var otherToggled = thisToggle.siblings('.filter-toggle.selected');
+    
+    otherToggled.find('.filter-dropdown').slideUp(function() { otherToggled.removeClass('selected'); });
+
+    if (thisToggle.hasClass('selected')) {
+      thisToggle.find('.filter-dropdown').slideUp(function() { thisToggle.removeClass('selected'); });
+    } else {
+      thisToggle.addClass('selected');
+      thisToggle.find('.filter-dropdown').slideDown();
+    }
+  });
+
+  $('.filter-toggle').click(function(event) {
+    event.stopPropagation();
+  });
+
+  $('html').click(function() {
+    console.log('hey');
+    $('.filter-toggle.selected .filter-text').click();
+  });
+
+  $('.parent-tags > div').click(function () {
+    var isSelected = $(this).hasClass('selected');
+    
+    $('.parent-tags > div').removeClass('selected');
+    $('.child-tags > div').hide();
+
+    if(!isSelected) {
+      $(this).addClass('selected');
+      $('.child-tags > div[tagID=' + $(this).attr('tagID') + ']').show();
+    }
+  });
+
+  $('.child-tags .child-tag').click(function () {
+    $(this).siblings().removeClass('selected');
+    $(this).toggleClass('selected');
+  });
+
+  // if($("#map").length > 0)
+  //   mapOffset = $("#map").offset().top;
 });
 
 var mapOffset;
@@ -229,10 +343,9 @@ function filterChange() {
 
 function updateFilter() {
   filter.tags = [];
-  var selectedTags = $('#tag-input').tokenInput("get");
-  for(var i in selectedTags) {
-    filter.tags.push(selectedTags[i].id);
-  }
+  $('#header .tags [tagid].selected').each(function() {
+    filter.tags.push($(this).attr("tagid"));
+  });
 
   switch ($(".filter.date .filters .selected").index()) {
     case 0:
@@ -259,7 +372,7 @@ function updateFilter() {
     filter.price.push($(this).index());
   });
 
-  filter.sort = $("#content .main .inner .header .sort span.selected").index();
+  filter.sort = $("#content .header .sort span.selected").index();
 }
 
 // this gets called on infinite scroll and on filter changes
@@ -291,44 +404,26 @@ function pullEvents() {
   if(filter.sort)
     query += "&sort=" + filter.sort;
   loading('show');
-  $.getJSON("/events/index?format=json" + query, function (events) {
-    var locations = [];
-    for(var i in events) {
-      var start = Date.parse(events[i].occurrences[0].start.substr(0,19));
-      var li = $($('#content .main .inner .events-seed li:last-child').clone().wrap('<ul>').parent().html());
-      li.find(".name").attr("href", events[i].occurrences[0].id);
-      li.find(".index").html(parseInt(i) + 1);
-      li.find(".mod").html(start.toString("MMMdd").toUpperCase());
-      li.find(".day").html(day_of_week[events[i].occurrences[0].day_of_week]);
-      li.find(".time").html(start.toString("hh:mmtt").toLowerCase());
-      li.find(".one .name").html(events[i].title);
-      li.find(".one .venue").html(events[i].venue.name);
-      li.find(".one .venue").attr("href",events[i].venue_id);
-      li.find(".one .description").html(strip(events[i].description));
 
-      if(events[i].price == 0)
-        li.find(".one .description").prepend("<span><strong>FREE</strong></span> ");
-      else if(events[i].price > 0)
-        li.find(".one .description").prepend("<span><strong>$" + parseFloat(events[i].price).toFixed(2) + "</strong></span> ");
-        
-      li.prependTo('#content .main .inner .events-seed');
-      locations.push({lat: events[i].venue.latitude, long: events[i].venue.longitude});
-    }
+  $.get("/events/index?ajax=true" + query, function (data) {
+    var locations = [];
+
+    $('#content .main .inner').html(data);
+
+    $('#content .main .inner .events li').each(function(index) {
+      locations.push({lat: $(this).find('.latitude').html(), 
+                     long: $(this).find('.longitude').html()});
+    });
 
     placeMarkers({points: locations});
 
-    $('#content .main .inner .events').empty();
-    $('#content .main .inner .header .count').html(events.length + " event" + ((events.length == 1) ? "" : "s"));
-    $('#content .main .inner .events-seed li:not(:last-child)').each(function() {
-      $(this).prependTo('#content .main .inner .events');
-    });
     loading('hide');
   });
 }
 
 function loading(command) {
   if (command === 'show') {
-    var top = $('.main .inner .events').scrollTop() + $('.main .inner .header').height();
+    var top = $('.main .inner .events').scrollTop();
     var bottom = $('.main .inner .events').height() - Math.max(0,$('.main .inner .events').height() + $('.main .inner .events').offset().top - $(window).height() - $(window).scrollTop());
     var y = (top + bottom) / 2 - 33;
     var x = $('.main .inner .events').width() / 2 - 33;
@@ -361,11 +456,11 @@ function radioSelection() {
 }
 
 function lockMap() {
-  if($("#body").scrollTop() >= mapOffset) {
-    $('#map').css({ position: 'fixed', top: 0, left: 0, float: 'none' });
-  } else {
-    $('#map').css({ position: 'relative', float: 'left' });
-  }
+  // if($("#body").scrollTop() >= mapOffset) {
+  //   $('#map').css({ position: 'fixed', top: 0, right: scrollbarWidth + 'px', float: 'none' });
+  // } else {
+  //   $('#map').css({ position: 'relative', float: 'right', top: 'auto', right:'auto' });
+  // }
 }
 
 function loadModal(event) {
