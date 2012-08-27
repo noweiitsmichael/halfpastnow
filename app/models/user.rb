@@ -1,12 +1,12 @@
 class User < ActiveRecord::Base
-  attr_accessible :firstname, :lastname, :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid
+  attr_accessible :firstname, :lastname, :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :fb_access_token
   attr_accessible :profilepic, :remote_profilepic_url, :crop_x, :crop_y, :crop_w, :crop_h
   mount_uploader :profilepic, ProfilepicUploader
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   after_update :crop_profilepic
 
 
-  validates_presence_of :firstname, :lastname, :username, :email
+  validates_presence_of :firstname, :lastname, :email
   validates_uniqueness_of :email, :username, :case_sensitive => false
 
   has_many :events
@@ -42,6 +42,7 @@ class User < ActiveRecord::Base
 
   def self.find_for_facebook_oauth(access_token, signed_in_resource=nil)
     data = access_token.extra.raw_info
+
     # TODO: if email exists but uid does not, ask user if he wants to merge with existing account
 
     if user = User.where(:email => data.email).first || User.where(:uid => data.id).first
@@ -55,7 +56,8 @@ class User < ActiveRecord::Base
                    :username => data.username, 
                    :password => Devise.friendly_token[0,20], 
                    :provider => "facebook",
-                   :uid => data.id) 
+                   :uid => data.id,
+                   :fb_access_token => access_token.credentials.token) 
     end
   end
 
@@ -66,6 +68,10 @@ class User < ActiveRecord::Base
 
       end
     end
+  end
+
+  def facebook
+    @facebook ||= Koala::Facebook::API.new(fb_access_token)
   end
 
   # def password_required?

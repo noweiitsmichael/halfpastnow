@@ -14,6 +14,8 @@ class Occurrence < ActiveRecord::Base
 
   def create
     self.day_of_week = (start ? start.to_date.wday : nil)
+    # initally mark deleted flag as false
+    self.deleted = false
     super
   end
 
@@ -21,4 +23,11 @@ class Occurrence < ActiveRecord::Base
     self.day_of_week = (start ? start.to_date.wday : nil)
     super
   end
+
+  # mark as deleted instead of actually deleting
+  def delete
+    self.deleted = true
+    self.save
+  end
+
 end

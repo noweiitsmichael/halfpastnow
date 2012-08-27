@@ -49,6 +49,7 @@ gem 'devise'
 gem 'cancan'
 gem 'rolify'
 gem 'omniauth-facebook'
+gem 'koala'
 
 #file attachments and Amazon S3
 #gem 'paperclip'
