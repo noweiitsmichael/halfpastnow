@@ -1,151 +1,446 @@
-// (function($) {
-//   var scrollbarWidth = 0;
-//   $.getScrollbarWidth = function() {
-//     if ( !scrollbarWidth ) {
-//       if ( $.browser.msie ) {
-//         var $textarea1 = $('<textarea cols="10" rows="2"></textarea>')
-//             .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body'),
-//           $textarea2 = $('<textarea cols="10" rows="2" style="overflow: hidden;"></textarea>')
-//             .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body');
-//         scrollbarWidth = $textarea1.width() - $textarea2.width();
-//         $textarea1.add($textarea2).remove();
-//       } else {
-//         var $div = $('<div />')
-//           .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
-//           .prependTo('body').append('<div />').find('div')
-//             .css({ width: '100%', height: 200 });
-//         scrollbarWidth = 100 - $div.width();
-//         $div.parent().remove();
-//       }
-//     }
-//     return scrollbarWidth;
-//   };
-// })(jQuery);
+/** jquery plugins **/
 
-// var scrollbarWidth;
+// checks if element has a scrollbar
+$.fn.hasScrollBar = function() {
+    return this.get(0).scrollHeight > this.innerHeight();
+}
+
+// finds browser's scrollbar width
+var scrollbarWidth = 0;
+$.getScrollbarWidth = function() {
+  if ( !scrollbarWidth ) {
+    if ( $.browser.msie ) {
+      var $textarea1 = $('<textarea cols="10" rows="2"></textarea>')
+          .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body'),
+        $textarea2 = $('<textarea cols="10" rows="2" style="overflow: hidden;"></textarea>')
+          .css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body');
+      scrollbarWidth = $textarea1.width() - $textarea2.width();
+      $textarea1.add($textarea2).remove();
+    } else {
+      var $div = $('<div />')
+        .css({ width: 100, height: 100, overflow: 'auto', position: 'absolute', top: -1000, left: -1000 })
+        .prependTo('body').append('<div />').find('div')
+          .css({ width: '100%', height: 200 });
+      scrollbarWidth = 100 - $div.width();
+      $div.parent().remove();
+    }
+  }
+  return scrollbarWidth;
+};
+
+var defaultThing = { url: function() { return "/" + this.type + "s/show/" + this.id; } };
+
+var things = {
+  "venue": spawn(defaultThing,{type: "venue"}),
+  "event": spawn(defaultThing,{type: "event"}),
+  "act": spawn(defaultThing,{type: "act"}),
+  "shunt": spawn(defaultThing,{type: "shunt", url: function() { return "/events/shunt"; }})
+};
+
+var mapOffset;
+
+var hours = ['midnight','1am','2am','3am','4am','5am','6am','7am','8am','9am','10am','11am','noon','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm','midnight'];
+
+var MAX_DAYS = 30;
+var MAX_PRICE = 50;
+var MAX_HOURS = 24;
+var MAX_SECONDS = 86400;
+var ANY_TIME_TEXT = "Any Time";
+
+var filter = {
+  option_day: 0,
+  start_days: "",
+  end_days: "",
+  start_seconds: "",
+  end_seconds: "",
+  day: [0,1,2,3,4,5,6],
+  low_price: "",
+  high_price: "",
+  included_tags: [],
+  excluded_tags: [],
+  lat_min: "",
+  lat_max: "",
+  long_min: "",
+  long_max: "",
+  offset: 0,
+  search: "",
+  sort: 0,
+  name: ""
+};
 
 $(function() {
-  // scrollbarWidth = $.getScrollbarWidth();
+  channelFilters[0] = $.extend(true, {}, filter);
+  //console.log(filter);
+
+  scrollbarWidth = $.getScrollbarWidth();
+
+  // onclick include or exclude tags
+  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu .include, .tags-menu .exclude', function() {
+    //turn off if already selected
+    if($(this).hasClass('selected')) {
+      $('.tags-display .tag[tag-id=' + $(this).attr('tag-id') + ']').click();
+      return;
+    }
+
+    var include = $(this).hasClass('include');
+    var tagID = $(this).attr('tag-id');
+
+    if(include && filter.included_tags.indexOf(tagID) === -1) {
+      filter.included_tags.push(tagID);
+      var excludedIndex = filter.excluded_tags.indexOf(tagID);
+      if(excludedIndex !== -1) {
+        filter.excluded_tags.splice(excludedIndex,1);
+      }
+    } else if(!include && filter.excluded_tags.indexOf(tagID) === -1) {
+      filter.excluded_tags.push(tagID);
+      var includedIndex = filter.included_tags.indexOf(tagID);
+      if(includedIndex !== -1) {
+        filter.included_tags.splice(includedIndex,1);
+      }
+    }
+
+    updateViewFromFilter();
+  });
+
+  // onclick for removing tags when they're clicked in the tag display box
+  $("#header .filter-inner, #header .advancedbar").on("click", ".tags-display .tag", function() {
+    var included = $(this).hasClass('included');
+    var tagID = $(this).attr('tag-id');
+
+    if(included)
+      filter.included_tags.splice(filter.included_tags.indexOf(tagID),1);
+    else
+      filter.excluded_tags.splice(filter.excluded_tags.indexOf(tagID),1);
+
+    updateViewFromFilter();
+  });
+
+  // accordion for tag menu
+
+  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu .toggler, .tags-menu .tag-header .name', function() {
+    $(this).parent().parent().siblings().find('.toggler').html("&#x25B6;");
+    $(this).parent().parent().siblings().find('ul').slideUp();
+    var childTagList = $(this).parent().parent().find('ul');
+    if(childTagList.is(":visible")) {
+      $(this).parent().find('.toggler').html("&#x25B6;");
+    } else {
+      $(this).parent().find('.toggler').html("&#x25BC;");
+    }
+    childTagList.slideToggle();
+  });
+
+  
+  $('.lists li').not('.no-select').click(function() {
+    var index = $(this).index() + 1;
+    $('.lists li').removeClass('selected');
+    $('.lists li:nth-child(' + index + ')').addClass('selected');
+    
+    var channelID = $(this).attr('channel-id') || 0;
+    filter = $.extend(true, {}, channelFilters[channelID]);
+
+    updateViewFromFilter();
+  });
+
+  $('.sorts li').not('.no-select').click(function() {    
+    filter.sort = $(this).index();
+    
+    updateViewFromFilter();
+  });
 
   $(".price-range").slider({
     range: true,
     min: 0,
-    max: 50,
-    values: [ 0, 50 ],
+    max: MAX_PRICE,
+    values: [ 0, MAX_PRICE ],
     slide: function( event, ui ) {
-      if(ui.values[0] == 0 && ui.values[1] == 50)
-        $(".price-display").html("all prices");
-      else {
-        var priceOne = (ui.values[0] === 0 ? "free" : (ui.values[0] === 50) ? "$50+" : "$" + ui.values[0]);
-        var priceTwo = (ui.values[1] === 0 ? "free" : (ui.values[1] === 50) ? "$50+" : "$" + ui.values[1]);
-        if (priceOne === priceTwo)
-          $(".price-display").html(priceOne);
-        else
-          $(".price-display").html(priceOne + " - " + priceTwo);
-      }
+      filter.low_price = (ui.values[0] === 0) ? "" : ui.values[0];
+      filter.high_price = (ui.values[1] === MAX_PRICE) ? "" : ui.values[1];
+      updateViewFromFilter(false);
     },
-    stop: filterChange
+    stop: updateViewFromFilter
   });
 
-  $(".today.time-range, .tomorrow.time-range, .custom.time-range").slider({
+  $(".time-range").slider({
     range: true,
     min: 0,
-    max: 24,
-    values: [ 0, 24 ],
+    max: MAX_HOURS,
+    values: [ 0, MAX_HOURS ],
     slide: function( event, ui ) {
-      if(ui.values[0] == 0 && ui.values[1] == 24)
-        $(this).siblings(".time-display").html("all day");
-      else
-        $(this).siblings(".time-display").html("from " + hours[ui.values[0]] + " to " + hours[ui.values[1]]);
+      if (ui.values[0] === ui.values[1])
+        return false;
+
+      filter.start_seconds = (ui.values[0] === 0) ? "" : ui.values[0] * 3600;
+      filter.end_seconds = (ui.values[1] === MAX_HOURS) ? MAX_SECONDS : ui.values[1] * 3600;
+      updateViewFromFilter(false);
     },
-    stop: filterChange
+    stop: updateViewFromFilter
   });  
 
-  $(".custom.date-range").slider({
-    range: true,
+  $(".date-range").slider({
+    //range: true,
     min: 0,
-    max: 60,
-    values: [ 0, 60 ],
+    max: MAX_DAYS,
+    //values: [ 0, MAX_DAYS ],
+    value: 0,
     slide: function( event, ui ) {
-      if(ui.values[0] == 0 && ui.values[1] == 60)
-        $(this).siblings(".date-display").html("any day");
-      else {
-        var dateMod = function (dateVal) {
-          switch (dateVal) {
-            case 0:
-              return "today";
-            case 1:
-              return "tomorrow";
-            case 60:
-              return "forever";
-            default:
-              return Date.today().add(dateVal).days().toString("ddd MMM d");
-          }
-        };
-        var dateOne = dateMod(ui.values[0]);
-        var dateTwo = dateMod(ui.values[1]);
-        if (dateOne === dateTwo)
-          $(".date-display").html(dateOne);
-        else
-          $(".date-display").html("from " + dateOne + " to " + dateTwo);
-      }
+      //if (ui.values[0] === MAX_DAYS)
+      //  return false;
+
+      filter.start_days = ui.value;
+      filter.end_days = ui.value;
+
+      //filter.start_days = ui.values[0];
+      //filter.end_days = ui.values[1];
+      updateViewFromFilter(false);
     },
-    stop: filterChange
+    stop: updateViewFromFilter
   });
 
-  $('.more-tags').click(function() {
-    if($('.filter.tags').hasClass('expanded')) {
-      $('.more-tags').html("&#x25BE; more");
-    } else {
-      $('.more-tags').html("&#x25B4; less");
+  $('.filter.date .filters span').click(function () {
+    filter.option_day = $(this).index();
+
+    switch(filter.option_day) {
+      case 0:
+        filter.start_days = "";
+        break;
+      case 1:
+        filter.start_days = 0;
+        break;
+      case 2:
+        filter.start_days = 1;
+        break;
+      case 3:
+        filter.start_days = $(".date-range").slider("value");
+        break;
     }
-    $('.filter.tags').toggleClass('expanded');
+    filter.end_days = filter.start_days;
+    
+    updateViewFromFilter();
   });
+});
 
+function defaultTo(parameter, parameterDefault) {
+  return (typeof parameter !== 'undefined') ? parameter : parameterDefault;
+}
+
+function updateViewFromFilter(pullEventsFlag) {
+  pullEventsFlag = defaultTo(pullEventsFlag, true);
+
+  //console.log("filter: ");
+  //console.log(filter);
+  //console.log(channelFilters);
+
+  ////////////// CHANNELS //////////////
+
+  var channelStr = filter.name === "" ? "All Events" : filter.name;
+  $('.filter-toggle.channels .text-inner').html(channelStr);
+
+  ////////////// TAGS ////////////// 
+
+  $('.tags-display').empty();
+
+  //tags selection
+  for(var i in filter.included_tags) {
+    $('.tags-display').append("<span class='tag included' tag-id='" + filter.included_tags[i] + "'><span class='name'>" + tags[filter.included_tags[i]] + "</span><span class='remove'>&#10799;</span></span>");
+  }
+
+  for(var i in filter.excluded_tags) {
+    $('.tags-display').append("<span class='tag excluded' tag-id='" + filter.excluded_tags[i] + "'><span class='name'>" + tags[filter.excluded_tags[i]] + "</span><span class='remove'>&#10799;</span></span>");
+  }
+
+  //tags header
+  var filterText = "";
+  
+  $('.include').removeClass('selected');
+  for(var i in filter.included_tags) {
+    filterText += tags[filter.included_tags[i]];
+    if(i < filter.included_tags.length - 1 || filter.excluded_tags.length !== 0)
+      filterText += " + ";
+    $('.include[tag-id='+filter.included_tags[i]+']').addClass('selected');
+  }
+
+  $('.exclude').removeClass('selected');
+  for(var i in filter.excluded_tags) {
+    filterText += "<em>not</em> " + tags[filter.excluded_tags[i]];
+    if(i < filter.excluded_tags.length - 1)
+      filterText += " + ";
+    $('.exclude[tag-id='+filter.excluded_tags[i]+']').addClass('selected');
+  }
+
+  if (filterText === "")
+    filterText = "Any Tag";
+
+  $('.filter-toggle.tags .text-inner').html(filterText);
+
+  ////////////// DATETIME ////////////// 
+
+  $('.filter.date .filters span').removeClass('selected');
+  $('.filter.date .filters span:nth-child(' + (filter.option_day + 1) + ')').addClass('selected');
+
+  $('.filter.date .custom-select').removeClass('selected');
+  $('.filter.date .custom-select:nth-child(' + (filter.option_day + 1) + ')').addClass('selected');
+
+  //time
+  var start_hours = (filter.start_seconds === "") ? 0 : filter.start_seconds / 3600;
+  var end_hours = (filter.end_seconds === "") ? MAX_HOURS : filter.end_seconds / 3600;
+
+  $(".custom-select:nth-child(" + (filter.option_day + 1) +  ") .time-range").slider("values", 0, start_hours);
+  $(".custom-select:nth-child(" + (filter.option_day + 1) +  ") .time-range").slider("values", 1, end_hours);
+
+  var timeStr = "";
+  var timePreStr = "at ";
+  if(start_hours === 0 && end_hours === MAX_HOURS) {
+    timeStr = ANY_TIME_TEXT;
+  } else {
+    if(end_hours === MAX_HOURS) {
+      timeStr = hours[start_hours];
+      timePreStr = "after ";
+    } else if(start_hours === 0) {
+      timeStr = hours[end_hours];
+      timePreStr = "before ";
+    } else {       
+      var timeOne = hours[start_hours];
+      var timeTwo = hours[end_hours];
+      timeStr = timeOne + "&ndash;" + timeTwo;
+      timePreStr = "from ";
+    }
+  }
+
+  $(".custom-select:nth-child(" + (filter.option_day + 1) +  ") .time-display").html(timePreStr + " " + timeStr);
+  
+  //date
+
+  //$(".date-range").slider("values", 0, filter.start_days);
+  //$(".date-range").slider("values", 1, filter.end_days);
+
+  // var dateMod = function (dateVal) {
+  //   if(dateVal === 0)
+  //     return "today";
+  //   if(dateVal === 1)
+  //     return "tomorrow";
+  //   if(dateVal === MAX_DAYS)
+  //     return "forever";
+  //   if(dateVal < 7)
+  //     return "This " + Date.today().add(dateVal).days().toString("dddd");
+  //   if(dateVal < 14)
+  //     return "Next " + Date.today().add(dateVal).days().toString("dddd");
+    
+  //   return Date.today().add(dateVal).days().toString("MMM d");
+  // };
+
+  // var dateStr;
+  // if(filter.start_days === 0 && filter.end_days >= MAX_DAYS) {
+  //   dateStr = "Any Date";
+  // } else {
+  //   if(filter.end_days >= MAX_DAYS) {
+  //     dateStr = "After " + dateMod(filter.start_days - 1);
+  //   } else if(filter.start_days === filter.end_days) {
+  //     dateStr = dateMod(filter.start_days);
+  //   } else if(filter.start_days === 0) {
+  //     dateStr = "Before " + dateMod(filter.end_days + 1);
+  //   } else {
+  //     var dateOne = dateMod(filter.start_days);
+  //     var dateTwo = dateMod(filter.end_days);
+  //     dateStr = dateOne + " - " + dateTwo;
+  //   }
+  // }
+
+  $(".date-range").slider("value", filter.start_days);
+
+  var dateStr = "";
+  var datePreStr = "during ";
+  if(filter.option_day === 0)
+    dateStr = "";
+  else if(filter.start_days === 0)
+    dateStr = "Today";
+  else if(filter.start_days === 1)
+    dateStr = "Tomorrow";
+  else if(filter.start_days < 7)
+    dateStr = Date.today().add(filter.start_days).days().toString("dddd");
+  else if(filter.start_days < 14)
+    dateStr = "Next " + Date.today().add(filter.start_days).days().toString("ddd");
+  else
+    dateStr = Date.today().add(filter.start_days).days().toString("MMM d");
+
+  if(filter.option_day === 3)
+    $(".date-display").html(dateStr);
+
+  var titleStr = "";
+  var titlePreStr = "";
+  if(dateStr === "") {
+    titleStr = timeStr;
+    if(timePreStr !== "") {
+      titlePreStr = timePreStr;
+    }
+  } else {
+    titlePreStr = datePreStr;
+    if(timeStr === ANY_TIME_TEXT) {
+      titleStr = dateStr;
+    } else {
+      titleStr = dateStr + " " + timePreStr + timeStr;
+    }
+  }
+
+  $('.filter-toggle.date .pre-text').html(titlePreStr);
+  $('.filter-toggle.date .text-inner').html(titleStr);
+
+  ////////////// PRICE //////////////
+
+  var low_price = (filter.low_price === "") ? 0 : filter.low_price;
+  var high_price = (filter.high_price === "") ? MAX_PRICE : filter.high_price
+
+  //price selection and header
+  $(".price-range").slider("values", 0, low_price);
+  $(".price-range").slider("values", 1, high_price);
+
+  var priceStr;
+  if(low_price === 0 && high_price >= MAX_PRICE) {
+    priceStr = "Any Price";
+  } else {
+    if(high_price >= MAX_PRICE) {
+      priceStr = "Over $" + low_price;
+    } else if(low_price === high_price) {
+      priceStr = (low_price === 0 ? "Free" : "$" + low_price);
+    } else if(low_price === 0) {
+      priceStr = "Under $" + high_price;
+    } else {
+      var priceOne = "$" + low_price;
+      var priceTwo = "$" + high_price;
+      priceStr = priceOne + " - " + priceTwo;
+    }
+  }
+
+  $('.price-display, .filter-toggle.price .text-inner').html(priceStr);
+
+  ////////////// SORT //////////////
+
+  //sort
+  $('.sorts li').removeClass('selected');
+  $('.sorts li:nth-child(' + (filter.sort + 1) + ')').addClass('selected');
+  
+  //sort header
+  $('.filter-toggle.sort .text-inner').html($('.sorts li.selected').html());
+
+  //search terms [later]
+
+  if(pullEventsFlag) {
+    pullEvents();
+  }
+}
+
+
+var advancedSlideTime, filterSlideTime, marginHeight, baseHeight, filterHeight, advancedHeight;
+
+$(function() {
   $('.mode.venue .address.one').click(function(){
      $('.mode').hide();
-
-  });
-
-
-  $('#header .filter.date span').click(function () {
-    $(this).siblings('span').removeClass('selected');
-    $(this).addClass('selected');
-
-    $(this).parent().parent().find('.custom-select').removeClass('selected');
-    $(this).parent().parent().find('.custom-select:nth-child(' + ($(this).index() + 1) +  ')').addClass('selected');
   });
 
   $('#content .sidebar .inner .filter.day span').click(function() {
     $('#content .sidebar .inner .filter.date span.custom').click();
   });
-  $('#content .sidebar .inner .filter.price span').click(toggleSelection);
-  $('#content .sidebar .inner .filter.day span').click(toggleSelection);
-  $('#content .header .sort span').click(radioSelection);  
 
-  //tag filterchange
-  $('#header .tags [tagid]').click(filterChange);
-  //time filterchange
-    //done uppage
-  //price filterchange
-    //done uppage
-  //sort filterchange
-
-  $('#content .sidebar .inner .filter.date .date ').datetimepicker({
-    ampm: true,
-    showMinute: false,
-    hour: (new Date()).getHours(),
-    minute: 0,
-    dateFormat: 'D m/d',
-    timeFormat: 'h:mmtt',
-    separator: ' @ '
-  });
-
-  $('.mode .overlay').click(closeMode);
-
-  $('.mode .overlay .window').click(function(event) {
-    event.stopPropagation();
-  });
+  
   
   $(".mode .window .menu li").click(function() {
     var index = $(this).index();
@@ -155,12 +450,11 @@ $(function() {
     $(this).parent().parent().children("div").eq(index).addClass("selected");
   });
 
-  $('#content .main .inner .events').on("mouseenter", "li", function() {
+  $('#content').on("mouseenter", ".events li", function() {
     google.maps.event.trigger(markers[$(this).index()], 'mouseover');
   });
-  
 
-  $('#content .main .inner .events').on("mouseleave", "li", function() {
+  $('#content').on("mouseleave", ".events li", function() {
     google.maps.event.trigger(markers[$(this).index()], 'mouseout');
   });
 
@@ -169,30 +463,25 @@ $(function() {
   
   $(window).resize(showPageMarkers);
   $(window).resize(lockMap);
+  $(window).resize(checkScroll);
 
   // // oh god what a grody hack. TODO: find out why this happens and fixitfixitfixit
   // $('#content .main .inner .events, .venue.mode .events').on("click", ".linkto", loadModal);
   // $(".window .linkto").click(loadModal);
-  $("#content .main .inner .events").on("click", ".linkto", loadModal);
-  // $("#overlays").on("click", ".linkto", loadModal);
-
-  // $('.inner-toggle').click(function() {
-  //   $(this).siblings('.inner').slideToggle();
-  // });
-
+  var slideTime = 0;
   $('.filter-text').click(function(event) {
 
     var thisToggle = $(this).parents('.filter-toggle');
     
     var otherToggled = thisToggle.siblings('.filter-toggle.selected');
     
-    otherToggled.find('.filter-dropdown').slideUp(function() { otherToggled.removeClass('selected'); });
+    otherToggled.find('.filter-dropdown').slideUp(slideTime, function() { otherToggled.removeClass('selected'); });
 
     if (thisToggle.hasClass('selected')) {
-      thisToggle.find('.filter-dropdown').slideUp(function() { thisToggle.removeClass('selected'); });
+      thisToggle.find('.filter-dropdown').slideUp(slideTime, function() { thisToggle.removeClass('selected'); });
     } else {
       thisToggle.addClass('selected');
-      thisToggle.find('.filter-dropdown').slideDown();
+      thisToggle.find('.filter-dropdown').slideDown(slideTime);
     }
   });
 
@@ -201,77 +490,110 @@ $(function() {
   });
 
   $('html').click(function() {
-    console.log('hey');
     $('.filter-toggle.selected .filter-text').click();
   });
 
-  $('.parent-tags > div').click(function () {
-    var isSelected = $(this).hasClass('selected');
-    
-    $('.parent-tags > div').removeClass('selected');
-    $('.child-tags > div').hide();
+  advancedSlideTime = 200;
+  filterSlideTime = 100;
+  
+  marginHeight = $('.expandobar').height() + 10;
+  baseHeight = $('#header .one').height() + marginHeight;
+  filterHeight = baseHeight + $('.filterbar').height();
+  advancedHeight = baseHeight + $('.advancedbar').height();
 
-    if(!isSelected) {
-      $(this).addClass('selected');
-      $('.child-tags > div[tagID=' + $(this).attr('tagID') + ']').show();
+  $('.expandobar-inner').click(function () {
+    if($(this).hasClass('expanded')) {
+      $('.advancedbar').slideUp(advancedSlideTime, function() {  $('.filterbar').slideDown(filterSlideTime) });
+      $('#content, #map-wrapper').animate(
+        { "margin-top" : baseHeight },
+        advancedSlideTime, 
+        function() { 
+          $('#content, #map-wrapper').animate(
+            {"margin-top" : filterHeight }, 
+            filterSlideTime,
+            checkScroll
+          );
+        }
+      ); 
+      $(this).removeClass('expanded');
+      $(this).html("<span>&#9660;</span>show advanced options<span>&#9660;</span>");
+    } else {
+      $('.filterbar').slideUp(filterSlideTime, function() {  $('.advancedbar').slideDown(advancedSlideTime); });
+      $('#content, #map-wrapper').animate(
+        { "margin-top" : baseHeight },
+        filterSlideTime, 
+        function() { 
+          $('#content, #map-wrapper').animate(
+            {"margin-top" : advancedHeight }, 
+            advancedSlideTime,
+            checkScroll
+          );
+        }
+      );
+      $(this).addClass('expanded');
+      $(this).html("<span>&#9650;</span>hide advanced options<span>&#9650;</span>");
     }
   });
 
-  $('.child-tags .child-tag').click(function () {
-    $(this).siblings().removeClass('selected');
-    $(this).toggleClass('selected');
+  $("#content").on("click", "[linkto]", loadModal);
+
+  $('#overlays').on("click", "[linkto]", loadModal);
+  $('#overlays').on("click", '.mode .close-btn', closeMode);
+  $('#overlays').on("click", '.mode .add_bookmark', function() {
+    $.post('/bookmarks/create',{
+      bookmarked_id: $(this).attr('bookmarked_id'),
+      bookmarked_type: $(this).attr('bookmarked_type')},
+      function(data) {
+        $('.mode .add_bookmark').hide();
+        $('.mode .remove_bookmark').attr("bookmark-id",data.id);
+        $('.mode .remove_bookmark').show();
+      },"json"
+    );
   });
+  $('#overlays').on("click", '.mode .remove_bookmark', function() {
+    $.ajax('/bookmarks/' + $(this).attr('bookmark-id'),{
+      type: "DELETE",
+      dataType: "json",
+      success: function() {
+        $('.mode .remove_bookmark').hide();
+        $('.mode .add_bookmark').show();
+      }
+    });
+  });
+
+  $('.mode .overlay .background').click(closeMode);
 
   // if($("#map").length > 0)
   //   mapOffset = $("#map").offset().top;
+
+  checkScroll();
 });
 
-var mapOffset;
-
-var hours = ['midnight','1 am','2 am','3 am','4 am','5 am','6 am','7 am','8 am','9 am','10 am','11 am','noon','1 pm','2 pm','3 pm','4 pm','5 pm','6 pm','7 pm','8 pm','9 pm','10 pm','11 pm','midnight'];
-
-var day_of_week = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
-
 window.addEventListener("popstate", function(e) {
+  //console.log("popstate");
+  //console.log(e);
   var query = e.target.location.search;
   if(query !== "") {
     modal(parsequery(query));
   } else {
-
     demodal();
   }
 });
 
-// var today = Date.today();
-
-var filter = {
-  start: Date.today(),
-  end: Date.today().add({days: 1}),
-  day: [0,1,2,3,4,5,6],
-  price: [0,1,2,3,4],
-  tags: [],
-  latMin: null,
-  latMax: null,
-  longMin: null,
-  longMax: null,
-  offset: 0,
-  search: null,
-  sort: 0
-};
-
 var boundsChangedFlag = false;
 function boundsChanged() {
-  filter.latMin = map.getBounds().getSouthWest().lat();
-  filter.latMax = map.getBounds().getNorthEast().lat();
-  filter.longMin = map.getBounds().getSouthWest().lng();
-  filter.longMax = map.getBounds().getNorthEast().lng();
+  filter.lat_min = map.getBounds().getSouthWest().lat();
+  filter.lat_max = map.getBounds().getNorthEast().lat();
+  filter.long_min = map.getBounds().getSouthWest().lng();
+  filter.long_max = map.getBounds().getNorthEast().lng();
   if(boundsChangedFlag) {
-    filterChange();
+    updateViewFromFilter();
   }
   boundsChangedFlag = true;
 }
 
-function closeMode(){
+function closeMode() {
+  //console.log("closeMode");
   history.pushState({}, "main mode", "/");
   demodal();
 }
@@ -305,17 +627,17 @@ function placeMarker(lat, long) {
 
   google.maps.event.addListener(marker, 'mouseover', function() {
     marker.setIcon("/assets/markers/marker_hover_" + marker.index +  ".png");
-    $("#content .main .inner .events LI:nth-child(" + marker.index + ")").addClass("hover");
+    $("#content .main .inner .events li:nth-child(" + marker.index + ")").addClass("hover");
     markers[i].foo = "bar";
   });
 
   google.maps.event.addListener(marker, 'mouseout', function() {
     marker.setIcon("/assets/markers/marker_" + marker.index + ".png");
-    $("#content .main .inner .events LI:nth-child(" + marker.index + ")").removeClass("hover");
+    $("#content .main .inner .events li:nth-child(" + marker.index + ")").removeClass("hover");
   });
 
   google.maps.event.addListener(marker, 'click', function() {
-    $("#content .main .inner .events LI:nth-child(" + marker.index + ") .name").click();
+    $("#content .main .inner .events li:nth-child(" + marker.index + ")").click();
   });
 
   markers.push(marker);
@@ -334,81 +656,24 @@ function showPageMarkers() {
   }
 }
 
-// on change of filter
-function filterChange() {
-  updateFilter();
-  pullEvents();
-  //put events in page
-}
-
-function updateFilter() {
-  filter.tags = [];
-  $('#header .tags [tagid].selected').each(function() {
-    filter.tags.push($(this).attr("tagid"));
-  });
-
-  switch ($(".filter.date .filters .selected").index()) {
-    case 0:
-      filter.start = Date.today().add({hours:$(".today.time-range").slider("values",0)});
-      filter.end = Date.today().add({hours:$(".today.time-range").slider("values",1)});
-      break;
-    case 1:
-      filter.start = Date.today().add({hours:$(".tomorrow.time-range").slider("values",0), days:1});
-      filter.end = Date.today().add({hours:$(".tomorrow.time-range").slider("values",1), days:1});
-      break;
-    case 2:
-      filter.start = $('#content .sidebar .inner .filter.date .start.date').datepicker("getDate");
-      filter.end = $('#content .sidebar .inner .filter.date .end.date').datepicker("getDate");
-      break;
-  }
-  
-  filter.day = [];
-  $('#content .sidebar .inner .filter.day span.selected').each(function () {
-    filter.day.push($(this).index());
-  });
-
-  filter.price = [];
-  $('#content .sidebar .inner .filter.price span.selected').each(function () {
-    filter.price.push($(this).index());
-  });
-
-  filter.sort = $("#content .header .sort span.selected").index();
-}
-
 // this gets called on infinite scroll and on filter changes
 function pullEvents() {
-  var query = "";
-
-  if(filter.start)
-    query += "&start=" + (filter.start.getTime() / 1000);
-  if(filter.end)
-    query += "&end=" + (filter.end.getTime() / 1000);
-  if(filter.search)
-    query += "&search=" + filter.search;
-  if(filter.latMin)
-    query += "&lat_min=" + filter.latMin;
-  if(filter.latMax)
-    query += "&lat_max=" + filter.latMax;
-  if(filter.longMin)
-    query += "&long_min=" + filter.longMin;
-  if(filter.longMax)
-    query += "&long_max=" + filter.longMax;
-  if(filter.day.length > 0 && filter.day.length < 7)
-    query += "&day=" + filter.day.reduce(function(a,b) { return a + "," + b; },"").substring(1);
-  if(filter.price.length > 0 && filter.price.length < 5)
-    query += "&price=" + filter.price.reduce(function(a,b) { return a + "," + b; },"").substring(1);
-  if(filter.tags.length > 0)
-    query += "&tags=" + filter.tags.reduce(function(a,b) { return a + "," + b; },"").substring(1);
-  if(filter.offset)
-    query += "&offset=" + filter.offset;
-  if(filter.sort)
-    query += "&sort=" + filter.sort;
   loading('show');
 
-  $.get("/events/index?ajax=true" + query, function (data) {
+  var visibleTagListID = $('.child-tags-menu:visible').attr('tag-id');
+  $.get("/events/index?ajax=true", filter, function (data) {
     var locations = [];
 
-    $('#content .main .inner').html(data);
+    var jData = $(data);
+
+    $('#content .main .inner').html(jData.find("#combo_event_list").html());
+    $('#header .filter-toggle.tags .filter-inner').html(jData.find("#combo_tag_list").html());
+    $('#header .advancedbar .tags-list').html(jData.find("#combo_advanced_tag_list").html());
+
+    if(visibleTagListID) {
+      $('.child-tags-menu[tag-id=' + visibleTagListID + ']').show();
+      $('.tag-header[tag-id=' + visibleTagListID + '] .toggler').html("&#x25BC;");
+    }
 
     $('#content .main .inner .events li').each(function(index) {
       locations.push({lat: $(this).find('.latitude').html(), 
@@ -418,6 +683,9 @@ function pullEvents() {
     placeMarkers({points: locations});
 
     loading('hide');
+
+    updateViewFromFilter(false);
+    checkScroll();
   });
 }
 
@@ -463,10 +731,25 @@ function lockMap() {
   // }
 }
 
-function loadModal(event) {
+function checkScroll() {
+  var mapWrapperWidth = 990;
+  if($('#body').hasScrollBar()) {
+    //$('#map-wrapper').width(mapWrapperWidth);
+    $('#header').width($('#body').width() - scrollbarWidth);
+  } else {
+    //$('#map-wrapper').width(mapWrapperWidth + scrollbarWidth);
+    $('#header').width($('#body').width());
+  }
+}
 
-  var thing = {type:$(this).attr("linkto"), id: $(this).attr("href")};
-  history.pushState(thing, thing.type + " mode", "?" + thing.type + "_id=" + thing.id);
+function loadModal(event) {
+  //console.log('loadModal');
+  var thing = spawn(things[$(this).attr("linkto")],{id: $(this).attr("link-id")});
+  //console.log(thing);
+  //console.log(thing.type);
+  //console.log(thing.id);
+  //var thing = {type:$(this).attr("linkto"), id: $(this).attr("link-id")};
+  history.pushState({}, thing.type + " mode", "?" + thing.type + "_id=" + thing.id);
   if($(this).is("#content .main .events li .venue")) {
      event.stopPropagation();
   }
@@ -474,74 +757,72 @@ function loadModal(event) {
   return false;
 }
 
-//only works for one parameter. lol
+//only works for one parameter. lol.
 function parsequery(query) {
   query = query.substring(1, query.length);
   var queryArr = query.split('=');
   if(queryArr[0] == "venue_id") {
-    return { type: "venue", id: queryArr[1] };
+    return spawn(things["venue"],{ id: queryArr[1] });
   } else if(queryArr[0] == "event_id") {
-    return { type: "event", id: queryArr[1] };
+    return spawn(things["event"],{ id: queryArr[1] });
   } else if(queryArr[0] == "act_id") {
-    return { type: "act", id: queryArr[1] };
+    return spawn(things["act"],{ id: queryArr[1] });
+  } else if(queryArr[0] == "shunt") {
+    return spawn(things["shunt"]);
   } else {
     return null;
   }
 }
 
 function demodal() {
+  //console.log("demodal");
   modal();
 }
 
 function to_ordinal(num) {
-   
     var ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] ;
     return num.toString() + ordinal[num%10];
 }
 
-function strip(html)
-{
+function strip(html) {
   var tmp = document.createElement("DIV");
   tmp.innerHTML = html;
   return tmp.textContent || tmp.innerText;
 }
 
 function modal(thing) {
-
+  //console.log("modal");
+  //console.log(thing);
   if(!thing) {
     $('.mode .description').html("");
     $('.mode').hide();
     return;
   } else {
-    $.get('/' + thing.type + 's/show/' + thing.id, function(data) {
+    $.get(thing.url(), function(data) {
+     //$.get('/' + thing.type + 's/show/' + thing.id, function(data) {
       $('.mode').hide().removeClass().addClass('mode ' + thing.type);
       $('.mode .window').html(data);
-      $('.mode .linkto').click(loadModal);
-      $('.mode .close-btn').click(closeMode);
-      $('.mode').show(); 
-      $('.mode .add_bookmark').click(function() {
-        $.post('/bookmarks/create',{
-          bookmarked_id: $(this).attr('bookmarked_id'),
-          bookmarked_type: $(this).attr('bookmarked_type')},
-          function(data) {
-            $('.mode .add_bookmark').hide();
-            $('.mode .remove_bookmark').attr("bookmark-id",data.id);
-            $('.mode .remove_bookmark').show();
-          },"json"
-        );
-      });  
-      $('.mode .remove_bookmark').click(function() {
-        $.ajax('/bookmarks/' + $(this).attr('bookmark-id'),{
-          type: "DELETE",
-          dataType: "json",
-          success: function() {
-            $('.mode .remove_bookmark').hide();
-            $('.mode .add_bookmark').show();
-          }
-        });
-      });
+      $('.mode').show();
     });
   }
 }
 
+function deepExtend(destination, source) {
+  for (var property in source) {
+    if (source[property] && source[property].constructor &&
+     source[property].constructor === Object) {
+      destination[property] = destination[property] || {};
+      arguments.callee(destination[property], source[property]);
+    } else {
+      destination[property] = source[property];
+    }
+  }
+  return destination;
+};
 
+function spawn(classObject, extendParams) {
+  if (typeof extendParams === 'undefined')
+    return deepExtend({},classObject);
+  else
+    return deepExtend(deepExtend({},classObject),extendParams);
+}

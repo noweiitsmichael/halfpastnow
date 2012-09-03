@@ -48,6 +48,7 @@ gem 'sanitize'
 gem 'devise'
 gem 'cancan'
 gem 'rolify'
+gem 'omniauth-facebook'
 
 #file attachments and Amazon S3
 #gem 'paperclip'

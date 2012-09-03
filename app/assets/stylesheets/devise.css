@@ -1,4 +1,4 @@
-#body { background-color: white; }
+#body { }
 #profile-nav li { cursor:pointer; }
 #profile-nav li.selected { font-weight:bold; }
 #profile-nav { float:left; width: 300px; margin-top: 10px;}

@@ -18,4 +18,9 @@ class TagsController < ApplicationController
 
   	redirect_to :action => "index"
   end
+
+  def rename(tag, new_name)
+    tag.name = new_name
+  end
+
 end

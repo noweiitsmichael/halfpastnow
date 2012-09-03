@@ -2,10 +2,9 @@ class ApplicationController < ActionController::Base
   layout :layout_by_resource
   protect_from_forgery
 
-  
-  #rescue_from CanCan::AccessDenied do |exception|
-  #    redirect_to root_path, :alert => exception.message
-  #  end
+  rescue_from CanCan::AccessDenied do |exception|
+     redirect_to root_path, :alert => exception.message
+   end
   
   # Mobile stuff 
     before_filter :prepare_for_mobile

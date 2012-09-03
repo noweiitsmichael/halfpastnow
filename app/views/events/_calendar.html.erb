@@ -13,9 +13,9 @@
 		</div>
 	<% unless options[:datetime_only] %>
 		<div class="details">
-			<span class="linkto event-name" href="<%= occ.id %>" linkto="event"><%= occ.event.title %></span>
+			<span class="event-name" link-id="<%= occ.id %>" linkto="event"><%= occ.event.title %></span>
 		<% if options[:venue] %>
-			<span class="linkto venue-name" href="<%= occ.event.venue.id %>" linkto="venue">at <%= occ.event.venue.name %></span>
+			<span class="venue-name" link-id="<%= occ.event.venue.id %>" linkto="venue">at <%= occ.event.venue.name %></span>
 		<% end %>
 		</div>
 		<div class="description"><span><strong><%= occ.event.price ? ((occ.event.price != 0) ? number_to_currency(occ.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span><%= occ.event.description %></span></div>

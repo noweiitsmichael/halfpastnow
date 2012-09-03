@@ -26,7 +26,7 @@
 				<h2>Featuring</h2>
 				<div class="block-inner">
 					<% @event.acts.each_with_index do |act,index| %>
-						<span href="<%= act.id %>" linkto="act" class="linkto act-name"><%= act.name %></span><%= (index != @event.acts.length - 1) ? ", " : "" %>
+						<span link-id="<%= act.id %>" linkto="act" class="act-name"><%= act.name %></span><%= (index != @event.acts.length - 1) ? ", " : "" %>
 					<% end %>
 					<div class="embeds">
 					<% @event.acts.each do |act| %>
@@ -44,7 +44,7 @@
 		<div class="block">
 			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=402x300&zoom=15&maptype=roadmap&markers=color:red%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&style=feature:all|hue:0x000001|saturation:-50&sensor=false"/></a>
 			<div class="block-inner">
-				<div class="venue"><a linkto="venue" href="<%= @event.venue.id %>" class="linkto"><%= @event.venue.name %></a></div>
+				<div class="venue"><a linkto="venue" link-id="<%= @event.venue.id %>" href="#"><%= @event.venue.name %></a></div>
 				<div class="address one"><%= @event.venue.address %></div>
 				<div class="address two"><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></div>
 			</div>
@@ -58,7 +58,13 @@
 		</div>
 		<% end %>
 	</div>
-<% if false %>
+
+	<div class="clear"></div>
+<% end %>
+
+
+
+<% if false %><!--
 	<div class="col-2">
 		<div class="block">
 
@@ -103,7 +109,5 @@
 		</div>
 
 
-	</div>
-<% end %>
-	<div class="clear"></div>
+	</div>-->
 <% end %>
