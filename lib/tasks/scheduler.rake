@@ -28,22 +28,24 @@ task :update_occurrences => :environment do
 	old_occurrences.each do |occurrence|
 		event = occurrence.event
 		puts "occurrence id: " + occurrence.id.to_s
-		#if occurrence doesn't have a recurrence, then just destroy it
+		#if occurrence doesn't have a recurrence, then just delete it
 		#otherwise, try to generate more occurrences from the recurrence.
 			#if it can't, and the occurrence is the only occurrence of the recurrence, then destroy the recurrence
 		if occurrence.recurrence.nil?
-			occurrence.destroy
+			occurrence.delete
 		else
 			if (!occurrence.recurrence.gen_occurrences(1) && occurrence.recurrence.occurrences.count == 1)
-				occurrence.recurrence.destroy
+				occurrence.recurrence.delete
 			else
 				occurrence.recurrence.save
-				occurrence.destroy
+				occurrence.delete
 			end
 		end
-		if (event.occurrences.length == 0)
-			event.destroy
-		end
+		## Probably never want to delete events either so we always have the data
+		
+		# if (event.occurrences.length == 0)
+		# 	event.destroy
+		# end
 	end
 end
 

@@ -6,7 +6,13 @@
 
 <div id="city-name">Member Since <%= @user.created_at.strftime("%B") %> <%= @user.created_at.strftime("%Y") %></div>
 
-
+<br>
+<br>
+<b>Bands I Like on Facebook:</b>
+  <% @user.facebook.get_connection("me", "Music").each do |m| %>
+  <div><%=m["name"]%></div>
+  <% end %>
+<br><br>
 
 <table>
 <h2>Bookmarked Venues</h2>

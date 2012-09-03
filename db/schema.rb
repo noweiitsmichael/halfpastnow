@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20120827204134) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "event_id"
+    t.boolean  "suggested"
   end
 
   add_index "acts", ["event_id"], :name => "index_acts_on_event_id"
@@ -87,6 +88,7 @@ ActiveRecord::Schema.define(:version => 20120827204134) do
     t.integer  "clicks",      :default => 0
     t.integer  "views",       :default => 0
     t.integer  "user_id"
+    t.boolean  "suggested"
   end
 
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
@@ -125,6 +127,7 @@ ActiveRecord::Schema.define(:version => 20120827204134) do
     t.datetime "updated_at",    :null => false
     t.integer  "recurrence_id"
     t.integer  "day_of_week"
+    t.boolean  "deleted"
   end
 
   add_index "occurrences", ["event_id"], :name => "index_occurrences_on_event_id"
@@ -244,6 +247,7 @@ ActiveRecord::Schema.define(:version => 20120827204134) do
     t.string   "profilepic"
     t.string   "provider"
     t.string   "uid"
+    t.string   "fb_access_token"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -273,6 +277,7 @@ ActiveRecord::Schema.define(:version => 20120827204134) do
     t.integer  "clicks",      :default => 0
     t.integer  "views",       :default => 0
     t.string   "events_url"
+    t.boolean  "suggested"
   end
 
 end
