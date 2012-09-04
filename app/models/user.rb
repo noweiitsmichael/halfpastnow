@@ -46,18 +46,30 @@ class User < ActiveRecord::Base
     # TODO: if email exists but uid does not, ask user if he wants to merge with existing account
 
     if user = User.where(:email => data.email).first || User.where(:uid => data.id).first
-      user
+      if user.fb_access_token.nil?
+        user.fb_access_token = access_token.credentials.token
+        user.provider = "facebook"
+        user.uid = data.id     
+        @new_user_token = Koala::Facebook::API.new(access_token.credentials.token)
+        user.fb_picture = @new_user_token.get_picture(data.id, :type => "large", :height => "125", :width => "125")
+      end
+
+      return user
 
     # TODO: Check to see if they have signed in before locally?
     else # Create a user with a stub password. 
-      User.create!(:email => data.email, 
+      new_user = User.create(:email => data.email, 
                    :firstname => data.first_name, 
                    :lastname => data.last_name, 
                    :username => data.username, 
                    :password => Devise.friendly_token[0,20], 
                    :provider => "facebook",
                    :uid => data.id,
-                   :fb_access_token => access_token.credentials.token) 
+                   :fb_access_token => access_token.credentials.token)
+      @new_user_token = Koala::Facebook::API.new(new_user.fb_access_token)
+      new_user.fb_picture = @new_user_token.get_picture(data.id, :type => "large", :height => "125", :width => "125")
+      new_user.save
+      return new_user
     end
   end
 
