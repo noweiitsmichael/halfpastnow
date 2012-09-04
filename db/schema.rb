@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120827204134) do
+ActiveRecord::Schema.define(:version => 20120904172547) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20120827204134) do
     t.string   "included_tags"
     t.string   "excluded_tags"
     t.boolean  "default"
+    t.integer  "sort"
   end
 
   add_index "channels", ["user_id"], :name => "index_channels_on_user_id"

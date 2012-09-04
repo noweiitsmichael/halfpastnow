@@ -59,7 +59,7 @@
 				  long_max: "",
 				  offset: 0,
 				  search: "",
-				  sort: 0,
+				  sort: <%= channel.sort || 0 %>,
 				  name: "<%= channel.name || "" %>"
 				};
 			<% end %>
@@ -87,9 +87,9 @@
 
 			// filter.search = "<%= params[:search] %>";
 
-			// <% @tags.each do |tag| %>
-			// tags[<%= tag.id %>] = "<%= tag.name %>";
-			// <% end %>
+			<% @tags.each do |tag| %>
+			tags[<%= tag.id %>] = "<%= tag.name %>";
+			<% end %>
 
 		});
 	</script>
@@ -229,8 +229,8 @@
 						<% end %>
 					</ul>
 					<div class="actions">
-						<span class="new">create custom channel</span>
-						<span class="save">save custom channel</span>
+						<span class="new" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>create custom channel</span>
+						<span class="save" <%= current_user ? "" : "linkto='shunt'" %>>save custom channel</span>
 						<!-- <span class="rename">rename</span>
 						<span class="delete">delete</span> -->
 					</div>
@@ -313,7 +313,9 @@
 		<div class="overlay">
 			<div class="background">
 			</div>			
-			<div class="window">
+			<div class="insert-point">
+				<div class="window">
+				</div>
 			</div>
 		</div>
 	</div>

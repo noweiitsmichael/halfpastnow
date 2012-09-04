@@ -3,14 +3,21 @@ require 'pp'
 class ChannelsController < ApplicationController
 
 	def create
-		puts params;
 		@channel = Channel.new
-		@channel.update_attributes(params[:channel])
-		@channel.tags = params[:channel][:tags]
-		#@channel = Channel.new(params[:channel])
-		@channel.user_id = current_user.id
 
-		pp @channel
+		@channel.user_id = current_user.id
+		@channel.option_day = params[:option_day].to_s.empty? ? nil : params[:option_day].to_i
+		@channel.start_days = params[:start_days].to_s.empty? ? nil : params[:start_days].to_i
+		@channel.end_days = params[:end_days].to_s.empty? ? nil : params[:end_days].to_i
+		@channel.start_seconds = params[:start_seconds].to_s.empty? ? nil : params[:start_seconds].to_i
+		@channel.end_seconds = params[:end_seconds].to_s.empty? ? nil : params[:end_seconds].to_i
+		@channel.low_price = params[:low_price].to_s.empty? ? nil : params[:low_price].to_i
+		@channel.high_price = params[:high_price].to_s.empty? ? nil : params[:high_price].to_i
+		@channel.included_tags = params[:included_tags].to_s.empty? ? nil : params[:included_tags] * ","
+		@channel.excluded_tags = params[:excluded_tags].to_s.empty? ? nil : params[:excluded_tags] * ","
+		@channel.sort = params[:sort].to_s.empty? ? nil : params[:sort].to_i
+		@channel.name = params[:name]
+
 		respond_to do |format|
 		  if @channel.save
 		    format.html { redirect_to :back }
@@ -19,15 +26,12 @@ class ChannelsController < ApplicationController
 		    format.html { redirect_to :back }
 		    format.json { render json: @channel.errors, status: :unprocessable_entity }
 		  end
-		  format.js
 		end
 	end
 
 	def new
-	    @channel = Channel.new
-
 	    respond_to do |format|
-	      format.html # new.html.erb
+	      format.html { render :layout => "mode_lite" }
 	      format.json { render json: @channel }
 	    end
 	end
@@ -43,13 +47,25 @@ class ChannelsController < ApplicationController
 
 	def update
 		@channel = Channel.find(params[:id])
+
+		@channel.user_id = current_user.id
+		@channel.option_day = params[:option_day].to_s.empty? ? nil : params[:option_day].to_i
+		@channel.start_days = params[:start_days].to_s.empty? ? nil : params[:start_days].to_i
+		@channel.end_days = params[:end_days].to_s.empty? ? nil : params[:end_days].to_i
+		@channel.start_seconds = params[:start_seconds].to_s.empty? ? nil : params[:start_seconds].to_i
+		@channel.end_seconds = params[:end_seconds].to_s.empty? ? nil : params[:end_seconds].to_i
+		@channel.low_price = params[:low_price].to_s.empty? ? nil : params[:low_price].to_i
+		@channel.high_price = params[:high_price].to_s.empty? ? nil : params[:high_price].to_i
+		@channel.included_tags = params[:included_tags].to_s.empty? ? nil : params[:included_tags] * ","
+		@channel.excluded_tags = params[:excluded_tags].to_s.empty? ? nil : params[:excluded_tags] * ","
+		@channel.sort = params[:sort].to_s.empty? ? nil : params[:sort].to_i
+		@channel.name = params[:name]
+
 	    respond_to do |format|
-	      if @channel.update_attributes(params[:channel])
-	        format.html { redirect_to @user, notice: 'Channel was successfully updated.' }
-	        format.json { head :no_content }
+	      if @channel.save
+	        format.json { render json: @channel }
 	      else
-	        format.html { render action: "edit" }
-	        format.json { render json: @user.errors, status: :unprocessable_entity }
+		    format.json { render json: @channel.errors, status: :unprocessable_entity }
 	      end
 	    end
 	end

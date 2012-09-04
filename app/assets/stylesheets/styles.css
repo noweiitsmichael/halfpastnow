@@ -25,6 +25,7 @@
 
 
 
+
 @font-face {
     font-family: PTSansNarrow;
     src: url('/assets/PTN57F-webfont.eot');
@@ -1427,6 +1428,20 @@ color: #B51DBB;
   position:relative;
   z-index: 1000;
 }
+
+.mode .window.lite {
+  width: 400px;
+  background:white;
+}
+
+.mode .window.lite h4 {
+  margin: 5px 0 10px;
+}
+
+.mode .window.lite .new-channel-name {
+  width:312px;
+}
+
 .mode .window .inner {
   padding: 8px 10px 10px;
 }
@@ -1644,6 +1659,7 @@ color: #B51DBB;
   background: white;
   box-shadow: 3px 2px 8px rgba(0,0,0,.4);
   font-size: 14px;
+  overflow: hidden;
 }
 
 #city-name {

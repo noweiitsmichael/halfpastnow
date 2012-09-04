@@ -28,13 +28,15 @@ $.getScrollbarWidth = function() {
   return scrollbarWidth;
 };
 
-var defaultThing = { url: function() { return "/" + this.type + "s/show/" + this.id; } };
+var defaultThing = { internal_url: function() { return "/" + this.type + "s/show/" + this.id; },
+                     url: function() { return "?" + this.type + "_id=" + this.id; } };
 
 var things = {
-  "venue": spawn(defaultThing,{type: "venue"}),
-  "event": spawn(defaultThing,{type: "event"}),
-  "act": spawn(defaultThing,{type: "act"}),
-  "shunt": spawn(defaultThing,{type: "shunt", url: function() { return "/events/shunt"; }})
+  "venue": spawn(defaultThing, {type: "venue"}),
+  "event": spawn(defaultThing, {type: "event"}),
+  "act": spawn(defaultThing, {type: "act"}),
+  "shunt": spawn(defaultThing, {type: "shunt", internal_url: function() { return "/events/shunt"; }, url: function() { return "?shunt"; }}),
+  "new-channel": spawn(defaultThing, {type: "new-channel", internal_url: function() { return "/channels/new"; }, url: function() { return "?new-channel"; }})
 };
 
 var mapOffset;
@@ -69,7 +71,8 @@ var filter = {
 };
 
 $(function() {
-  channelFilters[0] = $.extend(true, {}, filter);
+  if(typeof(channelFilters) !== 'undefined')
+    channelFilters[0] = $.extend(true, {}, filter);
   //console.log(filter);
 
   scrollbarWidth = $.getScrollbarWidth();
@@ -130,7 +133,7 @@ $(function() {
   });
 
   
-  $('.lists li').not('.no-select').click(function() {
+  $('.lists').on('click', 'li', function() {
     var index = $(this).index() + 1;
     $('.lists li').removeClass('selected');
     $('.lists li:nth-child(' + index + ')').addClass('selected');
@@ -536,7 +539,7 @@ $(function() {
   });
 
   $("#content").on("click", "[linkto]", loadModal);
-
+  $("#header").on("click", "[linkto]", loadModal);
   $('#overlays').on("click", "[linkto]", loadModal);
   $('#overlays').on("click", '.mode .close-btn', closeMode);
   $('#overlays').on("click", '.mode .add_bookmark', function() {
@@ -563,10 +566,77 @@ $(function() {
 
   $('.mode .overlay .background').click(closeMode);
 
+  
+  $('.mode').on('click', '.new-channel-create', function() {
+
+    filter.name = ($('.new-channel-name').val() === "") ? "New Channel" : $('.new-channel-name').val();
+    $.post('/channels/create', filter, function(channel) {
+
+      channelFilters[channel.id] = {
+          option_day: (channel.option_day === null) ? 0 : channel.option_day,
+          start_days: (channel.start_days === null) ? '' : channel.start_days,
+          end_days: (channel.end_days === null) ? '' : channel.end_days,
+          start_seconds: (channel.start_seconds === null) ? '' : channel.start_seconds,
+          end_seconds: (channel.end_seconds === null) ? '' : channel.end_seconds,
+          low_price: (channel.low_price === null) ? '' : channel.low_price,
+          high_price: (channel.high_price === null) ? '' : channel.high_price,
+          included_tags: channel.included_tags ? channel.included_tags.split(",") : [],
+          excluded_tags: channel.excluded_tags ? channel.excluded_tags.split(",") : [],
+          lat_min: "",
+          lat_max: "",
+          long_min: "",
+          long_max: "",
+          offset: 0,
+          search: "",
+          sort: (channel.sort === null) ? 0 : channel.sort,
+          name: (channel.name === null) ? '' : channel.name,
+      };
+
+      $(".channels .lists").append("<li class='channel title' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</li>");
+      $('.channels .lists li').removeClass('selected');
+      $('.channels .lists li[channel-id=' + channel.id + ']').addClass('selected');
+      
+      demodal();
+
+    }, "json");
+  });
+
+
+  $('.actions .save').not('[linkto=shunt]').click(function() {
+    if($('.lists li.selected').hasClass('channel')) {
+      if(confirm("Are you sure you want to save " + $(".channels .lists li.selected").html() + "?")) {
+        $.post('/channels/update/' + $(".channels .lists li.selected").attr('channel-id'), filter, function(channel) {
+
+          channelFilters[channel.id] = {
+              option_day: (channel.option_day === null) ? 0 : channel.option_day,
+              start_days: (channel.start_days === null) ? '' : channel.start_days,
+              end_days: (channel.end_days === null) ? '' : channel.end_days,
+              start_seconds: (channel.start_seconds === null) ? '' : channel.start_seconds,
+              end_seconds: (channel.end_seconds === null) ? '' : channel.end_seconds,
+              low_price: (channel.low_price === null) ? '' : channel.low_price,
+              high_price: (channel.high_price === null) ? '' : channel.high_price,
+              included_tags: channel.included_tags ? channel.included_tags.split(",") : [],
+              excluded_tags: channel.excluded_tags ? channel.excluded_tags.split(",") : [],
+              lat_min: "",
+              lat_max: "",
+              long_min: "",
+              long_max: "",
+              offset: 0,
+              search: "",
+              sort: (channel.sort === null) ? 0 : channel.sort,
+              name: (channel.name === null) ? '' : channel.name,
+          };
+        }, "json");
+      }
+    }
+  });
+
   // if($("#map").length > 0)
   //   mapOffset = $("#map").offset().top;
 
   checkScroll();
+
+
 });
 
 window.addEventListener("popstate", function(e) {
@@ -749,7 +819,9 @@ function loadModal(event) {
   //console.log(thing.type);
   //console.log(thing.id);
   //var thing = {type:$(this).attr("linkto"), id: $(this).attr("link-id")};
-  history.pushState({}, thing.type + " mode", "?" + thing.type + "_id=" + thing.id);
+  if($(this).attr("linkto") !== "shunt" && $(this).attr("linkto") !== "new-channel") {
+    history.pushState({}, thing.type + " mode", thing.url());
+  }
   if($(this).is("#content .main .events li .venue")) {
      event.stopPropagation();
   }
@@ -769,6 +841,8 @@ function parsequery(query) {
     return spawn(things["act"],{ id: queryArr[1] });
   } else if(queryArr[0] == "shunt") {
     return spawn(things["shunt"]);
+  } else if(queryArr[0] == "new-channel") {
+    return spawn(things["new-channel"]);
   } else {
     return null;
   }
@@ -798,10 +872,10 @@ function modal(thing) {
     $('.mode').hide();
     return;
   } else {
-    $.get(thing.url(), function(data) {
+    $.get(thing.internal_url(), function(data) {
      //$.get('/' + thing.type + 's/show/' + thing.id, function(data) {
       $('.mode').hide().removeClass().addClass('mode ' + thing.type);
-      $('.mode .window').html(data);
+      $('.mode .insert-point').html(data);
       $('.mode').show();
     });
   }

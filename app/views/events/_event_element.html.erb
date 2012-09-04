@@ -13,7 +13,7 @@
 				<% end %>
 			<% end %>
 		</div>
-		<div class="description"><span><strong class="price"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span><%= occurrence.event.description %></span></div>
+		<div class="description"><span><strong class="price"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span><%= strip_tags(occurrence.event.description) %></span></div>
 		<div style="display:none;">
 			<div class="latitude"><%= occurrence.event.venue.latitude %></div>
 			<div class="longitude"><%= occurrence.event.venue.longitude %></div>
