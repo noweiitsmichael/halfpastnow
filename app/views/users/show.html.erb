@@ -2,9 +2,9 @@
 
 <h2><b><%= @user.firstname.titleize %> <%= @user.lastname.titleize %>
 <div id="city-name">Austin, TX</div></b></h2>
-<% if @user.profilepic.nil? == false %>
+<% if @user.profilepic.blank? == false %>
   <%= image_tag @user.profilepic_url(:thumb).to_s %>
-<% elsif @user.fb_picture.nil? == false %>
+<% elsif @user.fb_picture.blank? == false %>
   <%= image_tag @user.fb_picture %>
 <% else %>
   <%= image_tag("buddy.jpg") %>
