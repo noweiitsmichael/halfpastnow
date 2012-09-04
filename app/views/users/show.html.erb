@@ -2,7 +2,7 @@
 
 <h2><b><%= @user.firstname.titleize %> <%= @user.lastname.titleize %>
 <div id="city-name">Austin, TX</div></b></h2>
-<% if @user.profilepic_file_name.nil? == false %>
+<% if @user.profilepic.nil? == false %>
   <%= image_tag @user.profilepic_url(:thumb).to_s %>
 <% elsif @user.fb_picture.nil? == false %>
   <%= image_tag @user.fb_picture %>
