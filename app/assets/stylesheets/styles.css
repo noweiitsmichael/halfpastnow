@@ -26,6 +26,7 @@
 
 
 
+
 @font-face {
     font-family: PTSansNarrow;
     src: url('/assets/PTN57F-webfont.eot');
@@ -514,37 +515,34 @@ input::-webkit-input-placeholder
 
 .tags-menu li .include, .tags-menu li .exclude {
   float:right;
-  font-weight:bold;
   cursor: pointer;
   margin-right: 3px;
   display: block;
-  font-size: 13px;
-  position: relative;
-  top: 2px;
-  border: 1px solid #027000;
-  padding: 0 2px;
   border-radius: 2px;
-  background: white;
-  color: #027000;
   box-shadow: 1px 1px 1px rgba(0,0,0,.2);
+  margin-top: 2px;
 }
 
-.tags-menu li .include.selected, .tags-menu li .exclude.selected {
-  background: -webkit-linear-gradient(top, #65BF63 0%, #03A200 100%);
-  color:white;
-  border-color: #027000;
-  text-shadow: none;
+.tags-menu li .include {
+  border: 1px solid #027000;
+  width:19px;
+  height:19px;
+  background-image:url("/assets/include.png");
 }
 
-.tags-menu li .exclude.selected {
-  background: -webkit-linear-gradient(top, #BF6363 0%, #A20000 100%);
-  border-color: #700000;
+.tags-menu li .include.selected {
+  background-image:url("/assets/include_select.png");
 }
 
 .tags-menu li .exclude {
-  padding: 0 6px 0 10px;
-  border-color: #700000;
-  color: #700000;
+  border: 1px solid #700000;
+  width:18px;
+  height:19px;
+  background-image:url("/assets/exclude.png");
+}
+
+.tags-menu li .exclude.selected {
+  background-image:url("/assets/exclude_select.png");
 }
 
 .child-tags-menu {

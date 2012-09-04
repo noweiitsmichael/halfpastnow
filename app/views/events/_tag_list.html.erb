@@ -12,16 +12,16 @@
 						<span class="no-toggler">&nbsp;</span>
 					<% end %>
 					<span class="name"><%= tag.name %> <%= numResults == 0 ? "" : "(#{numResults})" %></span>
-					<span class="exclude" tag-id="<%= tag.id %>" title="don't show events with this tag">&nbsp;&#8416;</span>
-					<span class="include" tag-id="<%= tag.id %>" title="show events with this tag">&#x25EF;</span>
+					<span class="exclude" tag-id="<%= tag.id %>" title="don't show events with this tag"></span>
+					<span class="include" tag-id="<%= tag.id %>" title="show events with this tag"></span>
 				</div>
 				<ul class="child-tags-menu" tag-id="<%= tag.id %>">
 					<% tag.childTags.each do |cTag| %>
 					<% numResults = (occurringTags[cTag.id]) ? occurringTags[cTag.id][:count] : 0 %>
 						<li class="<%= numResults == 0 ? "no-results" : "" %>">
 							<span class="name"><%= cTag.name %> <%= numResults == 0 ? "" : "(#{numResults})" %></span>
-							<span class="exclude" tag-id="<%= cTag.id %>" title="don't show events with this tag">&nbsp;&#8416;</span>
-							<span class="include" tag-id="<%= cTag.id %>" title="show events with this tag">&#x25EF;</span>
+							<span class="exclude" tag-id="<%= cTag.id %>" title="don't show events with this tag"></span>
+							<span class="include" tag-id="<%= cTag.id %>" title="show events with this tag"></span>
 						</li>
 					<% end %>
 				</ul>
@@ -38,16 +38,16 @@
 						<span class="no-toggler">&nbsp;</span>
 					<% end %>
 					<span class="name"><%= tuple[:tag].name %> <%= numResults == 0 ? "" : "(#{numResults})" %></span>
-					<span class="exclude" tag-id="<%= id %>" title="don't show events with this tag">&nbsp;&#8416;</span>
-					<span class="include" tag-id="<%= id %>" title="show events with this tag">&#x25EF;</span>
+					<span class="exclude" tag-id="<%= id %>" title="don't show events with this tag"></span>
+					<span class="include" tag-id="<%= id %>" title="show events with this tag"></span>
 				</div>
 				<ul class="child-tags-menu" tag-id="<%= id %>">
 					<% tuple[:tag].childTags.each do |cTag| %>
 					<% numResults = occurringTags[cTag.id][:count] %>
 						<li class="<%= numResults == 0 ? "no-results" : "" %>">
 							<span class="name"><%= cTag.name %> <%= numResults == 0 ? "" : "(#{numResults})" %></span>
-							<span class="exclude" tag-id="<%= cTag.id %>" title="don't show events with this tag">&nbsp;&#8416;</span>
-							<span class="include" tag-id="<%= cTag.id %>" title="show events with this tag">&#x25EF;</span>
+							<span class="exclude" tag-id="<%= cTag.id %>" title="don't show events with this tag"></span>
+							<span class="include" tag-id="<%= cTag.id %>" title="show events with this tag"></span>
 						</li>
 					<% end %>
 				</ul>
