@@ -4,6 +4,9 @@ class Ability
   def initialize(user)
     # Define abilities for the passed in user here. For example:
     #
+
+    ## TODO: What we want to do is that anyone can make changes, but they will be flagged as Suggested until approved by admin.
+    ##       Admin changes are automatically approved and applied.
        user ||= User.new # guest user (not logged in)
        if user.has_role? :admin                        # old #  if user.admin?
          can :manage, :all

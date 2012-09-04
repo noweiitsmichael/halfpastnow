@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120824213817) do
+ActiveRecord::Schema.define(:version => 20120830201414) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(:version => 20120824213817) do
     t.datetime "updated_at",  :null => false
     t.integer  "event_id"
     t.boolean  "suggested"
+    t.string   "fb_picture"
   end
 
   add_index "acts", ["event_id"], :name => "index_acts_on_event_id"
@@ -84,6 +85,7 @@ ActiveRecord::Schema.define(:version => 20120824213817) do
     t.integer  "views",       :default => 0
     t.integer  "user_id"
     t.boolean  "suggested"
+    t.string   "fb_picture"
   end
 
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
@@ -148,6 +150,7 @@ ActiveRecord::Schema.define(:version => 20120824213817) do
     t.boolean  "deleted"
     t.boolean  "submitted"
     t.integer  "raw_venue_id"
+    t.string   "fb_picture"
   end
 
   add_index "raw_events", ["raw_venue_id"], :name => "index_raw_events_on_raw_venue_id"
@@ -175,6 +178,7 @@ ActiveRecord::Schema.define(:version => 20120824213817) do
     t.text     "description"
     t.string   "events_url"
     t.datetime "last_visited"
+    t.string   "fb_picture"
   end
 
   add_index "raw_venues", ["venue_id"], :name => "index_raw_venues_on_venue_id"
@@ -247,6 +251,7 @@ ActiveRecord::Schema.define(:version => 20120824213817) do
     t.string   "provider"
     t.string   "uid"
     t.string   "fb_access_token"
+    t.string   "fb_picture"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -277,6 +282,7 @@ ActiveRecord::Schema.define(:version => 20120824213817) do
     t.integer  "views",       :default => 0
     t.string   "events_url"
     t.boolean  "suggested"
+    t.string   "fb_picture"
   end
 
 end

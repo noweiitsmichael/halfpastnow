@@ -91,6 +91,120 @@ namespace :api do
 		end
 	end
 
+	desc "pull venues from facebook events"
+	task :get_fb_events => :environment do
+		access_token = User.find_by_email("noweiitsmichael@yahoo.com").fb_access_token
+		puts "Pulling from Facebook"
+		no_id = false
+		@graph = Koala::Facebook::API.new(access_token)
+		## Pull all things that halfpastnow likes
+		@graph.get_connections("halfpastnow","likes").each do |like|
+
+			## Now pull the events from all things halfpastnow likes. Should work even if nil
+			@graph.get_connections(like['id'],"events", :fields => 'location,venue,name,description').each do |events|
+				no_id = false
+				## Get location of each event and create if doesn't exist
+				if Venue.find_by_name(events['location']) == nil  # && (events['venue'] != nil || events['location'] != nil)
+					puts "No existing venue found for " + events['name'] + " @ " + events['location']
+					## Find venue by listed ID
+					if events['venue'] != nil
+						if events['venue']['id'] != nil #need this because 'venue' of nil will throw error when looking for 'id'
+							puts "Creating rawvenue with id:"
+							puts events['venue']['id']
+							fb_venue = @graph.get_object(events['venue']['id'])
+							raw_venue = RawVenue.create!(
+								:name => fb_venue['name'],
+								:address => fb_venue['location']['street'],
+								:city => fb_venue['location']['city'],
+								:state_code => fb_venue['location']['state'],
+								:zip => fb_venue['location']['zip'],
+								:latitude => fb_venue['location']['latitude'],
+								:longitude => fb_venue['location']['longitude'],
+								:phone => fb_venue['phone'],
+								:url => fb_venue['website'],
+								:description => fb_venue['about'],
+								:raw_id => fb_venue['id'],
+								:from => "facebook"
+							)
+							raw_venue.fb_picture = @graph.get_picture(fb_venue['id'], :type => "large")
+							raw_venue.save
+						
+					## Some n00bs don't know how to link to FB venues and input manual location.
+						else
+							puts "Manually creating venue: " + events['location']
+							raw_venue = RawVenue.create!(
+								:name => events['location'],
+								:address => events['venue']['street'],
+								:city => events['venue']['city'],
+								:state_code => events['venue']['state'],
+								:zip => events['venue']['zip'],
+								:from => "facebook"
+							)
+						end
+					end
+					## Now make actual venue
+					if events['venue'] != nil
+						puts "Creating real venue for " + raw_venue.name
+						venue = Venue.create!(
+							:name => raw_venue.name,
+							:address => raw_venue.address,
+							:city => raw_venue.city,
+							:state => raw_venue.state_code,
+							:zip => raw_venue.zip,
+							:latitude => raw_venue.latitude,
+							:longitude => raw_venue.longitude,
+							:phonenumber => raw_venue.phone,
+							:url => raw_venue.url,
+							:description => raw_venue.description,
+							:fb_picture => raw_venue.fb_picture
+						)
+						raw_venue.venue_id = venue.id
+						raw_venue.save
+					end
+
+					if events['venue'] == nil
+						no_id = true
+					end
+				end
+
+				## Now that location has been confirmed, put in events
+				if Event.find_by_title(events['name']) == nil && RawEvent.find_by_title(events['name']) == nil && no_id != true
+					event = RawEvent.create!(
+						:title => events['name'],
+						:description => events['description'],
+						:start => events['start_time'],
+						:end => events['end_time'],
+						:url => events['website'],
+						:raw_venue_id => RawVenue.find_by_name(events['location']).id,
+						:from => "facebook",
+						:raw_id => events['id']
+					)
+					
+					## time zone timezone hack :( probably needs to be fixed soon
+					## Dunno why facebook returns a time that is off by one hour. Daylight Savings?
+					if events['start_time'] != nil
+						event.start = event.start.to_datetime + 1.hours
+					end
+
+					if events['end_time'] != nil
+						event.end = event.end.to_datetime + 1.hours
+					end
+					event.fb_picture = @graph.get_picture(events['id'], :type => "large")
+					event.save!
+					puts "Successfully created event for " + events['name']
+				end
+
+			end
+		end
+
+
+	end
+
+
+
+
+
+
 	desc "pull venues from apis"
 	task :get_venues => :environment do
 

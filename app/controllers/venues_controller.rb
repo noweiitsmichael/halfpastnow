@@ -2,8 +2,9 @@ require 'pp'
 require 'ruby-prof'
 
 class VenuesController < ApplicationController
-  before_filter :authenticate_user!
-  skip_before_filter :authenticate_user!, :only => [:show, :find]
+  #before_filter :authenticate_user!
+  # skip_before_filter :authenticate_user!, :only => [:show, :find]
+  #before_filter :only_allow_admin, :only => [ :index ]
   
   # GET /venues
   # GET /venues.json
@@ -305,3 +306,9 @@ class VenuesController < ApplicationController
     render :layout => false
   end
 end
+
+private
+
+  def only_allow_admin
+    redirect_to root_path, :alert => 'Not authorized as an administrator.' unless current_user.has_role? :admin
+  end
