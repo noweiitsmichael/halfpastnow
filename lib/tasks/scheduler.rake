@@ -103,6 +103,13 @@ namespace :api do
 			## Now pull the events from all things halfpastnow likes. Should work even if nil
 			@graph.get_connections(like['id'],"events", :fields => 'location,venue,name,description').each do |events|
 				no_id = false
+
+				## if the name or location is blank, we're just gonna skip it
+				if events['name'].blank? || events['location'].blank?
+					puts "skipping..."
+					next
+				end
+
 				## Get location of each event and create if doesn't exist
 				if Venue.find_by_name(events['location']) == nil  # && (events['venue'] != nil || events['location'] != nil)
 					puts "No existing venue found for " + events['name'] + " @ " + events['location']
@@ -129,7 +136,7 @@ namespace :api do
 							raw_venue.fb_picture = @graph.get_picture(fb_venue['id'], :type => "large")
 							raw_venue.save
 						
-					## Some n00bs don't know how to link to FB venues and input manual location.
+						## Some n00bs don't know how to link to FB venues and input manual location.
 						else
 							puts "Manually creating venue: " + events['location']
 							raw_venue = RawVenue.create!(
