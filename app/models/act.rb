@@ -3,6 +3,9 @@ class Act < ActiveRecord::Base
   has_and_belongs_to_many :tags
   has_many :embeds, :dependent => :destroy
 
+  # So we can assign to admin:
+  belongs_to :user
+
   # Bi-directional bookmarks association (find a user's bookmarked performers, and users who have bookmarked this performer)
   belongs_to :bookmarked, :polymorphic => true
   has_many :bookmarks, :as => :bookmarked

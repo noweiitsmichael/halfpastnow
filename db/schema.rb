@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120904172547) do
+ActiveRecord::Schema.define(:version => 20120905193951) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20120904172547) do
     t.integer  "event_id"
     t.boolean  "suggested"
     t.string   "fb_picture"
+    t.string   "admin_owner"
   end
 
   add_index "acts", ["event_id"], :name => "index_acts_on_event_id"
@@ -289,6 +290,7 @@ ActiveRecord::Schema.define(:version => 20120904172547) do
     t.string   "events_url"
     t.boolean  "suggested"
     t.string   "fb_picture"
+    t.string   "admin_owner"
   end
 
 end
