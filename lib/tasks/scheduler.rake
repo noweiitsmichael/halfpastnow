@@ -208,7 +208,60 @@ namespace :api do
 	end
 
 
+	desc "pull venues from facebook events"
+	task :get_fb_artists => :environment do
+		access_token = User.find_by_email("noweiitsmichael@yahoo.com").fb_access_token
+		@graph = Koala::Facebook::API.new(access_token)
 
+		puts "Pulling artists from Facebook"
+
+		## Pull all things that halfpastnow likes
+		artists = @graph.get_connections("halfpastnow","likes")
+
+		## Parse out everything that's not a Musician/band
+		artists.delete_if { |x| x['category'] != "Musician/band"}
+
+		## Take each liked musician...
+		artists.each do |liked_artists|
+			## And get their full profile based on id
+			#pp liked_artists
+			full_artist = @graph.get_object(liked_artists['id'])
+			full_artist['name'] = full_artist['name'].titleize()
+			#puts full_artist['name']
+			search_artist = Act.find_by_name(full_artist['name']) 
+			#pp search_artist
+			if search_artist == nil
+				puts "New artist found: " + full_artist['name']
+				new_artist = Act.create!(
+					:name => full_artist['name'],
+					:description => full_artist['description'],
+					:website => full_artist['website'],
+					:genre => full_artist['genre'],
+					:bio => full_artist['bio'],
+					:fb_id => full_artist['id'],
+					:fb_likes => full_artist['likes'],
+					:fb_link => full_artist['link'],
+				)
+				new_artist.fb_picture = @graph.get_picture(full_artist['id'], :type => "large")
+				new_artist.save
+				puts "Successfully created new artist " + new_artist.name
+			else
+				puts "Updating existing artist " + search_artist.name
+				if search_artist.description.blank?
+					search_artist.description = full_artist['description']
+				end
+				search_artist.website = full_artist['website']
+				search_artist.genre = full_artist['genre']
+				search_artist.bio = full_artist['bio']
+				search_artist.fb_id = full_artist['id']
+				search_artist.fb_likes = full_artist['likes']
+				search_artist.fb_link = full_artist['link']
+				search_artist.fb_picture = @graph.get_picture(full_artist['id'], :type => "large")
+				search_artist.save
+				puts "Successfully updated artist " +  search_artist.name
+			end
+		end
+	end
 
 
 
