@@ -1,0 +1,56 @@
+<script type="text/javascript" src="/assets/stupidtable.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$('#acts-table').stupidtable();
+	});
+</script>
+<style type="text/css">
+	#acts-table {
+		margin:20px 10px;
+		border-spacing: 0;
+		border-collapse:collapse;
+	}
+
+	#acts-table th {
+
+	}
+	#acts-table td, #acts-table th {
+		padding:5px;
+	}
+	#acts-table td:nth-child(1) {
+		width:50px;
+	}
+	#acts-table td:nth-child(2) {
+		width:400px;
+	}
+	#acts-table td:nth-child(3) {
+		width:27px;
+		text-align:center;
+	}
+	#acts-table tbody tr:nth-child(odd) {
+		background:#eeeeee;
+	}
+</style>
+<a href="#">new performer</a>
+<table id="acts-table">
+	<thead>
+		<tr>
+			<th class="type-float" style="cursor:pointer;">%</th>
+			<th class="type-string" style="cursor:pointer;text-align:left;">name</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	<% @acts.each do |act| %>
+		<tr>
+			<td data-order-by="<%= act.completedness %>">
+				<div style="padding:1px;overflow:hidden;width:30px;margin:0 auto;background-color:rgba(<%= ((1 - act.completedness) * 192).round %>,<%= (act.completedness * 192).round %>,0,1);">
+					<div style="float:right;height:5px;width:<%= (30 * (1 - act.completedness)).round %>px;background-color:white;"></div>
+				</div>
+			</td>
+			<td data-order-by="<%= act.name %>"><a href="#"><%= act.name %></a></td>
+			<td><a href="#">[delete]</a></td>
+		</tr>
+	<% end %>
+	</tbody>
+</table>

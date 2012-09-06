@@ -1,4 +1,5 @@
 class ActsController < ApplicationController
+  layout "venues"
 
   def show
     @act = Act.find(params[:id])
@@ -21,5 +22,9 @@ class ActsController < ApplicationController
       format.html { render :layout => "mode" }
       format.json { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), :act => @act.to_json } } 
     end
+  end
+
+  def index
+    @acts = Act.includes(:events, :tags, :embeds).all.sort_by{ |act| act.name }
   end
 end
