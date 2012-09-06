@@ -13,29 +13,33 @@
 	      success: 
 	        function(data) { 
 	          var eventID = actForm.attr('event-id');
-	          var selectActs = $('input.act-names[event-id=' + eventID + ']');
-	          var selectedActs = selectActs.siblings(".select2-container").find(".select2-search-choice");
-	          hideActsMode();
-	          //connect act to event
-	          //var vals = $('input.act-names[event-id=' + eventID + ']').val();
-	          var actIDs = selectActs.select2("val");
-	          var actNames = [];
-	          selectedActs.each(function() { actNames.push( $(this).text() ); });
-	          var acts = [];
-	          for(var i in actIDs) {
-	            acts.push({id: actIDs[i], text: actNames[i]});
-	          }
-	          acts.push({id: data.id, text: data.name});
-	          console.log("acts");
-	          console.log(acts);
-	          selectActs.select2("val",acts);
-	          
-	          actsInfo[data.id] = {tags: data.tags};
-	          actsChange(selectActs);
 
-	          //selectActs.trigger("change");
-	          //$('input.act-names[event-id=' + eventID + ']').select2("val", {id:45, text:"Califoria"});
-	          //import act's tags to event
+	          if(typeof eventID != 'undefined') {
+	          	  var selectActs = $('input.act-names[event-id=' + eventID + ']');
+		          var selectedActs = selectActs.siblings(".select2-container").find(".select2-search-choice");
+		         
+		          //connect act to event
+		          //var vals = $('input.act-names[event-id=' + eventID + ']').val();
+		          var actIDs = selectActs.select2("val");
+		          var actNames = [];
+		          selectedActs.each(function() { actNames.push( $(this).text() ); });
+		          var acts = [];
+		          for(var i in actIDs) {
+		            acts.push({id: actIDs[i], text: actNames[i]});
+		          }
+		          acts.push({id: data.id, text: data.name});
+		          console.log("acts");
+		          console.log(acts);
+		          selectActs.select2("val",acts);
+		          
+		          actsInfo[data.id] = {tags: data.tags};
+		          actsChange(selectActs);
+		      }
+	      	  hideActsMode();
+
+	      	  //gross.
+	      	  if(typeof actSuccessCallback !== 'undefined')
+	      	  	actSuccessCallback(data);
 	        }
 	    });
 	});

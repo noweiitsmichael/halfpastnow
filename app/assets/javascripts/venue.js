@@ -2,6 +2,8 @@
 //     return this.filter(function(i) {return !(a.indexOf(i) > -1);});
 // };
 
+var actSuccessCallback;
+
 var actsInfo = {};
 
 var validators = {};
@@ -244,12 +246,15 @@ var eventActs = {};
     eventActs[$(obj).attr("event-id")] = $(obj).val();
   }
 
-  function showActsMode(eventID,actID) {
+  function showActsMode(eventID,actID,successFunction) {
     var actSuffix = (typeof actID !== 'undefined' ? "/" + actID : "");
     $.get('/venues/actsMode' + actSuffix, function(data) {
       $('.acts.mode .window').html(data);
-      if(typeof eventID !== 'undefined')
+      if(typeof eventID !== 'undefined' || eventID === null)
         $('#act-form').attr('event-id',eventID);
+
+      actSuccessCallback = successFunction;
+
       $('.acts.mode').show();
     });
   }
