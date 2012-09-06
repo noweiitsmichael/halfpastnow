@@ -57,6 +57,11 @@
 		  <%= e.label :description %>
 		  <%= e.text_area :description, :class => "cleditor" %>
 		</div>
+
+		<div class="field">
+		  <%= e.label "[Genres]" %>
+		  <i><%= @act.genre %></i>
+		</div>
 		
 		<% @iStrName = "act[tag_ids][]" %>
 		<% @iStrId = "act_tag_ids_" %>
@@ -64,7 +69,8 @@
 		<%= render :partial => "tags", :locals => { :element => @act } %>
 
 		<%= render :partial => "embeds", :locals => { :act => @act } %>		
-		
+
+
 		<div class="actions">
     		<%= e.submit %>
   		</div>

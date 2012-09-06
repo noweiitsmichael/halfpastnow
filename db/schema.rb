@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120905202357) do
+ActiveRecord::Schema.define(:version => 20120906202528) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -142,6 +142,14 @@ ActiveRecord::Schema.define(:version => 20120905202357) do
 
   add_index "occurrences", ["event_id"], :name => "index_occurrences_on_event_id"
   add_index "occurrences", ["recurrence_id"], :name => "index_occurrences_on_recurrence_id"
+
+  create_table "pictures", :force => true do |t|
+    t.string   "picture"
+    t.integer  "picture_id"
+    t.string   "picture_type"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "raw_events", :force => true do |t|
     t.string   "title"
