@@ -1,25 +1,27 @@
-<script type="text/javascript">
-	$(function() {
-		$("a.new").click(function() {
-			if($(this).prev().val() !== "")
-				window.location = "/tags/create?name=" + $(this).prev().val() + (typeof $(this).prev().attr("parent") === "undefined" ? "" : "&parent_id=" + $(this).prev().attr("parent"));
-		});
+<div id="body">
+	<script type="text/javascript">
+		$(function() {
+			$("a.new").click(function() {
+				if($(this).prev().val() !== "")
+					window.location = "/tags/create?name=" + $(this).prev().val() + (typeof $(this).prev().attr("parent") === "undefined" ? "" : "&parent_id=" + $(this).prev().attr("parent"));
+			});
 
-		$("input").keypress(function(e) {
-		    if(e.which == 13) {
-		        $(this).next().click();
-		    }
+			$("input").keypress(function(e) {
+			    if(e.which == 13) {
+			        $(this).next().click();
+			    }
+			});
 		});
-	});
-</script>
+	</script>
 
-<% @parentTags.each do |parentTag| %>
-	<h3><%= parentTag.name %></h3>
-	<div style="margin-left:20px;">
-		<% parentTag.childTags.each do |tag| %>
-			<h4><%= tag.name %></h4>
-		<% end %>
-		<input class="new child" parent="<%= parentTag.id %>" placeholder="new tag" /> <a href="#" class="new child">create</a>
-	</div>
-<% end %>
-<input class="new parent" placeholder="new parent tag" /> <a href="#" class="new parent">create</a>
+	<% @parentTags.each do |parentTag| %>
+		<h3><%= parentTag.name %></h3>
+		<div style="margin-left:20px;">
+			<% parentTag.childTags.each do |tag| %>
+				<h4><%= tag.name %></h4>
+			<% end %>
+			<input class="new child" parent="<%= parentTag.id %>" placeholder="new tag" /> <a href="#" class="new child">create</a>
+		</div>
+	<% end %>
+	<input class="new parent" placeholder="new parent tag" /> <a href="#" class="new parent">create</a>
+</div>
