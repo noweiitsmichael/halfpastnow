@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120909200933) do
+ActiveRecord::Schema.define(:version => 20120909201330) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20120909200933) do
     t.datetime "updated_at",  :null => false
     t.integer  "event_id"
     t.boolean  "suggested"
-    t.string   "fb_picture"
+    t.text     "fb_picture"
     t.string   "admin_owner"
     t.text     "website"
     t.text     "genre"
