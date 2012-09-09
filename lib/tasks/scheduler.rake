@@ -259,9 +259,11 @@ namespace :api do
 				if search_artist.description.blank?
 					search_artist.description = full_artist['description']
 				end
+				if search_artist.bio.blank?
+					search_artist.bio = full_artist['bio']
+				end
 				search_artist.website = full_artist['website']
 				search_artist.genre = full_artist['genre']
-				search_artist.bio = full_artist['bio']
 				search_artist.fb_id = full_artist['id']
 				search_artist.fb_likes = full_artist['likes']
 				search_artist.fb_link = full_artist['link']
