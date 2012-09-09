@@ -50,7 +50,7 @@
 
 </script>
 <h3>New Performer</h3>
-<%= form_for @act, :url => "/venues/actCreate", :html => { :id => "act-form" } do |e| %>
+<%= form_for @act, :url => "/venues/actCreate", :html => { :id => "act-form", :multipart => true } do |e| %>
 	<% if @act.id %><%= e.hidden_field :id %><% end %>
     <div class="main">
 		<div class="field">
@@ -71,6 +71,13 @@
 		<% @iStrId = "act_tag_ids_" %>
 		
 		<%= render :partial => "tags", :locals => { :element => @act } %>
+
+		<div class="field">
+		  <%= e.label "Facebook Picture" %>
+		  <i><%= image_tag @act.fb_picture %></i>
+		  
+		</div>
+
 
 		<%= render :partial => "embeds", :locals => { :act => @act } %>		
 

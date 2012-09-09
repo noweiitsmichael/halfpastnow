@@ -106,7 +106,16 @@ namespace :api do
 
 				## if the name or location is blank, we're just gonna skip it
 				if events['name'].blank? || events['location'].blank?
-					puts "skipping..."
+					puts "skipping because no location..."
+					next
+				end
+
+				if events['location']['city'] != ('Austin' || 'Round Rock' || 'Cedar Park' || 'San Marcos' || 'Georgetown' || 'Pflugerville' ||
+												   'Kyle' || 'Leander' || 'Bastrop' || 'Brushy Creek' || 'Buda' || 'Dripping Springs' || 'Elgin' ||
+												   'Hutto' || 'Jollyville' || 'Lakeway' || 'Lockhart' || 'Luling' || 'Shady Hollow' || 'Taylor' ||
+												   'Wells Branch' || 'Windemere' || 'Marble Falls' || 'Burnet' || 'Johnson City' || 'La Grange' ||
+												   'Killeen' || "Lampasas" || 'Fredericksburg')
+					puts "skipping because not in CSA..."
 					next
 				end
 
