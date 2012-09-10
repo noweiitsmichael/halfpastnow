@@ -1,5 +1,5 @@
 <li linkto="event" link-id="<%= occurrence.id %>">
-	<div class="index"><%= index ? (index + 1) : "" %></div>
+	<div class="index <%= ((index + 1) >= 100) ? "over100" : ""%>"><%= index ? (index + 1) : "" %></div>
 	<div class="event-inner">
 		<div class="title">
 			<%= occurrence.event.title %><span class="venue-name" link-id="<%= occurrence.event.venue.id %>" linkto="venue">at <%= occurrence.event.venue.name %></span>
@@ -19,8 +19,8 @@
 			<div class="longitude"><%= occurrence.event.venue.longitude %></div>
 		</div>
 		<div class="marker-caching">
-			<img src="/assets/markers/marker_<%= index %>.png" />
-			<img src="/assets/markers/marker_hover_<%= index %>.png" />
+			<img src="/assets/markers/marker_<%= (index + 1) % 100 %>.png" />
+			<img src="/assets/markers/marker_hover_<%= (index + 1) % 100 %>.png" />
 		</div>
 	</div>
 </li>

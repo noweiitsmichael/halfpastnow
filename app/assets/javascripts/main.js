@@ -5,6 +5,10 @@ $.fn.hasScrollBar = function() {
     return this.get(0).scrollHeight > this.innerHeight();
 }
 
+$.fn.scrollBottom = function() {
+    return this[0].scrollHeight - this[0].scrollTop - this[0].clientHeight;
+}
+
 // finds browser's scrollbar width
 var scrollbarWidth = 0;
 $.getScrollbarWidth = function() {
@@ -50,9 +54,9 @@ var MAX_SECONDS = 86400;
 var ANY_TIME_TEXT = "Any Time";
 
 var filter = {
-  option_day: 0,
-  start_days: "",
-  end_days: "",
+  option_day: 1,
+  start_days: 0,
+  end_days: 0,
   start_seconds: "",
   end_seconds: "",
   day: [0,1,2,3,4,5,6],
@@ -70,7 +74,10 @@ var filter = {
   name: ""
 };
 
+var infiniteScrolling = false;
+
 $(function() {
+
   if(typeof(channelFilters) !== 'undefined')
     channelFilters[0] = $.extend(true, {}, filter);
   //console.log(filter);
@@ -204,19 +211,22 @@ $(function() {
 
     switch(filter.option_day) {
       case 0:
-        filter.start_days = "";
+        filter.start_days = 0;
+        filter.end_days = "INFINITY";
         break;
       case 1:
         filter.start_days = 0;
+        filter.end_days = filter.start_days;
         break;
       case 2:
         filter.start_days = 1;
+        filter.end_days = filter.start_days;
         break;
       case 3:
         filter.start_days = $(".date-range").slider("value");
+        filter.end_days = filter.start_days;
         break;
     }
-    filter.end_days = filter.start_days;
     
     updateViewFromFilter();
   });
@@ -228,10 +238,7 @@ function defaultTo(parameter, parameterDefault) {
 
 function updateViewFromFilter(pullEventsFlag) {
   pullEventsFlag = defaultTo(pullEventsFlag, true);
-
-  //console.log("filter: ");
-  //console.log(filter);
-  //console.log(channelFilters);
+  filter.offset = 0;
 
   ////////////// CHANNELS //////////////
 
@@ -441,9 +448,7 @@ $(function() {
 
   $('#content .sidebar .inner .filter.day span').click(function() {
     $('#content .sidebar .inner .filter.date span.custom').click();
-  });
-
-  
+  });  
   
   $(".mode .window .menu li").click(function() {
     var index = $(this).index();
@@ -463,10 +468,12 @@ $(function() {
 
   $('#body').scroll(showPageMarkers);
   $('#body').scroll(lockMap);
+  $('#body').scroll(checkInfinite);
   
   $(window).resize(showPageMarkers);
   $(window).resize(lockMap);
   $(window).resize(checkScroll);
+  $(window).resize(checkInfinite);
 
   // // oh god what a grody hack. TODO: find out why this happens and fixitfixitfixit
   // $('#content .main .inner .events, .venue.mode .events').on("click", ".linkto", loadModal);
@@ -565,7 +572,6 @@ $(function() {
   });
 
   $('.mode .overlay .background').click(closeMode);
-
   
   $('.mode').on('click', '.new-channel-create', function() {
 
@@ -573,9 +579,9 @@ $(function() {
     $.post('/channels/create', filter, function(channel) {
 
       channelFilters[channel.id] = {
-          option_day: (channel.option_day === null) ? 0 : channel.option_day,
-          start_days: (channel.start_days === null) ? '' : channel.start_days,
-          end_days: (channel.end_days === null) ? '' : channel.end_days,
+          option_day: (channel.option_day === null) ? 1 : channel.option_day,
+          start_days: (channel.start_days === null) ? 0 : channel.start_days,
+          end_days: (channel.end_days === null) ? 0 : channel.end_days,
           start_seconds: (channel.start_seconds === null) ? '' : channel.start_seconds,
           end_seconds: (channel.end_seconds === null) ? '' : channel.end_seconds,
           low_price: (channel.low_price === null) ? '' : channel.low_price,
@@ -609,8 +615,8 @@ $(function() {
 
           channelFilters[channel.id] = {
               option_day: (channel.option_day === null) ? 0 : channel.option_day,
-              start_days: (channel.start_days === null) ? '' : channel.start_days,
-              end_days: (channel.end_days === null) ? '' : channel.end_days,
+              start_days: (channel.start_days === null) ? 0 : channel.start_days,
+              end_days: (channel.end_days === null) ? 0 : channel.end_days,
               start_seconds: (channel.start_seconds === null) ? '' : channel.start_seconds,
               end_seconds: (channel.end_seconds === null) ? '' : channel.end_seconds,
               low_price: (channel.low_price === null) ? '' : channel.low_price,
@@ -630,6 +636,7 @@ $(function() {
       }
     }
   });
+
 
   // if($("#map").length > 0)
   //   mapOffset = $("#map").offset().top;
@@ -691,18 +698,17 @@ function placeMarker(lat, long) {
   var marker = new google.maps.Marker({ //MarkerWithLabel({
     map: map,
     position: new google.maps.LatLng(lat,long),
-    icon: "/assets/markers/marker_" + (i + 1) + ".png",
+    icon: "/assets/markers/marker_" + (i + 1) % 100 + ".png",
     index: i + 1
   });
 
   google.maps.event.addListener(marker, 'mouseover', function() {
-    marker.setIcon("/assets/markers/marker_hover_" + marker.index +  ".png");
+    marker.setIcon("/assets/markers/marker_hover_" + marker.index % 100 +  ".png");
     $("#content .main .inner .events li:nth-child(" + marker.index + ")").addClass("hover");
-    markers[i].foo = "bar";
   });
 
   google.maps.event.addListener(marker, 'mouseout', function() {
-    marker.setIcon("/assets/markers/marker_" + marker.index + ".png");
+    marker.setIcon("/assets/markers/marker_" + marker.index % 100 + ".png");
     $("#content .main .inner .events li:nth-child(" + marker.index + ")").removeClass("hover");
   });
 
@@ -736,9 +742,15 @@ function pullEvents() {
 
     var jData = $(data);
 
-    $('#content .main .inner').html(jData.find("#combo_event_list").html());
-    $('#header .filter-toggle.tags .filter-inner').html(jData.find("#combo_tag_list").html());
-    $('#header .advancedbar .tags-list').html(jData.find("#combo_advanced_tag_list").html());
+    if(infiniteScrolling) {
+      $('#content .main .inner .events').append(jData.find("#combo_event_list").html());
+      infiniteScrolling = false;
+    } else {
+      $('#content .main .inner .events').html(jData.find("#combo_event_list").html());
+      $('.total-occurrences').html(jData.find("#combo_total_occurrences").html());
+      $('#header .filter-toggle.tags .filter-inner').html(jData.find("#combo_tag_list").html());
+      $('#header .advancedbar .tags-list').html(jData.find("#combo_advanced_tag_list").html());
+    }
 
     if(visibleTagListID) {
       $('.child-tags-menu[tag-id=' + visibleTagListID + ']').show();
@@ -759,21 +771,26 @@ function pullEvents() {
   });
 }
 
+var pulling = false;
 function loading(command) {
   if (command === 'show') {
-    var top = $('.main .inner .events').scrollTop();
-    var bottom = $('.main .inner .events').height() - Math.max(0,$('.main .inner .events').height() + $('.main .inner .events').offset().top - $(window).height() - $(window).scrollTop());
-    var y = (top + bottom) / 2 - 33;
-    var x = $('.main .inner .events').width() / 2 - 33;
-    $('.main .inner .header, .main .inner .events').css('opacity','.5');
-    if(y > 0) {
-      $('#loading').css('top', y + 'px');
-      $('#loading').css('left', x + 'px');
-      $('#loading').show();
+    pulling = true;
+    if(!infiniteScrolling) {
+      var top = $('.main .inner .events').scrollTop();
+      var bottom = $('.main .inner .events').height() - Math.max(0,$('.main .inner .events').height() + $('.main .inner .events').offset().top - $(window).height() - $(window).scrollTop());
+      var y = (top + bottom) / 2 - 33;
+      var x = $('.main .inner .events').width() / 2 - 33;
+      $('.main .inner .header, .main .inner .events').css('opacity','.5');
+      if(y > 0) {
+        $('#loading').css('top', y + 'px');
+        $('#loading').css('left', x + 'px');
+        $('#loading').show();
+      }
     }
   } else if (command === 'hide') {
     $('.main .inner .header, .main .inner .events').css('opacity','1');
     $('#loading').hide();
+    pulling = false;
   }
 }
 
@@ -809,6 +826,19 @@ function checkScroll() {
   } else {
     //$('#map-wrapper').width(mapWrapperWidth + scrollbarWidth);
     $('#header').width($('#body').width());
+  }
+}
+
+function checkInfinite() {
+  //if we're near the bottom of the page and not currently pulling in events
+  if($('#body').scrollBottom() < 100 && !pulling) {
+    //check if there are any more possible events to pull
+    // if so, pull em.
+    if($('#content .main .inner .events li').length < parseInt($('.total-occurrences').html())) {
+      infiniteScrolling = true;
+      filter.offset = $('#content .main .inner .events li').length;
+      pullEvents();
+    }
   }
 }
 

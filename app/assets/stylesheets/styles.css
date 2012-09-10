@@ -1217,6 +1217,10 @@ input::-webkit-input-placeholder
   text-align: center;
 }
 
+#content .events .index.over100 {
+  font-size:16px;
+}
+
 #content .events .price {
 font-size: 12px;
 color: #2E2EFE;

@@ -15,15 +15,22 @@ end
 class EventsController < ApplicationController
 
 def index
-
     @tags = Tag.all
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
 
-    # pp params
-    # @amount = params[:amount] || 20
-    # @offset = params[:offset] || 0
-
     search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
+
+    # amount/offset
+    @amount = 10
+    unless(params[:amount].to_s.empty?)
+      @amount = params[:amount].to_i
+    end
+
+    @offset = 0
+    unless(params[:offset].to_s.empty?)
+      @offset = params[:offset].to_i
+    end
+
 
     # search
     unless(params[:search].to_s.empty?)
@@ -44,13 +51,11 @@ def index
     end_date_check = start_time_check = end_time_check = day_check = "TRUE"
     occurrence_start_time = "((EXTRACT(HOUR FROM occurrences.start) * 3600) + (EXTRACT(MINUTE FROM occurrences.start) * 60))"
 
-    unless(params[:start_days].to_s.empty? && params[:end_days].to_s.empty?)
-      event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
-      event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 365000 : params[:end_days].to_i + 1))
+    event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
+    event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_s == "INFINITY") ? 365000 : params[:end_days].to_i + 1))
 
-      start_date_check = "occurrences.start >= '#{event_start_date}'"
-      end_date_check = "occurrences.start <= '#{event_end_date}'"
-    end
+    start_date_check = "occurrences.start >= '#{event_start_date}'"
+    end_date_check = "occurrences.start <= '#{event_end_date}'"
 
     unless(params[:start_seconds].to_s.empty? && params[:end_seconds].to_s.empty?)
       event_start_time = params[:start_seconds].to_s.empty? ? 0 : params[:start_seconds].to_i
@@ -143,23 +148,25 @@ def index
       high_price_match = "events.price <= #{high_price}"
     end
 
-    # the big enchilada
-    # query = "SELECT events.id AS event_id, venues.id AS venue_id
-    #     FROM events 
-    #       INNER JOIN occurrences ON events.id = occurrences.event_id
-    #       INNER JOIN venues ON events.venue_id = venues.id
-    #       LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
-    #       LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-    #     WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_match} AND #{low_price_match} AND #{high_price_match}
-    #     ORDER BY occurrences.start"
+    order_by = "occurrences.start"
+    if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
+      # order by event score when sorting by popularity
+      order_by = "CASE events.views 
+                    WHEN 0 THEN 0
+                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+                  END DESC"
+    end
 
-    query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id
-        FROM occurrences 
-          INNER JOIN events ON occurrences.event_id = events.id
-          INNER JOIN venues ON events.venue_id = venues.id
-          LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
-          LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-        WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
+    # the big enchilada
+    query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            FROM occurrences 
+              INNER JOIN events ON occurrences.event_id = events.id
+              INNER JOIN venues ON events.venue_id = venues.id
+              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
+            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
+
+    puts query
     
     @ids = ActiveRecord::Base.connection.select_all(query)
 
@@ -167,30 +174,13 @@ def index
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
 
-    @occurrences = Occurrence.includes(:event => :tags, :event => :venue, :event => :occurrences, :event => :recurrences).find(@occurrence_ids)
-
-    # puts query
-    # puts ""
-    # puts "- - - - - - - - - - - - -"
-    # puts ""
-    # @occurrences.each { |occ| pp occ }
-    # puts ""
-    
-
-    if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
-      @occurrences = @occurrences.sort_by do |occurrence| 
-        occurrence.event.score
-      end.reverse
-    else
-      @occurrences = @occurrences.sort_by do |occurrence|
-        occurrence.start
-      end
-    end
+    @allOccurrences = Occurrence.includes(:event => :tags, :event => :venue, :event => :occurrences, :event => :recurrences).find(@occurrence_ids, :order => order_by)
+    @occurrences = @allOccurrences.drop(@offset).take(@amount)
 
     # generating tag list for occurrences
 
     @occurringTags = {}
-    @occurrences.each do |occurrence|
+    @allOccurrences.each do |occurrence|
       occurrence.event.tags.each do |tag|
         unless(tag.parent_tag_id)
           if(!@occurringTags[tag.id])
@@ -202,7 +192,7 @@ def index
       end
     end
 
-    @occurrences.each do |occurrence|
+    @allOccurrences.each do |occurrence|
       occurrence.event.tags.each do |tag|
         unless(!tag.parent_tag_id)
           if(!@occurringTags[tag.id])
@@ -267,45 +257,12 @@ def index
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
-          render :partial => "combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags }
+          render :partial => "combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset }
         end
       end
       format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
     end
-
-    # @events = Event.includes(:tags, :venue, :occurrences, :recurrences).find(@event_ids)
-
-    # @events.each { |event| pp event.occurrences }
-
-    # if(params[:sort].to_s.empty? || params[:sort] == 0)
-    #   @events = @events.sort_by do |event| 
-    #     event.score
-    #   end.reverse
-    # else
-    #   @events = @events.sort_by do |event|
-    #     event.occurrences.first.start
-    #   end
-    # end
-
-    # if @events.count > 0 
-    #   ActiveRecord::Base.connection.update("UPDATE events
-    #     SET views = views + 1
-    #     WHERE id IN (#{@event_ids * ','})")
-
-    #   ActiveRecord::Base.connection.update("UPDATE venues
-    #     SET views = views + 1
-    #     WHERE id IN (#{@venue_ids * ','})")
-    # end
-
-    # respond_to do |format|
-    #   format.html do
-    #     unless (params[:ajax].to_s.empty?) 
-    #       render :partial => "event_list", :locals => { :events => @events }
-    #     end
-    #   end
-    #   format.json { render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
-    # end
-
+    
   end
 
 

@@ -18,7 +18,7 @@
 			<span class="venue-name" link-id="<%= occ.event.venue.id %>" linkto="venue">at <%= occ.event.venue.name %></span>
 		<% end %>
 		</div>
-		<div class="description"><span><strong><%= occ.event.price ? ((occ.event.price != 0) ? number_to_currency(occ.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span><%= occ.event.description %></span></div>
+		<div class="description"><span><strong><%= occ.event.price ? ((occ.event.price != 0) ? number_to_currency(occ.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span><%= strip_tags(occ.event.description) %></span></div>
 	<% end %>
 	</li>
 <% end %>
