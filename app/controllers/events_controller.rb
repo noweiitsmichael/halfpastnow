@@ -21,7 +21,7 @@ def index
     search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
 
     # amount/offset
-    @amount = 10
+    @amount = 20
     unless(params[:amount].to_s.empty?)
       @amount = params[:amount].to_i
     end

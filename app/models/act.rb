@@ -3,7 +3,7 @@ class Act < ActiveRecord::Base
   has_and_belongs_to_many :tags
   has_many :embeds, :dependent => :destroy
   has_many :pictures, :as => :pictureable
-  mount_uploader :picture, ImageUploader
+  # mount_uploader :picture, ImageUploader
   # So we can assign to admin:
   belongs_to :user
 
