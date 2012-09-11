@@ -103,7 +103,7 @@ namespace :api do
 			## Now pull the events from all things halfpastnow likes. Should work even if nil
 			@graph.get_connections(like['id'],"events", :fields => 'location,venue,name,description').each do |events|
 				no_id = false
-
+				edited_already = false
 				## if the name or location is blank, we're just gonna skip it
 				if events['name'].blank? || events['location'].blank?
 					puts "skipping because no location..."
@@ -195,7 +195,7 @@ namespace :api do
 					end
 				else
 					## Updating existing venue with FB information
-					if events['venue'] != nil
+					if events['venue'] != nil && edited_already == false
 						if events['venue']['id'] != nil
 							fb_venue = @graph.get_object(events['venue']['id'])
 							raw_venue = RawVenue.find_by_name(events['location'])
@@ -242,6 +242,7 @@ namespace :api do
 							real_venue.fb_picture = @graph.get_picture(fb_venue['id'], :type => "large")
 							raw_venue.save
 							real_venue.save
+							edited_already = true
 						end
 					end
 
@@ -273,11 +274,8 @@ namespace :api do
 					event.save!
 					puts "Successfully created event for " + events['name']
 				end
-
 			end
 		end
-
-
 	end
 
 
