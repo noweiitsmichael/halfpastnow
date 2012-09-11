@@ -56,7 +56,7 @@ class Recurrence < ActiveRecord::Base
   
 
   def gen_occurrences(number_of_occurrences = -1)
-    occurrences_exist = (self.occurrences.count > 0)
+    occurrences_exist = (self.occurrences.size > 0)
     puts "do occurrences exist? " + (occurrences_exist ? "YES" : "NO")
     until_time = (range_end && range_end.to_time < Time.now.advance(:years => 1)) ? range_end.to_time : Time.now.advance(:years => 1)
     counter_time = occurrences_exist ? self.occurrences.last(:order => "start").start.to_date.to_time : ((range_start && range_start.to_date.to_time > Date.today.to_time) ? range_start.to_date.to_time : Date.today.to_time)

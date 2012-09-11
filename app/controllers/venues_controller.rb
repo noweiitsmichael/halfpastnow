@@ -213,6 +213,13 @@ class VenuesController < ApplicationController
     render json: {:event_id => @event.id }
   end
 
+  def deleteAct
+    @act = Act.find(params[:id])
+    @act.destroy
+
+    render json: {:act_id => @act.id }
+  end
+
   def rawEvent
     @rawEvent = RawEvent.find(params[:id])
 
@@ -286,7 +293,7 @@ class VenuesController < ApplicationController
     respond_to do |format|
       if @act.save
         format.html { redirect_to :action => :index, :notice => 'yay' }
-        format.json { render json: { :name => @act.name, :text => @act.name, :id => @act.id, :tags => (@act.tags.collect { |t| t.id.to_s } * ",") } }
+        format.json { render json: { :name => @act.name, :text => @act.name, :id => @act.id, :tags => (@act.tags.collect { |t| t.id.to_s } * ","), :completedness => @act.completedness } }
       else
         format.html { redirect_to :action => :index, :notice => 'boo' }
         format.json { render json: false }

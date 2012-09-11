@@ -12,7 +12,7 @@
 		var channelFilters = {};
 
 		function initialize() {
-
+			console.log("initialize");
 			//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
 			geocoder = new google.maps.Geocoder();
 			var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
@@ -90,7 +90,6 @@
 			<% @tags.each do |tag| %>
 			tags[<%= tag.id %>] = "<%= tag.name %>";
 			<% end %>
-
 		});
 	</script>
 <% end %>
@@ -154,9 +153,9 @@
 				</span>
 				<span class="filter-toggle date">
 					<span class="filter-text">
-						<span class="pre-text">at </span>
+						<span class="pre-text">during </span>
 						<span class="text">
-							<span class="text-inner">Any Time</span>
+							<span class="text-inner">Today</span>
 							<span class="toggler">&#9662;</span>
 						</span>
 					</span>
@@ -164,11 +163,11 @@
 						<div class="filter-inner">
 							<div class="filter date">
 								<div class="filters">
-									<span class="any selected">any day</span><span class="today">today</span><span class="tomorrow">tomorrow</span><span class="custom">specific date</span>
+									<span class="any">any day</span><span class="today selected">today</span><span class="tomorrow">tomorrow</span><span class="custom">specific date</span>
 								</div>
 								<div>
-									<div class="custom-select selected"><div class="any time-range"></div><div class="any time-display">any time</div></div>
-									<div class="custom-select"><div class="today time-range"></div><div class="today time-display">any time</div></div>
+									<div class="custom-select"><div class="any time-range"></div><div class="any time-display">any time</div></div>
+									<div class="custom-select selected"><div class="today time-range"></div><div class="today time-display">any time</div></div>
 									<div class="custom-select"><div class="tomorrow time-range"></div><div class="tomorrow time-display">any time</div></div>
 									<div class="custom-select"><div class="custom time-range"></div><div class="custom time-display">any time</div><div class="custom date-range"></div><div class="custom date-display">today</div></div>
 								</div>
@@ -231,8 +230,6 @@
 					<div class="actions">
 						<span class="new" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>create custom channel</span>
 						<span class="save" <%= current_user ? "" : "linkto='shunt'" %>>save custom channel</span>
-						<!-- <span class="rename">rename</span>
-						<span class="delete">delete</span> -->
 					</div>
 				</div>
 			</div>
@@ -250,11 +247,11 @@
 						<h3>Date</h3>
 						<div class="filter date">
 							<div class="filters">
-								<span class="any selected">any day</span><span class="today">today</span><span class="tomorrow">tomorrow</span><span class="custom">specific date</span>
+								<span class="any">any day</span><span class="today selected">today</span><span class="tomorrow">tomorrow</span><span class="custom">specific date</span>
 							</div>
 							<div>
-								<div class="custom-select selected"><div class="any time-range"></div><div class="any time-display">any time</div></div>
-								<div class="custom-select"><div class="today time-range"></div><div class="today time-display">any time</div></div>
+								<div class="custom-select"><div class="any time-range"></div><div class="any time-display">any time</div></div>
+								<div class="custom-select selected"><div class="today time-range"></div><div class="today time-display">any time</div></div>
 								<div class="custom-select"><div class="tomorrow time-range"></div><div class="tomorrow time-display">any time</div></div>
 								<div class="custom-select"><div class="custom time-range"></div><div class="custom time-display">any time</div><div class="custom date-range"></div><div class="custom date-display">today</div></div>
 							</div>
@@ -301,7 +298,10 @@
 		</div> -->
 		<div class="main">
 			<div class="inner">
-				<%= render :partial => "event_list", :locals => { :occurrences => @occurrences } %>
+				<div style="display:none;" class="total-occurrences"><%= @allOccurrences.size %></div>
+				<ul class="events">
+					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
+				</ul>
 			</div>
 			<img id="loading" src="/assets/ajax-loader.gif" />
 		</div>

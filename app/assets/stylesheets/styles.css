@@ -27,6 +27,8 @@
 
 
 
+
+
 @font-face {
     font-family: PTSansNarrow;
     src: url('/assets/PTN57F-webfont.eot');
@@ -85,6 +87,7 @@ html, body
   height:100%;
   overflow:hidden;
   background: #F3F3FA url(scaleside5.png);
+  background-image: -webkit-linear-gradient(left, rgba(0,0,0,.2) 0%,rgba(255,255,255,0) 50%, rgba(0,0,0,.2) 100%), url(scaleside5.png);
 }
 
 #body {
@@ -1217,6 +1220,10 @@ input::-webkit-input-placeholder
   text-align: center;
 }
 
+#content .events .index.over100 {
+  font-size:16px;
+}
+
 #content .events .price {
 font-size: 12px;
 color: #2E2EFE;
@@ -1652,7 +1659,7 @@ color: #B51DBB;
 
 #info-content {
   width: 880px;
-  padding: 60px;
+  padding: 30px;
   margin: 52px auto 0;
   background: white;
   box-shadow: 3px 2px 8px rgba(0,0,0,.4);

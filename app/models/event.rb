@@ -10,6 +10,8 @@ class Event < ActiveRecord::Base
   accepts_nested_attributes_for :occurrences, :allow_destroy => true
   accepts_nested_attributes_for :recurrences, :allow_destroy => true
   accepts_nested_attributes_for :venue
+  # has_many :pictures, :as => :pictureable
+  # mount_uploader :picture, ImageUploader
   
   validates_presence_of :venue_id, :title
   # define_index do
@@ -46,11 +48,6 @@ class Event < ActiveRecord::Base
     p = self.clicks
     z = 1.96
     phat = [1.0*p/n,1].min
-    # puts "n: " + n.to_s
-    # puts "p: " + p.to_s
-    # puts "z: " + z.to_s
-    # puts "phat: " + phat.to_s
-    # puts (phat*(1-phat)+z*z/(4*n))/n
     return (phat + z*z/(2*n) - z * Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)
   end
 

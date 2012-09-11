@@ -3,12 +3,12 @@
 class ImageUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
-  # include CarrierWave::RMagick
+   include CarrierWave::RMagick
   # include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
+  #storage :file
+  storage :fog
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -16,6 +16,10 @@ class ImageUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
+  # Cache directory for use with Heroku and S3
+   def cache_dir
+     "#{Rails.root}/tmp/uploads"
+   end
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url
   #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
@@ -29,9 +33,15 @@ class ImageUploader < CarrierWave::Uploader::Base
   # end
 
   # Create different versions of your uploaded files:
-  # version :thumb do
-  #   process :scale => [50, 50]
-  # end
+  version :thumb do
+    process :crop
+    process :resize_to_limit => [150, 150]
+  end
+
+  version :large do
+    process :crop
+    process :resize_to_limit => [500, 500]
+  end
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:

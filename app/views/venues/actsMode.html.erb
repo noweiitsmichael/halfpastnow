@@ -13,29 +13,33 @@
 	      success: 
 	        function(data) { 
 	          var eventID = actForm.attr('event-id');
-	          var selectActs = $('input.act-names[event-id=' + eventID + ']');
-	          var selectedActs = selectActs.siblings(".select2-container").find(".select2-search-choice");
-	          hideActsMode();
-	          //connect act to event
-	          //var vals = $('input.act-names[event-id=' + eventID + ']').val();
-	          var actIDs = selectActs.select2("val");
-	          var actNames = [];
-	          selectedActs.each(function() { actNames.push( $(this).text() ); });
-	          var acts = [];
-	          for(var i in actIDs) {
-	            acts.push({id: actIDs[i], text: actNames[i]});
-	          }
-	          acts.push({id: data.id, text: data.name});
-	          console.log("acts");
-	          console.log(acts);
-	          selectActs.select2("val",acts);
-	          
-	          actsInfo[data.id] = {tags: data.tags};
-	          actsChange(selectActs);
 
-	          //selectActs.trigger("change");
-	          //$('input.act-names[event-id=' + eventID + ']').select2("val", {id:45, text:"Califoria"});
-	          //import act's tags to event
+	          if(typeof eventID != 'undefined') {
+	          	  var selectActs = $('input.act-names[event-id=' + eventID + ']');
+		          var selectedActs = selectActs.siblings(".select2-container").find(".select2-search-choice");
+		         
+		          //connect act to event
+		          //var vals = $('input.act-names[event-id=' + eventID + ']').val();
+		          var actIDs = selectActs.select2("val");
+		          var actNames = [];
+		          selectedActs.each(function() { actNames.push( $(this).text() ); });
+		          var acts = [];
+		          for(var i in actIDs) {
+		            acts.push({id: actIDs[i], text: actNames[i]});
+		          }
+		          acts.push({id: data.id, text: data.name});
+		          console.log("acts");
+		          console.log(acts);
+		          selectActs.select2("val",acts);
+		          
+		          actsInfo[data.id] = {tags: data.tags};
+		          actsChange(selectActs);
+		      }
+	      	  hideActsMode();
+
+	      	  //gross.
+	      	  if(typeof actSuccessCallback !== 'undefined')
+	      	  	actSuccessCallback(data);
 	        }
 	    });
 	});
@@ -45,7 +49,8 @@
 	}
 
 </script>
-<h3>New Performer</h3>
+
+<h3 style="margin-bottom:15px;">Performer</h3>
 <%= form_for @act, :url => "/venues/actCreate", :html => { :id => "act-form" } do |e| %>
 	<% if @act.id %><%= e.hidden_field :id %><% end %>
     <div class="main">
@@ -57,14 +62,32 @@
 		  <%= e.label :description %>
 		  <%= e.text_area :description, :class => "cleditor" %>
 		</div>
+
+		<div class="field">
+		  <%= e.label :bio %>
+		  <%= e.text_area :bio, :class => "cleditor" %>
+		</div>
+
+		<div class="field">
+		  <%= e.label "[Genres]" %>
+		  <i><%= @act.genre %></i>
+		</div>
 		
 		<% @iStrName = "act[tag_ids][]" %>
 		<% @iStrId = "act_tag_ids_" %>
 		
 		<%= render :partial => "tags", :locals => { :element => @act } %>
 
+		<div class="field">
+		  <%= e.label "Facebook Picture" %>
+		  <i><%= image_tag @act.fb_picture %></i>
+		  
+		</div>
+
+
 		<%= render :partial => "embeds", :locals => { :act => @act } %>		
-		
+
+
 		<div class="actions">
     		<%= e.submit %>
   		</div>
