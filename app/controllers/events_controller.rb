@@ -16,10 +16,13 @@ class EventsController < ApplicationController
 
 def index
 
+    unless(params[:channel_id])
+    end
+    
     @tags = Tag.all
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
 
-    # pp params
+    pp params
     # @amount = params[:amount] || 20
     # @offset = params[:offset] || 0
 
@@ -112,7 +115,8 @@ def index
 
     # tags
     unless(params[:included_tags].to_s.empty?)
-      tags_mush = params[:included_tags].collect { |str| str.to_i } * ','
+      tags_mush = params[:included_tags] * ','
+
       tag_include_match = "events.id IN (
                     SELECT event_id 
                       FROM events, tags, events_tags 
@@ -123,7 +127,7 @@ def index
     end
 
     unless(params[:excluded_tags].to_s.empty?)
-      tags_mush = params[:excluded_tags].collect { |str| str.to_i } * ','
+      tags_mush = params[:excluded_tags] * ','
       tag_exclude_match = "events.id NOT IN (
                     SELECT event_id 
                       FROM events, tags, events_tags 

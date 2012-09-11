@@ -2,6 +2,8 @@ Myapp::Application.routes.draw do
   
 
 
+  get "mobile/new"
+
   resources :histories
 
   resources :bookmarks
