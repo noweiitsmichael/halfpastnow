@@ -110,14 +110,7 @@ namespace :api do
 					next
 				end
 
-				if events['location']['city'] != ('Austin' || 'Round Rock' || 'Cedar Park' || 'San Marcos' || 'Georgetown' || 'Pflugerville' ||
-												   'Kyle' || 'Leander' || 'Bastrop' || 'Brushy Creek' || 'Buda' || 'Dripping Springs' || 'Elgin' ||
-												   'Hutto' || 'Jollyville' || 'Lakeway' || 'Lockhart' || 'Luling' || 'Shady Hollow' || 'Taylor' ||
-												   'Wells Branch' || 'Windemere' || 'Marble Falls' || 'Burnet' || 'Johnson City' || 'La Grange' ||
-												   'Killeen' || "Lampasas" || 'Fredericksburg')
-					puts "skipping because not in CSA..."
-					next
-				end
+
 
 				## Get location of each event and create if doesn't exist
 				if Venue.find_by_name(events['location']) == nil  # && (events['venue'] != nil || events['location'] != nil)
@@ -128,6 +121,15 @@ namespace :api do
 							puts "Creating rawvenue with id:"
 							puts events['venue']['id']
 							fb_venue = @graph.get_object(events['venue']['id'])
+
+							if fb_venue['location']['city'] != ('Austin' || 'Round Rock' || 'Cedar Park' || 'San Marcos' || 'Georgetown' || 'Pflugerville' ||
+								   'Kyle' || 'Leander' || 'Bastrop' || 'Brushy Creek' || 'Buda' || 'Dripping Springs' || 'Elgin' ||
+								   'Hutto' || 'Jollyville' || 'Lakeway' || 'Lockhart' || 'Luling' || 'Shady Hollow' || 'Taylor' ||
+								   'Wells Branch' || 'Windemere' || 'Marble Falls' || 'Burnet' || 'Johnson City' || 'La Grange' ||
+								   'Killeen' || "Lampasas" || 'Fredericksburg')
+								puts "skipping because not in CSA..."
+								next
+							end
 							raw_venue = RawVenue.create!(
 								:name => fb_venue['name'],
 								:address => fb_venue['location']['street'],
@@ -148,6 +150,16 @@ namespace :api do
 						## Some n00bs don't know how to link to FB venues and input manual location.
 						else
 							puts "Manually creating venue: " + events['location']
+
+							if events['venue']['city'] != ('Austin' || 'Round Rock' || 'Cedar Park' || 'San Marcos' || 'Georgetown' || 'Pflugerville' ||
+								   'Kyle' || 'Leander' || 'Bastrop' || 'Brushy Creek' || 'Buda' || 'Dripping Springs' || 'Elgin' ||
+								   'Hutto' || 'Jollyville' || 'Lakeway' || 'Lockhart' || 'Luling' || 'Shady Hollow' || 'Taylor' ||
+								   'Wells Branch' || 'Windemere' || 'Marble Falls' || 'Burnet' || 'Johnson City' || 'La Grange' ||
+								   'Killeen' || "Lampasas" || 'Fredericksburg')
+								puts "skipping because not in CSA..."
+								next
+							end
+
 							raw_venue = RawVenue.create!(
 								:name => events['location'],
 								:address => events['venue']['street'],
@@ -181,6 +193,58 @@ namespace :api do
 					if events['venue'] == nil
 						no_id = true
 					end
+				else
+					## Updating existing venue with FB information
+					if events['venue'] != nil
+						if events['venue']['id'] != nil
+							fb_venue = @graph.get_object(events['venue']['id'])
+							raw_venue = RawVenue.find_by_name(events['location'])
+							real_venue = Venue.find_by_name(events['location'])
+							puts "Venue found, updating venue: " + fb_venue['name']
+
+							if real_venue.address.blank? == true
+								raw_venue.address = fb_venue['location']['street']
+								real_venue.address = fb_venue['location']['street']
+
+							end
+
+							if real_venue.city.blank? == true
+								raw_venue.city = fb_venue['location']['city']
+								real_venue.city = fb_venue['location']['city']
+							end
+
+							if real_venue.state.blank? == true
+								raw_venue.state_code = fb_venue['location']['state']
+								real_venue.state = fb_venue['location']['state']
+							end
+
+							if real_venue.url.blank? == true
+								raw_venue.url = fb_venue['location']['website']
+								real_venue.url = fb_venue['location']['website']
+							end
+
+							if real_venue.description.blank? == true
+								raw_venue.description = fb_venue['location']['description']
+								real_venue.description = fb_venue['location']['description']
+							end
+
+							if real_venue.phonenumber.blank? == true
+								raw_venue.phone = fb_venue['location']['phone']
+								real_venue.phonenumber = fb_venue['location']['phone']
+							end
+
+							raw_venue.zip = fb_venue['location']['zip']
+							real_venue.zip = fb_venue['location']['zip']
+							raw_venue.latitude = fb_venue['location']['latitude']
+							real_venue.latitude = fb_venue['location']['latitude']
+							raw_venue.from = "facebook"
+							raw_venue.fb_picture = @graph.get_picture(fb_venue['id'], :type => "large")
+							real_venue.fb_picture = @graph.get_picture(fb_venue['id'], :type => "large")
+							raw_venue.save
+							real_venue.save
+						end
+					end
+
 				end
 
 				## Now that location has been confirmed, put in events
