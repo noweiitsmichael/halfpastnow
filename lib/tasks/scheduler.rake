@@ -99,18 +99,16 @@ namespace :api do
 		@graph = Koala::Facebook::API.new(access_token)
 		## Pull all things that halfpastnow likes
 		@graph.get_connections("halfpastnow","likes").each do |like|
-
+			edited_already = false
 			## Now pull the events from all things halfpastnow likes. Should work even if nil
 			@graph.get_connections(like['id'],"events", :fields => 'location,venue,name,description').each do |events|
 				no_id = false
-				edited_already = false
+				
 				## if the name or location is blank, we're just gonna skip it
 				if events['name'].blank? || events['location'].blank?
 					puts "skipping because no location..."
 					next
 				end
-
-
 
 				## Get location of each event and create if doesn't exist
 				if Venue.find_by_name(events['location']) == nil  # && (events['venue'] != nil || events['location'] != nil)
