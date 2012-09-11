@@ -94,7 +94,7 @@ namespace :api do
 	desc "pull venues from facebook events"
 	task :get_fb_events => :environment do
 		access_token = User.find_by_email("noweiitsmichael@yahoo.com").fb_access_token
-		puts "Pulling from Facebook"
+		puts "Pulling from Facebook. IS IT DAYLIGHT SAVINGS TIME YET?!?!?!?!?!?!?!"
 		no_id = false
 		@graph = Koala::Facebook::API.new(access_token)
 		## Pull all things that halfpastnow likes
@@ -217,24 +217,26 @@ namespace :api do
 							end
 
 							if real_venue.url.blank? == true
-								raw_venue.url = fb_venue['location']['website']
-								real_venue.url = fb_venue['location']['website']
+								raw_venue.url = fb_venue['website']
+								real_venue.url = fb_venue['website']
 							end
 
 							if real_venue.description.blank? == true
-								raw_venue.description = fb_venue['location']['description']
-								real_venue.description = fb_venue['location']['description']
+								raw_venue.description = fb_venue['about']
+								real_venue.description = fb_venue['about']
 							end
 
 							if real_venue.phonenumber.blank? == true
-								raw_venue.phone = fb_venue['location']['phone']
-								real_venue.phonenumber = fb_venue['location']['phone']
+								raw_venue.phone = fb_venue['phone']
+								real_venue.phonenumber = fb_venue['phone']
 							end
 
 							raw_venue.zip = fb_venue['location']['zip']
 							real_venue.zip = fb_venue['location']['zip']
 							raw_venue.latitude = fb_venue['location']['latitude']
 							real_venue.latitude = fb_venue['location']['latitude']
+							raw_venue.latitude = fb_venue['location']['longitude']
+							real_venue.latitude = fb_venue['location']['longitude']
 							raw_venue.from = "facebook"
 							raw_venue.fb_picture = @graph.get_picture(fb_venue['id'], :type => "large")
 							real_venue.fb_picture = @graph.get_picture(fb_venue['id'], :type => "large")
