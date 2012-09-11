@@ -14,6 +14,12 @@ end
 
 class EventsController < ApplicationController
 
+def splash
+  respond_to do |format|
+    format.html { render :layout => false }
+  end
+end
+
 def index
     @tags = Tag.all
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
@@ -244,7 +250,7 @@ def index
     # puts "_________________________"
     # puts ""
 
-    if @event_ids.count > 0
+    if @event_ids.size > 0
       ActiveRecord::Base.connection.update("UPDATE events
         SET views = views + 1
         WHERE id IN (#{@event_ids * ','})")
@@ -341,7 +347,7 @@ def index
                       FROM events, tags, events_tags 
                       WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{params[:tags]}) 
                       GROUP BY event_id 
-                      HAVING COUNT(tag_id) >= #{@tagIDs.count}
+                      HAVING COUNT(tag_id) >= #{@tagIDs.size}
                   )"
     end
 
