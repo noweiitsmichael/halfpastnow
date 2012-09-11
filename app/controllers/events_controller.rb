@@ -20,23 +20,38 @@ def splash
   end
 end
 
-<<<<<<< HEAD
-    unless(params[:channel_id])
+
+def index
+
+    unless(params[:channel_id].to_s.empty?)
+      channel = Channel.find(params[:channel_id].to_i)
+
+      params[:option_day] = channel.option_day || 0
+      params[:start_days] = channel.start_days || ""
+      params[:end_days] = channel.end_days || ""
+      params[:start_seconds] = channel.start_seconds || ""
+      params[:end_seconds] = channel.end_seconds || ""
+      params[:low_price] = channel.low_price || ""
+      params[:high_price] = channel.high_price || ""
+      params[:included_tags] = channel.included_tags ? channel.included_tags.split(',') : nil
+      params[:excluded_tags] = channel.excluded_tags ? channel.excluded_tags.split(',') : nil
+      params[:lat_min] = ""
+      params[:lat_max] = ""
+      params[:long_min] = ""
+      params[:long_max] = ""
+      params[:offset] = 0
+      params[:search] = ""
+      params[:sort] = channel.sort || 0
+      params[:name] = channel.name || ""
     end
     
-    @tags = Tag.all
-    @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
-
+   
     pp params
     # @amount = params[:amount] || 20
     # @offset = params[:offset] || 0
 
-=======
-def index
     @tags = Tag.all
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
-
->>>>>>> fcb2d4c5a2b7c0986ccc666abf4892aeaa482169
     search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
 
     # amount/offset
