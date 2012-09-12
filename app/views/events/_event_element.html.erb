@@ -1,4 +1,5 @@
-<li linkto="event" link-id="<%= occurrence.id %>">
+<% if false %>
+<!-- <li linkto="event" link-id="<%= occurrence.id %>">
 	<div class="index <%= ((index + 1) >= 100) ? "over100" : ""%>"><%= index ? (index + 1) : "" %></div>
 	<div class="event-inner">
 		<div class="title">
@@ -22,5 +23,35 @@
 			<img src="/assets/markers/marker_<%= (index + 1) % 100 %>.png" />
 			<img src="/assets/markers/marker_hover_<%= (index + 1) % 100 %>.png" />
 		</div>
+	</div>
+</li> -->
+<% end %>
+
+<li linkto="event" link-id="<%= occurrence.id %>">
+	<div class="index <%= ((index + 1) >= 100) ? "over100" : ""%>"><%= index ? (index + 1) : "" %></div>
+	<div class="title">
+		<%= occurrence.event.title %>
+	</div>
+	<div class="venue" link-id="<%= occurrence.event.venue.id %>" linkto="venue"><!-- <span class="at">@</span> -->at <%= occurrence.event.venue.name %></div>
+	<div class="datetime"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></div>
+	<div class="price"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></div>
+	<div class="tags">
+		<% if occurrence.event.tags.count > 0 %>
+			<% occurrence.event.tags.each do |tag| %>
+				<span class="tag"><%= tag.name %></span>
+			<% end %>
+		<% end %>
+	</div>
+	<div class="picture">
+		<img src="http://lorempixel.com/250/150/nightlife/<%= (index)%10 + 1 %>" />
+		<div class="picture-overlay"></div>
+	</div>
+	<div style="display:none;">
+		<div class="latitude"><%= occurrence.event.venue.latitude %></div>
+		<div class="longitude"><%= occurrence.event.venue.longitude %></div>
+	</div>
+	<div class="marker-caching">
+		<img src="/assets/markers/marker_<%= (index + 1) % 100 %>.png" />
+		<img src="/assets/markers/marker_hover_<%= (index + 1) % 100 %>.png" />
 	</div>
 </li>
