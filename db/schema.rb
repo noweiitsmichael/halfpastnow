@@ -144,11 +144,20 @@ ActiveRecord::Schema.define(:version => 20120909201330) do
   add_index "occurrences", ["recurrence_id"], :name => "index_occurrences_on_recurrence_id"
 
   create_table "pictures", :force => true do |t|
+
+    t.integer  "eventID"
+    t.integer  "venueId"
+    t.text     "comment"
+    t.float    "longitude"
+    t.float    "altitude"
+    t.string   "url"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+
     t.string   "picture"
     t.integer  "picture_id"
     t.string   "picture_type"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+ 
   end
 
   create_table "raw_events", :force => true do |t|
@@ -232,6 +241,15 @@ ActiveRecord::Schema.define(:version => 20120909201330) do
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
+  create_table "students", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "videoname"
+    t.string   "videonametest"
+  end
+
   create_table "tags", :force => true do |t|
     t.string   "name"
     t.integer  "parent_tag_id"
@@ -265,6 +283,7 @@ ActiveRecord::Schema.define(:version => 20120909201330) do
     t.string   "lastname"
     t.string   "username"
     t.string   "profilepic"
+    t.string   "authentication_token"
     t.string   "provider"
     t.string   "uid"
     t.string   "fb_access_token"
@@ -301,6 +320,17 @@ ActiveRecord::Schema.define(:version => 20120909201330) do
     t.boolean  "suggested"
     t.string   "fb_picture"
     t.string   "admin_owner"
+  end
+
+  create_table "videos", :force => true do |t|
+    t.integer  "eventID"
+    t.integer  "venueId"
+    t.text     "comment"
+    t.float    "longitude"
+    t.float    "altitude"
+    t.string   "url"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
 end
