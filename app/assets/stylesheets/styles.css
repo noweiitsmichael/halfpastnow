@@ -51,6 +51,7 @@
 
 
 
+
 @font-face {
     font-family: PTSansNarrow;
     src: url('/assets/PTN57F-webfont.eot');
@@ -109,7 +110,7 @@ html, body
   height:100%;
   overflow:hidden;
   background: #F3F3FA url(scaleside5.png);
-  background-image: -webkit-linear-gradient(left, rgba(0,0,0,.2) 0%,rgba(255,255,255,0) 50%, rgba(0,0,0,.2) 100%), url(scaleside5.png);
+  background-image: -webkit-linear-gradient(left, rgba(0,0,0,.1) 0%,rgba(255,255,255,0) 50%, rgba(0,0,0,.1) 100%), url(scaleside5.png);
 }
 
 #body {
@@ -1833,4 +1834,8 @@ color: #B51DBB;
   margin-left: 5px;
   position: relative;
   top: -1px;
+}
+
+iframe {
+  background: url(/assets/spinner.gif) no-repeat center center;
 }
