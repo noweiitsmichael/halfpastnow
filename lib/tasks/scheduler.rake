@@ -384,7 +384,9 @@ namespace :api do
 
 	desc "pull events from api for a venue"
 	task :get_venue_event, [:num_venues]  => [:environment] do |t, args|
-		num_venues = args[:num_venues] || 1
+
+		num_venues = args[:num_venues].to_s.empty? ? 1 : args[:num_venues].to_i
+
 
 		@raw_venues = RawVenue.includes(:venue).where("events_url IS NOT NULL AND (last_visited IS NULL OR last_visited < '#{ (Date.today - 7).to_datetime }')").take(num_venues)
 
