@@ -458,17 +458,10 @@ namespace :api do
 		@raw_venues.each do |raw_venue|
 			puts raw_venue.venue.name
 			apiURL = URI(raw_venue.events_url)
-			puts "apiURL:"
-			pp apiURL
 			apiXML = Net::HTTP.get(apiURL)
-			puts "apiXML:"
-			pp apiXML
 			doc = Document.new(apiXML)	
-			puts "doc:"
-			pp doc
 			XPath.each( doc, "//event") do |item|
-				puts "item:"
-				pp item
+
 				if RawEvent.where(:raw_id => item.elements["event_id"].text, :from => "do512").size > 0
 					next
 				end
@@ -482,11 +475,7 @@ namespace :api do
 				    :from => "do512",
 				    :raw_venue_id => raw_venue.id
 				})
-				puts "raw_event:"
-				pp raw_event
-				# pp raw_event
 			end
-			puts "exited loop"
 			raw_venue.last_visited = DateTime.now
 			raw_venue.save
 		end

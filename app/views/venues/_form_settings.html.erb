@@ -127,5 +127,6 @@
   <div id="map_canvas"></div>
   <div class="actions">
     <%= f.submit %>
+    <a href="/venues/delete/<%= @venue.id %>" data-confirm="Are you sure you want to delete this venue?">Delete Venue</a>
   </div>
 <% end %>

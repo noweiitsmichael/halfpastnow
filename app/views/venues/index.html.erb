@@ -52,7 +52,7 @@
   <div class="venues-list">
   <h3>Venues (# of Events)</h3>
   <% @venuesCooked.each do |venue| %>  
-    <a href="/venues/edit/<%= venue["venue_id"] %>"><%= venue["name"] %></a> (<%= venue["count"] %>)<br />
+    <a href="/venues/edit/<%= venue["id"] %>"><%= venue["name"] %></a> (<%= venue["events_count"] %>)<br />
   <% end %>
   </div>
 </div>
