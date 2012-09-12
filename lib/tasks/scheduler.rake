@@ -34,7 +34,7 @@ task :update_occurrences => :environment do
 		if occurrence.recurrence.nil?
 			occurrence.delete
 		else
-			if (!occurrence.recurrence.gen_occurrences(1) && occurrence.recurrence.occurrences.count == 1)
+			if (!occurrence.recurrence.gen_occurrences(1) && occurrence.recurrence.occurrences.size == 1)
 				occurrence.recurrence.delete
 			else
 				occurrence.recurrence.save
@@ -355,7 +355,7 @@ namespace :api do
 			end
 
 			XPath.each( doc, "//item") do |item|
-				if RawVenue.where(:raw_id => item.elements["xCal:x-calconnect-venue"].elements["xCal:x-calconnect-venue-id"].text).count > 0
+				if RawVenue.where(:raw_id => item.elements["xCal:x-calconnect-venue"].elements["xCal:x-calconnect-venue-id"].text).size > 0
 					next
 				end
 
@@ -417,7 +417,7 @@ namespace :api do
 				if(d_until && d_start && d_start > d_until)
 					@breakout = true
 					break
-				elsif RawEvent.where(:raw_id => item.elements["id"].text).count > 0
+				elsif RawEvent.where(:raw_id => item.elements["id"].text).size > 0
 					next
 				end
 
@@ -449,7 +449,6 @@ namespace :api do
 
 		num_venues = args[:num_venues].to_s.empty? ? 1 : args[:num_venues].to_i
 
-
 		@raw_venues = RawVenue.includes(:venue).where("events_url IS NOT NULL AND (last_visited IS NULL OR last_visited < '#{ (Date.today - 7).to_datetime }')").take(num_venues)
 
 		# pp @raw_venues
@@ -463,7 +462,7 @@ namespace :api do
 			doc = Document.new(apiXML)	
 			XPath.each( doc, "//event") do |item|
 
-				if RawEvent.where(:raw_id => item.elements["event_id"].text, :from => "do512").count > 0
+				if RawEvent.where(:raw_id => item.elements["event_id"].text, :from => "do512").size > 0
 					next
 				end
 
