@@ -20,10 +20,38 @@ def splash
   end
 end
 
+
 def index
+
+    unless(params[:channel_id].to_s.empty?)
+      channel = Channel.find(params[:channel_id].to_i)
+
+      params[:option_day] = channel.option_day || 0
+      params[:start_days] = channel.start_days || ""
+      params[:end_days] = channel.end_days || ""
+      params[:start_seconds] = channel.start_seconds || ""
+      params[:end_seconds] = channel.end_seconds || ""
+      params[:low_price] = channel.low_price || ""
+      params[:high_price] = channel.high_price || ""
+      params[:included_tags] = channel.included_tags ? channel.included_tags.split(',') : nil
+      params[:excluded_tags] = channel.excluded_tags ? channel.excluded_tags.split(',') : nil
+      params[:lat_min] = ""
+      params[:lat_max] = ""
+      params[:long_min] = ""
+      params[:long_max] = ""
+      params[:offset] = 0
+      params[:search] = ""
+      params[:sort] = channel.sort || 0
+      params[:name] = channel.name || ""
+    end
+    
+   
+    pp params
+    # @amount = params[:amount] || 20
+    # @offset = params[:offset] || 0
+
     @tags = Tag.all
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
-
     search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
 
     # amount/offset
@@ -123,7 +151,8 @@ def index
 
     # tags
     unless(params[:included_tags].to_s.empty?)
-      tags_mush = params[:included_tags].collect { |str| str.to_i } * ','
+      tags_mush = params[:included_tags] * ','
+
       tag_include_match = "events.id IN (
                     SELECT event_id 
                       FROM events, tags, events_tags 
@@ -134,7 +163,7 @@ def index
     end
 
     unless(params[:excluded_tags].to_s.empty?)
-      tags_mush = params[:excluded_tags].collect { |str| str.to_i } * ','
+      tags_mush = params[:excluded_tags] * ','
       tag_exclude_match = "events.id NOT IN (
                     SELECT event_id 
                       FROM events, tags, events_tags 
@@ -171,8 +200,6 @@ def index
               LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
-
-    puts query
     
     @ids = ActiveRecord::Base.connection.select_all(query)
 

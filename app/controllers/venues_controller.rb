@@ -26,12 +26,22 @@ class VenuesController < ApplicationController
         GROUP BY venue_id,venues.name
         ORDER BY COUNT(*) DESC")
 
+    # @venuesCooked = ActiveRecord::Base.connection.select_all("
+    #   SELECT venue_id,venues.name,COUNT(*) 
+    #     FROM venues,events
+    #     WHERE venues.id = events.venue_id
+    #     GROUP BY venue_id,venues.name
+    #     ORDER BY COUNT(*) DESC")
+
     @venuesCooked = ActiveRecord::Base.connection.select_all("
-      SELECT venue_id,venues.name,COUNT(*) 
-        FROM venues,events
-        WHERE venues.id = events.venue_id
-        GROUP BY venue_id,venues.name
-        ORDER BY COUNT(*) DESC")
+      SELECT venues.id, venues.name, COUNT(events.id) AS events_count
+        FROM venues
+        LEFT OUTER JOIN events
+        ON venues.id = events.venue_id
+        GROUP BY venues.id,venues.name
+        ORDER BY events_count DESC")
+
+    pp @venuesCooked.last
   end
 
   # GET /venues/1
@@ -186,9 +196,7 @@ class VenuesController < ApplicationController
     end
   end
 
-  # DELETE /venues/1
-  # DELETE /venues/1.json
-  def destroy
+  def delete
     @venue = Venue.find(params[:id])
     @venue.destroy
 
