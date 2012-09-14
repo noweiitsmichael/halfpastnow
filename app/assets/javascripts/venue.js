@@ -21,6 +21,7 @@ var eventActs = {};
           }); 
 
       $(selector).submit(function() { 
+        console.log("submitting");
             var obj = $(this);
             if(validators[selector].numberOfInvalids() == 0) {
               obj.find('.form-success').remove();

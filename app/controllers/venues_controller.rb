@@ -145,7 +145,7 @@ class VenuesController < ApplicationController
   # GET /venues/new.json
   def fromRaw
     @venue = Venue.find(params[:id])
-
+    pp @venue
     @event = @venue.events.build()
     @event.update_attributes(params[:event])
     @event.user_id = current_user.id
@@ -287,7 +287,7 @@ class VenuesController < ApplicationController
     else
       @act = Act.find(params[:act][:id])
     end
-
+    puts params[:act]
     @act.update_attributes!(params[:act])
 
     respond_to do |format|
@@ -307,7 +307,6 @@ class VenuesController < ApplicationController
     else
       @act = Act.find(params[:id])
     end
-
     @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
 
     render :layout => false

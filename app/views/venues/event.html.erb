@@ -8,7 +8,7 @@
 
 <% @ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] %>
 <% @week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] %>
-<%= form_for @event, :url => "/venues/eventEdit/" + @event.id.to_s, :html => { :id => "event_" + @event.id.to_s } do |e| %>
+<%= form_for @event, :url => "/venues/eventEdit/" + @event.id.to_s, :html => { :multipart => true, :id => "event_" + @event.id.to_s } do |e| %>
 	<% @iStrName = "event[tag_ids][]" %>
 
 	<% @iStrId = @event.id ? "event_2#{@event.id.to_s}_tag_ids_" : "event_0_tag_ids_" %>
@@ -32,6 +32,32 @@
 		<%= render :partial => "tags", :locals => { :element => @event } %>
 
 		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => @event } %>
+
+	    <div class="field">
+	    	<div class="picgal">
+	    	<b><%= e.label "Picture Galleries" %></b><br>
+
+	    	<% if !@event.fb_picture.blank? %>
+					<%= e.label "From Facebook:" %>
+					<%= image_tag @event.fb_picture %>
+					<br>
+			<% end %>
+
+		    <% @event.acts.each do |artists| %>
+		    	<label>From artist <%= artists.name %>: </label>
+		    	<% artists.pictures.each do |pic| %>
+		    		<%= image_tag pic.image_url(:thumb).to_s %>
+		    	<% end %>
+		    	<br>
+		    <% end %>
+			</div>
+		    <label>From Venue:</label>
+		    <% @event.venue.pictures.each do |pic| %>
+		    		<%= image_tag pic.image_url(:thumb).to_s %>
+		    <% end %>
+	    </div>
+
+	    <%= render :partial => "pictures_events", :locals => { :event => @event } %>
 
 		<div class="actions">
     		<%= e.submit %>

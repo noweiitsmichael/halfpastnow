@@ -14,9 +14,9 @@ class User < ActiveRecord::Base
 
   # Allows you to search for bookmarked venues/events/acts by calling "user.bookmarked_type"
   has_many :bookmarks  
-  has_many :bookmarked_venues, :through =>  :bookmarks, :source => :bookmarked, :source_type => "Venue"
-  has_many :bookmarked_events, :through =>  :bookmarks, :source => :bookmarked, :source_type => "Occurrence"
-  has_many :bookmarked_acts, :through =>  :bookmarks, :source => :bookmarked, :source_type => "Act"
+  has_many :bookmarked_venues, :through => :bookmarks, :source => :bookmarked, :source_type => "Venue"
+  has_many :bookmarked_events, :through => :bookmarks, :source => :bookmarked, :source_type => "Occurrence"
+  has_many :bookmarked_acts, :through => :bookmarks, :source => :bookmarked, :source_type => "Act"
 
   # History (attended events)
   has_many :histories, :dependent => :destroy

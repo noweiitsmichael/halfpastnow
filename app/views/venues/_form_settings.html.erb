@@ -62,7 +62,7 @@
   <% end %>
 <% end %>
 
-<%= form_for @venue, :url => @venue.id ? "/venues/update/" + @venue.id.to_s : "/venues/create", :html => { :id => "venue_settings" } do |f| %>
+<%= form_for @venue, :url => @venue.id ? "/venues/update/" + @venue.id.to_s : "/venues/create", :html => { :id => "venue_settings", :multipart => true } do |f| %>
    <div class="main settings">
     <div class="field">
       <%= f.label :name %>
@@ -100,6 +100,13 @@
       <%= f.label :zip %>
       <%= f.text_field :zip, :class => 'location required' %>
     </div>
+
+    <div class="field">
+      <%= f.label "Facebook Picture" %>
+      <i><%= image_tag @venue.fb_picture %></i>
+    </div>
+    <%= render :partial => "pictures_venues", :locals => { :venue => @venue } %>
+
     <% if false %>
     <div class="tags field">
     <label>Tags</label>
@@ -119,12 +126,17 @@
       </div>
     <% end %>
     </div>
+
+
   </div>
   <% end %>
     <%= f.hidden_field :latitude %>
     <%= f.hidden_field :longitude %>
   </div>
   <div id="map_canvas"></div>
+
+
+
   <div class="actions">
     <%= f.submit %>
   </div>

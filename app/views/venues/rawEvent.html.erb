@@ -2,6 +2,7 @@
     $(document).ready(function(){
 	    generateValidator("#new_event_<%= @rawEvent.id %>",{"ajax":true});
     });
+
 </script>
 
 <% @ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] %>
@@ -10,7 +11,7 @@
    event.occurrences.push(Occurrence.new(:start => @rawEvent.start, :end => @rawEvent.end))
    event.recurrences.push(Recurrence.new(:start => @rawEvent.start, :end => @rawEvent.end))
    occurrence = Occurrence.new(:start => @rawEvent.start, :end => @rawEvent.end) %>
-<%= form_for event, :url => "/venues/fromRaw/" + @venue.id.to_s, :html => { :id => "new_event_" + @rawEvent.id.to_s } do |e| %>
+<%= form_for event, :url => "/venues/fromRaw/" + @venue.id.to_s, :html => { :multipart => true, :id => "new_event_" + @rawEvent.id.to_s } do |e| %>
 	<% @iStrName = "event[tag_ids][]" %>
 	<% @iStrId = "event_1#{@rawEvent.id.to_s}_tag_ids_" %>
 	<%= hidden_field_tag :raw_event_id, @rawEvent.id %>
@@ -39,6 +40,25 @@
 		<%= render :partial => "tags", :locals => { :element => event } %>
 
 		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => event } %>
+
+	    <div class="field">
+	    	<div class="picgal">
+	    	<b><%= e.label "Picture Galleries" %></b><br>
+
+	    	<% if !@rawEvent.fb_picture.blank? %>
+					<%= e.label "From Facebook:" %>
+					<%= image_tag @rawEvent.fb_picture %>
+					<br>
+			<% end %>
+			</div>
+		    <label>From Venue:</label>
+		    <% @venue.pictures.each do |pic| %>
+		    		<%= image_tag pic.image_url(:thumb).to_s %>
+		    <% end %>
+	    </div>
+
+	    <%= render :partial => "pictures_events", :locals => { :event => event } %>
+
 
 		<div class="actions">
 			<%= e.submit %>
