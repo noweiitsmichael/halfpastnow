@@ -1,4 +1,6 @@
 class ActsController < ApplicationController
+  before_filter :authenticate_user!
+
   layout "venues"
 
   def show
@@ -30,6 +32,7 @@ class ActsController < ApplicationController
   end
 
   def index
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     @acts = Act.includes(:events, :tags, :embeds).all.sort_by{ |act| act.name }
   end
 end

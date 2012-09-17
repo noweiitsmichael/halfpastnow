@@ -2,7 +2,7 @@ require 'pp'
 require 'ruby-prof'
 
 class VenuesController < ApplicationController
-  #before_filter :authenticate_user!
+  before_filter :authenticate_user!
   # skip_before_filter :authenticate_user!, :only => [:show, :find]
   #before_filter :only_allow_admin, :only => [ :index ]
   
@@ -11,7 +11,7 @@ class VenuesController < ApplicationController
   def index
 
 
-    # authorize! :index, @user, :message => 'Not authorized as an administrator.'
+     authorize! :index, @user, :message => 'Not authorized as an administrator.'
     
     # @venues = Venue.all
     # @venues = RawEvent.where(:submitted => nil, :deleted => nil).collect { |raw_event| raw_event.raw_venue ? raw_event.raw_venue.venue : nil }.compact
@@ -98,6 +98,7 @@ class VenuesController < ApplicationController
 
   # GET /venues/edit/1
   def edit
+    authorize! :edit, @user, :message => 'Not authorized as an administrator.'
     @venue = Venue.includes(:tags, :events => :tags, :raw_venues => :raw_events).find(params[:id])
 
     @venue.events.build
@@ -129,7 +130,7 @@ class VenuesController < ApplicationController
   # PUT /venues/1
   # PUT /venues/1.json
   def update
-
+    authorize! :update, @user, :message => 'Not authorized as an administrator.'
     @venue = Venue.find(params[:id])
 
     if(params[:venue][:events_attributes])
@@ -278,7 +279,6 @@ class VenuesController < ApplicationController
 
   # GET /venues/find
   def actFind
-
     if(params[:contains])
       @acts = Act.where("name ilike ?", "%#{params[:contains]}%").collect {|a| { :name => "#{a.name}", :text => "#{a.name}", :id => a.id, :tags => (a.tags.collect { |t| t.id.to_s } * ",") } }
     else
@@ -289,7 +289,7 @@ class VenuesController < ApplicationController
   end
 
   def actCreate
-    
+    authorize! :actCreate, @user, :message => 'Not authorized as an administrator.'    
     if (params[:act][:id].to_s.empty?)
       @act = Act.new()
     else
