@@ -120,7 +120,7 @@ namespace :api do
 							puts events['venue']['id']
 							fb_venue = @graph.get_object(events['venue']['id'])
 
-							if fb_venue['location']['city'] != ('Austin' || 'Round Rock' || 'Cedar Park' || 'San Marcos' || 'Georgetown' || 'Pflugerville' ||
+							if fb_venue['location']['city'] != ('Austin' || 'Round Rock' || 'Cedar Park' || "San Marcos" || 'Georgetown' || 'Pflugerville' ||
 								   'Kyle' || 'Leander' || 'Bastrop' || 'Brushy Creek' || 'Buda' || 'Dripping Springs' || 'Elgin' ||
 								   'Hutto' || 'Jollyville' || 'Lakeway' || 'Lockhart' || 'Luling' || 'Shady Hollow' || 'Taylor' ||
 								   'Wells Branch' || 'Windemere' || 'Marble Falls' || 'Burnet' || 'Johnson City' || 'La Grange' ||
@@ -149,7 +149,7 @@ namespace :api do
 						else
 							puts "Manually creating venue: " + events['location']
 
-							if events['venue']['city'] != ('Austin' || 'Round Rock' || 'Cedar Park' || 'San Marcos' || 'Georgetown' || 'Pflugerville' ||
+							if events['venue']['city'] != ('Austin' || 'Round Rock' || 'Cedar Park' || "San Marcos" || 'Georgetown' || 'Pflugerville' ||
 								   'Kyle' || 'Leander' || 'Bastrop' || 'Brushy Creek' || 'Buda' || 'Dripping Springs' || 'Elgin' ||
 								   'Hutto' || 'Jollyville' || 'Lakeway' || 'Lockhart' || 'Luling' || 'Shady Hollow' || 'Taylor' ||
 								   'Wells Branch' || 'Windemere' || 'Marble Falls' || 'Burnet' || 'Johnson City' || 'La Grange' ||
