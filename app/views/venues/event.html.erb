@@ -37,16 +37,18 @@
 	    	<div class="picgal">
 	    	<b><%= e.label "Picture Galleries" %></b><br>
 
-	    	<% if !@event.fb_picture.blank? %>
+	    	<% unless @event.fb_picture.blank? %>
 					<%= e.label "From Facebook:" %>
 					<%= image_tag @event.fb_picture %>
 					<br>
 			<% end %>
 
 		    <% @event.acts.each do |artists| %>
-		    	<label>From artist <%= artists.name %>: </label>
-		    	<% artists.pictures.each do |pic| %>
-		    		<%= image_tag pic.image_url(:thumb).to_s %>
+		    	<% unless artists.pictures.empty? %>
+			    	<label>From artist <%= artists.name %>: </label>
+			    	<% artists.pictures.each do |pic| %>
+			    		<%= image_tag pic.image_url(:thumb).to_s %>
+			    	<% end %>
 		    	<% end %>
 		    	<br>
 		    <% end %>
