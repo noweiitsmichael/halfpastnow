@@ -1,57 +1,4 @@
 /* Global styles */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @font-face {
     font-family: PTSansNarrow;
     src: url('/assets/PTN57F-webfont.eot');
@@ -1725,7 +1672,7 @@ color: #B51DBB;
     padding: 0;
     line-height: 31px;
     text-align: center;
-    background: url(/assets/scaletake2c.png) 8px 8px;
+    background: url("/assets/scaletake2c.png") 8px 8px;
     text-shadow: 2px 3px 3px rgba(0,0,0,.5);
     position: absolute;
     top: 41px;
@@ -1824,7 +1771,7 @@ color: #B51DBB;
 
 }*/
 #content .events li.hover {
-  background: -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,.3) 0%,rgba(255,255,255,.6) 100%),url(/assets/scaleside5p.png);
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,.3) 0%,rgba(255,255,255,.6) 100%),url("/assets/scaleside5p.png");
 }
 
 #content .events li .venue:hover:after {
@@ -1837,5 +1784,5 @@ color: #B51DBB;
 }
 
 iframe {
-  background: url(/assets/spinner.gif) no-repeat center center;
+  background: url("/assets/spinner.gif") no-repeat center center;
 }

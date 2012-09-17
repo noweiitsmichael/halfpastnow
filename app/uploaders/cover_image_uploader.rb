@@ -1,9 +1,9 @@
 # encoding: utf-8
 
-class ImageUploader < CarrierWave::Uploader::Base
+class CoverImageUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
-   include CarrierWave::RMagick
+  # include CarrierWave::RMagick
   # include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
@@ -16,10 +16,6 @@ class ImageUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
-  # Cache directory for use with Heroku and S3
-   def cache_dir
-     "#{Rails.root}/tmp/uploads"
-   end
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url
   #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
@@ -33,23 +29,28 @@ class ImageUploader < CarrierWave::Uploader::Base
   # end
 
   # Create different versions of your uploaded files:
-  version :tiny do
-    process :resize_to_limit => [35, 35]
-  end
-
+  
   version :thumb do
+    process :crop
     process :resize_to_limit => [150, 150]
   end
 
   version :large do
-    process :resize_to_limit => [400, 400]
+    process :crop
+    process :resize_to_limit => [500, 500]
   end
 
-  version :full do
-    process :resize_to_limit => [1000, 1000]
+  def crop
+    if model.crop_x.present?
+      manipulate! do |img|
+        x = model.crop_x.to_i
+        y = model.crop_y.to_i
+        w = model.crop_w.to_i
+        h = model.crop_h.to_i
+        img.crop!(x, y, w, h)
+      end
+    end
   end
-
-
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
