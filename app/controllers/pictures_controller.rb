@@ -8,7 +8,8 @@ class PicturesController < ApplicationController
       else
         format.html 
         format.json 
-      	end
+      end
 		format.js
+    end
 	end
 end
