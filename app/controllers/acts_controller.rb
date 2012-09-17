@@ -1,5 +1,5 @@
 class ActsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :only => [:index]
 
   layout "venues"
 
