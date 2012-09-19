@@ -30,6 +30,7 @@ class ChannelsController < ApplicationController
 	end
 
 	def new
+		@channels = current_user.channels
 	    respond_to do |format|
 	      format.html { render :layout => "mode_lite" }
 	      format.json { render json: @channel }

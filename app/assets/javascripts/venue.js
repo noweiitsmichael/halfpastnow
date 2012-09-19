@@ -137,11 +137,17 @@ var eventActs = {};
 
     // $("#form_events .main.event.new input.title").change();
 
-    this.find(".datetime-input").datetimepicker({
-      ampm: true,
-      dateFormat: 'D M d, yy',
-      timeFormat: 'h:mm tt',
-      separator: ' at '
+    this.find(".datetime-input").each(function() {
+      
+      var dDate = Date.parse($(this).siblings('.datetime-hidden').val());
+      
+      $(this).datetimepicker({
+        ampm: true,
+        dateFormat: 'D M d, yy',
+        timeFormat: 'h:mm tt',
+        separator: ' at ',
+        defaultDate: dDate
+      });
     });
 
     this.find(".time-input").timepicker({

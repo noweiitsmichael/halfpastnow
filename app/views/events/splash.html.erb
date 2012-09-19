@@ -17,19 +17,19 @@
 				console.log($('.datetime').val());
 				switch($('.datetime').val()) {
 					case "today":
-						dateTimeParams = "start_days=0&end_days=0";
+						dateTimeParams = "option_day=1&start_days=0&end_days=0";
 						break;
 					case "tonight":
-						dateTimeParams = "start_days=0&end_days=0&start_seconds=72000&end_seconds=86400";
+						dateTimeParams = "option_day=1&start_days=0&end_days=0&start_seconds=72000&end_seconds=86400";
 						break;
 					case "tomorrow":
-						dateTimeParams = "start_days=1&end_days=1";
+						dateTimeParams = "option_day=2&start_days=1&end_days=1";
 						break;
 					case "weekend":
 						dateTimeParams = "";
 						break;
 					case "any":
-						dateTimeParams = "";
+						dateTimeParams = "option_day=0&start_days=0&end_days=INFINITY";
 						break;
 				}
 				window.location = "/?" + dateTimeParams;

@@ -206,10 +206,10 @@
   overflow: visible;
 }
 
-.dk_fouc select {
+/*.dk_fouc select {
   position: relative;
   top: -99999em;
   visibility: hidden;
-}
+}*/
 
 /***** End Critical to the continued enjoyment of working dropdowns ******/

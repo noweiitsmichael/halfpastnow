@@ -1,7 +1,23 @@
 <div class="tags-display">&nbsp;</div>
 <ul class="tags-menu">
 
-	<% if (parentTags) %>
+	<% tagCounts.select{|tagCount| tagCount[:parent].nil? }.each do |parentTagCount| %>
+		<li>
+			<div class="tag-header <%= parentTagCount[:count] == 0 ? "no-results" : "" %>" tag-id="<%= parentTagCount[:id] %>">
+				<span class="include" tag-id="<%= parentTagCount[:id] %>" title="show events with this tag"><img src="/assets/include2.png" /></span>
+				<span class="exclude" tag-id="<%= parentTagCount[:id] %>" title="don't show events with this tag"><img src="/assets/exclude.png" /></span>
+				<span class="name"><%= parentTagCount[:name] %> <%= parentTagCount[:count] == 0 ? "" : "(#{parentTagCount[:count]})" %></span>
+				<% if parentTagCount[:children].size > 0 %>
+					<span class="toggler">&#x25B6;</span>
+				<% end %>
+			</div>
+			<!-- <ul class="child-tags-menu" tag-id="<%= parentTagCount[:id] %>">
+				
+			</ul> -->
+		</li>
+	<% end %>
+
+	<% if false %><!-- <% if (parentTags) %>
 		<% parentTags.each do |tag| %>
 			<% numResults = (occurringTags[tag.id]) ? occurringTags[tag.id][:count] : 0 %>
 			<li>
@@ -54,5 +70,5 @@
 			</li>
 		<% end %>
 		
-	<% end %>
+	<% end %> --><% end %>
 </ul>

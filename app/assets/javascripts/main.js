@@ -53,27 +53,6 @@ var MAX_HOURS = 24;
 var MAX_SECONDS = 86400;
 var ANY_TIME_TEXT = "Any Time";
 
-var filter = {
-  option_day: 1,
-  start_days: 0,
-  end_days: 0,
-  start_seconds: "",
-  end_seconds: "",
-  day: [0,1,2,3,4,5,6],
-  low_price: "",
-  high_price: "",
-  included_tags: [],
-  excluded_tags: [],
-  lat_min: "",
-  lat_max: "",
-  long_min: "",
-  long_max: "",
-  offset: 0,
-  search: "",
-  sort: 0,
-  name: ""
-};
-
 var infiniteScrolling = false;
 
 $(function() {
@@ -140,10 +119,21 @@ $(function() {
   });
 
   
-  $('.lists').on('click', 'li', function() {
-    var index = $(this).index() + 1;
-    $('.lists li').removeClass('selected');
-    $('.lists li:nth-child(' + index + ')').addClass('selected');
+  // $('.lists').on('click', 'li', function() {
+  //   var index = $(this).index() + 1;
+  //   $('.lists li').removeClass('selected');
+  //   $('.lists li:nth-child(' + index + ')').addClass('selected');
+    
+  //   var channelID = $(this).attr('channel-id') || 0;
+  //   filter = $.extend(true, {}, channelFilters[channelID]);
+
+  //   updateViewFromFilter();
+  // });
+
+  $('#header').on('click', '.stream', function() {
+    $("#dk_container_stream-select").removeClass('selected');
+    $(this).siblings().removeClass('selected');
+    $(this).addClass('selected');
     
     var channelID = $(this).attr('channel-id') || 0;
     filter = $.extend(true, {}, channelFilters[channelID]);
@@ -151,9 +141,31 @@ $(function() {
     updateViewFromFilter();
   });
 
+  // $(".streambar").on("change", "#dk_container_stream-select .dk_options_inner", function() {
+  //   $("#dk_container_stream-select").addClass('selected');
+  //   $(".streambar .stream").removeClass('selected');
+
+  //   console.log("change");
+  //   console.log($(".stream.selector").val());
+
+  //   var channelID = parseInt($(".stream.selector").val());
+  //   filter = $.extend(true, {}, channelFilters[channelID]);
+
+  //   updateViewFromFilter();
+  // });
+
   $('.sorts li').not('.no-select').click(function() {    
     filter.sort = $(this).index();
     
+    updateViewFromFilter();
+  });
+
+  $('.sort').click(function() {    
+    if($(this).attr("sort-type") === "popularity")
+      filter.sort = 0;
+    else if($(this).attr("sort-type") === "date")
+      filter.sort = 1;
+
     updateViewFromFilter();
   });
 
@@ -237,13 +249,16 @@ function defaultTo(parameter, parameterDefault) {
 }
 
 function updateViewFromFilter(pullEventsFlag) {
+  // console.log("startfilter");
+  // console.log(filter);
+
   pullEventsFlag = defaultTo(pullEventsFlag, true);
   filter.offset = 0;
 
   ////////////// CHANNELS //////////////
 
-  var channelStr = filter.name === "" ? "All Events" : filter.name;
-  $('.filter-toggle.channels .text-inner').html(channelStr);
+  // var channelStr = filter.name === "" ? "All Events" : filter.name;
+  // $('.filter-toggle.channels .text-inner').html(channelStr);
 
   ////////////// TAGS ////////////// 
 
@@ -262,19 +277,23 @@ function updateViewFromFilter(pullEventsFlag) {
   var filterText = "";
   
   $('.include').removeClass('selected');
+  $('.include img').attr('src','/assets/include2.png');
   for(var i in filter.included_tags) {
     filterText += tags[filter.included_tags[i]];
     if(i < filter.included_tags.length - 1 || filter.excluded_tags.length !== 0)
       filterText += " + ";
     $('.include[tag-id='+filter.included_tags[i]+']').addClass('selected');
+    $('.include[tag-id='+filter.included_tags[i]+'] img').attr('src','/assets/include_select.png');
   }
 
   $('.exclude').removeClass('selected');
+  $('.exclude img').attr('src','/assets/exclude2.png');
   for(var i in filter.excluded_tags) {
     filterText += "<em>not</em> " + tags[filter.excluded_tags[i]];
     if(i < filter.excluded_tags.length - 1)
       filterText += " + ";
     $('.exclude[tag-id='+filter.excluded_tags[i]+']').addClass('selected');
+    $('.exclude[tag-id='+filter.excluded_tags[i]+'] img').attr('src','/assets/exclude_select.png');
   }
 
   if (filterText === "")
@@ -391,7 +410,7 @@ function updateViewFromFilter(pullEventsFlag) {
     }
   }
 
-  $('.filter-toggle.date .pre-text').html(titlePreStr);
+  //$('.filter-toggle.date .pre-text').html(titlePreStr);
   $('.filter-toggle.date .text-inner').html(titleStr);
 
   ////////////// PRICE //////////////
@@ -433,6 +452,9 @@ function updateViewFromFilter(pullEventsFlag) {
 
   //search terms [later]
 
+  // console.log("endfilter");
+  // console.log(filter);
+
   if(pullEventsFlag) {
     pullEvents();
   }
@@ -440,8 +462,22 @@ function updateViewFromFilter(pullEventsFlag) {
 
 
 var advancedSlideTime, filterSlideTime, marginHeight, baseHeight, filterHeight, advancedHeight;
-
+var typingTimer;               //timer identifier
+var doneTypingInterval = 500;  //time in ms
 $(function() {
+
+  //on keyup, start the countdown
+  $('.search-input').keyup(function(){
+    console.log("keyup");
+      typingTimer = setTimeout(doneTyping, doneTypingInterval);
+  });
+
+  //on keydown, clear the countdown 
+  $('.search-input').keydown(function(){
+    console.log("keydown");
+      clearTimeout(typingTimer);
+  });
+
   $('.mode.venue .address.one').click(function(){
      $('.mode').hide();
   });
@@ -458,28 +494,30 @@ $(function() {
     $(this).parent().parent().children("div").eq(index).addClass("selected");
   });
 
-  $('#content').on("mouseenter", ".events li", function() {
+  $('#content').on("mouseenter", ".events > li:not(.no-results)", function() {
     google.maps.event.trigger(markers[$(this).index()], 'mouseover');
   });
 
-  $('#content').on("mouseleave", ".events li", function() {
+  $('#content').on("mouseleave", ".events > li:not(.no-results)", function() {
     google.maps.event.trigger(markers[$(this).index()], 'mouseout');
   });
 
   $('#body').scroll(showPageMarkers);
   $('#body').scroll(lockMap);
   $('#body').scroll(checkInfinite);
+  $('#body').scroll(scrollHeader);
   
   $(window).resize(showPageMarkers);
   $(window).resize(lockMap);
   $(window).resize(checkScroll);
   $(window).resize(checkInfinite);
+  $(window).resize(scrollHeader);
 
   // // oh god what a grody hack. TODO: find out why this happens and fixitfixitfixit
   // $('#content .main .inner .events, .venue.mode .events').on("click", ".linkto", loadModal);
   // $(".window .linkto").click(loadModal);
   var slideTime = 0;
-  $('.filter-text').click(function(event) {
+  $('.filter-toggle:not(.search) .filter-text').click(function(event) {
 
     var thisToggle = $(this).parents('.filter-toggle');
     
@@ -506,19 +544,29 @@ $(function() {
   advancedSlideTime = 200;
   filterSlideTime = 100;
   
-  marginHeight = $('.expandobar').height() + 10;
-  baseHeight = $('#header .one').height() + marginHeight;
-  filterHeight = baseHeight + $('.filterbar').height();
-  advancedHeight = baseHeight + $('.advancedbar').height();
+  marginHeight = 10;
+  var oneH = $('#header .one').outerHeight();
+  var streamH = $('.streambar').outerHeight();
+  var filterH = $('.filterbar').outerHeight();
+  var advancedH = $('.advancedbar').outerHeight();
 
+  baseHeight = oneH + streamH + marginHeight;
+  filterHeight = oneH + streamH + filterH + marginHeight;
+  advancedHeight = oneH + streamH + advancedH + marginHeight;
+
+  // console.log("oneH: " + oneH);
+  // console.log("streamH: " + streamH);
+  // console.log("filterH: " + filterH);
+  // console.log("advancedH: " + advancedH);
+  
   $('.expandobar-inner').click(function () {
     if($(this).hasClass('expanded')) {
       $('.advancedbar').slideUp(advancedSlideTime, function() {  $('.filterbar').slideDown(filterSlideTime) });
-      $('#content, #map-wrapper').animate(
+      $('#content, #map-wrapper, .subbar-wrapper').animate(
         { "margin-top" : baseHeight },
         advancedSlideTime, 
         function() { 
-          $('#content, #map-wrapper').animate(
+          $('#content, #map-wrapper, .subbar-wrapper').animate(
             {"margin-top" : filterHeight }, 
             filterSlideTime,
             checkScroll
@@ -529,11 +577,11 @@ $(function() {
       $(this).html("<span>&#9660;</span>show advanced options<span>&#9660;</span>");
     } else {
       $('.filterbar').slideUp(filterSlideTime, function() {  $('.advancedbar').slideDown(advancedSlideTime); });
-      $('#content, #map-wrapper').animate(
+      $('#content, #map-wrapper, .subbar-wrapper').animate(
         { "margin-top" : baseHeight },
         filterSlideTime, 
         function() { 
-          $('#content, #map-wrapper').animate(
+          $('#content, #map-wrapper, .subbar-wrapper').animate(
             {"margin-top" : advancedHeight }, 
             advancedSlideTime,
             checkScroll
@@ -574,9 +622,13 @@ $(function() {
   $('.mode .overlay .background').click(closeMode);
   
   $('.mode').on('click', '.new-channel-create', function() {
+    var isNewChannel = !($('.new-channel-name').val() === "");
+    var saveChannelId = $('.save-channel').val();
+    var saveChannelName = $('.save-channel').val();
 
-    filter.name = ($('.new-channel-name').val() === "") ? "New Channel" : $('.new-channel-name').val();
-    $.post('/channels/create', filter, function(channel) {
+    filter.name = isNewChannel ? $('.new-channel-name').val() : $('.save-channel :selected').text();
+
+    $.post(isNewChannel ? '/channels/create' : '/channels/update/' + saveChannelId, filter, function(channel) {
 
       channelFilters[channel.id] = {
           option_day: (channel.option_day === null) ? 1 : channel.option_day,
@@ -598,7 +650,16 @@ $(function() {
           name: (channel.name === null) ? '' : channel.name,
       };
 
-      $(".channels .lists").append("<li class='channel title' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</li>");
+      if(isNewChannel) {
+        $(".streambar .header").append("<span class='stream' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</span>");
+        streamSelector();
+
+        $(".channels .lists").append("<li class='channel title' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</li>");
+      }
+
+      $(".streambar .header .stream").removeClass('selected');
+      $('.streambar .header .stream[channel-id=' + channel.id + ']').addClass('selected');
+
       $('.channels .lists li').removeClass('selected');
       $('.channels .lists li[channel-id=' + channel.id + ']').addClass('selected');
       
@@ -637,14 +698,96 @@ $(function() {
     }
   });
 
-
   // if($("#map").length > 0)
   //   mapOffset = $("#map").offset().top;
 
   checkScroll();
 
+  updateViewFromFilter(false);
 
 });
+
+$(window).load(function() {
+  initialize();
+  streamSelector();
+});
+
+function streamSelector() {
+  $('#dk_container_stream-select').remove();
+  $('.streambar .stream.selector').remove();
+
+  var parentWidth = $('.streambar .header').width();
+  var sumWidth = 0;
+  var maxWidth = 0;
+  var overflowIndex = 0;
+  // dropdown creator
+  $('.streambar .header .stream').each(function(index) {
+    // console.log($(this).text() + ":");
+    // console.log("width: " + $(this).width());
+    // console.log("parentwidth: " + parentWidth);   
+    // console.log("");
+
+    sumWidth += $(this).outerWidth();
+    
+    if(sumWidth > parentWidth && overflowIndex === 0) {
+      overflowIndex = index;
+    }
+    
+    if(overflowIndex != 0) {
+      maxWidth = Math.max(maxWidth,$(this).outerWidth());
+    }
+  });
+
+  // console.log("overflowIndex: " + overflowIndex);
+
+  //if there are overflowed streams, make a stream dropdown
+  if(overflowIndex != 0) {
+    var streamSelect = $("<select name='stream-select' class='stream selector' style='position:absolute;top:0;right:0;'></select>");
+    sumWidth = 0;
+    $('.streambar .stream').each(function(index) {
+      sumWidth += $(this).outerWidth();
+      // console.log($(this).text() + ":");
+      // console.log("width: " + $(this).outerWidth());
+      // console.log("sumWidth: " + sumWidth);
+      // console.log("parentwidth: " + parentWidth);   
+      // console.log("");
+      if(index >= overflowIndex || (sumWidth + maxWidth + 24 > parentWidth)) {
+        streamSelect.append("<option value='" + $(this).attr("channel-id") + "'>" + $(this).text() + "</option>");
+        $(this).hide();
+      } else {
+        $(this).show();
+      }
+    });
+
+    $('.stream:nth-child(' + overflowIndex + ')').after(streamSelect);
+    $('.streambar .stream.selector').dropkick({
+      theme: "ptsans",
+      width: maxWidth,
+      change: function (value, label) {
+        $("#dk_container_stream-select").addClass('selected');
+        $(".streambar .stream").removeClass('selected');
+
+        var channelID = parseInt(value);
+        filter = $.extend(true, {}, channelFilters[channelID]);
+
+        updateViewFromFilter();
+      }
+    });
+  } else {
+    $('.streambar .stream').show();
+  }
+}
+
+function scrollHeader() {
+  var headerTop = -(Math.min($('#body').scrollTop(),$('#header .one').outerHeight()));
+  $('#header, #content #map-wrapper').css('top',headerTop+'px');
+}
+
+//user is "finished typing," do something
+function doneTyping () {
+    filter.search = $('.search-input').val();
+    pullEvents();
+}
 
 window.addEventListener("popstate", function(e) {
   //console.log("popstate");
@@ -747,7 +890,7 @@ function pullEvents() {
       infiniteScrolling = false;
     } else {
       $('#content .main .inner .events').html(jData.find("#combo_event_list").html());
-      $('.total-occurrences').html(jData.find("#combo_total_occurrences").html());
+      $('.num-occurrences-count').html(jData.find("#combo_total_occurrences").html());
       $('#header .filter-toggle.tags .filter-inner').html(jData.find("#combo_tag_list").html());
       $('#header .advancedbar .tags-list').html(jData.find("#combo_advanced_tag_list").html());
     }

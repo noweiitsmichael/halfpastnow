@@ -1,5 +1,13 @@
 <% content_for :body do %>
-	<h4>Create new channel with current filter settings</h4>
+	<h4>Save Filters</h4>
+	<div>Lorem deez ipsums, muthafucka</div>
+	<span>save existing channel</span>
+	<select class="save-channel" name="no-dropkick">
+		<% @channels.each do |channel| %>
+			<option value="<%= channel.id %>"><%= channel.name %></option>
+		<% end %>
+	</select><br/>
+	<span>or create new</span>
 	<input class="new-channel-name" type="text" placeholder="channel name" />
-	<button class="new-channel-create">Create</button>
+	<button class="new-channel-create">Save</button>
 <% end %>

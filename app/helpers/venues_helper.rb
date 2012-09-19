@@ -4,7 +4,7 @@ module VenuesHelper
   end
 
   def display_datetime(datetime)
-  	return datetime ? datetime.to_time.strftime("%a %B %-d, %Y at %-I:%M %P") : nil
+  	return datetime ? datetime.to_time.strftime("%a %b %-d, %Y at %-I:%M %P") : nil
   end
 
   def hidden_datetime(datetime)
