@@ -463,7 +463,7 @@ namespace :api do
 				end
 
 				raw_event = RawEvent.create({
-					:title => html_ent.decode(item.elements["title"].text),
+					:title => Sanitize.clean(html_ent.decode(item.elements["title"].text)),
 				    :description => Sanitize.clean(html_ent.decode(item.elements["description"].text)),
 				    :start => DateTime.parse(item.elements["begin_time"].text),
 				    :url => item.elements["link"].text,
