@@ -11,7 +11,8 @@ class Ability
        if user.has_role? :admin                        # old #  if user.admin?
          can :manage, :all
        else
-         can :read, Event
+         can :manage, :all #temporarily allow everything
+         #can :read, Event
        end
     #
     # The first argument to `can` is the action you are giving the user permission to do.

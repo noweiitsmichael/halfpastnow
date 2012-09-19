@@ -2,8 +2,10 @@
 	$(function() {
 		$("#add-embed").click(function() {
 			var embedIndex = ((typeof $('.embeds.field').last().attr("index") !== 'undefined') ? parseInt($('.embeds.field').last().attr("index")) + 1 : 0);
+			
 			var firstEmbed = $('.embeds.field').first();
 			$('.embeds.field').last().after(firstEmbed.clone());
+			$('.embeds.field').last().attr('index',embedIndex);
 			$('.embeds.field').last().find("input").attr('name','act[embeds_attributes][' + embedIndex + '][primary]');
 			$('.embeds.field').last().find("textarea").attr('name','act[embeds_attributes][' + embedIndex + '][source]');
 			$('.embeds.field').last().show();

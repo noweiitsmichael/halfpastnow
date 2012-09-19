@@ -2,8 +2,10 @@ class Act < ActiveRecord::Base
   has_and_belongs_to_many :events
   has_and_belongs_to_many :tags
   has_many :embeds, :dependent => :destroy
-  has_many :pictures, :as => :pictureable
-  # mount_uploader :picture, ImageUploader
+  has_many :pictures, :as => :pictureable, :dependent => :destroy
+  #attr_accessible :pictures_attributes, :pictures
+  attr_accessor :image, :remote_image_url
+  accepts_nested_attributes_for :pictures, :allow_destroy => true, :reject_if => proc {|attributes| attributes['image'].blank? && attributes['remote_image_url'].blank?  }
   # So we can assign to admin:
   belongs_to :user
 

@@ -113,19 +113,19 @@ namespace :api do
 				## Get location of each event and create if doesn't exist
 				if Venue.find_by_name(events['location']) == nil  # && (events['venue'] != nil || events['location'] != nil)
 					puts "No existing venue found for " + events['name'] + " @ " + events['location']
+
+					allowed_cities = ['Austin', 'Round Rock', 'Cedar Park', 'San Marcos', 'Georgetown', 'Pflugerville',
+								   'Kyle', 'Leander', 'Bastrop', 'Brushy Creek', 'Buda', 'Dripping Springs', 'Elgin',
+								   'Hutto', 'Jollyville', 'Lakeway', 'Lockhart', 'Luling', 'Shady Hollow', 'Taylor',
+								   'Wells Branch', 'Windemere', 'Marble Falls', 'Burnet', 'Johnson City', 'La Grange',
+								   'Killeen', 'Lampasas', 'Fredericksburg']
 					## Find venue by listed ID
 					if events['venue'] != nil
 						if events['venue']['id'] != nil #need this because 'venue' of nil will throw error when looking for 'id'
-							puts "Creating rawvenue with id:"
-							puts events['venue']['id']
 							fb_venue = @graph.get_object(events['venue']['id'])
-
-							if fb_venue['location']['city'] != ('Austin' || 'Round Rock' || 'Cedar Park' || 'San Marcos' || 'Georgetown' || 'Pflugerville' ||
-								   'Kyle' || 'Leander' || 'Bastrop' || 'Brushy Creek' || 'Buda' || 'Dripping Springs' || 'Elgin' ||
-								   'Hutto' || 'Jollyville' || 'Lakeway' || 'Lockhart' || 'Luling' || 'Shady Hollow' || 'Taylor' ||
-								   'Wells Branch' || 'Windemere' || 'Marble Falls' || 'Burnet' || 'Johnson City' || 'La Grange' ||
-								   'Killeen' || "Lampasas" || 'Fredericksburg')
-								puts "skipping because not in CSA..."
+							puts "Creating rawvenue with id " + events['venue']['id'] + " in " + fb_venue['location']['city']
+							if !allowed_cities.include?(fb_venue['location']['city'])
+								puts "skipping because " + fb_venue['location']['city'] + " is not in Greater Austin Area..."
 								next
 							end
 							raw_venue = RawVenue.create!(
@@ -149,12 +149,8 @@ namespace :api do
 						else
 							puts "Manually creating venue: " + events['location']
 
-							if events['venue']['city'] != ('Austin' || 'Round Rock' || 'Cedar Park' || 'San Marcos' || 'Georgetown' || 'Pflugerville' ||
-								   'Kyle' || 'Leander' || 'Bastrop' || 'Brushy Creek' || 'Buda' || 'Dripping Springs' || 'Elgin' ||
-								   'Hutto' || 'Jollyville' || 'Lakeway' || 'Lockhart' || 'Luling' || 'Shady Hollow' || 'Taylor' ||
-								   'Wells Branch' || 'Windemere' || 'Marble Falls' || 'Burnet' || 'Johnson City' || 'La Grange' ||
-								   'Killeen' || "Lampasas" || 'Fredericksburg')
-								puts "skipping because not in CSA..."
+							if  !allowed_cities.include?(events['venue']['city'])
+								puts "skipping because " + events['venue']['city'] + " is not in Greater Austin Area..."
 								next
 							end
 
@@ -467,7 +463,7 @@ namespace :api do
 				end
 
 				raw_event = RawEvent.create({
-					:title => html_ent.decode(item.elements["title"].text),
+					:title => Sanitize.clean(html_ent.decode(item.elements["title"].text)),
 				    :description => Sanitize.clean(html_ent.decode(item.elements["description"].text)),
 				    :start => DateTime.parse(item.elements["begin_time"].text),
 				    :url => item.elements["link"].text,

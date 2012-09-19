@@ -1,0 +1,49 @@
+<div class="picture_parts">
+<script type="text/javascript">
+	$(function() {
+		$(".add-pictures").click(function() {
+			var picIndex = ((typeof $('.pictures.field').last().attr("index") !== 'undefined') ? parseInt($('.pictures.field').last().attr("index")) + 1 : 0);
+			var firstpic = $('.pictures.field').first();
+			$('.pictures.field').last().after(firstpic.clone());
+			$('.pictures.field').last().attr('index',picIndex);
+			$('.pictures.field .upload_pic').last().attr('name','event[pictures_attributes][' + picIndex + '][image]');
+			$('.pictures.field .upload_pic').last().attr('id','event_pictures_attributes_' + picIndex + '_image');
+			$('.pictures.field .remote_url').last().attr('name','event[pictures_attributes][' + picIndex + '][remote_image_url]');
+			$('.pictures.field .remote_url').last().attr('id','event_pictures_attributes_' + picIndex + '_remote_image_url');
+			$('.pictures.field').last().show();
+			return false;
+		});
+
+		$('.picture_parts').on("click", ".remove-pic", function() {
+			var index = $(this).parents(".pictures.field").attr("index");
+			if(typeof index !== 'undefined') {
+				$(this).after("<input type='hidden' name='event[pictures_attributes][" + index + "][_destroy]' value='1' />");
+				$(this).parents(".pictures.field").hide();
+			} else {
+				$(this).parents(".pictures.field").remove();
+			}
+			return false;
+		});
+	});
+</script>
+<div class="field">
+	<a href="" class="add-pictures">Add Event Pictures</a>
+</div>
+<div class="pictures field" style="display:none;">
+	<label>
+		<div class="remove-pic">&#10799;</div>
+	</label>
+	<input class ="upload_pic" type="file" /> <br>
+	<label class="buffer">or input URL</label> <input class="remote_url" type="text" size="30"/>
+	
+</div>
+<label class="buffer"></label>
+
+<% event.pictures.each_with_index do |pic, index| %>
+<div class="pictures field gallery" index="<%= index %>">
+	<input type="hidden" name="event[pictures_attributes][<%= index %>][id]" value="<%= pic.id %>" />
+		<div href="" class="remove-pic">&#10799;</div>
+	<%= image_tag pic.image_url(:thumb).to_s %>
+</div>
+<% end %>
+</div>

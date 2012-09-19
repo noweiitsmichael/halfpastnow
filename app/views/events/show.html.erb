@@ -1,8 +1,13 @@
+
+
 <% content_for :title do %>
 	<%= render :partial => "layouts/bookmark", :locals => { :element => @occurrence } %>
-	<h1><%= @event.title %></h1><% end %>
+	<h1><%= @event.title %></h1>
+<% end %>
 
 <% content_for :body do %>
+<%= javascript_include_tag "galleria-1.2.8.min" %>
+
 	<ul class="sub-header">
 		<li><%= @occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
 		<% if @event.price %>
@@ -49,6 +54,41 @@
 				<div class="address two"><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></div>
 			</div>
 		</div>
+
+		<div id="galleria">
+			<% unless @event.venue.fb_picture.blank?%>
+				<img src="<%=@event.venue.fb_picture%>" data-title="<%= @event.venue.name %>" >
+			<% end %>
+            <% @event.venue.pictures.each do |pic| %>
+			    <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @event.venue.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+		    <% end %>
+
+		    <% unless @event.fb_picture.blank?%>
+				<img src="<%=@event.fb_picture%>" data-title="<%= @event.title %>" >
+			<% end %>
+		    <% @event.pictures.each do |pic| %>
+				<a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @event.title.first(25) %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+		    <% end %>
+
+		    <% @event.acts.each do |artists| %>
+			    <% unless artists.fb_picture.blank?%>
+					<img src="<%= artists.fb_picture %>" data-title="<%= artists.name %>" >
+				<% end %>
+		    	<% artists.pictures.each do |pic| %>
+		    		<a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= artists.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+		    	<% end %>
+		    	<br>
+		    <% end %>
+        </div>
+        <script>
+            Galleria.loadTheme('assets/galleria.classic.min.js');
+            $('#galleria').galleria({
+		        width:400,
+		        height:300,
+		        lightbox:true
+		    });
+        </script>
+
 		<% unless @occurrences.length == 0 && @recurrences.length == 0 %>
 		<div class="calendar block">
 			<h2>Other Times</h2>

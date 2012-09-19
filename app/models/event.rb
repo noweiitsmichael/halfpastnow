@@ -10,8 +10,10 @@ class Event < ActiveRecord::Base
   accepts_nested_attributes_for :occurrences, :allow_destroy => true
   accepts_nested_attributes_for :recurrences, :allow_destroy => true
   accepts_nested_attributes_for :venue
-  # has_many :pictures, :as => :pictureable
-  # mount_uploader :picture, ImageUploader
+  has_many :pictures, :as => :pictureable, :dependent => :destroy
+  attr_accessor :image, :remote_image_url
+  accepts_nested_attributes_for :pictures, :allow_destroy => true, :reject_if => proc {|attributes| attributes['image'].blank? && attributes['remote_image_url'].blank?  }
+  
   
   validates_presence_of :venue_id, :title
   # define_index do
