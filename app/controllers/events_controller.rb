@@ -101,7 +101,7 @@ def index
 
     unless(params[:day].to_s.empty?)
       event_days = params[:day].to_s.empty? ? nil : params[:day].collect { |day| day.to_i } * ','
-
+      pp event_days
       days_check = "#{event_days ? "occurrences.day_of_week IN (#{event_days})" : "TRUE" }"
     end
 

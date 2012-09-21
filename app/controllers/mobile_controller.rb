@@ -40,16 +40,88 @@ class MobileController < ApplicationController
 	  end
   end
 
+  def checkUser
+    email = params[:email]
+    password = params[:password]
+    @user=User.find_by_email(email.downcase)
+    if @user.nil?
+        respond_to do |format|
+          format.html # index.html.erb
+          format.json { render json: {:code=>"0" } }
+            # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+        end
+        return
+      else
+        if @user.valid_password?(params[:password])
+          respond_to do |format|
+          format.html # index.html.erb
+          format.json { render json: {:code=>"1" } }
+            # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+          end
+          return
+        else
+         respond_to do |format|
+          format.html # index.html.erb
+          format.json { render json: {:code=>"2" } }
+            # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+          end
+          return
+        end
+    end
+
+  end
+  def checkFB
+    email = params[:email]
+    @user=User.find_by_email(email)
+    if not @user.nil?
+        respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: {:code=>"1" } }
+          # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+        end
+        return
+      else
+        # Create user for FB
+        @user = User.new()
+        @user.email = params[:email]
+        @user.lastname = params[:lastname]
+        @user.firstname = params[:firstname]
+        @user.uid = params[:uid]
+        @user.fb_picture = params[:fb_picture]
+        @user.username = params[:username]
+        @user.password =  Devise.friendly_token[0,20]
+        @user.provider = "facebook"
+        @user.save!
+        respond_to do |format|
+          format.html # index.html.erb
+          format.json { render json: {:code=>"7" } }
+            # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+        end
+    end
+    
+
+  end
   def FBlogin
 
-    @tags = Tag.all
-    @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
-
-    # pp params
+    pp params
     # @amount = params[:amount] || 20
     # @offset = params[:offset] || 0
 
+    @tags = Tag.all
+    @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
     search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
+
+    # amount/offset
+    @amount = 20
+    unless(params[:amount].to_s.empty?)
+      @amount = params[:amount].to_i
+    end
+
+    @offset = 0
+    unless(params[:offset].to_s.empty?)
+      @offset = params[:offset].to_i
+    end
+
 
     # search
     unless(params[:search].to_s.empty?)
@@ -70,13 +142,11 @@ class MobileController < ApplicationController
     end_date_check = start_time_check = end_time_check = day_check = "TRUE"
     occurrence_start_time = "((EXTRACT(HOUR FROM occurrences.start) * 3600) + (EXTRACT(MINUTE FROM occurrences.start) * 60))"
 
-    unless(params[:start_days].to_s.empty? && params[:end_days].to_s.empty?)
-      event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
-      event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 365000 : params[:end_days].to_i + 1))
+    event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
+    event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_s == "INFINITY") ? 365000 : params[:end_days].to_i + 1))
 
-      start_date_check = "occurrences.start >= '#{event_start_date}'"
-      end_date_check = "occurrences.start <= '#{event_end_date}'"
-    end
+    start_date_check = "occurrences.start >= '#{event_start_date}'"
+    end_date_check = "occurrences.start <= '#{event_end_date}'"
 
     unless(params[:start_seconds].to_s.empty? && params[:end_seconds].to_s.empty?)
       event_start_time = params[:start_seconds].to_s.empty? ? 0 : params[:start_seconds].to_i
@@ -87,15 +157,16 @@ class MobileController < ApplicationController
     end
 
     unless(params[:day].to_s.empty?)
-      event_days = params[:day].to_s.empty? ? nil : params[:day].collect { |day| day.to_i } * ','
-
+      # event_days = params[:day].to_s.empty? ? nil : params[:day].collect { |day| day.to_i } * ','
+      event_days = params[:day].to_s.empty? ? nil : params[:day].to_s
+      pp event_days
       days_check = "#{event_days ? "occurrences.day_of_week IN (#{event_days})" : "TRUE" }"
     end
 
-    occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check} AND #{day_check}"
+    occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check} AND #{days_check}"
 
 
-	# location
+    # location
     if(params[:lat_min].to_s.empty? || params[:long_min].to_s.empty? || params[:lat_max].to_s.empty? || params[:long_max].to_s.empty?)
       @ZoomDelta = {
                11 => { :lat => 0.30250564 / 2, :long => 0.20942688 / 2 }, 
@@ -138,7 +209,8 @@ class MobileController < ApplicationController
 
     # tags
     unless(params[:included_tags].to_s.empty?)
-      tags_mush = params[:included_tags].collect { |str| str.to_i } * ','
+      tags_mush = params[:included_tags] * ','
+
       tag_include_match = "events.id IN (
                     SELECT event_id 
                       FROM events, tags, events_tags 
@@ -149,7 +221,7 @@ class MobileController < ApplicationController
     end
 
     unless(params[:excluded_tags].to_s.empty?)
-      tags_mush = params[:excluded_tags].collect { |str| str.to_i } * ','
+      tags_mush = params[:excluded_tags] * ','
       tag_exclude_match = "events.id NOT IN (
                     SELECT event_id 
                       FROM events, tags, events_tags 
@@ -169,15 +241,25 @@ class MobileController < ApplicationController
       high_price_match = "events.price <= #{high_price}"
     end
 
-    
+    order_by = "occurrences.start"
+    if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
+      # order by event score when sorting by popularity
+      order_by = "CASE events.views 
+                    WHEN 0 THEN 0
+                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+                  END DESC"
+    end
 
-    query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id
-        FROM occurrences 
-          INNER JOIN events ON occurrences.event_id = events.id
-          INNER JOIN venues ON events.venue_id = venues.id
-          LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
-          LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-        WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
+    # the big enchilada
+    query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            FROM occurrences 
+              INNER JOIN events ON occurrences.event_id = events.id
+              INNER JOIN venues ON events.venue_id = venues.id
+              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
+            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
+
+    puts query
     
     @ids = ActiveRecord::Base.connection.select_all(query)
 
@@ -185,25 +267,13 @@ class MobileController < ApplicationController
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
 
-    @occurrences = Occurrence.includes(:event => :tags, :event => :venue, :event => :occurrences, :event => :recurrences).find(@occurrence_ids)
-
-    
-    
-
-    if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
-      @occurrences = @occurrences.sort_by do |occurrence| 
-        occurrence.event.score
-      end.reverse
-    else
-      @occurrences = @occurrences.sort_by do |occurrence|
-        occurrence.start
-      end
-    end
+    @allOccurrences = Occurrence.includes(:event => :tags, :event => :venue, :event => :occurrences, :event => :recurrences).find(@occurrence_ids, :order => order_by)
+    @occurrences = @allOccurrences.drop(@offset).take(@amount)
 
     # generating tag list for occurrences
 
     @occurringTags = {}
-    @occurrences.each do |occurrence|
+    @allOccurrences.each do |occurrence|
       occurrence.event.tags.each do |tag|
         unless(tag.parent_tag_id)
           if(!@occurringTags[tag.id])
@@ -215,7 +285,7 @@ class MobileController < ApplicationController
       end
     end
 
-    @occurrences.each do |occurrence|
+    @allOccurrences.each do |occurrence|
       occurrence.event.tags.each do |tag|
         unless(!tag.parent_tag_id)
           if(!@occurringTags[tag.id])
@@ -255,9 +325,18 @@ class MobileController < ApplicationController
 
     @occurringTags = Hash[@occurringTags.sort_by { |id, tuple| id }]
 
-    
+    # pp @occurringTags
+    # puts ""
+    # puts "- - - - - - - - - - - - -"
+    # puts ""
+    # @occurringTags.each do |id,tuple|
+    #   pp tuple[:tag]
+    #   pp tuple[:tag].childTags
+    # end
+    # puts "_________________________"
+    # puts ""
 
-    if @event_ids.count > 0
+    if @event_ids.size > 0
       ActiveRecord::Base.connection.update("UPDATE events
         SET views = views + 1
         WHERE id IN (#{@event_ids * ','})")
@@ -266,33 +345,85 @@ class MobileController < ApplicationController
         SET views = views + 1
         WHERE id IN (#{@venue_ids * ','})")
     end
-
-    uid = params[:uid]
-    @user=User.find_by_uid(uid)
-   	@channels= Channel.where("user_id=?",@user.id)
+    # 2 cases - Non registerd user, registered user  
+    # case 1 - params[:email] empty - return all event only
+    # case 2 - params[:email] not empty - return bookmarks, customized channels, and all events
+    email = params[:email]
+    @user=User.find_by_email(email)
     @tagss = Tag.all.collect{|t| [t.id,t.name]}
     @tagss = Tag.all.sort_by do |tag|
         tag.id
-      end
-    @tags = @tagss.collect{|t| [t.id,t.name]}
-    @bookmarks= Bookmark.where("user_id=?",@user.id)
-	@occurrenceids= @user.bookmarked_events.collect(&:id)
-	@eventids = Occurrence.find(@occurrenceids).collect(&:event_id)
-	@events = Event.includes(:tags, :venue, :recurrences).find(@eventids) 
-
+    end
+    if not @user.nil?
+      @channels= Channel.where("user_id=?",@user.id)
+      
+      @tags = @tagss.collect{|t| [t.id,t.name]}
+      @bookmarks= Bookmark.where("user_id=?",@user.id)
+  	  @occurrenceids= @user.bookmarked_events.collect(&:id)
+  	  @eventids = Occurrence.find(@occurrenceids).collect(&:event_id)
+  	  @events = Event.includes(:tags, :venue, :recurrences).find(@eventids) 
+    end
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
           render :partial => "combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags }
         end
       end
-      # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
-      format.json { render json: {code:"3",tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
-     
+      # format.json { render json: {code:"3",tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
+      if (params[:email].to_s.empty?)
+        format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+      else 
+        format.json { render json: {code:"3",tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
+      end
     end
 
     
 
+  end
+  def showVenue
+    @venue = Venue.find(params[:id])
+    @venue.clicks += 1
+    @venue.save
+    @occurrences  = []
+    @recurrences = []
+    @occs = @venue.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now }  }.flatten.sort_by { |occ| occ.start }
+    @occs.each do |occ|
+      # check if occurrence is instance of a recurrence
+      if occ.recurrence_id.nil?
+        @occurrences << occ
+      else
+        if @recurrences.index(occ.recurrence).nil?
+          @recurrences << occ.recurrence
+        end
+      end
+    end
+    @eventidsocc = @occurrences.collect(&:event_id)
+    @eventidsrec = @recurrences.collect(&:event_id)
+    @occevents = Event.includes(:tags).find(@eventidsocc)
+    @recevents = Event.includes(:tags).find(@eventidsrec)
+
+    respond_to do |format|
+
+      format.html { render :layout => "mode" }
+      format.json { render json: { :occurrences => @occevents.to_json(:include => [:tags,:occurrences]), :recurrences => @recevents.to_json(:include => [:tags,:recurrences]), :venue => @venue.to_json } } 
+    end  
+  end
+
+  def bookmark
+    @userid = User.find_by_uid(params[:uid]).id
+    @occurrenceid = Occurrence.find_by_event_id(params[:event_id]).id
+    @bookmark = Bookmark.new
+    @bookmark.bookmarked_id = @occurrenceid
+    @bookmark.bookmarked_type = "Occurrence"
+    @bookmark.user_id = @userid
+    @bookmark.save!
+  end
+  
+  def unbookmark
+    @userid = User.find_by_uid(params[:uid]).id
+    @occurrenceid = Occurrence.find_by_event_id(params[:event_id]).id
+    @bookmark = Bookmark.find_by_bookmarked_id(@occurrenceid)
+    @bookmark.destroy
   end
 
 
