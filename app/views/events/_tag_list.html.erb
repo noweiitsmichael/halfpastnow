@@ -1,74 +1,28 @@
 <div class="tags-display">&nbsp;</div>
-<ul class="tags-menu">
-
+<ul class="tags-menu parents">
 	<% tagCounts.select{|tagCount| tagCount[:parent].nil? }.each do |parentTagCount| %>
 		<li>
 			<div class="tag-header <%= parentTagCount[:count] == 0 ? "no-results" : "" %>" tag-id="<%= parentTagCount[:id] %>">
-				<span class="include" tag-id="<%= parentTagCount[:id] %>" title="show events with this tag"><img src="/assets/include2.png" /></span>
-				<span class="exclude" tag-id="<%= parentTagCount[:id] %>" title="don't show events with this tag"><img src="/assets/exclude.png" /></span>
-				<span class="name"><%= parentTagCount[:name] %> <%= parentTagCount[:count] == 0 ? "" : "(#{parentTagCount[:count]})" %></span>
+				<span class="exclude icon-remove-circle" tag-id="<%= parentTagCount[:id] %>" title="don't show events with this tag"><!-- <img src="/assets/exclude.png" /> --></span>
+				<span class="include icon-ok-circle" tag-id="<%= parentTagCount[:id] %>" title="show events with this tag"><!-- <img src="/assets/include2.png" /> --></span>
+				<span class="name"><%= parentTagCount[:name] %> <em><%= parentTagCount[:count] == 0 ? "" : "[#{parentTagCount[:count]}]" %></em></span>
 				<% if parentTagCount[:children].size > 0 %>
-					<span class="toggler">&#x25B6;</span>
+					<span class="toggler icon-chevron-right"></span>
 				<% end %>
 			</div>
-			<!-- <ul class="child-tags-menu" tag-id="<%= parentTagCount[:id] %>">
-				
-			</ul> -->
 		</li>
 	<% end %>
-
-	<% if false %><!-- <% if (parentTags) %>
-		<% parentTags.each do |tag| %>
-			<% numResults = (occurringTags[tag.id]) ? occurringTags[tag.id][:count] : 0 %>
-			<li>
-				<div class="tag-header <%= numResults == 0 ? "no-results" : "" %>" tag-id="<%= tag.id %>">
-					<% if tag.childTags.count > 0 %>
-						<span class="toggler">&#x25B6;</span>
-					<% else %>
-						<span class="no-toggler">&nbsp;</span>
-					<% end %>
-					<span class="name"><%= tag.name %> <%= numResults == 0 ? "" : "(#{numResults})" %></span>
-					<span class="exclude" tag-id="<%= tag.id %>" title="don't show events with this tag"></span>
-					<span class="include" tag-id="<%= tag.id %>" title="show events with this tag"></span>
+</ul>
+<ul class="tags-menu children">
+	<% tagCounts.select{|tagCount| tagCount[:parent].nil? }.each do |parentTagCount| %>
+		<% parentTagCount[:children].each do |childTagCount| %>
+			<li parent-id="<%= parentTagCount[:id] %>">
+				<div class="tag-header <%= childTagCount[:count] == 0 ? "no-results" : "" %>" tag-id="<%= childTagCount[:id] %>">
+					<span class="exclude icon-remove-circle" tag-id="<%= childTagCount[:id] %>" title="don't show events with this tag"></span>
+					<span class="include icon-ok-circle" tag-id="<%= childTagCount[:id] %>" title="show events with this tag"></span>
+					<span class="name"><%= childTagCount[:name] %> <em><%= childTagCount[:count] == 0 ? "" : "[#{childTagCount[:count]}]" %></em></span>
 				</div>
-				<ul class="child-tags-menu" tag-id="<%= tag.id %>">
-					<% tag.childTags.each do |cTag| %>
-					<% numResults = (occurringTags[cTag.id]) ? occurringTags[cTag.id][:count] : 0 %>
-						<li class="<%= numResults == 0 ? "no-results" : "" %>">
-							<span class="name"><%= cTag.name %> <%= numResults == 0 ? "" : "(#{numResults})" %></span>
-							<span class="exclude" tag-id="<%= cTag.id %>" title="don't show events with this tag"></span>
-							<span class="include" tag-id="<%= cTag.id %>" title="show events with this tag"></span>
-						</li>
-					<% end %>
-				</ul>
 			</li>
 		<% end %>
-	<% else %>
-		<% occurringTags.select{|id,tuple| tuple[:tag].parent_tag_id.nil? }.each do |id, tuple| %>
-			<% numResults = tuple[:count] %>
-			<li>
-				<div class="tag-header <%= numResults == 0 ? "no-results" : "" %>" tag-id="<%= id %>">
-					<% if tuple[:tag].childTags.size > 0 %>
-						<span class="toggler">&#x25B6;</span>
-					<% else %>
-						<span class="no-toggler">&nbsp;</span>
-					<% end %>
-					<span class="name"><%= tuple[:tag].name %> <%= numResults == 0 ? "" : "(#{numResults})" %></span>
-					<span class="exclude" tag-id="<%= id %>" title="don't show events with this tag"></span>
-					<span class="include" tag-id="<%= id %>" title="show events with this tag"></span>
-				</div>
-				<ul class="child-tags-menu" tag-id="<%= id %>">
-					<% tuple[:tag].childTags.each do |cTag| %>
-					<% numResults = occurringTags[cTag.id][:count] %>
-						<li class="<%= numResults == 0 ? "no-results" : "" %>">
-							<span class="name"><%= cTag.name %> <%= numResults == 0 ? "" : "(#{numResults})" %></span>
-							<span class="exclude" tag-id="<%= cTag.id %>" title="don't show events with this tag"></span>
-							<span class="include" tag-id="<%= cTag.id %>" title="show events with this tag"></span>
-						</li>
-					<% end %>
-				</ul>
-			</li>
-		<% end %>
-		
-	<% end %> --><% end %>
+	<% end %>
 </ul>

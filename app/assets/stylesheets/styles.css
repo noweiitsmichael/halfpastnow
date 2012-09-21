@@ -1,5 +1,20 @@
 /* Global styles */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @font-face {
     font-family: PTSansNarrow;
     src: url('/assets/PTN57F-webfont.eot');
@@ -382,9 +397,9 @@ input::-webkit-input-placeholder
   }
 
 .tags-display {
-  font-size: 14px;
+  font-size: 17px;
   overflow: hidden;
-  font-family: PTSansNarrow;
+  font-family: PTSansNarrowBold;
   border: 1px solid #9D689D;
   margin-bottom:2px;
   padding: 2px 4px;
@@ -395,16 +410,14 @@ input::-webkit-input-placeholder
 
 .tags-display .tag {
   display:inline-block;
-  margin-right: 7px;
-  border-bottom: 1px dotted black;
-  line-height: 14px;
+  margin-right: 6px;
+  line-height: 24px;
   cursor: pointer;
 }
 
 .tags-display .tag.excluded:before {
-  content:'not';
+  content: '';
   font-variant: small-caps;
-  margin-right: 3px;
   font-size: 16px;
   font-family: PTSansNarrow;
 }
@@ -439,11 +452,12 @@ input::-webkit-input-placeholder
 .tags-menu li .no-results .name {
   font-family: PTSansNarrow;
   font-style: italic;
-  color:#807480;
+  color: #342B34;
+  padding-right: 3px;
 }
 
 .tags-menu li .no-results .toggler {
-  color: #AC92AC;
+  color: hsl(300, 0%, 51%);
 }
 
 .tags-menu li .tag-header.no-results {
@@ -466,7 +480,7 @@ input::-webkit-input-placeholder
   font-size: 12px;
   cursor: pointer;
   position: relative;
-  top: 3px;
+  top: 6px;
   color: #9D689D;
 }
 
@@ -474,7 +488,6 @@ input::-webkit-input-placeholder
   float:left;
   position: relative;
   top: 2px;
-  cursor: pointer;
   display: inline-block;
 }
 
@@ -495,25 +508,17 @@ input::-webkit-input-placeholder
 }
 
 .tags-menu li .include {
-  border: 1px solid #027000;
-  width:19px;
-  height:19px;
-  background-image:url("/assets/include.png");
 }
 
 .tags-menu li .include.selected {
-  background-image:url("/assets/include_select.png");
+    color: #009900;
 }
 
 .tags-menu li .exclude {
-  border: 1px solid #700000;
-  width:18px;
-  height:19px;
-  background-image:url("/assets/exclude.png");
 }
 
 .tags-menu li .exclude.selected {
-  background-image:url("/assets/exclude_select.png");
+    color: #990000;
 }
 
 .child-tags-menu {
@@ -942,7 +947,7 @@ input::-webkit-input-placeholder
   margin-left: -11px;
   margin-right: -3px;
   display: inline-block; zoom: 1; 
-  margin: 0px 0 0 0; cursor: pointer; border: 1px solid #bbb; overflow: visible; text-decoration: none; white-space: nowrap; color: #333; background-color: #ddd; background-image: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%), url(data:image/png;base64,iVBORw0KGg[...]QmCC);  background-clip: padding-box; 
+  margin: 0px 0 0 0;  border: 1px solid #bbb; overflow: visible; text-decoration: none; white-space: nowrap; color: #333; background-color: #ddd; background-image: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%), url(data:image/png;base64,iVBORw0KGg[...]QmCC);  background-clip: padding-box; 
   border-radius: 2px 2px 0 0; box-shadow: 0 1px 0 rgba(0, 0, 0, .3), 0 2px 2px -1px rgba(0, 0, 0, .5), 0 1px 0 rgba(255, 255, 255, .3) inset; text-shadow: 0 1px 0 rgba(255,255,255, .9);
 }
 
@@ -978,8 +983,8 @@ input::-webkit-input-placeholder
 #header .header .filter-toggle .text-inner em {
   font-style:normal;
   font-variant: small-caps;
-  font-size: 23px;
-  line-height: 20px;
+  font-size: 16px;
+  line-height: 12px;
   display: inline-block;
 }
 
@@ -1015,11 +1020,13 @@ input::-webkit-input-placeholder
 }
 
 #header .header .tags .filter-inner {
-  width:250px;
+  width: 400px;
 }
 
 #header .header .tags .filter-inner .tags-menu {
   height:auto;
+  float: left;
+  width: 198px;
 }
 
 #header .header .tags .filter-inner .tags-menu li {
@@ -1793,17 +1800,17 @@ color: #B51DBB;
 }
 
 .tags-menu li .tag-header.no-results {
-  opacity: .6;
   background: -webkit-linear-gradient(top, rgba(240,240,240,0) 0%, rgba(240,240,240,1) 100%);
+  opacity: .5;
 }
 
 .tags-menu li .no-results .name {
-    color: #342B34;
   
+    
+      
 }
 
 .tags-menu li .no-results .toggler {
-  color: #9D689D;
 }
 
 .tags-menu li .include, .tags-menu li .exclude {
@@ -1813,12 +1820,14 @@ color: #B51DBB;
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  width: 19px;
-  height: 19px;
   background-image: none;
-  margin: 2px 0 2px 2px;
+  margin: 1px 0 0 0;
   border-radius: 4px;
   overflow: hidden;
+  padding: 0;
+  width: 18px;
+  font-size: 20px;
+  color: rgba(0,0,0,.7);
 }
 
 .tags-menu li .name {
@@ -1836,14 +1845,16 @@ color: #B51DBB;
 }
 
 .tags-menu li .include {
-    border: 1px solid #006600;
   
-    margin-left: 5px;
+    
+      
+      margin-right: 2px;
 }
 
 .tags-menu li .exclude {
-    border: 1px solid #660000;
+    margin-left: 5px;
 
+    margin-right: 2px;
 }
 
 .tags-menu > li {
@@ -1870,7 +1881,6 @@ background-position: 0 11px;
 }
 
 iframe {
-<<<<<<< HEAD
   background: url(/assets/spinner.gif) no-repeat center center;
 }
 
@@ -2155,7 +2165,63 @@ html, body {
   font-size:24px;
 }
 
-=======
-  background: url("/assets/spinner.gif") no-repeat center center;
+.tag .icon-ok-sign, .tag .icon-remove-sign {
+  margin-right: 2px;
+  top: 1px;
+  display: inline-block;
+  position: relative;
 }
->>>>>>> 5b79a9b0eaa362e17021adb8dc0a1265c78440e4
+
+.tag .icon-ok-sign {
+  color:#009900;
+}
+
+.tag .icon-remove-sign {
+  color:#990000;
+}
+
+.tag.included {
+  color: #005500;
+}
+
+.tag.excluded {
+  color: #880000;
+}
+
+#header .header .tags .filter-inner .tags-menu.children li {
+  display:none;
+}
+
+.tags-menu li .toggler.icon-caret-right {
+  font-size:20px;
+  position: relative;
+  top: 1px;
+  left: 1px;
+}
+
+.tags-menu li .tag-header:hover {
+  background-image: -webkit-linear-gradient(top, hsla(296, 35%, 81%, 0) 0%, hsla(296, 35%, 81%, 1) 100%);
+}
+
+.tags-menu li .tag-header:hover .include {
+  color:#009900;
+}
+
+.tags-menu li .tag-header:hover .exclude {
+  color:#990000;
+}
+
+.tags-menu li .tag-header.no-results:hover {
+    background: -webkit-linear-gradient(top, hsla(0, 0%, 85%, 0) 0%, hsla(0, 0%, 85%, 1) 100%);
+
+}
+
+.tags-menu.parents li .tag-header {
+  cursor:pointer;
+}
+
+.tags-menu li .name em {
+  font-size: 13px;
+  font-style: normal;
+  color: hsl(300, 40%, 38%);
+}

@@ -241,7 +241,6 @@ def index
         }
         @tagCounts[parentTag.id][:children].push(@tagCounts[childTag.id])
       end
-       @tagCounts[parentTag.id][:children] = @tagCounts[parentTag.id][:children].sort_by { |tagCount| tagCount.count }.reverse
     end
 
     @allOccurrences.each do |occurrence|
@@ -250,11 +249,21 @@ def index
       end
     end
 
+    @parentTags.each do |parentTag|
+      @tagCounts[parentTag.id][:children] = @tagCounts[parentTag.id][:children].sort_by { |tagCount| tagCount[:count] }.reverse
+    end
+
     @tagCounts = @tagCounts.sort_by { |tagCount| tagCount ? tagCount[:count] : 0 }.compact.reverse
 
-    @tagCounts.each do |tc|
-      puts tc[:name] + " (" + tc[:count].to_s + ")"
-    end
+    # @tagCounts.each do |tc|
+    #   puts tc[:name] + " (" + tc[:count].to_s + ")"
+    # end
+
+    # @tagCounts.each do |tc|
+    #   tc[:children].each do |child|
+    #     puts child[:name] + " (" + child[:count].to_s + ")"
+    #   end
+    # end
 
     # @allOccurrences.each do |occurrence|
     #   occurrence.event.tags.each do |tag|
