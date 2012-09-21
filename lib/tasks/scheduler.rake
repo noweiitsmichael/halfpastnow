@@ -49,6 +49,21 @@ task :update_occurrences => :environment do
 	end
 end
 
+desc "bind parent tags to events"
+task :bind_parent_tags => :environment do
+	
+	Event.all.each do |event|
+		pp event
+		event.tags.each do |tag|
+			unless(tag.parentTag.nil? || event.tags.include?(tag.parentTag))
+				event.tags.push(tag.parentTag)
+				puts "pushed " + tag.parentTag.name
+			end
+		end
+		event.save
+	end
+end
+
 namespace :db do
 
 	desc "load in tags and raw venues"
