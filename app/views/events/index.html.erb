@@ -2,7 +2,7 @@
 
 <% content_for :code do %>
 	<% 	@now = DateTime.now.change(:hour => 0)
-		@channels = current_user ? current_user.channels : Channel.default_channels %>
+		@channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
 
 	<script type="text/javascript">
 		var geocoder;
@@ -10,6 +10,27 @@
 		var markers = [];
 		var tags = {};
 		var channelFilters = {};
+
+		var filter = {
+		  option_day: <%= params[:option_day] || 1 %>,
+		  start_days: <%= params[:start_days] || 0 %>,
+		  end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days] || 0 %>,
+		  start_seconds: <%= params[:start_seconds] || "''" %>,
+		  end_seconds: <%= params[:end_seconds] || "''" %>,
+		  day: [0,1,2,3,4,5,6],
+		  low_price: <%= params[:low_price] || "''" %>,
+		  high_price: <%= params[:high_price] || "''" %>,
+		  included_tags: <%= params[:included_tags] ? "'" + params[:included_tags] + "'.split(',')" : "[]" %>,
+		  excluded_tags: <%= params[:excluded_tags] ? "'" + params[:excluded_tags] + "'.split(',')" : "[]" %>,
+		  lat_min: "",
+		  lat_max: "",
+		  long_min: "",
+		  long_max: "",
+		  offset: 0,
+		  search: "",
+		  sort: <%= params[:sort] || 0 %>,
+		  name: "<%= params[:name] || "" %>"
+		};
 
 		function initialize() {
 			console.log("initialize");
@@ -40,12 +61,14 @@
 			google.maps.event.addListener(map, 'idle', boundsChanged);
 		}
 
+
+
 		$(function() {
 			<% @channels.each do |channel| %>
 				channelFilters[<%= channel.id %>] = {
-				  option_day: <%= channel.option_day || 0 %>,
-				  start_days: <%= channel.start_days || "''" %>,
-				  end_days: <%= channel.end_days || "''" %>,
+				  option_day: <%= channel.option_day || 1 %>,
+				  start_days: <%= channel.start_days || 0 %>,
+				  end_days: <%= channel.end_days || 0 %>,
 				  start_seconds: <%= channel.start_seconds || "''" %>,
 				  end_seconds: <%= channel.end_seconds || "''" %>,
 				  // day: [0,1,2,3,4,5,6],
@@ -63,27 +86,6 @@
 				  name: "<%= channel.name || "" %>"
 				};
 			<% end %>
-
-			// var event_id = <%= params[:event_id] || 0 %>;
-			// var venue_id = <%= params[:venue_id] || 0 %>;
-			// var act_id = <%= params[:act_id] || 0 %>;
-
-			// if(<%= params.key?(:event_id) ? "true" : "false" %>) {
-			// 	console.log("event modal load");
-			// 	modal(spawn(things["event"], {id: event_id}));
-			// }
-			// if(<%= params.key?(:venue_id) ? "true" : "false" %>) {
-			// 	console.log("venue modal load");
-			// 	modal(spawn(things["venue"], {id: venue_id}));      
-			// }
-			// if(<%= params.key?(:act_id) ? "true" : "false" %>) {
-			// 	console.log("act modal load");
-			// 	modal(spawn(things["act"], {id: act_id}));      
-			// }
-			// if(<%= params.key?(:shunt) ? "true" : "false" %>) {
-			// 	console.log("shunt modal load");
-			// 	modal(spawn(things["shunt"],{}));      
-			// }
 
 			// filter.search = "<%= params[:search] %>";
 
@@ -113,54 +115,150 @@
 		</div>
 	</div> -->
 	<% end %>
-	<div class="filterbar">
-		<div class="stay-on-target">
-			<div class="header">
-				<span class="filter-toggle channels">
-					<span class="filter-text">
-						<span class="text">
-							<span class="text-inner">All Events</span>
-							<span class="toggler">&#9662;</span>
+	<div class="bar-wrapper">
+		<div class="streambar">
+			<div class="stay-on-target">
+				<div class="header">
+					<!-- <span class="stream-save">Save Filters&nbsp;&nbsp;<span class="icon icon-circle-arrow-down"></span></span> -->
+					<span class="stream selected">All Events</span>
+					<% @channels.each do |channel| %>
+						<span class="stream" channel-id="<%= channel.id %>"><%= channel.name %></span>
+					<% end %>
+				</div>
+			</div>
+		</div>
+		<div class="filterbar">
+			<div class="stay-on-target">
+				<div class="header">
+					<div class="toggle-wrapper">
+						<!-- <span class="filter-toggle channels">
+							<span class="filter-text">
+								<span class="text">
+									<span class="text-inner">All Events</span>
+									<span class="toggler">&#9662;</span>
+								</span>
+								<span class="channels-arrow"></span>
+							</span>
+							<div class="filter-dropdown">
+								<div class="filter-inner">
+									<ul class="lists">
+										<li class="title selected">All Events</li>
+										<% @channels.each do |channel| %>
+											<li class="channel title" channel-id="<%= channel.id %>"><%= channel.name %></li>
+										<% end %>
+									</ul>
+								</div>
+							</div>
+						</span> -->
+						<span class="filter-toggle tags">
+							<span class="filter-text">
+								<span class="pre-text"><span class="icon icon-tags"></span>Tags:</span>
+								<span class="text">
+									<span class="text-inner">Any Tag</span>
+								</span>
+							</span>
+							<div class="filter-dropdown">
+								<div class="filter-inner">
+									<%= render :partial => "tag_list", :locals => { :tagCounts => @tagCounts, :parentTags => @parentTags } %>
+								</div>
+							</div>
 						</span>
-						<span class="channels-arrow"></span>
-					</span>
-					<div class="filter-dropdown">
-						<div class="filter-inner">
-							<ul class="lists">
-								<li class="title selected">All Events</li>
-								<!-- <li class="title no-select">Channels</li> -->
-								<% @channels.each do |channel| %>
-									<li class="channel title" channel-id="<%= channel.id %>"><%= channel.name %></li>
-								<% end %>
-							</ul>
+						<span class="filter-toggle date">
+							<span class="filter-text">
+								<span class="pre-text"><span class="icon icon-time"></span>Time:</span>
+								<span class="text">
+									<span class="text-inner">Today</span>
+								</span>
+							</span>
+							<div class="filter-dropdown">
+								<div class="filter-inner">
+									<div class="filter date">
+										<div class="filters">
+											<span class="any">any day</span><span class="today selected">today</span><span class="tomorrow">tomorrow</span><span class="custom">specific date</span>
+										</div>
+										<div>
+											<div class="custom-select"><div class="any time-range"></div><div class="any time-display">any time</div></div>
+											<div class="custom-select selected"><div class="today time-range"></div><div class="today time-display">any time</div></div>
+											<div class="custom-select"><div class="tomorrow time-range"></div><div class="tomorrow time-display">any time</div></div>
+											<div class="custom-select"><div class="custom time-range"></div><div class="custom time-display">any time</div><div class="custom date-range"></div><div class="custom date-display">today</div></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</span>
+						<span class="filter-toggle price">
+							<span class="filter-text">
+								<span class="pre-text"><span class="icon icon-money"></span>Cost:</span> 
+								<span class="text">
+									<span class="text-inner">Any Price</span>
+								</span>
+							</span>
+							<div class="filter-dropdown">
+								<div class="filter-inner">
+									<div class="price-range"></div><div class="price-display">any price</div>
+								</div>
+							</div>
+						</span>
+						<span class="filter-toggle search">
+							<span class="filter-text">
+								<span class="pre-text"><span class="icon icon-search"></span></span>
+								<span class="text">
+									<span class="text-inner"><input type="text" class="search-input" /></span>
+								</span>
+							</span>
+						</span>
+						<span class="filter-action save" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>
+							<span class="icon icon-caret-left"></span>Save
+						</span>
+						<!-- <span class="filter-toggle sort">
+							<span class="filter-text">
+								sorted by
+								<span class="text">
+									<span class="text-inner">Popularity</span>
+								</span>
+							</span>
+							<div class="filter-dropdown">
+								<div class="filter-inner">
+									<ul class="sorts">
+										<li class="title selected">Popularity</li>
+										<li class="title">Date</li>
+									</ul>
+								</div>
+							</div>
+						</span> -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="advancedbar">
+			<div class="stay-on-target">
+				<!-- <div class="col one">
+					<div class="channels">
+						<ul class="lists">
+							<li class="title selected">All Events</li>
+							<% @channels.each do |channel| %>
+								<li class="channel title" channel-id="<%= channel.id %>"><%= channel.name %></li>
+							<% end %>
+						</ul>
+						<div class="actions">
+							<span class="new" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>create custom channel</span>
+							<span class="save" <%= current_user ? "" : "linkto='shunt'" %>>save custom channel</span>
 						</div>
 					</div>
-				</span>
-				
-				<span class="filter-toggle tags">
-					<span class="filter-text">
-						tagged as
-						<span class="text">
-							<span class="text-inner">Any Tag</span>
-							<span class="toggler">&#9662;</span>
-						</span>
-					</span>
-					<div class="filter-dropdown">
-						<div class="filter-inner">
-							<%= render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => nil } %>
+				</div> -->
+				<div class="list-mods">
+					<div class="col two">
+						<div class="tags block">
+							<h3>Tags</h3>
+							<div class="tags-list">
+								<%# render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => @parentTags } %>
+								<%= render :partial => "tag_list", :locals => { :tagCounts => @tagCounts, :parentTags => @parentTags } %>
+							</div>
 						</div>
 					</div>
-				</span>
-				<span class="filter-toggle date">
-					<span class="filter-text">
-						<span class="pre-text">during </span>
-						<span class="text">
-							<span class="text-inner">Today</span>
-							<span class="toggler">&#9662;</span>
-						</span>
-					</span>
-					<div class="filter-dropdown">
-						<div class="filter-inner">
+					<div class="col three">
+						<div class="date block">
+							<h3>Date</h3>
 							<div class="filter date">
 								<div class="filters">
 									<span class="any">any day</span><span class="today selected">today</span><span class="tomorrow">tomorrow</span><span class="custom">specific date</span>
@@ -173,113 +271,34 @@
 								</div>
 							</div>
 						</div>
-					</div>
-				</span>
-				<span class="filter-toggle price">
-					<span class="filter-text">
-						for 
-						<span class="text">
-							<span class="text-inner">Any Price</span>
-							<span class="toggler">&#9662;</span>
-						</span>
-					</span>
-					<div class="filter-dropdown">
-						<div class="filter-inner">
+						<div class="price block">
+							<h3>Price</h3>
 							<div class="price-range"></div><div class="price-display">any price</div>
 						</div>
 					</div>
-				</span>
-				<span class="filter-toggle sort">
-					<span class="filter-text">
-						sorted by
-						<span class="text">
-							<span class="text-inner">Popularity</span>
-							<span class="toggler">&#9662;</span>
-						</span>
-					</span>
-					<div class="filter-dropdown">
-						<div class="filter-inner">
+					<div class="col four">
+						<!-- 
+						<div class="search block">
+							<h3>Search Terms</h3>
+							<input type='text' />
+						</div>-->
+						<div class="sort block">
+							<h3>Sorted by</h3>
 							<ul class="sorts">
 								<li class="title selected">Popularity</li>
 								<li class="title">Date</li>
 							</ul>
 						</div>
 					</div>
-				</span>
-			</div>
-		</div>
-	</div>
-	<div class="advancedbar">
-		<div class="stay-on-target">
-			<div class="col one">
-				<div class="channels">
-					<ul class="lists">
-						<li class="title selected">All Events</li>
-						<!-- <li class="title no-select">Channels</li> -->
-						<% @channels.each do |channel| %>
-							<li class="channel title" channel-id="<%= channel.id %>"><%= channel.name %></li>
-						<% end %>
-						<% if false %>
-							<!-- 
-							<li class="title no-select">Bookmarks</li>
-							<li>Bookmarked Events</li>
-							<li>Bookmarked Venues</li>
-							<li>Bookmarked Performers</li> -->
-						<% end %>
-					</ul>
-					<div class="actions">
-						<span class="new" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>create custom channel</span>
-						<span class="save" <%= current_user ? "" : "linkto='shunt'" %>>save custom channel</span>
-					</div>
-				</div>
-			</div>
-			<div class="list-mods">
-				<div class="col two">
-					<div class="tags block">
-						<h3>Tags</h3>
-						<div class="tags-list">
-							<%= render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => @parentTags } %>
-						</div>
-					</div>
-				</div>
-				<div class="col three">
-					<div class="date block">
-						<h3>Date</h3>
-						<div class="filter date">
-							<div class="filters">
-								<span class="any">any day</span><span class="today selected">today</span><span class="tomorrow">tomorrow</span><span class="custom">specific date</span>
-							</div>
-							<div>
-								<div class="custom-select"><div class="any time-range"></div><div class="any time-display">any time</div></div>
-								<div class="custom-select selected"><div class="today time-range"></div><div class="today time-display">any time</div></div>
-								<div class="custom-select"><div class="tomorrow time-range"></div><div class="tomorrow time-display">any time</div></div>
-								<div class="custom-select"><div class="custom time-range"></div><div class="custom time-display">any time</div><div class="custom date-range"></div><div class="custom date-display">today</div></div>
-							</div>
-						</div>
-					</div>
-					<div class="price block">
-						<h3>Price</h3>
-						<div class="price-range"></div><div class="price-display">any price</div>
-					</div>
-				</div>
-				<div class="col four">
-					<!-- 
-					<div class="search block">
-						<h3>Search Terms</h3>
-						<input type='text' />
-					</div>-->
-					<div class="sort block">
-						<h3>Sorted by</h3>
-						<ul class="sorts">
-							<li class="title selected">Popularity</li>
-							<li class="title">Date</li>
-						</ul>
-					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="expandobar">
+		<div class="subbar">
+			<div class="num-occurrences">Showing <span class="num-occurrences-count"><%= @allOccurrences.size %></span> events</div>
+			<div class="sort-by">Sort by: <span class="sort" sort-type="popularity">popularity</span> | <span class="sort" sort-type="date">date</span></div>
+		</div>
 		<div class="expandobar-inner">
 			<span>&#9660;</span>show advanced options<span>&#9660;</span>
 		</div>
@@ -287,15 +306,10 @@
 <% end %>
 
 <% content_for :body do %>
-	<div id="content"><!-- 
-		<div id="map-signifier">
-			<div id="map-signified"> -->
-			<div id="map-wrapper">
-				<div id="map"></div>
-			</div>
-				<!-- 
-			</div>
-		</div> -->
+	<div id="content">
+		<div id="map-wrapper">
+			<div id="map"></div>
+		</div>
 		<div class="main">
 			<div class="inner">
 				<div style="display:none;" class="total-occurrences"><%= @allOccurrences.size %></div>

@@ -1,0 +1,26 @@
+<li linkto="event" link-id="<%= occurrence.id %>">
+	<div class="index <%= ((index + 1) >= 100) ? "over100" : ""%>"><%= index ? (index + 1) : "" %></div>
+	<div class="event-inner">
+		<div class="title">
+			<%= occurrence.event.title %><span class="venue-name" link-id="<%= occurrence.event.venue.id %>" linkto="venue">at <%= occurrence.event.venue.name %></span>
+		</div>
+		<div class="details">
+			<span class="datetime"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></span>
+			<% if occurrence.event.tags.count > 0 %>
+				tagged as
+				<% occurrence.event.tags.each do |tag| %>
+					<span class="tag"><%= tag.name %></span>
+				<% end %>
+			<% end %>
+		</div>
+		<div class="description"><span><strong class="price"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span><%= strip_tags(occurrence.event.description) %></span></div>
+		<div style="display:none;">
+			<div class="latitude"><%= occurrence.event.venue.latitude %></div>
+			<div class="longitude"><%= occurrence.event.venue.longitude %></div>
+		</div>
+		<div class="marker-caching">
+			<img src="/assets/markers/marker_<%= (index + 1) % 100 %>.png" />
+			<img src="/assets/markers/marker_hover_<%= (index + 1) % 100 %>.png" />
+		</div>
+	</div>
+</li>

@@ -1,0 +1,66 @@
+<p id="notice"><%= notice %></p>
+
+<h2><b><%= @user.firstname.titleize %> <%= @user.lastname.titleize %>
+<div id="city-name">Austin, TX</div></b></h2>
+<% if @user.profilepic.blank? == false %>
+  <%= image_tag @user.profilepic_url(:thumb).to_s %>
+<% elsif @user.fb_picture.blank? == false %>
+  <%= image_tag @user.fb_picture %>
+<% else %>
+  <%= image_tag("buddy.jpg") %>
+<% end %>
+
+<div id="city-name">Member Since <%= @user.created_at.strftime("%B") %> <%= @user.created_at.strftime("%Y") %></div>
+
+<table>
+<h2>Bookmarked Venues</h2>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Address</th>
+  </tr>
+  <% @user.bookmarked_venues.each do |b| %>
+  <tr>
+    <td><%=b.id %></td>
+    <td><%=b.name %></td>
+    <td><%=b.address%></td>
+  </tr>
+  <% end %>
+</table>
+
+<table>
+<h2>Bookmarked Events</h2>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Date</th>
+  </tr>
+  <% @user.bookmarked_events.each do |b| %>
+  <tr>
+    <td><%=b.id %></td>
+    <td><%=b.event.title %></td>
+    <td><%=b.event.price%></td>
+  </tr>
+  <% end %>
+</table>
+<br><br><br>
+
+<table>
+<h2>Attended Events</h2>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Date</th>
+  </tr>
+  <% @user.histories.each do |h| %>
+  <tr>
+    <td><%=h.id %></td>
+    <td><%=h.occurrence.event.title %></td>
+    <td><%=h.occurrence_id%></td>
+  </tr>
+  <% end %>
+</table>
+
+<% if can? :update, @user %>
+<%= link_to 'Edit', edit_user_registration_path %> 
+<% end %>

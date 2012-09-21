@@ -1,7 +1,52 @@
-<p id="notice"><%= notice %></p>
+<script type="text/javascript">
+  var jcrop_api;
 
-<h2><b><%= @user.firstname.titleize %> <%= @user.lastname.titleize %>
-<div id="city-name">Austin, TX</div></b></h2>
+  $(function() {
+    $('#profile-nav li').click(function() {
+      $('#profile-nav li').removeClass('selected');
+      $(this).addClass('selected');
+      $('#profile-menu > div').removeClass('selected');
+      $('#profile-menu > div:nth-child(' + ($(this).index() + 1) + ')').addClass('selected');
+    });
+  });
+
+  $(document).ready(function() {
+
+    // Store variables
+    var accordion_head = $('.accordion > li > a'),
+      accordion_body = $('.accordion li > .sub-menu');
+
+    // Open the first tab on load
+    accordion_head.first().addClass('active').next().slideDown('normal');
+
+    // Click function
+    accordion_head.on('click', function(event) {
+
+      // Disable header links
+      event.preventDefault();
+
+      // Show and hide the tabs on click
+      if ($(this).attr('class') != 'active'){
+        accordion_body.slideUp('normal');
+        $(this).next().stop(true,true).slideToggle('normal');
+        accordion_head.removeClass('active');
+        $(this).addClass('active');
+      }
+    });
+  });
+
+</script>
+
+<% content_for (:head) do %>
+<%= stylesheet_link_tag "accordionmenu" %>
+<%= stylesheet_link_tag "devise" %>
+
+<% end %>
+
+<div id="profile-nav">
+<h2><i>my hpn. </i></h2>
+
+<br>
 <% if @user.profilepic.blank? == false %>
   <%= image_tag @user.profilepic_url(:thumb).to_s %>
 <% elsif @user.fb_picture.blank? == false %>
@@ -10,57 +55,138 @@
   <%= image_tag("buddy.jpg") %>
 <% end %>
 
-<div id="city-name">Member Since <%= @user.created_at.strftime("%B") %> <%= @user.created_at.strftime("%Y") %></div>
+<h2><b><i><%= @user.firstname.titleize %> <%= @user.lastname.titleize %></i></h2>
+<div id="location"><%= image_tag("location-icon.png") %>  Austin, TX</div></b>
+<br><br>
 
-<table>
-<h2>Bookmarked Venues</h2>
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Address</th>
-  </tr>
-  <% @user.bookmarked_venues.each do |b| %>
-  <tr>
-    <td><%=b.id %></td>
-    <td><%=b.name %></td>
-    <td><%=b.address%></td>
-  </tr>
-  <% end %>
-</table>
 
-<table>
-<h2>Bookmarked Events</h2>
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Date</th>
-  </tr>
-  <% @user.bookmarked_events.each do |b| %>
-  <tr>
-    <td><%=b.id %></td>
-    <td><%=b.event.title %></td>
-    <td><%=b.event.price%></td>
-  </tr>
-  <% end %>
-</table>
-<br><br><br>
+  <ul class="accordion">
+    <li id="one" class="channels selected">
+      <a href="#one">My Channels<span>495</span></a>
+      <ul class="sub-menu">
+        <li><a href="#"><em>01</em>Nada<span>42</span></a></li>
+      </ul>
+    </li>
+    
+    <li id="two" class="events">
+      <a href="#two">Bookmarked Events<span>26</span></a>
+      <ul class="sub-menu">
+        <% count = 0 %>
+        <% @user.bookmarked_events.each do |b| %>
+        <% count = count + 1 %>
+        <li>
+          <a href="#">
+          <em><%= count %></em>
+          <% if b.event.title.length > 35 %>
+            <%= b.event.title.first(35) %>...
+          <% else %>
+            <%= b.event.title %>
+          <% end %>
+          </a>
+        </li>
+        <% end %>
+      </ul>
+    </li>
+    
+    <li id="three" class="artists">
+      <a href="#three">Bookmarked Artists<span>58</span></a>
+      <ul class="sub-menu">
+        <% count = 0 %>
+        <% @user.bookmarked_acts.each do |b| %>
+        <% count = count + 1 %>
+        <li>
+          <a href="#">
+          <em><%= count %></em>
+          <% if b.name.length > 30 %>
+            <%= b.name.first(30) %>...
+          <% else %>
+            <%= b.name %>
+          <% end %>
+          <span><%=b.events.size()%></span>
+          </a>
+        </li>
+        <% end %>
+      </ul>
+    </li>
 
-<table>
-<h2>Attended Events</h2>
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Date</th>
-  </tr>
-  <% @user.histories.each do |h| %>
-  <tr>
-    <td><%=h.id %></td>
-    <td><%=h.occurrence.event.title %></td>
-    <td><%=h.occurrence_id%></td>
-  </tr>
-  <% end %>
-</table>
+    <li id="four" class="venues">
+      <a href="#two">Bookmarked Venues<span>26</span></a>
+      <ul class="sub-menu">
+        <% count = 0 %>
+        <% @user.bookmarked_venues.each do |b| %>
+        <% count = count + 1 %>
+        <li>
+          <a href="#">
+          <em><%= count %></em>
+          <% if b.name.length > 30 %>
+            <%= b.name.first(30) %>...
+          <% else %>
+            <%= b.name %>
+          <% end %>
+          <span><%=b.events.size()%></span>
+          </a>
+        </li>
+        <% end %>
+      </ul>
+    </li>
+  </ul>
+</div>
 
-<% if can? :update, @user %>
-<%= link_to 'Edit', edit_user_registration_path %> 
-<% end %>
+
+<div id="profile-menu">
+
+  <div class="channels selected">
+
+    oh hai
+  </div>
+  <div class="events" style="margin-top: -96px" >
+    <div id="content">
+    <div class="main">
+      <div class="inner">
+        <ul class="events">
+          <% @occurrences = @user.bookmarked_events %>
+          <%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
+        </ul>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="artists" style="margin-top: -96px">
+    <div id="content">
+      <div class="main">
+        <div class="inner">
+          <ul class="events">
+            <% @occurrences = [] %>
+            <% @user.bookmarked_acts.each do |a| %> 
+              <% a.events.each do |e| %>
+                <% e.occurrences.each do |o| %>
+                  <% @occurrences << o %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="venues" style="margin-top: -96px" >
+    <div id="content">
+      <div class="main">
+        <div class="inner">
+          <ul class="events">
+            <% @occurrences = [] %>
+            <% @user.bookmarked_venues.each do |a| %> 
+              <% a.events.each do |e| %>
+                <% e.occurrences.each do |o| %>
+                  <% @occurrences << o %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

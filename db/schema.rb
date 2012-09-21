@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120909201330) do
+ActiveRecord::Schema.define(:version => 20120914204939) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -98,7 +98,9 @@ ActiveRecord::Schema.define(:version => 20120909201330) do
     t.integer  "views",       :default => 0
     t.integer  "user_id"
     t.boolean  "suggested"
-    t.string   "fb_picture"
+    t.text     "fb_picture"
+    t.text     "url"
+    t.text     "cover_image"
   end
 
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
@@ -144,20 +146,11 @@ ActiveRecord::Schema.define(:version => 20120909201330) do
   add_index "occurrences", ["recurrence_id"], :name => "index_occurrences_on_recurrence_id"
 
   create_table "pictures", :force => true do |t|
-
-    t.integer  "eventID"
-    t.integer  "venueId"
-    t.text     "comment"
-    t.float    "longitude"
-    t.float    "altitude"
-    t.string   "url"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-
-    t.string   "picture"
-    t.integer  "picture_id"
-    t.string   "picture_type"
- 
+    t.string   "image"
+    t.integer  "pictureable_id"
+    t.string   "pictureable_type"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "raw_events", :force => true do |t|
@@ -172,7 +165,7 @@ ActiveRecord::Schema.define(:version => 20120909201330) do
     t.string   "venue_city"
     t.string   "venue_state"
     t.string   "venue_zip"
-    t.string   "url"
+    t.text     "url"
     t.string   "raw_id"
     t.string   "from"
     t.datetime "created_at",    :null => false
@@ -180,7 +173,7 @@ ActiveRecord::Schema.define(:version => 20120909201330) do
     t.boolean  "deleted"
     t.boolean  "submitted"
     t.integer  "raw_venue_id"
-    t.string   "fb_picture"
+    t.text     "fb_picture"
   end
 
   add_index "raw_events", ["raw_venue_id"], :name => "index_raw_events_on_raw_venue_id"
@@ -204,11 +197,11 @@ ActiveRecord::Schema.define(:version => 20120909201330) do
     t.string   "raw_id"
     t.string   "from"
     t.integer  "venue_id"
-    t.string   "url"
+    t.text     "url"
     t.text     "description"
     t.string   "events_url"
     t.datetime "last_visited"
-    t.string   "fb_picture"
+    t.text     "fb_picture"
   end
 
   add_index "raw_venues", ["venue_id"], :name => "index_raw_venues_on_venue_id"
@@ -240,15 +233,6 @@ ActiveRecord::Schema.define(:version => 20120909201330) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
-
-  create_table "students", :force => true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-    t.string   "videoname"
-    t.string   "videonametest"
-  end
 
   create_table "tags", :force => true do |t|
     t.string   "name"
@@ -283,7 +267,6 @@ ActiveRecord::Schema.define(:version => 20120909201330) do
     t.string   "lastname"
     t.string   "username"
     t.string   "profilepic"
-    t.string   "authentication_token"
     t.string   "provider"
     t.string   "uid"
     t.string   "fb_access_token"
@@ -313,24 +296,13 @@ ActiveRecord::Schema.define(:version => 20120909201330) do
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
     t.string   "phonenumber"
-    t.string   "url"
+    t.text     "url"
     t.integer  "clicks",      :default => 0
     t.integer  "views",       :default => 0
     t.string   "events_url"
     t.boolean  "suggested"
-    t.string   "fb_picture"
+    t.text     "fb_picture"
     t.string   "admin_owner"
-  end
-
-  create_table "videos", :force => true do |t|
-    t.integer  "eventID"
-    t.integer  "venueId"
-    t.text     "comment"
-    t.float    "longitude"
-    t.float    "altitude"
-    t.string   "url"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
   end
 
 end

@@ -1,10 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<%= javascript_include_tag "application" %>
+	<%= javascript_include_tag "dropkick" %>
+	<%= stylesheet_link_tag "dropkick" %>
   	<%= stylesheet_link_tag "splash" %>
 	<title>half past now.</title>
 </head>
 <body>
-	<div id="content"></div>
+	<script type="text/javascript">
+		$(function() {
+			$('.type').dropkick({ width: 200, display: "inline-block" });
+			$('.datetime').dropkick({ width: 200, display: "inline-block" });
+			$('.go-button').click(function() {
+				var dateTimeParams = "";
+				console.log($('.datetime').val());
+				switch($('.datetime').val()) {
+					case "today":
+						dateTimeParams = "option_day=1&start_days=0&end_days=0";
+						break;
+					case "tonight":
+						dateTimeParams = "option_day=1&start_days=0&end_days=0&start_seconds=72000&end_seconds=86400";
+						break;
+					case "tomorrow":
+						dateTimeParams = "option_day=2&start_days=1&end_days=1";
+						break;
+					case "weekend":
+						dateTimeParams = "";
+						break;
+					case "any":
+						dateTimeParams = "option_day=0&start_days=0&end_days=INFINITY";
+						break;
+				}
+				window.location = "/?" + dateTimeParams;
+			});
+		});
+	</script>
+	<div id="content-outer">
+		<div id="content">
+			<!-- <h1>half past now.</h1> -->
+			<img src="/assets/halfpastnow_shadow.png" class="logo"/>
+			<div class="search-line">
+				<span>Show me</span>&nbsp;
+				<select name="type" tabindex="1" class="type">
+				  <option>All Events</option>
+				  <option selected="selected">Live Music</option>
+				  <option>Happy Hours</option>
+				  <option>Free Stuff</option>
+				  <option>Outdoor Events</option>
+				</select>
+				&nbsp;in Austin&nbsp;
+				<select name="datetime" tabindex="2" class="datetime">
+				  <option value="today">Today</option>
+				  <option value="tonight" selected="selected">Tonight</option>
+				  <option value="tomorrow">Tomorrow</option>
+				  <option value="weekend">This Weekend</option>
+				  <option value="any">Any Day</option>
+				</select>&nbsp;
+				<input class="go-button" type="submit" value="show me!" />
+			</div>
+		</div>
+	</div>
 </body>
 </html>

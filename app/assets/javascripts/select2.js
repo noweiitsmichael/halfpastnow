@@ -1496,8 +1496,9 @@
             var choice,
                 id = this.id(data),
                 parts,
-                val = this.getVal();
-
+                val = this.getVal(),
+                pictures, 
+                actPics = "";
             parts = ["<li class='select2-search-choice'>",
                 this.opts.formatSelection(data),
                 "<a href='javascript:void(0)' class='select2-search-choice-close' tabindex='-1'></a>",
@@ -1522,7 +1523,18 @@
 
             choice.data("select2-data", data);
             choice.insertBefore(this.searchContainer);
-
+            $.getJSON('/acts/show/' + id + '.json', function(actInfo) {
+                pictures = $.parseJSON(actInfo.pictures);
+                actPics += "<label>From " + $.parseJSON(actInfo.act).name + ":</label>";
+                if(pictures.length > 0) {
+                    for (var i in pictures) {
+                        var temp = pictures[i].image;
+                        actPics += " <img src='" + temp.thumb.url + "'/>";
+                    }
+                }
+                actPics += "<br>";
+                $(actPics).insertAfter('.picgal');
+            });
             val.push(id);
             this.setVal(val);
         },

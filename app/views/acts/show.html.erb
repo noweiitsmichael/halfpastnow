@@ -3,6 +3,7 @@
 	<h1><%= @act.name %></h1><% end %>
 
 <% content_for :body do %>
+<%= javascript_include_tag "galleria-1.2.8.min" %>
 	<ul class="sub-header">
 		<% unless @act.tags.length == 0 %>
 			<li><%= @act.tags.collect { |tag| tag.name } * " / " %></li>
@@ -28,12 +29,31 @@
 		<% end %>
 	</div>
 	<div class="col-2">
+		<div id="galleria">
+			<% unless @act.fb_picture.blank?%>
+				<img src="<%= @act.fb_picture%>" data-title="<%= @act.name %>" >
+			<% end %>
+            <% @act.pictures.each do |pic| %>
+			    <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @act.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+		    <% end %>
+        </div>
+
+        <script>
+            Galleria.loadTheme('assets/galleria.classic.min.js');
+            $('#galleria').galleria({
+		        width:400,
+		        height:300,
+		        lightbox:true
+		    });
+        </script>
+
 		<div class="calendar block">
 			<h2>Calendar</h2>
 			<div class="block-inner">
 				<%= render :partial => "events/calendar", :locals => { :occurrences => @occurrences, :recurrences => @recurrences } %>
 			</div>
 		</div>
+
 	</div>
 	<div class="clear"></div>
 <% end %>

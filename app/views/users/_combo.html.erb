@@ -1,0 +1,17 @@
+<div>
+	<div id="combo_event_list">	
+		<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
+	</div>
+
+	<div id="combo_tag_list">
+		<%= render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => nil } %>
+	</div>
+
+	<div id="combo_advanced_tag_list">
+		<%= render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => @parentTags } %>
+	</div>
+
+	<div id="combo_total_occurrences">
+		<%= @allOccurrences.size %>
+	</div>
+</div>

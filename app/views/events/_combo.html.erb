@@ -4,11 +4,13 @@
 	</div>
 
 	<div id="combo_tag_list">
-		<%= render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => nil } %>
+		<%# render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => nil } %>
+		<%= render :partial => "tag_list", :locals => { :tagCounts => @tagCounts, :parentTags => @parentTags } %>
 	</div>
 
 	<div id="combo_advanced_tag_list">
-		<%= render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => @parentTags } %>
+		<%# render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => @parentTags } %>
+		<%= render :partial => "tag_list", :locals => { :tagCounts => @tagCounts, :parentTags => @parentTags } %>
 	</div>
 
 	<div id="combo_total_occurrences">
