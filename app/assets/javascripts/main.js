@@ -56,9 +56,6 @@ var ANY_TIME_TEXT = "Any Time";
 var infiniteScrolling = false;
 
 $(function() {
-
-  if(typeof(channelFilters) !== 'undefined')
-    channelFilters[0] = $.extend(true, {}, filter);
   //console.log(filter);
 
   scrollbarWidth = $.getScrollbarWidth();
@@ -496,6 +493,10 @@ function updateViewFromFilter(pullEventsFlag) {
 
   // console.log("endfilter");
   // console.log(filter);
+
+  ////////////// SEARCH ////////////// 
+
+  $('.search-input').val(filter.search);
 
   if(pullEventsFlag) {
     pullEvents();
