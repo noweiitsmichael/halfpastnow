@@ -5,3 +5,9 @@ class String
     raise ArgumentError.new("invalid value for Boolean: \"#{self}\"")
   end
 end
+
+class Object
+	def coalesce_to(default)
+		return self.to_s.empty? ? default : self
+	end
+end

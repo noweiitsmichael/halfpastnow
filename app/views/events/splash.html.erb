@@ -10,10 +10,11 @@
 <body>
 	<script type="text/javascript">
 		$(function() {
-			$('.type').dropkick({ width: 200, display: "inline-block" });
+			$('.stream').dropkick({ width: 200, display: "inline-block" });
 			$('.datetime').dropkick({ width: 200, display: "inline-block" });
 			$('.go-button').click(function() {
 				var dateTimeParams = "";
+				var streamParams = ""
 				console.log($('.datetime').val());
 				switch($('.datetime').val()) {
 					case "today":
@@ -25,14 +26,16 @@
 					case "tomorrow":
 						dateTimeParams = "option_day=2&start_days=1&end_days=1";
 						break;
-					case "weekend":
-						dateTimeParams = "";
-						break;
 					case "any":
 						dateTimeParams = "option_day=0&start_days=0&end_days=INFINITY";
 						break;
 				}
-				window.location = "/?" + dateTimeParams;
+
+				if($('.stream').val() != "0") {
+					streamParams = "channel_id=" + $('.stream').val(); 
+				}
+
+				window.location = "/?" + dateTimeParams + "&" + streamParams;
 			});
 		});
 	</script>
@@ -42,19 +45,17 @@
 			<img src="/assets/halfpastnow_shadow.png" class="logo"/>
 			<div class="search-line">
 				<span>Show me</span>&nbsp;
-				<select name="type" tabindex="1" class="type">
-				  <option>All Events</option>
-				  <option selected="selected">Live Music</option>
-				  <option>Happy Hours</option>
-				  <option>Free Stuff</option>
-				  <option>Outdoor Events</option>
+				<select name="stream" tabindex="1" class="stream">
+				  <option value="0">All Events</option>
+				  <% Channel.default_channels.each do |channel| %>
+				  	<option value="<%= channel.id %>"><%= channel.name %></option>
+				  <% end %>
 				</select>
 				&nbsp;in Austin&nbsp;
 				<select name="datetime" tabindex="2" class="datetime">
 				  <option value="today">Today</option>
 				  <option value="tonight" selected="selected">Tonight</option>
 				  <option value="tomorrow">Tomorrow</option>
-				  <option value="weekend">This Weekend</option>
 				  <option value="any">Any Day</option>
 				</select>&nbsp;
 				<input class="go-button" type="submit" value="show me!" />
