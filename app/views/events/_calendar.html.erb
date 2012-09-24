@@ -1,10 +1,38 @@
-<% options = options || { :venue => true, :description => true } %>
+<% 
+@week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] 
+@ordinal = ["th","st","nd","rd","th","th","th","th","th","th"]
+options = options || { :venue => true, :description => true } 
+def to_ordinal(num)
+	return num.to_s + @ordinal[num%10]
+end
+%>
 <ul class="events">
-	<% if false %>
-	<% recurrences.each do |rec| %>
-		<%= rec.start.to_time.strftime("%a %B %d at %I:%M%p") %> <br />
+<% recurrences.each do |rec| %>
+	<li>
+		<div class="recurrence datetime-wrapper">
+			<div class="recurrence datetime">
+				<span><%= "Every " + ((rec.every_other.nil? || rec.every_other == 0) ? "" : ((rec.every_other == 1) ? "other" : to_ordinal(rec.every_other))) %></span>
+	    		<span><%= (rec.day_of_week && rec.week_of_month) ? to_ordinal(rec.week_of_month) + " " + @week[rec.day_of_week] : (rec.day_of_month ? to_ordinal(rec.day_of_month) : (rec.day_of_week ? @week[rec.day_of_week] : "day")) %></span>
+				<% if rec.end %>
+			    	<span>from <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
+			    	<span>to <%= rec.end.to_time.strftime("%-l:%M%P") %></span>
+			    <% else %>
+			    	<span>at <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
+			    <% end %>
+			</div>
+			<div class="datetime-flag"></div>
+		</div>
+	<% unless options[:datetime_only] %>
+		<div class="details">
+			<span class="event-name" link-id="<%= rec.id %>" linkto="event"><%= rec.event.title %></span>
+		<% if options[:venue] %>
+			<span class="venue-name" link-id="<%= rec.event.venue.id %>" linkto="venue">at <%= rec.event.venue.name %></span>
+		<% end %>
+		</div>
+		<div class="description"><span><strong><%= rec.event.price ? ((rec.event.price != 0) ? number_to_currency(rec.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span><%= strip_tags(rec.event.description) %></span></div>
 	<% end %>
-	<% end %>
+	</li>
+<% end %>
 <% occurrences.each do |occ| %>
 	<li>
 		<div class="datetime-wrapper">

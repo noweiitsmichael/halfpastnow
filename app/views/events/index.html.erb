@@ -12,24 +12,24 @@
 		var channelFilters = {};
 
 		var filter = {
-		  option_day: <%= params[:option_day] || 1 %>,
-		  start_days: <%= params[:start_days] || 0 %>,
-		  end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days] || 0 %>,
-		  start_seconds: <%= params[:start_seconds] || "''" %>,
-		  end_seconds: <%= params[:end_seconds] || "''" %>,
+		  option_day: <%= params[:option_day].coalesce_to 1 %>,
+		  start_days: <%= params[:start_days].coalesce_to 0 %>,
+		  end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
+		  start_seconds: <%= params[:start_seconds].coalesce_to "''" %>,
+		  end_seconds: <%= params[:end_seconds].coalesce_to "''" %>,
 		  day: [0,1,2,3,4,5,6],
-		  low_price: <%= params[:low_price] || "''" %>,
-		  high_price: <%= params[:high_price] || "''" %>,
-		  included_tags: <%= params[:included_tags] ? "'" + params[:included_tags] + "'.split(',')" : "[]" %>,
-		  excluded_tags: <%= params[:excluded_tags] ? "'" + params[:excluded_tags] + "'.split(',')" : "[]" %>,
+		  low_price: <%= params[:low_price].coalesce_to "''" %>,
+		  high_price: <%= params[:high_price].coalesce_to "''" %>,
+		  included_tags: <%= params[:included_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[]" %>,
+		  excluded_tags: <%= params[:excluded_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[]" %>,
 		  lat_min: "",
 		  lat_max: "",
 		  long_min: "",
 		  long_max: "",
 		  offset: 0,
 		  search: "",
-		  sort: <%= params[:sort] || 0 %>,
-		  name: "<%= params[:name] || "" %>"
+		  sort: <%= params[:sort].coalesce_to 0 %>,
+		  name: "<%= params[:name].coalesce_to "" %>"
 		};
 
 		function initialize() {
@@ -87,42 +87,45 @@
 				};
 			<% end %>
 
+    		channelFilters[0] = { 
+    			  option_day: 0,
+				  start_days: 0,
+				  end_days: 'INFINITY',
+				  start_seconds: '',
+				  end_seconds: '',
+				  low_price: '',
+				  high_price: '',
+				  included_tags: [],
+				  excluded_tags: [],
+				  lat_min: "",
+				  lat_max: "",
+				  long_min: "",
+				  long_max: "",
+				  offset: 0,
+				  search: "",
+				  sort: "",
+				  name: "" };
+
 			// filter.search = "<%= params[:search] %>";
 
 			<% @tags.each do |tag| %>
 			tags[<%= tag.id %>] = "<%= tag.name %>";
 			<% end %>
+
+			console.log(tags);
 		});
 	</script>
 <% end %>
 
 <% content_for :header do %>
-	<% if false %>
-	<!--
-	<div class="two">
-		<div class="inner">
-			<div class="search">
-				<%= form_tag("/events", :method => "get", :id => "search-form") do %>
-				<%= label_tag(:q, "find") %>
-				<%= text_field_tag :search, params[:search], :placeholder => "things to do", :class => "terms" %>
-				<%= label_tag(:qtwo, "around") %>
-				<%= text_field_tag :location, params[:location], :placeholder => "a point in space", :class => "location" %>
-				<%= hidden_field_tag :latitude, params[:latitude] %>
-				<%= hidden_field_tag :longitude, params[:longitude] %>
-				<%= image_submit_tag("search2.png") %>
-				<% end %>
-			</div>
-		</div>
-	</div> -->
-	<% end %>
 	<div class="bar-wrapper">
 		<div class="streambar">
 			<div class="stay-on-target">
 				<div class="header">
-					<!-- <span class="stream-save">Save Filters&nbsp;&nbsp;<span class="icon icon-circle-arrow-down"></span></span> -->
-					<span class="stream selected">All Events</span>
+					<% @selectedChannel = params[:channel_id].coalesce_to 0 %>
+					<span class="stream <%= @selectedChannel == 0 ? "selected" : ""%>" channel-id="0">All Events</span>
 					<% @channels.each do |channel| %>
-						<span class="stream" channel-id="<%= channel.id %>"><%= channel.name %></span>
+						<span class="stream <%= (@selectedChannel.to_i == channel.id) ? "selected" : ""%>" channel-id="<%= channel.id %>"><%= channel.name %></span>
 					<% end %>
 				</div>
 			</div>

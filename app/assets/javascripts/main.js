@@ -56,9 +56,6 @@ var ANY_TIME_TEXT = "Any Time";
 var infiniteScrolling = false;
 
 $(function() {
-
-  if(typeof(channelFilters) !== 'undefined')
-    channelFilters[0] = $.extend(true, {}, filter);
   //console.log(filter);
 
   scrollbarWidth = $.getScrollbarWidth();
@@ -497,6 +494,10 @@ function updateViewFromFilter(pullEventsFlag) {
   // console.log("endfilter");
   // console.log(filter);
 
+  ////////////// SEARCH ////////////// 
+
+  $('.search-input').val(filter.search);
+
   if(pullEventsFlag) {
     pullEvents();
   }
@@ -745,13 +746,12 @@ $(function() {
 
   checkScroll();
 
-  updateViewFromFilter(false);
-
 });
 
 $(window).load(function() {
   initialize();
   streamSelector();
+  updateViewFromFilter(false);
 });
 
 function streamSelector() {
@@ -1015,13 +1015,18 @@ function checkScroll() {
 }
 
 function checkInfinite() {
+  console.log("checkInfinite");
+  
   //if we're near the bottom of the page and not currently pulling in events
   if($('#body').scrollBottom() < 100 && !pulling) {
     //check if there are any more possible events to pull
     // if so, pull em.
-    if($('#content .main .inner .events li').length < parseInt($('.total-occurrences').html())) {
+    // console.log("events li count: " + $('#content .main .inner .events li:not(.no-results)').length);
+    // console.log("total occurrences count: " + parseInt($('.num-occurrences-count').html()));
+    if($('#content .main .inner .events li:not(.no-results)').length < parseInt($('.num-occurrences-count').html())) {
       infiniteScrolling = true;
       filter.offset = $('#content .main .inner .events li').length;
+      console.log("checkInfinite pullEvents")
       pullEvents();
     }
   }
