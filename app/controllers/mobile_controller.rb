@@ -55,7 +55,7 @@ class MobileController < ApplicationController
         if @user.valid_password?(params[:password])
           respond_to do |format|
           format.html # index.html.erb
-          format.json { render json: {:code=>"1" } }
+          format.json { render json: {:code=>"1",user:@user } }
             # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
           end
           return
@@ -103,7 +103,7 @@ class MobileController < ApplicationController
   end
   def FBlogin
 
-    pp params
+    # pp params
     # @amount = params[:amount] || 20
     # @offset = params[:offset] || 0
 
@@ -410,7 +410,7 @@ class MobileController < ApplicationController
   end
 
   def bookmark
-    @userid = User.find_by_uid(params[:uid]).id
+    @userid = User.find_by_email(params[:email]).id
     @occurrenceid = Occurrence.find_by_event_id(params[:event_id]).id
     @bookmark = Bookmark.new
     @bookmark.bookmarked_id = @occurrenceid
@@ -420,7 +420,7 @@ class MobileController < ApplicationController
   end
   
   def unbookmark
-    @userid = User.find_by_uid(params[:uid]).id
+    @userid = User.find_by_email(params[:email]).id
     @occurrenceid = Occurrence.find_by_event_id(params[:event_id]).id
     @bookmark = Bookmark.find_by_bookmarked_id(@occurrenceid)
     @bookmark.destroy
