@@ -103,7 +103,36 @@ class MobileController < ApplicationController
   end
   def FBlogin
 
-    # pp params
+    unless(params[:channel_id].to_s.empty?)
+      channel = Channel.find(params[:channel_id].to_i)
+
+      params[:option_day] ||= channel.option_day || 0
+      params[:start_days] ||= channel.start_days || ""
+      params[:end_days] ||= channel.end_days || ""
+      params[:start_seconds] ||= channel.start_seconds || ""
+      params[:end_seconds] ||= channel.end_seconds || ""
+      params[:low_price] ||= channel.low_price || ""
+      params[:high_price] ||= channel.high_price || ""
+      params[:included_tags] ||= channel.included_tags ? channel.included_tags.split(',') : nil
+      params[:excluded_tags] ||= channel.excluded_tags ? channel.excluded_tags.split(',') : nil
+      params[:lat_min] ||= ""
+      params[:lat_max] ||= ""
+      params[:long_min] ||= ""
+      params[:long_max] ||= ""
+      params[:offset] ||= 0
+      params[:search] ||= ""
+      params[:sort] ||= channel.sort || 0
+      params[:name] ||= channel.name || ""
+    end
+
+    if(params[:included_tags] && params[:included_tags].is_a?(String))
+      params[:included_tags] = params[:included_tags].split(",")
+    end
+    
+    if(params[:excluded_tags] && params[:excluded_tags].is_a?(String))
+      params[:excluded_tags] = params[:excluded_tags].split(",")
+    end
+    pp params
     # @amount = params[:amount] || 20
     # @offset = params[:offset] || 0
 
@@ -273,68 +302,39 @@ class MobileController < ApplicationController
     # generating tag list for occurrences
 
     @occurringTags = {}
-    @allOccurrences.each do |occurrence|
-      occurrence.event.tags.each do |tag|
-        unless(tag.parent_tag_id)
-          if(!@occurringTags[tag.id])
-            @occurringTags[tag.id] = { :tag => Tag.new(:name => tag.name), :count => 1 }
-          else
-            @occurringTags[tag.id][:count] += 1
-          end
-        end
+    @tagCounts = []
+
+    @parentTags.each do |parentTag|
+      @tagCounts[parentTag.id] = {
+        :count => 0,
+        :children => [],
+        :id => parentTag.id,
+        :name => parentTag.name,
+        :parent => nil
+      }
+      parentTag.childTags.each do |childTag|
+        @tagCounts[childTag.id] = {
+          :count => 0,
+          :children => [],
+          :id => childTag.id,
+          :name => childTag.name,
+          :parent => @tagCounts[parentTag.id]
+        }
+        @tagCounts[parentTag.id][:children].push(@tagCounts[childTag.id])
       end
     end
 
     @allOccurrences.each do |occurrence|
       occurrence.event.tags.each do |tag|
-        unless(!tag.parent_tag_id)
-          if(!@occurringTags[tag.id])
-            @occurringTags[tag.id] = { :tag => Tag.new(:name => tag.name, :parent_tag_id => tag.parent_tag_id), :count => 1 }
-            @occurringTags[tag.id][:tag].id = tag.id
-            if(@occurringTags[tag.parent_tag_id])
-              @occurringTags[tag.parent_tag_id][:tag].childTags.push(@occurringTags[tag.id][:tag])
-            end
-          else
-            @occurringTags[tag.id][:count] += 1
-          end
-        end
+         @tagCounts[tag.id][:count] += 1
       end
     end
 
-    tags_list = ((params[:included_tags].to_s.empty?) ? [] : params[:included_tags].collect { |str| str.to_i }) + ((params[:excluded_tags].to_s.empty?) ? [] : params[:excluded_tags].collect { |str| str.to_i })
-    tags_list.each do |tag_id|
-      tag = Tag.find(tag_id)
-      parent_tag = tag.parentTag
-
-      if(parent_tag)
-        unless(@occurringTags[parent_tag.id])
-          @occurringTags[parent_tag.id] = { :tag => Tag.new(:name => parent_tag.name), :count => 0 }
-        end
-
-        unless(@occurringTags[tag.id])
-          @occurringTags[tag.id] = { :tag => Tag.new(:name => tag.name, :parent_tag_id => tag.parent_tag_id), :count => 0 }
-          @occurringTags[tag.id][:tag].id = tag.id
-          @occurringTags[parent_tag.id][:tag].childTags.push(@occurringTags[tag.id][:tag])
-        end
-      else
-        unless(@occurringTags[tag.id])
-          @occurringTags[tag.id] = { :tag => Tag.new(:name => tag.name), :count => 0 }
-        end
-      end
+    @parentTags.each do |parentTag|
+      @tagCounts[parentTag.id][:children] = @tagCounts[parentTag.id][:children].sort_by { |tagCount| tagCount[:count] }.reverse
     end
 
-    @occurringTags = Hash[@occurringTags.sort_by { |id, tuple| id }]
-
-    # pp @occurringTags
-    # puts ""
-    # puts "- - - - - - - - - - - - -"
-    # puts ""
-    # @occurringTags.each do |id,tuple|
-    #   pp tuple[:tag]
-    #   pp tuple[:tag].childTags
-    # end
-    # puts "_________________________"
-    # puts ""
+    @tagCounts = @tagCounts.sort_by { |tagCount| tagCount ? tagCount[:count] : 0 }.compact.reverse
 
     if @event_ids.size > 0
       ActiveRecord::Base.connection.update("UPDATE events
@@ -345,6 +345,7 @@ class MobileController < ApplicationController
         SET views = views + 1
         WHERE id IN (#{@venue_ids * ','})")
     end
+
     # 2 cases - Non registerd user, registered user  
     # case 1 - params[:email] empty - return all event only
     # case 2 - params[:email] not empty - return bookmarks, customized channels, and all events
@@ -362,7 +363,29 @@ class MobileController < ApplicationController
   	  @occurrenceids= @user.bookmarked_events.collect(&:id)
   	  @eventids = Occurrence.find(@occurrenceids).collect(&:event_id)
   	  @events = Event.includes(:tags, :venue, :recurrences).find(@eventids) 
+      @bookmarkedevents =[]
+      @events.each { 
+        |event| 
+        @occurs1 =[]
+        @occurs1 << event.occurrences.first
+        @reccs1 =[]
+        @reccs1 <<  event.recurrences.first
+        @item1 = [:event => event, :occurrences => @occurs1 , :recurrences => @reccs1, :venue => event.venue, :tags => event.tags ] 
+        @bookmarkedevents << @item1
+      }
     end
+    # hack to speed up !!!!
+    @items =[]
+    @occurrences.each { 
+      |occ| 
+      @event = occ.event
+      @occurs =[]
+      @occurs << @event.occurrences.first
+      @reccs =[]
+      @reccs << @event.recurrences.first
+      @item = [:event => @event, :occurrences => @occurs , :recurrences => @reccs, :venue => @event.venue, :tags => @event.tags ] 
+      @items << @item
+    }
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
@@ -372,9 +395,10 @@ class MobileController < ApplicationController
 
       # format.json { render json: {code:"3",tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       if (params[:email].to_s.empty?)
-        format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+        # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+        format.json { render json: @items.to_json }
       else 
-        format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
+        format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @bookmarkedevents,:events=>@items } }
       end
 
   end
