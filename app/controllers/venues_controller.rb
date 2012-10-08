@@ -10,7 +10,6 @@ class VenuesController < ApplicationController
   # GET /venues.json
   def index
 
-
      authorize! :index, @user, :message => 'Not authorized as an administrator.'
     
     # @venues = Venue.all
@@ -26,22 +25,21 @@ class VenuesController < ApplicationController
         GROUP BY venue_id,venues.name
         ORDER BY COUNT(*) DESC")
 
-    # @venuesCooked = ActiveRecord::Base.connection.select_all("
-    #   SELECT venue_id,venues.name,COUNT(*) 
-    #     FROM venues,events
-    #     WHERE venues.id = events.venue_id
-    #     GROUP BY venue_id,venues.name
-    #     ORDER BY COUNT(*) DESC")
-
     @venuesCooked = ActiveRecord::Base.connection.select_all("
-      SELECT venues.id, venues.name, COUNT(events.id) AS events_count
+      SELECT venues.id, venues.name, venues.address, venues.views, COUNT(events.id) AS events_count
         FROM venues
         LEFT OUTER JOIN events
         ON venues.id = events.venue_id
         GROUP BY venues.id,venues.name
         ORDER BY events_count DESC")
+    
+    # would be nice but "venue_id" is the label in @venuesCooked and "id" is the label in @venuesRaw
+    # instead we'll have to iterate through @venuesRaw in the table
+    # @venuesCombined = (@venuesRaw+@venuesCooked).group_by{|h| h["venue_id"]}.map{|k,v| v.reduce(:merge)}
+  
 
-    pp @venuesCooked.last
+    # Will have to come back and make dataTables serverside, see http://railscasts.com/episodes/340-datatables?view=asciicast
+    render :layout => "admin"
   end
 
   # GET /venues/1

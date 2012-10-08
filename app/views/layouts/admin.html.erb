@@ -3,24 +3,37 @@
 <head>
   <title>half past now.</title>
 
+  <%= javascript_include_tag "application" %>
   <%= javascript_include_tag "jquery-ui" %>
   <%= javascript_include_tag "jquery-ui-timepicker-addon" %>
   <%= javascript_include_tag "viewport" %>
   <%= javascript_include_tag "date" %>
-  <%= javascript_include_tag "main" %>
   <%= javascript_include_tag "tokeninput" %>
   <%= javascript_include_tag "dropkick" %>
+  <%= javascript_include_tag "jquery.validate" %>
+  <%= javascript_include_tag "jquery.form" %>
   <%= javascript_include_tag "jquery.tabSlideOut.v1.3" %>
+  <%= javascript_include_tag "jquery.dataTables.min" %>
+  <%= javascript_include_tag "venue" %>
+  <%= javascript_include_tag "jquery.cleditor.min" %>
+  <%= javascript_include_tag "select2" %>
+  
+  
 
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
   <%= javascript_include_tag "markerwithlabel" %>
 
-  <%= stylesheet_link_tag    "font-awesome" %>
-  <%= stylesheet_link_tag    "styles" %>
-  <%= stylesheet_link_tag    "jquery-ui" %>
+  <%= stylesheet_link_tag "venue" %>
+  <%= stylesheet_link_tag "jquery-ui" %>
+  <%= stylesheet_link_tag "select2" %>
+  <%= stylesheet_link_tag "font-awesome" %>
+  <%= stylesheet_link_tag "admin" %>
+  <%= stylesheet_link_tag "jquery-ui" %>
   <%= stylesheet_link_tag "dropkick" %>
   <%= stylesheet_link_tag "ptsans_theme" %>
-  
+  <%= stylesheet_link_tag "jquery.dataTables_themeroller" %>
+  <%= stylesheet_link_tag "jquery-ui-1.8.24.custom" %>
+
   <%= csrf_meta_tags %>
 
   <script type="text/javascript">
@@ -36,11 +49,9 @@
 
     </script>
 
-  <!-- for cropper -->
   <%= yield :head %>
 
 </head>
-<!-- <body onload="if(typeof initialize !== 'undefined') initialize();"> -->
 <body>
 	<%= yield :code %>
 	
@@ -56,17 +67,37 @@
               <%= link_to('login', new_user_session_path)  %> / <%= link_to('sign up', new_user_registration_path)  %> 
             <% end %>
           </div>
-          <div class="menu-element right"><a href="/info/contact">contact us</a></div>
-          <!-- <div class="menu-element right"><a href="/info/about">about us</a></div> -->
         </div>
       </div>
       <%= yield :header%>
     </div>
-    <%= yield :body %>
+    <div id="content">
+      <div id="main-menu">
+        <h2>Admin Control Panel</h2>
+        <ul>
+          <li><a class="active" href="/admin/test">Assigned Events</a></li>
+          <li><a href="/admin/controlPanel">Create New Event</a></li>
+          <li><a href="/admin/venues">Venue Search</a></li>
+          <li><a href="/admin/artists">Artist Search</a></li>
+          <li><a href="#">Assignments</a></li>
+          <li><a href="#">My Stats</a></li>
+        </ul>
+      </div>
+
+
+      <div id="inner">
+        <%= yield :body %>
+        <%= yield %>
+      </div>
+
+
+    </div>
   </div>
-  <div id="overlays">
+
+   <div id="overlays">
     <%= yield :overlay %>
   </div>
+
   <div class="slide-out-div">
 	<a class="handle" href="http://link-for-non-js-users.html">Content</a>
 	<h3>Got some feedback?</h3>
