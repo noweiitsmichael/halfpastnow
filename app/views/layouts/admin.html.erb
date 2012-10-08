@@ -47,6 +47,12 @@
 
     });
 
+    $(function(){
+      var path = location.pathname;
+      if ( path )
+        $('#main-menu a[href$="' + path + '"]').attr('class', 'selected');
+    });
+
     </script>
 
   <%= yield :head %>
@@ -75,7 +81,7 @@
       <div id="main-menu">
         <h2>Admin Control Panel</h2>
         <ul>
-          <li><a class="active" href="/admin/test">Assigned Events</a></li>
+          <li><a href="/admin">Assigned Events</a></li>
           <li><a href="/admin/controlPanel">Create New Event</a></li>
           <li><a href="/admin/venues">Venue Search</a></li>
           <li><a href="/admin/artists">Artist Search</a></li>

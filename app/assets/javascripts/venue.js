@@ -26,7 +26,7 @@ var eventActs = {};
             if(validators[selector].numberOfInvalids() == 0) {
               obj.find('.form-success').remove();
               obj.find('.form-failure').remove();
-              obj.find("[type='submit']").after("<div class='form-load'>&#8634;</div>");
+              obj.find("[type='submit']").after("<div class='form-load'>Updating... &#8634;</div>");
               obj.find("select[name*=4i], select[name*=5i]").each(function() {
                 if($(this).val() === "")
                   $(this).parent().find("select,input").attr("disabled","disabled");

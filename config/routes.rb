@@ -85,7 +85,7 @@ Myapp::Application.routes.draw do
   match 'tags' => 'tags#index'
   match 'info' => 'info#about'
   match 'admin' => 'admin#index'
-  match 'admin/venues' => 'venues#index'
+  #match 'admin/venues' => 'venues#index'
   match 'admin/artists' => 'acts#index'
 
   match 'feedbacks' => 'feedbacks#index'

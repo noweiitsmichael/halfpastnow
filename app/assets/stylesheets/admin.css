@@ -48,6 +48,7 @@ html, body
   height:100%;
   overflow:auto;
   position:relative;
+  display:inline;
 }
 
 UL, LI
@@ -144,6 +145,7 @@ H6 {font-size: 14px;}
     float:left;
     width: 235px;
     margin-bottom: 50px;
+    margin-right: 10px;
     border-right:solid 1px #c4c4c4;
 
 }
@@ -185,15 +187,22 @@ H6 {font-size: 14px;}
     text-decoration:none;
     margin-left:5px;
 }
-#main-menu li a.active, a:hover{
+
+/*.acts-body #main-menu li a.acts {
+  color:#653782;
+}*/
+
+#main-menu li a.selected{
     color:#653782;
-}​
-#main-menu li a.active{
-    color:red;
-}​
+}
+
+#main-menu li a:hover{
+    color:#653782;
+}
+
 
 table {
-    font-size: 12px;
+    font-size: 16px;
 }
 
 
