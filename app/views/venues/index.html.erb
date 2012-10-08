@@ -1,85 +1,58 @@
+<div id="body">
+  <script type="text/javascript">
+    
+    var venue_id = null;
 
-<script type="text/javascript">
-  $(document).ready(function() {
-  oTable = $('#venues').dataTable({
-    "bJQueryUI": true,
-    "sPaginationType": "full_numbers",
-    "iDisplayLength": 50
-  });
-} );
-  var venue_id = null;
+    $(function() {
+      $("#venue-go").click(function() {
+        if(venue_id) {
+          console.log("/venues/edit/" + venue_id);
+          window.location = "/venues/edit/" + venue_id;
+        }
+      });
 
-  $(function() {
-    $("#venue-go").click(function() {
-      if(venue_id) {
-        console.log("/venues/edit/" + venue_id);
-        window.location = "/venues/edit/" + venue_id;
-      }
+      $( "#venue-name" ).autocomplete({
+        source: function( request, response ) {
+          $.getJSON("/venues/find?contains=" + request.term, function (data) {
+            console.log(data);
+            response(data);
+          });
+        },
+        minLength: 2,
+        select: function( event, ui ) {
+          $("#venue-name").val(ui.item.label);
+          venue_id = ui.item.id;
+
+          console.log( ui.item ?
+            "Selected: " + ui.item.label :
+            "Nothing selected, input was " + this.value);
+        },
+        open: function() {
+          $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+        },
+        close: function() {
+          $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+        }
+      });
     });
+  </script>
+  <h1>Find Venue</h1>
 
-    $( "#venue-name" ).autocomplete({
-      source: function( request, response ) {
-        $.getJSON("/venues/find?contains=" + request.term, function (data) {
-          console.log(data);
-          response(data);
-        });
-      },
-      minLength: 2,
-      select: function( event, ui ) {
-        $("#venue-name").val(ui.item.label);
-        venue_id = ui.item.id;
+  Venue name: <input id="venue-name" /> <button id="venue-go">Go</button>
+  <br />
+  <a href="/venues/new">New Venue</a><br /><br />
 
-        console.log( ui.item ?
-          "Selected: " + ui.item.label :
-          "Nothing selected, input was " + this.value);
-      },
-      open: function() {
-        $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
-      },
-      close: function() {
-        $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
-      }
-    });
-  });
-</script>
-<h1>Find Venue</h1>
+  <div class="venues-list">
+  <h3>Venues (# of Raw Events)</h3>
 
-<a href="/venues/new">New Venue</a><br /><br />
-
-<table id="venues">
-  <thead>
-  <tr>
-    <th>Venue</th>
-    <th>% done</th>
-    <th>Active Events</th>
-    <th>Raw Events</th>
-    <th>Address</th>
-    <th>Popularity</th>
-    <th>Merge</th>
-  </tr>
-</thead>
-<tbody>
-<% i = 1 %>
-<% @venuesCooked.each do |venue| %>  
-  <% if i < 60 %> 
-  <tr>
-    <td><%= venue["name"] %></td>
-    <td></td>
-    <td><%= venue["events_count"] %></td>
-    <td>
-        <% if @venuesRaw.any? {|v| v["venue_id"] == venue["id"]} %>
-          <%= @venuesRaw.find{|id| id["venue_id"] == venue["id"]}["count"] %>
-        <% else %>
-          0
-        <% end %>
-      </td>
-    <td><%= venue["address"] %></td>
-    <td><%= venue["views"] %></td>
-    <td>[ ]</td>  
-  </tr>
-    <% i = i + 1 %>
+  <% @venuesRaw.each do |venue| %>  
+    <a href="/venues/edit/<%= venue["venue_id"] %>"><%= venue["name"] %></a> (<%= venue["count"] %>)<br />
   <% end %>
-<% end %>
-</tbody>
-</table>
-
+  </div>
+  <div class="venues-list">
+  <h3>Venues (# of Events)</h3>
+  <% @venuesCooked.each do |venue| %>  
+    <a href="/venues/edit/<%= venue["id"] %>"><%= venue["name"] %></a> (<%= venue["events_count"] %>)<br />
+  <% end %>
+  </div>
+</div>

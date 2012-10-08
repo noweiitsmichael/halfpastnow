@@ -283,13 +283,6 @@ var eventActs = {};
   $(function() {
     $("body").incomingForm();
 
-    $('.slide-out-div').tabSlideOut({
-        tabHandle: '.handle',                     //class of the element that will become your tab
-        pathToTabImage: '/assets/feedback_tab_v.jpg', //path to the image for the tab //Optionally can be set using css
-        imageHeight: '122px',                     //height of tab image           //Optionally can be set using css
-        imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
-    });
-
     $('body').on("click", ".select2-search-choice", function(event) {
       console.log("act click");
       var eventID = $(this).parents(".acts.field").find(".act-names").attr("event-id");
