@@ -6,9 +6,14 @@
 		$('.mode .overlay .window').click(function(event) {
 		event.stopPropagation();
 		});
+
+		$('.mode .actions').click(function() {
+			$('<span class="ajaxLoader"><img src="/assets/ajax-loader.gif"></span>').appendTo('.actions');
+		});
 	  	
 	    var actForm = $("#act-form");
 	    actForm.ajaxForm({
+	      
 	      dataType: 'json',
 	      success: 
 	        function(data) { 
