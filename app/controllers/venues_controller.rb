@@ -39,6 +39,7 @@ class VenuesController < ApplicationController
   
 
     # Will have to come back and make dataTables serverside, see http://railscasts.com/episodes/340-datatables?view=asciicast
+    render :layout => "admin"
   end
 
   # GET /venues/1
