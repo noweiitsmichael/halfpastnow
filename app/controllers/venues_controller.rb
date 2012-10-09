@@ -5,6 +5,7 @@ class VenuesController < ApplicationController
   before_filter :authenticate_user!, :only => [:index, :update, :edit, :actCreate]
   # skip_before_filter :authenticate_user!, :only => [:show, :find]
   #before_filter :only_allow_admin, :only => [ :index ]
+  attr_accessor :events_count, :raw_events_count
   
   # GET /venues
   # GET /venues.json
@@ -37,9 +38,18 @@ class VenuesController < ApplicationController
     # instead we'll have to iterate through @venuesRaw in the table
     # @venuesCombined = (@venuesRaw+@venuesCooked).group_by{|h| h["venue_id"]}.map{|k,v| v.reduce(:merge)}
   
-
+    # TODO: FIGURE OUT HOW TO GET EVENTS COUNTS INTO VENUESCOOKED
+    @venuesCooked.each do |venue|
+        if@venuesRaw.find{|id| id["venue_id"] == venue["id"]}["count"]
+    else
+      0
+    end
     # Will have to come back and make dataTables serverside, see http://railscasts.com/episodes/340-datatables?view=asciicast
-
+    
+    respond_to do |format|
+      format.html {render :layout => "admin"}
+      format.json { render json: VenuesDatatable.new(view_context) }
+    end
   end
 
   # GET /venues/1

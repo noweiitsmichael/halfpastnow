@@ -10,6 +10,8 @@ Myapp::Application.routes.draw do
 
   resources :channels
 
+  resources :venues
+
   get "info/about"
 
   get "info/contact"
@@ -81,7 +83,7 @@ Myapp::Application.routes.draw do
 
   # TODO: overcome the stupidity that is rails 3 routing and clean this up.
   match 'venues' => 'venues#index'
-  match 'events' => 'events#index'
+ # match 'events' => 'events#index'
   match 'tags' => 'tags#index'
   match 'info' => 'info#about'
   match 'admin' => 'admin#index'
