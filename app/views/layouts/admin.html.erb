@@ -21,6 +21,9 @@
   
 
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
+  <link href='http://fonts.googleapis.com/css?family=Marcellus+SC' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Adamina' rel='stylesheet' type='text/css'>
   <%= javascript_include_tag "markerwithlabel" %>
 
   <%= stylesheet_link_tag "venue" %>
@@ -51,6 +54,9 @@
       var path = location.pathname;
       if ( path )
         $('#main-menu a[href$="' + path + '"]').attr('class', 'selected');
+      if ( path === "/acts/index" )
+        $('#main-menu a[href$="/admin/artists"]').attr('class', 'selected');
+
     });
 
     </script>

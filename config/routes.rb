@@ -87,6 +87,7 @@ Myapp::Application.routes.draw do
   match 'admin' => 'admin#index'
   match 'admin/venues' => 'venues#index'
   match 'admin/artists' => 'acts#index'
+  match 'acts/index' => 'acts#index'
 
   match 'feedbacks' => 'feedbacks#index'
   match 'users' => 'users#index', :as => "user"

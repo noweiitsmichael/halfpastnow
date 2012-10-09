@@ -2219,6 +2219,7 @@ html, body {
 
 #header .header .tags .filter-inner .tags-menu.children li {
   display:none;
+  text-indent: 6em;
 }
 
 .tags-menu li .toggler.icon-caret-right {
