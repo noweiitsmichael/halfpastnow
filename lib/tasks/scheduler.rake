@@ -138,7 +138,7 @@ namespace :api do
 					if events['venue'] != nil
 						if events['venue']['id'] != nil #need this because 'venue' of nil will throw error when looking for 'id'
 							fb_venue = @graph.get_object(events['venue']['id'])
-							if !fb_venue['location']['city'].nil?
+							if fb_venue['location']['city'].nil?
 								puts "skipping because location does not specify city (meaning not real location/event)..."
 								next
 							end
@@ -172,7 +172,7 @@ namespace :api do
 								puts "skipping because " + events['location'] + " is not a real location..."
 								next
 							end
-							if  (events['venue']['city'].nil? == true) || (!allowed_cities.include?(events['venue']['city']))
+							if  events['venue']['city'].nil? || !allowed_cities.include?(events['venue']['city'])
 								puts "skipping because " + events['venue']['city'] + " is not in Greater Austin Area..."
 								next
 							end
