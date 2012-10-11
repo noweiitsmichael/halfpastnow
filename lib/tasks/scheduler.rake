@@ -120,7 +120,7 @@ namespace :api do
 				no_id = false
 				
 				## if the name or location is blank, we're just gonna skip it
-				if events['name'].blank? || events['location'].blank?
+				if events['name'].blank? || events['location'].blank? 
 					puts "skipping because no location..."
 					next
 				end
@@ -163,6 +163,11 @@ namespace :api do
 						## Some n00bs don't know how to link to FB venues and input manual location.
 						else
 							puts "Manually creating venue: " + events['location']
+							stupid_fake_venues = ['Online', 'online', 'web', 'Web', 'Website', 'website']
+							if stupid_fake_venues.include?(events['location'])
+								puts "skipping because " + events['location'] + " is not a real location..."
+								next
+							end
 
 							if  !allowed_cities.include?(events['venue']['city'])
 								puts "skipping because " + events['venue']['city'] + " is not in Greater Austin Area..."
