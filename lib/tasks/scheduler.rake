@@ -109,7 +109,7 @@ namespace :api do
 	desc "pull venues from facebook events"
 	task :get_fb_events => :environment do
 		access_token = User.find_by_email("noweiitsmichael@yahoo.com").fb_access_token
-		puts "Pulling from Facebook. IS IT DAYLIGHT SAVINGS TIME YET?!?!?!?!?!?!?!"
+		puts "Pulling from Facebook. IS IT DAYLIGHT SAVINGS TIME YET?!?!?!?!?!?!?!?!?!?!??!?!?!?!?!??!?!?!?!?!?!?!??!?!?!?!"
 		no_id = false
 		@graph = Koala::Facebook::API.new(access_token)
 		## Pull all things that halfpastnow likes
@@ -168,8 +168,7 @@ namespace :api do
 								puts "skipping because " + events['location'] + " is not a real location..."
 								next
 							end
-
-							if  !allowed_cities.include?(events['venue']['city'])
+							if  (events['venue']['city'].nil? == true) || (!allowed_cities.include?(events['venue']['city']))
 								puts "skipping because " + events['venue']['city'] + " is not in Greater Austin Area..."
 								next
 							end
