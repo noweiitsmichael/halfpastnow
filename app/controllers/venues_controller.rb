@@ -5,7 +5,6 @@ class VenuesController < ApplicationController
   before_filter :authenticate_user!, :only => [:index, :update, :edit, :actCreate]
   # skip_before_filter :authenticate_user!, :only => [:show, :find]
   #before_filter :only_allow_admin, :only => [ :index ]
-  
   # GET /venues
   # GET /venues.json
   def index
@@ -35,10 +34,21 @@ class VenuesController < ApplicationController
     
     # would be nice but "venue_id" is the label in @venuesCooked and "id" is the label in @venuesRaw
     # instead we'll have to iterate through @venuesRaw in the table
+    ## (not deleting because its awesome code)
     # @venuesCombined = (@venuesRaw+@venuesCooked).group_by{|h| h["venue_id"]}.map{|k,v| v.reduce(:merge)}
   
+    @venuesCooked.each do |venue|
+      intersect_venue = @venuesRaw.find{|id| id["venue_id"] == venue["id"]}
+      if intersect_venue.nil? == false
+        venue.merge!({ "raw_events_count" => intersect_venue["count"]})
+      else
+        venue.merge!({ "raw_events_count" => 0})
+      end
+    end
 
     # Will have to come back and make dataTables serverside, see http://railscasts.com/episodes/340-datatables?view=asciicast
+    # ^ DONE BIATCH
+
 
   end
 
@@ -89,7 +99,7 @@ class VenuesController < ApplicationController
     @venue = Venue.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html { render :layout => "admin" }
       format.json { render json: @venue }
     end
   end
@@ -293,7 +303,6 @@ class VenuesController < ApplicationController
     else
       @act = Act.find(params[:act][:id])
     end
-    puts params[:act]
     @act.update_attributes!(params[:act])
 
     respond_to do |format|
