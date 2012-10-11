@@ -138,7 +138,11 @@ namespace :api do
 					if events['venue'] != nil
 						if events['venue']['id'] != nil #need this because 'venue' of nil will throw error when looking for 'id'
 							fb_venue = @graph.get_object(events['venue']['id'])
-							puts "Creating rawvenue with id " + events['venue']['id'] + " in " + fb_venue['location']['city']
+							if !fb_venue['location']['city'].nil?
+								puts "skipping because location does not specify city (meaning not real location/event)..."
+								next
+							end
+								puts "Creating rawvenue with id " + events['venue']['id'] + " in " + fb_venue['location']['city']
 							if !allowed_cities.include?(fb_venue['location']['city'])
 								puts "skipping because " + fb_venue['location']['city'] + " is not in Greater Austin Area..."
 								next
