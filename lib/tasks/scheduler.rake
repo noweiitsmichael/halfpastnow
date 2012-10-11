@@ -138,12 +138,10 @@ namespace :api do
 					if events['venue'] != nil
 						if events['venue']['id'] != nil #need this because 'venue' of nil will throw error when looking for 'id'
 							fb_venue = @graph.get_object(events['venue']['id'])
-							if fb_venue['location']['city'] != nil
-								puts "Creating rawvenue with id " + events['venue']['id'] + " in " + fb_venue['location']['city']
-								if !allowed_cities.include?(fb_venue['location']['city'])
-									puts "skipping because " + fb_venue['location']['city'] + " is not in Greater Austin Area..."
-									next
-								end
+							puts "Creating rawvenue with id " + events['venue']['id'] + " in " + fb_venue['location']['city']
+							if !allowed_cities.include?(fb_venue['location']['city'])
+								puts "skipping because " + fb_venue['location']['city'] + " is not in Greater Austin Area..."
+								next
 							end
 							raw_venue = RawVenue.create!(
 								:name => fb_venue['name'],
@@ -170,11 +168,9 @@ namespace :api do
 								puts "skipping because " + events['location'] + " is not a real location..."
 								next
 							end
-							if  events['venue']['city'].nil? == false 
-								if  !allowed_cities.include?(events['venue']['city'])
-									puts "skipping because " + events['venue']['city'] + " is not in Greater Austin Area..."
-									next
-								end
+							if  (events['venue']['city'].nil? == true) || (!allowed_cities.include?(events['venue']['city']))
+								puts "skipping because " + events['venue']['city'] + " is not in Greater Austin Area..."
+								next
 							end
 
 							raw_venue = RawVenue.create!(
