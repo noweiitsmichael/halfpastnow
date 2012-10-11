@@ -82,8 +82,8 @@ Myapp::Application.routes.draw do
   # See how all your routes lay out with "rake routes"
 
   # TODO: overcome the stupidity that is rails 3 routing and clean this up.
-  match 'venues' => 'venues#index'
- # match 'events' => 'events#index'
+  # match 'venues' => 'venues#index'
+  # match 'events' => 'events#index'
   match 'tags' => 'tags#index'
   match 'info' => 'info#about'
   match 'admin' => 'admin#index'

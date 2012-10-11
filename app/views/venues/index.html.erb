@@ -8,8 +8,10 @@
     "bStateSave": true,
     "bProcessing": true,
     "bServerSide": true,
-    "sAjaxSource": $('#venues').data('source')
-  });
+    "sAjaxSource": $('#venues').data('source'),
+    "aoColumnDefs": [{ "sWidth": "30%", "aTargets": [ 0, 1 ] },
+                     { "asSorting": [ "desc", "asc"], "aTargets": [ 2,3,4 ] }]
+  }).fnSetFilteringDelay();
 } );
   var venue_id = null;
 
@@ -55,8 +57,9 @@
   <tr>
     <th>Venue</th>
     <th>Address</th>
-    <th>Popularity</th>
+    <th>Clicks</th>
     <th>Events</th>
+    <th>Raw Events</th>
   </tr>
 </thead>
 <tbody>

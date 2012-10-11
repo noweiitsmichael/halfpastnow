@@ -5,8 +5,6 @@ class VenuesController < ApplicationController
   before_filter :authenticate_user!, :only => [:index, :update, :edit, :actCreate]
   # skip_before_filter :authenticate_user!, :only => [:show, :find]
   #before_filter :only_allow_admin, :only => [ :index ]
-  attr_accessor :events_count, :raw_events_count
-  
   # GET /venues
   # GET /venues.json
   def index
@@ -36,16 +34,21 @@ class VenuesController < ApplicationController
     
     # would be nice but "venue_id" is the label in @venuesCooked and "id" is the label in @venuesRaw
     # instead we'll have to iterate through @venuesRaw in the table
+    ## (not deleting because its awesome code)
     # @venuesCombined = (@venuesRaw+@venuesCooked).group_by{|h| h["venue_id"]}.map{|k,v| v.reduce(:merge)}
   
-    # TODO: FIGURE OUT HOW TO GET EVENTS COUNTS INTO VENUESCOOKED
     @venuesCooked.each do |venue|
-        if@venuesRaw.find{|id| id["venue_id"] == venue["id"]}["count"]
-    else
-      0
+      intersect_venue = @venuesRaw.find{|id| id["venue_id"] == venue["id"]}
+      if intersect_venue.nil? == false
+        venue.merge!({ "raw_events_count" => intersect_venue["count"]})
+      else
+        venue.merge!({ "raw_events_count" => 0})
+      end
     end
+
     # Will have to come back and make dataTables serverside, see http://railscasts.com/episodes/340-datatables?view=asciicast
-    
+    # ^ DONE BIATCH
+
     respond_to do |format|
       format.html {render :layout => "admin"}
       format.json { render json: VenuesDatatable.new(view_context) }
@@ -99,7 +102,7 @@ class VenuesController < ApplicationController
     @venue = Venue.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html { render :layout => "admin" }
       format.json { render json: @venue }
     end
   end
@@ -117,6 +120,7 @@ class VenuesController < ApplicationController
 
     @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
 
+    render :layout => "admin"
   end
 
   # POST /venues

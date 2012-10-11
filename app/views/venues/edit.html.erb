@@ -29,11 +29,12 @@
     .menu.selected { color: black; text-decoration: none; }
   </style>
   <a href="/venues">&lt; Back</a>
-  <h1><%= @venue.name %></h1>
+  <h2><b><%= @venue.name %></b></h2>
   <% if @venue.url && @venue.url != "" %>
-    <h3>(<a href="<%= @venue.url %>"><%= @venue.url %></a>)</h3>
+    <h4>(<a href="<%= @venue.url %>"><%= @venue.url %></a>)</h4>
   <% end %>
-  <h3><a href='#' class='menu settings selected'>Settings</a> | <a href='#' class='menu events'>Events</a> | <a href='#' class='menu raw_events'>Raw Events</a></h3>
+  <br>
+  <h3><b><a href='#' class='menu settings selected'>Venue Info</a> | <a href='#' class='menu events'>Edit Displayed Events</a> | <a href='#' class='menu raw_events'>Scraped Raw Events</a></h3></b>
 
 
   <div class="tab settings selected">

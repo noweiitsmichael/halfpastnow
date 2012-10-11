@@ -112,6 +112,12 @@ H6 {font-size: 14px;}
   margin-bottom: 50px;
 }
 
+.profpic
+{
+  float: left;
+  margin-right: 12px; 
+}
+
 #inner
 {
   float:right;
