@@ -351,10 +351,15 @@ html,body {
 
 .close-mode {
   position:absolute;
-  top: 7px;
+  top: -10px;
   right:10px;
   cursor:pointer;
-  font-size: 16px;
+  font-size: 36px;
+  padding: 0px 10px 0px 10px;
+  -webkit-box-shadow: 0 3px 3px #3c3c40;
+  -moz-box-shadow: 0 3px 3px #3c3c40;
+  box-shadow: 0 3px 3px #3c3c40;
+  background-color: #D2D2D2;
 }
 
 .main.settings .input-tags {

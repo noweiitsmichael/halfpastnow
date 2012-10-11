@@ -1,6 +1,6 @@
 <script type="text/javascript">
 	$(function() {
-		$('.mode .overlay').click(closeMode);
+		//$('.mode .overlay').click(closeMode);
 		$('.mode .close-mode').click(closeMode);
 
 		$('.mode .overlay .window').click(function(event) {
@@ -50,7 +50,10 @@
 	});
 
 	function closeMode() {
-		$('.mode').hide();
+		console.log("closemode")
+		if(confirm('Changes will not be saved unless you click the "Update Act" button. Are you sure you want to exit?')){
+			$('.mode').hide();
+		}
 	}
 
 </script>
