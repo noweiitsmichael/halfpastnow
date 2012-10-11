@@ -168,11 +168,11 @@ namespace :api do
 						else
 							puts "Manually creating venue: " + events['location']
 							stupid_fake_venues = ['Online', 'online', 'web', 'Web', 'Website', 'website']
-							if stupid_fake_venues.include?(events['location'])
-								puts "skipping because " + events['location'] + " is not a real location..."
+							if stupid_fake_venues.include?(events['location']) || events['venue']['city'].nil?
+								puts "skipping because " + events['location'] + " is not a actual location..."
 								next
 							end
-							if  events['venue']['city'].nil? || !allowed_cities.include?(events['venue']['city'])
+							if  !allowed_cities.include?(events['venue']['city'])
 								puts "skipping because " + events['venue']['city'] + " is not in Greater Austin Area..."
 								next
 							end
