@@ -168,9 +168,11 @@ namespace :api do
 								puts "skipping because " + events['location'] + " is not a real location..."
 								next
 							end
-							if  (events['venue']['city'].nil? == true) || (!allowed_cities.include?(events['venue']['city']))
-								puts "skipping because " + events['venue']['city'] + " is not in Greater Austin Area..."
-								next
+							if  events['venue']['city'].nil? == false 
+								if  !allowed_cities.include?(events['venue']['city'])
+									puts "skipping because " + events['venue']['city'] + " is not in Greater Austin Area..."
+									next
+								end
 							end
 
 							raw_venue = RawVenue.create!(
