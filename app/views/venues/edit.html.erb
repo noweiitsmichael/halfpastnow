@@ -1,40 +1,6 @@
 <div id="body">
-  <script type="text/javascript">
-    var win;
-    $(function() {
-      $('.menu').click(function() {
-        $(this).parent().children('.menu').removeClass('selected');
-        $(this).addClass('selected');
 
-        $('.tab').removeClass('selected');
-        if($(this).hasClass('events')) {
-        	$('.tab.events').addClass('selected');
-        } else if($(this).hasClass('settings')) {
-          $('.tab.settings').addClass('selected');
-        } else {
-          $('.tab.raw_events').addClass('selected');
-        }
-  	  return false;
-      });
-
-
-      //$('body').layout({ applyDefaultStyles: true });
-
-      //win = window.open("<%= @venue.events_url %>", "Window", "width=900,height=1000,left=1100,toolbar=1,scrollbars=1");
-    });
-  </script>
-  <style type="text/css">
-    .tab { display: none; margin-bottom:50px; }
-    .tab.selected { display: block; }
-    .menu.selected { color: black; text-decoration: none; }
-  </style>
-  <a href="/venues">&lt; Back</a>
-  <h2><b><%= @venue.name %></b></h2>
-  <% if @venue.url && @venue.url != "" %>
-    <h4>(<a href="<%= @venue.url %>"><%= @venue.url %></a>)</h4>
-  <% end %>
-  <br>
-  <h3><b><a href='#' class='menu settings selected'>Venue Info</a> | <a href='#' class='menu events'>Edit Displayed Events</a> | <a href='#' class='menu raw_events'>Scraped Raw Events</a></h3></b>
+<%- render 'venues_nav' %>
 
 
   <div class="tab settings selected">

@@ -50,9 +50,14 @@ label {
 }
 
 .main.settings {
-  margin-top:40px;
+  margin-top:20px;
   clear:left;
   float:left;
+}
+
+.settings .do512 {
+  float: left;
+  margin-left: 139px;
 }
 
 .main.event h4 {

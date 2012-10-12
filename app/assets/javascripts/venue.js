@@ -177,7 +177,7 @@ var eventActs = {};
       multiple:true,
       //placeholder:"search performers",
       ajax: {
-                url: "/venues/actFind",
+                url: "/acts/actFind",
                 dataType: 'json',
                 data: function (term) {
                     return {
@@ -255,7 +255,7 @@ var eventActs = {};
 
   function showActsMode(eventID,actID,successFunction) {
     var actSuffix = (typeof actID !== 'undefined' ? "/" + actID : "");
-    $.get('/venues/actsMode' + actSuffix, function(data) {
+    $.get('/acts/actsMode' + actSuffix, function(data) {
       $('.acts.mode .window').html(data);
       if(typeof eventID !== 'undefined' || eventID === null)
         $('#act-form').attr('event-id',eventID);

@@ -37,4 +37,55 @@ class ActsController < ApplicationController
 
     render :layout => "admin"
   end
+
+
+  def destroy
+    @act = Act.find(params[:id])
+    @act.destroy
+
+    render json: {:act_id => @act.id }
+  end
+
+  def actCreate
+    authorize! :actCreate, @user, :message => 'Not authorized as an administrator.'    
+    if (params[:act][:id].to_s.empty?)
+      @act = Act.new()
+    else
+      @act = Act.find(params[:act][:id])
+    end
+    puts params[:act]
+    @act.update_attributes!(params[:act])
+
+    respond_to do |format|
+      if @act.save
+        format.html { redirect_to :action => :index, :notice => 'yay' }
+        format.json { render json: { :name => @act.name, :text => @act.name, :id => @act.id, :tags => (@act.tags.collect { |t| t.id.to_s } * ","), :completedness => @act.completedness } }
+      else
+        format.html { redirect_to :action => :index, :notice => 'boo' }
+        format.json { render json: false }
+      end
+    end
+  end
+
+  def actFind
+    if(params[:contains])
+      @acts = Act.where("name ilike ?", "%#{params[:contains]}%").collect {|a| { :name => "#{a.name}", :text => "#{a.name}", :id => a.id, :tags => (a.tags.collect { |t| t.id.to_s } * ",") } }
+    else
+      @acts = []
+    end
+
+    render json: @acts
+  end
+
+  def actsMode
+    if(params[:id].to_s.empty?)
+      @act = Act.new
+    else
+      @act = Act.find(params[:id])
+    end
+    @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
+
+    render :layout => false
+  end
+
 end

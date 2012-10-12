@@ -89,7 +89,7 @@
 		<% @iStrName = "act[tag_ids][]" %>
 		<% @iStrId = "act_tag_ids_" %>
 		
-		<%= render :partial => "tags", :locals => { :element => @act } %>
+		<%= render :partial => "/venues/tags", :locals => { :element => @act } %>
 
 		<div class="field">
 		  <%= e.label "Facebook Picture" %>
@@ -97,9 +97,9 @@
 		</div>
 
 
-		<%= render :partial => "pictures", :locals => { :act => @act } %>
+		<%= render :partial => "/venues/pictures", :locals => { :act => @act } %>
 
-		<%= render :partial => "embeds", :locals => { :act => @act } %>
+		<%= render :partial => "/venues/embeds", :locals => { :act => @act } %>
 
 		<div class="actions">
     		<%= e.submit %>
