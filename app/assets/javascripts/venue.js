@@ -4,6 +4,8 @@
 
 var actSuccessCallback;
 
+var picSuccessCallback;
+
 var actsInfo = {};
 
 var validators = {};
@@ -268,6 +270,23 @@ var eventActs = {};
 
   function hideActsMode() {
     $('.acts.mode').hide();
+  }
+
+  function showCoverEditMode(event_id,picture_url,picture_id,picture_type,successFunction) {
+          console.log("in showCoverEditMode");
+          console.log("event id: " + event_id);
+          console.log("picture url: " + picture_url);
+          console.log("picture id: " + picture_id);
+          console.log("picture type: " + picture_type);
+    $.get('/venues/cropMode/?picture_url=' + picture_url + "&event_id=" + event_id + "&picture_id=" + picture_id + "&picture_type=" + picture_type, function(data) {
+      $('.pics.mode .window').html(data);
+      picSuccessCallback = successFunction;
+      $('.pics.mode').show();
+    });
+  }
+
+  function hideCoverEditMode() {
+    $('.pics.mode').hide();
   }
 
   function dateTimeChange() {

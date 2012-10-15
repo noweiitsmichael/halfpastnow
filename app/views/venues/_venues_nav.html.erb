@@ -3,24 +3,24 @@
   $(function(){
     var path = location.pathname;
     if ( path )
-      $('#main-menu a[href$="' + path + '"]').attr('class', 'selected');
+      $('nav a[href$="' + path + '"]').attr('class', 'selected');
 
   });
 
 </script>
 
-  <a href="/venues">&lt; Back</a><br><br>
+  <a href="/admin/venues">&lt; Back</a><br><br>
   <h2><b><%= @venue.name %></b></h2>
   <% if @venue.url && @venue.url != "" %>
-    <a href="<%= @venue.url %>"><%= @venue.url %></a>
+    <a class="venue-url" href="<%= @venue.url %>">(<%= @venue.url %>)</a>
   <% end %>
   <br>
 
   <nav>
     <ul>
-        <li><a href="#" class='menu settings selected'>Venue Profile</a></li>
-        <li><a href="#" class='menu events'>Completed Events</a></li>
-        <li><a href="#" class='menu raw_events'>Edit Scraped Events</a></li>       
-        <li><a href="#" class='menu raw_events'>Create new Event</a></li>   
+        <li><a href="/venues/edit/<%=@venue.id%>" class='menu settings'>Venue Profile</a></li>
+        <li><a href="/venues/list_events/<%=@venue.id%>" class='menu events'>Completed Events</a></li>
+        <li><a href="/venues/list_raw_events/<%=@venue.id%>" class='menu raw_events'>Edit Scraped Events</a></li>       
+        <li><a href="/venues/new/<%=@venue.id%>" class='menu raw_events'>Add new Event</a></li>   
     </ul>
   </nav>

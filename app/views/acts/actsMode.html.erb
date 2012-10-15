@@ -50,11 +50,20 @@
 	});
 
 	function closeMode() {
-		console.log("closemode")
-		if(confirm('Changes will not be saved unless you click the "Update Act" button. Are you sure you want to exit?')){
-			$('.mode').hide();
-		}
-	}
+		$( "#confirm-close" ).dialog({
+            resizable: false,
+            height:140,
+            modal: true,
+            buttons: {
+                "Continue": function() {
+                    $('.mode').hide();
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+	};
 
 </script>
 
@@ -106,4 +115,9 @@
   		</div>
     </div>
 <% end %>
-<div class="close-mode">&#10799;</div>
+
+  <div id="confirm-close" title="Close without saving?" style="display:none; font-size:14px;">
+    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Changes will not be saved unless you click the "Update Act" button. Are you sure you want to exit?</p>
+  </div>
+
+<div class="close-mode">x</div>

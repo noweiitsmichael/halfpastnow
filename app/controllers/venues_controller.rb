@@ -46,9 +46,6 @@ class VenuesController < ApplicationController
       end
     end
 
-    # Will have to come back and make dataTables serverside, see http://railscasts.com/episodes/340-datatables?view=asciicast
-    # ^ DONE BIATCH
-
     respond_to do |format|
       format.html {render :layout => "admin"}
       format.json { render json: VenuesDatatable.new(view_context) }
@@ -110,7 +107,13 @@ class VenuesController < ApplicationController
   # GET /venues/edit/1
   def edit
     authorize! :edit, @user, :message => 'Not authorized as an administrator.'
-    @venue = Venue.includes(:tags, :events => :tags, :raw_venues => :raw_events).find(params[:id])
+    @venue = Venue.find(params[:id])
+
+    render :layout => "admin"
+  end
+
+  def list_events
+    @venue = Venue.includes(:tags, :events => :tags).find(params[:id])
 
     @venue.events.build
     @venue.events.each do |event| 
@@ -119,6 +122,12 @@ class VenuesController < ApplicationController
     end
 
     @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
+
+    render :layout => "admin"
+  end
+
+  def list_raw_events
+    @venue = Venue.includes(:raw_venues => :raw_events).find(params[:id])
 
     render :layout => "admin"
   end
@@ -155,10 +164,10 @@ class VenuesController < ApplicationController
 
     respond_to do |format|
       if @venue.update_attributes!(params[:venue])
-        format.html { redirect_to :action => :edit, :id => @venue.id, :notice => 'yay' }
+        format.html { redirect_to :action => :edit, :id => @venue.id}
         format.json { head :ok }
       else
-        format.html { redirect_to :action => :edit, :id => @venue.id, :notice => 'boo' }
+        format.html { redirect_to :action => :edit, :id => @venue.id}
         format.json { render json: @venue.errors, status: :unprocessable_entity }
       end
     end
@@ -283,7 +292,23 @@ class VenuesController < ApplicationController
   end
 
   # GET /venues/find
+  def cropMode
+    puts "cropMode Params:"
+    puts params
+    puts params[:picture_type]
+    @picURL = params[:picture_url]
+    @picture = Picture.find(params[:picture_id])
+    pp @picture
+    if params[:picture_type] == "Event"
+      @event = Event.find(params[:event_id])
+      @eventType = "Event"
+    else
+      @event = RawEvent.find(params[:event_id])
+      @eventType = "rawEvent"
+    end
 
+    render :layout => false
+  end
 end
 
 private

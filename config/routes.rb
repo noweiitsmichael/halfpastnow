@@ -20,6 +20,11 @@ Myapp::Application.routes.draw do
 
   get "tag/index"
 
+  # namespace :admin do
+  #   resources :venues, :acts
+  # end
+
+
   # resources :events
   # resources :venues
   # resources :feedbacks

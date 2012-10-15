@@ -189,6 +189,28 @@ H6 {font-size: 14px;}
     color:#653782;
 }
 
+.venue-url {
+  font-size:12px;
+}
+
+.do512 {
+  float: left;
+  margin-left: 139px;
+}
+#urlexample{
+  font-style: italic;
+  color: #777777;
+  font-size: 14px;
+}
+
+.form-load {
+  -webkit-animation: pulse .8s infinite alternate;
+ background-color:black;
+ color:white;
+ display: inline-block;
+ border-radius:5px;
+ padding: 5px 7px;
+}
 
 table {
     font-size: 16px;
@@ -237,8 +259,8 @@ nav a:hover, nav a:focus {
 
 }
 
-nav a:active {
-  color: #471169;
+nav a:active, nav .selected {
+  color: #EEEEEE;
   -moz-box-shadow: 0 0 2px 2px rgba(0,0,0,.3) inset;
   -webkit-box-shadow: 0 0 2px 2px rgba(0,0,0,.3) inset;
   box-shadow: 0 0 2px 2px rgba(0,0,0,.3) inset;
