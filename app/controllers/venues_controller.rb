@@ -290,26 +290,9 @@ class VenuesController < ApplicationController
       end
     end
   end
-
-  # GET /venues/find
-  def cropMode
-    puts "cropMode Params:"
-    puts params
-    puts params[:picture_type]
-    @picURL = params[:picture_url]
-    @picture = Picture.find(params[:picture_id])
-    pp @picture
-    if params[:picture_type] == "Event"
-      @event = Event.find(params[:event_id])
-      @eventType = "Event"
-    else
-      @event = RawEvent.find(params[:event_id])
-      @eventType = "rawEvent"
-    end
-
-    render :layout => false
-  end
 end
+  # GET /venues/find
+
 
 private
 

@@ -278,7 +278,7 @@ var eventActs = {};
           console.log("picture url: " + picture_url);
           console.log("picture id: " + picture_id);
           console.log("picture type: " + picture_type);
-    $.get('/venues/cropMode/?picture_url=' + picture_url + "&event_id=" + event_id + "&picture_id=" + picture_id + "&picture_type=" + picture_type, function(data) {
+    $.get('/pictures/cropMode/?picture_url=' + picture_url + "&event_id=" + event_id + "&picture_id=" + picture_id + "&picture_type=" + picture_type, function(data) {
       $('.pics.mode .window').html(data);
       picSuccessCallback = successFunction;
       $('.pics.mode').show();

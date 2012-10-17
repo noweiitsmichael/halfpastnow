@@ -9,6 +9,10 @@ input[type="text"], textarea {
   width:500px;
 }
 
+input[type="text"].picurl{
+  width:338px;
+}
+
 
 
 textarea {
@@ -30,6 +34,10 @@ label {
 
 .field {
   margin-bottom:10px;
+}
+
+.field.pic-field{
+  background-color: #DDD;
 }
 
 .pictures.field.gallery {
@@ -77,7 +85,7 @@ input.price {
 }
 
 #map_canvas {
-   width: 480px; height: 320px; float:left;margin: 40px 0 0 23px;
+   width: 286px; height: 514px; float:left;margin: 22px 0 0 20px;
 }
 
 .main.event .occurrence, .main.event .recurrence {
@@ -327,6 +335,10 @@ html,body {
   display:none;
 }
 
+.fb-image-submit{
+  display:inline;
+}
+
 .remove-embed {
  background-color:black;
  color:white;
@@ -372,7 +384,7 @@ html,body {
 
 
 /* picture add partial */
-.buffer {
+.buffer139 {
   margin-left: 139px;
 }
 

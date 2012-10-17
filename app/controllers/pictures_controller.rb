@@ -57,6 +57,30 @@ class PicturesController < ApplicationController
     pictureParams[:pictureable_id] = params[:pictureable_id]
     pictureParams[:image] = params[:venue][:image]
 
+    pp pictureParams
+
+    @picture = Picture.new(pictureParams)
+
+    respond_to do |format|
+      if @picture.save
+        format.html { render :nothing => true }
+        format.json { render json: @picture }
+      else
+        format.html { render :nothing => true }
+        format.json { render json: @picture }
+      end
+    end
+  end
+
+  def createForAct
+    puts "Pic CreatefromData"
+    pp params
+    pictureParams = {} 
+    pictureParams[:pictureable_type] = params[:pictureable_type]
+    pictureParams[:pictureable_id] = params[:pictureable_id]
+    pictureParams[:image] = params[:act][:image]
+
+
     @picture = Picture.new(pictureParams)
 
     respond_to do |format|
@@ -113,31 +137,48 @@ class PicturesController < ApplicationController
   end
 
   def coverImageAdd
+    puts "cover Picture Crop function"
+    pp params
+    @picture = Picture.find(params[:picture][:id])
 
-  puts "cover Picture Crop function"
-  pp params
-  @picture = Picture.find(params[:picture][:id])
-
-  # Saves to either raw event or event, we'll copy the cover_image over to raw event later
-  if params[:picType] == "Event"
-    @event = Event.find(params[:id])
-    event_hash = {"cover_image" => params[:cover_image]}
-    @event.update_attributes!(event_hash)
-  else
-    @event = RawEvent.find(params[:id])
-    event_hash = {"cover_image" => params[:cover_image]}
-    @event.update_attributes!(event_hash)
-  end
-
-  respond_to do |format|
-    if @picture.update_attributes!(params[:picture])
-      format.html { render :nothing => true }
-      format.json { render json: @event }
+    # Saves to either raw event or event, we'll copy the cover_image over to raw event later
+    if params[:picType] == "Event"
+      @event = Event.find(params[:id])
+      event_hash = {"cover_image" => params[:cover_image]}
+      @event.update_attributes!(event_hash)
     else
-      format.html { render :nothing => true }
-      format.json { render json: @event }
+      @event = RawEvent.find(params[:id])
+      event_hash = {"cover_image" => params[:cover_image]}
+      @event.update_attributes!(event_hash)
+    end
+
+    respond_to do |format|
+      if @picture.update_attributes!(params[:picture])
+        format.html { render :nothing => true }
+        format.json { render json: @event }
+      else
+        format.html { render :nothing => true }
+        format.json { render json: @event }
+      end
     end
   end
-end
+
+  def cropMode
+    puts "cropMode Params:"
+    puts params
+    puts params[:picture_type]
+    @picURL = params[:picture_url]
+    @picture = Picture.find(params[:picture_id])
+    pp @picture
+    if params[:picture_type] == "Event"
+      @event = Event.find(params[:event_id])
+      @eventType = "Event"
+    else
+      @event = RawEvent.find(params[:event_id])
+      @eventType = "rawEvent"
+    end
+
+    render :layout => false
+  end
 
 end

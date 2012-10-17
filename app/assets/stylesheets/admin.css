@@ -287,6 +287,10 @@ nav li:last-child a {
   border-radius: 0 4px 4px 0;            
 }
 
+.fb-pic-reduce {
+  max-height: 150px;
+}
+
 
 
 

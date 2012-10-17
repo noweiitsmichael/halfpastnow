@@ -1,18 +1,6 @@
 <div class="picture_parts">
 <script type="text/javascript">
 	$(function() {
-		$(".add-pictures").click(function() {
-			var picIndex = ((typeof $('.pictures.field').last().attr("index") !== 'undefined') ? parseInt($('.pictures.field').last().attr("index")) + 1 : 0);
-			var firstpic = $('.pictures.field').first();
-			$('.pictures.field').last().after(firstpic.clone());
-			$('.pictures.field').last().attr('index',picIndex);
-			$('.pictures.field .upload_pic').last().attr('name','event[pictures_attributes][' + picIndex + '][image]');
-			$('.pictures.field .upload_pic').last().attr('id','event_pictures_attributes_' + picIndex + '_image');
-			$('.pictures.field .remote_url').last().attr('name','event[pictures_attributes][' + picIndex + '][remote_image_url]');
-			$('.pictures.field .remote_url').last().attr('id','event_pictures_attributes_' + picIndex + '_remote_image_url');
-			$('.pictures.field').last().show();
-			return false;
-		});
 
 		$('.picture_parts').on("click", ".remove-pic", function() {
 			var index = $(this).parents(".pictures.field").attr("index");
@@ -25,25 +13,201 @@
 			return false;
 		});
 	});
-</script>
-<div class="field">
-	<a href="" class="add-pictures">Add Event Pictures</a>
-</div>
-<div class="pictures field" style="display:none;">
-	<label>
-		<div class="remove-pic">&#10799;</div>
-	</label>
-	<input class ="upload_pic" type="file" /> <br>
-	<label class="buffer">or input URL</label> <input class="remote_url" type="text" size="30"/>
-	
-</div>
-<label class="buffer"></label>
 
-<% event.pictures.each_with_index do |pic, index| %>
-<div class="pictures field gallery" index="<%= index %>">
-	<input type="hidden" name="event[pictures_attributes][<%= index %>][id]" value="<%= pic.id %>" />
-		<div href="" class="remove-pic">&#10799;</div>
-	<%= image_tag pic.image_url(:thumb).to_s %>
-</div>
-<% end %>
-</div>
+	$(function() {
+		$('.pic-field').on('click', 'a.pic-edit',function() {
+			console.log("click - pic-edit");
+			showCoverEditMode(parseInt($("#pictureable_id_<%=@event.id%>_url").val()),$(this).attr("pic-url"),$(this).attr("pic-id"),$("#pictureable_type_<%=@event.id%>_url").val(),callbackEdit);
+			return false;
+		});
+
+	});
+
+  $(function () {
+    $('.fb-pic-field').on('click', '.fb-image-submit', function() {
+      console.log("click - fb-image-submit");
+      $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('.fb-pic-field');
+        var picData = 
+          {"picture":
+            { "pictureable_id": parseInt($(this).attr("picable-id")),
+              "pictureable_type": $(this).attr("picable-type"), 
+              "remote_image_url": $(this).attr("fb-pic-url")
+            }
+          };
+        console.log(picData);
+      $.post("/pictures/create",picData,function(data) {
+      console.log(data);
+        console.log("Added from FB pic! " + data.id);
+        $('.ajaxLoader').detach();
+        showCoverEditMode(parseInt($("#pictureable_id_<%=@event.id%>_url").val()),data.image.large.url,data.id,$("#pictureable_type_<%=@event.id%>_url").val(),callbackEdit);
+      },
+      "json");
+      return false;
+    });
+  });
+
+  $(function () {
+    $('.new_pic_<%=@event.id%>').click( function (){
+      console.log("click");
+      if ($("#event_remote_image_url_<%=@event.id%>").val() == ""){
+        return false;
+      } 
+      else {
+        $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('.eventThumbs_<%=@event.id%>');
+        var picData = 
+          {"picture":
+            { "pictureable_id": parseInt($("#pictureable_id_<%=@event.id%>_url").val()),
+              "pictureable_type": $("#pictureable_type_<%=@event.id%>_url").val(), 
+              "remote_image_url": $("#event_remote_image_url_<%=@event.id%>").val()
+            }
+          };
+      }
+      $.post("/pictures/create",picData,function(data) {
+        console.log(data);
+        console.log("picturable id = " + data.pictureable_id);
+        var numThumbs = $(".gallery_<%=@event.id%>").length;
+        var newPicThumb = '<div class="pictures field gallery_<%=@event.id%>" index="' + numThumbs + ' ">';
+        newPicThumb += '<input type="hidden" name="event[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+        newPicThumb += '<input id="pictureable_type" name="pictureable_type" type="hidden" value="Event">';
+        newPicThumb += '<input id="pictureable_id" name="pictureable_id" type="hidden" value="' + data.pictureable_id + '">';
+        newPicThumb += '<div href="" class="remove-pic">&#10799;</div>';
+        newPicThumb += '<a href="" class="pic-edit" event-id="<%= @event.id %>" pic-url="' + data.image.large.url + '" pic-id="' + data.id + '">'
+        newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '"></div>';
+        $('.ajaxLoader').detach();
+        $(newPicThumb).appendTo('.eventThumbs_<%=@event.id%>');
+      },
+      "json");
+      return false;
+    });
+  });
+
+  $(function () {
+      $(".fileclick_<%=@event.id%>").click(function() {
+       	if ($(".event_image_<%=@event.id%>").val() == ""){
+          return false;
+        } 
+        else {
+          $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('.eventThumbs_<%=@event.id%>');
+          $("#event_<%= @event.id %>").ajaxSubmit({
+            beforeSerialize: function(form, options) {
+            },
+            url: "/pictures/createForEvent",
+            success:function(data) {
+              console.log(data);
+              var numThumbs = $(".gallery_<%=@event.id%>").length;
+              console.log("index number = " + numThumbs);
+              console.log("picturable id = " + data.pictureable_id);
+              var newPicThumb = '<div class="pictures field gallery_<%=@event.id%>" index="' + numThumbs + ' ">';
+              newPicThumb += '<input type="hidden" name="event[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+              newPicThumb += '<input id="pictureable_type" name="pictureable_type" type="hidden" value="Event">';
+              newPicThumb += '<input id="pictureable_id" name="pictureable_id" type="hidden" value="' + data.pictureable_id + '">';
+              newPicThumb += '<div href="" class="remove-pic">&#10799;</div>';
+              newPicThumb += '<a href="" class="pic-edit" event-id="<%= @event.id %>" pic-url="' + data.image.large.url + '" pic-id="' + data.id + '">'
+              newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '"></div>';
+              $('.ajaxLoader').detach();
+              $(newPicThumb).appendTo('.eventThumbs_<%=@event.id%>');
+            },
+            type: "post",
+            dataType: "json"
+          });
+          return false;
+      }
+      });
+  });
+
+  $('.picture_parts').on("click", ".remove-pic", function() {
+      console.log("click");
+    var index = $(this).parents(".pictures.field").attr("index");
+    if(typeof index !== 'undefined') {
+      $(this).after("<input type='hidden' name='event[pictures_attributes][" + index + "][_destroy]' value='1' />");
+      $(this).parents(".pictures.field").hide();
+    } else {
+      $(this).parents(".pictures.field").remove();
+    }
+    return false;
+  });
+
+	function callbackEdit(pic) {
+
+	}
+
+	function callbackNew(pic) {
+
+	}
+</script>
+
+
+
+<!-- Pictures Section -->
+
+      
+    <!-- Venue Facebook Photo -->
+    <label>From Venue:</label>
+    <% unless @event.venue.fb_picture.blank? %>
+      <% if Picture.where(:image => @event.venue.fb_picture.match(/[^\/]+$/).to_s, :pictureable_id => @event.venue.id, :pictureable_type => "Venue").exists? %>
+      <% else %>
+
+        <span class="pictures fb-pic-field"><div class="fb-image-submit" picable-id="<%= @event.venue.id %>" picable-type="Venue" fb-pic-url="<%= @event.venue.fb_picture %>">
+          <a href="" class="pic-edit" pic-url="<%= @event.venue.fb_picture %>">
+          <%= image_tag @event.venue.fb_picture, :class => "fb-pic-reduce" %> </a>
+        </div></span>
+      <% end %>
+    <% end %>
+    <!-- end -->
+    
+    <span class="pictures pic-field">
+    <% @event.venue.pictures.each do |pic| %>
+      <a href="" class="pic-edit" pic-url="<%= pic.image_url(:large).to_s %>" pic-id="<%= pic.id%>">
+      <%= image_tag pic.image_url(:thumb).to_s %></a>
+    <% end %>
+    </span>
+
+    <!-- Add new event picture -->
+    <% newPic = Picture.new %>
+    <%= e.fields_for newPic, :url => "/pictures/create", :html => {:multipart => true}, :remote => true do |g| %>
+        <p>
+          <label>Add Event Picture:</label>
+          <input id="pictureable_type_<%=@event.id%>_url" name="pictureable_type_<%=@event.id%>" type="hidden" value="Event">
+          <input id="pictureable_id_<%=@event.id%>_url" name="pictureable_id_<%=@event.id%>" type="hidden" value="<%=@event.id%>">
+          <input id="event_remote_image_url_<%=@event.id%>" name="event[remote_image_url]" size="30" type="text">
+          <a href="" class="new_pic_<%=@event.id%>">Add pic</a>
+        </p>
+    <% end %>
+    <label class="buffer"></label>
+    <% newPic2 = Picture.new %>
+    <%= e.fields_for newPic2, :html => { :multipart => true} do |g| %>
+      Or upload file:
+          <input id="pictureable_type_<%=@event.id%>" name="pictureable_type" type="hidden" value="Event">
+          <input id="pictureable_id_<%=@event.id%>" name="pictureable_id" type="hidden" value="<%=@event.id%>">
+
+      <input class="event_image_<%=@event.id%>" name="event[image]" type="file">
+      <a href="" class="fileclick_<%=@event.id%>">Add pic</a>
+    <% end %>
+    <br><br>
+    <!-- end -->
+
+    <label class="buffer"></label>
+
+    <% unless @event.fb_picture.blank? %>
+      <% if Picture.where(:image => @event.fb_picture.match(/[^\/]+$/).to_s, :pictureable_id => @event.id, :pictureable_type => "Event").exists? %>
+      <% else %>
+        <span class="fb-pic-field"><span class="fb-image-submit" picable-id="<%= @event.id %>" picable-type="Event" fb-pic-url="<%= @event.fb_picture %>">
+          <a href="" class="pic-edit" pic-url="<%= @event.fb_picture %>">
+          <%= image_tag @event.fb_picture, :class => "fb-pic-reduce" %> </a>
+        </span></span>
+      <% end %>
+    <% end %>
+	  <% @event.pictures.each_with_index do |pic, index| %>
+	  <span class="pictures field gallery_<%=@event.id%> pic-field" index="<%= index %>">
+          <input id="pictureable_type" name="pictureable_type" type="hidden" value="Event">
+          <input id="pictureable_id" name="pictureable_id" type="hidden" value="<%=@event.id%>">
+          <input type="hidden" name="event[pictures_attributes][<%= index %>][id]" value="<%= pic.id %>" />
+	      <div href="" class="remove-pic">&#10799;</div>
+	    <a href="" class="pic-edit" event-id="<%= @event.id %>" pic-url="<%= pic.image_url(:large).to_s %>" pic-id="<%= pic.id%>"><%= image_tag pic.image_url(:thumb).to_s %></a>
+	  </span>
+	  <% end %>
+
+    <span class="eventThumbs_<%=@event.id%> pic-field"></span>
+
+    </div>
+<!-- End Pictures Section -->

@@ -1,3 +1,7 @@
+<% content_for :head do %>
+<%= stylesheet_link_tag "jcrop" %>
+<% end %>
+
 <script type="text/javascript">
   var geocoder;
   var map;
@@ -6,7 +10,7 @@
     geocoder = new google.maps.Geocoder();
     var latlng = new google.maps.LatLng(30.25, -97.75);
     var myOptions = {
-      zoom: 8,
+      zoom: 13,
       center: latlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
@@ -42,6 +46,8 @@
     $(".location").blur(codeAddress);
     generateValidator("#venue_settings");
   });
+
+  $(window).load(initialize);
 
 </script>
 
@@ -121,11 +127,11 @@
           <%= hidden_field_tag :pictureable_attributes %>
           <%= hidden_field_tag :pictureable_type, "Venue" %>
           <%= hidden_field_tag :pictureable_id, @venue.id %>
-          <%= f.text_field :remote_image_url %>
+          <%= f.text_field :remote_image_url, :class => "picurl" %>
           <a href="" id="new_pic">Add pic</a>
         </p>
     <% end %>
-    <label class="buffer"></label>
+    <label class="buffer139"></label>
     <% newPic2 = Picture.new %>
     <%= f.fields_for newPic2, :html => { :multipart => true} do |g| %>
       Or upload file:
@@ -221,7 +227,7 @@
     };
     </script>
 
-    <label class="buffer"></label>
+    <label class="buffer139"></label>
 
     <% @venue.pictures.each_with_index do |pic, index| %>
     <div class="pictures field gallery" index="<%= index %>">
