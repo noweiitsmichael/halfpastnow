@@ -4,13 +4,10 @@
 
 		  $('.new-channel-create').click(function() {
 		    var isNewChannel = $('.new.field-selector').prop('checked');
-		    var saveChannelId = $('.save-channel').val();
-		    var saveChannelName = $('.save-channel').val();
 
-			console.log(isNewChannel);
-		    filter.name = isNewChannel ? $('.new-channel-name').val() : $('.save-channel :selected').text();
+		    filter.name = $('.new-channel-name').val();
 
-		    $.post(isNewChannel ? '/channels/create' : '/channels/update/' + saveChannelId, filter, function(channel) {
+		    $.post('/channels/create', filter, function(channel) {
 
 		      channelFilters[channel.id] = {
 		          option_day: (channel.option_day === null) ? 1 : channel.option_day,
@@ -32,12 +29,10 @@
 		          name: (channel.name === null) ? '' : channel.name,
 		      };
 
-		      if(isNewChannel) {
-		        $(".streambar .header").append("<span class='stream' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</span>");
-		        streamSelector();
+	        	$(".streambar .header").append("<span class='stream' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</span>");
+	        streamSelector();
 
-		        $(".channels .lists").append("<li class='channel title' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</li>");
-		      }
+	        	$(".channels .lists").append("<li class='channel title' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</li>");
 
 		      $(".streambar .header .stream").removeClass('selected');
 		      $('.streambar .header .stream[channel-id=' + channel.id + ']').addClass('selected');
@@ -54,34 +49,18 @@
 				$('.save-channel option[value=' + filter.stream_id + ']').prop('selected',true);
 			}
 
+			console.log('weeee');
 			$('.field-selector').click(function() {
+				console.log("click");
 				$('.field').removeClass('selected');
 				$(this).next('.field').addClass('selected');
 			});
-
-			$('.save-channel').focus(function() {
-				$('.field-selector').first().click();
-			});
-
-			$('.new-channel-name').focus(function() {
-				$('.field-selector').last().click();
-			});
 		});
 	</script>
-	<h4>Save Current Filters as Stream</h4>
-	<input type="radio" class="current field-selector" checked name="field-selector" />
-	<div class="field selected">
-		<label>current streams</label>
-		<select class="save-channel" name="no-dropkick">
-			<% @channels.reverse.each do |channel| %>
-				<option value="<%= channel.id %>"><%= channel.name %></option>
-			<% end %>
-		</select>
-	</div>
-	<input type="radio" class="new field-selector" name="field-selector" />
-	<div class="field">
+	<h4>Create New Stream from Current Filters</h4>
+	<div class="field" style="opacity:1;">
 		<label>new stream</label>
 		<input class="new-channel-name" type="text" placeholder="new stream name" />
 	</div>
-	<button class="new-channel-create">Save Stream</button>
+	<button class="new-channel-create">Create New Stream</button>
 <% end %>

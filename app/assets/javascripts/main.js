@@ -40,7 +40,8 @@ var things = {
   "event": spawn(defaultThing, {type: "event"}),
   "act": spawn(defaultThing, {type: "act"}),
   "shunt": spawn(defaultThing, {type: "shunt", internal_url: function() { return "/events/shunt"; }, url: function() { return "?shunt"; }}),
-  "new-channel": spawn(defaultThing, {type: "new-channel", internal_url: function() { return "/channels/new"; }, url: function() { return "?new-channel"; }})
+  "new-channel": spawn(defaultThing, {type: "new-channel", internal_url: function() { return "/channels/new"; }, url: function() { return "?new-channel"; }}),
+  "new-channel-2": spawn(defaultThing, {type: "new-channel-2", internal_url: function() { return "/channels/new2"; }, url: function() { return "?new-channel-2"; }})
 };
 
 var mapOffset;
@@ -763,7 +764,7 @@ function streamSelector() {
   $('#dk_container_stream-select').remove();
   $('.streambar .stream.selector').remove();
 
-  var parentWidth = $('.streambar .header').width();
+  var parentWidth = $('.streambar .header').width() - $('.stream.new').width();
   var sumWidth = 0;
   var maxWidth = 0;
   var overflowIndex = 0;
@@ -1047,7 +1048,7 @@ function loadModal(event) {
   //console.log(thing.type);
   //console.log(thing.id);
   //var thing = {type:$(this).attr("linkto"), id: $(this).attr("link-id")};
-  if($(this).attr("linkto") !== "shunt" && $(this).attr("linkto") !== "new-channel") {
+  if($(this).attr("linkto") !== "shunt" && $(this).attr("linkto") !== "new-channel" && $(this).attr("linkto") !== "new-channel-2" ) {
     history.pushState({}, thing.type + " mode", thing.url());
   }
   if($(this).is("#content .main .events li .venue")) {

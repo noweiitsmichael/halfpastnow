@@ -8,8 +8,6 @@ Myapp::Application.routes.draw do
 
   resources :bookmarks
 
-  resources :channels
-
   resources :venues
 
   get "info/about"

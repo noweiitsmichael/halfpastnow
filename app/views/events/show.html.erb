@@ -51,7 +51,7 @@
 			<%= render :partial => "layouts/bookmark", :locals => { :element => @occurrence, :bookmark_type => "Occurrence", :bookmark_already => holding_tank } %>
 		</div></div>
 		<div class="block">
-			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:black%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&style=feature:all|hue:0x000001|saturation:-100&sensor=false"/></a>
+			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:black%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&style=feature:all|hue:0x000001|saturation:-100&sensor=false"/></a>
 			<div class="block-inner">
 				<div class="venue"><a linkto="venue" link-id="<%= @event.venue.id %>" href="#"><%= @event.venue.name %></a></div>
 				<div class="address one"><%= @event.venue.address %></div>

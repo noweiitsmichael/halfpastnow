@@ -37,6 +37,14 @@ class ChannelsController < ApplicationController
 	    end
 	end
 
+	def new2
+		@channels = current_user.channels
+	    respond_to do |format|
+	      format.html { render :layout => "mode_lite" }
+	      format.json { render json: @channel }
+	    end
+	end
+
 	def show
     @channel = Channel.find(params[:id])
 
