@@ -45,18 +45,12 @@ class VenuesController < ApplicationController
         venue.merge!({ "raw_events_count" => 0})
       end
     end
-
-<<<<<<< HEAD
-    # Will have to come back and make dataTables serverside, see http://railscasts.com/episodes/340-datatables?view=asciicast
-    # ^ DONE BIATCH
-
-
-=======
+    
     respond_to do |format|
       format.html {render :layout => "admin"}
       format.json { render json: VenuesDatatable.new(view_context) }
     end
->>>>>>> new_admin
+
   end
 
   # GET /venues/1
