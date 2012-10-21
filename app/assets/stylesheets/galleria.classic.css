@@ -6,6 +6,8 @@
     position: relative;
     overflow: hidden;
     background: #000;
+    width: 358px;
+    height: 358px;
 }
 .galleria-container img {
     -moz-user-select: none;
