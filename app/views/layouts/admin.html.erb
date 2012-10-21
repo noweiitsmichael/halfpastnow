@@ -53,13 +53,13 @@
     $(function(){
       var path = Array.prototype.join.call(location.pathname.split("/", 3), "/");
       var path2 = Array.prototype.join.call(location.pathname.split("/", 2), "/");
-      // path.join("/");
-      // path2.join("/");
-      console.log(path);
-      console.log(path2);
-      if ( (path === "/admin/venues") || (path2 === "/venues"))
+
+
+      // $('#main-menu a[href$="' + path + '"]').attr('class', 'selected');
+
+      if ( path2 === "/venues" )
         $('#main-menu a[href$="/admin/venues"]').attr('class', 'selected');
-      else if ( path === "/acts/index" || "/admin/artists" ) 
+      else if ( (path === "/acts/index" ) || (path2 === "/admin/artists") ) 
         $('#main-menu a[href$="/admin/artists"]').attr('class', 'selected');
       
     });
