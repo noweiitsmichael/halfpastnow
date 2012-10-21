@@ -15,6 +15,9 @@
 
 
 
+
+
+
 .ui-helper-hidden { display: none; }
 .ui-helper-hidden-accessible { position: absolute !important; clip: rect(1px 1px 1px 1px); clip: rect(1px,1px,1px,1px); }
 .ui-helper-reset { margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none; }
@@ -61,18 +64,18 @@
 .ui-widget { font-family: Arial, Helvetica, sans-serif; font-size: 0.8em; }
 .ui-widget .ui-widget { font-size: 1em; }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Arial, Helvetica, sans-serif; font-size: 1em; }
-.ui-widget-content { border: 1px solid #200720; background: #e9e9ec; color: #333333; }
+.ui-widget-content { border: 1px solid #200720; background: #e9e9ec; color: #333333; border: none;}
 .ui-widget-content a { color: #333333; }
-.ui-widget-header { border: 1px solid #46264a; background: #573559; color: #ffffff; font-weight: bold; }
+.ui-widget-header { border: 1px solid #46264a; background: #573559; color: #ffffff; font-weight: bold; background: #333;}
 .ui-widget-header a { color: #ffffff; }
 
 /* Interaction states
 ----------------------------------*/
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { background: #AE74B1; font-weight: bold; color: #1f1f7f; border: 1px solid #7A5F7B;}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { background: #AE74B1; font-weight: bold; color: #1f1f7f; background: #888;}
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #1f1f7f; text-decoration: none; }
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { /* border: 1px solid #2e1c30; */ background: #46264a; font-weight: bold; color: #ffffff; }
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { /* border: 1px solid #2e1c30; */ background: #46264a; font-weight: bold; color: #ffffff; background: #0094C5;}
 .ui-state-hover a, .ui-state-hover a:hover { color: #ffffff; text-decoration: none; }
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #6a3271; background: #9837a4; font-weight: bold; color: #ffffff; }
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { border: 1px solid #6a3271; background: #9837a4; font-weight: bold; color: #ffffff; border: none; background: #0094C5;}
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #ffffff; text-decoration: none; }
 .ui-widget :active { outline: none; }
 
@@ -459,11 +462,11 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  * http://docs.jquery.com/UI/Slider#theming
  */
 .ui-slider { position: relative; text-align: left; }
-.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1em; height: 1.5em; cursor: default; border-radius: 2px;}
+.ui-slider .ui-slider-handle { position: absolute; z-index: 2; width: 1em; height: 1.5em; cursor: default;}
 .ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; }
 
-.ui-slider-horizontal { height: 1em; margin-top: .25em;}
-.ui-slider-horizontal .ui-slider-handle { margin-left: -.5em; margin-top: -.3em;}
+.ui-slider-horizontal { height: .5em; margin-top: .25em;}
+.ui-slider-horizontal .ui-slider-handle { margin-left: -.5em; margin-top: -.45em;}
 .ui-slider-horizontal .ui-slider-range { top: 0; height: 100%; }
 .ui-slider-horizontal .ui-slider-range-min { left: 0; }
 .ui-slider-horizontal .ui-slider-range-max { right: 0; }
@@ -499,7 +502,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
  *
  * http://docs.jquery.com/UI/Datepicker#theming
  */
-.ui-datepicker { width: 17em; padding: .2em .2em 0; display: none; z-index: 5 !important; }
+.ui-datepicker { width: 17em; padding: .2em .2em 0; display: none; z-index: 1000 !important; }
 .ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; }
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; }
 .ui-datepicker .ui-datepicker-prev-hover, .ui-datepicker .ui-datepicker-next-hover { top: 1px; }

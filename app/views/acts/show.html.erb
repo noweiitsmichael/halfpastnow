@@ -1,15 +1,15 @@
 <% content_for :title do %>
 	<%= render :partial => "layouts/bookmark", :locals => { :element => @act } %>
-	<h1><%= @act.name %></h1><% end %>
+	<h1><span class="icon-flag"></span><%= @act.name %></h1><% end %>
 
 <% content_for :body do %>
 <%= javascript_include_tag "galleria-1.2.8.min" %>
-	<ul class="sub-header">
-		<% unless @act.tags.length == 0 %>
-			<li><%= @act.tags.collect { |tag| tag.name } * " / " %></li>
-		<% end %>
-	</ul>
 	<div class="col-1">
+		<ul class="sub-header">
+			<% unless @act.tags.length == 0 %>
+				<li><%= @act.tags.collect { |tag| tag.name } * " / " %></li>
+			<% end %>
+		</ul>
 		<% unless @act.description.to_s.empty? %>
 			<div class="description block">
 				<h2>Details</h2>
@@ -38,13 +38,16 @@
 		    <% end %>
         </div>
 
-        <script>
-            Galleria.loadTheme('assets/galleria.classic.min.js');
-            $('#galleria').galleria({
-		        width:400,
-		        height:300,
-		        lightbox:true
-		    });
+        <script type="text/javascript">
+        	$(function() {
+        		
+	            Galleria.loadTheme('assets/galleria.classic.min.js');
+	            $('#galleria').galleria({
+			        width:358,
+			        height:358,
+			        lightbox:true
+			    });
+	        });
         </script>
 
 		<div class="calendar block">

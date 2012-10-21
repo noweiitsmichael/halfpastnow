@@ -2,22 +2,20 @@
 
 <% content_for :title do %>
 	<%= render :partial => "layouts/bookmark", :locals => { :element => @occurrence } %>
-	<h1><%= @event.title %></h1>
+	<h1><span class="icon-bolt"></span><%= @event.title %></h1>
 <% end %>
 
 <% content_for :body do %>
-<%= javascript_include_tag "galleria-1.2.8.min" %>
-
-	<ul class="sub-header">
-		<li><%= @occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
-		<% if @event.price %>
-			<li><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 2) : "FREE" %></li>
-		<% end %>
-		<% unless @event.tags.length == 0 %>
-			<li><%= @event.tags.collect { |tag| tag.name } * " / " %></li>
-		<% end %>
-	</ul>
 	<div class="col-1">
+		<ul class="sub-header">
+			<li><%= @occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
+			<% if @event.price %>
+				<li><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 2) : "FREE" %></li>
+			<% end %>
+			<% unless @event.tags.length == 0 %>
+				<li><%= @event.tags.collect { |tag| tag.name } * " / " %></li>
+			<% end %>
+		</ul>
 		<% unless @event.description.to_s.empty? %>
 			<div class="description block">
 				<h2>Details</h2>
@@ -47,7 +45,7 @@
 	</div>
 	<div class="col-2">
 		<div class="block">
-			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=402x300&zoom=15&maptype=roadmap&markers=color:red%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&style=feature:all|hue:0x000001|saturation:-50&sensor=false"/></a>
+			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:black%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&style=feature:all|hue:0x000001|saturation:-100&sensor=false"/></a>
 			<div class="block-inner">
 				<div class="venue"><a linkto="venue" link-id="<%= @event.venue.id %>" href="#"><%= @event.venue.name %></a></div>
 				<div class="address one"><%= @event.venue.address %></div>
@@ -80,13 +78,15 @@
 		    	<br>
 		    <% end %>
         </div>
-        <script>
-            Galleria.loadTheme('assets/galleria.classic.min.js');
-            $('#galleria').galleria({
-		        width:400,
-		        height:300,
-		        lightbox:true
-		    });
+        <script type="text/javascript">
+         	$(function() {
+            	Galleria.loadTheme('assets/galleria.classic.min.js');
+	            $('#galleria').galleria({
+			        width:358,
+			        height:358,
+			        lightbox:true
+			    });
+			});
         </script>
 
 		<% unless @occurrences.length == 0 && @recurrences.length == 0 %>
