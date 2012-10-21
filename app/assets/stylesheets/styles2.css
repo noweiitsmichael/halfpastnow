@@ -912,11 +912,11 @@ input::-webkit-input-placeholder
 }
 
 #header .header .filter-toggle.tags .text-inner {
-  max-width: 200px;
+  max-width: 160px;
 }
 
 #header .header .filter-toggle.date .text-inner {
-  max-width: 200px;
+  max-width: 150px;
   text-transform: none;
 }
 
@@ -1346,6 +1346,7 @@ input::-webkit-input-placeholder
     display: inline-block;
     line-height: 89px;
     font-style: italic;
+    font-family: Alegreya;
 }
 
 .mode .window.lite h4 {
@@ -1913,7 +1914,12 @@ html, body {
   line-height: 27px;
   font-weight: bold;
   font-family: Alegreya SC;
-  margin-right: 5px;
+  margin-right: 0;
+  margin-left: 2px;
+}
+
+#header .header .filter-toggle.filter-action.action-clear {
+    margin-left: 11px;
 }
 
 #header .header .filter-toggle.filter-action .pre-text {
@@ -1953,6 +1959,7 @@ html, body {
   height: 32px;
   padding: 3px 12px 0;
   margin-top: 3px;
+  margin-right: -11px;
 }
 
 #header .header .pre-text .icon {
@@ -1963,8 +1970,10 @@ html, body {
 }
 
 #header .header .text .icon {
-  margin-left: 3px;
+  margin-left: 0;
   font-size: 16px;
+  position: relative;
+  top: -1px;
 }
 
 #header .header .icon-sort {
