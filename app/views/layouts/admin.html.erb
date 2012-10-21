@@ -14,6 +14,7 @@
   <%= javascript_include_tag "jquery.form" %>
   <%= javascript_include_tag "jquery.tabSlideOut.v1.3" %>
   <%= javascript_include_tag "jquery.dataTables.min" %>
+  <%= javascript_include_tag "dataTables.fnSetFilteringDelay" %>
   <%= javascript_include_tag "venue" %>
   <%= javascript_include_tag "jquery.cleditor.min" %>
   <%= javascript_include_tag "select2" %>
@@ -23,19 +24,18 @@
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
   <link href='http://fonts.googleapis.com/css?family=Marcellus+SC' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Adamina' rel='stylesheet' type='text/css'>
   <%= javascript_include_tag "markerwithlabel" %>
 
   <%= stylesheet_link_tag "venue" %>
   <%= stylesheet_link_tag "jquery-ui" %>
+  <%= stylesheet_link_tag "jquery.cleditor" %>
   <%= stylesheet_link_tag "select2" %>
   <%= stylesheet_link_tag "font-awesome" %>
   <%= stylesheet_link_tag "admin" %>
-  <%= stylesheet_link_tag "jquery-ui" %>
   <%= stylesheet_link_tag "dropkick" %>
-  <%= stylesheet_link_tag "ptsans_theme" %>
   <%= stylesheet_link_tag "jquery.dataTables_themeroller" %>
   <%= stylesheet_link_tag "jquery-ui-1.8.24.custom" %>
+  <%= stylesheet_link_tag "jcrop" %>
 
   <%= csrf_meta_tags %>
 
@@ -51,12 +51,17 @@
     });
 
     $(function(){
-      var path = location.pathname;
-      if ( path )
-        $('#main-menu a[href$="' + path + '"]').attr('class', 'selected');
-      if ( path === "/acts/index" )
+      var path = Array.prototype.join.call(location.pathname.split("/", 3), "/");
+      var path2 = Array.prototype.join.call(location.pathname.split("/", 2), "/");
+      // path.join("/");
+      // path2.join("/");
+      console.log(path);
+      console.log(path2);
+      if ( (path === "/admin/venues") || (path2 === "/venues"))
+        $('#main-menu a[href$="/admin/venues"]').attr('class', 'selected');
+      else if ( path === "/acts/index" || "/admin/artists" ) 
         $('#main-menu a[href$="/admin/artists"]').attr('class', 'selected');
-
+      
     });
 
     </script>
@@ -85,7 +90,21 @@
     </div>
     <div id="content">
       <div id="main-menu">
-        <h2>Admin Control Panel</h2>
+        <h2><b>Admin Control Panel</b></h2>
+
+        <br><div class="profpic">
+        <% if current_user.profilepic.blank? == false %>
+          <%= image_tag current_user.profilepic_url(:tiny).to_s %>
+        <% elsif current_user.fb_picture.blank? == false %>
+          <%= image_tag current_user.fb_picture %>
+        <% else %>
+          <%= image_tag("buddy.jpg") %>
+        <% end %>
+        </div>
+        <h4><i><%= current_user.firstname.titleize %> <%= current_user.lastname.titleize %></i></h4>
+        <div id="location"><%= image_tag("location-icon.png") %>  Austin, TX</div>
+        <br>
+        
         <ul>
           <li><a href="/admin">Assigned Events</a></li>
           <li><a href="/admin/controlPanel">Create New Event</a></li>

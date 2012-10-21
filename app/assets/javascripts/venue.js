@@ -4,6 +4,8 @@
 
 var actSuccessCallback;
 
+var picSuccessCallback;
+
 var actsInfo = {};
 
 var validators = {};
@@ -11,6 +13,8 @@ var validators = {};
 var eventActs = {};
 
   function generateValidator(selector, options) {
+    console.log(selector);
+    console.log(options);
     options = options || {};
 
     if(options["ajax"] == true) {
@@ -36,6 +40,7 @@ var eventActs = {};
                   $(this).attr("disabled","disabled");
               });
             }
+            console.log(obj);
             obj.ajaxSubmit({
                 dataType:'json',
                 beforeSubmit: function() {
@@ -43,11 +48,14 @@ var eventActs = {};
                               },
                 beforeSerialize:  function() {
                                     var actIDs = obj.find(".act-names").val().split(",");
-                                    var htmlStr = ""
+                                    var htmlStr = "";
                                     for (var i in actIDs) {
                                       htmlStr += "<input checked='checked' type='checkbox' id='event_act_ids_" + actIDs[i] + "' name='event[act_ids][]' value='" + actIDs[i] + "'/>"
                                     }
                                     obj.find(".act-inputs").html(htmlStr);
+
+
+
                                   },
                 success:  function(data) {
                             console.log(data);
@@ -177,7 +185,7 @@ var eventActs = {};
       multiple:true,
       //placeholder:"search performers",
       ajax: {
-                url: "/venues/actFind",
+                url: "/acts/actFind",
                 dataType: 'json',
                 data: function (term) {
                     return {
@@ -185,11 +193,17 @@ var eventActs = {};
                     };
                 },
                 results: function(data) {
+
                     for(var i in data) {
                       if(typeof actsInfo[data[i].id] === 'undefined') {
-                        actsInfo[data[i].id] = { tags: data[i].tags };
+                        actsInfo[data[i].id] = { tags: data[i].tags,
+                                                 pictures: data[i].pictures,
+                                                 fb_picture: data[i].fb_picture,
+                                                 name: data[i].name };
+
                       }
                     }
+
                     return { results: data };
                 }
             },
@@ -222,7 +236,6 @@ var eventActs = {};
   };
 
   function actsChange(obj) {
-    // console.log("actsChange");
     var newActs = $(obj).val().split(",");
     if(newActs[0] == "")
       newActs = [];
@@ -235,27 +248,55 @@ var eventActs = {};
         addedActs.push(newActs[i]);
     }
 
-    // console.log("oldActs");
-    // console.log(oldActs);
-    // console.log("newActs");
-    // console.log(newActs);
-    // console.log("addedActs");
-    // console.log(addedActs);
-
     for(var i in addedActs) {
       var actTags = actsInfo[parseInt(addedActs[i])].tags.split(",");
-      // console.log("actTags");
-      // console.log(actTags);
+      var pictures = actsInfo[parseInt(addedActs[i])].pictures;
       for(var j in actTags) {
         $(obj).parents(".event-element").find("#event_" + $(obj).attr("event-id") + "_tag_ids_" + actTags[j]).prop("checked", true);
       }
     }
+
+      var lastAct = addedActs[addedActs.length-1];
+      // Check to see if FB picture has already been converted to pictures and don't display FB link if it has.
+      var fbPicExists = false;
+      var fbImageName = /[^\/]+$/.exec(actsInfo[parseInt(lastAct)].fb_picture);
+      for(var f in pictures){
+        var imageName = /[^\/]+$/.exec(pictures[f].image.url);
+        if (fbImageName[0] === imageName[0]){
+          fbPicExists = true;
+        }
+      }
+      // Add pictures
+      console.log("Added artist pics:");
+      console.log(actsInfo[parseInt(lastAct)]);
+      console.log(actsInfo[parseInt(lastAct)].id);
+      console.log(addedActs);
+      console.log(lastAct);
+      var actPics = "<div><label>From " + actsInfo[parseInt(lastAct)].name + ":</label><span class='pictures'>";
+      var actPictureField = ".field-for-act-pics-" + $(obj).attr("event-id");
+      var result = /[^\/]+$/.exec(actsInfo[parseInt(lastAct)].fb_picture);
+      if((actsInfo[parseInt(lastAct)].fb_picture != null) && (actsInfo[parseInt(lastAct)].fb_picture != "")) {
+        if(fbPicExists === false) {
+          actPics += '<span class="fb-pic-field"><div class="fb-image-submit" picable-id="' + lastAct + '" picable-type="Act" fb-pic-url="' + actsInfo[parseInt(lastAct)].fb_picture + '">';
+          actPics += '<a href="" pic-url="' + actsInfo[parseInt(lastAct)].fb_picture + '">';
+          actPics += '<img class="fb-pic-reduce" src="' + actsInfo[parseInt(lastAct)].fb_picture + '"/></a></div></span>';
+        }
+      }
+      if(pictures.length > 0) {
+          for (var i in pictures) {
+              actPics += '<a href="" class="pic-edit" pic-url="' + pictures[i].image.large.url + '" pic-id="' + pictures[i].id + '">';
+              actPics += '<img src="' + pictures[i].image.thumb.url + '"/></a>';
+          }
+      }
+      $(actPictureField).append(actPics + '</span></div>');
+
+
     eventActs[$(obj).attr("event-id")] = $(obj).val();
   }
 
   function showActsMode(eventID,actID,successFunction) {
     var actSuffix = (typeof actID !== 'undefined' ? "/" + actID : "");
-    $.get('/venues/actsMode' + actSuffix, function(data) {
+    $.get('/acts/actsMode' + actSuffix, function(data) {
       $('.acts.mode .window').html(data);
       if(typeof eventID !== 'undefined' || eventID === null)
         $('#act-form').attr('event-id',eventID);
@@ -268,6 +309,24 @@ var eventActs = {};
 
   function hideActsMode() {
     $('.acts.mode').hide();
+  }
+
+  function showCoverEditMode(event_id,picture_url,picture_id,picture_type,successFunction) {
+          console.log("in showCoverEditMode");
+          console.log("event id: " + event_id);
+          console.log("picture url: " + picture_url);
+          console.log("picture id: " + picture_id);
+          console.log("picture type: " + picture_type);
+    $.get('/pictures/cropMode/?picture_url=' + picture_url + "&event_id=" + event_id + "&picture_id=" + picture_id + "&picture_type=" + picture_type, function(data) {
+      $('.pics.mode .window').html(data);
+
+      picSuccessCallback = successFunction;
+      $('.pics.mode').show();
+    });
+  }
+
+  function hideCoverEditMode() {
+    $('.pics.mode').hide();
   }
 
   function dateTimeChange() {
@@ -286,7 +345,7 @@ var eventActs = {};
     $('body').on("click", ".select2-search-choice", function(event) {
       console.log("act click");
       var eventID = $(this).parents(".acts.field").find(".act-names").attr("event-id");
-      //ugggggggg
+      //uhnnnhhnggngggnnnnggg
       var actID = $(this).parents(".acts.field").find(".act-names").val().split(",")[$(this).index()];
       console.log(actID);
       showActsMode(eventID,actID);

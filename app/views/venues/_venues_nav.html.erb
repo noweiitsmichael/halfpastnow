@@ -1,0 +1,26 @@
+<script> 
+
+  $(function(){
+    var path = location.pathname;
+    if ( path )
+      $('nav a[href$="' + path + '"]').attr('class', 'selected');
+
+  });
+
+</script>
+
+  <a href="/admin/venues">&lt; Back</a><br><br>
+  <h2><b><%= @venue.name %></b></h2>
+  <% if @venue.url && @venue.url != "" %>
+    <a class="venue-url" href="<%= @venue.url %>">(<%= @venue.url %>)</a>
+  <% end %>
+  <br>
+
+  <nav>
+    <ul>
+        <li><a href="/venues/edit/<%=@venue.id%>" class='menu settings'>Venue Profile</a></li>
+        <li><a href="/venues/list_events/<%=@venue.id%>" class='menu events'>Completed Events</a></li>
+        <li><a href="/venues/list_raw_events/<%=@venue.id%>" class='menu raw_events'>Edit Scraped Events</a></li>       
+  
+    </ul>
+  </nav>

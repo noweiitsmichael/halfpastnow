@@ -1,0 +1,35 @@
+<script>
+$(document).ready(function() {
+    $('.child-tag').change(function() {
+    	var parentId = "#<%=@iStrId%>" + $(this).attr("parent-id");
+        if ($(this).is(':checked')) {
+            $(parentId).attr('checked', true);
+        } else {
+        	if ($(this).parent().siblings().children().is(':checked') === false) {
+        		$(parentId).attr('checked', false);
+        	}
+        }
+    });
+});
+</script>
+<div class="tags field">
+	<label>Tags</label>
+	<div class="input-tags">
+		<% @parentTags.sort { |a,b| a.name <=> b.name }.each do |tag| %>
+			<br>
+			<div class="parent tag">
+				<%= check_box_tag @iStrName, tag.id, element.id.nil? ? false : element.tags.include?(tag), :id => (@iStrId + tag.id.to_s), :class => "parent-check-box" %>
+				<%= label_tag @iStrName, tag.name, :for => (@iStrId + tag.id.to_s) %>
+			</div>
+
+			<div class="children">
+			<% tag.childTags.sort { |a,b| a.name <=> b.name }.each do |childTag| %>
+				<div class="child tag">
+				<%= check_box_tag @iStrName, childTag.id, element.id.nil? ? false : element.tags.include?(childTag), :id => (@iStrId + childTag.id.to_s), :class => "child-tag", 'parent-id' => tag.id %>
+				<%= label_tag @iStrName, childTag.name, :for => (@iStrId + childTag.id.to_s) %>
+				</div>
+			<% end %>
+			</div>
+	    <% end %>
+    </div>
+</div>

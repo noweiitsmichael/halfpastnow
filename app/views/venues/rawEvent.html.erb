@@ -41,24 +41,31 @@
 
 		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => event } %>
 
-	    <div class="field">
-	    	<div class="picgal">
-	    	<b><%= e.label "Picture Galleries" %></b><br>
+		<div class="field">
+	    	<%= e.label :cover_image %>
+	    	<span class="cover-image-<%= @rawEvent.id %>">
+				<b><span style="color:red;">**** NONE: Click an image from the gallery below, or upload a new one and click it ****</span><b>
+			</span>
+		</div>
 
-	    	<% if !@rawEvent.fb_picture.blank? %>
-					<%= e.label "From Facebook:" %>
-					<%= image_tag @rawEvent.fb_picture %>
-					<br>
-			<% end %>
-			</div>
-		    <label>From Venue:</label>
-		    <% @venue.pictures.each do |pic| %>
-		    		<%= image_tag pic.image_url(:thumb).to_s %>
-		    <% end %>
+		<div class="greyback">
+		<div class="field pic-field">
+	    	<b>PICTURE GALLERY</b><br><br>
+			<!-- container for new artists from select2 box-->
+			<span class="field-for-act-pics-1<%=@rawEvent.id%>"></span>
+	    	<!-- end -->
+
+	    <%= render :partial => "pictures_raw_events", :locals => { :e => e, :event => event, :rawEvent => @rawEvent, :venue => @venue } %>
+	    <br>
 	    </div>
+	</div>
 
-	    <%= render :partial => "pictures_events", :locals => { :event => event } %>
-
+	    <div class="pics mode">
+			<div class="overlay">
+				<div class="window">
+				</div>
+			</div>
+		</div>
 
 		<div class="actions">
 			<%= e.submit %>

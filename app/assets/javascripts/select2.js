@@ -1498,7 +1498,10 @@
                 parts,
                 val = this.getVal(),
                 pictures, 
-                actPics = "";
+                actPics = "",
+                actFbPic = "",
+                actLabel = "",
+                actFbPicField = "";
             parts = ["<li class='select2-search-choice'>",
                 this.opts.formatSelection(data),
                 "<a href='javascript:void(0)' class='select2-search-choice-close' tabindex='-1'></a>",
@@ -1523,18 +1526,40 @@
 
             choice.data("select2-data", data);
             choice.insertBefore(this.searchContainer);
-            $.getJSON('/acts/show/' + id + '.json', function(actInfo) {
-                pictures = $.parseJSON(actInfo.pictures);
-                actPics += "<label>From " + $.parseJSON(actInfo.act).name + ":</label>";
-                if(pictures.length > 0) {
-                    for (var i in pictures) {
-                        var temp = pictures[i].image;
-                        actPics += " <img src='" + temp.thumb.url + "'/>";
-                    }
-                }
-                actPics += "<br>";
-                $(actPics).insertAfter('.picgal');
-            });
+            // console.log("Printing thhis....");
+            // console.log(this);
+            // $.getJSON('/acts/show/' + id + '.json', function(actInfo) {
+            //     // console.log("actInfo this:");
+                
+            //     // console.log(actInfo);
+            //     // console.log(data);
+            //     pictures = $.parseJSON(actInfo.pictures);
+            //     actLabel = "<label>From " + $.parseJSON(actInfo.act).name + ":</label>";
+
+            //     actFbPicField = ".fb-pic-field-for-act-" + $.parseJSON(actInfo.act).id;
+            //     var actLabelField = ".label-field-for-act-" + $.parseJSON(actInfo.act).id;
+            //     $(actLabelField).prepend(actLabel);
+            //     if(($.parseJSON(actInfo.act).fb_picture != null) && ($.parseJSON(actInfo.act).fb_picture != "")) {
+            //         actFbPic += '<span class="fb-image-submit" picable-id="' + $.parseJSON(actInfo.act).id + '" picable-type="Act" fb-pic-url="' + $.parseJSON(actInfo.act).fb_picture + '">';
+            //         actFbPic += '<a href="" class="pic-edit" pic-url="' + $.parseJSON(actInfo.act).fb_picture + '">';
+            //         actFbPic += '<img class="fb-pic-reduce" src="' + $.parseJSON(actInfo.act).fb_picture + '"/></a></span>';
+            //         //$(actFbPicField).append(actFbPic);
+            //         $(".field-for-act-pics-" + $.parseJSON(actInfo.occurrences).event_id).append(actFbPic);
+            //     }
+            //     if(pictures.length > 0) {
+                    
+            //         for (var i in pictures) {
+            //             var temp = pictures[i].image;
+            //             var actPicField = ".act-" + $.parseJSON(actInfo.act).id + "-pic-field-" + i;
+            //             actPics = '<a href="" class="pic-edit" pic-url="' + pictures[i].image.large.url + '" pic-id="' + pictures[i].id + '">';
+            //             actPics += '<img src="' + pictures[i].image.thumb.url + '"/></a>';
+            //             //$(actPicField).append(actPics);
+            //             $($.parseJSON(actInfo.occurrences).event_id).append(actPics);
+            //         }
+            //         // console.log("Adding other pictures... to " + actPicField);
+            //     }
+
+            // });
             val.push(id);
             this.setVal(val);
         },

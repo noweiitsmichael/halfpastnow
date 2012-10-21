@@ -46,10 +46,17 @@ class VenuesController < ApplicationController
       end
     end
 
+<<<<<<< HEAD
     # Will have to come back and make dataTables serverside, see http://railscasts.com/episodes/340-datatables?view=asciicast
     # ^ DONE BIATCH
 
 
+=======
+    respond_to do |format|
+      format.html {render :layout => "admin"}
+      format.json { render json: VenuesDatatable.new(view_context) }
+    end
+>>>>>>> new_admin
   end
 
   # GET /venues/1
@@ -107,7 +114,13 @@ class VenuesController < ApplicationController
   # GET /venues/edit/1
   def edit
     authorize! :edit, @user, :message => 'Not authorized as an administrator.'
-    @venue = Venue.includes(:tags, :events => :tags, :raw_venues => :raw_events).find(params[:id])
+    @venue = Venue.find(params[:id])
+
+    render :layout => "admin"
+  end
+
+  def list_events
+    @venue = Venue.includes(:tags, :events => :tags).find(params[:id])
 
     @venue.events.build
     @venue.events.each do |event| 
@@ -117,6 +130,19 @@ class VenuesController < ApplicationController
 
     @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
 
+    render :layout => "admin"
+  end
+
+  def list_raw_events
+    @venue = Venue.includes(:raw_venues => :raw_events).find(params[:id])
+
+    render :layout => "admin"
+  end
+
+  def new_event
+    @venue = Venue.includes(:raw_venues => :raw_events).find(params[:id])
+
+    render :layout => "admin"
   end
 
   # POST /venues
@@ -151,10 +177,10 @@ class VenuesController < ApplicationController
 
     respond_to do |format|
       if @venue.update_attributes!(params[:venue])
-        format.html { redirect_to :action => :edit, :id => @venue.id, :notice => 'yay' }
+        format.html { redirect_to :action => :edit, :id => @venue.id}
         format.json { head :ok }
       else
-        format.html { redirect_to :action => :edit, :id => @venue.id, :notice => 'boo' }
+        format.html { redirect_to :action => :edit, :id => @venue.id}
         format.json { render json: @venue.errors, status: :unprocessable_entity }
       end
     end
@@ -164,13 +190,26 @@ class VenuesController < ApplicationController
   # GET /venues/new.json
   def fromRaw
     @venue = Venue.find(params[:id])
-    pp @venue
+    puts "creating from raw......."
+    pp params
     @event = @venue.events.build()
-    @event.update_attributes(params[:event])
+    @event.update_attributes!(params[:event])
     @event.user_id = current_user.id
+
+    newpictures = Picture.where(:pictureable_type => "RawEvent", :pictureable_id => params[:raw_event_id]) 
+    unless newpictures.nil?
+      newpictures.each do |pic|
+        updatePic = Picture.find(pic.id)
+        updatePic.pictureable_id = @event.id
+        updatePic.pictureable_type = "Event"
+        updatePic.save!
+      end
+    end
+
+    @raw_event = RawEvent.find(params[:raw_event_id])
+    @event.cover_image = @raw_event.cover_image
     
     if @event.save
-      @raw_event = RawEvent.find(params[:raw_event_id])
       @raw_event.submitted = true
       @raw_event.save
       render json: {:event_id => @event.occurrences.first.id, :event_title => @event.title}
@@ -230,13 +269,6 @@ class VenuesController < ApplicationController
     render json: {:event_id => @event.id }
   end
 
-  def deleteAct
-    @act = Act.find(params[:id])
-    @act.destroy
-
-    render json: {:act_id => @act.id }
-  end
-
   def rawEvent
     @rawEvent = RawEvent.find(params[:id])
 
@@ -284,49 +316,8 @@ class VenuesController < ApplicationController
       end
     end
   end
-
-  # GET /venues/find
-  def actFind
-    if(params[:contains])
-      @acts = Act.where("name ilike ?", "%#{params[:contains]}%").collect {|a| { :name => "#{a.name}", :text => "#{a.name}", :id => a.id, :tags => (a.tags.collect { |t| t.id.to_s } * ",") } }
-    else
-      @acts = []
-    end
-
-    render json: @acts
-  end
-
-  def actCreate
-    authorize! :actCreate, @user, :message => 'Not authorized as an administrator.'    
-    if (params[:act][:id].to_s.empty?)
-      @act = Act.new()
-    else
-      @act = Act.find(params[:act][:id])
-    end
-    @act.update_attributes!(params[:act])
-
-    respond_to do |format|
-      if @act.save
-        format.html { redirect_to :action => :index, :notice => 'yay' }
-        format.json { render json: { :name => @act.name, :text => @act.name, :id => @act.id, :tags => (@act.tags.collect { |t| t.id.to_s } * ","), :completedness => @act.completedness } }
-      else
-        format.html { redirect_to :action => :index, :notice => 'boo' }
-        format.json { render json: false }
-      end
-    end
-  end
-
-  def actsMode
-    if(params[:id].to_s.empty?)
-      @act = Act.new
-    else
-      @act = Act.find(params[:id])
-    end
-    @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
-
-    render :layout => false
-  end
 end
+  # GET /venues/find
 
 private
 

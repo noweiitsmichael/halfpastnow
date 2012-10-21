@@ -12,7 +12,7 @@
 			});
 			$('#acts-table').on('click', 'a.act-delete',function() {
 				if(confirm("Are you sure you want to delete " + $('.act-name[act-id=' + $(this).attr("act-id") + ']').html() + "?")) {
-					$.getJSON("/venues/deleteAct/" + $(this).attr("act-id"), function(data) {
+					$.getJSON("/acts/destroy/" + $(this).attr("act-id"), function(data) {
 						$('.act-name[act-id=' + data.act_id + "]").parents("tr").remove();
 					});
 				}

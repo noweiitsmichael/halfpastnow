@@ -1,3 +1,5 @@
+<%= render 'venues_nav' %>
+
 <script type="text/javascript">
 	$(function() {
 		$('#raw-events .event-element .toggler').click(function() {
@@ -34,7 +36,7 @@
 	<div class="compact event-element" objectID="<%= raw_event.id %>">
 		<div class="time"><%= raw_event.start.to_time.strftime("%b %-d @ %-I:%M%P") %></div>
 		<div class="title"><%= raw_event.title %><a href="<%= raw_event.url %>" class="from">[<%= raw_event.from %>]</a></div>
-		<div class="description"><%= raw_event.description %></div>
+		<!-- <div class="description"><%= truncate(raw_event.description, :length => 300) %></div> -->
 		<a href="" class="toggler">+</a>
 	</div>
 <% end %>
