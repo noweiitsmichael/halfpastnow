@@ -1023,7 +1023,24 @@ input::-webkit-input-placeholder
 
 .mode .events .datetime-wrapper {
   position:relative;
-  padding: 0;
+  padding: 0 0 0 6px;
+  margin-left: -6px;
+}
+
+.mode.venue .events .datetime-wrapper {
+  background: rgba(197, 0, 148, 0.23);
+  color: #580D46;
+}
+
+.mode.event .events .datetime-wrapper {
+  background: rgba(0, 148, 197, 0.23);
+  color: #0D4658;
+  margin-bottom: 6px;
+}
+
+.mode.act .events .datetime-wrapper {
+  background: rgba(148, 197, 0, 0.23);
+  color: #46580D;
 }
 
 .mode .events li:first-child .datetime-wrapper {
@@ -1212,7 +1229,7 @@ input::-webkit-input-placeholder
 .events .description {
   font-size: 11px;
   overflow:hidden;
-  height: 30px;
+  max-height: 30px;
 }
 
 
@@ -1480,7 +1497,7 @@ input::-webkit-input-placeholder
     top: 2px;
 }
 
-.mode .window .sub-header li.datetime {
+.mode .window .sub-header li.datetime, .mode .window .sub-header li.price {
     text-transform:lowercase;
     font-family:Alegreya SC;
 }

@@ -36,7 +36,7 @@ end
 <% occurrences.each do |occ| %>
 	<li>
 		<div class="datetime-wrapper">
-			<div class="occurrence datetime"><%= occ.start.to_time.strftime("%B %-d at %-l:%M%P") %></div>
+			<div class="occurrence datetime"><%= occ.start.to_time.strftime("%A, %b %-d @ %-l:%M%P") %></div>
 			<div class="datetime-flag"></div>
 		</div>
 	<% unless options[:datetime_only] %>
