@@ -289,8 +289,14 @@ nav li:last-child a {
 
 .fb-pic-reduce {
   max-height: 150px;
+  max-width: 150px;
 }
 
+
+.greyback{
+  background-color: #DDD;
+  padding: 10px 10px 10px 10px;
+}
 
 
 

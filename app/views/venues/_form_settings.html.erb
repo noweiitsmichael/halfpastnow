@@ -113,10 +113,12 @@
       <%= f.text_field :zip, :class => 'location required' %>
     </div>
 
+    <% unless @venue.fb_picture.nil? %>
     <div class="field">
       <%= f.label "Facebook Picture" %>
       <i><%= image_tag @venue.fb_picture %></i>
     </div>
+    <% end %>
     
 <!-- Pictures Section -->
     <div class="picture_parts">

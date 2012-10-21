@@ -115,27 +115,6 @@ class PicturesController < ApplicationController
     end
   end
 
-  def createForRawEvent
-    puts "Pic CreatefromData"
-    pp params
-    pictureParams = {} 
-    pictureParams[:pictureable_type] = params[:pictureable_type]
-    pictureParams[:pictureable_id] = params[:pictureable_id]
-    pictureParams[:image] = params[:rawEvent][:image]
-
-    @picture = Picture.new(pictureParams)
-
-    respond_to do |format|
-      if @picture.save
-        format.html { render :nothing => true }
-        format.json { render json: @picture }
-      else
-        format.html { render :nothing => true }
-        format.json { render json: @picture }
-      end
-    end
-  end
-
   def coverImageAdd
     puts "cover Picture Crop function"
     pp params
@@ -152,10 +131,12 @@ class PicturesController < ApplicationController
       @event.update_attributes!(event_hash)
     end
 
+    pp @event
+
     respond_to do |format|
       if @picture.update_attributes!(params[:picture])
         format.html { render :nothing => true }
-        format.json { render json: @event }
+        format.json { render json: { event: @event, pictures: @picture} }
       else
         format.html { render :nothing => true }
         format.json { render json: @event }
@@ -167,6 +148,7 @@ class PicturesController < ApplicationController
     puts "cropMode Params:"
     puts params
     puts params[:picture_type]
+    puts params[:picture_id]
     @picURL = params[:picture_url]
     @picture = Picture.find(params[:picture_id])
     pp @picture

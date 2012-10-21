@@ -1,0 +1,53 @@
+<%= render 'venues_nav' %>
+
+<script type="text/javascript">
+	 $(function() {
+	 	generateValidator("#edit_venue_<%= @venue.id %>");
+	 });
+
+</script>
+
+
+<% @ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] %>
+<% @week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] %>
+<%= form_for @venue, :url => "/venues/update/" + @venue.id.to_s , :validate => true do |f| %>
+  <% @i = 0; @venue.events.sort_by{ |event| event.id || 0 }.each do |event| %>
+    <% @iStrName = "venue[events_attributes][" + @i.to_s + "][tag_ids][]" %>
+    <% @iStrId = "venue_events_attributes_" + @i.to_s + "_tag_ids_" %>
+    <%= f.fields_for :events, event do |e| %>
+      <div class="main event<%= event.id ? "" : " new"%>">
+
+	<%= event.id.nil? ? raw("<h4>New Event</h4>") : "" %>
+	<%= event.user_id ? raw("<em>created by " + event.user.email + "</em><br /><br />") : "" %>
+	<div class="field">
+	  <%= e.label :title %>
+	  <%= e.text_field :title, :class => "title required" %>
+	</div>
+	<div class="field">
+	  <%= e.label :description %>
+	  <%= e.text_area :description %>
+	</div>
+	<div class="field">
+	  <%= e.label :price %>
+	  <%= e.text_field :price, :class => "price" %>
+	</div>
+
+	<%= render :partial => "tags", :locals => { :event => event } %>
+
+	<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => event } %>
+	
+	<% if !event.id.nil? %>
+	  <div class="remove">
+	    <%= e.check_box :_destroy %>
+	    <%= e.label :_destroy, "remove event" %>
+	  </div>
+	<% end %>
+		<div class="actions">
+    		<%= f.submit %>
+  		</div>
+      </div>
+    <% end %>
+    <% @i += 1 %>
+    
+  <% end %>
+<% end %>

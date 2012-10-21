@@ -24,9 +24,10 @@
 	});
 
   $(function () {
-    $('.fb-pic-field').on('click', '.fb-image-submit', function() {
+    $('.pic-field').on('click', '.fb-image-submit', function() {
       console.log("click - fb-image-submit");
-      $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('.fb-pic-field');
+      console.log($(this));
+      $(this).append('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>');
         var picData = 
           {"picture":
             { "pictureable_id": parseInt($(this).attr("picable-id")),
@@ -147,8 +148,8 @@
       <% if Picture.where(:image => @event.venue.fb_picture.match(/[^\/]+$/).to_s, :pictureable_id => @event.venue.id, :pictureable_type => "Venue").exists? %>
       <% else %>
 
-        <span class="pictures fb-pic-field"><div class="fb-image-submit" picable-id="<%= @event.venue.id %>" picable-type="Venue" fb-pic-url="<%= @event.venue.fb_picture %>">
-          <a href="" class="pic-edit" pic-url="<%= @event.venue.fb_picture %>">
+        <span class="pictures pic-field"><div class="fb-image-submit" picable-id="<%= @event.venue.id %>" picable-type="Venue" fb-pic-url="<%= @event.venue.fb_picture %>">
+          <a href="" pic-url="<%= @event.venue.fb_picture %>">
           <%= image_tag @event.venue.fb_picture, :class => "fb-pic-reduce" %> </a>
         </div></span>
       <% end %>
@@ -191,8 +192,8 @@
     <% unless @event.fb_picture.blank? %>
       <% if Picture.where(:image => @event.fb_picture.match(/[^\/]+$/).to_s, :pictureable_id => @event.id, :pictureable_type => "Event").exists? %>
       <% else %>
-        <span class="fb-pic-field"><span class="fb-image-submit" picable-id="<%= @event.id %>" picable-type="Event" fb-pic-url="<%= @event.fb_picture %>">
-          <a href="" class="pic-edit" pic-url="<%= @event.fb_picture %>">
+        <span class="pic-field"><span class="fb-image-submit" picable-id="<%= @event.id %>" picable-type="Event" fb-pic-url="<%= @event.fb_picture %>">
+          <a href="" pic-url="<%= @event.fb_picture %>">
           <%= image_tag @event.fb_picture, :class => "fb-pic-reduce" %> </a>
         </span></span>
       <% end %>

@@ -69,7 +69,8 @@ class ActsController < ApplicationController
 
   def actFind
     if(params[:contains])
-      @acts = Act.where("name ilike ?", "%#{params[:contains]}%").collect {|a| { :name => "#{a.name}", :text => "#{a.name}", :id => a.id, :tags => (a.tags.collect { |t| t.id.to_s } * ",") } }
+      # @acts = Act.where("name ilike ?", "%#{params[:contains]}%").collect {|a| { :name => "#{a.name}", :text => "#{a.name}", :id => a.id, :fb_picture => a.fb_picture, :tags => (a.tags.collect { |t| t.id.to_s } * ",") , :pictures => a.pictures } }
+      @acts = Act.where("name ilike ?", "%#{params[:contains]}%").collect {|a| { :name => "#{a.name}", :text => "#{a.name}", :id => a.id, :fb_picture => a.fb_picture, :tags => (a.tags.collect { |t| t.id.to_s } * ",") , :pictures => a.pictures } }
     else
       @acts = []
     end

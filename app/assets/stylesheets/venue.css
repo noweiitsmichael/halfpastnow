@@ -36,11 +36,11 @@ label {
   margin-bottom:10px;
 }
 
-.field.pic-field{
-  background-color: #DDD;
+.ajaxLoader {
+  display: inline;
 }
 
-.pictures.field.gallery {
+.pictures.field {
   width: 160px;
   display:inline;
 }
@@ -48,6 +48,8 @@ label {
 
 .pictures img {
   vertical-align:middle;
+  padding: 3px 2px 3px 2px;
+  border-bottom:solid 1px #c4c4c4;
 }
 .pictures .remove-pic {
   width: 9px;

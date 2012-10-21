@@ -132,6 +132,12 @@ class VenuesController < ApplicationController
     render :layout => "admin"
   end
 
+  def new_event
+    @venue = Venue.includes(:raw_venues => :raw_events).find(params[:id])
+
+    render :layout => "admin"
+  end
+
   # POST /venues
   # POST /venues.json
   def create
@@ -177,13 +183,26 @@ class VenuesController < ApplicationController
   # GET /venues/new.json
   def fromRaw
     @venue = Venue.find(params[:id])
-    pp @venue
+    puts "creating from raw......."
+    pp params
     @event = @venue.events.build()
-    @event.update_attributes(params[:event])
+    @event.update_attributes!(params[:event])
     @event.user_id = current_user.id
+
+    newpictures = Picture.where(:pictureable_type => "RawEvent", :pictureable_id => params[:raw_event_id]) 
+    unless newpictures.nil?
+      newpictures.each do |pic|
+        updatePic = Picture.find(pic.id)
+        updatePic.pictureable_id = @event.id
+        updatePic.pictureable_type = "Event"
+        updatePic.save!
+      end
+    end
+
+    @raw_event = RawEvent.find(params[:raw_event_id])
+    @event.cover_image = @raw_event.cover_image
     
     if @event.save
-      @raw_event = RawEvent.find(params[:raw_event_id])
       @raw_event.submitted = true
       @raw_event.save
       render json: {:event_id => @event.occurrences.first.id, :event_title => @event.title}

@@ -1,27 +1,27 @@
 <div class="picture_parts">
 <script type="text/javascript">
-  $(function() {
+	$(function() {
 
-    $('.picture_parts').on("click", ".remove-pic", function() {
-      var index = $(this).parents(".pictures.field").attr("index");
-      if(typeof index !== 'undefined') {
-        $(this).after("<input type='hidden' name='event[pictures_attributes][" + index + "][_destroy]' value='1' />");
-        $(this).parents(".pictures.field").hide();
-      } else {
-        $(this).parents(".pictures.field").remove();
-      }
-      return false;
-    });
-  });
+		$('.picture_parts').on("click", ".remove-pic", function() {
+			var index = $(this).parents(".pictures.field").attr("index");
+			if(typeof index !== 'undefined') {
+				$(this).after("<input type='hidden' name='event[pictures_attributes][" + index + "][_destroy]' value='1' />");
+				$(this).parents(".pictures.field").hide();
+			} else {
+				$(this).parents(".pictures.field").remove();
+			}
+			return false;
+		});
+	});
 
-  $(function() {
-    $('.pic-field').on('click', 'a.pic-edit',function() {
-      console.log("click - pic-edit");
-      showCoverEditMode(parseInt($("#pictureable_id_<%=@rawEvent.id%>_url").val()),$(this).attr("pic-url"),$(this).attr("pic-id"),$("#pictureable_type_<%=@rawEvent.id%>_url").val(),callbackEdit);
-      return false;
-    });
+	$(function() {
+		$('.pic-field').on('click', 'a.pic-edit',function() {
+			console.log("click - pic-edit");
+			showCoverEditMode(parseInt($("#pictureable_id_<%=@rawEvent.id%>_url").val()),$(this).attr("pic-url"),$(this).attr("pic-id"),$("#pictureable_type_<%=@rawEvent.id%>_url").val(),callbackEdit);
+			return false;
+		});
 
-  });
+	});
 
   $(function () {
     $('.pic-field').on('click', '.fb-image-submit', function() {
@@ -84,7 +84,7 @@
   $(function () {
       $(".fileclick_<%=@rawEvent.id%>").click(function() {
         console.log("click");
-        if ($(".event_image_<%=@rawEvent.id%>").val() == ""){
+       	if ($(".event_image_<%=@rawEvent.id%>").val() == ""){
           return false;
         } 
         else {
@@ -129,13 +129,13 @@
     return false;
   });
 
-  function callbackEdit(pic) {
+	function callbackEdit(pic) {
 
-  }
+	}
 
-  function callbackNew(pic) {
+	function callbackNew(pic) {
 
-  }
+	}
 </script>
 
 

@@ -18,7 +18,7 @@
 	      aspectRatio: 2.083,
 	      setSelect: [0, 0, 500, 500],
 	      onSelect: updateCrop, // @update,
-	      onChange: updateCrop// @update
+	      onChange: updateCrop  // @update
 	  	});
 	  	
 	    var actForm = $("#act-form");
@@ -53,8 +53,8 @@
 	          "picType": $(".picType").val(),
 	          "cover_image": parseInt($(".picture_id").val())
 	        };
-	      console.log(picData);
         $.post("/pictures/coverImageAdd",picData,function(data) {
+          $('.cover-image-' + data.event.id).html('<img src=' + data.pictures.image.cover.url + '>');
           closeMode();
         },
         "json");
