@@ -18,7 +18,7 @@ class Act < ActiveRecord::Base
   accepts_nested_attributes_for :embeds, :allow_destroy => true
 
   def completedness
-  	total_elements = 4
+  	total_elements = 5
   	complete_elements = 0
   	unless(self.name.to_s.empty?)
   		complete_elements += 1
@@ -32,6 +32,9 @@ class Act < ActiveRecord::Base
   	unless(self.embeds.size == 0)
   		complete_elements += 1
   	end
+    unless(self.pictures.size == 0)
+      complete_elements += 1
+    end
   	return complete_elements.to_f / total_elements.to_f
   end
 end

@@ -1,4 +1,3 @@
-<div id="body">
 	<script type="text/javascript" src="/assets/stupidtable.js"></script>
 	<script type="text/javascript">
 		$(function() {
@@ -13,7 +12,7 @@
 			});
 			$('#acts-table').on('click', 'a.act-delete',function() {
 				if(confirm("Are you sure you want to delete " + $('.act-name[act-id=' + $(this).attr("act-id") + ']').html() + "?")) {
-					$.getJSON("/venues/deleteAct/" + $(this).attr("act-id"), function(data) {
+					$.getJSON("/acts/destroy/" + $(this).attr("act-id"), function(data) {
 						$('.act-name[act-id=' + data.act_id + "]").parents("tr").remove();
 					});
 				}
@@ -70,7 +69,7 @@
 			background:#eeeeee;
 		}
 	</style>
-	<a href="#" class="new-act">new performer</a>
+	<a href="#" class="new-act">Add New Performer</a>
 	<table id="acts-table">
 		<thead>
 			<tr>
@@ -93,7 +92,6 @@
 		<% end %>
 		</tbody>
 	</table>
-</div>
 <div class="acts mode">
 	<div class="overlay">
 		<div class="window">

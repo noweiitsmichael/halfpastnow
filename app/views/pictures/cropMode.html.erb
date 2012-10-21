@@ -1,0 +1,106 @@
+<script type="text/javascript">
+	$(function() {
+		$('.mode .overlay').click(closeMode);
+		$('.mode .close-mode').click(closeMode);
+
+		$('.mode .overlay .window').click(function(event) {
+		event.stopPropagation();
+		});
+
+		// console.log("width: " + $(".cropbox").width());
+		// console.log("height: " + $(".cropbox").height());
+		// var height = Math.round((img.length - (img.width/2.08))/2);
+		// if (height < 0) {
+		// 	height = 0;
+		// }
+
+	    $('.cropbox').Jcrop({
+	      aspectRatio: 2.083,
+	      setSelect: [0, 0, 500, 500],
+	      onSelect: updateCrop, // @update,
+	      onChange: updateCrop  // @update
+	  	});
+	  	
+	    var actForm = $("#act-form");
+	    actForm.ajaxForm({
+	      dataType: 'json',
+	      success: 
+	        function(data) { 
+
+	      	  hideActsMode();
+
+	      	  //gross.
+	      	  if(typeof picSuccessCallback !== 'undefined')
+	      	  	picSuccessCallback(data);
+	        }
+	    });
+	 });
+
+	$(function () {
+      $('.ajax-submit').click( function (){
+        console.log("click");
+        $('<div class="ajaxLoader pictures field gallery"><img src="/assets/ajax-loader.gif"></div>').appendTo('.ajax-submit');
+	      var picData = 
+	        {"picture":
+	          { "crop_x": parseInt($(".picture_crop_x").val()),
+	            "crop_y": parseInt($(".picture_crop_y").val()),
+	            "crop_w": parseInt($(".picture_crop_w").val()),
+	            "crop_h": parseInt($(".picture_crop_h").val()),
+	            "remote_image_url": $("remote_image_url").val(),
+	            "id": parseInt($(".picture_id").val())
+	          },
+	          "id": parseInt($(".id").val()),
+	          "picType": $(".picType").val(),
+	          "cover_image": parseInt($(".picture_id").val())
+	        };
+        $.post("/pictures/coverImageAdd",picData,function(data) {
+          $('.cover-image-' + data.event.id).html('<img src=' + data.pictures.image.cover.url + '>');
+          closeMode();
+        },
+        "json");
+        return false;
+      });
+    });
+
+	function closeMode() {
+		$('.mode').hide();
+	}
+
+	function updateCrop(coords) {
+      $('.picture_crop_x').val(coords.x);
+      $('.picture_crop_y').val(coords.y);
+      $('.picture_crop_w').val(coords.w);
+      $('.picture_crop_h').val(coords.h);
+      $('.preview').css({
+        width: Math.round(250 / coords.w * $('.cropbox').width()) + 'px',
+        height: Math.round(120 / coords.h * $('.cropbox').height()) + 'px',
+        marginLeft: '-' + Math.round(250 / coords.w * coords.x) + 'px',
+        marginTop: '-' + Math.round(120 / coords.h * coords.y) + 'px'
+      });
+    }
+
+</script>
+
+<h2>Crop Cover Image</h2>
+
+<%= image_tag @picURL, :class => "cropbox" %>
+
+<h4>Preview</h4>
+<div style="width:250px; height:120px; overflow:hidden;">
+  <%= image_tag @picURL, :class => "preview" %>
+</div>
+
+<%= form_for(@picture, :url => "/pictures/coverImageAdd") do |f| %>
+  <div class="actions">
+    <% %w[x y w h].each do |attribute| %>
+      <%= f.text_field "crop_#{attribute}", :class=> "picture_crop_#{attribute}"%>
+    <% end %>
+	<%= hidden_field_tag(:remote_image_url, @picURL, :class => "remote_url") %>
+	<%= hidden_field_tag(:id, @event.id, :class => "id") %>
+	<%= hidden_field_tag(:id, @picture.id, :class => "picture_id") %>
+	<%= hidden_field_tag(:picType, @eventType, :class => "picType") %>
+	<a href="" class="ajax-submit">Submit Crop!</a>
+  </div>
+<% end %>
+
+<div class="close-mode">&#10799;</div>

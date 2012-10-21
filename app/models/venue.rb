@@ -4,7 +4,8 @@ class Venue < ActiveRecord::Base
   has_many :raw_venues
   has_many :pictures, :as => :pictureable, :dependent => :destroy
   #attr_accessible :pictures_attributes, :pictures
-  attr_accessor :image, :remote_image_url
+  attr_accessor :image, :remote_image_url, :venuesCooked
+  cattr_accessor :venuesCooked
   accepts_nested_attributes_for :pictures, :allow_destroy => true, :reject_if => proc {|attributes| attributes['image'].blank? && attributes['remote_image_url'].blank?  }
   # So we can assign to admin:
   belongs_to :user

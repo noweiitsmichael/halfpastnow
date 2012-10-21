@@ -1,0 +1,255 @@
+<script type="text/javascript">
+	$(function() {
+		//$('.mode .overlay').click(closeMode);
+		$('.mode .close-mode').click(closeMode);
+
+		$('.mode .overlay .window').click(function(event) {
+		event.stopPropagation();
+		});
+
+		$('.mode .actions').click(function() {
+			$('<span class="ajaxLoader"><img src="/assets/ajax-loader.gif"></span>').appendTo('.actions');
+		});
+	  	
+	    var actForm = $("#act-form");
+	    actForm.ajaxForm({
+	      
+	      dataType: 'json',
+	      success: 
+	        function(data) { 
+	          var eventID = actForm.attr('event-id');
+
+	          if(typeof eventID != 'undefined') {
+	          	  var selectActs = $('input.act-names[event-id=' + eventID + ']');
+		          var selectedActs = selectActs.siblings(".select2-container").find(".select2-search-choice");
+		         
+		          //connect act to event
+		          //var vals = $('input.act-names[event-id=' + eventID + ']').val();
+		          var actIDs = selectActs.select2("val");
+		          var actNames = [];
+		          selectedActs.each(function() { actNames.push( $(this).text() ); });
+		          var acts = [];
+		          for(var i in actIDs) {
+		            acts.push({id: actIDs[i], text: actNames[i]});
+		          }
+		          acts.push({id: data.id, text: data.name});
+		          console.log("acts");
+		          console.log(acts);
+		          selectActs.select2("val",acts);
+		          
+		          actsInfo[data.id] = {tags: data.tags};
+		          actsChange(selectActs);
+		      }
+	      	  hideActsMode();
+
+	      	  //gross.
+	      	  if(typeof actSuccessCallback !== 'undefined')
+	      	  	actSuccessCallback(data);
+	        }
+	    });
+	});
+
+	function closeMode() {
+		$( "#confirm-close" ).dialog({
+            resizable: false,
+            height:240,
+            modal: true,
+            buttons: {
+                "Continue": function() {
+                    $('.mode').hide();
+                    $( this ).dialog( "close" );
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+	};
+
+</script>
+
+<h3 style="margin-bottom:15px;">Performer</h3>
+<%= form_for @act, :url => "/acts/actCreate", :html => { :id => "act-form", :multipart => true} do |e| %>
+	<% if @act.id %><%= e.hidden_field :id %><% end %>
+    <div class="main">
+		<div class="field">
+		  <%= e.label :name %>
+		  <%= e.text_field :name %>
+		</div>
+		<div class="field">
+		  <%= e.label :description %>
+		  <%= e.text_area :description, :class => "cleditor" %>
+		</div>
+
+		<div class="field">
+		  <%= e.label :bio %>
+		  <%= e.text_area :bio, :class => "cleditor" %>
+		</div>
+
+		<div class="field">
+		  <%= e.label :website %>
+		  <%= e.text_field :website %>
+		</div>
+
+		<div class="field">
+		  <%= e.label "[Genres]" %>
+		  <i><%= @act.genre %></i>
+		</div>
+		
+		<% @iStrName = "act[tag_ids][]" %>
+		<% @iStrId = "act_tag_ids_" %>
+		
+		<%= render :partial => "/venues/tags", :locals => { :element => @act } %>
+
+<!-- Pictures Section -->
+    <div class="picture_parts">
+
+    <!-- Artist Facebook Photo -->
+    <div class="field">
+	    <% unless @act.fb_picture.blank? %>
+	    <label class="">From Facebook:</label>
+	      <% if Picture.where(:image => @act.fb_picture.match(/[^\/]+$/).to_s, :pictureable_id => @act.id, :pictureable_type => "Act").exists? %>
+	      <% else %>
+	        <span class="fb-pic-field"><div class="fb-image-submit" picable-id="<%= @act.id %>" picable-type="Act" fb-pic-url="<%= @act.fb_picture %>">
+	          <%= image_tag @act.fb_picture %>
+	        </div></span>
+	      <% end %>
+	    <% end %>
+	</div>
+    <!-- end -->
+
+    <% newPic = Picture.new %>
+    <%= e.fields_for newPic, :url => "/pictures/create", :html => {:multipart => true} do |g| %>
+        <p>
+          <label>Add Artist Picture:</label>
+          <%= hidden_field_tag :pictureable_attributes %>
+          <%= hidden_field_tag :pictureable_type, "Act" %>
+          <%= hidden_field_tag :pictureable_id, @act.id %>
+          <%= e.text_field :remote_image_url, :html => {:class => "picurl"} %>
+          <a href="" id="new_pic">Add pic</a>
+        </p>
+    <% end %>
+    <label class="buffer139"></label>
+    <% newPic2 = Picture.new %>
+    <%= e.fields_for newPic2, :html => { :multipart => true} do |g| %>
+      Or upload file:
+      <%= hidden_field_tag :pictureable_attributes %>
+      <%= e.file_field :image %>
+      <a href="" id="fileclick">Add pic</a>
+    <% end %>
+    <br><br>
+
+
+    <script>
+    $(function () {
+      $('#new_pic').click( function (){
+        if ($("#act_remote_image_url").val() == ""){
+          confirmURL("nourl");
+          return false;
+        } 
+        else {
+          $('<div class="ajaxLoader pictures field gallery"><img src="/assets/ajax-loader.gif"></div>').appendTo('#actThumbs');
+          var picData = 
+            {"picture":
+              { "pictureable_id": parseInt($("#pictureable_id").val()),
+                "pictureable_type": $("#pictureable_type").val(), 
+                "remote_image_url": $("#act_remote_image_url").val()
+              }
+            };
+        }
+        $.post("/pictures/create",picData,function(data) {
+          var numThumbs = document.getElementsByClassName("gallery");
+          var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
+          newPicThumb += '<div class="pictures field gallery" index="' + numThumbs + '">';
+          newPicThumb += '<input type="hidden" name="act[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+          newPicThumb += '<div href="" class="remove-pic">&#10799;</div>';
+          newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '"></div>';
+          $('.ajaxLoader').detach();
+          $(newPicThumb).appendTo('#actThumbs');
+        },
+        "json");
+        return false;
+      });
+    });
+
+    $(function () {
+        $("#fileclick").click(function() {
+          if ($("#act_image").val() == ""){
+            confirmURL("nofile");
+            return false;
+          } else {
+            $('<div class="ajaxLoader pictures field gallery"><img src="/assets/ajax-loader.gif"></div>').appendTo('#actThumbs');
+            $("#act-form").ajaxSubmit({
+              beforeSerialize: function(form, options) {
+              },
+              url: "/pictures/createForAct",
+              success:function(data) {
+                var numThumbs = document.getElementsByClassName("gallery");
+                var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
+                newPicThumb += '<div class="pictures field gallery" index="' + numThumbs + '">';
+                newPicThumb += '<input type="hidden" name="act[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+                newPicThumb += '<div style="margin-right:3px;" href="" class="remove-pic">&#10799;</div>';
+                newPicThumb += '<img style="margin-right:3px;" alt="image_thumb" src="' + data.image.thumb.url + '"></div>';
+                $('.ajaxLoader').detach();
+                $(newPicThumb).appendTo('#actThumbs');
+              },
+              type: "post",
+              dataType: "json"
+            });
+            return false;
+          }
+        });
+    });
+
+    $('.picture_parts').on("click", ".remove-pic", function() {
+        console.log("click");
+      var index = $(this).parents(".pictures.field").attr("index");
+      if(typeof index !== 'undefined') {
+        $(this).after("<input type='hidden' name='act[pictures_attributes][" + index + "][_destroy]' value='1' />");
+        $(this).parents(".pictures.field").hide();
+      } else {
+        $(this).parents(".pictures.field").remove();
+      }
+      return false;
+    });
+
+     function confirmURL(confirmType) {
+        $( "#" + confirmType ).dialog({
+            modal: true,
+            buttons: {
+                Ok: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        });
+    };
+    </script>
+
+    <label class="buffer139"></label>
+
+    <% @act.pictures.each_with_index do |pic, index| %>
+    <div class="pictures field gallery" index="<%= index %>">
+      <input type="hidden" name="act[pictures_attributes][<%= index %>][id]" value="<%= pic.id %>" />
+        <div href="" class="remove-pic">&#10799;</div>
+      <%= image_tag pic.image_url(:thumb).to_s %>
+    </div>
+    <% end %>
+
+    <span id="actThumbs"></span>
+
+    </div>
+<!-- End Pictures Section -->
+
+		<%= render :partial => "/venues/embeds", :locals => { :act => @act } %>
+
+		<div class="actions">
+    		<%= e.submit %>
+  		</div>
+    </div>
+<% end %>
+
+  <div id="confirm-close" title="Close without saving?" style="display:none; font-size:14px;">
+    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Changes will not be saved unless you click the "Update Act" button. Are you sure you want to exit?</p>
+  </div>
+
+<div class="close-mode">x</div>

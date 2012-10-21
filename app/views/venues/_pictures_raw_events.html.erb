@@ -1,0 +1,206 @@
+<div class="picture_parts">
+<script type="text/javascript">
+	$(function() {
+
+		$('.picture_parts').on("click", ".remove-pic", function() {
+			var index = $(this).parents(".pictures.field").attr("index");
+			if(typeof index !== 'undefined') {
+				$(this).after("<input type='hidden' name='event[pictures_attributes][" + index + "][_destroy]' value='1' />");
+				$(this).parents(".pictures.field").hide();
+			} else {
+				$(this).parents(".pictures.field").remove();
+			}
+			return false;
+		});
+	});
+
+	$(function() {
+		$('.pic-field').on('click', 'a.pic-edit',function() {
+			console.log("click - pic-edit");
+			showCoverEditMode(parseInt($("#pictureable_id_<%=@rawEvent.id%>_url").val()),$(this).attr("pic-url"),$(this).attr("pic-id"),$("#pictureable_type_<%=@rawEvent.id%>_url").val(),callbackEdit);
+			return false;
+		});
+
+	});
+
+  $(function () {
+    $('.pic-field').on('click', '.fb-image-submit', function() {
+      console.log("click - fb-image-submit");
+      $(this).append('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>');
+        var picData = 
+          {"picture":
+            { "pictureable_id": parseInt($(this).attr("picable-id")),
+              "pictureable_type": $(this).attr("picable-type"), 
+              "remote_image_url": $(this).attr("fb-pic-url")
+            }
+          };
+
+      $.post("/pictures/create",picData,function(data) {
+      console.log(data);
+        console.log("Added from FB pic! " + data.id);
+        $('.ajaxLoader').detach();
+        showCoverEditMode(parseInt($("#pictureable_id_<%=@rawEvent.id%>_url").val()),data.image.large.url,data.id,$("#pictureable_type_<%=@rawEvent.id%>_url").val(),callbackEdit);
+      },
+      "json");
+      return false;
+    });
+  });
+
+  $(function () {
+    $('.new_pic_<%=@rawEvent.id%>').click( function (){
+      console.log("click");
+      if ($("#event_remote_image_url_<%=@rawEvent.id%>").val() == ""){
+        return false;
+      } 
+      else {
+        $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('.eventThumbs_<%=@rawEvent.id%>');
+        var picData = 
+          {"picture":
+            { "pictureable_id": parseInt($("#pictureable_id_<%=@rawEvent.id%>_url").val()),
+              "pictureable_type": $("#pictureable_type_<%=@rawEvent.id%>_url").val(), 
+              "remote_image_url": $("#event_remote_image_url_<%=@rawEvent.id%>").val()
+            }
+          };
+      }
+      $.post("/pictures/create",picData,function(data) {
+        console.log(data);
+        console.log("picturable id = " + data.pictureable_id);
+        var numThumbs = $(".gallery_<%=@rawEvent.id%>").length;
+        var newPicThumb = '<div class="pictures field gallery_<%=@rawEvent.id%>" index="' + numThumbs + ' ">';
+        newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][id]" value="' + data.id + '" />';
+        newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][pictureable_id]" value="' + data.pictureable_id + '" />';
+        newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][pictureable_type]" value="RawEvent" />';
+        newPicThumb += '<div href="" class="remove-pic">&#10799;</div>';
+        newPicThumb += '<a href="" class="pic-edit" event-id="<%= @rawEvent.id %>" pic-url="' + data.image.large.url + '" pic-id="' + data.id + '">'
+        newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '"></div>';
+        $('.ajaxLoader').detach();
+        $(newPicThumb).appendTo('.eventThumbs_<%=@rawEvent.id%>');
+      },
+      "json");
+      return false;
+    });
+  });
+
+  $(function () {
+      $(".fileclick_<%=@rawEvent.id%>").click(function() {
+        console.log("click");
+       	if ($(".event_image_<%=@rawEvent.id%>").val() == ""){
+          return false;
+        } 
+        else {
+          $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('.eventThumbs_<%=@rawEvent.id%>');
+          console.log("submitting....");
+          $("#new_event_<%= @rawEvent.id %>").ajaxSubmit({
+            beforeSerialize: function(form, options) {
+            },
+            url: "/pictures/createForEvent",
+            success:function(data) {
+              console.log(data);
+              var numThumbs = $(".gallery_<%=@rawEvent.id%>").length;
+              console.log("index number = " + numThumbs);
+              console.log("picturable id = " + data.pictureable_id);
+              var newPicThumb = '<div class="pictures field gallery_<%=@rawEvent.id%>" index="' + numThumbs + ' ">';
+              newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][id]" value="' + data.id + '" />';
+              newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][pictureable_id]" value="' + data.pictureable_id + '" />';
+              newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][pictureable_type]" value="rawEvent" />';
+              newPicThumb += '<div href="" class="remove-pic">&#10799;</div>';
+              newPicThumb += '<a href="" class="pic-edit" event-id="<%= @rawEvent.id %>" pic-url="' + data.image.large.url + '" pic-id="' + data.id + '">'
+              newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '"></div>';
+              $('.ajaxLoader').detach();
+              $(newPicThumb).appendTo('.eventThumbs_<%=@rawEvent.id%>');
+            },
+            type: "post",
+            dataType: "json"
+          });
+          return false;
+      }
+      });
+  });
+
+  $('.picture_parts').on("click", ".remove-pic", function() {
+      console.log("click");
+    var index = $(this).parents(".pictures.field").attr("index");
+    if(typeof index !== 'undefined') {
+      $(this).after("<input type='hidden' name='event[pictures_attributes][" + index + "][_destroy]' value='1' />");
+      $(this).parents(".pictures.field").hide();
+    } else {
+      $(this).parents(".pictures.field").remove();
+    }
+    return false;
+  });
+
+	function callbackEdit(pic) {
+
+	}
+
+	function callbackNew(pic) {
+
+	}
+</script>
+
+
+
+<!-- Pictures Section -->
+
+      
+    <!-- Show Venue Photos-->
+    <label>From Venue:</label>
+    <% unless venue.fb_picture.blank? %>
+      <% if Picture.where(:image => venue.fb_picture.match(/[^\/]+$/).to_s, :pictureable_id => venue.id, :pictureable_type => "Venue").exists? %>
+      <% else %>
+
+        <span class="pictures pic-field"><div class="fb-image-submit" picable-id="<%= venue.id %>" picable-type="Venue" fb-pic-url="<%= venue.fb_picture %>">
+          <a href="" pic-url="<%= venue.fb_picture %>">
+          <%= image_tag venue.fb_picture, :class => "fb-pic-reduce" %> </a>
+        </div></span>
+      <% end %>
+    <% end %>
+    
+    <span class="pictures pic-field">
+    <% venue.pictures.each do |pic| %>
+      <a href="" class="pic-edit" pic-url="<%= pic.image_url(:large).to_s %>" pic-id="<%= pic.id%>">
+      <%= image_tag pic.image_url(:thumb).to_s %></a>
+    <% end %>
+    </span>
+    <!-- end -->
+
+    <!-- Add new event picture -->
+    <input class="picture-names" type="hidden" style="width:600px;" value="<%= event.pictures.collect { |a| a.id } * "," %>" event-id="<%= event && event.id ? ("2" + event.id.to_s) : (rawEvent && rawEvent.id ? "1" + rawEvent.id.to_s : "0") %>" />
+    <% newPic = Picture.new %>
+    <%= e.fields_for newPic, :url => "/pictures/create", :html => {:multipart => true}, :remote => true do |g| %>
+        <p>
+          <label>Add Event Picture:</label>
+          <input id="pictureable_type_<%=@rawEvent.id%>_url" name="pictureable_type_<%=@rawEvent.id%>" type="hidden" value="RawEvent">
+          <input id="pictureable_id_<%=@rawEvent.id%>_url" name="pictureable_id_<%=@rawEvent.id%>" type="hidden" value="<%=@rawEvent.id%>">
+          <input id="event_remote_image_url_<%=@rawEvent.id%>" name="event[remote_image_url]" size="30" type="text">
+          <a href="" class="new_pic_<%=@rawEvent.id%>">Add pic</a>
+        </p>
+    <% end %>
+    <label class="buffer"></label>
+    <% newPic2 = Picture.new %>
+    <%= e.fields_for newPic2, :html => { :multipart => true} do |g| %>
+    Or upload file:
+    <input id="pictureable_type_<%=@rawEvent.id%>" name="pictureable_type" type="hidden" value="RawEvent">
+    <input id="pictureable_id_<%=@rawEvent.id%>" name="pictureable_id" type="hidden" value="<%=@rawEvent.id%>">
+    <input class="event_image_<%=@rawEvent.id%>" name="event[image]" type="file">
+    <a href="" class="fileclick_<%=@rawEvent.id%>">Add pic</a>
+    <% end %>
+    <br><br>
+    <!-- end -->
+
+    <label class="buffer"></label>
+
+    <% unless @rawEvent.fb_picture.blank? %>
+      <% if Picture.where(:image => @rawEvent.fb_picture.match(/[^\/]+$/).to_s, :pictureable_id => @rawEvent.id, :pictureable_type => "Event").exists? %>
+      <% else %>
+        <span class="pic-field"><span class="fb-image-submit" picable-id="<%= @rawEvent.id %>" picable-type="RawEvent" fb-pic-url="<%= @rawEvent.fb_picture %>">
+          <a href="" pic-url="<%= @rawEvent.fb_picture %>">
+          <%= image_tag @rawEvent.fb_picture, :class => "fb-pic-reduce" %> </a>
+        </span></span>
+      <% end %>
+    <% end %>
+
+    <span class="eventThumbs_<%=@rawEvent.id%> pic-field"></span>
+
+    </div>
+<!-- End Pictures Section -->

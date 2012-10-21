@@ -3,17 +3,16 @@ class BookmarksController < ApplicationController
 
 	def create
 		@bookmark = Bookmark.new
-		@bookmark.bookmarked_id = params["bookmarked_id"]
-		@bookmark.bookmarked_type = params["bookmarked_type"]
-		@bookmark.user_id = current_user.id
+
 		respond_to do |format|
-		  if @bookmark.save
+		  if @bookmark.update_attributes!(params[:bookmark])
 		    format.html { redirect_to :back }
 		    format.json { render json: @bookmark, status: :created, location: @bookmark }
 		  else
 		    format.html { redirect_to :back }
 		    format.json { render json: @bookmark.errors, status: :unprocessable_entity }
 		  end
+		  format.js
 		end
 	end
 
@@ -29,11 +28,18 @@ class BookmarksController < ApplicationController
 	  # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+  	puts "bookmark delete***"
+  	pp params
     @bookmark = Bookmark.find(params[:id])
     @bookmark.destroy
     respond_to do |format|
-      format.html { redirect_to :back }
-      format.json { head :no_content }
+	    if
+	      format.html { redirect_to :back }
+	      format.json { head :no_content }
+	    else 
+	      format.html { redirect_to :back }
+		  format.json { render json: @bookmark.errors, status: :unprocessable_entity }
+		end
     end
   end
 

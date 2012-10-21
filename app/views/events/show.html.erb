@@ -3,6 +3,7 @@
 <% content_for :title do %>
 	<%= render :partial => "layouts/bookmark", :locals => { :element => @occurrence } %>
 	<h1><span class="icon-bolt"></span><%= @event.title %></h1>
+
 <% end %>
 
 <% content_for :body do %>
@@ -44,6 +45,12 @@
 		<% end %>
 	</div>
 	<div class="col-2">
+		<div class="block"><div class="block-inner">
+			<% if current_user %>
+				<% holding_tank = current_user.bookmarked_events.where(:id => @occurrence.id) %>
+			<% end %>
+			<%= render :partial => "layouts/bookmark", :locals => { :element => @occurrence, :bookmark_type => "Occurrence", :bookmark_already => holding_tank } %>
+		</div></div>
 		<div class="block">
 			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:black%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&style=feature:all|hue:0x000001|saturation:-100&sensor=false"/></a>
 			<div class="block-inner">
@@ -106,26 +113,6 @@
 
 <% if false %><!--
 	<div class="col-2">
-		<div class="block">
-
-			<% bkmrk = Bookmark.new %>
-
-			<%= form_for bkmrk, :url => "/bookmarks/create" do |f| %>
-				<div><%= f.hidden_field :bookmarked_id, :value => @occurrence.id %></div>
-				<div><%= f.hidden_field :bookmarked_type, :value => "Occurrence" %></div>
-					<div><%= f.hidden_field :user_id, :value => current_user.id %></div>
-				<%= f.submit "Bookmark!" %>
-			<% end %>
-
-			<br>Bookmarked by: </br>
-			<% @bookmarked_by = @occurrence.bookmarks %>
-			<ol>
-				<% @bookmarked_by.each do |b| %>
-					<li><%= b.user_id %></li>
-				<% end %>
-			</ol>
-
-		</div>
 
 
 		<div class="block">
