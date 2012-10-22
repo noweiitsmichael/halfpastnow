@@ -6,7 +6,7 @@
 	<div class="col-1">
 		<ul class="sub-header">
 			<% unless @act.tags.length == 0 %>
-				<li><%= @act.tags.collect { |tag| tag.name } * " / " %></li>
+				<li class="tags"><span class="icon icon-tags"></span><%= @act.tags.collect { |tag| tag.name } * " / " %></li>
 			<% end %>
 		</ul>
 		<% unless @act.description.to_s.empty? %>

@@ -24,7 +24,7 @@ end
 		</div>
 	<% unless options[:datetime_only] %>
 		<div class="details">
-			<span class="event-name" link-id="<%= rec.id %>" linkto="event"><%= rec.event.title %></span>
+			<span class="event-name" link-id="<%= rec.occurrences.first.id %>" linkto="event"><%= rec.event.title %></span>
 		<% if options[:venue] %>
 			<span class="venue-name" link-id="<%= rec.event.venue.id %>" linkto="venue">at <%= rec.event.venue.name %></span>
 		<% end %>
@@ -36,7 +36,7 @@ end
 <% occurrences.each do |occ| %>
 	<li>
 		<div class="datetime-wrapper">
-			<div class="occurrence datetime"><%= occ.start.to_time.strftime("%B %-d at %-l:%M%P") %></div>
+			<div class="occurrence datetime"><%= occ.start.to_time.strftime("%A, %b %-d @ %-l:%M%P") %></div>
 			<div class="datetime-flag"></div>
 		</div>
 	<% unless options[:datetime_only] %>

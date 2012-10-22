@@ -1023,7 +1023,24 @@ input::-webkit-input-placeholder
 
 .mode .events .datetime-wrapper {
   position:relative;
-  padding: 0;
+  padding: 0 0 0 6px;
+  margin-left: -6px;
+}
+
+.mode.venue .events .datetime-wrapper {
+  background: rgba(197, 0, 148, 0.23);
+  color: #580D46;
+}
+
+.mode.event .events .datetime-wrapper {
+  background: rgba(0, 148, 197, 0.23);
+  color: #0D4658;
+  margin-bottom: 6px;
+}
+
+.mode.act .events .datetime-wrapper {
+  background: rgba(148, 197, 0, 0.23);
+  color: #46580D;
 }
 
 .mode .events li:first-child .datetime-wrapper {
@@ -1212,7 +1229,7 @@ input::-webkit-input-placeholder
 .events .description {
   font-size: 11px;
   overflow:hidden;
-  height: 30px;
+  max-height: 30px;
 }
 
 
@@ -1391,6 +1408,18 @@ input::-webkit-input-placeholder
   background: #94C500;
 }
 
+.mode.event .window h2 {
+  color: #0094C5;
+}
+
+.mode.venue .window h2 {
+  color: #C50094;
+}
+
+.mode.act .window h2 {
+  color: #94C500;
+}
+
 .mode .window .title .bookmark {
   margin-right:10px;
   cursor:pointer;
@@ -1423,10 +1452,11 @@ input::-webkit-input-placeholder
     top: 1px;
 }
 .mode .window h2 {
-  font-size: 18px;
+  font-size: 21px;
   margin-bottom: 5px;
   font-style: italic;
   font-family: Alegreya;
+  color: #0094C5;
 }
 
 .mode .window .h1under {
@@ -1458,8 +1488,22 @@ input::-webkit-input-placeholder
   margin-right: 25px;
   color: black;
   padding: 0;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: bold;
+}
+
+.mode .window .sub-header li .icon {
+    position: relative;
+    top: 2px;
+}
+
+.mode .window .sub-header li.datetime, .mode .window .sub-header li.price {
+    text-transform:lowercase;
+    font-family:Alegreya SC;
+}
+
+.mode .window .sub-header li.tags {
+    text-transform:lowercase;
 }
 
 .mode .window .col-1, .mode .window .col-2 {
