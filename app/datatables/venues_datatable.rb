@@ -40,23 +40,6 @@ private
 
   def fetch_venues
 
-    # venues_with_raw = ActiveRecord::Base.connection.select_all("
-    #   SELECT venue_id,venues.name,COUNT(*) 
-    #     FROM venues,raw_venues,raw_events 
-    #     WHERE venues.id = raw_venues.venue_id AND raw_venues.id = raw_events.raw_venue_id AND raw_events.submitted IS NULL AND raw_events.deleted IS NULL
-    #     GROUP BY venue_id,venues.name
-    #     ORDER BY COUNT(*) DESC")
-
-    # venues_with_existing_events_query = "
-    #   SELECT venues.id AS venue_id, venues.name, venues.address, venues.views, COUNT(events.id) AS events_count
-    #     FROM venues
-    #     LEFT OUTER JOIN events
-    #     ON venues.id = events.venue_id
-    #     GROUP BY venues.id,venues.name"
-
-
-
-
     venues_query = "
       SELECT v2.venue_id, v2.name, v2.address, v2.views, v2.events_count, COALESCE(v1.raw_events_count, 0) AS raw_events_count FROM
         ( SELECT venue_id,venues.name,COUNT(*) AS raw_events_count
@@ -81,21 +64,6 @@ private
 
     #[√] Combine venues and venues_with_raw
     # venues_with_events = ActiveRecord::Base.connection.select_all(venues_with_existing_events_query)
-    
-    # i = 0
-    # venues.each do |v|
-    #   if i < 15
-    #     puts v
-    #   end
-    #   i += 1
-    # end
-
-    # i = 0
-    # while i < 100
-      
-    #   i += 1
-    # end
-
 
     # venues.each do |venue|
     #   intersect_venue = venues_with_raw.find{|id| id["venue_id"] == venue["id"]}

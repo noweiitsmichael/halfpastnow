@@ -1,3 +1,5 @@
+
+
 <% content_for :title do %>
 	<h1><span class="icon-bolt"></span><%= @event.title %></h1>
 <% end %>
@@ -5,12 +7,12 @@
 <% content_for :body do %>
 	<div class="col-1">
 		<ul class="sub-header">
-			<li class="datetime"><span class="icon icon-time"></span><%= @occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
+			<li><%= @occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
 			<% if @event.price %>
-				<li class="price"><span class="icon icon-credit-card"></span><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 2) : "FREE" %></li>
+				<li><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 2) : "FREE" %></li>
 			<% end %>
 			<% unless @event.tags.length == 0 %>
-				<li class="tags"><span class="icon icon-tags"></span><%= @event.tags.collect { |tag| tag.name } * " / " %></li>
+				<li><%= @event.tags.collect { |tag| tag.name } * " / " %></li>
 			<% end %>
 		</ul>
 		<% unless @event.description.to_s.empty? %>
@@ -84,7 +86,7 @@
     	<% end %>
         <script type="text/javascript">
          	$(function() {
-            	Galleria.loadTheme('assets/galleria.classic.min.js');
+            	
 	            $('#galleria').galleria({
 			        width:358,
 			        height:358,
