@@ -25,7 +25,7 @@ class VenuesController < ApplicationController
         ORDER BY COUNT(*) DESC")
 
     @venuesCooked = ActiveRecord::Base.connection.select_all("
-      SELECT venues.id, venues.name, venues.address, venues.views, COUNT(events.id) AS events_count
+      SELECT venues.id AS venue_id, venues.name, venues.address, venues.views, COUNT(events.id) AS events_count
         FROM venues
         LEFT OUTER JOIN events
         ON venues.id = events.venue_id
@@ -35,16 +35,16 @@ class VenuesController < ApplicationController
     # would be nice but "venue_id" is the label in @venuesCooked and "id" is the label in @venuesRaw
     # instead we'll have to iterate through @venuesRaw in the table
     ## (not deleting because its awesome code)
-    # @venuesCombined = (@venuesRaw+@venuesCooked).group_by{|h| h["venue_id"]}.map{|k,v| v.reduce(:merge)}
-  
-    @venuesCooked.each do |venue|
-      intersect_venue = @venuesRaw.find{|id| id["venue_id"] == venue["id"]}
-      if intersect_venue.nil? == false
-        venue.merge!({ "raw_events_count" => intersect_venue["count"]})
-      else
-        venue.merge!({ "raw_events_count" => 0})
-      end
-    end
+    @venuesCooked = (@venuesRaw+@venuesCooked).group_by{|v| v["venue_id"]}.map{|a,b| b.reduce(:merge)}
+
+    # @venuesCooked.each do |venue|
+    #   intersect_venue = @venuesRaw.find{|id| id["venue_id"] == venue["id"]}
+    #   if intersect_venue.nil? == false
+    #     venue.merge!({ "raw_events_count" => intersect_venue["count"]})
+    #   else
+    #     venue.merge!({ "raw_events_count" => 0})
+    #   end
+    # end
     
     respond_to do |format|
       format.html {render :layout => "admin"}

@@ -43,7 +43,7 @@
 				<div><a href="<%= @venue.url %>"><%= @venue.url %></a></div>
 			</div>
 		</div>
-
+		<% unless (@venue.fb_picture.blank? && @venue.pictures.nil?) %>
 		<div id="galleria">
 			<% unless @venue.fb_picture.blank?%>
 				<img src="<%= @venue.fb_picture%>" data-title="<%= @venue.name %>" >
@@ -52,9 +52,10 @@
 			    <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @venue.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
 		    <% end %>
         </div>
+        <% end %>
 
         <script>
-            Galleria.loadTheme('assets/galleria.classic.min.js');
+            // Galleria.loadTheme('assets/galleria.classic.min.js');
             $('#galleria').galleria({
 		        width:358,
 		        height:358,

@@ -2,7 +2,6 @@
 
 <% content_for :title do %>
 	<h1><span class="icon-bolt"></span><%= @event.title %></h1>
-
 <% end %>
 
 <% content_for :body do %>
@@ -58,7 +57,7 @@
 				<div class="address two"><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></div>
 			</div>
 		</div>
-
+		<% unless (@event.venue.fb_picture.blank? && @event.fb_picture.blank? && @event.pictures.nil? && @event.acts.nil? )%>
 		<div id="galleria">
 			<% unless @event.venue.fb_picture.blank?%>
 				<img src="<%=@event.venue.fb_picture%>" data-title="<%= @event.venue.name %>" >
@@ -84,6 +83,7 @@
 		    	<br>
 		    <% end %>
         </div>
+    	<% end %>
         <script type="text/javascript">
          	$(function() {
             	Galleria.loadTheme('assets/galleria.classic.min.js');

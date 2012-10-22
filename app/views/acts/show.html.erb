@@ -34,6 +34,8 @@
 			<% end %>
 			<%= render :partial => "layouts/bookmark", :locals => { :element => @act, :bookmark_type => "Act", :bookmark_already => holding_tank } %>
 		</div></div>
+
+		<% unless (@act.fb_picture.blank? && @act.pictures.nil?) %>
 		<div id="galleria">
 			<% unless @act.fb_picture.blank?%>
 				<img src="<%= @act.fb_picture%>" data-title="<%= @act.name %>" >
@@ -42,11 +44,12 @@
 			    <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @act.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
 		    <% end %>
         </div>
+        <% end %>
 
         <script type="text/javascript">
         	$(function() {
         		
-	            Galleria.loadTheme('assets/galleria.classic.min.js');
+	            // Galleria.loadTheme('assets/galleria.classic.min.js');
 	            $('#galleria').galleria({
 			        width:358,
 			        height:358,
