@@ -930,6 +930,8 @@ function showPageMarkers() {
 
 // this gets called on infinite scroll and on filter changes
 function pullEvents(updateOptions) {
+  var async_reloadTagsList = reloadTagsList;
+  var async_infiniteScrolling = infiniteScrolling;
 
   updateOptions = defaultTo(updateOptions, {});
 
@@ -946,13 +948,13 @@ function pullEvents(updateOptions) {
 
     var jData = $(data);
 
-    if(infiniteScrolling) {
+    if(async_infiniteScrolling) {
       $('#content .main .inner .events').append(jData.find("#combo_event_list").html());
       infiniteScrolling = false;
     } else {
       $('#content .main .inner .events').html(jData.find("#combo_event_list").html());
       $('.num-occurrences-count').html(jData.find("#combo_total_occurrences").html());
-      if(reloadTagsList) {
+      if(async_reloadTagsList) {
         $('#header .filter-toggle.tags .filter-inner').html(jData.find("#combo_tag_list").html());
         $('#header .advancedbar .tags-list').html(jData.find("#combo_advanced_tag_list").html());
       } else {
