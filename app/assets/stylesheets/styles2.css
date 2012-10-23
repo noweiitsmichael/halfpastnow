@@ -2148,7 +2148,7 @@ html, body {
     cursor: auto;
 
     padding: 16px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 #content .main .inner .no-results-suggestions {
@@ -2161,16 +2161,16 @@ html, body {
     margin: 0;
     min-height: inherit;
     box-shadow: none;
-    font-size: 12px;
-    margin-left: 10px;
+    font-size: 16px;
+    margin-left: 2px;
     margin-top: 3px;
     list-style: disc inside;
     cursor: auto;
 }
 
 #content .main .inner .events .no-results h3 {
-  font-family:PTSansNarrowBold;
   font-size:24px;
+  font-style: italic;
 }
 
 .tag .icon-ok-sign, .tag .icon-remove-sign {

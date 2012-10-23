@@ -7,7 +7,7 @@
 
 		    filter.name = $('.new-channel-name').val();
 
-		    $.post('/channels/create', filter, function(channel) {
+		    $.post('/channels/create?format=json', filter, function(channel) {
 
 		      channelFilters[channel.id] = {
 		          option_day: (channel.option_day === null) ? 1 : channel.option_day,
