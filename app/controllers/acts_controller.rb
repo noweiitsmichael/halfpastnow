@@ -59,12 +59,14 @@ class ActsController < ApplicationController
     puts params[:act]
     @act.update_attributes!(params[:act])
 
-    params[:pictures].each do |pic|
-        puts pic
-        puts pic[1]["id"]
-        addedPic = Picture.find(pic[1]["id"])
-        addedPic.pictureable_id = @act.id
-        addedPic.save!
+    unless params[:pictures].nil? 
+      params[:pictures].each do |pic|
+          puts pic
+          puts pic[1]["id"]
+          addedPic = Picture.find(pic[1]["id"])
+          addedPic.pictureable_id = @act.id
+          addedPic.save!
+      end
     end
 
 
