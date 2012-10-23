@@ -282,11 +282,13 @@ var eventActs = {};
           actPics += '<img class="fb-pic-reduce" src="' + actsInfo[parseInt(lastAct)].fb_picture + '"/></a></div></span>';
         }
       }
-      if(pictures.length > 0) {
-          for (var i in pictures) {
-              actPics += '<a href="" class="pic-edit" pic-url="' + pictures[i].image.large.url + '" pic-id="' + pictures[i].id + '">';
-              actPics += '<img src="' + pictures[i].image.thumb.url + '"/></a>';
-          }
+      if (pictures != null) {
+        if(pictures.length > 0) {
+            for (var i in pictures) {
+                actPics += '<a href="" class="pic-edit" pic-url="' + pictures[i].image.large.url + '" pic-id="' + pictures[i].id + '">';
+                actPics += '<img src="' + pictures[i].image.thumb.url + '"/></a>';
+            }
+        }
       }
       $(actPictureField).append(actPics + '</span></div>');
 

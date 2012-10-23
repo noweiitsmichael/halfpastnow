@@ -2344,6 +2344,28 @@ html, body {
   filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f47a20', endColorstr='#faa51a');
 }
 
+/* purple */
+.purple {
+  color: #F5E9FE;
+  border: solid 1px #8419D4;
+  background: #7F1DF7;
+  background: -webkit-gradient(linear, left top, left bottom, from(#7F1AFA), to(#8620F4));
+  background: -moz-linear-gradient(top,  #7F1AFA,  #8620F4);
+  filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#8620F4', endColorstr='#8620F4');
+}
+.purple:hover {
+  background: #8620F4;
+  background: -webkit-gradient(linear, left top, left bottom, from(#7911F8), to(#6915F0));
+  background: -moz-linear-gradient(top,  #7911F8,  #6915F0);
+  filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#7911F8', endColorstr='#6915F0');
+}
+.purple:active {
+  color: #C1A5FC;
+  background: -webkit-gradient(linear, left top, left bottom, from(#8620F4), to(#8620F4));
+  background: -moz-linear-gradient(top,  #8620F4,  #8620F4);
+  filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#8620F4', endColorstr='#8620F4');
+}
+
 /* white */
 .white {
   color: #606060;

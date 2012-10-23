@@ -58,10 +58,12 @@
 			<% @event.acts.each_with_index do |act, index| %>
 				<label>From <%= act.name %></label>
 				<span class="pictures">
-				<% if !Picture.where(:image => act.fb_picture.match(/[^\/]+$/).to_s, :pictureable_id => act.id, :pictureable_type => "Act").exists? %>
-		          <span class="pictures pic-field"><div class="fb-image-submit" picable-id="<%= act.id %>" picable-type="Act" fb-pic-url="<%= act.fb_picture %>">
-		          <a href="" pic-url="<%= act.fb_picture %>">
-		          <img class="fb-pic-reduce" src="<%= act.fb_picture %>"/></a></div></span>
+				<% unless act.fb_picture.blank? %>
+					<% if !Picture.where(:image => act.fb_picture.match(/[^\/]+$/).to_s, :pictureable_id => act.id, :pictureable_type => "Act").exists? %>
+			          <span class="pictures pic-field"><div class="fb-image-submit" picable-id="<%= act.id %>" picable-type="Act" fb-pic-url="<%= act.fb_picture %>">
+			          <a href="" pic-url="<%= act.fb_picture %>">
+			          <img class="fb-pic-reduce" src="<%= act.fb_picture %>"/></a></div></span>
+					<% end %>
 				<% end %>
 				<% act.pictures.each_with_index do |pic, index| %>
 					<a href="" class="pic-edit" pic-url="<%= pic.image.large.url %>" pic-id="<%= pic.id %>">

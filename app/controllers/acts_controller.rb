@@ -1,3 +1,4 @@
+require 'pp'
 class ActsController < ApplicationController
   before_filter :authenticate_user!, :only => [:index]
 
@@ -47,7 +48,9 @@ class ActsController < ApplicationController
   end
 
   def actCreate
-    authorize! :actCreate, @user, :message => 'Not authorized as an administrator.'    
+    authorize! :actCreate, @user, :message => 'Not authorized as an administrator.'  
+    puts "actsCReate"
+    pp params  
     if (params[:act][:id].to_s.empty?)
       @act = Act.new()
     else
@@ -55,6 +58,15 @@ class ActsController < ApplicationController
     end
     puts params[:act]
     @act.update_attributes!(params[:act])
+
+    params[:pictures].each do |pic|
+        puts pic
+        puts pic[1]["id"]
+        addedPic = Picture.find(pic[1]["id"])
+        addedPic.pictureable_id = @act.id
+        addedPic.save!
+    end
+
 
     respond_to do |format|
       if @act.save

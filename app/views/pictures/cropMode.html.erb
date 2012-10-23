@@ -93,13 +93,13 @@
 <%= form_for(@picture, :url => "/pictures/coverImageAdd") do |f| %>
   <div class="actions">
     <% %w[x y w h].each do |attribute| %>
-      <%= f.text_field "crop_#{attribute}", :class=> "picture_crop_#{attribute}"%>
+      <%= hidden_field "crop_#{attribute}", :class=> "picture_crop_#{attribute}"%>
     <% end %>
 	<%= hidden_field_tag(:remote_image_url, @picURL, :class => "remote_url") %>
 	<%= hidden_field_tag(:id, @event.id, :class => "id") %>
 	<%= hidden_field_tag(:id, @picture.id, :class => "picture_id") %>
 	<%= hidden_field_tag(:picType, @eventType, :class => "picType") %>
-	<a href="" class="ajax-submit">Submit Crop!</a>
+	<a href="" class="ajax-submit purple button">Submit Crop!</a>
   </div>
 <% end %>
 

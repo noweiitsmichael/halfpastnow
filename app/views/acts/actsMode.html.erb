@@ -148,7 +148,7 @@
           return false;
         } 
         else {
-          $('<div class="ajaxLoader pictures field gallery"><img src="/assets/ajax-loader.gif"></div>').appendTo('#actThumbs');
+          $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('#actThumbs');
           var picData = 
             {"picture":
               { "pictureable_id": parseInt($("#pictureable_id").val()),
@@ -158,10 +158,12 @@
             };
         }
         $.post("/pictures/create",picData,function(data) {
+          console.log(data);
           var numThumbs = document.getElementsByClassName("gallery");
-          var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
-          newPicThumb += '<div class="pictures field gallery" index="' + numThumbs + '">';
-          newPicThumb += '<input type="hidden" name="act[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+          var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs.length + ' ">';
+          newPicThumb += '<input type="hidden" name="pictures[' + numThumbs.length + '][id]" value="' + data.id + '" />';
+          newPicThumb += '<input type="hidden" name="pictures[' + numThumbs.length + '][pictureable_id]" value="<%= @act.id %>" />';
+          newPicThumb += '<input type="hidden" name="pictures[' + numThumbs.length + '][pictureable_type]" value="Act" />';
           newPicThumb += '<div href="" class="remove-pic">&#10799;</div>';
           newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '"></div>';
           $('.ajaxLoader').detach();
@@ -178,16 +180,21 @@
             confirmURL("nofile");
             return false;
           } else {
-            $('<div class="ajaxLoader pictures field gallery"><img src="/assets/ajax-loader.gif"></div>').appendTo('#actThumbs');
+            $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('#actThumbs');
             $("#act-form").ajaxSubmit({
               beforeSerialize: function(form, options) {
               },
               url: "/pictures/createForAct",
               success:function(data) {
+          console.log(data);
                 var numThumbs = document.getElementsByClassName("gallery");
-                var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
-                newPicThumb += '<div class="pictures field gallery" index="' + numThumbs + '">';
-                newPicThumb += '<input type="hidden" name="act[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+                console.log(numThumbs.length)
+                var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs.length + ' ">';
+                // newPicThumb += '<div class="pictures field gallery" index="' + numThumbs + '">';
+                // newPicThumb += '<input type="hidden" name="act[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+                newPicThumb += '<input type="hidden" name="pictures[' + numThumbs.length + '][id]" value="' + data.id + '" />';
+                newPicThumb += '<input type="hidden" name="pictures[' + numThumbs.length + '][pictureable_id]" value="' + data.pictureable_id + '" />';
+                newPicThumb += '<input type="hidden" name="pictures[' + numThumbs.length + '][pictureable_type]" value="Act" />';
                 newPicThumb += '<div style="margin-right:3px;" href="" class="remove-pic">&#10799;</div>';
                 newPicThumb += '<img style="margin-right:3px;" alt="image_thumb" src="' + data.image.thumb.url + '"></div>';
                 $('.ajaxLoader').detach();

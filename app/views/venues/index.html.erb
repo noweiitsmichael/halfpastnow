@@ -4,7 +4,7 @@
   oTable = $('#venues').dataTable({
     "bJQueryUI": true,
     "sPaginationType": "full_numbers",
-    "iDisplayLength": 25,
+    "iDisplayLength": 50,
     "bStateSave": true,
     "bProcessing": true,
     "bServerSide": true,
@@ -12,10 +12,19 @@
     "aoColumnDefs": [{ "sWidth": "30%", "aTargets": [ 0, 1 ] },
                      { "asSorting": [ "desc", "asc"], "aTargets": [ 2,3,4 ] }]
   }).fnSetFilteringDelay();
+   
+  // Sort immediately with columns 0 and 1
+  oTable.fnSort( [ [4,'desc'] ] );
+
 } );
   var venue_id = null;
 
   $(function() {
+
+    $("#venues_filter").click( function() {
+      $(this).find('input:text').attr("value", "");
+    });
+
     $("#venue-go").click(function() {
       if(venue_id) {
         console.log("/venues/edit/" + venue_id);
