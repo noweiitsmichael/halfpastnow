@@ -804,13 +804,25 @@ input::-webkit-input-placeholder
 {
   margin-left: 336px;
   position: relative;
-  padding-top: 38px;
+  padding-top: 37px;
 }
 #content .main .inner
 {
   padding: 0;
   position: relative;
 }
+
+.filter-summary {
+    background: rgba(0, 0, 0, .5);
+    color:white;
+    padding: 3px 9px 3px;
+    font-weight:700;
+    margin-bottom: 18px;
+    font-size: 18px;
+    text-align: right;
+    display: none;
+}
+
 #header .header
 {
   /*height: 60px;
@@ -1896,6 +1908,7 @@ html, body {
   line-height: 31px;
   float: right;
   margin-left: 0;
+  display: none !important;
 }
 
 #header .streambar .stream.selected {
@@ -2104,12 +2117,13 @@ html, body {
                     
       padding: 4px 0 9px;
       
-                    font-size: 16px;
+                    
                     overflow: hidden;
                     
       width: 990px;
                     margin: 0 auto;
-                    font-size: 18px;
+                    
+      font-size: 18px;
 }
 
 .num-occurrences {
