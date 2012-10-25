@@ -7,7 +7,7 @@
 
 </script>
 
-
+<% puts @event.title %>
 <% @ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] %>
 <% @week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] %>
 <%= form_for @venue, :url => "/venues/update/" + @venue.id.to_s , :validate => true do |f| %>
@@ -32,9 +32,9 @@
 	  <%= e.text_field :price, :class => "price" %>
 	</div>
 
-	<%= render :partial => "tags", :locals => { :event => event } %>
+	<%= render :partial => "tags", :locals => { :event => @event } %>
 
-	<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => event } %>
+	<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => @event } %>
 	
 	<% if !event.id.nil? %>
 	  <div class="remove">

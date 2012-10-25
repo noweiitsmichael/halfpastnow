@@ -134,7 +134,11 @@ class VenuesController < ApplicationController
   end
 
   def new_event
-    @venue = Venue.includes(:raw_venues => :raw_events).find(params[:id])
+
+    puts params
+    @venue = Venue.find(params[:id])
+    @event = @venue.events.build
+    @event.title = "blah"
 
     render :layout => "admin"
   end
