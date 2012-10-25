@@ -54,12 +54,9 @@ gem 'omniauth-facebook'
 gem 'koala'
 
 #file attachments and Amazon S3
-#gem 'paperclip'
 gem 'carrierwave'
 gem 'rmagick'
 gem 'fog'
-#gem 'aws-s3'
-#gem 'aws-sdk'
 
 group :test do
   # Pretty printed test output

@@ -893,17 +893,17 @@ function placeMarker(lat, long) {
   var marker = new google.maps.Marker({ //MarkerWithLabel({
     map: map,
     position: new google.maps.LatLng(lat,long),
-    icon: "/assets/markers/marker_" + (i + 1) % 100 + ".png",
+    icon: "/assets/markers/marker_" + (i + 1) % 1 + ".png",
     index: i + 1
   });
 
   google.maps.event.addListener(marker, 'mouseover', function() {
-    marker.setIcon("/assets/markers/marker_hover_" + marker.index % 100 +  ".png");
+    marker.setIcon("/assets/markers/marker_hover_" + marker.index % 1 +  ".png");
     $("#content .main .inner .events li:nth-child(" + marker.index + ")").addClass("hover");
   });
 
   google.maps.event.addListener(marker, 'mouseout', function() {
-    marker.setIcon("/assets/markers/marker_" + marker.index % 100 + ".png");
+    marker.setIcon("/assets/markers/marker_" + marker.index % 1 + ".png");
     $("#content .main .inner .events li:nth-child(" + marker.index + ")").removeClass("hover");
   });
 
