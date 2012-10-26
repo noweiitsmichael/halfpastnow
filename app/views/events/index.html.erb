@@ -277,7 +277,9 @@
 		</div>
 		<div class="main">
 			<div class="inner">
-				<div style="display:none;" class="total-occurrences"><%= @allOccurrences.size %></div>
+				<div class="filter-summary">
+					Showing <span class="num-events">27</span> <span class="price-filter">Free</span> <span class="tag-filter">Rock/Pop</span> events <span class="time-filter">Today</span>
+				</div>
 				<ul class="events">
 					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
 				</ul>

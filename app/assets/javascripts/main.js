@@ -325,8 +325,9 @@ function defaultTo(parameter, parameterDefault) {
   return (typeof parameter !== 'undefined') ? parameter : parameterDefault;
 }
 
-function updateViewFromFilter(pullEventsFlag) {
+function updateViewFromFilter(pullEventsFlag, options) {
 
+  options = defaultTo(options, {});
   pullEventsFlag = defaultTo(pullEventsFlag, true);
   filter.offset = 0;
 
@@ -527,7 +528,6 @@ function updateViewFromFilter(pullEventsFlag) {
   ////////////// SORT //////////////
 
   //sort
-  $('.sort-by .sort').removeClass('selected');
   if(filter.sort === 0) {
     $('.sort-by').html("Sorted by <span class='sort selected' sort-type='popularity'>popularity</span> / <span class='sort' sort-type='date'>date</span>");
   } else if(filter.sort === 1) {
@@ -536,7 +536,9 @@ function updateViewFromFilter(pullEventsFlag) {
 
   ////////////// SEARCH ////////////// 
 
-  $('.search-input').val(filter.search);
+  if(!(options.update_search === false)) {
+    $('.search-input').val(filter.search);
+  }
 
   if(pullEventsFlag) {
     pullEvents();
@@ -546,9 +548,8 @@ function updateViewFromFilter(pullEventsFlag) {
 
 var advancedSlideTime, filterSlideTime, marginHeight, baseHeight, filterHeight, advancedHeight;
 var typingTimer;               //timer identifier
-var doneTypingInterval = 500;  //time in ms
+var doneTypingInterval = 1000;  //time in ms
 $(function() {
-
   //on keyup, start the countdown
   $('.search-input').keyup(function(){
     console.log("keyup");
@@ -838,7 +839,7 @@ function scrollHeader() {
 //user is "finished typing," do something
 function doneTyping () {
     filter.search = $('.search-input').val();
-    pullEvents();
+    pullEvents({update_search: false});
 }
 
 window.addEventListener("popstate", function(e) {
@@ -928,7 +929,15 @@ function showPageMarkers() {
 }
 
 // this gets called on infinite scroll and on filter changes
-function pullEvents() {
+function pullEvents(updateOptions) {
+  var async_reloadTagsList = reloadTagsList;
+  var async_infiniteScrolling = infiniteScrolling;
+
+  updateOptions = defaultTo(updateOptions, {});
+
+  console.log("pullEvents");
+  console.log("infiniteScrolling: " + infiniteScrolling);
+  console.log("reloadTagsList: " + reloadTagsList);
   console.log(filter);
 
   loading('show');
@@ -939,13 +948,13 @@ function pullEvents() {
 
     var jData = $(data);
 
-    if(infiniteScrolling) {
+    if(async_infiniteScrolling) {
       $('#content .main .inner .events').append(jData.find("#combo_event_list").html());
       infiniteScrolling = false;
     } else {
       $('#content .main .inner .events').html(jData.find("#combo_event_list").html());
       $('.num-occurrences-count').html(jData.find("#combo_total_occurrences").html());
-      if(reloadTagsList) {
+      if(async_reloadTagsList) {
         $('#header .filter-toggle.tags .filter-inner').html(jData.find("#combo_tag_list").html());
         $('#header .advancedbar .tags-list').html(jData.find("#combo_advanced_tag_list").html());
       } else {
@@ -967,7 +976,7 @@ function pullEvents() {
 
     loading('hide');
 
-    updateViewFromFilter(false);
+    updateViewFromFilter(false, updateOptions);
     
     // gotta jiggle the handle for position:fixed elements on resize, i think? weird.
     //var top = $('#map-wrapper').position().top;
