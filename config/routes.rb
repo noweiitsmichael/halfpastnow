@@ -8,7 +8,7 @@ Myapp::Application.routes.draw do
 
   resources :bookmarks
 
-  #resources :venues
+  resources :venues
 
   get "info/about"
 
