@@ -362,7 +362,8 @@ class MobileController < ApplicationController
       @bookmarks= Bookmark.where("user_id=?",@user.id)
   	  @occurrenceids= @user.bookmarked_events.collect(&:id)
   	  @eventids = Occurrence.find(@occurrenceids).collect(&:event_id)
-  	  @events = Event.includes(:tags, :venue, :recurrences).find(@eventids) 
+  	  @ocs = Occurrence.find(@occurrenceids)
+      @events = Event.includes(:tags, :venue,:occurrences).find(@eventids) 
       @bookmarkedevents =[]
       @events.each { 
         |event| 
