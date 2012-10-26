@@ -363,3 +363,7 @@ nav li:last-child a {
   filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#8620F4', endColorstr='#8620F4');
 }
 
+.owner {
+  float: right;
+  display: inline;
+}

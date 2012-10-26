@@ -91,5 +91,10 @@
     		<%= e.submit %>
     		<% if @event.id %><a href="" class="delete-event" eventId="<%= @event.id %>">Delete Event</a><% end %>
   		</div>
+
+  		<div class="owner">
+  			<% owner = User.find(@event.user_id) %>
+  			<% if @event.user_id %>Created by <%= owner.firstname %> <%= owner.lastname %><% end %>
+  		</div>
     </div>
 <% end %>

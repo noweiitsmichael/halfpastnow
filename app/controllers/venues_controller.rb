@@ -134,7 +134,16 @@ class VenuesController < ApplicationController
   end
 
   def new_event
-    @venue = Venue.includes(:raw_venues => :raw_events).find(params[:id])
+    puts "params:"
+    puts params
+    @venue = Venue.find(params[:id])
+    @event = @venue.events.build
+    @event.title = "blah"
+
+    @event.update_attributes!(params[:event])
+    @event.occurrences.build
+    @event.recurrences.build
+    @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
 
     render :layout => "admin"
   end
