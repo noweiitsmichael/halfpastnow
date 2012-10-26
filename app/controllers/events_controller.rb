@@ -92,8 +92,17 @@ def index
     end_date_check = start_time_check = end_time_check = day_check = "TRUE"
     occurrence_start_time = "((EXTRACT(HOUR FROM occurrences.start) * 3600) + (EXTRACT(MINUTE FROM occurrences.start) * 60))"
 
-    event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
-    event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_s == "INFINITY") ? 365000 : params[:end_days].to_i + 1))
+    event_start_date = event_end_date = nil
+    if(!params[:start_date].to_s.empty?)
+      event_start_date = Date.parse(params[:start_date])
+    else
+      event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
+    end
+    if(!params[:end_date].to_s.empty?)
+      event_end_date = Date.parse(params[:end_date]).advance(:days => 1)
+    else
+      event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_s == "INFINITY") ? 365000 : params[:end_days].to_i + 1))
+    end
 
     start_date_check = "occurrences.start >= '#{event_start_date}'"
     end_date_check = "occurrences.start <= '#{event_end_date}'"
@@ -106,10 +115,11 @@ def index
       end_time_check = "#{occurrence_start_time} <= #{event_end_time}"
     end
 
+
     unless(params[:day].to_s.empty?)
-      event_days = params[:day].to_s.empty? ? nil : params[:day].collect { |day| day.to_i } * ','
-      pp event_days
-      days_check = "#{event_days ? "occurrences.day_of_week IN (#{event_days})" : "TRUE" }"
+      event_days = params[:day].collect { |day| day.to_i } * ','
+
+      day_check = "#{event_days ? "occurrences.day_of_week IN (#{event_days})" : "TRUE" }"
     end
 
     occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check} AND #{day_check}"
@@ -160,13 +170,15 @@ def index
     unless(params[:included_tags].to_s.empty?)
       tags_mush = params[:included_tags] * ','
 
-      tag_include_match = "events.id IN (
-                    SELECT event_id 
-                      FROM events, tags, events_tags 
-                      WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{tags_mush}) 
-                      GROUP BY event_id 
-                      HAVING COUNT(tag_id) >= #{ params[:included_tags].count }
-                  )"
+      # tag_include_match = "events.id IN (
+      #               SELECT event_id 
+      #                 FROM events, tags, events_tags 
+      #                 WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{tags_mush}) 
+      #                 GROUP BY event_id 
+      #                 HAVING COUNT(tag_id) >= #{ params[:included_tags].count }
+      #             )"
+
+      tag_include_match = "tags.id IN (#{tags_mush})"
     end
 
     unless(params[:excluded_tags].to_s.empty?)
@@ -208,6 +220,8 @@ def index
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
     
+    puts query
+
     @ids = ActiveRecord::Base.connection.select_all(query)
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq

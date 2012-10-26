@@ -1,0 +1,85 @@
+.dk_theme_alegreya {
+    font-family: Alegreya;
+       
+    font-weight: 900;
+    font-size: 24px;
+    margin: 0px 4px 0 6px;
+    height: 35px;
+    border-radius: 0;
+    border: none;
+    background: transparent;
+    float: left;
+    padding: 6px 0 3px 0;
+}
+
+.dk_theme_alegreya.selected {
+    
+}
+
+.dk_theme_alegreya.dk_open {
+    box-shadow:none;
+}
+
+.dk_theme_alegreya .dk_toggle,
+.dk_theme_alegreya.dk_open .dk_toggle {
+    padding: 0 10px 0 6px;
+
+    height: 33px;
+    border-radius: 0;
+    border: none;
+    color: #9DE7FF;
+    text-shadow: none;
+    background: transparent;
+}
+
+.dk_theme_alegreya.selected .dk_toggle,
+.dk_theme_alegreya.dk_open.selected .dk_toggle { 
+   border: none;   
+   text-shadow: none;
+}
+
+.dk_theme_alegreya .dk_label:after {
+    content:"\f0d7";
+    font-family:FontAwesome;
+    margin-left: 8px;
+    
+}
+
+.dk_theme_alegreya.selected .dk_label {
+   color:white; 
+   border-bottom:6px solid white;
+}
+
+.dk_theme_alegreya.dk_open .dk_label {
+    color:black;
+}
+
+.dk_theme_alegreya.dk_open .dk_label:after {
+    content:none;
+    margin-left:0;
+}
+
+.dk_theme_alegreya.dk_open .dk_toggle {
+    color:black;
+    background-color: white;
+    box-shadow: none;
+}
+
+.dk_theme_alegreya.dk_open .dk_options {
+    top: 40px !important;
+}
+
+.dk_theme_alegreya .dk_options a {
+    font-weight: 700;
+
+    height: 20px;
+    line-height: 19px;
+    font-size: 16px;
+}
+
+.dk_theme_alegreya .dk_options a:hover,
+.dk_theme_alegreya .dk_option_current a {
+    text-shadow: none;
+  
+    font-weight: 700;
+}

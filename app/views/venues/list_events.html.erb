@@ -1,3 +1,5 @@
+<%= render 'venues_nav' %>
+
 <script type="text/javascript">
 	$(function() {
 		$('#events .event-element .toggler').click(function() {
@@ -35,7 +37,7 @@
 		<div class="compact event-element" objectID="<%= event.id %>">
 			<div class="time"><%= event.firstOccurrence.start.to_time.strftime("%b %-d @ %-I:%M%P") %></div>
 			<div class="title"><%= event.title %></div>
-			<div class="description"><%= event.description %></div>
+			<div class="description"><%= truncate(event.description, :length => 300)  %></div>
 			<a href="" class="toggler">+</a>
 		</div>
 	<% else %>
@@ -45,4 +47,12 @@
 		</div>
 	<% end %>
 <% end %>
+
+<div class="acts mode">
+	<div class="overlay">
+		<div class="window">
+		</div>
+	</div>
+</div>
+
 </div>

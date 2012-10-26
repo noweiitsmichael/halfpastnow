@@ -34,6 +34,17 @@ class ProfilepicUploader < CarrierWave::Uploader::Base
   # end
 
   # Create different versions of your uploaded files:
+
+  version :mini do
+    process :crop
+    process :resize_to_limit => [35, 35]
+  end
+
+  version :tiny do
+    process :crop
+    process :resize_to_limit => [60, 60]
+  end
+
   version :thumb do
     process :crop
     process :resize_to_limit => [150, 150]

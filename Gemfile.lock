@@ -84,6 +84,8 @@ GEM
       railties (~> 3.0)
       thor (~> 0.14)
     journey (1.0.3)
+    jquery-datatables-rails (1.11.1)
+      jquery-rails
     jquery-rails (1.0.19)
       railties (~> 3.0)
       thor (~> 0.14)
@@ -106,6 +108,7 @@ GEM
     multipart-post (1.1.5)
     net-scp (1.0.4)
     net-ssh (2.5.2)
+    newrelic_rpm (3.5.0)
     nokogiri (1.5.3)
     oauth2 (0.8.0)
       faraday (~> 0.8)
@@ -201,9 +204,11 @@ DEPENDENCIES
   fog
   htmlentities
   jcrop-rails (~> 1.0.2)
+  jquery-datatables-rails
   jquery-rails
   koala
   mobile-fu
+  newrelic_rpm
   nokogiri (>= 1.4.4)
   omniauth-facebook
   pg
@@ -217,3 +222,4 @@ DEPENDENCIES
   thin
   turn (~> 0.8.3)
   uglifier (>= 1.0.3)
+  will_paginate

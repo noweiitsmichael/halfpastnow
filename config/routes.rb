@@ -8,7 +8,7 @@ Myapp::Application.routes.draw do
 
   resources :bookmarks
 
-  resources :channels
+  resources :venues
 
   get "info/about"
 
@@ -17,6 +17,11 @@ Myapp::Application.routes.draw do
   devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"}
 
   get "tag/index"
+
+  # namespace :admin do
+  #   resources :venues, :acts
+  # end
+
 
   # resources :events
   # resources :venues
@@ -80,11 +85,14 @@ Myapp::Application.routes.draw do
   # See how all your routes lay out with "rake routes"
 
   # TODO: overcome the stupidity that is rails 3 routing and clean this up.
-  match 'venues' => 'venues#index'
-  match 'events' => 'events#index'
+  # match 'venues' => 'venues#index'
+  # match 'events' => 'events#index'
   match 'tags' => 'tags#index'
   match 'info' => 'info#about'
-
+  match 'admin' => 'admin#index'
+  match 'admin/venues' => 'venues#index'
+  match 'admin/artists' => 'acts#index'
+  match 'venues/new_event' => 'venues#new_event'
   match 'feedbacks' => 'feedbacks#index'
   match 'users' => 'users#index', :as => "user"
   match '/search' => 'events#search'

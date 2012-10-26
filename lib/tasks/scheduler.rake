@@ -109,7 +109,7 @@ namespace :api do
 	desc "pull venues from facebook events"
 	task :get_fb_events => :environment do
 		access_token = User.find_by_email("noweiitsmichael@yahoo.com").fb_access_token
-		puts "Pulling from Facebook. IS IT DAYLIGHT SAVINGS TIME YET?!?!?!?!?!?!?!"
+		puts "Pulling from Facebook. IS IT DAYLIGHT SAVINGS TIME YET?!?!?!?!?!?!?!?!?!?!??!?!?!?!?!??!?!?!?!?!?!?!??!?!?!?!"
 		no_id = false
 		@graph = Koala::Facebook::API.new(access_token)
 		## Pull all things that halfpastnow likes
@@ -120,7 +120,7 @@ namespace :api do
 				no_id = false
 				
 				## if the name or location is blank, we're just gonna skip it
-				if events['name'].blank? || events['location'].blank?
+				if events['name'].blank? || events['location'].blank? 
 					puts "skipping because no location..."
 					next
 				end
@@ -138,7 +138,11 @@ namespace :api do
 					if events['venue'] != nil
 						if events['venue']['id'] != nil #need this because 'venue' of nil will throw error when looking for 'id'
 							fb_venue = @graph.get_object(events['venue']['id'])
-							puts "Creating rawvenue with id " + events['venue']['id'] + " in " + fb_venue['location']['city']
+							if fb_venue['location']['city'].nil?
+								puts "skipping because location does not specify city (meaning not real location/event)..."
+								next
+							end
+								puts "Creating rawvenue with id " + events['venue']['id'] + " in " + fb_venue['location']['city']
 							if !allowed_cities.include?(fb_venue['location']['city'])
 								puts "skipping because " + fb_venue['location']['city'] + " is not in Greater Austin Area..."
 								next
@@ -163,7 +167,11 @@ namespace :api do
 						## Some n00bs don't know how to link to FB venues and input manual location.
 						else
 							puts "Manually creating venue: " + events['location']
-
+							stupid_fake_venues = ['Online', 'online', 'web', 'Web', 'Website', 'website']
+							if stupid_fake_venues.include?(events['location']) || events['venue']['city'].nil?
+								puts "skipping because " + events['location'] + " is not a actual location..."
+								next
+							end
 							if  !allowed_cities.include?(events['venue']['city'])
 								puts "skipping because " + events['venue']['city'] + " is not in Greater Austin Area..."
 								next

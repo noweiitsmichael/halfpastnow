@@ -1,8 +1,9 @@
-
 <script type="text/javascript">
 	 $(function() {
 	 	generateValidator("#event_<%= @event.id %>",{"ajax":true});
 	 });
+
+
 </script>
 
 
@@ -33,37 +34,67 @@
 
 		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => @event } %>
 
+		<br>
 	    <div class="field">
-	    	<div class="picgal">
-	    	<b><%= e.label "Picture Galleries" %></b><br>
-
-	    	<% unless @event.fb_picture.blank? %>
-					<%= e.label "From Facebook:" %>
-					<%= image_tag @event.fb_picture %>
-					<br>
+	    	<%= e.label :cover_image %>
+	    	<span class="cover-image-<%= @event.id %>">
+			<% if @event.cover_image.nil? or Picture.where(:id => @event.cover_image).empty? %>
+				<b><span style="color:red;">**** NONE: Click an image from the gallery below, or upload a new one and click it ****</span><b>
+				<br>
+			<% else %>
+				<%= image_tag Picture.find(@event.cover_image).image_url(:cover).to_s %>
 			<% end %>
+			</span>
+		</div>
+			<br>
+		<div class="greyback">
+		<div class="field pic-field">
+	    	<b>PICTURE GALLERIES</b><br><br>
+			<!-- container for new artists from select2 box-->
+			<span class="field-for-act-pics-2<%=@event.id%>">
+			<!-- end -->
+			</span>
 
-		    <% @event.acts.each do |artists| %>
-		    	<% unless artists.pictures.empty? %>
-			    	<label>From artist <%= artists.name %>: </label>
-			    	<% artists.pictures.each do |pic| %>
-			    		<%= image_tag pic.image_url(:thumb).to_s %>
-			    	<% end %>
-		    	<% end %>
-		    	<br>
-		    <% end %>
-			</div>
-		    <label>From Venue:</label>
-		    <% @event.venue.pictures.each do |pic| %>
-		    		<%= image_tag pic.image_url(:thumb).to_s %>
-		    <% end %>
+			<% @event.acts.each_with_index do |act, index| %>
+				<label>From <%= act.name %></label>
+				<span class="pictures">
+				<% unless act.fb_picture.blank? %>
+					<% if !Picture.where(:image => act.fb_picture.match(/[^\/]+$/).to_s, :pictureable_id => act.id, :pictureable_type => "Act").exists? %>
+			          <span class="pictures pic-field"><div class="fb-image-submit" picable-id="<%= act.id %>" picable-type="Act" fb-pic-url="<%= act.fb_picture %>">
+			          <a href="" pic-url="<%= act.fb_picture %>">
+			          <img class="fb-pic-reduce" src="<%= act.fb_picture %>"/></a></div></span>
+					<% end %>
+				<% end %>
+				<% act.pictures.each_with_index do |pic, index| %>
+					<a href="" class="pic-edit" pic-url="<%= pic.image.large.url %>" pic-id="<%= pic.id %>">
+              		<img src="<%= pic.image.thumb.url %>"/></a>
+				<% end %>
+				</span>
+				<br>
+			<% end %>
+			
+	    
+
+	    <%= render :partial => "pictures_events", :locals => { :e => e, :event => @event } %>
+	    <br>
+	    </div>
 	    </div>
 
-	    <%= render :partial => "pictures_events", :locals => { :event => @event } %>
+	    <div class="pics mode">
+			<div class="overlay">
+				<div class="window">
+				</div>
+			</div>
+		</div>	
 
 		<div class="actions">
     		<%= e.submit %>
     		<% if @event.id %><a href="" class="delete-event" eventId="<%= @event.id %>">Delete Event</a><% end %>
+  		</div>
+
+  		<div class="owner">
+  			<% owner = User.find(@event.user_id) %>
+  			<% if @event.user_id %>Created by <%= owner.firstname %> <%= owner.lastname %><% end %>
   		</div>
     </div>
 <% end %>

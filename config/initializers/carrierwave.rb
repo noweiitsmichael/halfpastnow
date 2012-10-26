@@ -5,7 +5,7 @@ CarrierWave.configure do |config|
     :aws_secret_access_key  => 'LTRuhT705XVHFyVxeAMT7X10WgBDpYNaY7gugXjP',#ENV['AWS_SECRET_ACCESS_KEY'],       # required
     :region                 => 'us-east-1'  # optional, defaults to 'us-east-1'
   }
-  config.fog_directory  = 'hpn_profile_pics'#ENV['S3_BUCKET_NAME'] #                    # required
+  config.fog_directory  = 'hpn-pictures'#ENV['S3_BUCKET_NAME'] #                    # required
   config.fog_host = "http://#{config.fog_directory}.s3.amazonaws.com"
 
   if ENV['RAILS_ENV'] != 'production'

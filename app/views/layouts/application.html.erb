@@ -2,8 +2,13 @@
 <html>
 <head>
   <title>half past now.</title>
-
+  
+  <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Alegreya:regular,italic,700,700italic,900,900italic,'>
+  <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Alegreya+SC:regular,italic,700,700italic,900,900italic,'>
+  <%#= render :partial => "layouts/font_test" %>
+  
   <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "underscore" %>
   <%= javascript_include_tag "jquery-ui" %>
   <%= javascript_include_tag "jquery-ui-timepicker-addon" %>
   <%= javascript_include_tag "viewport" %>
@@ -12,15 +17,19 @@
   <%= javascript_include_tag "tokeninput" %>
   <%= javascript_include_tag "dropkick" %>
   <%= javascript_include_tag "jquery.tabSlideOut.v1.3" %>
+  <%= javascript_include_tag "galleria-1.2.8.min" %>
 
-  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCuX99Cn10qLVF0AQNRzduy012YqkaIXgk&sensor=false"></script>
+  
+
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
   <%= javascript_include_tag "markerwithlabel" %>
 
   <%= stylesheet_link_tag    "font-awesome" %>
-  <%= stylesheet_link_tag    "styles" %>
+  <%= stylesheet_link_tag    "styles2" %>
   <%= stylesheet_link_tag    "jquery-ui" %>
   <%= stylesheet_link_tag "dropkick" %>
-  <%= stylesheet_link_tag "ptsans_theme" %>
+  <%= stylesheet_link_tag "alegreya_theme" %>
+  <%= stylesheet_link_tag "galleria.classic" %>
   
   <%= csrf_meta_tags %>
 
@@ -34,6 +43,7 @@
         });
 
     });
+    
 
     </script>
 
@@ -49,10 +59,10 @@
     <div id="header">
       <div class="one">
         <div class="stay-on-target">
-          <a href="/"><img class="logo" src="/assets/halfpastnow_shadow.png" /></a>
+          <a href="/"><img class="logo" src="/assets/halfclock.png" /></a>
           <div class="menu-element right">
             <% if user_signed_in? %>
-              <%= link_to('my profile', :controller => "users", :action => "show")  %>  / <%= link_to('settings', edit_user_registration_path) %> / <%= link_to('logout', destroy_user_session_path, :method => 'delete') %>
+              <%= link_to('my profile', :controller => "users", :action => "show")  %><%#= link_to('settings', edit_user_registration_path) %> / <%= link_to('logout', destroy_user_session_path, :method => 'delete') %>
             <% else %>
               <%= link_to('login', new_user_session_path)  %> / <%= link_to('sign up', new_user_registration_path)  %> 
             <% end %>

@@ -1,5 +1,16 @@
 <% if current_user %>
-<% @bookmark = current_user ? Bookmark.where(:bookmarked_id => element.id, :bookmarked_type => element.class.name, :user_id => current_user.id).first : nil %>
-		<span <%= @bookmark ? "style='display:none;'" : "title='add bookmark'" %> class="bookmark add_bookmark" bookmarked_id="<%= element.id%>" bookmarked_type="<%= element.class.name %>">&#10026;</span>
-		<span <%= @bookmark ? "title='remove bookmark'" : "style='display:none;'" %> class="bookmark remove_bookmark" bookmark-id="<%= @bookmark ? @bookmark.id : "" %>">&#9733;</span>
+	<% if bookmark_already.exists? %>
+		<% bookmk = Bookmark.where(:bookmarked_id => element.id, :bookmarked_type => bookmark_type, :user_id => current_user.id).first %>
+		<%= button_to "Remove Bookmark", bookmk, :method => :delete, :class => "button white" %>
+	<% else %>
+		<% bkmrk = Bookmark.new %>
+		<%= form_for bkmrk, :url => "/bookmarks/create" do |f| %>
+			<div><%= f.hidden_field :bookmarked_id, :value => element.id %></div>
+			<div><%= f.hidden_field :bookmarked_type, :value => bookmark_type %></div>
+			<div><%= f.hidden_field :user_id, :value => current_user.id %></div>
+			<%= f.submit 'Bookmark it!', :class => 'button orange' %>
+		<% end %>
+	<% end %>
+<% else %>
+	<span class="button orange" linkto='shunt'>Bookmark it!</span>
 <% end %>

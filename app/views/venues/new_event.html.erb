@@ -1,0 +1,96 @@
+<%= render 'venues_nav' %>
+
+<script type="text/javascript">
+	 $(function() {
+	 	generateValidator("#event_<%= @event.id %>",{"ajax":true});
+	 });
+
+
+</script>
+
+
+<% @ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] %>
+<% @week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] %>
+<%= form_for @event, :url => "/venues/eventEdit/" + @event.id.to_s, :html => { :multipart => true, :id => "event_" + @event.id.to_s } do |e| %>
+	<% @iStrName = "event[tag_ids][]" %>
+
+	<% @iStrId = @event.id ? "event_2#{@event.id.to_s}_tag_ids_" : "event_0_tag_ids_" %>
+    <div class="main event<%= @event.id ? "" : " new"%>">
+    	<%= hidden_field_tag :venue_id, @venue.id %>
+		<div class="field">
+		  <%= e.label :title %>
+		  <%= e.text_field :title, :class => "title required" %>
+		</div>
+		<div class="field">
+		  <%= e.label :description %>
+		  <%= e.text_area :description, :class => "cleditor" %>
+		</div>
+		<div class="field">
+		  <%= e.label :price %>
+		  <%= e.text_field :price, :class => "price" %>
+		</div>
+
+		<%= render :partial => "acts", :locals => { :event => @event } %>
+
+		<%= render :partial => "tags", :locals => { :element => @event } %>
+
+		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => @event } %>
+
+		<br>
+	    <div class="field">
+	    	<%= e.label :cover_image %>
+	    	<span class="cover-image-<%= @event.id %>">
+			<% if @event.cover_image.nil? or Picture.where(:id => @event.cover_image).empty? %>
+				<b><span style="color:red;">**** NONE: Click an image from the gallery below, or upload a new one and click it ****</span><b>
+				<br>
+			<% else %>
+				<%= image_tag Picture.find(@event.cover_image).image_url(:cover).to_s %>
+			<% end %>
+			</span>
+		</div>
+			<br>
+		<div class="greyback">
+		<div class="field pic-field">
+	    	<b>PICTURE GALLERIES</b><br><br>
+			<!-- container for new artists from select2 box-->
+			<span class="field-for-act-pics-2<%=@event.id%>">
+			<!-- end -->
+			</span>
+
+			<% @event.acts.each_with_index do |act, index| %>
+				<label>From <%= act.name %></label>
+				<span class="pictures">
+				<% unless act.fb_picture.blank? %>
+					<% if !Picture.where(:image => act.fb_picture.match(/[^\/]+$/).to_s, :pictureable_id => act.id, :pictureable_type => "Act").exists? %>
+			          <span class="pictures pic-field"><div class="fb-image-submit" picable-id="<%= act.id %>" picable-type="Act" fb-pic-url="<%= act.fb_picture %>">
+			          <a href="" pic-url="<%= act.fb_picture %>">
+			          <img class="fb-pic-reduce" src="<%= act.fb_picture %>"/></a></div></span>
+					<% end %>
+				<% end %>
+				<% act.pictures.each_with_index do |pic, index| %>
+					<a href="" class="pic-edit" pic-url="<%= pic.image.large.url %>" pic-id="<%= pic.id %>">
+              		<img src="<%= pic.image.thumb.url %>"/></a>
+				<% end %>
+				</span>
+				<br>
+			<% end %>
+			
+	    
+
+	    <%= render :partial => "pictures_events", :locals => { :e => e, :event => @event } %>
+	    <br>
+	    </div>
+	    </div>
+
+	    <div class="pics mode">
+			<div class="overlay">
+				<div class="window">
+				</div>
+			</div>
+		</div>	
+		<br>
+		<div class="actions">
+    		<%= e.submit "Save Event" %>
+  		</div>
+    </div>
+<% end %>

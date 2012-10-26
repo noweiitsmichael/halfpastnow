@@ -1,22 +1,20 @@
 
 
 <% content_for :title do %>
-	<h1><%= @event.title %></h1>
+	<h1><span class="icon-bolt"></span><%= @event.title %></h1>
 <% end %>
 
 <% content_for :body do %>
-<%= javascript_include_tag "galleria-1.2.8.min" %>
-
-	<ul class="sub-header">
-		<li><%= @occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
-		<% if @event.price %>
-			<li><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 2) : "FREE" %></li>
-		<% end %>
-		<% unless @event.tags.length == 0 %>
-			<li><%= @event.tags.collect { |tag| tag.name } * " / " %></li>
-		<% end %>
-	</ul>
 	<div class="col-1">
+		<ul class="sub-header">
+			<li class="datetime"><span class="icon icon-time"></span><%= @occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
+			<% if @event.price %>
+				<li class="price"><span class="icon icon-credit-card"></span><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 2) : "FREE" %></li>
+			<% end %>
+			<% unless @event.tags.length == 0 %>
+				<li class="tags"><span class="icon icon-tags"></span><%= @event.tags.collect { |tag| tag.name } * " / " %></li>
+			<% end %>
+		</ul>
 		<% unless @event.description.to_s.empty? %>
 			<div class="description block">
 				<h2>Details</h2>
@@ -46,28 +44,20 @@
 	</div>
 	<div class="col-2">
 		<div class="block"><div class="block-inner">
-			<% if current_user.bookmarked_events.where(:id => @occurrence.id).exists? %>
-				<% bookmk = Bookmark.where(:bookmarked_id => @occurrence.id, :bookmarked_type => "Occurrence", :user_id => current_user.id).first %>
-				<%= button_to "Remove Bookmark", bookmk, :method => :delete, :class => "button white" %>
-			<% else %>
-				<% bkmrk = Bookmark.new %>
-				<%= form_for bkmrk, :url => "/bookmarks/create" do |f| %>
-					<div><%= f.hidden_field :bookmarked_id, :value => @occurrence.id %></div>
-					<div><%= f.hidden_field :bookmarked_type, :value => "Occurrence" %></div>
-					<div><%= f.hidden_field :user_id, :value => current_user.id %></div>
-					<%= f.submit 'Bookmark it!', :class => 'button orange' %>
-				<% end %>
+			<% if current_user %>
+				<% holding_tank = current_user.bookmarked_events.where(:id => @occurrence.id) %>
 			<% end %>
+			<%= render :partial => "layouts/bookmark", :locals => { :element => @occurrence, :bookmark_type => "Occurrence", :bookmark_already => holding_tank } %>
 		</div></div>
 		<div class="block">
-			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=402x300&zoom=15&maptype=roadmap&markers=color:red%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&style=feature:all|hue:0x000001|saturation:-50&sensor=false"/></a>
+			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&sensor=false"/></a>
 			<div class="block-inner">
 				<div class="venue"><a linkto="venue" link-id="<%= @event.venue.id %>" href="#"><%= @event.venue.name %></a></div>
 				<div class="address one"><%= @event.venue.address %></div>
 				<div class="address two"><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></div>
 			</div>
 		</div>
-
+		<% unless (@event.venue.fb_picture.blank? && @event.fb_picture.blank? && @event.pictures.nil? && @event.acts.nil? )%>
 		<div id="galleria">
 			<% unless @event.venue.fb_picture.blank?%>
 				<img src="<%=@event.venue.fb_picture%>" data-title="<%= @event.venue.name %>" >
@@ -93,13 +83,16 @@
 		    	<br>
 		    <% end %>
         </div>
-        <script>
-            Galleria.loadTheme('assets/galleria.classic.min.js');
-            $('#galleria').galleria({
-		        width:400,
-		        height:300,
-		        lightbox:true
-		    });
+    	<% end %>
+        <script type="text/javascript">
+         	$(function() {
+            	
+	            $('#galleria').galleria({
+			        width:358,
+			        height:358,
+			        lightbox:true
+			    });
+			});
         </script>
 
 		<% unless @occurrences.length == 0 && @recurrences.length == 0 %>
@@ -119,26 +112,6 @@
 
 <% if false %><!--
 	<div class="col-2">
-		<div class="block">
-
-			<% bkmrk = Bookmark.new %>
-
-			<%= form_for bkmrk, :url => "/bookmarks/create" do |f| %>
-				<div><%= f.hidden_field :bookmarked_id, :value => @occurrence.id %></div>
-				<div><%= f.hidden_field :bookmarked_type, :value => "Occurrence" %></div>
-					<div><%= f.hidden_field :user_id, :value => current_user.id %></div>
-				<%= f.submit "Bookmark!" %>
-			<% end %>
-
-			<br>Bookmarked by: </br>
-			<% @bookmarked_by = @occurrence.bookmarks %>
-			<ol>
-				<% @bookmarked_by.each do |b| %>
-					<li><%= b.user_id %></li>
-				<% end %>
-			</ol>
-
-		</div>
 
 
 		<div class="block">

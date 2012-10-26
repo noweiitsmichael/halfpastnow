@@ -1,0 +1,66 @@
+<% content_for :body do %>
+	<script type="text/javascript">
+		$(function() {
+
+		  $('.new-channel-create').click(function() {
+		    var isNewChannel = $('.new.field-selector').prop('checked');
+
+		    filter.name = $('.new-channel-name').val();
+
+		    $.post('/channels/create?format=json', filter, function(channel) {
+
+		      channelFilters[channel.id] = {
+		          option_day: (channel.option_day === null) ? 1 : channel.option_day,
+		          start_days: (channel.start_days === null) ? 0 : channel.start_days,
+		          end_days: (channel.end_days === null) ? 0 : channel.end_days,
+		          start_seconds: (channel.start_seconds === null) ? '' : channel.start_seconds,
+		          end_seconds: (channel.end_seconds === null) ? '' : channel.end_seconds,
+		          low_price: (channel.low_price === null) ? '' : channel.low_price,
+		          high_price: (channel.high_price === null) ? '' : channel.high_price,
+		          included_tags: channel.included_tags ? channel.included_tags.split(",") : [],
+		          excluded_tags: channel.excluded_tags ? channel.excluded_tags.split(",") : [],
+		          lat_min: "",
+		          lat_max: "",
+		          long_min: "",
+		          long_max: "",
+		          offset: 0,
+		          search: "",
+		          sort: (channel.sort === null) ? 0 : channel.sort,
+		          name: (channel.name === null) ? '' : channel.name,
+		      };
+
+	        	$(".streambar .header").append("<span class='stream' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</span>");
+	        streamSelector();
+
+	        	$(".channels .lists").append("<li class='channel title' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</li>");
+
+		      $(".streambar .header .stream").removeClass('selected');
+		      $('.streambar .header .stream[channel-id=' + channel.id + ']').addClass('selected');
+
+		      $('.channels .lists li').removeClass('selected');
+		      $('.channels .lists li[channel-id=' + channel.id + ']').addClass('selected');
+		      
+		      demodal();
+
+		    }, "json");
+		  });
+
+			if(typeof filter.stream_id !== 'undefined' && filter.stream_id !== "") {
+				$('.save-channel option[value=' + filter.stream_id + ']').prop('selected',true);
+			}
+
+			console.log('weeee');
+			$('.field-selector').click(function() {
+				console.log("click");
+				$('.field').removeClass('selected');
+				$(this).next('.field').addClass('selected');
+			});
+		});
+	</script>
+	<h4>Create New Stream from Current Filters</h4>
+	<div class="field" style="opacity:1;">
+		<label>new stream</label>
+		<input class="new-channel-name" type="text" placeholder="new stream name" />
+	</div>
+	<button class="new-channel-create">Create New Stream</button>
+<% end %>

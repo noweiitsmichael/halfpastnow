@@ -1,0 +1,45 @@
+<%= stylesheet_link_tag "grid" %>
+<script type="text/javascript">
+	$(function() {
+	$('.grid').click(function(e){
+	  evt = e || window.event;
+
+	  // make finger disappear
+	  $(this).hide(0);
+
+	  // get element at point of click
+	  starter = document.elementFromPoint(evt.clientX, evt.clientY);
+
+	  // send click to element at finger point
+	  $(starter).click();
+
+	  // bring back the finger
+	  $(this).show(0);
+	});
+	});
+</script>
+
+<div id="vertical-grid" class="grid">
+	<% 20.times do %>
+		<div class="unit"></div>
+		<div class="gutter"></div>
+	<% end %>
+	<div class="unit"></div>
+</div>
+
+<div id="horizontal-grid" class="grid">
+	<% 200.times do %>
+		<div class="unit"></div>
+	<% end %>
+</div>
+
+
+<% if false %><!-- 
+<div id="horizontal-grid" class="grid">
+	<% 20.times do %>
+		<div class="unit"></div>
+		<div class="gutter"></div>
+	<% end %>
+	<div class="unit"></div>
+</div> -->
+<% end %>

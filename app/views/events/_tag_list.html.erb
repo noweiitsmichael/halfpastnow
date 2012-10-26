@@ -3,9 +3,9 @@
 	<% tagCounts.select{|tagCount| tagCount[:parent].nil? }.each do |parentTagCount| %>
 		<li>
 			<div class="tag-header <%= parentTagCount[:count] == 0 ? "no-results" : "" %>" tag-id="<%= parentTagCount[:id] %>">
-				<span class="exclude icon-remove-circle" tag-id="<%= parentTagCount[:id] %>" title="don't show events with this tag"><!-- <img src="/assets/exclude.png" /> --></span>
-				<span class="include icon-ok-circle" tag-id="<%= parentTagCount[:id] %>" title="show events with this tag"><!-- <img src="/assets/include2.png" /> --></span>
-				<span class="name"><%= parentTagCount[:name] %> <em><%= parentTagCount[:count] == 0 ? "" : "[#{parentTagCount[:count]}]" %></em></span>
+				<!-- <span class="exclude icon-ban-circle" tag-id="<%= parentTagCount[:id] %>" title="don't show events with this tag"></span> -->
+				<span class="include icon-check-empty" tag-id="<%= parentTagCount[:id] %>" title="show events with this tag"><span></span></span>
+				<span class="name"><%= parentTagCount[:name] %><!-- <em><%= parentTagCount[:count] == 0 ? "" : "[#{parentTagCount[:count]}]" %></em> --></span>
 				<% if parentTagCount[:children].size > 0 %>
 					<span class="toggler icon-chevron-right"></span>
 				<% end %>
@@ -18,9 +18,9 @@
 		<% parentTagCount[:children].each do |childTagCount| %>
 			<li parent-id="<%= parentTagCount[:id] %>">
 				<div class="tag-header <%= childTagCount[:count] == 0 ? "no-results" : "" %>" tag-id="<%= childTagCount[:id] %>">
-					<span class="exclude icon-remove-circle" tag-id="<%= childTagCount[:id] %>" title="don't show events with this tag"></span>
-					<span class="include icon-ok-circle" tag-id="<%= childTagCount[:id] %>" title="show events with this tag"></span>
-					<span class="name"><%= childTagCount[:name] %> <em><%= childTagCount[:count] == 0 ? "" : "[#{childTagCount[:count]}]" %></em></span>
+					<!-- <span class="exclude icon-ban-circle" tag-id="<%= childTagCount[:id] %>" title="don't show events with this tag"></span> -->
+					<span class="include icon-check" tag-id="<%= childTagCount[:id] %>" title="show events with this tag"><span></span></span>
+					<span class="name"><%= childTagCount[:name] %><!-- <em><%= childTagCount[:count] == 0 ? "" : "[#{childTagCount[:count]}]" %></em> --></span>
 				</div>
 			</li>
 		<% end %>

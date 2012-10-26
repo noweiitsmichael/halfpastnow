@@ -28,6 +28,8 @@ class BookmarksController < ApplicationController
 	  # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+  	puts "bookmark delete***"
+  	pp params
     @bookmark = Bookmark.find(params[:id])
     @bookmark.destroy
     respond_to do |format|

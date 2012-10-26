@@ -7,6 +7,7 @@ gem 'rails', '3.2.3'
 
 gem 'pg'
 gem 'thin'
+gem 'newrelic_rpm'
 
 # gem 'thinking-sphinx', '2.0.11'
 # gem 'flying-sphinx',   '0.6.4'
@@ -20,6 +21,7 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.5'
   gem 'coffee-rails', '~> 3.2.2'
   gem 'uglifier', '>= 1.0.3'
+  gem 'jquery-datatables-rails'
 end
 
 #fancy jquery stuff
@@ -52,12 +54,9 @@ gem 'omniauth-facebook'
 gem 'koala'
 
 #file attachments and Amazon S3
-#gem 'paperclip'
 gem 'carrierwave'
 gem 'rmagick'
 gem 'fog'
-#gem 'aws-s3'
-#gem 'aws-sdk'
 
 group :test do
   # Pretty printed test output
@@ -73,3 +72,4 @@ gem 'mobile-fu'
 gem 'delayed_job_active_record'
 
 gem 'therubyracer'
+gem 'will_paginate'

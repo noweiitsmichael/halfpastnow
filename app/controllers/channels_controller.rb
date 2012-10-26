@@ -21,7 +21,7 @@ class ChannelsController < ApplicationController
 		respond_to do |format|
 		  if @channel.save
 		    format.html { redirect_to :back }
-		    format.json { render json: @channel, status: :created, location: @channel }
+		    format.json { render json: @channel }
 		  else
 		    format.html { redirect_to :back }
 		    format.json { render json: @channel.errors, status: :unprocessable_entity }
@@ -30,6 +30,14 @@ class ChannelsController < ApplicationController
 	end
 
 	def new
+		@channels = current_user.channels
+	    respond_to do |format|
+	      format.html { render :layout => "mode_lite" }
+	      format.json { render json: @channel }
+	    end
+	end
+
+	def new2
 		@channels = current_user.channels
 	    respond_to do |format|
 	      format.html { render :layout => "mode_lite" }

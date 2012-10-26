@@ -1,13 +1,87 @@
 <% content_for :body do %>
-	<h4>Save Filters</h4>
-	<div>Lorem deez ipsums, muthafucka</div>
-	<span>save existing channel</span>
-	<select class="save-channel" name="no-dropkick">
-		<% @channels.each do |channel| %>
-			<option value="<%= channel.id %>"><%= channel.name %></option>
-		<% end %>
-	</select><br/>
-	<span>or create new</span>
-	<input class="new-channel-name" type="text" placeholder="channel name" />
-	<button class="new-channel-create">Save</button>
+	<script type="text/javascript">
+		$(function() {
+
+		  $('.new-channel-create').click(function() {
+		    var isNewChannel = $('.new.field-selector').prop('checked');
+		    var saveChannelId = $('.save-channel').val();
+		    var saveChannelName = $('.save-channel').val();
+
+			console.log(isNewChannel);
+		    filter.name = isNewChannel ? $('.new-channel-name').val() : $('.save-channel :selected').text();
+
+		    $.post(isNewChannel ? '/channels/create' : '/channels/update/' + saveChannelId, filter, function(channel) {
+
+		      channelFilters[channel.id] = {
+		          option_day: (channel.option_day === null) ? 1 : channel.option_day,
+		          start_days: (channel.start_days === null) ? 0 : channel.start_days,
+		          end_days: (channel.end_days === null) ? 0 : channel.end_days,
+		          start_seconds: (channel.start_seconds === null) ? '' : channel.start_seconds,
+		          end_seconds: (channel.end_seconds === null) ? '' : channel.end_seconds,
+		          low_price: (channel.low_price === null) ? '' : channel.low_price,
+		          high_price: (channel.high_price === null) ? '' : channel.high_price,
+		          included_tags: channel.included_tags ? channel.included_tags.split(",") : [],
+		          excluded_tags: channel.excluded_tags ? channel.excluded_tags.split(",") : [],
+		          lat_min: "",
+		          lat_max: "",
+		          long_min: "",
+		          long_max: "",
+		          offset: 0,
+		          search: "",
+		          sort: (channel.sort === null) ? 0 : channel.sort,
+		          name: (channel.name === null) ? '' : channel.name,
+		      };
+
+		      if(isNewChannel) {
+		        $(".streambar .header").append("<span class='stream' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</span>");
+		        streamSelector();
+
+		        $(".channels .lists").append("<li class='channel title' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</li>");
+		      }
+
+		      $(".streambar .header .stream").removeClass('selected');
+		      $('.streambar .header .stream[channel-id=' + channel.id + ']').addClass('selected');
+
+		      $('.channels .lists li').removeClass('selected');
+		      $('.channels .lists li[channel-id=' + channel.id + ']').addClass('selected');
+		      
+		      demodal();
+
+		    }, "json");
+		  });
+
+			if(typeof filter.stream_id !== 'undefined' && filter.stream_id !== "") {
+				$('.save-channel option[value=' + filter.stream_id + ']').prop('selected',true);
+			}
+
+			$('.field-selector').click(function() {
+				$('.field').removeClass('selected');
+				$(this).next('.field').addClass('selected');
+			});
+
+			$('.save-channel').focus(function() {
+				$('.field-selector').first().click();
+			});
+
+			$('.new-channel-name').focus(function() {
+				$('.field-selector').last().click();
+			});
+		});
+	</script>
+	<h4>Save Current Filters as Stream</h4>
+	<input type="radio" class="current field-selector" checked name="field-selector" />
+	<div class="field selected">
+		<label>current streams</label>
+		<select class="save-channel" name="no-dropkick">
+			<% @channels.reverse.each do |channel| %>
+				<option value="<%= channel.id %>"><%= channel.name %></option>
+			<% end %>
+		</select>
+	</div>
+	<input type="radio" class="new field-selector" name="field-selector" />
+	<div class="field">
+		<label>new stream</label>
+		<input class="new-channel-name" type="text" placeholder="new stream name" />
+	</div>
+	<button class="new-channel-create">Save Stream</button>
 <% end %>

@@ -36,17 +36,35 @@
 			console.log("initialize");
 			//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
 			geocoder = new google.maps.Geocoder();
+
+			var styles = [
+			    {
+			      stylers: [
+			        { saturation: 0 },
+			        { invert_lightness: false },
+			        { gamma: 1 },
+			        { lightness: 0 }
+			      ]
+			    }];
+
 			var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
 			var myOptions = {
 				zoom: <%= @zoom %>,
 				center: latlng,
-				mapTypeId: google.maps.MapTypeId.ROADMAP,
+				mapTypeId: 'map_style',
 				disableDefaultUI: true,
 				zoomControl: true,
 				scrollwheel: false,
-				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
+				zoomControlOptions: { position: google.maps.ControlPosition.TOP_LEFT, style: google.maps.ZoomControlStyle.LARGE }
 			};
+
+			var styledMap = new google.maps.StyledMapType(styles,
+    			{name: "Styled Map"});
+
 			map = new google.maps.Map($("#map")[0], myOptions);
+
+			map.mapTypes.set('map_style', styledMap);
+  			map.setMapTypeId('map_style');
 
 			var locations = [];
 			
@@ -66,12 +84,13 @@
 		$(function() {
 			<% @channels.each do |channel| %>
 				channelFilters[<%= channel.id %>] = {
+				  stream_id: <%= channel.id %>,
 				  option_day: <%= channel.option_day || 1 %>,
 				  start_days: <%= channel.start_days || 0 %>,
 				  end_days: <%= channel.end_days || 0 %>,
 				  start_seconds: <%= channel.start_seconds || "''" %>,
 				  end_seconds: <%= channel.end_seconds || "''" %>,
-				  // day: [0,1,2,3,4,5,6],
+				  day: [0,1,2,3,4,5,6],
 				  low_price: <%= channel.low_price || "''" %>,
 				  high_price: <%= channel.high_price || "''" %>,
 				  included_tags: <%= channel.included_tags ? "'" + channel.included_tags + "'.split(',')" : "[]" %>,
@@ -88,11 +107,13 @@
 			<% end %>
 
     		channelFilters[0] = { 
+    			  stream_id: "",
     			  option_day: 0,
 				  start_days: 0,
 				  end_days: 'INFINITY',
 				  start_seconds: '',
 				  end_seconds: '',
+				  day: [0,1,2,3,4,5,6],
 				  low_price: '',
 				  high_price: '',
 				  included_tags: [],
@@ -103,27 +124,41 @@
 				  long_max: "",
 				  offset: 0,
 				  search: "",
-				  sort: "",
-				  name: "" };
+				  name: "",
+				  start_date: "",
+				  end_date: "" };
 
 			// filter.search = "<%= params[:search] %>";
-
-			<% @tags.each do |tag| %>
-			tags[<%= tag.id %>] = "<%= tag.name %>";
+			<% if false %>
+				// <% @tags.each do |tag| %>
+				// tags[<%= tag.id %>] = "<%= tag.name %>";
+				// <% end %>
 			<% end %>
 
-			console.log(tags);
+			<% @tagCounts.each do |tagCount| %>
+			tags['<%= tagCount[:id] %>'] = 
+				{ name: "<%= tagCount[:name] %>",
+				  parent_id: <%= tagCount[:parent] ? "'#{tagCount[:parent][:id]}'" : 'null' %>,
+				  <% children = tagCount[:children].collect { |child| "'#{child[:id]}'" } * ',' %>
+				  child_ids: [<%= children %>]
+				}
+			<% end %>
+
+			Galleria.loadTheme('/assets/galleria.classic.min.js');
 		});
 	</script>
 <% end %>
 
 <% content_for :header do %>
+	<%#= render :partial => "layouts/font_select" %>
+
 	<div class="bar-wrapper">
 		<div class="streambar">
 			<div class="stay-on-target">
 				<div class="header">
 					<% @selectedChannel = params[:channel_id].coalesce_to 0 %>
-					<span class="stream <%= @selectedChannel == 0 ? "selected" : ""%>" channel-id="0">All Events</span>
+					<!-- <span class="stream <%= @selectedChannel == 0 ? "selected" : ""%>" channel-id="0">All Events</span> -->
+					<span class="stream new" <%= current_user ? "linkto='new-channel-2'" : "linkto='shunt'" %>>+ New Stream</span>
 					<% @channels.each do |channel| %>
 						<span class="stream <%= (@selectedChannel.to_i == channel.id) ? "selected" : ""%>" channel-id="<%= channel.id %>"><%= channel.name %></span>
 					<% end %>
@@ -134,30 +169,21 @@
 			<div class="stay-on-target">
 				<div class="header">
 					<div class="toggle-wrapper">
-						<!-- <span class="filter-toggle channels">
+						
+						<span class="filter-toggle search">
 							<span class="filter-text">
+								<span class="pre-text"><span class="icon icon-search"></span></span>
 								<span class="text">
-									<span class="text-inner">All Events</span>
-									<span class="toggler">&#9662;</span>
+									<span class="text-inner"><input type="text" class="search-input" /></span>
 								</span>
-								<span class="channels-arrow"></span>
 							</span>
-							<div class="filter-dropdown">
-								<div class="filter-inner">
-									<ul class="lists">
-										<li class="title selected">All Events</li>
-										<% @channels.each do |channel| %>
-											<li class="channel title" channel-id="<%= channel.id %>"><%= channel.name %></li>
-										<% end %>
-									</ul>
-								</div>
-							</div>
-						</span> -->
+						</span>
 						<span class="filter-toggle tags">
 							<span class="filter-text">
-								<span class="pre-text"><span class="icon icon-tags"></span>Tags:</span>
+								<span class="pre-text"><span class="icon icon-tags"></span>Tags</span>
 								<span class="text">
 									<span class="text-inner">Any Tag</span>
+									<span class="icon icon-caret-down"></span>
 								</span>
 							</span>
 							<div class="filter-dropdown">
@@ -168,22 +194,37 @@
 						</span>
 						<span class="filter-toggle date">
 							<span class="filter-text">
-								<span class="pre-text"><span class="icon icon-time"></span>Time:</span>
+								<span class="pre-text"><span class="icon icon-time"></span>Time</span>
 								<span class="text">
 									<span class="text-inner">Today</span>
+									<span class="icon icon-caret-down"></span>
 								</span>
 							</span>
 							<div class="filter-dropdown">
 								<div class="filter-inner">
 									<div class="filter date">
 										<div class="filters">
-											<span class="any">any day</span><span class="today selected">today</span><span class="tomorrow">tomorrow</span><span class="custom">specific date</span>
+											<span class="any">any day</span><span class="today selected">today</span><span class="tomorrow">this week</span><span class="custom">custom</span>
 										</div>
 										<div>
 											<div class="custom-select"><div class="any time-range"></div><div class="any time-display">any time</div></div>
 											<div class="custom-select selected"><div class="today time-range"></div><div class="today time-display">any time</div></div>
-											<div class="custom-select"><div class="tomorrow time-range"></div><div class="tomorrow time-display">any time</div></div>
-											<div class="custom-select"><div class="custom time-range"></div><div class="custom time-display">any time</div><div class="custom date-range"></div><div class="custom date-display">today</div></div>
+											<div class="custom-select">
+												<div class="day-of-week">
+													<% dayOfWeek = Date.today() %>
+													<% 7.times do %>
+														<div day-of-week="<%= dayOfWeek.to_time.strftime("%w") %>"><div class="day"><%= dayOfWeek.to_time.strftime("%a") %></div><div class="date"><%= dayOfWeek.to_time.strftime("%b %-d") %></div></div>
+														<% dayOfWeek = dayOfWeek + 1 %>
+													<% end %>
+												</div>
+												<div class="tomorrow time-range"></div><div class="tomorrow time-display">any time</div>
+											</div>
+											<div class="custom-select">
+												<span class="icon icon-calendar"></span><input type="text" class="custom-start"/> to <span class="icon icon-calendar"></span><input type="text" class="custom-end"/>
+												<div class="custom time-range"></div><div class="custom time-display">any time</div>
+												<!-- <div class="custom date-range"></div>
+												<div class="custom date-display">today</div> -->
+											</div>
 										</div>
 									</div>
 								</div>
@@ -191,9 +232,10 @@
 						</span>
 						<span class="filter-toggle price">
 							<span class="filter-text">
-								<span class="pre-text"><span class="icon icon-money"></span>Cost:</span> 
+								<span class="pre-text"><span class="icon icon-credit-card"></span>Cost</span> 
 								<span class="text">
 									<span class="text-inner">Any Price</span>
+									<span class="icon icon-caret-down"></span>
 								</span>
 							</span>
 							<div class="filter-dropdown">
@@ -202,96 +244,16 @@
 								</div>
 							</div>
 						</span>
-						<span class="filter-toggle search">
+						<span class="filter-toggle filter-action action-clear">
 							<span class="filter-text">
-								<span class="pre-text"><span class="icon icon-search"></span></span>
-								<span class="text">
-									<span class="text-inner"><input type="text" class="search-input" /></span>
-								</span>
+								<span class="pre-text"><span class="icon icon-trash"></span>clear</span>
 							</span>
 						</span>
-						<span class="filter-action save" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>
-							<span class="icon icon-caret-left"></span>Save
-						</span>
-						<!-- <span class="filter-toggle sort">
+						<span class="filter-toggle filter-action action-save" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>
 							<span class="filter-text">
-								sorted by
-								<span class="text">
-									<span class="text-inner">Popularity</span>
-								</span>
+								<span class="pre-text"><span class="icon icon-save"></span>save</span>
 							</span>
-							<div class="filter-dropdown">
-								<div class="filter-inner">
-									<ul class="sorts">
-										<li class="title selected">Popularity</li>
-										<li class="title">Date</li>
-									</ul>
-								</div>
-							</div>
-						</span> -->
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="advancedbar">
-			<div class="stay-on-target">
-				<!-- <div class="col one">
-					<div class="channels">
-						<ul class="lists">
-							<li class="title selected">All Events</li>
-							<% @channels.each do |channel| %>
-								<li class="channel title" channel-id="<%= channel.id %>"><%= channel.name %></li>
-							<% end %>
-						</ul>
-						<div class="actions">
-							<span class="new" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>create custom channel</span>
-							<span class="save" <%= current_user ? "" : "linkto='shunt'" %>>save custom channel</span>
-						</div>
-					</div>
-				</div> -->
-				<div class="list-mods">
-					<div class="col two">
-						<div class="tags block">
-							<h3>Tags</h3>
-							<div class="tags-list">
-								<%# render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => @parentTags } %>
-								<%= render :partial => "tag_list", :locals => { :tagCounts => @tagCounts, :parentTags => @parentTags } %>
-							</div>
-						</div>
-					</div>
-					<div class="col three">
-						<div class="date block">
-							<h3>Date</h3>
-							<div class="filter date">
-								<div class="filters">
-									<span class="any">any day</span><span class="today selected">today</span><span class="tomorrow">tomorrow</span><span class="custom">specific date</span>
-								</div>
-								<div>
-									<div class="custom-select"><div class="any time-range"></div><div class="any time-display">any time</div></div>
-									<div class="custom-select selected"><div class="today time-range"></div><div class="today time-display">any time</div></div>
-									<div class="custom-select"><div class="tomorrow time-range"></div><div class="tomorrow time-display">any time</div></div>
-									<div class="custom-select"><div class="custom time-range"></div><div class="custom time-display">any time</div><div class="custom date-range"></div><div class="custom date-display">today</div></div>
-								</div>
-							</div>
-						</div>
-						<div class="price block">
-							<h3>Price</h3>
-							<div class="price-range"></div><div class="price-display">any price</div>
-						</div>
-					</div>
-					<div class="col four">
-						<!-- 
-						<div class="search block">
-							<h3>Search Terms</h3>
-							<input type='text' />
-						</div>-->
-						<div class="sort block">
-							<h3>Sorted by</h3>
-							<ul class="sorts">
-								<li class="title selected">Popularity</li>
-								<li class="title">Date</li>
-							</ul>
-						</div>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -299,8 +261,8 @@
 	</div>
 	<div class="expandobar">
 		<div class="subbar">
-			<div class="num-occurrences">Showing <span class="num-occurrences-count"><%= @allOccurrences.size %></span> events</div>
-			<div class="sort-by">Sort by: <span class="sort" sort-type="popularity">popularity</span> | <span class="sort" sort-type="date">date</span></div>
+			<div class="sort-by">Sorted by <span class="sort selected" sort-type="popularity">popularity</span> / <span class="sort" sort-type="date">date</span></div>
+			<div class="num-occurrences">showing <span class="num-occurrences-count"><%= @allOccurrences.size %></span> events</div>
 		</div>
 		<div class="expandobar-inner">
 			<span>&#9660;</span>show advanced options<span>&#9660;</span>
@@ -315,13 +277,16 @@
 		</div>
 		<div class="main">
 			<div class="inner">
-				<div style="display:none;" class="total-occurrences"><%= @allOccurrences.size %></div>
+				<div class="filter-summary">
+					Showing <span class="num-events">27</span> <span class="price-filter">Free</span> <span class="tag-filter">Rock/Pop</span> events <span class="time-filter">Today</span>
+				</div>
 				<ul class="events">
 					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
 				</ul>
 			</div>
 			<img id="loading" src="/assets/ajax-loader.gif" />
 		</div>
+		<%#= render :partial => "layouts/grid" %>
 	</div>
 <% end %>
 
