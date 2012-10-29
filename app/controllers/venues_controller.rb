@@ -138,9 +138,7 @@ class VenuesController < ApplicationController
     puts params
     @venue = Venue.find(params[:id])
     @event = @venue.events.build
-    @event.title = "blah"
 
-    @event.update_attributes!(params[:event])
     @event.occurrences.build
     @event.recurrences.build
     @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
@@ -304,6 +302,7 @@ class VenuesController < ApplicationController
     @venue = Venue.find(params[:venue_id])
     if(params[:id].to_s.empty?)
       @event = @venue.events.build
+      params[:event][:id] = @event.id
     else
       @event = Event.find(params[:id])
       params[:event]["user_id"] = current_user.id
