@@ -3,7 +3,8 @@ class Venue < ActiveRecord::Base
   has_many :events, :dependent => :destroy
   has_many :raw_venues
   has_many :pictures, :as => :pictureable, :dependent => :destroy
-  #attr_accessible :pictures_attributes, :pictures
+  has_many :embeds, :as => :embedable, :dependent => :destroy
+
   attr_accessor :image, :remote_image_url, :venuesCooked
   cattr_accessor :venuesCooked
   accepts_nested_attributes_for :pictures, :allow_destroy => true, :reject_if => proc {|attributes| attributes['image'].blank? && attributes['remote_image_url'].blank?  }
@@ -17,6 +18,7 @@ class Venue < ActiveRecord::Base
   has_many :bookmarked_by, :through => :bookmarks, :source => :user
 
   accepts_nested_attributes_for :events, :reject_if => lambda { |a| a[:title].blank? }, :allow_destroy => true
+  accepts_nested_attributes_for :embeds, :allow_destroy => true
   
   validates_presence_of :name #, :address, :city
   #validates :state, :presence => true, :length => { :minimum => 2, :maximum => 2, :message => "Please use the state postal code (eg. TX for Texas)"}

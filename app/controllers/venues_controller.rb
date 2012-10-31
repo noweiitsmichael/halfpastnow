@@ -134,13 +134,12 @@ class VenuesController < ApplicationController
   end
 
   def new_event
-    puts "params:"
-    puts params
+    puts "new_event:"
+    # puts params
     @venue = Venue.find(params[:id])
     @event = @venue.events.build
-    @event.title = "blah"
 
-    @event.update_attributes!(params[:event])
+
     @event.occurrences.build
     @event.recurrences.build
     @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
@@ -194,10 +193,11 @@ class VenuesController < ApplicationController
   def fromRaw
     @venue = Venue.find(params[:id])
     puts "creating from raw......."
-    pp params
+     # pp params
     @event = @venue.events.build()
-    @event.update_attributes!(params[:event])
     @event.user_id = current_user.id
+    @event.update_attributes!(params[:event])
+    
 
     newpictures = Picture.where(:pictureable_type => "RawEvent", :pictureable_id => params[:raw_event_id]) 
     unless newpictures.nil?
@@ -283,6 +283,7 @@ class VenuesController < ApplicationController
   end 
 
   def event
+    puts "event"
 
     if(params[:id].to_s.empty?)
       @venue = Venue.find(params[:venue_id])
@@ -301,16 +302,31 @@ class VenuesController < ApplicationController
   end 
 
   def eventEdit
+    puts "eventEdit"
+    # pp params
     @venue = Venue.find(params[:venue_id])
     if(params[:id].to_s.empty?)
       @event = @venue.events.build
+      params[:event][:id] = @event.id
     else
       @event = Event.find(params[:id])
-      params[:event]["user_id"] = current_user.id
+    end
+
+    params[:event][:user_id] = current_user.id
+    @event.update_attributes!(params[:event])
+
+    unless params[:event][:pictures_attributes].nil?
+      params[:event][:pictures_attributes].each do |pic|
+        if pic[1][:_destroy].nil?
+          updatePic = Picture.find(pic[1][:id])
+          updatePic.pictureable_id = @event.id
+          updatePic.save!
+        end
+      end
     end
 
     respond_to do |format|
-      if @event.update_attributes!(params[:event])
+      if @event.save!
         format.html { redirect_to :action => :edit, :id => @venue.id, :notice => 'yay' }
         format.json { render json: { :from => "eventEdit", :result => true } }
       else

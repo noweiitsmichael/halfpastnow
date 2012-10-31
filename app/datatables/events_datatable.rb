@@ -78,7 +78,7 @@ private
     # end
     
     if params[:sSearch].present?
-      puts "Search term detected: " + params[:sSearch].downcase
+      # puts "Search term detected: " + params[:sSearch].downcase
       venues = venues.select {|s| s["name"].downcase.include? params[:sSearch].downcase}
     end
 

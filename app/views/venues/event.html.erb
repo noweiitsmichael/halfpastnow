@@ -32,7 +32,7 @@
 
 		<%= render :partial => "tags", :locals => { :element => @event } %>
 
-		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => @event } %>
+		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => @event, :validate_occurrence => false  } %>
 
 		<br>
 	    <div class="field">
@@ -87,14 +87,18 @@
 			</div>
 		</div>	
 
+	    <%= render :partial => "embeds", :locals => { :type => 'event', :obj => @event } %>
+
 		<div class="actions">
     		<%= e.submit %>
     		<% if @event.id %><a href="" class="delete-event" eventId="<%= @event.id %>">Delete Event</a><% end %>
   		</div>
 
   		<div class="owner">
-  			<% owner = User.find(@event.user_id) %>
-  			<% if @event.user_id %>Created by <%= owner.firstname %> <%= owner.lastname %><% end %>
+  			<% if @event.user_id %>
+	  			<% owner = User.find(@event.user_id) %>
+	  			Created by <%= owner.firstname %> <%= owner.lastname %>
+	  		<% end %>
   		</div>
     </div>
 <% end %>

@@ -247,7 +247,7 @@
     </div>
 <!-- End Pictures Section -->
 
-		<%= render :partial => "/venues/embeds", :locals => { :act => @act } %>
+		<%= render :partial => "/venues/embeds", :locals => { :type => 'act', :obj => @act } %>
 
 		<div class="actions">
     		<%= e.submit %>
