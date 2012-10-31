@@ -302,7 +302,7 @@ class VenuesController < ApplicationController
 
   def eventEdit
     puts "eventEdit"
-    # pp params
+    pp params
     @venue = Venue.find(params[:venue_id])
     if(params[:id].to_s.empty?)
       @event = @venue.events.build
@@ -310,9 +310,10 @@ class VenuesController < ApplicationController
     else
       @event = Event.find(params[:id])
     end
-
+    pp Embed.last
     params[:event][:user_id] = current_user.id
     @event.update_attributes!(params[:event])
+    pp Embed.last
 
     unless params[:event][:pictures_attributes].nil?
       params[:event][:pictures_attributes].each do |pic|
@@ -323,6 +324,10 @@ class VenuesController < ApplicationController
         end
       end
     end
+
+    pp Embed.last
+    puts "event....."
+    pp @event
 
     respond_to do |format|
       if @event.save!

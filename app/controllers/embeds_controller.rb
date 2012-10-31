@@ -26,6 +26,7 @@ class EmbedsController < ApplicationController
   end
 
   def new
+    puts "Embed New"
     @embed = Embed.new
 
     respond_to do |format|
