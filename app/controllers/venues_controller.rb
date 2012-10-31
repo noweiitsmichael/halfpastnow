@@ -139,7 +139,6 @@ class VenuesController < ApplicationController
     @venue = Venue.find(params[:id])
     @event = @venue.events.build
 
-
     @event.occurrences.build
     @event.recurrences.build
     @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})

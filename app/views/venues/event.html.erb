@@ -96,9 +96,9 @@
 
   		<div class="owner">
   			<% if @event.user_id %>
-	  			<% owner = User.find(@event.user_id) %>
-	  			Created by <%= owner.firstname %> <%= owner.lastname %>
-	  		<% end %>
+  				<% owner = User.find(@event.user_id) %>
+  				Created by <%= owner.firstname %> <%= owner.lastname %>
+  			<% end %>
   		</div>
     </div>
 <% end %>

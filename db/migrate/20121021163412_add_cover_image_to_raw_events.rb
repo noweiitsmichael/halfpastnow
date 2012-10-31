@@ -1,5 +1,9 @@
 class AddCoverImageToRawEvents < ActiveRecord::Migration
-  def change
-  	add_column :raw_events, :cover_image, :text
+  def up
+  	change_column :raw_events, :cover_image, :text
+  end
+
+  def down
+  	change_column :raw_events, :cover_image, :integer
   end
 end
