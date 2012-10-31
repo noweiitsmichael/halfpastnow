@@ -56,6 +56,7 @@ class ActsController < ApplicationController
       @act = Act.find(params[:act][:id])
     end
     #puts params[:act]
+    @act.updated_by = current_user.id
     @act.update_attributes!(params[:act])
 
     unless params[:pictures].nil? 

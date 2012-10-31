@@ -1,25 +1,26 @@
 <script type="text/javascript">
 	$(function() {
-		$("#add-embed-<%=obj.id%>").click(function() {
-				var embedIndex = ((typeof $('.embeds-<%=obj.id%>.field').last().attr("index") !== 'undefined') ? parseInt($('.embeds-<%=obj.id%>.field').last().attr("index")) + 1 : 0);
-				var firstEmbed = $('.embeds-<%=obj.id%>.field').first();
-				$('.embeds-<%=obj.id%>.field').last().after(firstEmbed.clone());
-				$('.embeds-<%=obj.id%>.field').last().attr('index',embedIndex);
-				$('.embeds-<%=obj.id%>.field').last().find("input").attr('name','<%=type%>[embeds_attributes][' + embedIndex + '][primary]');
+		$("#add-embed-<%=obj.id%><%=type_ind%>").click(function() {
+				console.log("click");
+				var embedIndex = ((typeof $('.embeds-<%=obj.id%><%=type_ind%>.field').last().attr("index") !== 'undefined') ? parseInt($('.embeds-<%=obj.id%><%=type_ind%>.field').last().attr("index")) + 1 : 0);
+				var firstEmbed = $('.embeds-<%=obj.id%><%=type_ind%>.field').first();
+				$('.embeds-<%=obj.id%><%=type_ind%>.field').last().after(firstEmbed.clone());
+				$('.embeds-<%=obj.id%><%=type_ind%>.field').last().attr('index',embedIndex);
+				$('.embeds-<%=obj.id%><%=type_ind%>.field').last().find("input").attr('name','<%=type%>[embeds_attributes][' + embedIndex + '][primary]');
 
-				$('.embeds-<%=obj.id%>.field').last().append('<input type="hidden" name="<%=type%>[embeds_attributes][' + embedIndex + '][embedable_type]" value="<%= type.titleize %>" />');
-				$('.embeds-<%=obj.id%>.field').last().find("textarea").attr('name','<%=type%>[embeds_attributes][' + embedIndex + '][source]');
-				$('.embeds-<%=obj.id%>.field').last().show();
+				$('.embeds-<%=obj.id%><%=type_ind%>.field').last().append('<input type="hidden" name="<%=type%>[embeds_attributes][' + embedIndex + '][embedable_type]" value="<%= type.titleize %>" />');
+				$('.embeds-<%=obj.id%><%=type_ind%>.field').last().find("textarea").attr('name','<%=type%>[embeds_attributes][' + embedIndex + '][source]');
+				$('.embeds-<%=obj.id%><%=type_ind%>.field').last().show();
 				return false;
 		});
 
 		$('.event-element, .window').on("click", ".remove-embed", function() {
-			var index = $(this).parents(".embeds-<%=obj.id%>.field").attr("index");
+			var index = $(this).parents(".embeds-<%=obj.id%><%=type_ind%>.field").attr("index");
 			if(typeof index !== 'undefined') {
 				$(this).after("<input type='hidden' name='<%=type%>[embeds_attributes][" + index + "][_destroy]' value='1' />");
-				$(this).parents(".embeds-<%=obj.id%>.field").hide();
+				$(this).parents(".embeds-<%=obj.id%><%=type_ind%>.field").hide();
 			} else {
-				$(this).parents(".embeds-<%=obj.id%>.field").remove();
+				$(this).parents(".embeds-<%=obj.id%><%=type_ind%>.field").remove();
 			}
 			return false;
 		});
@@ -27,9 +28,9 @@
 </script>
 <br>
 <div class="field">
-	<a href="" id="add-embed-<%=obj.id%>" class="medium white button">Add Embed</a>
+	<a href="" id="add-embed-<%=obj.id%><%=type_ind%>" class="medium white button">Add Embed</a>
 </div>
-<div class="embeds-<%=obj.id%> field" style="display:none;">
+<div class="embeds-<%=obj.id%><%=type_ind%> field" style="display:none;">
 	<label>
 		<input type="checkbox" />
 		<div class="remove-embed">&#10799;</div>
@@ -38,7 +39,7 @@
 </div>
 
 <% obj.embeds.each_with_index do |embed, index| %>
-<div class="embeds-<%=obj.id%> field" index="<%= index %>">
+<div class="embeds-<%=obj.id%><%=type_ind%> field" index="<%= index %>">
 	<input type="hidden" name="<%=type%>[embeds_attributes][<%= index %>][id]" value="<%= embed.id %>" />
 	<label>
 		<input type="hidden" name="<%=type%>[embeds_attributes][<%= index %>][primary]" value="0"/>

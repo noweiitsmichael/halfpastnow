@@ -150,6 +150,7 @@ class VenuesController < ApplicationController
   # POST /venues.json
   def create
     @venue = Venue.new(params[:venue])
+    @venue.updated_by = current_user.id
 
     respond_to do |format|
       if @venue.save
@@ -175,6 +176,8 @@ class VenuesController < ApplicationController
         end
       end
     end
+
+    @venue.updated_by = current_user.id
 
     respond_to do |format|
       if @venue.update_attributes!(params[:venue])

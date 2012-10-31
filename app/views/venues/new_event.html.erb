@@ -288,7 +288,7 @@
 	    </div>
 	    </div>
 
-	    <%= render :partial => "embeds", :locals => { :type => 'event', :obj => @event } %>
+	    <%= render :partial => "embeds", :locals => { :type => 'event', :obj => @event, :type_ind => '' } %>
 
 	    <div class="pics mode">
 			<div class="overlay">
@@ -297,6 +297,12 @@
 			</div>
 		</div>	
 
+<div class="acts mode">
+  <div class="overlay">
+    <div class="window">
+    </div>
+  </div>
+</div>
 
 		<br>
 		<div class="actions">
