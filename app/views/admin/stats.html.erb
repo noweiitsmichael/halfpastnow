@@ -1,0 +1,38 @@
+<% content_for :head do %>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    
+      google.load('visualization', '1.0', {'packages':['corechart']});
+      google.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+			console.log('<%= raw admin_table_data%>');
+	        var data = google.visualization.arrayToDataTable(<%= raw admin_table_data %>);
+
+
+	    //     ([
+			  //   ['User', 'Acts', 'Venues', 'Events', 'Raw Events'],
+			  //   ['Carl',  1336060,    400361,    1001582,   997974],
+			  //   ['Jo',  1538156,    366849,    1119450,   941795],
+			  //   ['Michael',  1576579,    440514,    993360,    930593],
+			  //   ['Marc',  1600652,    434552,    1004163,   897127],
+			  //   ['Rob Rumble',  1968113,    393032,    979198,    1080887],
+			  //   ['Marc Bharagavavaavava',  1901067,    517206,    916965,    1056036]
+			  // ]);
+
+	      var options = {'title':'Admin Activity',
+	                     'width':600,
+	                     'height':500,
+						 'wAxis': {title: "User Name"},
+            			 'hAxis': {title: "Input Items"},
+	                 	 'isStacked':true,
+	                 	 'backgroundColor': '#F3F3FA'};
+
+	      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+	      chart.draw(data, options);
+	    }
+    </script>
+<% end %>
+
+
+<div id="chart_div" style="width:600; height:500; float:left"></div>
