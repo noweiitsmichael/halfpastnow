@@ -1,0 +1,650 @@
+<% @now = DateTime.now.change(:hour => 0) %>
+<% @day_of_week = ['SUN','MON','TUE','WED','THU','FRI','SAT'] %>
+<% @tags = Tag.all %>
+
+
+<script type="text/javascript">
+  var tags = [];
+  var geocoder;
+  var map; 
+  var markers = [];
+  var map1;
+  var event_ids=[];
+  var event_names=[];
+  var event_descriptions=[];
+  var venue_names=[];
+  var prices=[];
+  var searchTerm;
+  var width;
+  var start=false;
+  var currentLocation;
+  
+
+  $("#home .events-seed").hide();
+  function initialize() {
+    // Map
+ 
+  
+       if (navigator.geolocation) {
+  
+         navigator.geolocation.getCurrentPosition(function(position) {  
+          var currentLat = position.coords.latitude;
+          var currentLong= position.coords.longitude;
+          var s = currentLat+","+currentLong;
+          currentLocation = new google.maps.LatLng(currentLat, currentLong);
+          }); 
+       }
+        //google.maps.event.addListener(map, 'idle', boundsChanged);
+  
+        console.log("Width of device "+$(window).width());
+      geocoder = new google.maps.Geocoder();
+        // Lat : 30.2673 Long : -97.73963
+        //var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+        var latlng = new google.maps.LatLng(30.268037,-97.742722);
+        var myOptions = {
+          zoom: <%= @zoom %>,
+          center: latlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          disableDefaultUI: true,
+          zoomControl: true,
+          scrollwheel: false,
+          zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: google.maps.ZoomControlStyle.SMALL }
+        };
+        //map = new google.maps.Map($("#home #map")[0], myOptions);
+        map = new google.maps.Map($("#map")[0], myOptions);
+        // 30.270632,-97.74004
+       
+
+        var homeControlDiv = document.createElement('div');
+        var homeControl = new HomeControl(homeControlDiv);
+
+        homeControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.LEFT_TOP].push(homeControlDiv);
+        google.maps.event.trigger(map, "resize");
+      }
+
+  
+  function HomeControl(controlDiv) {
+
+    // Set CSS styles for the DIV containing the control
+    // Setting padding to 5 px will offset the control
+    // from the edge of the map
+    controlDiv.style.padding = '5px';
+
+    // Set CSS for the control border
+    var controlUI = document.createElement('div');
+    controlUI.style.backgroundColor = 'rgba(122,175,255,0.5)';
+    controlUI.style.borderStyle = 'solid';
+    controlUI.style.borderWidth = '2px';
+    controlUI.style.width = '210';
+    controlUI.style.height = '30';
+    controlUI.style.cursor = 'pointer';
+    controlUI.style.textAlign = 'center';
+    controlUI.title = 'Click to set the map';
+    controlDiv.appendChild(controlUI);
+
+    // Set CSS for the control interior
+    var controlText = document.createElement('div');
+    controlText.style.fontFamily = 'Arial,sans-serif';
+    controlText.style.fontSize = '20px';
+    controlText.style.paddingLeft = '4px';
+    controlText.style.paddingRight = '4px';
+    controlText.innerHTML = '<center><b>Resize your map</b></center>';
+    controlUI.appendChild(controlText);
+
+    // Setup the click event listeners: simply set the map to
+    // Chicago
+
+    google.maps.event.addDomListener(controlUI, 'click', function() {
+    searchReg="false";
+    boundsChanged();
+    mapVariables();
+    });
+    
+    
+
+  }
+
+  function runScript(e) {
+    if (e.keyCode == 13) {
+      searchReg="false";
+        mapVariables();
+        // set up the filter 
+        updateFilter();
+        // call this window.location.href = "/events?search="+x+"&commit=Search";
+        return false;
+    }
+  }
+
+  function submitTest(){
+    var x=document.getElementById("search").value;
+    searchTerm=x;
+    searchReg="true";
+    window.location.href = "/events?search="+x+"&commit=Search";
+  }
+
+  
+  function mapVariables(){
+    filter.search=document.getElementById("scriptBox").value;
+    searchReg="false";
+    filterChange() ;
+  
+  }
+  
+ 
+
+ $(function() {
+  <% @tags.each do |tag| %>
+        tags.push({id: <%= tag.id %>, name: "<%= tag.name.downcase %>"});
+  <% end %>
+  $("#home .events-seed").hide();
+
+  $("#tag-input").tokenInput(tags, {theme: "facebook", onAdd: filterChange, onDelete: filterChange });
+
+  $(".tag-library div").click(function() {
+    $("#tag-input").tokenInput("add", {id: parseInt($(this).attr("tagID")), name: $(this).html()});
+  });
+  
+  $("#testBtn").click(function() {
+    searchReg = "true";
+    var x=document.getElementById("search").value;
+    console.log("Search : "+x);
+    searchTerm=x;
+    window.location.href = "/events?search="+x+"&commit=Search";
+  });
+
+  $("#btnMap").click(function() {
+    filterChange() ;
+    window.location.href = "/#mapShow";
+  });
+
+  // Map stuffs
+  $("#testBtnMap").click(function() {
+    searchReg="false";
+    //mapVariables();
+    // Set up the filter
+    //updateFilter();
+    // call this window.location.href = "/events?search="+x+"&commit=Search";
+   
+    console.log("testBtnMap"+ currentLocation.toString());
+
+        
+
+     mapVariables();
+    
+  });
+
+  $("#resetFilter").click(function() {
+    console.log("Reset filter "+distLocation);
+   $("#filter input[name='radio-distance']").each(function() 
+    { 
+            this.checked = false; 
+            distLocation = 0;
+    }); 
+   $("#filter input[name='radio-distance']").checkboxradio("refresh");
+
+   $("#filter input[type='checkbox']").each(function() {
+
+      this.checked = false; 
+   });
+   
+   filter.price=[0,1,2,3,4];
+   $("#filter input[type='checkbox']").checkboxradio("refresh");
+
+   $('#day-menu li  div.ui-btn-inner.ui-li span').each(function() {
+   
+    console.log("Span here ");
+   $(this).removeClass('ui-icon-checkbox-on ui-icon ui-icon-shadow');
+   $(this).addClass('ui-icon  ui-icon-shadow ui-icon-checkbox-off');
+   //$(this).getElementById('span').class = "ui-icon ui-icon-checkbox-off ui-icon-shadow";
+   
+   });
+    
+   
+    $("#filter input[name='radio-view']").each(function() {
+
+      this.checked = false; 
+   });
+     $("#filter input[name='radio-view']").checkboxradio("refresh");
+
+    filter.start = Date.today();
+    filter.end = Date.today().add({days:365});
+
+    $('#day').val('none').selectmenu('refresh');
+    
+   filter.day=[0,1,2,3,4,5,6];
+   
+
+
+   $('ul.token-input-list-facebook li:not(:last-child)').each(function() {
+      $(this).remove();
+   });
+   filter.tags = [];
+
+    console.log("Reset filter "+distLocation);
+    filterChange();
+
+    
+  });
+  $("#filterSearch").click(function() {
+    filter.tags = [];
+    var selectedTags = $('#tag-input').tokenInput("get");
+    for(var i in selectedTags) {
+     
+      filter.tags.push(selectedTags[i].id);
+    }
+    filterChange();
+
+    
+  });
+});
+
+
+
+ 
+  // $( '#event' ).live( 'pageinit',function(event){
+  //   var SelectedOptionClass = $('option:selected').attr('class');
+  //   $('div.ui-select').addClass(SelectedOptionClass);
+    
+  //   $('#note_utilisateur').live('change', function(){  
+  //     $('div.ui-select').removeClass(SelectedOptionClass);
+      
+  //     SelectedOptionClass = $('option:selected').attr('class');
+  //     $('div.ui-select').addClass(SelectedOptionClass);   
+      
+  //    });
+    
+    
+  // });
+
+  </script>
+
+
+<% def eventListElement (event, index) %>
+      <li>
+        <a href="<%= event ? "#event?event_id=" + event.id.to_s : "" %>" data-transition="slidedown">
+       
+          
+          
+         <div class="when sun">
+            <div class="mod">
+              
+              <%= event ? event.occurrences.first.start.to_time.strftime("%^b%d") : "" %>
+            </div>
+           
+            <div class="day">
+              <%= event ? @day_of_week[event.occurrences.first.start.wday] : "" %>
+            </div>
+            <div class="time">
+              <%= event ? event.occurrences.first.start.to_time.strftime("%I:%M%P") : "" %>
+            </div>
+          </div>
+
+          
+          <div class="one">
+             
+            <!-- <div class="nameEvent"> event name</div>
+            <div class="where">at <%= event ? event.venue.name : "" %></div>
+            <div class="description">description event description</div> -->
+           
+
+            <!-- <div class="nameEvent"><%= event ? @tempName : "" %></div>
+            <div class="where"> at <%= event ? "venue name" : "" %> </div>
+              
+            <div class="description"> <%= event ? "event description stuffs" : "" %>
+            </div> -->
+
+           
+            <div class="nameEvent"><%= event ? truncate(strip_tags(event.title), :length => 30)  : "" %></div>
+            <div class="where"> at <%= event ? event.venue.name : "" %> </div>
+              
+            <div class="description"><span="price";  style="color:#2E2EFE"><strong><%= event ? (event.price!=nil)? ((event.price.to_f!=0.0) ? "Price: "+ number_to_currency(event.price,:unit=>"$").to_s+" " : "FREE ") : "" : "" %></strong></span><span style="color:#888"><%= event ? truncate(strip_tags(event.description), :length => 30) : "" %></span>
+            </div>
+            
+          </div>
+          <div style="display:none;">
+              <div class="latitude"><%= event ? event.venue.latitude : "" %></div>
+              <div class="longitude"><%= event ? event.venue.longitude : "" %></div>
+              <div class="eventID"><%= event ? event.id : "" %></div>
+              
+          </div>  
+          
+        </a>
+      </li>
+<% end %>
+
+
+<% def venueEventListElement (event, index) %>
+    <li>
+      <a href="<%= event ? "#event?event_id=" + event.id.to_s : "" %>" data-transition="slidedown"> 
+        <div class="when sun">
+          <div class="mod">
+            <%# (event.date < now) ? event.date.strftime("%m/%e") : (event.date < (now + 7)) ? 'THIS' : (event.date < (now + 14)) ? 'NEXT' : event.date.strftime("%-m/%e") %>
+            <%= event ? event.occurrences.first.start.to_time.strftime("%m/%d") : "" %>
+          </div>
+          <div class="day">
+            <%= event ? @day_of_week[event.occurrences.first.start.wday] : "" %>
+          </div>
+          <div class="time">
+            <%= event ? event.occurrences.first.start.to_time.strftime("%I:%M%P") : "" %>
+          </div>
+        </div>
+        <div class="one">
+          
+          <!--div class="venue mode event"><a linkto="event" href=""  class="linkto"></a></div-->
+          <!-- <span href="<%= event ? event.id : "" %>" linkto="event" class="linkto-name"><%= event ? event.title : "" %></span> -->
+         <!--  <a linkto="linkto-name" href="http://events.austin360.com/austin_tx/venues/show/448999-coldtowne-theater">ColdTowne Theater</a> -->
+        
+          <span href="<%= event ? event.id : "" %>" linkto="event" class="linkto name"><%= event ? truncate(strip_tags(event.title), :length => 25) : "" %></span>
+          <!-- <div class="description"><%= event ? truncate(strip_tags(event.description), :length => 25) : "" %></div> -->
+          <div class="description"><span="price";  style="color:#2E2EFE"><strong><%= event ? (event.price!=nil)? ((event.price.to_f!=0.0) ? "Price: "+ number_to_currency(event.price,:unit=>"$").to_s+" " : "FREE ") : "" : "" %></strong></span><span style="color:#888"><%= event ? truncate(strip_tags(event.description), :length => 25) : "" %></span>
+            </div>
+        </div>
+        <div style="display:none;">
+          <div class="latitude"><%= event ? event.venue.latitude : "" %></div>
+          <div class="longitude"><%= event ? event.venue.longitude : "" %></div>
+        </div>
+      </a>
+    </li>
+<% end %>
+
+
+<!-- Home -->
+
+
+<div data-role="page" id="home" data-mini="true">
+
+    <div data-role="header" data-theme="b" >
+      <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
+        <h1>half past now.</h1>
+        <hr/>
+        <div data-inline="true">
+          <div data-role="fieldSearch" >
+            <form accept-charset="UTF-8" action="search" id="search-form" method="post" onsubmit="submitTest(); return false;" >
+              <a href="#filter" data-role="button" data-inline="true" data-transition="pop">Filter</a>
+              <input id="search" name="search" placeholder="music, movie .etc" type="text"  data-inline="true" width="45|%">
+              <input type="hidden" name="searchReg" value="true">
+              <a id="testBtn" data-role="button" data-inline="true" data-transition="pop">Search</a>
+              <a id="btnMap" data-role="button" data-inline="true" data-transition="pop">Map</a>
+            </form>      
+        </div>
+      </div>
+    </div>
+      
+    <div data-role="content"  >
+
+    
+
+      <div class="choice_list"> 
+          <h1><div class="ui-block-a" style="opacity: 1;"><span class="count"><%= @events.size %> event<%= @events.size == 1 ? "" : "s" %></span> <%= @key.to_s == "" ? "" : " for " %><strong><%= @key.to_s == "" ? "" : @key.to_s %></strong> nearby</div></h1>
+         
+          <br>
+
+          
+          <!--p><a class="map-link" href="http://maps.google.com/maps?q=30.30787,-97.74133" ><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=430x170&amp;zoom=15&amp;maptype=roadmap&amp;markers=color:red%7C30.30787,-97.74133&amp;style=feature:all|hue:0x000001|saturation:-50&amp;sensor=false"></a></p--> 
+          <div class="ui-block-b">
+            
+            
+            
+          </div>
+          
+         
+
+          <div class="ui-block-c" >
+
+            <ul class="events" data-role="listview" data-inset="true" data-theme="c" >
+              
+              <%  @events.each_with_index do |event, index| 
+                  eventListElement(event, index)
+                end %>
+            </ul>
+            <ul class="events-seed" data-role="listview" data-inset="true" style="display:none;">
+            <%
+              eventListElement(nil, nil)
+
+            %>
+
+            </ul>
+          </div>
+      
+
+
+
+      </div>
+
+    </div>
+    <!-- <div data-role="footer" class="ui-bar" data-theme="b"  data-id="footer">
+      <a href="#about" data-icon="info">About</a>
+    </div> -->
+  </div>
+
+  <!-- Event -->
+  <div data-role="page" id="event" data-mini="true">
+    <div data-role="header" data-theme="b" >
+      <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
+      <h1>half past now.</h1>
+      <a  data-icon="arrow-l" data-rel="back">Back</a>
+    </div>
+    <div data-role="content">
+      <div class="ui-grid-a" id="event_infos">  
+          <div class="ui-block-a">
+            <div class="event_header"><h1><span></span></h1></div>
+            <div class="event_description"><p><strong><span></span></strong></p></div>
+          </div>    
+          <div class="ui-block-b">
+             <p><a class="map-link" href="" style="float: left;"><img class="map" /></a></p> 
+            <p><div class="time_one"><strong></strong></div></p>
+            <p><div class="time_two"><strong></strong></div></p>
+            <p><div class="price"> </div></p>
+            <p><div class="add1"></div></p>
+            <p><div class="add2"></div></p>
+            <a class="venue-link" href="" data-transition="slidedown"></a>
+          </div>
+      </div>
+    </div>
+    
+  </div>
+<!-- Venue -->
+
+<div  data-role="page"  id="venue" data-mini="true">
+
+
+  
+   <div data-role="header" data-theme="b" >
+      <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
+      <h1>half past now.</h1>
+      <a href="#home" data-icon="arrow-l" data-rel="back">Back</a>
+    </div>
+  
+  <div data-role="content">
+  
+  <h1> Venue Page </h1>
+      <div class="ui-block-a">
+        <p><a class="map-link" href="" style="float: left;"><img class="map" /></a></p> 
+      </div>
+      <div class="ui-block-b">
+        <div class="details">
+          <div class="address onee"><span></span></div>
+          <div class="address two"><span></span></div>
+          <br />
+          <div class="phone"><strong>Phone:</strong> <span></span></div>
+          <a class="venue-link" href="" data-transition="slidedown"> </a>
+          <a class="url" href=""data-transition="slidedown"></a>
+          <!--div class="price"><strong>Hours:</strong> Daily 5am-10pm</div-->
+        </div>
+      </div>
+      <div class="ui-block-c">
+        <ul class="vevents"  data-role="listview" data-inset="true"  >
+          <%  @events.each_with_index do |event, index| 
+
+              venueEventListElement(event, index)
+            end %>
+
+        </ul>
+        <ul class="vevents-seed1" data-role="listview" data-inset="true" >
+        <%
+          venueEventListElement(nil, nil)
+
+        %>
+
+        </ul>
+        <ul class="vevents-seed2" data-role="listview" data-inset="true" >
+        <%
+          venueEventListElement(nil, nil)
+
+        %>
+
+        </ul>
+      </div>
+
+  </div>
+  
+</div>
+
+
+
+
+
+
+<!-- About -->
+<div data-role="page" id="about" data-mini="true">
+  <div data-role="header" data-theme="b" >
+    <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
+    <h1>About</h1>
+    <a href="#home" data-icon="arrow-l" data-rel="back">Back</a> 
+  </div>
+  <div data-role="content">
+    <p>half past now. is your guide to Austin</p>
+  </div>
+  
+</div>
+
+
+
+
+<!-- Map -->
+<div data-role="page" id="mapShow" data-mini="true">
+    <div data-role="header" data-theme="b" >
+      <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
+      
+        <h1>half past now.</h1>
+        <hr/>
+        
+        <div data-inline="true">
+          
+              <a href="#filter" data-role="button" data-inline="true" data-transition="pop">Filter</a>
+              <input id="scriptBox" type="text" onkeypress="return runScript(event)" />
+              <a id="testBtnMap" data-role="button" data-inline="true" data-transition="pop">Search</a>
+          
+      </div>
+    </div> 
+   
+    <div data-role="content">
+      <div id="map"></div>
+    </div>
+    
+</div>
+
+<!-- Filter -->
+<% @tags = Tag.all %>
+<div  data-role="page"  id="filter" data-mini="true">
+
+
+  
+  <div data-role="header" data-theme="b" >
+    <a href="#home" data-icon="home" data-iconpos="notext">Home</a>
+    <h1>half past now.</h1>
+    <a href="#home" data-icon="arrow-l" data-rel="back" >Map</a>
+  </div>
+
+  <div data-role="content" data-mini="true">
+      <div data-role="controlgroup" data-type="horizontal">  
+        <center><a id="filterSearch" data-role="button" data-inline="true" >Set Filter</a><a id="resetFilter" data-role="button" data-inline="true">Reset Filter</a></center>
+      </div>
+       
+
+
+        <fieldset data-role="controlgroup" data-type="horizontal">
+          <legend>Choose your price options</legend>
+          <input type="checkbox" name="price-1a" id="price-1a" class="selected" value="0"/>
+          <label for="price-1a">Free</label>
+
+          <input type="checkbox" name="price-2a" id="price-2a" class="selected" value="1"/>
+          <label for="price-2a">$</label>
+          
+          <input type="checkbox" name="price-3a" id="price-3a" class="selected" value="2"/>
+          <label for="price-3a">$$</label>
+
+          <input type="checkbox" name="price-4a" id="price-4a" class="selected" value="3"/>
+          <label for="price-4a">$$$</label>
+
+          <input type="checkbox" name="price-5a" id="price-5a" class="selected" value="4"/>
+          <label for="price-5a">$$$$</label>
+        </fieldset>
+      
+         <select name="days" id="day" data-native-menu="false" data-mini="true" multiple="multiple" size="8" >
+                        <ul>
+                          <li>
+                            <option >Choose a day</option>
+                            <option class="selected" value="0">Sunday</option>
+                            <option class="selected" value="1">Monday</option>
+                            <option class="selected" value="2">Tuesday</option>
+                            <option class="selected" value="3">Wednesday</option>
+                            <option class="selected" value="4">Thursay</option>
+                            <option class="selected" value="5">Friday</option>
+                            <option class="selected" value="6">Saturday</option>
+                          </li>
+                        </ul>
+        </select>
+
+        
+      
+        <fieldset data-role="controlgroup" data-type="horizontal">
+          <legend>Today or Tomorrow</legend>
+              <input type="radio" name="radio-view" id="radio-view-a" value="0"  />
+              <label for="radio-view-a"  >Today</label>
+              <input type="radio" name="radio-view" id="radio-view-b" value="1"  />
+              <label for="radio-view-b"  >Tomorrow</label>
+              <input type="radio" name="radio-view" id="radio-view-c" value="2"  />
+              <label for="radio-view-c"  >None</label>
+              
+        </fieldset>
+
+
+         <fieldset data-role="controlgroup" data-type="horizontal">
+          <legend>Within</legend>
+              <input type="radio" name="radio-distance" id="radio-distance-a" value="0"  />
+              <label for="radio-distance-a"  >none</label>
+              <input type="radio" name="radio-distance" id="radio-distance-b" value="0.5"  />
+              <label for="radio-distance-b"  >0.5 mi</label>
+              <input type="radio" name="radio-distance" id="radio-distance-c" value="2"  />
+              <label for="radio-distance-c"  >2 mi</label>
+              <input type="radio" name="radio-distance" id="radio-distance-d" value="3"  />
+              <label for="radio-distance-d"  >>2 mi</label>
+              
+        </fieldset>
+
+        
+     
+      </br>
+        <label>tags</label>
+          <input type="text" class="tags" id="tag-input" style="width: 100px;"/>
+          <div class="tag-library">
+            <% @tags.each do |tag| %>
+            <div tagID="<%= tag.id %>"><%= tag.name.downcase %></div>
+            <% end %>
+          </div>
+          <div class="more-tags">
+            &#x25BE; more
+          </div>
+
+       
+
+  </div>
+
+
+
+
+</div>
+
+
