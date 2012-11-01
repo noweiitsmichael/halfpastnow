@@ -5,28 +5,24 @@
       google.load('visualization', '1.0', {'packages':['corechart']});
       google.setOnLoadCallback(drawChart);
 
+      $(function(){
+	    var path = location.pathname;
+	    if ( path )
+	      $('nav a[href$="' + path + '"]').attr('class', 'selected');
+
+	  });
+
       function drawChart() {
-			console.log('<%= raw admin_table_data%>');
-	        var data = google.visualization.arrayToDataTable(<%= raw admin_table_data %>);
+		console.log('<%= raw admin_table_data%>');
+        var data = google.visualization.arrayToDataTable(<%= raw admin_table_data %>);
 
-
-	    //     ([
-			  //   ['User', 'Acts', 'Venues', 'Events', 'Raw Events'],
-			  //   ['Carl',  1336060,    400361,    1001582,   997974],
-			  //   ['Jo',  1538156,    366849,    1119450,   941795],
-			  //   ['Michael',  1576579,    440514,    993360,    930593],
-			  //   ['Marc',  1600652,    434552,    1004163,   897127],
-			  //   ['Rob Rumble',  1968113,    393032,    979198,    1080887],
-			  //   ['Marc Bharagavavaavava',  1901067,    517206,    916965,    1056036]
-			  // ]);
-
-	      var options = {'title':'Admin Activity',
-	                     'width':600,
-	                     'height':500,
-						 'wAxis': {title: "User Name"},
-            			 'hAxis': {title: "Input Items"},
-	                 	 'isStacked':true,
-	                 	 'backgroundColor': '#F3F3FA'};
+        var options = {'title':'Admin Activity',
+                     'width':850,
+                     'height':500,
+					 'wAxis': {title: "User Name"},
+        			 'hAxis': {title: "Input Items"},
+                 	 'isStacked':true,
+                 	 'backgroundColor': '#F3F3FA'};
 
 	      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
 	      chart.draw(data, options);
@@ -34,5 +30,15 @@
     </script>
 <% end %>
 
+<div id="date-select" >
+	<b0>Time Range</h2><br>
+	<a href="" id="24-hours" class="medium white button">Last 24 hours</a>
+	<a href="" id="yesterday" class="medium white button">Yesterday</a>
+	<a href="" id="this-week" class="medium white button">This Week (starting Sunday)</a>
+	<a href="" id="7-days" class="medium white button selected">Last 7 days</a>
+	<a href="" id="last-week" class="medium white button">Last Week</a>
+	<a href="" id="two-weeks" class="medium white button">Last Two Weeks</a>
+	<a href="" id="all-time" class="medium white button">All Time</a>
+</div>
 
 <div id="chart_div" style="width:600; height:500; float:left"></div>

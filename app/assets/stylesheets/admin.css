@@ -298,6 +298,16 @@ nav li:last-child a {
   padding: 10px 10px 10px 10px;
 }
 
+#date-select{
+  display: inline;
+  float:left;
+  padding-top:60px;
+}
+
+#date-select a{
+  margin: 5px 5px 5px 5px;
+}
+
 .button {
   display: inline-block;
   zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
