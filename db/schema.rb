@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121021163412) do
+ActiveRecord::Schema.define(:version => 20121031171052) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20121021163412) do
     t.string   "fb_id"
     t.string   "fb_likes"
     t.string   "fb_link"
+    t.string   "updated_by"
   end
 
   add_index "acts", ["event_id"], :name => "index_acts_on_event_id"
@@ -78,14 +79,15 @@ ActiveRecord::Schema.define(:version => 20121021163412) do
   add_index "channels", ["user_id"], :name => "index_channels_on_user_id"
 
   create_table "embeds", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "act_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "embedable_id"
     t.boolean  "primary"
     t.text     "source"
+    t.string   "embedable_type"
   end
 
-  add_index "embeds", ["act_id"], :name => "index_embeds_on_act_id"
+  add_index "embeds", ["embedable_id"], :name => "index_embeds_on_act_id"
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -100,7 +102,7 @@ ActiveRecord::Schema.define(:version => 20121021163412) do
     t.boolean  "suggested"
     t.text     "fb_picture"
     t.text     "url"
-    t.text     "cover_image"
+    t.integer  "cover_image"
   end
 
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
@@ -115,13 +117,13 @@ ActiveRecord::Schema.define(:version => 20121021163412) do
   add_index "events_tags", ["tag_id"], :name => "index_events_tags_on_tag_id"
 
   create_table "feedbacks", :force => true do |t|
-    t.integer  "feedback_type"
     t.string   "subject"
     t.string   "description"
     t.integer  "status"
     t.integer  "user_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.integer  "feedback_type"
   end
 
   create_table "histories", :force => true do |t|
@@ -174,7 +176,7 @@ ActiveRecord::Schema.define(:version => 20121021163412) do
     t.boolean  "submitted"
     t.integer  "raw_venue_id"
     t.text     "fb_picture"
-    t.text     "cover_image"
+    t.integer  "cover_image"
   end
 
   add_index "raw_events", ["raw_venue_id"], :name => "index_raw_events_on_raw_venue_id"
@@ -237,6 +239,7 @@ ActiveRecord::Schema.define(:version => 20121021163412) do
 
   create_table "students", :force => true do |t|
     t.string   "name"
+<<<<<<< HEAD
     t.string   "email"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
@@ -246,6 +249,8 @@ ActiveRecord::Schema.define(:version => 20121021163412) do
 
   create_table "tags", :force => true do |t|
     t.string   "name"
+=======
+>>>>>>> 170d052c620e97770162d67a04f610335dd0d902
     t.integer  "parent_tag_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -261,12 +266,12 @@ ActiveRecord::Schema.define(:version => 20121021163412) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "email",                   :default => "", :null => false
+    t.string   "encrypted_password",      :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
+    t.integer  "sign_in_count",           :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -276,6 +281,10 @@ ActiveRecord::Schema.define(:version => 20121021163412) do
     t.string   "firstname"
     t.string   "lastname"
     t.string   "username"
+    t.string   "profilepic_file_name"
+    t.string   "profilepic_content_type"
+    t.integer  "profilepic_file_size"
+    t.datetime "profilepic_updated_at"
     t.string   "profilepic"
     t.string   "authentication_token"
     t.string   "provider"
@@ -314,6 +323,7 @@ ActiveRecord::Schema.define(:version => 20121021163412) do
     t.boolean  "suggested"
     t.text     "fb_picture"
     t.string   "admin_owner"
+    t.string   "updated_by"
   end
 
   create_table "videos", :force => true do |t|

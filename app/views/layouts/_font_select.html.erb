@@ -9,9 +9,9 @@
 
 		$("#font-select-2").change(function() {
 			//$("#content .events li .title").css("font-family",$(this).val());
-			$("#header").css("font-family",$("#font-select-2 option:selected").attr("family"));
-			$("#header").css("font-style",$("#font-select-2 option:selected").attr("style"));
-			$("#header").css("font-weight",$("#font-select-2 option:selected").attr("weight"));
+			$("html,body").css("font-family",$("#font-select-2 option:selected").attr("family"));
+			$("html,body").css("font-style",$("#font-select-2 option:selected").attr("style"));
+			$("html,body").css("font-weight",$("#font-select-2 option:selected").attr("weight"));
 		});
 	});
 </script>

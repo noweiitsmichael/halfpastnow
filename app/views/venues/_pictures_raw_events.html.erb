@@ -36,7 +36,7 @@
           };
 
       $.post("/pictures/create",picData,function(data) {
-      console.log(data);
+      // console.log(data);
         console.log("Added from FB pic! " + data.id);
         $('.ajaxLoader').detach();
         showCoverEditMode(parseInt($("#pictureable_id_<%=@rawEvent.id%>_url").val()),data.image.large.url,data.id,$("#pictureable_type_<%=@rawEvent.id%>_url").val(),callbackEdit);
@@ -63,7 +63,7 @@
           };
       }
       $.post("/pictures/create",picData,function(data) {
-        console.log(data);
+        // console.log(data);
         console.log("picturable id = " + data.pictureable_id);
         var numThumbs = $(".gallery_<%=@rawEvent.id%>").length;
         var newPicThumb = '<div class="pictures field gallery_<%=@rawEvent.id%>" index="' + numThumbs + ' ">';
@@ -95,10 +95,10 @@
             },
             url: "/pictures/createForEvent",
             success:function(data) {
-              console.log(data);
+              // console.log(data);
               var numThumbs = $(".gallery_<%=@rawEvent.id%>").length;
-              console.log("index number = " + numThumbs);
-              console.log("picturable id = " + data.pictureable_id);
+              // console.log("index number = " + numThumbs);
+              // console.log("picturable id = " + data.pictureable_id);
               var newPicThumb = '<div class="pictures field gallery_<%=@rawEvent.id%>" index="' + numThumbs + ' ">';
               newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][id]" value="' + data.id + '" />';
               newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][pictureable_id]" value="' + data.pictureable_id + '" />';
@@ -189,7 +189,6 @@
     <!-- end -->
 
     <label class="buffer"></label>
-
     <% unless @rawEvent.fb_picture.blank? %>
       <% if Picture.where(:image => @rawEvent.fb_picture.match(/[^\/]+$/).to_s, :pictureable_id => @rawEvent.id, :pictureable_type => "Event").exists? %>
       <% else %>

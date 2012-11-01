@@ -26,7 +26,7 @@
   $(function () {
     $('.pic-field').on('click', '.fb-image-submit', function() {
       console.log("click - fb-image-submit");
-      console.log($(this));
+      // console.log($(this));
       $(this).append('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>');
         var picData = 
           {"picture":
@@ -35,9 +35,9 @@
               "remote_image_url": $(this).attr("fb-pic-url")
             }
           };
-        console.log(picData);
+        // console.log(picData);
       $.post("/pictures/create",picData,function(data) {
-      console.log(data);
+      // console.log(data);
         console.log("Added from FB pic! " + data.id);
         $('.ajaxLoader').detach();
         showCoverEditMode(parseInt($("#pictureable_id_<%=@event.id%>_url").val()),data.image.large.url,data.id,$("#pictureable_type_<%=@event.id%>_url").val(),callbackEdit);
@@ -64,7 +64,7 @@
           };
       }
       $.post("/pictures/create",picData,function(data) {
-        console.log(data);
+        // console.log(data);
         console.log("picturable id = " + data.pictureable_id);
         var numThumbs = $(".gallery_<%=@event.id%>").length;
         var newPicThumb = '<div class="pictures field gallery_<%=@event.id%>" index="' + numThumbs + ' ">';
@@ -94,7 +94,7 @@
             },
             url: "/pictures/createForEvent",
             success:function(data) {
-              console.log(data);
+              // console.log(data);
               var numThumbs = $(".gallery_<%=@event.id%>").length;
               console.log("index number = " + numThumbs);
               console.log("picturable id = " + data.pictureable_id);

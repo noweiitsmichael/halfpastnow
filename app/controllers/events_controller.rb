@@ -53,7 +53,7 @@ def index
       params[:excluded_tags] = params[:excluded_tags].split(",")
     end
    
-    pp params
+    # pp params
     # @amount = params[:amount] || 20
     # @offset = params[:offset] || 0
 
@@ -220,7 +220,7 @@ def index
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
     
-    puts query
+    # puts query
 
     @ids = ActiveRecord::Base.connection.select_all(query)
 
@@ -483,8 +483,8 @@ def index
   def create
     @event = Event.new(params[:event])
     @occurrence = Occurrence.new(:start => params[:start], :end => params[:end], :event_id => @event.id)
-    puts params[:start]
-    puts params[:end]
+    # puts params[:start]
+    # puts params[:end]
     respond_to do |format|
       if @event.save && @occurrence.save
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
@@ -499,6 +499,7 @@ def index
   # PUT /events/1
   # PUT /events/1.json
   def update
+
     @event = Event.find(params[:id])
 
     respond_to do |format|

@@ -252,7 +252,10 @@ var eventActs = {};
       var actTags = actsInfo[parseInt(addedActs[i])].tags.split(",");
       var pictures = actsInfo[parseInt(addedActs[i])].pictures;
       for(var j in actTags) {
+        // console.log(actTags[j]);
+        // console.log("#event_" + $(obj).attr("event-id") + "_tag_ids_" + actTags[j]);
         $(obj).parents(".event-element").find("#event_" + $(obj).attr("event-id") + "_tag_ids_" + actTags[j]).prop("checked", true);
+
       }
     }
 
@@ -267,13 +270,14 @@ var eventActs = {};
         }
       }
       // Add pictures
-      console.log("Added artist pics:");
-      console.log(actsInfo[parseInt(lastAct)]);
-      console.log(actsInfo[parseInt(lastAct)].id);
-      console.log(addedActs);
-      console.log(lastAct);
+      // console.log("Added artist pics:");
+      // console.log(actsInfo[parseInt(lastAct)]);
+      // console.log(actsInfo[parseInt(lastAct)].id);
+      // console.log(addedActs);
+      // console.log(lastAct);
       var actPics = "<div><label>From " + actsInfo[parseInt(lastAct)].name + ":</label><span class='pictures'>";
       var actPictureField = ".field-for-act-pics-" + $(obj).attr("event-id");
+      // console.log(actPictureField);
       var result = /[^\/]+$/.exec(actsInfo[parseInt(lastAct)].fb_picture);
       if((actsInfo[parseInt(lastAct)].fb_picture != null) && (actsInfo[parseInt(lastAct)].fb_picture != "")) {
         if(fbPicExists === false) {

@@ -246,8 +246,8 @@
 
     </div>
 <!-- End Pictures Section -->
-
-		<%= render :partial => "/venues/embeds", :locals => { :act => @act } %>
+    <!-- put in type_ind so that empty event embeds won't interfere with empty act embeds -->
+		<%= render :partial => "/venues/embeds", :locals => { :type => 'act', :obj => @act, :type_ind => 'act' } %>
 
 		<div class="actions">
     		<%= e.submit %>
