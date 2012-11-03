@@ -173,8 +173,6 @@ class UsersController < ApplicationController
       else
       end
 
-    puts @array
-
     respond_to do |format|
       format.json { render json: @array }
     end
