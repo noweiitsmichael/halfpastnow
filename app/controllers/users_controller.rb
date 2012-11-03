@@ -123,7 +123,7 @@ class UsersController < ApplicationController
 
     case params[:daterange]
       when "24-hours"
-        User.all.each do |u|
+        @usersList.each do |u|
           @array << [u.firstname + " " + u.lastname, 
                      Event.find(:all, :conditions => ["(user_id = ?) AND (updated_at < ?)", u.id, 24.hours.ago]).count,
                      Venue.find(:all, :conditions => ["(updated_by = ?) AND (updated_at < ?)", u.id, 24.hours.ago]).count,
@@ -131,7 +131,7 @@ class UsersController < ApplicationController
         end
         
       when "yesterday"
-        User.all.each do |u|
+        @usersList.each do |u|
           @array << [u.firstname + " " + u.lastname, 
                      Event.find(:all, :conditions => {:user_id => u.id, :updated_at => Date.today-1...Date.today}).count,
                      Venue.find(:all, :conditions => {:updated_by => u.id, :updated_at => Date.today-1...Date.today}).count,
@@ -139,7 +139,7 @@ class UsersController < ApplicationController
         end
 
       when "this-week" 
-        User.all.each do |u|
+        @usersList.each do |u|
           @array << [u.firstname + " " + u.lastname, 
                      Event.find(:all, :conditions => {:user_id => u.id, :updated_at => Time.now.beginning_of_week...Date.today+1}).count,
                      Venue.find(:all, :conditions => {:updated_by => u.id, :updated_at => Time.now.beginning_of_week...Date.today+1}).count,
@@ -147,7 +147,7 @@ class UsersController < ApplicationController
         end
 
       when "7-days"
-        User.all.each do |u|
+        @usersList.each do |u|
           @array << [u.firstname + " " + u.lastname, 
                      Event.find(:all, :conditions => ["(user_id = ?) AND (updated_at < ?)", u.id, 168.hours.ago]).count,
                      Venue.find(:all, :conditions => ["(updated_by = ?) AND (updated_at < ?)", u.id, 168.hours.ago]).count,
@@ -155,7 +155,7 @@ class UsersController < ApplicationController
         end
 
       when "last-week"
-        User.all.each do |u|
+        @usersList.each do |u|
           @array << [u.firstname + " " + u.lastname, 
                      Event.find(:all, :conditions => {:user_id => u.id, :updated_at => Time.now.prev_week...Time.now.beginning_of_week}).count,
                      Venue.find(:all, :conditions => {:updated_by => u.id, :updated_at => Time.now.prev_week...Time.now.beginning_of_week}).count,
@@ -163,7 +163,7 @@ class UsersController < ApplicationController
         end
 
       when "all-time"
-        User.all.each do |u|
+        @usersList.each do |u|
           @array << [u.firstname + " " + u.lastname, 
                      Event.where(:user_id => u.id).count,
                      Venue.where(:updated_by => u.id).count,
