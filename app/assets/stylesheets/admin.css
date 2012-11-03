@@ -301,7 +301,7 @@ nav li:last-child a {
 #date-select{
   display: inline;
   float:left;
-  padding-top:60px;
+  padding-top:30px;
 }
 
 #date-select a{

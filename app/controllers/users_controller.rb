@@ -90,6 +90,95 @@ class UsersController < ApplicationController
     end
   end
 
+  def itemslist
+    @user = User.find(params[:user_id])
+    @itemsList = []
+
+    @user.acts.each do |e|
+      unless e.updated_at.nil?
+        @itemsList << {'type' => 'Act', 'id' => e.id, 'name' => e.name, 'date' => e.updated_at.strftime("%Y-%m-%d at %I:%M %p")}
+      end
+    end
+
+    @user.venues.each do |e|
+      unless e.updated_at.nil?
+        @itemsList << {'type' => 'Venue', 'id' => e.id, 'name' => e.name, 'date' => e.updated_at.strftime("%Y-%m-%d at %I:%M %p")}
+      end
+    end
+
+    @user.events.each do |e|
+      unless e.updated_at.nil?
+        @itemsList << {'type' => 'Event', 'id' => e.id, 'venue_id' => e.venue.id, 'name' => e.title, 'date' => e.updated_at.strftime("%Y-%m-%d at %I:%M %p")}
+      end
+    end
+    respond_to do |format|
+      format.json { render json: @itemsList }
+    end
+  end
+
+  def adminStats
+    @array = []
+    @array << ['User', 'Events', 'Venues', 'Acts']
+    @usersList = User.find(19, 20, 22, 31, 32, 35, 36, 38, 39, 42, 43, 47, 48, 49, 50, 51, 52, 53, 56, 58, 59, :select => 'id, firstname, lastname')
+
+    case params[:daterange]
+      when "24-hours"
+        User.all.each do |u|
+          @array << [u.firstname + " " + u.lastname, 
+                     Event.find(:all, :conditions => ["(user_id = ?) AND (updated_at < ?)", u.id, 24.hours.ago]).count,
+                     Venue.find(:all, :conditions => ["(updated_by = ?) AND (updated_at < ?)", u.id, 24.hours.ago]).count,
+                     Act.find(:all, :conditions => ["(updated_by = ?) AND (updated_at < ?)", u.id, 24.hours.ago]).count]
+        end
+        
+      when "yesterday"
+        User.all.each do |u|
+          @array << [u.firstname + " " + u.lastname, 
+                     Event.find(:all, :conditions => {:user_id => u.id, :updated_at => Date.today-1...Date.today}).count,
+                     Venue.find(:all, :conditions => {:updated_by => u.id, :updated_at => Date.today-1...Date.today}).count,
+                     Act.find(:all, :conditions => {:updated_by => u.id, :updated_at => Date.today-1...Date.today}).count]
+        end
+
+      when "this-week" 
+        User.all.each do |u|
+          @array << [u.firstname + " " + u.lastname, 
+                     Event.find(:all, :conditions => {:user_id => u.id, :updated_at => Time.now.beginning_of_week...Date.today+1}).count,
+                     Venue.find(:all, :conditions => {:updated_by => u.id, :updated_at => Time.now.beginning_of_week...Date.today+1}).count,
+                     Act.find(:all, :conditions => {:updated_by => u.id, :updated_at => Time.now.beginning_of_week...Date.today+1}).count]
+        end
+
+      when "7-days"
+        User.all.each do |u|
+          @array << [u.firstname + " " + u.lastname, 
+                     Event.find(:all, :conditions => ["(user_id = ?) AND (updated_at < ?)", u.id, 168.hours.ago]).count,
+                     Venue.find(:all, :conditions => ["(updated_by = ?) AND (updated_at < ?)", u.id, 168.hours.ago]).count,
+                     Act.find(:all, :conditions => ["(updated_by = ?) AND (updated_at < ?)", u.id, 168.hours.ago]).count]
+        end
+
+      when "last-week"
+        User.all.each do |u|
+          @array << [u.firstname + " " + u.lastname, 
+                     Event.find(:all, :conditions => {:user_id => u.id, :updated_at => Time.now.prev_week...Time.now.beginning_of_week}).count,
+                     Venue.find(:all, :conditions => {:updated_by => u.id, :updated_at => Time.now.prev_week...Time.now.beginning_of_week}).count,
+                     Act.find(:all, :conditions => {:updated_by => u.id, :updated_at => Time.now.prev_week...Time.now.beginning_of_week}).count]
+        end
+
+      when "all-time"
+        User.all.each do |u|
+          @array << [u.firstname + " " + u.lastname, 
+                     Event.where(:user_id => u.id).count,
+                     Venue.where(:updated_by => u.id).count,
+                     Act.where(:updated_by => u.id).count]
+        end
+
+      else
+      end
+
+    puts @array
+
+    respond_to do |format|
+      format.json { render json: @array }
+    end
+  end
 
 
 end

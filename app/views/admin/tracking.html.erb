@@ -1,0 +1,60 @@
+<script>
+
+  // $(document).ready(function() {
+  //   oTable = $('#itemsTable').dataTable();
+  // });
+
+  $(function() {
+    $('#user-select').on("change", function (){
+      // console.log($('#user-select option:selected').val());
+    $.get('/users/itemslist/?user_id=' + $('#user-select option:selected').val(), function(data) {
+      // console.log(data);
+      var tableData = "<table id='itemsTable'><thead><tr><th></th><th>Type</th><th>Name/Title</th><th>Edited Date</th><th>Edit</th></tr></thead><tbody>"
+      for (var i=0;i<data.length;i++) {
+        tableData += "<tr><td></td><td>"+ data[i].type +"</td><td><a href='/?"+data[i].type.toLowerCase()+"_id="+data[i].id+"'>"+data[i].name+"</a></td><td>"+data[i].date+"</td>";
+        if (data[i].type === "Act")
+          tableData += "<td><a href='/acts/index' target='_blank'>Edit</a></tr>"
+        else if (data[i].type === "Event")
+          tableData += "<td><a href='/venues/list_events/" + data[i].venue_id + "' target='_blank'>Edit</a></tr>"
+        else if (data[i].type === "Venue")
+          tableData += "<td><a href='/venues/edit/" + data[i].id + "' target='_blank'>Edit</a></tr>"
+      }
+      tableData += "</tbody></table>"
+      $('#tableContainer').html(tableData);
+      var iTable =  $('#itemsTable').dataTable({ 
+                              "fnDrawCallback": function ( oSettings ) {
+                                /* Need to redo the counters if filtered or sorted */
+                                if ( oSettings.bSorted || oSettings.bFiltered )
+                                {
+                                  for ( var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++ )
+                                  {
+                                    $('td:eq(0)', oSettings.aoData[ oSettings.aiDisplay[i] ].nTr ).html( i+1 );
+                                  }
+                                }
+                              },
+                              "bJQueryUI": true,
+                              "bRetrieve" : true,
+                              "bPaginate" : false,
+                              "aoColumnDefs": [{ "sWidth": "60%", "aTargets": [ 2 ] },
+                                               { "bSortable": false, "aTargets": [ 0 ] }
+                                              ],
+                              "aaSorting" : [[3, 'desc']]
+                              });
+      iTable.fnDraw();
+    });
+    });
+  });
+
+</script>
+
+<h2>Select User:
+<% @users = User.find(19, 20, 22, 31, 32, 35, 36, 38, 39, 42, 43, 47, 48, 49, 50, 51, 52, 53, 56, 58, 59).sort_by{|a| a.firstname} %>
+<select id="user-select" name="user-select">
+    <option class="" value=""></option>
+  <% @users.each do |o| %>
+    <option class="user-<%=o.id%>" value="<%=o.id%>"><%=o.fullname%></option>
+    <% end %>
+</select>
+</h2>
+<br><br>
+<div id="tableContainer"></div>

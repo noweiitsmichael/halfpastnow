@@ -111,7 +111,11 @@
           <li><a href="/admin/artists">Artist Search</a></li>
           <li><a href="/admin/events">Event Search</a></li>
           <li><a href="#">Assignments</a></li>
-          <li><a href="/admin/stats">My Stats</a></li>
+          <% idList = [24, 16, 21, 17, 11, 18, 25] %>
+          <% if idList.include?(current_user.id) %>
+          <li><a href="/admin/stats">Overall Stats</a></li>
+          <li><a href="/admin/tracking">Individual Stats</a></li>
+          <% end %>
         </ul>
       </div>
 

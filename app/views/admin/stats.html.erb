@@ -4,41 +4,58 @@
     
       google.load('visualization', '1.0', {'packages':['corechart']});
       google.setOnLoadCallback(drawChart);
+    
+	var chart;
 
-      $(function(){
-	    var path = location.pathname;
-	    if ( path )
-	      $('nav a[href$="' + path + '"]').attr('class', 'selected');
+	$(function () {
+		chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+	    drawChart();
+	});
 
-	  });
+	function drawChart() {
+		var jsonData = $.ajax ({
+			url:"/users/adminStats/?daterange=" + $('#date-range').val(),
+			dataType:"json",
+			async: false,
+			}).responseText;
 
-      function drawChart() {
-		console.log('<%= raw admin_table_data%>');
-        var data = google.visualization.arrayToDataTable(<%= raw admin_table_data %>);
+		arrayData = $.parseJSON(jsonData);
+		var data = new google.visualization.arrayToDataTable(arrayData);
+		var options = {'title':'Admin Activity',
+                 'width':850,
+                 'height':500,
+				 'vAxis': {title: "User Name"},
+    			 'hAxis': {title: "Entries Made"},
+             	 'isStacked':true,
+             	 'backgroundColor': '#F3F3FA',
+             	 animation:{
+			        duration: 1000,
+			        easing: 'out'}
+					 };
 
-        var options = {'title':'Admin Activity',
-                     'width':850,
-                     'height':500,
-					 'wAxis': {title: "User Name"},
-        			 'hAxis': {title: "Input Items"},
-                 	 'isStacked':true,
-                 	 'backgroundColor': '#F3F3FA'};
+		chart.draw(data, options);
+	};
 
-	      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-	      chart.draw(data, options);
-	    }
+	$(function () {    
+	    $("a.time-button").click(function (){
+	    	$('#date-range').val($(this).attr('id'));
+	    	drawChart();
+	    	return false;
+	    });
+	});
     </script>
 <% end %>
 
 <div id="date-select" >
-	<b0>Time Range</h2><br>
-	<a href="" id="24-hours" class="medium white button">Last 24 hours</a>
-	<a href="" id="yesterday" class="medium white button">Yesterday</a>
-	<a href="" id="this-week" class="medium white button">This Week (starting Sunday)</a>
-	<a href="" id="7-days" class="medium white button selected">Last 7 days</a>
-	<a href="" id="last-week" class="medium white button">Last Week</a>
-	<a href="" id="two-weeks" class="medium white button">Last Two Weeks</a>
-	<a href="" id="all-time" class="medium white button">All Time</a>
+	<h2>Time Range</h2><br>
+	<a href="" id="24-hours" class="medium white button time-button">Last 24 hours</a>
+	<a href="" id="yesterday" class="medium white button time-button">Yesterday</a>
+	<a href="" id="this-week" class="medium white button time-button">This Week (starting Monday)</a>
+	<a href="" id="7-days" class="medium white button time-button">Last 7 days</a>
+	<a href="" id="last-week" class="medium white button time-button">Last Week</a>
+	<a href="" id="all-time" class="medium white button time-button">All Time</a>
 </div>
+
+<input type="hidden" id="date-range" name="search[date]" value="24-hours" />
 
 <div id="chart_div" style="width:600; height:500; float:left"></div>

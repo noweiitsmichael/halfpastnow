@@ -1,6 +1,8 @@
 module AdminHelper
 
-	def admin_table_data
+	def admin_table_data(rando)
+		puts rando
+		puts params
 		@array = []
 		@array << ['User', 'Events', 'Venues', 'Acts']
 		User.all.each do |u|
