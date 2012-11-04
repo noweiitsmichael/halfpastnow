@@ -125,9 +125,9 @@ class UsersController < ApplicationController
       when "24-hours"
         @usersList.each do |u|
           @array << [u.firstname + " " + u.lastname, 
-                     Event.find(:all, :conditions => ["(user_id = ?) AND (updated_at < ?)", u.id, 24.hours.ago]).count,
-                     Venue.find(:all, :conditions => ["(updated_by = ?) AND (updated_at < ?)", u.id, 24.hours.ago]).count,
-                     Act.find(:all, :conditions => ["(updated_by = ?) AND (updated_at < ?)", u.id, 24.hours.ago]).count]
+                     Event.find(:all, :conditions => ["(user_id = ?) AND (updated_at > ?)", u.id, 24.hours.ago]).count,
+                     Venue.find(:all, :conditions => ["(updated_by = ?) AND (updated_at > ?)", u.id, 24.hours.ago]).count,
+                     Act.find(:all, :conditions => ["(updated_by = ?) AND (updated_at > ?)", u.id, 24.hours.ago]).count]
         end
         
       when "yesterday"
@@ -149,9 +149,9 @@ class UsersController < ApplicationController
       when "7-days"
         @usersList.each do |u|
           @array << [u.firstname + " " + u.lastname, 
-                     Event.find(:all, :conditions => ["(user_id = ?) AND (updated_at < ?)", u.id, 168.hours.ago]).count,
-                     Venue.find(:all, :conditions => ["(updated_by = ?) AND (updated_at < ?)", u.id, 168.hours.ago]).count,
-                     Act.find(:all, :conditions => ["(updated_by = ?) AND (updated_at < ?)", u.id, 168.hours.ago]).count]
+                     Event.find(:all, :conditions => ["(user_id = ?) AND (updated_at > ?)", u.id, 168.hours.ago]).count,
+                     Venue.find(:all, :conditions => ["(updated_by = ?) AND (updated_at > ?)", u.id, 168.hours.ago]).count,
+                     Act.find(:all, :conditions => ["(updated_by = ?) AND (updated_at > ?)", u.id, 168.hours.ago]).count]
         end
 
       when "last-week"
