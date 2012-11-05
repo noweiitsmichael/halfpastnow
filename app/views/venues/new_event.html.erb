@@ -21,6 +21,10 @@
 		  <%= e.label :title %>
 		  <%= e.text_field :title, :class => "title required" %>
 		</div>
+    <div class="field">
+      <%= e.label "Event Link / Registration Link" %>
+      <%= e.text_field :event_url, :class => "event_url" %>
+    </div>
 		<div class="field">
 		  <%= e.label :description %>
 		  <%= e.text_area :description, :class => "cleditor" %>

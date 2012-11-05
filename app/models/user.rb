@@ -6,11 +6,13 @@ class User < ActiveRecord::Base
   after_update :crop_profilepic
 
 
-  validates_presence_of :firstname, :lastname, :email
+  validates_presence_of :email
   validates_uniqueness_of :email, :username, :case_sensitive => false
 
   has_many :events
   has_many :channels
+  has_many :acts, :foreign_key => :updated_by
+  has_many :venues, :foreign_key => :updated_by
 
   # Allows you to search for bookmarked venues/events/acts by calling "user.bookmarked_type"
   has_many :bookmarks  
@@ -33,6 +35,7 @@ class User < ActiveRecord::Base
   end
 
   rolify
+
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
@@ -98,7 +101,11 @@ class User < ActiveRecord::Base
 
   def facebook
     @facebook ||= Koala::Facebook::API.new(fb_access_token)
+  end
 
+
+  def fullname
+    return firstname + " " + lastname
   end
 
   # def password_required?

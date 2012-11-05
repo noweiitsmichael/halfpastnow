@@ -12,7 +12,6 @@
 		var channelFilters = {};
 
 		var filter = {
-		  option_day: <%= params[:option_day].coalesce_to 1 %>,
 		  start_days: <%= params[:start_days].coalesce_to 0 %>,
 		  end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
 		  start_seconds: <%= params[:start_seconds].coalesce_to "''" %>,
@@ -29,11 +28,13 @@
 		  offset: 0,
 		  search: "",
 		  sort: <%= params[:sort].coalesce_to 0 %>,
-		  name: "<%= params[:name].coalesce_to "" %>"
+		  name: "<%= params[:name].coalesce_to "" %>",
+		  start_date: "",
+		  end_date: ""
 		};
 
 		function initialize() {
-			console.log("initialize");
+			//console.log("initialize");
 			//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
 			geocoder = new google.maps.Geocoder();
 
@@ -79,18 +80,19 @@
 			google.maps.event.addListener(map, 'idle', boundsChanged);
 		}
 
-
+		function to_i(obj) {
+			return parseInt(obj);
+		}
 
 		$(function() {
 			<% @channels.each do |channel| %>
 				channelFilters[<%= channel.id %>] = {
 				  stream_id: <%= channel.id %>,
-				  option_day: <%= channel.option_day || 1 %>,
 				  start_days: <%= channel.start_days || 0 %>,
 				  end_days: <%= channel.end_days || 0 %>,
 				  start_seconds: <%= channel.start_seconds || "''" %>,
 				  end_seconds: <%= channel.end_seconds || "''" %>,
-				  day: [0,1,2,3,4,5,6],
+				  day: <%= channel.day_of_week ? "'" + channel.day_of_week + "'.split(',').map(to_i)" : "[]" %>,
 				  low_price: <%= channel.low_price || "''" %>,
 				  high_price: <%= channel.high_price || "''" %>,
 				  included_tags: <%= channel.included_tags ? "'" + channel.included_tags + "'.split(',')" : "[]" %>,
@@ -100,17 +102,18 @@
 				  long_min: "",
 				  long_max: "",
 				  offset: 0,
-				  search: "",
+				  search: "<%= channel.search || "" %>",
 				  sort: <%= channel.sort || 0 %>,
-				  name: "<%= channel.name || "" %>"
+				  name: "<%= channel.name || "" %>",
+				  start_date: "<%= channel.start_date ? channel.start_date.to_s : "" %>",
+				  end_date: "<%= channel.end_date ? channel.end_date.to_s : "" %>"
 				};
 			<% end %>
 
     		channelFilters[0] = { 
     			  stream_id: "",
-    			  option_day: 0,
 				  start_days: 0,
-				  end_days: 'INFINITY',
+				  end_days: -1,
 				  start_seconds: '',
 				  end_seconds: '',
 				  day: [0,1,2,3,4,5,6],
@@ -160,7 +163,7 @@
 					<!-- <span class="stream <%= @selectedChannel == 0 ? "selected" : ""%>" channel-id="0">All Events</span> -->
 					<span class="stream new" <%= current_user ? "linkto='new-channel-2'" : "linkto='shunt'" %>>+ New Stream</span>
 					<% @channels.each do |channel| %>
-						<span class="stream <%= (@selectedChannel.to_i == channel.id) ? "selected" : ""%>" channel-id="<%= channel.id %>"><%= channel.name %></span>
+						<span class="stream <%= (@selectedChannel.to_i == channel.id) ? "selected" : ""%>" stream-id="<%= channel.id %>"><%= channel.name %></span>
 					<% end %>
 				</div>
 			</div>
@@ -244,14 +247,14 @@
 								</div>
 							</div>
 						</span>
-						<span class="filter-toggle filter-action action-clear">
-							<span class="filter-text">
-								<span class="pre-text"><span class="icon icon-trash"></span>clear</span>
-							</span>
-						</span>
 						<span class="filter-toggle filter-action action-save" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>
 							<span class="filter-text">
-								<span class="pre-text"><span class="icon icon-save"></span>save</span>
+								<span class="pre-text"><span class="icon icon-plus-sign"></span>new stream</span>
+							</span>
+						</span>
+						<span class="filter-toggle filter-action action-clear">
+							<span class="filter-text">
+								<span class="pre-text"><span class="icon icon-remove-sign"></span>clear</span>
 							</span>
 						</span>
 					</div>
@@ -259,7 +262,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="expandobar">
+	<!-- <div class="expandobar">
 		<div class="subbar">
 			<div class="sort-by">Sorted by <span class="sort selected" sort-type="popularity">popularity</span> / <span class="sort" sort-type="date">date</span></div>
 			<div class="num-occurrences">showing <span class="num-occurrences-count"><%= @allOccurrences.size %></span> events</div>
@@ -267,7 +270,7 @@
 		<div class="expandobar-inner">
 			<span>&#9660;</span>show advanced options<span>&#9660;</span>
 		</div>
-	</div>
+	</div> -->
 <% end %>
 
 <% content_for :body do %>
@@ -278,7 +281,7 @@
 		<div class="main">
 			<div class="inner">
 				<div class="filter-summary">
-					Showing <span class="num-events">27</span> <span class="price-filter">Free</span> <span class="tag-filter">Rock/Pop</span> events <span class="time-filter">Today</span>
+					showing <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sort-type">[by popularity/<span class="sort date">date</span>]</span> <span class="end-block"></span>
 				</div>
 				<ul class="events">
 					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>

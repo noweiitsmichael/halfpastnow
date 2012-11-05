@@ -1,21 +1,22 @@
 #body { }
-#profile-nav li { cursor:pointer; }
-#profile-nav li.selected { font-weight:bold; }
-#profile-nav { float:left; width: 300px; margin-top: 10px;}
-#profile-menu { float:left; width: 550px; padding: 10px;}
+#profile-nav {
+ }
+#profile-nav li { cursor:pointer; text-transform: lowercase; background: #ddd; padding: 2px 4px; margin: 4px 0 0 0; font-style: italic; text-align: right; font-weight: bold; color: #333;}
+#profile-nav li.selected { font-weight:bold; color: white; background: #888;}
+#profile-sidebar { float:left; text-align: right;}
+#profile-menu { float:left; margin-left: 18px;}
+#profile-menu h2 { font-style:italic; line-height:20px; }
 #profile-menu > div { visibility:hidden;width:0px;height:0px; }
 #profile-menu > div.selected { visibility:visible;width:auto;height:auto; }
 #location { color: #999999;}
+a.logout { text-decoration:none; text-transform:lowercase; color:black; font-weight:bold; font-style:italic; margin-right:4px; margin-top:4px; display: block;}
+.profile-pic { width:120px; display:block; }
 html, body
 {
   margin: 0;
   padding: 0;
-  background-color:white;
-  font-family: "Trebuchet MS",Arial,sans-serif;
   font-size: 16px;
   width:100%;
   height:100%;
   overflow:hidden;
-  background: #F3F3FA url(scaleside5.png);
-  background-image: -webkit-linear-gradient(left, rgba(0,0,0,.2) 0%,rgba(255,255,255,0) 50%, rgba(0,0,0,.2) 100%), url(scaleside5.png);
 }

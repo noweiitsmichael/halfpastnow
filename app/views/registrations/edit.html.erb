@@ -1,129 +1,150 @@
-<script type="text/javascript">
-  var jcrop_api;
+<% content_for :title do %>Account<% end %>
 
-  $(function() {
-    $('#profile-nav li').click(function() {
-      $('#profile-nav li').removeClass('selected');
-      $(this).addClass('selected');
-      $('#profile-menu > div').removeClass('selected');
-      $('#profile-menu > div:nth-child(' + ($(this).index() + 1) + ')').addClass('selected');
+<% content_for :content do %>
+  <script type="text/javascript">
+    var jcrop_api;
+
+    $(function() {
+      $('#profile-nav li').click(function() {
+        $('#profile-nav li').removeClass('selected');
+        $(this).addClass('selected');
+        $('#profile-menu > div').removeClass('selected');
+        $('#profile-menu > div:nth-child(' + ($(this).index() + 1) + ')').addClass('selected');
+      });
+      $('.profile .edit_user').ajaxForm({
+        dataType: 'json',
+        success: function() { alert('weeee'); }
+      });
+      $('.update-picture .edit_user').ajaxForm({
+        dataType: 'json',
+        success: function(user) {
+          console.log(user.profilepic.url);
+          $('#cropbox').attr('src',user.profilepic.url);
+          $('#preview').attr('src',user.profilepic.url);
+          $('.update-picture').hide();
+          $('.crop-picture').show();
+          $('#cropbox').Jcrop({
+            aspectRatio: 1,
+            onSelect: updateCrop,
+            onChange: updateCrop
+          },function(){
+            jcrop_api = this;
+          });
+        }
+      });
+      $('.crop-picture .edit_user').ajaxForm({
+        dataType: 'json',
+        success: function(user) {
+          $('#existing-pic').attr('src',user.profilepic.thumb.url);
+          $('.crop-picture').hide();
+          $('.update-picture').show();
+          jcrop_api.destroy();
+        }
+      });
     });
-    $('.profile .edit_user').ajaxForm({
-      dataType: 'json',
-      success: function() { alert('weeee'); }
-    });
-    $('.update-picture .edit_user').ajaxForm({
-      dataType: 'json',
-      success: function(user) {
-        console.log(user.profilepic.url);
-        $('#cropbox').attr('src',user.profilepic.url);
-        $('#preview').attr('src',user.profilepic.url);
-        $('.update-picture').hide();
-        $('.crop-picture').show();
-        $('#cropbox').Jcrop({
-          aspectRatio: 1,
-          onSelect: updateCrop,
-          onChange: updateCrop
-        },function(){
-          jcrop_api = this;
+
+    function updateCrop(coords) {
+        $('#user_crop_x').val(coords.x);
+        $('#user_crop_y').val(coords.y);
+        $('#user_crop_w').val(coords.w);
+        $('#user_crop_h').val(coords.h);
+        $('#preview').css({
+          width: Math.round(150 / coords.w * $('#cropbox').width()) + 'px',
+          height: Math.round(150 / coords.h * $('#cropbox').height()) + 'px',
+          marginLeft: '-' + Math.round(150 / coords.w * coords.x) + 'px',
+          marginTop: '-' + Math.round(150 / coords.h * coords.y) + 'px'
         });
       }
-    });
-    $('.crop-picture .edit_user').ajaxForm({
-      dataType: 'json',
-      success: function(user) {
-        $('#existing-pic').attr('src',user.profilepic.thumb.url);
-        $('.crop-picture').hide();
-        $('.update-picture').show();
-        jcrop_api.destroy();
-      }
-    });
-  });
+  </script>
+  <div id="profile-sidebar">
+    <img src="/assets/profile.png" class="profile-pic"/>
+    <!-- <h2><%= current_user.firstname %> <%= current_user.lastname %> </h2> -->
+    <ul id="profile-nav">
+      <li class="streams selected">Streams</li>
+      <li class="bookmarks">Bookmarks</li>
+      <li class="picture">Picture</li>
+      <li class="settings">Settings</li>
+      <li class="password">Password</li>
 
-  function updateCrop(coords) {
-      $('#user_crop_x').val(coords.x);
-      $('#user_crop_y').val(coords.y);
-      $('#user_crop_w').val(coords.w);
-      $('#user_crop_h').val(coords.h);
-      $('#preview').css({
-        width: Math.round(150 / coords.w * $('#cropbox').width()) + 'px',
-        height: Math.round(150 / coords.h * $('#cropbox').height()) + 'px',
-        marginLeft: '-' + Math.round(150 / coords.w * coords.x) + 'px',
-        marginTop: '-' + Math.round(150 / coords.h * coords.y) + 'px'
-      });
-    }
-</script>
-<h2>Settings</h2>
-<ul id="profile-nav">
-  <li class="profile selected">Profile</li>
-  <li class="picture">Picture</li>
-  <li class="password">Password</li>
-  <li class="bookmarks">Bookmarks</li>
-</ul>
-
-<div id="profile-menu">
-  <div class="profile selected">
-    <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put }) do |f| %>
-      <p><%= f.label :username %><br />
-      <%= f.text_field :username %></p>
-
-      <p><%= f.label :firstname %><br />
-      <%= f.text_field :firstname %></p>
-
-      <p><%= f.label :lastname %><br />
-      <%= f.text_field :lastname %></p>
-
-      <div><%= f.label :email %><br />
-      <%= f.email_field :email %></div>
-
-      <div><%= f.submit "Update" %></div>
-    <% end %>
+    </ul>
+    <%= link_to('Logout', destroy_user_session_path, :method => 'delete', :class => 'logout') %>
   </div>
-  <div class="picture">
-    <div class="update-picture">
-      <% if resource.profilepic %>
-        <%= image_tag resource.profilepic_url(:thumb), :id => "existing-pic" %>
-      <% end %>
-      <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put, :multipart => true }) do |f| %>
-          <%= f.label :profilepic, "File name" %><%= f.file_field :profilepic %><br />
-          <%= f.label :remote_profilepic_url, "Or image URL" %><%= f.text_field :remote_profilepic_url %>
-        <div><%= f.submit "Update" %></div>
-      <% end %>
-    </div>
-    <div class="crop-picture" style="display:none;">
-      <img src="" id="cropbox" />
 
-      <h4>Preview</h4>
-      <div style="height:150px;width:150px;overflow:hidden;">
-        <img src="" id="preview" />
+  <div id="profile-menu">
+
+    <div class="streams selected">
+      <h2>Streams</h2>
+    </div>
+
+    <div class="bookmarks">
+      <h2>Bookmarks</h2>
+    </div>
+    
+    <div class="picture">
+      <h2>Picture</h2>
+      <div class="update-picture">
+        <% if resource.profilepic %>
+          <%= image_tag resource.profilepic_url(:thumb), :id => "existing-pic" %>
+        <% end %>
+        <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put, :multipart => true }) do |f| %>
+            <%= f.label :profilepic, "File name" %><%= f.file_field :profilepic %><br />
+            <%= f.label :remote_profilepic_url, "Or image URL" %><%= f.text_field :remote_profilepic_url %>
+          <div><%= f.submit "Update" %></div>
+        <% end %>
       </div>
+      <div class="crop-picture" style="display:none;">
+        <img src="" id="cropbox" />
 
-      <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put, :multipart => true }) do |f| %>
-        <div class="actions">
-          <% %w[x y w h].each do |attribute| %>
-            <%= f.hidden_field "crop_#{attribute}"%>
-          <% end %>
-
-          <%= f.submit "Update" %>
+        <h4>Preview</h4>
+        <div style="height:150px;width:150px;overflow:hidden;">
+          <img src="" id="preview" />
         </div>
+
+        <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put, :multipart => true }) do |f| %>
+          <div class="actions">
+            <% %w[x y w h].each do |attribute| %>
+              <%= f.hidden_field "crop_#{attribute}"%>
+            <% end %>
+
+            <%= f.submit "Update" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="settings">
+      <h2>Settings</h2>
+      <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put }) do |f| %>
+        <p><%= f.label :username %><br />
+        <%= f.text_field :username %></p>
+
+        <p><%= f.label :firstname %><br />
+        <%= f.text_field :firstname %></p>
+
+        <p><%= f.label :lastname %><br />
+        <%= f.text_field :lastname %></p>
+
+        <div><%= f.label :email %><br />
+        <%= f.email_field :email %></div>
+
+        <div><%= f.submit "Update" %></div>
+      <% end %>
+    </div>
+
+    <div class="password">
+      <h2>Password</h2>
+      <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put }) do |f| %>
+        <div><%= f.label :password %> <em>(leave blank if you don't want to change it)</em><br />
+          <%= f.password_field :password, :autocomplete => "off" %></div>
+
+          <div><%= f.label :password_confirmation %><br />
+          <%= f.password_field :password_confirmation %></div>
+
+          <div><%= f.label :current_password %> <em>(we need your current password to confirm your changes)</em><br />
+          <%= f.password_field :current_password %></div>
+
+          <div><%= f.submit "Update" %></div>
       <% end %>
     </div>
   </div>
-  <div class="password">
-    <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put }) do |f| %>
-      <div><%= f.label :password %> <em>(leave blank if you don't want to change it)</em><br />
-        <%= f.password_field :password, :autocomplete => "off" %></div>
-
-        <div><%= f.label :password_confirmation %><br />
-        <%= f.password_field :password_confirmation %></div>
-
-        <div><%= f.label :current_password %> <em>(we need your current password to confirm your changes)</em><br />
-        <%= f.password_field :current_password %></div>
-
-        <div><%= f.submit "Update" %></div>
-    <% end %>
-  </div>
-  <div class="bookmarks">
-
-  </div>
-</div>
+<% end %>

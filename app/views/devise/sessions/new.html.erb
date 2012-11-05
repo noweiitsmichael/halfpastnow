@@ -1,17 +1,19 @@
-<h2>Login</h2>
+<% content_for :title do %>Login<% end %>
 
-<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email %></div>
+<% content_for :content do %>
+  <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+    <div><%= f.label :email %><br />
+    <%= f.email_field :email %></div>
 
-  <div><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
+    <div><%= f.label :password %><br />
+    <%= f.password_field :password %></div>
 
-  <% if devise_mapping.rememberable? -%>
-    <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
-  <% end -%>
+    <% if devise_mapping.rememberable? -%>
+      <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
+    <% end -%>
 
-  <div><%= f.submit "Login" %></div>
-  <!--<div><%= link_to "Sign in with facebook", user_omniauth_authorize_path(:facebook) %>	-->
-  <% end %>
-<%= render "links" %>
+    <div><%= f.submit "Login" %></div>
+    <!--<div><%= link_to "Sign in with facebook", user_omniauth_authorize_path(:facebook) %>	-->
+    <% end %>
+  <%= render "links" %>
+<% end %>

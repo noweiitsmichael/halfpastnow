@@ -13,7 +13,6 @@
 		    $.post(isNewChannel ? '/channels/create' : '/channels/update/' + saveChannelId, filter, function(channel) {
 
 		      channelFilters[channel.id] = {
-		          option_day: (channel.option_day === null) ? 1 : channel.option_day,
 		          start_days: (channel.start_days === null) ? 0 : channel.start_days,
 		          end_days: (channel.end_days === null) ? 0 : channel.end_days,
 		          start_seconds: (channel.start_seconds === null) ? '' : channel.start_seconds,
@@ -27,23 +26,22 @@
 		          long_min: "",
 		          long_max: "",
 		          offset: 0,
-		          search: "",
+		          search: (channel.search === null) ? '' : channel.search,
 		          sort: (channel.sort === null) ? 0 : channel.sort,
 		          name: (channel.name === null) ? '' : channel.name,
+		          stream_id: channel.id,
+		          start_date: (channel.start_date === null) ? "" : channel.start_date,
+		          end_date: (channel.end_date === null) ? "" : channel.end_date,
+		          day: channel.day_of_week ? channel.day_of_week.split(",").map(to_i) : [0,1,2,3,4,5,6],
 		      };
 
 		      if(isNewChannel) {
-		        $(".streambar .header").append("<span class='stream' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</span>");
+		        $(".streambar .header").append("<span class='stream' stream-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</span>");
 		        streamSelector();
-
-		        $(".channels .lists").append("<li class='channel title' channel-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</li>");
 		      }
 
 		      $(".streambar .header .stream").removeClass('selected');
-		      $('.streambar .header .stream[channel-id=' + channel.id + ']').addClass('selected');
-
-		      $('.channels .lists li').removeClass('selected');
-		      $('.channels .lists li[channel-id=' + channel.id + ']').addClass('selected');
+		      $('.streambar .header .stream[stream-id=' + channel.id + ']').addClass('selected');
 		      
 		      demodal();
 
