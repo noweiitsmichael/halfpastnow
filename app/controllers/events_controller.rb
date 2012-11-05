@@ -13,7 +13,7 @@ class ZoomDelta
 end
 
 class EventsController < ApplicationController
-
+helper :content
 def splash
   respond_to do |format|
     format.html { render :layout => false }
@@ -101,7 +101,7 @@ def index
     if(!params[:end_date].to_s.empty?)
       event_end_date = Date.parse(params[:end_date]).advance(:days => 1)
     else
-      event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_s == "INFINITY") ? 365000 : params[:end_days].to_i + 1))
+      event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_i == -1) ? 365000 : params[:end_days].to_i + 1))
     end
 
     start_date_check = "occurrences.start >= '#{event_start_date}'"

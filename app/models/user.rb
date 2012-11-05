@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   after_update :crop_profilepic
 
 
-  validates_presence_of :firstname, :lastname, :email
+  validates_presence_of :email
   validates_uniqueness_of :email, :username, :case_sensitive => false
 
   has_many :events

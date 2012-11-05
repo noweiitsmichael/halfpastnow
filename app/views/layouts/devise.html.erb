@@ -4,9 +4,16 @@
  	<%= stylesheet_link_tag "jcrop" %>
     <% if false %><%= javascript_include_tag "users" %><% end %>
 <% end %>
+<% content_for :header do %>
+	<div class="titlebar">
+		<div class="stay-on-target">
+			<h1><%= yield :title %></h1>
+		</div>
+	</div>
+<% end %>
 <% content_for :body do %>
 	<div id="info-content">
-		<%= yield %>
+		<%= yield :content %>
 	</div>
 <% end %>
 <%= render :template => 'layouts/application' %>
