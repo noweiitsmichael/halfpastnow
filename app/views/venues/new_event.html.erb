@@ -2,7 +2,7 @@
 
 <script type="text/javascript">
 	 $(function() {
-	 	generateValidator("#event_<%= @event.id %>",{"ajax":true});
+	 	generateValidator("#event",{"ajax":true});
 	 });
 
 
@@ -11,16 +11,20 @@
 
 <% @ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] %>
 <% @week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] %>
-<%= form_for @event, :url => "/venues/eventEdit/" + @event.id.to_s, :html => { :multipart => true, :id => "event_" + @event.id.to_s } do |e| %>
+<%= form_for @event, :url => "/venues/eventEdit/" + @event.id.to_s, :html => { :multipart => true, :id => "event" + @event.id.to_s } do |e| %>
 	<% @iStrName = "event[tag_ids][]" %>
 
 	<% @iStrId = @event.id ? "event_2#{@event.id.to_s}_tag_ids_" : "event_0_tag_ids_" %>
-    <div class="main event<%= @event.id ? "" : " new"%>">
+    <div class="main event-element event<%= @event.id ? "" : " new"%>">
     	<%= hidden_field_tag :venue_id, @venue.id %>
 		<div class="field">
 		  <%= e.label :title %>
 		  <%= e.text_field :title, :class => "title required" %>
 		</div>
+    <div class="field">
+      <%= e.label "Event Link / Registration Link" %>
+      <%= e.text_field :event_url, :class => "event_url" %>
+    </div>
 		<div class="field">
 		  <%= e.label :description %>
 		  <%= e.text_area :description, :class => "cleditor" %>
@@ -34,12 +38,12 @@
 
 		<%= render :partial => "tags", :locals => { :element => @event } %>
 
-		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => @event } %>
+		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => @event, :validate_occurrence => true } %>
 
 		<br>
 	    <div class="field">
 	    	<%= e.label :cover_image %>
-	    	<span class="cover-image-<%= @event.id %>">
+	    	<span class="cover-image">
 			<% if @event.cover_image.nil? or Picture.where(:id => @event.cover_image).empty? %>
 				<b><span style="color:red;">**** NONE: Click an image from the gallery below, or upload a new one and click it ****</span><b>
 				<br>
@@ -49,11 +53,13 @@
 			</span>
 		</div>
 			<br>
+
+<!-- PICTURES SECTION -->
 		<div class="greyback">
 		<div class="field pic-field">
 	    	<b>PICTURE GALLERIES</b><br><br>
 			<!-- container for new artists from select2 box-->
-			<span class="field-for-act-pics-2<%=@event.id%>">
+			<span class="field-for-act-pics-0">
 			<!-- end -->
 			</span>
 
@@ -75,12 +81,218 @@
 				<br>
 			<% end %>
 			
-	    
+<div class="picture_parts">
+<script type="text/javascript">
+	$(function() {
 
-	    <%= render :partial => "pictures_events", :locals => { :e => e, :event => @event } %>
+		$('.picture_parts').on("click", ".remove-pic", function() {
+			var index = $(this).parents(".pictures.field").attr("index");
+			if(typeof index !== 'undefined') {
+				$(this).after("<input type='hidden' name='event[pictures_attributes][" + index + "][_destroy]' value='1' />");
+				$(this).parents(".pictures.field").hide();
+			} else {
+				$(this).parents(".pictures.field").remove();
+			}
+			return false;
+		});
+	});
+
+	$(function() {
+		$('.pic-field').on('click', 'a.pic-edit',function() {
+			console.log("click - pic-edit");
+			showCoverEditMode(0,$(this).attr("pic-url"),$(this).attr("pic-id"),$("#pictureable_type_url").val(),callbackEdit);
+			return false;
+		});
+
+	});
+
+	$(function () {
+	    $('.pic-field').on('click', '.fb-image-submit', function() {
+	      console.log("click - fb-image-submit");
+	      // console.log($(this));
+	      $(this).append('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>');
+	        var picData = 
+	          {"picture":
+	            { "pictureable_id": parseInt($(this).attr("picable-id")),
+	              "pictureable_type": $(this).attr("picable-type"), 
+	              "remote_image_url": $(this).attr("fb-pic-url")
+	            }
+	          };
+	        // console.log(picData);
+	      $.post("/pictures/create",picData,function(data) {
+	      // console.log(data);
+	        console.log("Added from FB pic! " + data.id);
+	        $('.ajaxLoader').detach();
+	        showCoverEditMode(0,data.image.large.url,data.id,$("#pictureable_type_url").val(),callbackEdit);
+	      },
+	      "json");
+	      return false;
+	    });
+	});
+
+  $(function () {
+    $('.new_pic').click( function (){
+      console.log("click");
+      if ($("#event_remote_image_url").val() == ""){
+        return false;
+      } 
+      else {
+        $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('.eventThumbs');
+        var picData = 
+          {"picture":
+            { "pictureable_id": "",
+              "pictureable_type": $("#pictureable_type_url").val(), 
+              "remote_image_url": $("#event_remote_image_url").val()
+            }
+          };
+      }
+      $.post("/pictures/create",picData,function(data) {
+        // console.log(data);
+        // console.log("picturable id = " + data.pictureable_id);
+        var numThumbs = $(".gallery").length;
+        var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
+        newPicThumb += '<input type="hidden" name="event[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+        newPicThumb += '<input id="pictureable_type" name="pictureable_type" type="hidden" value="Event">';
+        newPicThumb += '<input id="pictureable_id" name="pictureable_id" type="hidden" value="">';
+        newPicThumb += '<div href="" class="remove-pic">&#10799;</div>';
+        newPicThumb += '<a href="" class="pic-edit" event-id="<%= @event.id %>" pic-url="' + data.image.large.url + '" pic-id="' + data.id + '">'
+        newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '"></div>';
+        $('.ajaxLoader').detach();
+        $(newPicThumb).appendTo('.eventThumbs');
+      },
+      "json");
+      return false;
+    });
+  });
+
+  $(function () {
+      $(".fileclick").click(function() {
+       	if ($(".event_image").val() == ""){
+          return false;
+        } 
+        else {
+          $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('.eventThumbs');
+          $("#event").ajaxSubmit({
+            beforeSerialize: function(form, options) {
+            },
+            url: "/pictures/createForEvent",
+            success:function(data) {
+              // console.log(data);
+              var numThumbs = $(".gallery").length;
+              // console.log("index number = " + numThumbs);
+              // console.log("picturable id = " + data.pictureable_id);
+              var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
+              newPicThumb += '<input type="hidden" name="event[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+              newPicThumb += '<input id="pictureable_type" name="pictureable_type" type="hidden" value="Event">';
+              newPicThumb += '<input id="pictureable_id" name="pictureable_id" type="hidden" value="">';
+              newPicThumb += '<div href="" class="remove-pic">&#10799;</div>';
+              newPicThumb += '<a href="" class="pic-edit" event-id="<%= @event.id %>" pic-url="' + data.image.large.url + '" pic-id="' + data.id + '">'
+              newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '"></div>';
+              $('.ajaxLoader').detach();
+              $(newPicThumb).appendTo('.eventThumbs');
+            },
+            type: "post",
+            dataType: "json"
+          });
+          return false;
+      }
+      });
+  });
+
+  $('.picture_parts').on("click", ".remove-pic", function() {
+      console.log("click");
+    var index = $(this).parents(".pictures.field").attr("index");
+    if(typeof index !== 'undefined') {
+      $(this).after("<input type='hidden' name='event[pictures_attributes][" + index + "][_destroy]' value='1' />");
+      $(this).parents(".pictures.field").hide();
+    } else {
+      $(this).parents(".pictures.field").remove();
+    }
+    return false;
+  });
+
+	function callbackEdit(pic) {
+
+	}
+
+	function callbackNew(pic) {
+
+	}
+</script>
+
+
+
+<!-- Pictures Section -->
+
+      
+    <!-- Venue Facebook Photo -->
+    <label>From Venue:</label>
+    <% unless @event.venue.fb_picture.blank? %>
+      <% if Picture.where(:image => @event.venue.fb_picture.match(/[^\/]+$/).to_s, :pictureable_id => @event.venue.id, :pictureable_type => "Venue").exists? %>
+      <% else %>
+
+        <span class="pictures pic-field"><div class="fb-image-submit" picable-id="<%= @event.venue.id %>" picable-type="Venue" fb-pic-url="<%= @event.venue.fb_picture %>">
+          <a href="" pic-url="<%= @event.venue.fb_picture %>">
+          <%= image_tag @event.venue.fb_picture, :class => "fb-pic-reduce" %> </a>
+        </div></span>
+      <% end %>
+    <% end %>
+    <!-- end -->
+    
+    <span class="pictures pic-field">
+    <% @event.venue.pictures.each do |pic| %>
+      <a href="" class="pic-edit" pic-url="<%= pic.image_url(:large).to_s %>" pic-id="<%= pic.id%>">
+      <%= image_tag pic.image_url(:thumb).to_s %></a>
+    <% end %>
+    </span>
+
+    <!-- Add new event picture -->
+    <% newPic = Picture.new %>
+    <%= e.fields_for newPic, :url => "/pictures/create", :html => {:multipart => true}, :remote => true do |g| %>
+        <p>
+          <label>Add Event Picture:</label>
+          <input id="pictureable_type_url" name="pictureable_type" type="hidden" value="Event">
+          <input id="pictureable_id_url" name="pictureable_id" type="hidden" value="">
+          <input id="event_remote_image_url" name="event[remote_image_url]" size="30" type="text">
+          <a href="" class="new_pic">Add pic</a>
+        </p>
+    <% end %>
+    <label class="buffer"></label>
+    <% newPic2 = Picture.new %>
+    <%= e.fields_for newPic2, :html => { :multipart => true} do |g| %>
+      Or upload file:
+      <input id="pictureable_type" name="pictureable_type" type="hidden" value="Event">
+      <input id="pictureable_id" name="pictureable_id" type="hidden" value="">
+      <input class="event_image" name="event[image]" type="file">
+      <a href="" class="fileclick">Add pic</a>
+    <% end %>
+    <br><br>
+    <!-- end -->
+
+    <label class="buffer"></label>
+
+	  <% @event.pictures.each_with_index do |pic, index| %>
+	  <span class="pictures field gallery pic-field" index="<%= index %>">
+          <input id="pictureable_type" name="pictureable_type" type="hidden" value="Event">
+          <input id="pictureable_id" name="pictureable_id" type="hidden" value="">
+          <input type="hidden" name="event[pictures_attributes][<%= index %>][id]" value="<%= pic.id %>" />
+	      <div href="" class="remove-pic">&#10799;</div>
+	    <a href="" class="pic-edit" event-id="" pic-url="<%= pic.image_url(:large).to_s %>" pic-id="<%= pic.id%>"><%= image_tag pic.image_url(:thumb).to_s %></a>
+	  </span>
+	  <% end %>
+
+    <span class="eventThumbs pic-field"></span>
+
+    </div>
+<!-- End Pictures Section -->
+
+
+
 	    <br>
 	    </div>
 	    </div>
+
+	    <%= render :partial => "embeds", :locals => { :type => 'event', :obj => @event, :type_ind => '' } %>
 
 	    <div class="pics mode">
 			<div class="overlay">
@@ -88,6 +300,14 @@
 				</div>
 			</div>
 		</div>	
+
+<div class="acts mode">
+  <div class="overlay">
+    <div class="window">
+    </div>
+  </div>
+</div>
+
 		<br>
 		<div class="actions">
     		<%= e.submit "Save Event" %>

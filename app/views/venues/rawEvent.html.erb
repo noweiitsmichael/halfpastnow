@@ -27,6 +27,10 @@
 		  <%= e.text_field :title, :class => "required" %>
 		</div>
 		<div class="field">
+		  <%= e.label "Event Link / Registration Link" %>
+		  <%= e.text_field :event_url, :class => "event_url" %>
+		</div>
+		<div class="field">
 		  <label>Description<br /><em style="font-size:small;color:gray;">(make sure to rewrite pre-populated descriptions)</em></label>
 		  <%= e.text_area :description, :class => "cleditor" %>
 		</div>
@@ -39,7 +43,7 @@
 
 		<%= render :partial => "tags", :locals => { :element => event } %>
 
-		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => event } %>
+		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => event, :validate_occurrence => false  } %>
 
 		<div class="field">
 	    	<%= e.label :cover_image %>
@@ -66,6 +70,7 @@
 				</div>
 			</div>
 		</div>
+	    <%= render :partial => "embeds", :locals => { :type => 'event', :obj => @rawEvent, :type_ind => '' } %>
 
 		<div class="actions">
 			<%= e.submit %>

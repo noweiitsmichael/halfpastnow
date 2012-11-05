@@ -1,3 +1,4 @@
+
 class AdminController < ApplicationController
 	layout "admin"
 	before_filter :authenticate_user!
@@ -9,6 +10,10 @@ class AdminController < ApplicationController
 	end
 
 	def test
+	end
+
+	def admin_table
+
 	end
 	
 

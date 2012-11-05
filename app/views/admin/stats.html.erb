@@ -1,0 +1,62 @@
+<% content_for :head do %>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    
+      google.load('visualization', '1.0', {'packages':['corechart']});
+      google.setOnLoadCallback(drawChart);
+    
+	var chart;
+
+	$(function () {
+		chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+	    drawChart();
+	});
+
+	function drawChart() {
+		var jsonData = $.ajax ({
+			url:"/users/adminStats/?daterange=" + $('#date-range').val(),
+			dataType:"json",
+			async: false,
+			}).responseText;
+
+		arrayData = $.parseJSON(jsonData);
+		var data = new google.visualization.arrayToDataTable(arrayData);
+		var options = {'title':'Admin Activity',
+                 'width':880,
+                 'height':500,
+				 'vAxis': {title: "User Name"},
+    			 'hAxis': {title: "Entries Made"},
+             	 'isStacked':true,
+             	 'chartArea':{left:50,top:50,width:"80%",height:"68%"},
+             	 'backgroundColor': '#F3F3FA',
+             	 animation:{
+			        duration: 1000,
+			        easing: 'out'}
+					 };
+
+		chart.draw(data, options);
+	};
+
+	$(function () {    
+	    $("a.time-button").click(function (){
+	    	$('#date-range').val($(this).attr('id'));
+	    	drawChart();
+	    	return false;
+	    });
+	});
+    </script>
+<% end %>
+
+<div id="date-select" >
+	<h2>Time Range</h2><br>
+	<a href="" id="24-hours" class="medium white button time-button">Last 24 hours</a>
+	<a href="" id="yesterday" class="medium white button time-button">Yesterday</a>
+	<a href="" id="this-week" class="medium white button time-button">This Week (starting Monday)</a>
+	<a href="" id="7-days" class="medium white button time-button">Last 7 days</a>
+	<a href="" id="last-week" class="medium white button time-button">Last Week</a>
+	<a href="" id="all-time" class="medium white button time-button">All Time</a>
+</div>
+
+<input type="hidden" id="date-range" name="search[date]" value="24-hours" />
+
+<div id="chart_div" style="width:600; height:500; float:left"></div>

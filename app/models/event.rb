@@ -2,25 +2,24 @@ class Event < ActiveRecord::Base
   belongs_to :venue
   belongs_to :user
   
-
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :acts
+
   has_many :recurrences, :dependent => :destroy
   has_many :occurrences, :dependent => :destroy
+  has_many :pictures, :as => :pictureable, :dependent => :destroy
+  has_many :embeds, :as => :embedable, :dependent => :destroy
+
   accepts_nested_attributes_for :occurrences, :allow_destroy => true
   accepts_nested_attributes_for :recurrences, :allow_destroy => true
   accepts_nested_attributes_for :venue
-  has_many :pictures, :as => :pictureable, :dependent => :destroy
-  attr_accessor :image, :remote_image_url
   accepts_nested_attributes_for :pictures, :allow_destroy => true, :reject_if => proc {|attributes| attributes['image'].blank? && attributes['remote_image_url'].blank?  }
+  accepts_nested_attributes_for :embeds, :allow_destroy => true
+
+  attr_accessor :image, :remote_image_url
   
-  
-  validates_presence_of :venue_id, :title
-  # define_index do
-  #       indexes title, :sortable => true
-  #       indexes description
-  #       indexes venue.name
-  # end
+  validates_presence_of :venue_id
+  validates_presence_of :title, :message => "Please input event title"
 
   def matches? (search)
     if (search.nil? || search == "")

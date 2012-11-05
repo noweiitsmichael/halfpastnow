@@ -2382,7 +2382,7 @@ html, body {
   filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dcdcdc');
 }
 .white:active {
-  color: #999;
+  color: #999999;
   background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#fff));
   background: -moz-linear-gradient(top,  #ededed,  #fff);
   filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#ffffff');

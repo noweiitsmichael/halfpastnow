@@ -1,43 +1,43 @@
 class MobileController < ApplicationController
   def new
-  	email = params[:email]
-	  password = params[:password]
-	  user = params[:username]
-	  lastname = params[:lastname]
-	  firstname = params[:firstname]
-	  if email.nil? or password.nil?
-	      
-	      respond_to do |format|
-	        format.html # index.html.erb
-	        format.json { render json: {:code=>"0" } }
-	          # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
-	      end
-	      return
-	    end
+    email = params[:email]
+    password = params[:password]
+    user = params[:username]
+    lastname = params[:lastname]
+    firstname = params[:firstname]
+    if email.nil? or password.nil?
 
-	  @user=User.find_by_email(email.downcase)
-	  if not @user.nil?
-	      puts "Existing email"
-	        respond_to do |format|
-	        format.html # index.html.erb
-	        format.json { render json: {:code=>"1" } }
-	          # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
-	      end
-	      
-	      return
-	  end
-	  @user = User.new()
-	  @user.email=email
-	  @user.password=password
-	  @user.username=user
-	  @user.lastname=lastname
-	  @user.firstname=firstname
-	  @user.save!
-	  respond_to do |format|
-	        format.html # index.html.erb
-	        format.json { render json: {:code=>"7" } }
-	          # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
-	  end
+        respond_to do |format|
+          format.html # index.html.erb
+          format.json { render json: {:code=>"0" } }
+            # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+        end
+        return
+      end
+
+    @user=User.find_by_email(email.downcase)
+    if not @user.nil?
+        puts "Existing email"
+          respond_to do |format|
+          format.html # index.html.erb
+          format.json { render json: {:code=>"1" } }
+            # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+        end
+
+        return
+    end
+    @user = User.new()
+    @user.email=email
+    @user.password=password
+    @user.username=user
+    @user.lastname=lastname
+    @user.firstname=firstname
+    @user.save!
+    respond_to do |format|
+          format.html # index.html.erb
+          format.json { render json: {:code=>"7" } }
+            # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+    end
   end
 
   def checkUser
@@ -103,6 +103,35 @@ class MobileController < ApplicationController
   end
   def FBlogin
 
+    unless(params[:channel_id].to_s.empty?)
+      channel = Channel.find(params[:channel_id].to_i)
+
+      params[:option_day] ||= channel.option_day || 0
+      params[:start_days] ||= channel.start_days || ""
+      params[:end_days] ||= channel.end_days || ""
+      params[:start_seconds] ||= channel.start_seconds || ""
+      params[:end_seconds] ||= channel.end_seconds || ""
+      params[:low_price] ||= channel.low_price || ""
+      params[:high_price] ||= channel.high_price || ""
+      params[:included_tags] ||= channel.included_tags ? channel.included_tags.split(',') : nil
+      params[:excluded_tags] ||= channel.excluded_tags ? channel.excluded_tags.split(',') : nil
+      params[:lat_min] ||= ""
+      params[:lat_max] ||= ""
+      params[:long_min] ||= ""
+      params[:long_max] ||= ""
+      params[:offset] ||= 0
+      params[:search] ||= ""
+      params[:sort] ||= channel.sort || 0
+      params[:name] ||= channel.name || ""
+    end
+
+    if(params[:included_tags] && params[:included_tags].is_a?(String))
+      params[:included_tags] = params[:included_tags].split(",")
+    end
+    
+    if(params[:excluded_tags] && params[:excluded_tags].is_a?(String))
+      params[:excluded_tags] = params[:excluded_tags].split(",")
+    end
     # pp params
     # @amount = params[:amount] || 20
     # @offset = params[:offset] || 0
@@ -159,7 +188,6 @@ class MobileController < ApplicationController
     unless(params[:day].to_s.empty?)
       # event_days = params[:day].to_s.empty? ? nil : params[:day].collect { |day| day.to_i } * ','
       event_days = params[:day].to_s.empty? ? nil : params[:day].to_s
-      pp event_days
       days_check = "#{event_days ? "occurrences.day_of_week IN (#{event_days})" : "TRUE" }"
     end
 
@@ -259,7 +287,7 @@ class MobileController < ApplicationController
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
 
-    puts query
+    # puts query
     
     @ids = ActiveRecord::Base.connection.select_all(query)
 
@@ -359,10 +387,30 @@ class MobileController < ApplicationController
       
       @tags = @tagss.collect{|t| [t.id,t.name]}
       @bookmarks= Bookmark.where("user_id=?",@user.id)
-  	  @occurrenceids= @user.bookmarked_events.collect(&:id)
-  	  @eventids = Occurrence.find(@occurrenceids).collect(&:event_id)
-  	  @events = Event.includes(:tags, :venue, :recurrences).find(@eventids) 
+      @occurrenceids= @user.bookmarked_events.collect(&:id)
+      @eventids = Occurrence.find(@occurrenceids).collect(&:event_id)
+      @tmps = Occurrence.find(@occurrenceids)
+      @events = Event.includes(:tags, :venue, :recurrences).find(@eventids) 
+      @eventinfo =[]
+      @events.each{
+        |o| 
+        @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
+        @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
+        @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs}
+        @eventinfo << @item
+      }
     end
+    # Create events from occurrence
+    @es = @occurrences.collect { |occ| occ.event }
+    @esinfo =[]
+    @es.each{
+      |o| 
+      @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
+      @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
+      @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs}
+      @esinfo << @item
+    }
+
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
@@ -372,9 +420,12 @@ class MobileController < ApplicationController
 
       # format.json { render json: {code:"3",tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       if (params[:email].to_s.empty?)
-        format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+        # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+        format.json { render json: {:events=>@esinfo} }
       else 
-        format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
+        format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo  }} 
+        # format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
+      
       end
 
   end

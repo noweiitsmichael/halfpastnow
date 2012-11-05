@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20121105102707) do
     t.string   "fb_id"
     t.string   "fb_likes"
     t.string   "fb_link"
+    t.integer  "updated_by"
   end
 
   add_index "acts", ["event_id"], :name => "index_acts_on_event_id"
@@ -81,14 +82,15 @@ ActiveRecord::Schema.define(:version => 20121105102707) do
   add_index "channels", ["user_id"], :name => "index_channels_on_user_id"
 
   create_table "embeds", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "act_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "embedable_id"
     t.boolean  "primary"
     t.text     "source"
+    t.string   "embedable_type"
   end
 
-  add_index "embeds", ["act_id"], :name => "index_embeds_on_act_id"
+  add_index "embeds", ["embedable_id"], :name => "index_embeds_on_act_id"
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -104,6 +106,7 @@ ActiveRecord::Schema.define(:version => 20121105102707) do
     t.text     "fb_picture"
     t.text     "url"
     t.text     "cover_image"
+    t.text     "event_url"
   end
 
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
@@ -178,6 +181,7 @@ ActiveRecord::Schema.define(:version => 20121105102707) do
     t.integer  "raw_venue_id"
     t.text     "fb_picture"
     t.text     "cover_image"
+    t.text     "event_url"
   end
 
   add_index "raw_events", ["raw_venue_id"], :name => "index_raw_events_on_raw_venue_id"
@@ -307,6 +311,7 @@ ActiveRecord::Schema.define(:version => 20121105102707) do
     t.boolean  "suggested"
     t.text     "fb_picture"
     t.string   "admin_owner"
+    t.integer  "updated_by"
   end
 
 end

@@ -764,7 +764,7 @@ $(function() {
   
 
   $('.filter-action.action-clear').click(function() {
-    filter = $.extend(filter, channelFilters[0]);
+    filter = $.extend(true, {}, channelFilters[0]);
     updateViewFromFilter();
   });
 

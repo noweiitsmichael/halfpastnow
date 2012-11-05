@@ -40,6 +40,10 @@
       $('.ajax-submit').click( function (){
         console.log("click");
         $('<div class="ajaxLoader pictures field gallery"><img src="/assets/ajax-loader.gif"></div>').appendTo('.ajax-submit');
+       			// console.log(parseInt($(".picture_crop_x").val()));
+	         //    console.log(parseInt($(".picture_crop_y").val()));
+	         //    console.log(parseInt($(".picture_crop_w").val()));
+	         //    console.log(parseInt($(".picture_crop_h").val()));
 	      var picData = 
 	        {"picture":
 	          { "crop_x": parseInt($(".picture_crop_x").val()),
@@ -54,7 +58,12 @@
 	          "cover_image": parseInt($(".picture_id").val())
 	        };
         $.post("/pictures/coverImageAdd",picData,function(data) {
-          $('.cover-image-' + data.event.id).html('<img src=' + data.pictures.image.cover.url + '>');
+        	// console.log(data);
+        	if (data.event) {
+          		$('.cover-image-' + data.event.id).html('<img src=' + data.pictures.image.cover.url + '>');
+          	} else {
+          		$('.cover-image').html('<img src=' + data.pictures.image.cover.url + '><input type="hidden" name="event[cover_image]" value="' + data.pictures.id + '">');
+          	}
           closeMode();
         },
         "json");
@@ -93,10 +102,10 @@
 <%= form_for(@picture, :url => "/pictures/coverImageAdd") do |f| %>
   <div class="actions">
     <% %w[x y w h].each do |attribute| %>
-      <%= hidden_field "crop_#{attribute}", :class=> "picture_crop_#{attribute}"%>
+      <%= f.hidden_field "crop_#{attribute}", :class => "picture_crop_#{attribute}"%>
     <% end %>
 	<%= hidden_field_tag(:remote_image_url, @picURL, :class => "remote_url") %>
-	<%= hidden_field_tag(:id, @event.id, :class => "id") %>
+	<% unless @event.nil? %><%= hidden_field_tag(:id, @event.id, :class => "id") %><%end%>
 	<%= hidden_field_tag(:id, @picture.id, :class => "picture_id") %>
 	<%= hidden_field_tag(:picType, @eventType, :class => "picType") %>
 	<a href="" class="ajax-submit purple button">Submit Crop!</a>

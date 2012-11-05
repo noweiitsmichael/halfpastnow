@@ -967,11 +967,11 @@ input::-webkit-input-placeholder
 }
 
 #header .header .filter-toggle.tags .text-inner {
-  max-width: 160px;
+  max-width: 135px;
 }
 
 #header .header .filter-toggle.date .text-inner {
-  max-width: 150px;
+  max-width: 140px;
   text-transform: none;
 }
 

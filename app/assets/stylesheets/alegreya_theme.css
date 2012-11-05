@@ -52,7 +52,6 @@
 }
 
 .dk_theme_alegreya.dk_open .dk_label {
-    color:black;
 }
 
 .dk_theme_alegreya.dk_open .dk_label:after {
@@ -61,13 +60,11 @@
 }
 
 .dk_theme_alegreya.dk_open .dk_toggle {
-    color:black;
-    background-color: white;
     box-shadow: none;
 }
 
 .dk_theme_alegreya.dk_open .dk_options {
-    top: 40px !important;
+    top: 32px !important;
 }
 
 .dk_theme_alegreya .dk_options a {

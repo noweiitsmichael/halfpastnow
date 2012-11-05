@@ -1,6 +1,5 @@
 require 'pp'
-require 'will_paginate/array'
-class EventsDatatable
+class VenuesDatatable
   delegate :params, :h, :link_to, to: :@view
 
   def initialize(view)
@@ -14,8 +13,8 @@ class EventsDatatable
   def as_json(options = {})
     {
       sEcho: params[:sEcho].to_i,
-      iTotalRecords: Event.count,
-      iTotalDisplayRecords: events.total_entries,
+      iTotalRecords: Venue.count,
+      iTotalDisplayRecords: venues.total_entries,
       aaData: data
     }
   end
@@ -78,7 +77,7 @@ private
     # end
     
     if params[:sSearch].present?
-      # puts "Search term detected: " + params[:sSearch].downcase
+      puts "Search term detected: " + params[:sSearch].downcase
       venues = venues.select {|s| s["name"].downcase.include? params[:sSearch].downcase}
     end
 

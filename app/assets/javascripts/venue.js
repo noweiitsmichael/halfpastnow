@@ -252,7 +252,10 @@ var eventActs = {};
       var actTags = actsInfo[parseInt(addedActs[i])].tags.split(",");
       var pictures = actsInfo[parseInt(addedActs[i])].pictures;
       for(var j in actTags) {
+        // console.log(actTags[j]);
+        // console.log("#event_" + $(obj).attr("event-id") + "_tag_ids_" + actTags[j]);
         $(obj).parents(".event-element").find("#event_" + $(obj).attr("event-id") + "_tag_ids_" + actTags[j]).prop("checked", true);
+
       }
     }
 
@@ -267,13 +270,14 @@ var eventActs = {};
         }
       }
       // Add pictures
-      console.log("Added artist pics:");
-      console.log(actsInfo[parseInt(lastAct)]);
-      console.log(actsInfo[parseInt(lastAct)].id);
-      console.log(addedActs);
-      console.log(lastAct);
+      // console.log("Added artist pics:");
+      // console.log(actsInfo[parseInt(lastAct)]);
+      // console.log(actsInfo[parseInt(lastAct)].id);
+      // console.log(addedActs);
+      // console.log(lastAct);
       var actPics = "<div><label>From " + actsInfo[parseInt(lastAct)].name + ":</label><span class='pictures'>";
       var actPictureField = ".field-for-act-pics-" + $(obj).attr("event-id");
+      // console.log(actPictureField);
       var result = /[^\/]+$/.exec(actsInfo[parseInt(lastAct)].fb_picture);
       if((actsInfo[parseInt(lastAct)].fb_picture != null) && (actsInfo[parseInt(lastAct)].fb_picture != "")) {
         if(fbPicExists === false) {
@@ -314,11 +318,11 @@ var eventActs = {};
   }
 
   function showCoverEditMode(event_id,picture_url,picture_id,picture_type,successFunction) {
-          console.log("in showCoverEditMode");
-          console.log("event id: " + event_id);
-          console.log("picture url: " + picture_url);
-          console.log("picture id: " + picture_id);
-          console.log("picture type: " + picture_type);
+          // console.log("in showCoverEditMode");
+          // console.log("event id: " + event_id);
+          // console.log("picture url: " + picture_url);
+          // console.log("picture id: " + picture_id);
+          // console.log("picture type: " + picture_type);
     $.get('/pictures/cropMode/?picture_url=' + picture_url + "&event_id=" + event_id + "&picture_id=" + picture_id + "&picture_type=" + picture_type, function(data) {
       $('.pics.mode .window').html(data);
 
