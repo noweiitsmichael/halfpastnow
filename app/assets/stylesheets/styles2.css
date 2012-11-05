@@ -1398,6 +1398,33 @@ input::-webkit-input-placeholder
     line-height: 13px;
 }
 
+.mode.shunt .window.lite {
+  width:800px;
+  background:transparent;
+  font-size:100px;
+  color:white;
+  font-style:italic;
+  font-weight:700;
+  text-align: center;
+  margin-top: 145px;
+}
+
+.mode.shunt .window.lite .inner {
+    color: #9DE7FF;
+    font-family: Alegreya SC;
+    font-style: normal;
+}
+
+.mode.shunt .window.lite a {
+    color:white;
+    text-decoration:none;
+    border-bottom: 3px dotted white;
+    display: inline-block;
+    line-height: 89px;
+    font-family: Alegreya;
+    font-style: italic;
+}
+
 .mode .window.lite h4 {
   margin: 10px 0 10px;
   font-size: 24px;
