@@ -951,9 +951,9 @@ function pullEvents(updateOptions) {
 
   updateOptions = defaultTo(updateOptions, {});
 
-  // console.log("pullEvents");
-  // console.log("infiniteScrolling: " + infiniteScrolling);
-  // console.log("reloadTagsList: " + reloadTagsList);
+  console.log("pullEvents");
+  console.log("infiniteScrolling: " + infiniteScrolling);
+  console.log("reloadTagsList: " + reloadTagsList);
   console.log(filter);
 
   loading('show');
@@ -997,8 +997,10 @@ function pullEvents(updateOptions) {
     // gotta jiggle the handle for position:fixed elements on resize, i think? weird.
     //var top = $('#map-wrapper').position().top;
     //$('#map-wrapper').css("top",(top + 1) + "px");
-    $('#body').scrollTop(Math.min($('#body').scrollTop(),$('#header .one').outerHeight()));
-
+    
+    if(!async_infiniteScrolling) {
+      $('#body').scrollTop(Math.min($('#body').scrollTop(),$('#header .one').outerHeight()));
+    }
     checkScroll();
   });
 }
@@ -1055,11 +1057,13 @@ function checkScroll() {
 }
 
 function checkInfinite() {
+  console.log("checkInfinite");
   //if we're near the bottom of the page and not currently pulling in events
   if($('#body').scrollBottom() < 100 && !pulling) {
+    console.log("pull em");
     //check if there are any more possible events to pull
     // if so, pull em.
-    if($('#content .main .inner .events li:not(.no-results)').length < parseInt($('.num-occurrences-count').html())) {
+    if($('#content .main .inner .events li:not(.no-results)').length < parseInt($('.filter-summary .num-events').html())) {
       infiniteScrolling = true;
       filter.offset = $('#content .main .inner .events li').length;
       pullEvents();
