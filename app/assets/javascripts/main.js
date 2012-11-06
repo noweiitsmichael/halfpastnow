@@ -84,6 +84,27 @@ $(function() {
 
   scrollbarWidth = $.getScrollbarWidth();
 
+  $('#content .events').on('click','.event-actions .icon',function() {
+    console.log("icon click");
+    if($(this).hasClass('icon-facebook-sign')) {
+      console.log('facebook icon click');
+      var url = 'http://www.facebook.com/plugins/send_button_form_shell.php?api_key=250711198388411&locale=en_US&nodeURL=http%3A%2F%2Fhalfpastnow.herokuapp.com';
+      window.open(url, '_blank');
+      window.focus();
+    } else if($(this).hasClass('icon-twitter-sign')) {
+      console.log('twitter icon click');
+      var url = 'https://twitter.com/intent/tweet?text=http%3A%2F%2Fhalfpastnow.herokuapp.com';
+      window.open(url, '_blank');
+      window.focus();
+    } else if($(this).hasClass('icon-envelope-alt')) {
+      console.log('email icon click');
+      var url = 'mailto:?body=http%3A%2F%2Fhalfpastnow.herokuapp.com';
+      window.open(url, '_blank');
+      window.focus();
+    }
+    event.stopPropagation();
+  });
+
 
   $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.children .name', function() {
     $(this).siblings('.include').click();
@@ -205,7 +226,7 @@ $(function() {
     $(".tags-menu.children li[parent-id='" + parentTagID + "']").show();
   });
 
-  $('#header').on('click', '.stream:not(.new)', function() {
+  $('#header').on('click', '.stream:not(.new, .selected)', function() {
     console.log("stream click [stream-id=" +  ($(this).attr('stream-id') || 0) + "]");
 
     $("#dk_container_stream-select").removeClass('selected');
@@ -218,6 +239,10 @@ $(function() {
     console.log(filter);
     console.log("^ loaded stream filter");
     updateViewFromFilter();
+  });
+
+  $('#header').on('click', '.stream.selected', function() {
+    $('.filter-action.action-clear').click();
   });
 
   $('.filter-summary').on('click', '.filter', function() {
@@ -241,7 +266,7 @@ $(function() {
     updateViewFromFilter();
   });
 
-  $('.sort-type').on('click', '.sort', function() {    
+  $('.filter.sort .filters').on('click', 'span', function() {    
     if($(this).hasClass('popularity'))
       filter.sort = 0;
     else if($(this).hasClass('date'))
@@ -585,11 +610,16 @@ function updateViewFromFilter(pullEventsFlag, options) {
   ////////////// SORT //////////////
 
   //sort
+  var sortStr = "";
+  $('.filter.sort .filters span').removeClass('selected');
   if(filter.sort === 0) {
-    $('.sort-type').html("[by popularity/<span class='sort date'>date</span>]");
+    $('.filter.sort .filters span.popularity').addClass('selected');
+    sortStr = "Popularity";
   } else if(filter.sort === 1) {
-    $('.sort-type').html("[by date/<span class='sort popularity'>popularity</span>]");
+    $('.filter.sort .filters span.date').addClass('selected');
+    sortStr = "Date";
   }
+  $('.filter-toggle.sort .text-inner').html(sortStr);
 
   ////////////// SEARCH ////////////// 
 
@@ -782,7 +812,7 @@ function streamSelector() {
   $('#dk_container_stream-select').remove();
   $('.streambar .stream.selector').remove();
 
-  var parentWidth = $('.streambar .header').width() - $('.stream.new').width();
+  var parentWidth = $('.streambar .header').width() - $('.action-save').outerWidth(true) - $('.action-clear').outerWidth(true); //- $('.stream.new').width();
   var sumWidth = 0;
   var maxWidth = 0;
   var overflowIndex = 0;

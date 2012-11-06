@@ -14,7 +14,8 @@
 				return false;
 		});
 
-		$('.event-element, .window').on("click", ".remove-embed", function() {
+		$('.embeds-section-<%=obj.id%>-<%=type%>').on("click", ".remove-embed", function() {
+			console.log("click");
 			var index = $(this).parents(".embeds-<%=obj.id%><%=type_ind%>.field").attr("index");
 			if(typeof index !== 'undefined') {
 				$(this).after("<input type='hidden' name='<%=type%>[embeds_attributes][" + index + "][_destroy]' value='1' />");

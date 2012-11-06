@@ -55,10 +55,12 @@ class ActsController < ApplicationController
     else
       @act = Act.find(params[:act][:id])
     end
-    #puts params[:act]
+    puts "act update"
+    puts params[:act]
     @act.updated_by = current_user.id
     @act.update_attributes!(params[:act])
-
+    puts "act embeds"
+    pp @act.embeds
     unless params[:pictures].nil? 
       params[:pictures].each do |pic|
           #puts pic

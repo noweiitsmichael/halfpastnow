@@ -556,7 +556,7 @@ input::-webkit-input-placeholder
 {
     overflow: hidden;
 }
-#header .filter.date .filters SPAN
+#header .filter .filters span
 {
   font-size: 15px;
   padding: 4px 0;
@@ -567,7 +567,7 @@ input::-webkit-input-placeholder
   width: 94px;
   text-align: center;
 }
-#header .filter.date .filters SPAN.selected {
+#header .filter .filters span.selected {
     background: black;
     color: white;
 }
@@ -825,11 +825,10 @@ input::-webkit-input-placeholder
 }
 
 .filter-summary {
-    padding: 7px 0 0px;
+    padding: 8px 0 0px;
     font-weight:700;
-    margin-bottom: 15px;
+    margin-bottom: 9px;
     font-size: 18px;
-    text-align: right;
     border-radius: 0 0 1px 1px;
 }
 
@@ -864,7 +863,7 @@ input::-webkit-input-placeholder
     background:black;
     position:relative;
     top: 1px;
-    margin-left: 3px;
+    margin-right: 3px;
 }
 
 #header .header
@@ -967,17 +966,17 @@ input::-webkit-input-placeholder
 }
 
 #header .header .filter-toggle.tags .text-inner {
-  max-width: 135px;
+  max-width: 150px;
 }
 
 #header .header .filter-toggle.date .text-inner {
-  max-width: 140px;
+  max-width: 155px;
   text-transform: none;
 }
 
 #header .header .filter-dropdown {
   position:absolute;
-  top: 29px;
+  top: 35px;
   left: -1px;
   z-index: 800;
   display:none;
@@ -1011,7 +1010,7 @@ input::-webkit-input-placeholder
 }
 
 #header .header .sort .filter-inner {
-  width: 176px;
+  width: 195px;
 }
 
 #header .header .filter-dropdown .filter-inner {
@@ -1052,12 +1051,6 @@ input::-webkit-input-placeholder
 {
   cursor:pointer;
 
-}
-#header .header .sort SPAN.selected
-{
-  text-decoration:none;
-  cursor:default;
-  color: #C5C5D9;
 }
 #header .header .location
 {
@@ -1200,6 +1193,70 @@ input::-webkit-input-placeholder
 
 #content .events li.hover .title {
   color: rgba(0,0,0,.7);
+}
+
+#content .events li .event-actions {
+    display: none;
+    position:absolute;
+    bottom: -10px;
+    right: 5px;
+    text-align: right;
+    color: #888;
+}
+
+#content .events li .event-actions div {
+    overflow: hidden;
+    margin-bottom: -7px;
+}
+
+#content .events li .event-actions .text {
+    font-family:'Alegreya SC';
+    font-weight:700;
+    font-size: 18px;
+    position:relative;
+    display: none;
+    float:right;
+    top: -2px;
+    text-shadow: 1px 1px 2px white;
+}
+
+#content .events li .event-actions .icon {
+    font-size:21px;
+    display: inline-block;
+    float:right;
+    width: 32px;
+}
+
+#content .events li .event-actions .icon-facebook-sign {
+    font-size: 25px;
+    position: relative;
+    right: 0px;
+}
+
+#content .events li .event-actions .icon-twitter-sign {
+    font-size: 25px;
+    position: relative;
+    right: 0px;
+}
+
+#content .events li .event-actions .icon-bookmark {
+    font-size: 30px;
+    position: relative;
+    right: 0px;
+}
+
+#content .events li .event-actions .icon:hover {
+    color:black;
+    text-shadow: 1px 1px 0 white;
+}
+
+#content .events li .event-actions .icon:hover + .text {
+    color:black;
+    display:inline-block;
+}
+
+#content .events li.hover .event-actions {
+    display:block;
 }
 
 #content .events li.hover .price {
@@ -1680,7 +1737,7 @@ input::-webkit-input-placeholder
   background: white;
   font-size: 14px;
   overflow: hidden;
-  padding: 95px 0 18px;
+  padding: 105px 0 18px;
 }
 
 #info-content > .info {
@@ -1947,7 +2004,7 @@ html, body {
 #header > .one .logo {
   margin-top: 2px;
   height: 30px;
-  margin-left: -5px;
+  margin-left: -3px;
 }
 
 #header .streambar {
@@ -1972,6 +2029,13 @@ html, body {
     background: rgba(255, 255, 255, .2);
     text-shadow: 1px 1px 0 rgba(0, 0, 0, 1);
     box-shadow: none;
+}
+
+#header .streambar .stream.bookmark .icon {
+    margin-right: 9px;    
+    font-size: 16px;
+    position: relative;
+    top: 0px;
 }
 
 #header .streambar .stream.new {
@@ -2035,9 +2099,8 @@ html, body {
 }
 
 #header .header .filter-toggle.filter-action {
-  float: right;
   cursor: pointer;
-  margin-top: 2px;
+  margin-top: 8px;
   font-size: 18px;
   padding: 0px;
   height: 28px;
@@ -2045,11 +2108,10 @@ html, body {
   font-weight: bold;
   font-family: Alegreya SC;
   margin-right: 0;
-  margin-left: 2px;
+  margin-left: 10px;
 }
 
 #header .header .filter-toggle.filter-action.action-save {
-    margin-left: 13px;
 }
 
 #header .header .filter-toggle.filter-action .pre-text {
@@ -2254,8 +2316,11 @@ html, body {
 #content .main .inner .events .no-results {
     cursor: auto;
 
-    padding: 16px;
-    font-size: 16px;
+    font-size: 12px;
+    color: black;
+    margin-top: 8px;
+    padding: 0;
+    font-family: Verdana;
 }
 
 #content .main .inner .no-results-suggestions {
@@ -2268,16 +2333,19 @@ html, body {
     margin: 0;
     min-height: inherit;
     box-shadow: none;
-    font-size: 16px;
     margin-left: 2px;
     margin-top: 3px;
     list-style: disc inside;
     cursor: auto;
+    color: black;
+    font-size: 12px;
 }
 
 #content .main .inner .events .no-results h3 {
-  font-size:24px;
+  font-size: 21px;
   font-style: italic;
+  font-family: 'Alegreya';
+  padding-bottom: 3px;
 }
 
 .tag .icon-ok-sign, .tag .icon-remove-sign {
