@@ -90,8 +90,9 @@
 				</div>
 			</div>
 		</div>	
-
+		<div class="embeds-section-<%=@event.id%>-event">
 	    <%= render :partial => "embeds", :locals => { :type => 'event', :obj => @event, :type_ind => '' } %>
+	    </div>
 
 		<div class="actions">
     		<%= e.submit %>

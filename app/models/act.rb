@@ -1,7 +1,6 @@
 class Act < ActiveRecord::Base
   has_and_belongs_to_many :events
   has_and_belongs_to_many :tags
-  has_many :embeds, :dependent => :destroy
   has_many :pictures, :as => :pictureable, :dependent => :destroy
   has_many :embeds, :as => :embedable, :dependent => :destroy
   #attr_accessible :pictures_attributes, :pictures
@@ -16,8 +15,6 @@ class Act < ActiveRecord::Base
   has_many :bookmarks, :as => :bookmarked
   # Allows you to search for users that bookmarked this artist by calling "act.bookmarked_by"
   has_many :bookmarked_by, :through => :bookmarks, :source => :user
-  
-  accepts_nested_attributes_for :embeds, :allow_destroy => true
 
   def completedness
   	total_elements = 5

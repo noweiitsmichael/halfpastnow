@@ -243,7 +243,9 @@
 
     </div>
 <!-- End Pictures Section -->
-
+    <div class="embeds-section-<%=@venue.id%>-venue">
+    <%= render :partial => "embeds", :locals => { :type => 'venue', :obj => @venue, :type_ind => 'venue' } %>
+    </div>
 
     <% if false %>
     <div class="tags field">
