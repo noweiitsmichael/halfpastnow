@@ -3,6 +3,8 @@
 <head>
   <title>half past now.</title>
   
+  <link rel="shortcut icon" href="/assets/favicon.ico" />
+
   <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Alegreya:regular,italic,700,700italic,900,900italic,'>
   <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Alegreya+SC:regular,italic,700,700italic,900,900italic,'>
   <%#= render :partial => "layouts/font_test" %>
@@ -53,13 +55,14 @@
 </head>
 <!-- <body onload="if(typeof initialize !== 'undefined') initialize();"> -->
 <body>
+
 	<%= yield :code %>
 	
   <div id="body">
     <div id="header">
       <div class="one">
         <div class="stay-on-target">
-          <a href="/"><img class="logo" src="/assets/halfclock.png" /></a>
+          <a href="/"><img class="logo" src="/assets/halfpastnow_final_header.png" /></a>
           <div class="menu-element right pic">
             <% if user_signed_in? %>
               <%#= link_to('my profile', :controller => "users", :action => "show")  %><%= link_to(current_user.firstname + " " + current_user.lastname, edit_user_registration_path) %>
@@ -68,7 +71,7 @@
             <% end %>
             <img src="/assets/profile.png" class="top-profile-pic" />
           </div>
-          <div class="menu-element right"><a href="/info/contact">contact us</a></div>
+          <!-- <div class="menu-element right"><a href="/info/contact">contact us</a></div> -->
           <div class="menu-element right"><a href="/info/about">about us</a></div>
         </div>
       </div>

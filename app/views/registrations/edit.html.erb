@@ -65,7 +65,6 @@
       <li class="picture">Picture</li>
       <li class="settings">Settings</li>
       <li class="password">Password</li>
-
     </ul>
     <%= link_to('Logout', destroy_user_session_path, :method => 'delete', :class => 'logout') %>
   </div>
@@ -74,10 +73,31 @@
 
     <div class="streams selected">
       <h2>Streams</h2>
+      <% current_user.channels.each do |channel| %>
+        <div><%= channel.name %></div>
+      <% end %>
     </div>
 
     <div class="bookmarks">
       <h2>Bookmarks</h2>
+      <% if current_user.bookmarked_events.size > 0 %>
+        <h3>Bookmarked Events</h3>
+        <% current_user.bookmarked_events.each do |occurrence| %>
+          <div><%= occurrence.event.title %></div>
+        <% end %>
+      <% end %>
+      <% if current_user.bookmarked_venues.size > 0 %>
+        <h3>Bookmarked Venues</h3>
+        <% current_user.bookmarked_venues.each do |venue| %>
+          <div><%= venue.name %></div>
+        <% end %>
+      <% end %>
+      <% if current_user.bookmarked_acts.size > 0 %>
+        <h3>Bookmarked Artists</h3>
+        <% current_user.bookmarked_acts.each do |act| %>
+          <div><%= act.name %></div>
+        <% end %>
+      <% end %>
     </div>
     
     <div class="picture">
