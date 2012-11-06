@@ -249,7 +249,10 @@ var eventActs = {};
     }
 
     for(var i in addedActs) {
-      var actTags = actsInfo[parseInt(addedActs[i])].tags.split(",");
+      console.log("wtf is this tags shit");
+      if(actsInfo[parseInt(addedActs[i])] !== null) {
+        var actTags = actsInfo[parseInt(addedActs[i])].tags.split(",");
+      }
       var pictures = actsInfo[parseInt(addedActs[i])].pictures;
       for(var j in actTags) {
         // console.log(actTags[j]);
