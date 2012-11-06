@@ -34,9 +34,11 @@
 <div id="events">
 <% @venue.events.select { |oc| oc.firstOccurrence ? (oc.firstOccurrence.start > Date.today) : nil}.sort_by { |event| event.firstOccurrence ? event.firstOccurrence.start : DateTime.new(1970,1,1) }.each do |event| %>
 	<% if event.id %>
+		<% occ_id = event.occurrences.first.id %>
 		<div class="compact event-element" objectID="<%= event.id %>">
 			<div class="time"><%= event.firstOccurrence.start.to_time.strftime("%b %-d @ %-I:%M%P") %></div>
 			<div class="title"><%= event.title %></div>
+			<a class="live-link" href="/?event_id=<%= occ_id %>" target="_blank">Live Page</a>
 			<div class="description"><%= truncate(event.description, :length => 300)  %></div>
 			<a href="" class="toggler">+</a>
 		</div>

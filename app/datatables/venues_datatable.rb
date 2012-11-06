@@ -12,10 +12,13 @@ class VenuesDatatable
   end
 
   def as_json(options = {})
+    puts "total_entries......"
+    puts entries
+    puts "/end"
     {
       sEcho: params[:sEcho].to_i,
       iTotalRecords: Venue.count,
-      iTotalDisplayRecords: venues.total_entries,
+      iTotalDisplayRecords: entries,
       aaData: data
     }
   end
@@ -39,7 +42,6 @@ private
   end
 
   def fetch_venues
-
     venues_query = "
       SELECT v2.venue_id, v2.name, v2.address, v2.views, v2.events_count, COALESCE(v1.raw_events_count, 0) AS raw_events_count FROM
         ( SELECT venue_id,venues.name,COUNT(*) AS raw_events_count
@@ -56,7 +58,18 @@ private
 
     #[√] If sort_column is name, address, or clicks, append ORDER BY to venues
     # if ((sort_column == "name") || (sort_column == "address") || (sort_column == "views"))
+
+
+    if params[:sSearch].present?
+      # puts "Search term detected: " + params[:sSearch].downcase
+      # venues = venues.select {|s| s["name"].downcase.include? params[:sSearch].downcase}
+      venues_query += " WHERE v2.name ilike '%" + params[:sSearch] + "%'"
+    end
+
     venues_query += " ORDER BY " + sort_column + " " + sort_direction
+
+    venues_query += " LIMIT " + params[:iDisplayLength] + " OFFSET " + params[:iDisplayStart]
+
     venues = ActiveRecord::Base.connection.select_all(venues_query)
     #[ ] TODO: If sort_column is completion, append some complicated shit
     #elsif (sort_column == "completedness")
@@ -76,13 +89,6 @@ private
     # elsif (sort_column == "raw_events_count")
     #   sort_direction == "asc" ? venues = venues.sort_by {|u| u["raw_events_count"].to_i} : venues = venues.sort_by {|u| u["raw_events_count"].to_i}.reverse
     # end
-    
-    if params[:sSearch].present?
-      puts "Search term detected: " + params[:sSearch].downcase
-      venues = venues.select {|s| s["name"].downcase.include? params[:sSearch].downcase}
-    end
-
-    venues = venues.paginate(:page => page, :per_page => per_page)
 
     venues
   end
@@ -102,5 +108,13 @@ private
 
   def sort_direction
     params[:sSortDir_0] == "desc" ? "desc" : "asc"
+  end
+
+  def entries
+    if params[:sSearch].present?
+      venues.length
+    else
+      Venue.count
+    end
   end
 end

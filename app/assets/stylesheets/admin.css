@@ -197,6 +197,13 @@ H6 {font-size: 14px;}
   float: left;
   margin-left: 139px;
 }
+
+.venue-link {
+  float:left;
+  margin-left: 139px;
+  display: block;
+}
+
 #urlexample{
   font-style: italic;
   color: #777777;

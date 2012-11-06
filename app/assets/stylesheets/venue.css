@@ -277,15 +277,11 @@ input.time-input {
   width:100px;
 }
 
-.venues-list {
-  float:left;
-  width:400px;
-  margin-right:100px;
-}
-
 .event-element { padding: 5px; background-color: #eee; margin: 10px 0; position: relative; width: 960px; overflow: hidden; }
 .event-element .time { width: 140px; background: #DDD; position: absolute; top: 0; left: 0; padding: 5px; }
 .event-element div.title { font-weight:bold; float: left; margin-left: 153px;}
+.event-element .live-link {float:right; margin-right: 40px;}
+.event-element .delete-raw-event {float:right; margin-right: 45px;}
 .event-element .description { font-size:small; clear: both; padding: 6px 1px 0 1px; }
 .event-element .toggler { position:absolute;top:5px;right:5px;text-decoration:none;background:black;color:white; padding: 3px 8px 1px;display:inline-block;font-weight:bold;border-radius:5px; }
 .event-element .from {
