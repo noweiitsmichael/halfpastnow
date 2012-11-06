@@ -478,6 +478,105 @@ class MobileController < ApplicationController
     @bookmark = Bookmark.find_by_bookmarked_id(@occurrenceid)
     @bookmark.destroy
   end
+  def update
+    @user = User.find_by_email(params[:email])
+    @username = @user.username
+    @email = @user.email
+    @emailuser = User.find_by_email(params[:newemail])
+    @usernameuser = User.find_by_username(params[:username])
+
+    if (not @emailuser.nil?) && (not @usernameuser.nil?)
+      @newusername = @usernameuser.username
+      @neweamil = @emailuser.email
+
+      if @username.eql?(@newusername) && (@email.eql?(@neweamil))
+        @user.email=params[:newemail]
+        @user.username=params[:username]
+        @user.lastname=params[:lastname]
+        @user.firstname=params[:firstname]
+        @user.save!
+        respond_to do |format|
+            format.json { render json: {:code=>"1",:message=>"OK" } }
+            
+        end 
+        return
+      elsif @username.eql?(@newusername) && (not @email.eql?(@neweamil))
+          respond_to do |format|
+              format.json { render json: {:code=>"2",:message=>"this is a used email" } }
+               
+          end
+          return  
+      elsif (not @username.eql?(@newusername)) && (@email.eql?(@neweamil))
+          respond_to do |format|
+              format.json { render json: {:code=>"3",:message=>"this is a used username" } }
+              
+          end
+          return
+      elsif (not @username.eql?(@newusername)) && (not @email.eql?(@neweamil))
+          respond_to do |format|
+              format.json { render json: {:code=>"4",:message=>"these are used username and used email" } }
+              
+          end  
+          return
+        
+      end
+
+      
+    elsif (@emailuser.nil?) && (not @usernameuser.nil?)
+      @newusername = @usernameuser.username
+      if (not @username.eql?(@newusername))
+        respond_to do |format|
+              format.json { render json: {:code=>"3",:message=>"there is a used username" } }
+              
+            end
+        return
+      else
+        @user.email=params[:newemail]
+        @user.username=params[:username]
+        @user.lastname=params[:lastname]
+        @user.firstname=params[:firstname]
+        @user.save!
+        respond_to do |format|
+              format.json { render json: {:code=>"1",:message=>"OK" } }
+              
+            end
+        return
+      end
+
+    elsif (not @emailuser.nil?) && (@usernameuser.nil?)
+      @neweamil = @emailuser.email
+      if (not @email.eql?(@neweamil))
+        respond_to do |format|
+              format.json { render json: {:code=>"2",:message=>"there is a used email" } }
+              
+            end
+        return
+      else
+        @user.email=params[:newemail]
+        @user.username=params[:username]
+        @user.lastname=params[:lastname]
+        @user.firstname=params[:firstname]
+        @user.save!
+        respond_to do |format|
+              format.json { render json: {:code=>"1",:message=>"OK" } }
+              
+            end
+        return
+      end
+      
+    elsif (@emailuser.nil?) && (@usernameuser.nil?)
+      @user.email=params[:newemail]
+      @user.username=params[:username]
+      @user.lastname=params[:lastname]
+      @user.firstname=params[:firstname]
+      @user.save!
+      respond_to do |format|
+            format.json { render json: {:code=>"1",:message=>"OK" } }
+            
+          end
+      return 
+    end
+  end
 
 
 end
