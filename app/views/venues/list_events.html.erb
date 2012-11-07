@@ -32,7 +32,7 @@
 	});
 </script>
 <div id="events">
-<% @venue.events.select { |oc| oc.nextOccurrence ? (oc.nextOccurrence.start > Time.now) : nil}.sort_by { |event| event.nextOccurrence ? event.firstOccurrence.start : DateTime.new(1970,1,1) }.each do |event| %>
+<% @venue.events.select { |oc| oc.nextOccurrence ? (oc.nextOccurrence.start > Time.now) : nil}.sort_by { |event| event.nextOccurrence ? event.nextOccurrence.start : DateTime.new(1970,1,1) }.each do |event| %>
 	<% if event.id %>
 		<% occ_id = event.occurrences.first.id %>
 		<div class="compact event-element" objectID="<%= event.id %>">
