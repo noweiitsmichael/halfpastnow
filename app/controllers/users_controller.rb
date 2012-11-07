@@ -108,7 +108,7 @@ class UsersController < ApplicationController
 
     @user.events.each do |e|
       unless e.updated_at.nil?
-        @itemsList << {'type' => 'Event', 'id' => e.firstOccurrence.id, 'venue_id' => e.venue.id, 'name' => e.title, 'date' => e.updated_at.strftime("%Y-%m-%d at %I:%M %p")}
+        @itemsList << {'type' => 'Event', 'id' => e.nextOccurrence.id, 'venue_id' => e.venue.id, 'name' => e.title, 'date' => e.updated_at.strftime("%Y-%m-%d at %I:%M %p")}
       end
     end
     respond_to do |format|
