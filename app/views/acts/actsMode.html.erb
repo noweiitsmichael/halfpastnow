@@ -69,7 +69,7 @@
 
 </script>
 
-<h3 style="margin-bottom:15px;">Performer</h3>
+<h3 style="margin-bottom:15px;">Performer</h3><a href="/?act_id=<%=@act.id%>" target="_blank"> [Live Page]</a>
 <%= form_for @act, :url => "/acts/actCreate", :html => { :id => "act-form", :multipart => true} do |e| %>
 	<% if @act.id %><%= e.hidden_field :id %><% end %>
     <div class="main">
