@@ -432,6 +432,9 @@ class MobileController < ApplicationController
 
     
 
+
+    
+
   end
   def showVenue
     @venue = Venue.find(params[:id])
