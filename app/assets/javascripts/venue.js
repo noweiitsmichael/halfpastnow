@@ -249,7 +249,10 @@ var eventActs = {};
     }
 
     for(var i in addedActs) {
-      var actTags = actsInfo[parseInt(addedActs[i])].tags.split(",");
+      console.log("wtf is this tags shit");
+      if(actsInfo[parseInt(addedActs[i])] !== null) {
+        var actTags = actsInfo[parseInt(addedActs[i])].tags.split(",");
+      }
       var pictures = actsInfo[parseInt(addedActs[i])].pictures;
       for(var j in actTags) {
         // console.log(actTags[j]);
@@ -318,11 +321,11 @@ var eventActs = {};
   }
 
   function showCoverEditMode(event_id,picture_url,picture_id,picture_type,successFunction) {
-          console.log("in showCoverEditMode");
-          console.log("event id: " + event_id);
-          console.log("picture url: " + picture_url);
-          console.log("picture id: " + picture_id);
-          console.log("picture type: " + picture_type);
+          // console.log("in showCoverEditMode");
+          // console.log("event id: " + event_id);
+          // console.log("picture url: " + picture_url);
+          // console.log("picture id: " + picture_id);
+          // console.log("picture type: " + picture_type);
     $.get('/pictures/cropMode/?picture_url=' + picture_url + "&event_id=" + event_id + "&picture_id=" + picture_id + "&picture_type=" + picture_type, function(data) {
       $('.pics.mode .window').html(data);
 

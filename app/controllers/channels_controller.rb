@@ -3,20 +3,8 @@ require 'pp'
 class ChannelsController < ApplicationController
 
 	def create
-		@channel = Channel.new
-
-		@channel.user_id = current_user.id
-		@channel.option_day = params[:option_day].to_s.empty? ? nil : params[:option_day].to_i
-		@channel.start_days = params[:start_days].to_s.empty? ? nil : params[:start_days].to_i
-		@channel.end_days = params[:end_days].to_s.empty? ? nil : params[:end_days].to_i
-		@channel.start_seconds = params[:start_seconds].to_s.empty? ? nil : params[:start_seconds].to_i
-		@channel.end_seconds = params[:end_seconds].to_s.empty? ? nil : params[:end_seconds].to_i
-		@channel.low_price = params[:low_price].to_s.empty? ? nil : params[:low_price].to_i
-		@channel.high_price = params[:high_price].to_s.empty? ? nil : params[:high_price].to_i
-		@channel.included_tags = params[:included_tags].to_s.empty? ? nil : params[:included_tags] * ","
-		@channel.excluded_tags = params[:excluded_tags].to_s.empty? ? nil : params[:excluded_tags] * ","
-		@channel.sort = params[:sort].to_s.empty? ? nil : params[:sort].to_i
-		@channel.name = params[:name]
+		@channel = current_user.channels.build
+		@channel.update_custom(params)
 
 		respond_to do |format|
 		  if @channel.save
@@ -56,19 +44,8 @@ class ChannelsController < ApplicationController
 
 	def update
 		@channel = Channel.find(params[:id])
-
-		@channel.user_id = current_user.id
-		@channel.option_day = params[:option_day].to_s.empty? ? nil : params[:option_day].to_i
-		@channel.start_days = params[:start_days].to_s.empty? ? nil : params[:start_days].to_i
-		@channel.end_days = params[:end_days].to_s.empty? ? nil : params[:end_days].to_i
-		@channel.start_seconds = params[:start_seconds].to_s.empty? ? nil : params[:start_seconds].to_i
-		@channel.end_seconds = params[:end_seconds].to_s.empty? ? nil : params[:end_seconds].to_i
-		@channel.low_price = params[:low_price].to_s.empty? ? nil : params[:low_price].to_i
-		@channel.high_price = params[:high_price].to_s.empty? ? nil : params[:high_price].to_i
-		@channel.included_tags = params[:included_tags].to_s.empty? ? nil : params[:included_tags] * ","
-		@channel.excluded_tags = params[:excluded_tags].to_s.empty? ? nil : params[:excluded_tags] * ","
-		@channel.sort = params[:sort].to_s.empty? ? nil : params[:sort].to_i
-		@channel.name = params[:name]
+		@channel.update_custom(params)
+		
 
 	    respond_to do |format|
 	      if @channel.save

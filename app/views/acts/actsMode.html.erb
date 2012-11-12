@@ -17,6 +17,7 @@
 	      dataType: 'json',
 	      success: 
 	        function(data) { 
+            console.log(data);
 	          var eventID = actForm.attr('event-id');
 
 	          if(typeof eventID != 'undefined') {
@@ -68,7 +69,7 @@
 
 </script>
 
-<h3 style="margin-bottom:15px;">Performer</h3>
+<h3 style="margin-bottom:15px;">Performer</h3><a href="/?act_id=<%=@act.id%>" target="_blank"> [Live Page]</a>
 <%= form_for @act, :url => "/acts/actCreate", :html => { :id => "act-form", :multipart => true} do |e| %>
 	<% if @act.id %><%= e.hidden_field :id %><% end %>
     <div class="main">
@@ -247,7 +248,9 @@
     </div>
 <!-- End Pictures Section -->
     <!-- put in type_ind so that empty event embeds won't interfere with empty act embeds -->
+    <div class="embeds-section-<%=@act.id%>-act">
 		<%= render :partial => "/venues/embeds", :locals => { :type => 'act', :obj => @act, :type_ind => 'act' } %>
+    </div>
 
 		<div class="actions">
     		<%= e.submit %>

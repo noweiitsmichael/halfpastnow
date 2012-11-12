@@ -27,6 +27,10 @@
 		  <%= e.text_field :title, :class => "required" %>
 		</div>
 		<div class="field">
+		  <%= e.label "Event Link / Registration Link" %>
+		  <%= e.text_field :event_url, :class => "event_url" %>
+		</div>
+		<div class="field">
 		  <label>Description<br /><em style="font-size:small;color:gray;">(make sure to rewrite pre-populated descriptions)</em></label>
 		  <%= e.text_area :description, :class => "cleditor" %>
 		</div>
@@ -66,7 +70,9 @@
 				</div>
 			</div>
 		</div>
+		<div class="embeds-section-<%=@rawEvent.id%>-event">
 	    <%= render :partial => "embeds", :locals => { :type => 'event', :obj => @rawEvent, :type_ind => '' } %>
+		</div>
 
 		<div class="actions">
 			<%= e.submit %>

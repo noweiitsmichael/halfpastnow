@@ -197,6 +197,13 @@ H6 {font-size: 14px;}
   float: left;
   margin-left: 139px;
 }
+
+.venue-link {
+  float:left;
+  margin-left: 139px;
+  display: block;
+}
+
 #urlexample{
   font-style: italic;
   color: #777777;
@@ -296,6 +303,16 @@ nav li:last-child a {
 .greyback{
   background-color: #DDD;
   padding: 10px 10px 10px 10px;
+}
+
+#date-select{
+  display: inline;
+  float:left;
+  padding-top:30px;
+}
+
+#date-select a{
+  margin: 5px 5px 5px 5px;
 }
 
 .button {

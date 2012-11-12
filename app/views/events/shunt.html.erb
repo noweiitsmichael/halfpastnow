@@ -1,3 +1,28 @@
 <% content_for :body do %>
-	<%= link_to('login', new_user_session_path) %> or <%= link_to('sign up', new_user_registration_path)  %> 
+	<!-- <h4>Sign Up</h4>
+	<script type="text/javascript">
+	  $(function() {
+	    $('#new_user').submit(function() {
+	        $(this).ajaxSubmit();
+	        return false;
+	    });
+	  });
+	</script>
+	<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :validate => true) do |f| %>
+	  <%= devise_error_messages! %>
+
+	  <div><%= f.label :email %><br />
+	  <%= f.email_field :email %></div>
+
+	  <div><%= f.label :password %><br />
+	  <%= f.password_field :password %></div>
+
+	  <div><%= f.label :password_confirmation %><br />
+	  <%= f.password_field :password_confirmation %></div>
+
+	  <div><%= f.submit "Sign up" %></div>
+	<% end %> -->
+	<% content_for :body do %>
+		<%= link_to('login', new_user_session_path) %> or <%= link_to('sign up', new_user_registration_path)  %> 
+	<% end %>
 <% end %>

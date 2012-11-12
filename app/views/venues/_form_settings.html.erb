@@ -73,6 +73,8 @@
   </form>
   <% end %>
 <% end %>
+<br><br>
+<div class="venue-link"><a href="/?venue_id=<%=@venue.id%>" target="_blank">Live Page</a></div>
 
 <%= form_for @venue, :url => @venue.id ? "/venues/update/" + @venue.id.to_s : "/venues/create", :html => { :id => "venue_settings", :multipart => true } do |f| %>
    <div class="main settings">
@@ -243,7 +245,9 @@
 
     </div>
 <!-- End Pictures Section -->
-
+    <div class="embeds-section-<%=@venue.id%>-venue">
+    <%= render :partial => "embeds", :locals => { :type => 'venue', :obj => @venue, :type_ind => 'venue' } %>
+    </div>
 
     <% if false %>
     <div class="tags field">

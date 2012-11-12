@@ -32,11 +32,12 @@
 	});
 </script>
 <div id="raw-events">
-<% @venue.raw_venues.collect { |rv| rv.raw_events }.flatten.select{ |re| !(re.deleted || re.submitted) }.sort_by{ |re| re.start }.each do |raw_event| %>
+<% @venue.raw_venues.collect { |rv| rv.raw_events }.flatten.select{ |re| !(re.deleted || re.submitted) && re.start > Time.now }.sort_by{ |re| re.start }.each do |raw_event| %>
 	<div class="compact event-element" objectID="<%= raw_event.id %>">
 		<div class="time"><%= raw_event.start.to_time.strftime("%b %-d @ %-I:%M%P") %></div>
 		<div class="title"><%= raw_event.title %><a href="<%= raw_event.url %>" class="from">[<%= raw_event.from %>]</a></div>
-		<!-- <div class="description"><%= truncate(raw_event.description, :length => 300) %></div> -->
+		<a href="" class="delete-raw-event" rawEventId="<%=raw_event.id%>">Delete</a>
+		<div class="description"><%= truncate(raw_event.description, :length => 300) %></div>
 		<a href="" class="toggler">+</a>
 	</div>
 <% end %>
