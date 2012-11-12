@@ -1423,7 +1423,7 @@ input::-webkit-input-placeholder
 }
 
 .mode .window.lite {
-  width: 405px;
+  width: 437px;
   background:white;
 }
 
@@ -1448,13 +1448,14 @@ input::-webkit-input-placeholder
     opacity:1;
 }
 
-.mode .window.lite .field label {
+.mode .window.lite label {
     display:block;
     font-size:14px;
     font-family: Alegreya SC;
     line-height: 13px;
+    text-transform: lowercase;
 }
-
+/*
 .mode.shunt .window.lite {
   width:800px;
   background:transparent;
@@ -1480,12 +1481,34 @@ input::-webkit-input-placeholder
     line-height: 89px;
     font-family: Alegreya;
     font-style: italic;
-}
+}*/
 
 .mode .window.lite h4 {
   margin: 10px 0 10px;
   font-size: 24px;
   font-style: italic;
+}
+
+.mode.shunt .window.lite {
+  width: 520px;
+}
+
+.mode.shunt .window.lite .inner {
+  padding:0;
+}
+
+.mode.shunt .window.lite .method input {
+    margin-bottom:10px;
+}
+
+.mode.shunt .window.lite .method {
+    background:white;
+    padding: 0 20px 20px;
+    float:left;
+    width:220px;
+}
+
+.mode.shunt .window.lite .method.signup {
 }
 
 .mode .window.lite .new-channel-name {
@@ -1501,6 +1524,10 @@ input::-webkit-input-placeholder
 .mode .window .inner {
   padding: 0 18px 18px 18px;
   color: #303030;
+}
+
+.mode .window.lite .inner {
+  padding-top:18px;
 }
 
 .mode .window .title {
@@ -1563,6 +1590,10 @@ input::-webkit-input-placeholder
   white-space: nowrap;
   font-weight: 700;
 }
+.mode .window.lite h1 {
+    width: 366px;
+}
+
 .mode .window h1 span {
     margin-right: 17px;
     position: relative;
@@ -2032,7 +2063,7 @@ html, body {
 }
 
 #header .streambar .stream.bookmark .icon {
-    margin-right: 9px;    
+    margin-left: 9px;    
     font-size: 16px;
     position: relative;
     top: 0px;

@@ -1,28 +1,49 @@
+<% content_for :title do %>
+	<h1>Sign Up <em style="font-style:normal;">|</em> Log In</h1>
+<% end %>
+
 <% content_for :body do %>
-	<!-- <h4>Sign Up</h4>
-	<script type="text/javascript">
-	  $(function() {
-	    $('#new_user').submit(function() {
-	        $(this).ajaxSubmit();
-	        return false;
-	    });
-	  });
-	</script>
-	<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :validate => true) do |f| %>
-	  <%= devise_error_messages! %>
+	<div class="method signup">
+		<h4>Sign Up</h4>
+		<script type="text/javascript">
+		  // $(function() {
+		  //   $('#new_user').submit(function() {
+		  //       $(this).ajaxSubmit();
+		  //       return false;
+		  //   });
+		  // });
+		</script>
+		<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :validate => true) do |f| %>
+		  <%= devise_error_messages! %>
 
-	  <div><%= f.label :email %><br />
-	  <%= f.email_field :email %></div>
+		  <div><%= f.label :email %>
+		  <%= f.email_field :email %></div>
 
-	  <div><%= f.label :password %><br />
-	  <%= f.password_field :password %></div>
+			<div><%= f.label :firstname, "first name" %>
+			<%= f.text_field :firstname %></div>
 
-	  <div><%= f.label :password_confirmation %><br />
-	  <%= f.password_field :password_confirmation %></div>
+			<div><%= f.label :lastname, "last name" %>
+			<%= f.text_field :lastname %></div>
 
-	  <div><%= f.submit "Sign up" %></div>
-	<% end %> -->
-	<% content_for :body do %>
-		<%= link_to('login', new_user_session_path) %> or <%= link_to('sign up', new_user_registration_path)  %> 
-	<% end %>
+		  <div><%= f.label :password %>
+		  <%= f.password_field :password %></div>
+
+		  <div><%= f.label :password_confirmation %>
+		  <%= f.password_field :password_confirmation %></div>
+
+		  <div><%= f.submit "Sign Up" %></div>
+		<% end %>
+	</div>
+	<div class="method login">
+		<h4>Log in</h4>
+		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+		    <div><%= f.label :email %>
+		    <%= f.email_field :email %></div>
+
+		    <div><%= f.label :password %>
+		    <%= f.password_field :password %></div>
+
+		    <div><%= f.submit "Log In" %></div>
+	    <% end %>
+	</div>
 <% end %>

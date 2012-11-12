@@ -1,3 +1,7 @@
+<% content_for :title do %>
+	<h1>Save Current Filters as Stream</h1>
+<% end %>
+
 <% content_for :body do %>
 	<script type="text/javascript">
 		$(function() {
@@ -66,7 +70,6 @@
 			});
 		});
 	</script>
-	<h4>Save Current Filters as Stream</h4>
 	<input type="radio" class="current field-selector" checked name="field-selector" />
 	<div class="field selected">
 		<label>current streams</label>

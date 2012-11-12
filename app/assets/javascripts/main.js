@@ -215,7 +215,9 @@ $(function() {
 
   // accordion for tag menu
 
-  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.parents .tag-header', function() {
+  $("#header .filter-inner, #header .advancedbar").on("mouseover", '.tags-menu.parents .tag-header', function1);
+  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.parents .tag-header', function1);
+  function function1() {
     $('.tags-menu .toggler').removeClass('icon-caret-right').addClass('icon-chevron-right');
     $(this).find('.toggler').addClass('icon-caret-right').removeClass('icon-chevron-right');
     $('.tags-menu.parents li').removeClass('selected');
@@ -224,7 +226,7 @@ $(function() {
     
     $('.tags-menu.children li').hide();
     $(".tags-menu.children li[parent-id='" + parentTagID + "']").show();
-  });
+  }
 
   $('#header').on('click', '.stream:not(.new, .selected)', function() {
     console.log("stream click [stream-id=" +  ($(this).attr('stream-id') || 0) + "]");
@@ -804,7 +806,8 @@ $(function() {
 
 $(window).load(function() {
   streamSelector();
-  initialize();
+  if(typeof initialize !== 'undefined')
+    initialize();
   updateViewFromFilter(false);
 });
 
