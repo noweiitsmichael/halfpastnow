@@ -15,7 +15,7 @@ class VenuesDatatable
     {
       sEcho: params[:sEcho].to_i,
       iTotalRecords: Venue.count,
-      iTotalDisplayRecords: venues.total_entries,
+      iTotalDisplayRecords: entries,
       aaData: data
     }
   end
@@ -39,24 +39,39 @@ private
   end
 
   def fetch_venues
-
     venues_query = "
       SELECT v2.venue_id, v2.name, v2.address, v2.views, v2.events_count, COALESCE(v1.raw_events_count, 0) AS raw_events_count FROM
         ( SELECT venue_id,venues.name,COUNT(*) AS raw_events_count
           FROM venues,raw_venues,raw_events 
-          WHERE venues.id = raw_venues.venue_id AND raw_venues.id = raw_events.raw_venue_id AND raw_events.submitted IS NULL AND raw_events.deleted IS NULL
+          WHERE venues.id = raw_venues.venue_id AND raw_venues.id = raw_events.raw_venue_id AND raw_events.submitted IS NULL AND raw_events.deleted IS NULL AND raw_events.start > now()
           GROUP BY venue_id,venues.name ) v1
       FULL OUTER JOIN
         ( SELECT venues.id AS venue_id, venues.name, venues.address, venues.views, COUNT(events.id) AS events_count
           FROM venues
-          LEFT OUTER JOIN events
+          LEFT OUTER JOIN
+            ( SELECT events.id, events.venue_id, min(occurrences.start)
+              FROM events
+              LEFT OUTER JOIN occurrences
+              ON events.id = occurrences.event_id
+              WHERE occurrences.start > now()
+              GROUP BY events.id) AS events
           ON venues.id = events.venue_id
           GROUP BY venues.id,venues.name ) v2
       ON v1.venue_id = v2.venue_id"
 
     #[√] If sort_column is name, address, or clicks, append ORDER BY to venues
     # if ((sort_column == "name") || (sort_column == "address") || (sort_column == "views"))
+
+
+    if params[:sSearch].present?
+      # puts "Search term detected: " + params[:sSearch].downcase
+      # venues = venues.select {|s| s["name"].downcase.include? params[:sSearch].downcase}
+      venues_query += " WHERE v2.name ilike '%" + params[:sSearch] + "%'"
+    end
+
     venues_query += " ORDER BY " + sort_column + " " + sort_direction
+    venues_query += " LIMIT " + params[:iDisplayLength] + " OFFSET " + params[:iDisplayStart]
+
     venues = ActiveRecord::Base.connection.select_all(venues_query)
     #[ ] TODO: If sort_column is completion, append some complicated shit
     #elsif (sort_column == "completedness")
@@ -76,13 +91,8 @@ private
     # elsif (sort_column == "raw_events_count")
     #   sort_direction == "asc" ? venues = venues.sort_by {|u| u["raw_events_count"].to_i} : venues = venues.sort_by {|u| u["raw_events_count"].to_i}.reverse
     # end
-    
-    if params[:sSearch].present?
-      puts "Search term detected: " + params[:sSearch].downcase
-      venues = venues.select {|s| s["name"].downcase.include? params[:sSearch].downcase}
-    end
 
-    venues = venues.paginate(:page => page, :per_page => per_page)
+    # venues = venues.paginate(:page => page, :per_page => per_page)
 
     venues
   end
@@ -103,4 +113,29 @@ private
   def sort_direction
     params[:sSortDir_0] == "desc" ? "desc" : "asc"
   end
+
+  def entries
+    venues_query = "
+      SELECT v2.venue_id, v2.name, v2.address, v2.views, v2.events_count, COALESCE(v1.raw_events_count, 0) AS raw_events_count FROM
+        ( SELECT venue_id,venues.name,COUNT(*) AS raw_events_count
+          FROM venues,raw_venues,raw_events 
+          WHERE venues.id = raw_venues.venue_id AND raw_venues.id = raw_events.raw_venue_id AND raw_events.submitted IS NULL AND raw_events.deleted IS NULL AND raw_events.start > now()
+          GROUP BY venue_id,venues.name ) v1
+      FULL OUTER JOIN
+        ( SELECT venues.id AS venue_id, venues.name, venues.address, venues.views, COUNT(events.id) AS events_count
+          FROM venues
+          LEFT OUTER JOIN events
+          ON venues.id = events.venue_id
+          GROUP BY venues.id,venues.name ) v2
+      ON v1.venue_id = v2.venue_id"
+
+    if params[:sSearch].present?
+      venues_query += " WHERE v2.name ilike '%" + params[:sSearch] + "%'"
+    end
+
+    num_results = ActiveRecord::Base.connection.select_all("SELECT COUNT(*) FROM ( " + venues_query + " ) AS numResults")
+    resultCount = num_results[0]["count"].to_i
+    resultCount
+  end
+
 end
