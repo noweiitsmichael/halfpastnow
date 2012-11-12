@@ -390,13 +390,13 @@ class MobileController < ApplicationController
       @occurrenceids= @user.bookmarked_events.collect(&:id)
       @eventids = Occurrence.find(@occurrenceids).collect(&:event_id)
       @tmps = Occurrence.find(@occurrenceids)
-      @events = Event.includes(:tags, :venue, :recurrences).find(@eventids) 
+      @events = Event.includes(:tags, :venue, :recurrences,:acts).find(@eventids) 
       @eventinfo =[]
       @events.each{
         |o| 
         @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
         @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
-        @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs}
+        @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts}
         @eventinfo << @item
       }
     end
@@ -407,7 +407,7 @@ class MobileController < ApplicationController
       |o| 
       @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
       @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
-      @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs}
+      @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts}
       @esinfo << @item
     }
 
@@ -468,13 +468,14 @@ def showact
     @recurrences = []
     @pictures = []
     @occs = @act.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now }  }.flatten.sort_by { |occ| occ.start }
+    @venues = @act.events.collect {|event| event.venue}
     @occs.each do |occ|
       # check if occurrence is instance of a recurrence
       if occ.recurrence_id.nil?
-        @occurrences << occ
+        @occurrences <<  occ
       else
         if @recurrences.index(occ.recurrence).nil?
-          @recurrences << occ.recurrence
+          @recurrences << occ.recurrence #{:rec => occ.recurrence, :venue => occ.event.venue}
         end
       end
     end
@@ -486,7 +487,7 @@ def showact
     respond_to do |format|
       format.html { render :layout => "mode" }
       format.json { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), 
-                                   :act => @act.to_json, :pictures => @pictures.to_json, :embeds => @act.embeds } } 
+                                   :act => @act, :pictures => @pictures, :embeds => @act.embeds, :tags => @act.tags, :venues =>@venues } } 
     end
 end
   def bookmark
@@ -505,6 +506,33 @@ end
     @bookmark = Bookmark.find_by_bookmarked_id(@occurrenceid)
     @bookmark.destroy
   end
+  def bookmarkvenue
+    @userid = User.find_by_email(params[:email]).id
+    @bookmark = Bookmark.new
+    @bookmark.bookmarked_id = params[:venueid]
+    @bookmark.bookmarked_type = "Venue"
+    @bookmark.user_id = @userid
+    @bookmark.save!
+  end
+  def unbookmarkvenue
+    @bookmark = Bookmark.find_by_bookmarked_id(params[:venueid])
+    @bookmark.destroy
+  end
+  
+  def bookmarkact
+    @userid = User.find_by_email(params[:email]).id
+    @bookmark = Bookmark.new
+    @bookmark.bookmarked_id = params[:actid]
+    @bookmark.bookmarked_type = "Act"
+    @bookmark.user_id = @userid
+    @bookmark.save!
+  end
+  
+  def unbookmarkact
+    @bookmark = Bookmark.find_by_bookmarked_id(params[:actid])
+    @bookmark.destroy
+  end
+
   def update
     @user = User.find_by_email(params[:email])
     @username = @user.username
