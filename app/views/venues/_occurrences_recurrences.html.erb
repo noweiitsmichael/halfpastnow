@@ -1,6 +1,10 @@
+
+
+
+<label>Add a new time or recurrence</label><br>
 <div class="occurrence recurrence">
 	<div class="toggle-recurring">
-		<input type="checkbox" /> recurring
+		<input type="checkbox" /> Make Recurring
 	</div>
 
 	<div class="new-occurrence">
@@ -48,6 +52,7 @@
 		<% end %>
 	</div>
 </div>
+<label>Existing times:</label>
 <% event.occurrences.sort_by{ |occurrence| occurrence.id || 0 }.each do |occurrence| %>
   <%= e.fields_for :occurrences, occurrence do |o| %>
     <%# TODO fix when we start getting lots of recurrences %> 
@@ -69,6 +74,7 @@
 	<% end %>
   <% end %>
 <% end %>
+<label>Existing Recurrences: </label> <br>
 <% event.recurrences.sort_by{ |recurrence| recurrence.id || 0 }.each do |recurrence| %>
   <%= e.fields_for :recurrences, recurrence do |r| %>
     <% unless (recurrence.id.nil?) %>

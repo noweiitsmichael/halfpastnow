@@ -15,7 +15,7 @@
         if (data[i].type === "Act")
           tableData += "<td><a href='/acts/index' target='_blank'>Edit</a></tr>"
         else if (data[i].type === "Event")
-          tableData += "<td><a href='/venues/list_events/" + data[i].venue_id + "' target='_blank'>Edit</a></tr>"
+          tableData += "<td><a href='/venues/list_events/" + data[i].venue_id + "#anchor_" + data[i].id + "' target='_blank'>Edit</a></tr>"
         else if (data[i].type === "Venue")
           tableData += "<td><a href='/venues/edit/" + data[i].id + "' target='_blank'>Edit</a></tr>"
       }

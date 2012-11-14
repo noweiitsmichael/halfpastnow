@@ -528,19 +528,20 @@ def index
   def upcoming
     puts "upcoming....."
     if params[:range] == "oneweek"
-      @occurrencesList = Occurrence.find(:all, :conditions => ["(start > ?) AND (start < ?)", Time.now, 1.week.from_now])
+      @eventsList = Event.find(:all).map(&:nextOccurrence.to_proc).reject {|x| x.nil?}.delete_if { |x| x.start > 1.week.from_now}
+      # @eventsList = Event.find(:all, :conditions => ["(start > ?) AND (start < ?)", Time.now, 1.week.from_now])
     else params[:range] == "twoweeks"
-      @occurrencesList = Occurrence.find(:all, :conditions => ["(start > ?) AND (start < ?)", Time.now, 2.weeks.from_now])
+      @eventsList = Event.find(:all).map(&:nextOccurrence.to_proc).reject {|x| x.nil?}.delete_if { |x| x.start > 2.week.from_now}
     end
-    @eventsList = []
+    @outputList = []
 
-    @occurrencesList.each do |e|
+    @eventsList.each do |e|
       unless e.event.nil?
-        @eventsList << {'id' => e.id, 'event_id' => e.event.id, 'event_title' => e.event.title,  'event_completedness' => e.event.completedness, 'venue_id' => e.event.venue.id, 'start' => e.start.strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e.event.user_id).exists? ? User.find(e.event.user_id).fullname : "", 'updated_at' => e.event.updated_at.strftime("%m/%d @ %I:%M %p")}
+        @outputList << {'id' => e.id, 'event_id' => e.event.id, 'event_title' => e.event.title,  'event_completedness' => e.event.completedness, 'venue_id' => e.event.venue.id, 'start' => e.start.strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e.event.user_id).exists? ? User.find(e.event.user_id).fullname : "", 'updated_at' => e.event.updated_at.strftime("%m/%d @ %I:%M %p")}
       end
     end
     respond_to do |format|
-      format.json { render json: @eventsList }
+      format.json { render json: @outputList }
     end
   end
   

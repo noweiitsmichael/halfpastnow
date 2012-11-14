@@ -116,11 +116,12 @@ class VenuesController < ApplicationController
   def list_events
     @venue = Venue.includes(:tags, :events => :tags).find(params[:id])
 
-    @venue.events.build
-    @venue.events.each do |event| 
-      event.occurrences.build
-      event.recurrences.build
-    end
+    # Is this even needed at all?
+    # @venue.events.build
+    # @venue.events.each do |event| 
+    #   event.occurrences.build
+    #   event.recurrences.build
+    # end
 
     @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
 
@@ -166,6 +167,7 @@ class VenuesController < ApplicationController
   # PUT /venues/1
   # PUT /venues/1.json
   def update
+    puts "update venues"
     authorize! :update, @user, :message => 'Not authorized as an administrator.'
     @venue = Venue.find(params[:id])
 
@@ -313,10 +315,21 @@ class VenuesController < ApplicationController
     else
       @event = Event.find(params[:id])
     end
-    pp Embed.last
+
+    # unless params[:days_select].nil?
+    #   params[:days_select][1..-1].each_with_index do |day, i|
+    #     puts params[:event][:recurrences_attributes].size
+    #     puts i
+    #     tempHash = Hash.new()
+    #     tempHash[length+1+i] = {"test" => 1}
+    #     pp tempHash
+    #     params[:event][:recurrences_attributes].merge!(tempHash)
+    #   end
+    #   pp params[:event][:recurrences_attributes]
+    # end
+
     params[:event][:user_id] = current_user.id
     @event.update_attributes!(params[:event])
-    pp Embed.last
 
     unless params[:event][:pictures_attributes].nil?
       params[:event][:pictures_attributes].each do |pic|
@@ -328,13 +341,13 @@ class VenuesController < ApplicationController
       end
     end
 
-    pp Embed.last
-    puts "event....."
-    pp @event
+    # pp Embed.last
+    # puts "event....."
+    # pp @event
 
     respond_to do |format|
       if @event.save!
-        format.html { redirect_to :action => :edit, :id => @venue.id, :notice => 'yay' }
+        format.html { redirect_to :action => :list_events, :id => @venue.id }
         format.json { render json: { :from => "eventEdit", :result => true } }
       else
         format.html { redirect_to :action => :edit, :id => @venue.id, :notice => 'boo' }
