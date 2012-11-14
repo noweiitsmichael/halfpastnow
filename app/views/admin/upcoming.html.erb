@@ -15,7 +15,7 @@
         tableData += "<td><a href='/?event_id="+data[i].id+"' target='_blank'>"+data[i].event_title+"</a></td>"; //<td>" + data[i].event_completedness+"</td>";
         tableData += "<td><div style='padding:1px;overflow:hidden;width:30px;margin:0 auto;background-color:rgba(" + Math.round((1 - data[i].event_completedness) * 192) + "," + Math.round(data[i].event_completedness * 192) + ",0,1);''><div style='float:right;height:5px;width:" + Math.round(30 * (1 - data[i].event_completedness)) + "px;background-color:white;''><div style='display:none;'>" + data[i].event_completedness + "</div></div></div></td>";
         tableData += "<td>"+data[i].owner+"</td><td>"+data[i].updated_at+"</td>";
-        tableData += "<td><a href='/venues/list_events/" + data[i].venue_id + "' target='_blank'>Edit</a></tr>";
+        tableData += "<td><a href='/venues/list_events/" + data[i].venue_id + "#anchor" + data[i].id + "' target='_blank'>Edit</a></tr>";
       }
       tableData += "</tbody></table>"
       $('#tableContainer').html(tableData);
