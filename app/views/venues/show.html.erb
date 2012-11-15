@@ -24,13 +24,11 @@
 		<% end %>
 	</div>
 	<div class="col-2">
-		<div class="block"><div class="block-inner">
-				<% if current_user %>
-					<% holding_tank = current_user.bookmarked_venues.where(:id => @venue.id) %>
-
-				<% end %>
-				<%= render :partial => "layouts/bookmark", :locals => { :element => @venue, :bookmark_type => "Venue", :bookmark_already => holding_tank } %>
-		</div></div>
+		<div class="block">
+			<div class="block-inner">
+				<%= render :partial => "layouts/share_bookmark", :locals => { :type => 'venue', :id => @venue.id } %>
+			</div>
+		</div>
 		<div class="block">
 			<a class="map-link" href="http://maps.google.com/maps?q=<%= @venue.latitude %>,<%= @venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @venue.latitude %>,<%= @venue.longitude %>&sensor=false"/></a>
 			<div class="block-inner">

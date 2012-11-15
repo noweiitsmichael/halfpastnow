@@ -1,0 +1,66 @@
+<script type="text/javascript">
+	var id = "<%= id  %>";
+	var type = "<%= type %>";
+	var root_url = "http%3A%2F%2Flocalhost:3000";
+	var link = root_url + "%3F" + type + "_id%3D" + id;
+	var bookmark_id = "<%= bookmarkId.to_s %>";
+
+	$(function() {
+		$('.bookmark-share .bookmark').click(function() {
+			var that = $(this);
+			if(that.hasClass('add')) {
+				var bookmarked_type = "";
+				switch(type) {
+					case "event":
+						bookmarked_type = "Occurrence";
+						break;
+					case "venue":
+						bookmarked_type = "Venue";
+						break;
+					case "act":
+						bookmarked_type = "Act";
+						break;
+				};
+				$.getJSON('/bookmarks/custom_create', { bookmark: { "type": bookmarked_type, "id": id } }, function(data) {
+					console.log("new bookmark");
+					console.log(data);
+					that.removeClass('add').addClass('remove');
+					bookmark_id = data;
+				});
+			} else if(that.hasClass('remove')) {
+				$.getJSON('/bookmarks/destroy/', { id: bookmark_id }, function(data) {
+					that.addClass('add').removeClass('remove');
+				});
+			}
+		});
+		
+		$('.bookmark-share .email').click(function() {
+			var url = 'mailto:?body=' + link;
+	      	window.open(url, '_blank');
+	      	window.focus();
+		});
+		
+		$('.bookmark-share .facebook').click(function() {
+			var url = 'http://www.facebook.com/sharer/sharer.php?u=' + link;
+			window.open(url, '_blank');
+			window.focus();
+		});
+		
+		$('.bookmark-share .twitter').click(function() {
+			var url = 'https://twitter.com/intent/tweet?text=' + link;
+			window.open(url, '_blank');
+			window.focus();
+		});
+	});
+</script>
+
+<div class="bookmark-share">
+	<span class="icon icon-envelope-alt email"></span>
+	<span class="icon icon-facebook-sign facebook"></span>
+	<span class="icon icon-twitter-sign twitter"></span>
+	<span class="icon icon-bookmark bookmark <%= bookmarkId.nil? ? "add" : "remove" %>"></span>
+	<% if false %><!-- <span class="bookmark"><span class="icon icon-bookmark"></span><span class="text">bookmark</span></span>
+	<span class="email"><span class="icon icon-envelope-alt"></span><span class="text">email</span></span>
+	<span class="facebook"><span class="icon icon-facebook-sign"></span><span class="text">facebook</span></span>
+	<span class="twitter"><span class="icon icon-twitter-sign"></span><span class="text">twitter</span></span> --><% end %>
+</div>

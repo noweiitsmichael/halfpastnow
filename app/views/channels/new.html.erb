@@ -40,7 +40,7 @@
 		      };
 
 		      if(isNewChannel) {
-		        $(".streambar .header").append("<span class='stream' stream-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</span>");
+		        $(".streambar .stream").last().after("<span class='stream' stream-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</span>");
 		        streamSelector();
 		      }
 

@@ -61,6 +61,8 @@ def index
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
     search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
 
+    bookmarked = !params[:bookmark_type].to_s.empty?
+
     # amount/offset
     @amount = 20
     unless(params[:amount].to_s.empty?)
@@ -212,15 +214,42 @@ def index
     end
 
     # the big enchilada
-    query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-            FROM occurrences 
-              INNER JOIN events ON occurrences.event_id = events.id
-              INNER JOIN venues ON events.venue_id = venues.id
-              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
-              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
-    
-    # puts query
+    if(bookmarked)
+      user_id = current_user.id
+
+      if(params[:bookmark_type] == "event")
+        query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+              FROM occurrences 
+                INNER JOIN events ON occurrences.event_id = events.id
+                INNER JOIN venues ON events.venue_id = venues.id
+                INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
+              WHERE bookmarks.user_id = #{user_id} AND bookmarks.bookmarked_type = 'Occurrence'"
+      elsif(params[:bookmark_type] == "venue")
+        query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+              FROM occurrences 
+                INNER JOIN events ON occurrences.event_id = events.id
+                INNER JOIN venues ON events.venue_id = venues.id
+                INNER JOIN bookmarks ON venues.id = bookmarks.bookmarked_id
+              WHERE bookmarks.user_id = #{user_id} AND bookmarks.bookmarked_type = 'Venue'"
+      elsif(params[:bookmark_type] == "act")
+        query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+              FROM occurrences 
+                INNER JOIN events ON occurrences.event_id = events.id
+                INNER JOIN venues ON events.venue_id = venues.id
+                LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
+                LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
+                INNER JOIN bookmarks ON acts.id = bookmarks.bookmarked_id
+              WHERE bookmarks.user_id = #{user_id} AND bookmarks.bookmarked_type = 'Act'"
+      end
+    else
+      query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+              FROM occurrences 
+                INNER JOIN events ON occurrences.event_id = events.id
+                INNER JOIN venues ON events.venue_id = venues.id
+                LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+                LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
+              WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
+    end
 
     @ids = ActiveRecord::Base.connection.select_all(query)
 
@@ -429,11 +458,15 @@ def index
   # GET /events/1
   # GET /events/1.json
   def show
+
     @occurrence = Occurrence.find(params[:id])
     @event = @occurrence.event
 
     @event.clicks += 1
     @event.save
+
+    bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :user_id => current_user.id).first
+    @bookmarkId = bookmark.nil? ? nil : bookmark.id 
 
     @occurrences = []
     @recurrences = []

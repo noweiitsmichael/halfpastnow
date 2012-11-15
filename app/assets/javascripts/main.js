@@ -77,7 +77,7 @@ function popFilterTag(tag_id) {
 }
 
 function inFilterTag(tag_id) {
-  return !(filter.included_tags.indexOf(tag_id) === -1);
+  return !(typeof filter.included_tags === 'undefined' || filter.included_tags.indexOf(tag_id) === -1);
 }
 
 $(function() {
@@ -88,7 +88,8 @@ $(function() {
     console.log("icon click");
     if($(this).hasClass('icon-facebook-sign')) {
       console.log('facebook icon click');
-      var url = 'http://www.facebook.com/plugins/send_button_form_shell.php?api_key=250711198388411&locale=en_US&nodeURL=http%3A%2F%2Fhalfpastnow.herokuapp.com';
+      //var url = 'http://www.facebook.com/plugins/send_button_form_shell.php?api_key=250711198388411&locale=en_US&nodeURL=http%3A%2F%2Fhalfpastnow.herokuapp.com';
+      var url = 'http://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fhalfpastnow.herokuapp.com';
       window.open(url, '_blank');
       window.focus();
     } else if($(this).hasClass('icon-twitter-sign')) {
@@ -228,8 +229,8 @@ $(function() {
     $(".tags-menu.children li[parent-id='" + parentTagID + "']").show();
   }
 
-  $('#header').on('click', '.stream:not(.new, .selected)', function() {
-    console.log("stream click [stream-id=" +  ($(this).attr('stream-id') || 0) + "]");
+  $('#header').on('click', '.stream:not(.new, .selected, .bookmark)', function() {
+    $('#header').addClass('selected');
 
     $("#dk_container_stream-select").removeClass('selected');
     $(this).siblings().removeClass('selected');
@@ -238,12 +239,10 @@ $(function() {
     var streamID = $(this).attr('stream-id') || 0;
 
     filter = $.extend(true, {}, channelFilters[streamID]);
-    console.log(filter);
-    console.log("^ loaded stream filter");
     updateViewFromFilter();
   });
 
-  $('#header').on('click', '.stream.selected', function() {
+  $('#header').on('click', '.stream.selected:not(.bookmark)', function() {
     $('.filter-action.action-clear').click();
   });
 
@@ -371,6 +370,11 @@ $(function() {
     }
     
     updateViewFromFilter();
+  });
+
+
+  $('#unnecessarily-long-id-for-toggling-search-on-map-move-and-zoom').click(function() {
+    updateBoundsFlag = $(this).prop("checked");
   });
 });
 
@@ -732,10 +736,10 @@ $(function() {
     otherToggled.find('.filter-dropdown').slideUp(slideTime, function() { otherToggled.removeClass('selected'); });
 
     if (thisToggle.hasClass('selected')) {
-      $('#header').removeClass('selected');
+      // $('#header').removeClass('selected');
       thisToggle.find('.filter-dropdown').slideUp(slideTime, function() { thisToggle.removeClass('selected'); });
     } else {
-      $('#header').addClass('selected');
+      // $('#header').addClass('selected');
       thisToggle.addClass('selected');
       thisToggle.find('.filter-dropdown').slideDown(slideTime);
     }
@@ -796,12 +800,37 @@ $(function() {
   
 
   $('.filter-action.action-clear').click(function() {
+    $('#header').removeClass('selected');
     filter = $.extend(true, {}, channelFilters[0]);
     updateViewFromFilter();
   });
 
-  checkScroll();
+  $('.filter-action.action-bookmarks').click(function() {
+    $('.bookmarkbar').show();
+    $('.filterbar').hide();
+    $('.streambar').hide();
+    rehead();
+    filter = $.extend(true, { bookmark_type: $('.stream.bookmark.selected').attr('bookmark-type') }, channelFilters[0]);
+    updateViewFromFilter();
+  });
 
+  $('.filter-action.action-streams').click(function() {
+    $('.bookmarkbar').hide();
+    $('.filterbar').show();
+    $('.streambar').show();
+    rehead();
+    filter = $.extend(true, {}, channelFilters[0]);
+    updateViewFromFilter();
+  });
+
+  $('.stream.bookmark').click(function() {
+    $('.stream.bookmark').removeClass('selected');
+    $(this).addClass('selected');
+    filter = $.extend(true, { bookmark_type: $('.stream.bookmark.selected').attr('bookmark-type') }, channelFilters[0]);
+    updateViewFromFilter();
+  });
+
+  checkScroll();
 });
 
 $(window).load(function() {
@@ -810,6 +839,12 @@ $(window).load(function() {
     initialize();
   updateViewFromFilter(false);
 });
+
+function rehead() {
+  //hooray for arbitrary integers!
+  $("#content").css("margin-top", ($("#header").height() - 5) + "px");
+  $("#content #map-wrapper").css("margin-top", ($("#header").height() + 11) + "px");
+}
 
 function streamSelector() {
   $('#dk_container_stream-select').remove();
@@ -903,15 +938,18 @@ window.addEventListener("popstate", function(e) {
 });
 
 var boundsChangedFlag = false;
+var updateBoundsFlag = true;
 function boundsChanged() {
-  filter.lat_min = map.getBounds().getSouthWest().lat();
-  filter.lat_max = map.getBounds().getNorthEast().lat();
-  filter.long_min = map.getBounds().getSouthWest().lng();
-  filter.long_max = map.getBounds().getNorthEast().lng();
-  if(boundsChangedFlag) {
-    updateViewFromFilter();
+  if(updateBoundsFlag) {
+    filter.lat_min = map.getBounds().getSouthWest().lat();
+    filter.lat_max = map.getBounds().getNorthEast().lat();
+    filter.long_min = map.getBounds().getSouthWest().lng();
+    filter.long_max = map.getBounds().getNorthEast().lng();
+    if(boundsChangedFlag) {
+      updateViewFromFilter();
+    }
+    boundsChangedFlag = true;
   }
-  boundsChangedFlag = true;
 }
 
 function closeMode() {
@@ -984,10 +1022,10 @@ function pullEvents(updateOptions) {
 
   updateOptions = defaultTo(updateOptions, {});
 
-  console.log("pullEvents");
-  console.log("infiniteScrolling: " + infiniteScrolling);
-  console.log("reloadTagsList: " + reloadTagsList);
-  console.log(filter);
+  // console.log("pullEvents");
+  // console.log("infiniteScrolling: " + infiniteScrolling);
+  // console.log("reloadTagsList: " + reloadTagsList);
+  // console.log(filter);
 
   loading('show');
 
@@ -1090,10 +1128,10 @@ function checkScroll() {
 }
 
 function checkInfinite() {
-  console.log("checkInfinite");
+  //console.log("checkInfinite");
   //if we're near the bottom of the page and not currently pulling in events
   if($('#body').scrollBottom() < 100 && !pulling) {
-    console.log("pull em");
+    //console.log("pull em");
     //check if there are any more possible events to pull
     // if so, pull em.
     if($('#content .main .inner .events li:not(.no-results)').length < parseInt($('.filter-summary .num-events').html())) {
@@ -1105,7 +1143,7 @@ function checkInfinite() {
 }
 
 function loadModal(event) {
-  console.log('loadModal');
+  //console.log('loadModal');
   var thing = spawn(things[$(this).attr("linkto")],{id: $(this).attr("link-id")});
   //console.log(thing);
   //console.log(thing.type);

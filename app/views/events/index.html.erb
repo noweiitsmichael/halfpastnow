@@ -164,10 +164,10 @@
 					<% @selectedChannel = params[:channel_id].coalesce_to 0 %>
 					<!-- <span class="stream <%= @selectedChannel == 0 ? "selected" : ""%>" channel-id="0">All Events</span> -->
 					<!-- <span class="stream new" <%= current_user ? "linkto='new-channel-2'" : "linkto='shunt'" %>>+ New Stream</span> -->
-					<!-- <span class="stream bookmark"><span class="icon icon-bookmark"></span>Bookmarks</span> -->
 					<% @channels.each do |channel| %>
 						<span class="stream <%= (@selectedChannel.to_i == channel.id) ? "selected" : ""%>" stream-id="<%= channel.id %>"><%= channel.name %></span>
 					<% end %>
+					<!-- <span class="stream bookmark">Bookmarks<span class="icon icon-bookmark"></span></span> -->
 					<span class="filter-toggle filter-action action-save" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>
 						<span class="filter-text">
 							<span class="pre-text"><span class="icon icon-plus-sign"></span>new stream</span>
@@ -178,7 +178,27 @@
 							<span class="pre-text"><span class="icon icon-remove-sign"></span>clear</span>
 						</span>
 					</span>
+					<% if current_user %>
+					<span class="filter-toggle filter-action action-bookmarks">
+						<span class="filter-text">
+							<span class="pre-text"><span class="icon icon-bookmark"></span>bookmarks</span>
+						</span>
+					</span>
+					<% end %>
 				</div>
+			</div>
+		</div>
+		<div class="bookmarkbar">
+			<div class="stay-on-target">
+				<span class="stream title">Bookmarks:</span>
+				<span class="stream bookmark selected" bookmark-type="event"><span class="icon icon-bolt"></span>Events</span>
+				<span class="stream bookmark" bookmark-type="venue"><span class="icon icon-home"></span>Venues</span>
+				<span class="stream bookmark" bookmark-type="act"><span class="icon icon-flag"></span>Performers</span>
+				<span class="filter-toggle filter-action action-streams">
+					<span class="filter-text">
+						<span class="pre-text"><span class="icon icon-reorder"></span>streams + filters</span>
+					</span>
+				</span>
 			</div>
 		</div>
 		<div class="filterbar">
@@ -195,7 +215,7 @@
 						</span>
 						<span class="filter-toggle tags">
 							<span class="filter-text">
-								<span class="pre-text"><span class="icon icon-tags"></span>Tags</span>
+								<span class="pre-text"><!-- <span class="icon icon-tags"></span> -->Tags</span>
 								<span class="text">
 									<span class="text-inner">Any Tag</span>
 									<span class="icon icon-caret-down"></span>
@@ -209,7 +229,7 @@
 						</span>
 						<span class="filter-toggle date">
 							<span class="filter-text">
-								<span class="pre-text"><span class="icon icon-time"></span>Time</span>
+								<span class="pre-text"><!-- <span class="icon icon-time"></span> -->Time</span>
 								<span class="text">
 									<span class="text-inner">Today</span>
 									<span class="icon icon-caret-down"></span>
@@ -247,7 +267,7 @@
 						</span>
 						<span class="filter-toggle price">
 							<span class="filter-text">
-								<span class="pre-text"><span class="icon icon-credit-card"></span>Cost</span> 
+								<span class="pre-text"><!-- <span class="icon icon-credit-card"></span> -->Cost</span> 
 								<span class="text">
 									<span class="text-inner">Any Price</span>
 									<span class="icon icon-caret-down"></span>
@@ -261,7 +281,7 @@
 						</span>
 						<span class="filter-toggle sort">
 							<span class="filter-text">
-								<span class="pre-text"><span class="icon icon-sort"></span>Sort</span> 
+								<span class="pre-text"><!-- <span class="icon icon-sort"></span> -->Sort</span> 
 								<span class="text">
 									<span class="text-inner">Popularity</span>
 									<span class="icon icon-caret-down"></span>
@@ -297,6 +317,9 @@
 	<div id="content">
 		<div id="map-wrapper">
 			<div id="map"></div>
+			<div class="map-move">
+				<input type="checkbox" checked id="unnecessarily-long-id-for-toggling-search-on-map-move-and-zoom"/> redo search on map move + zoom
+			</div>
 		</div>
 		<div class="main">
 			<div class="inner">
@@ -316,8 +339,8 @@
 <% content_for :overlay do %>
 	<div class="mode">
 		<div class="overlay">
-			<div class="background">
-			</div>			
+			<!-- <div class="background">
+			</div> -->	
 			<div class="insert-point">
 				<div class="window">
 				</div>

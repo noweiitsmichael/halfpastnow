@@ -98,7 +98,7 @@
     <!-- <h2><%= current_user.firstname %> <%= current_user.lastname %> </h2> -->
     <ul id="profile-nav">
       <li class="streams selected">Streams</li>
-      <li class="bookmarks">Bookmarks</li>
+      <% if false %><!-- <li class="bookmarks">Bookmarks</li> --><% end %>
       <li class="picture">Picture</li>
       <li class="settings">Settings</li>
       <li class="password">Password</li>
@@ -152,7 +152,8 @@
       <% end %>
     </div>
 
-    <div class="bookmarks">
+    <% if false %>
+   <!--  <div class="bookmarks">
       <h2>Bookmarks</h2>
       <% if current_user.bookmarked_events.size > 0 %>
         <h3>Bookmarked Events</h3>
@@ -172,7 +173,8 @@
           <div><%= act.name %></div>
         <% end %>
       <% end %>
-    </div>
+    </div> -->
+    <% end %>
     
     <div class="picture">
       <h2>Picture</h2>

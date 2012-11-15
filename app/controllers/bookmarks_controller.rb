@@ -28,12 +28,10 @@ class BookmarksController < ApplicationController
 	  # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-  	puts "bookmark delete***"
-  	pp params
     @bookmark = Bookmark.find(params[:id])
-    @bookmark.destroy
+    
     respond_to do |format|
-	    if
+	    if @bookmark.destroy
 	      format.html { redirect_to :back }
 	      format.json { head :no_content }
 	    else 
@@ -43,4 +41,20 @@ class BookmarksController < ApplicationController
     end
   end
 
+  def custom_create
+  	id = params[:bookmark][:id]
+  	type = params[:bookmark][:type]
+
+  	@bookmark = current_user.bookmarks.build
+  	@bookmark.bookmarked_id = id
+  	@bookmark.bookmarked_type = type
+
+  	respond_to do |format|
+		if @bookmark.save
+      		format.json { render json: @bookmark.id }
+		else 
+			format.json { render json: @bookmark.errors, status: :unprocessable_entity }
+		end
+    end
+  end
 end
