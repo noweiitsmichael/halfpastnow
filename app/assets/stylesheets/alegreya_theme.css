@@ -1,22 +1,29 @@
 .dk_theme_alegreya {
-    font-family: Alegreya;
        
-    font-size: 24px;
+    font-size: 20px;
     margin: 6px 0 0 0;
     height: 27px;
-    border-radius: 0;
+    border-radius: 2px;
     border: 1px solid transparent;
     background: rgba(255, 255, 255, .2);
     float: left;
     padding: 0 11px 3px 11px;
     text-shadow: 1px 1px 0 rgba(0, 0, 0, 1);
-    line-height: 32px;
+    line-height: 28px;
+    font-family: Lato,sans-serif;
+    text-transform: lowercase;
+    font-variant: small-caps;
+    font-weight: 900;
 }
 
 .dk_theme_alegreya.selected {
-    color: white; background: #0094C5; border-color: white; 
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, .25); box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .25);
+    color: white; background: #0094C5; 
+    border-color: transparent; 
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .25); 
+    box-shadow: none;
     
+    margin-top: 12px;
+    border-radius: 2px 2px 0 0;
 }
 
 .dk_theme_alegreya.dk_open {
@@ -68,11 +75,11 @@
 }
 
 .dk_theme_alegreya .dk_options a {
-    font-weight: 700;
+    font-weight: 900;
 
     height: 20px;
     line-height: 19px;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .dk_theme_alegreya .dk_options a:hover,

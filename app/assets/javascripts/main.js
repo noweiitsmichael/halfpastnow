@@ -85,24 +85,37 @@ $(function() {
   scrollbarWidth = $.getScrollbarWidth();
 
   $('#content .events').on('click','.event-actions .icon',function() {
+    var id = $(this).attr('event-id');
+    var type = "event";
+    var root_url = "http%3A%2F%2Flocalhost:3000";
+    var link = root_url + "%3F" + type + "_id%3D" + id;
+
+
+
     console.log("icon click");
-    if($(this).hasClass('icon-facebook-sign')) {
+    if($(this).hasClass('facebook')) {
       console.log('facebook icon click');
-      //var url = 'http://www.facebook.com/plugins/send_button_form_shell.php?api_key=250711198388411&locale=en_US&nodeURL=http%3A%2F%2Fhalfpastnow.herokuapp.com';
-      var url = 'http://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fhalfpastnow.herokuapp.com';
+      var url = 'http://www.facebook.com/sharer/sharer.php?u=' + link;
       window.open(url, '_blank');
       window.focus();
-    } else if($(this).hasClass('icon-twitter-sign')) {
+    } else if($(this).hasClass('twitter')) {
       console.log('twitter icon click');
-      var url = 'https://twitter.com/intent/tweet?text=http%3A%2F%2Fhalfpastnow.herokuapp.com';
+      var url = 'https://twitter.com/intent/tweet?text=' + link;
       window.open(url, '_blank');
       window.focus();
-    } else if($(this).hasClass('icon-envelope-alt')) {
+    } else if($(this).hasClass('email')) {
       console.log('email icon click');
-      var url = 'mailto:?body=http%3A%2F%2Fhalfpastnow.herokuapp.com';
+      var url = 'mailto:?body=' + link;
       window.open(url, '_blank');
       window.focus();
+    } else if($(this).hasClass('bookmark')) {
+      console.log('bookmark icon click');
+      $.getJSON('/bookmarks/custom_create', { bookmark: { "type": "Occurrence", "id": id } }, function(data) {
+        console.log("new bookmark");
+        console.log(data);
+      });
     }
+
     event.stopPropagation();
   });
 
@@ -850,7 +863,7 @@ function streamSelector() {
   $('#dk_container_stream-select').remove();
   $('.streambar .stream.selector').remove();
 
-  var parentWidth = $('.streambar .header').width() - $('.action-save').outerWidth(true) - $('.action-clear').outerWidth(true); //- $('.stream.new').width();
+  var parentWidth = $('.streambar .header').width() - $('.action-bookmarks').outerWidth(true) - $('.action-save').outerWidth(true) - $('.action-clear').outerWidth(true); //- $('.stream.new').width();
   var sumWidth = 0;
   var maxWidth = 0;
   var overflowIndex = 0;

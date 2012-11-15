@@ -2101,7 +2101,7 @@ html, body {
     font-weight: 900;
     margin: 6px 6px 0 0;
     color: white;
-    border-radius: 1px;
+    border-radius: 2px;
     border: 1px solid transparent;
     line-height: 28px;
     background: rgba(255, 255, 255, .2);

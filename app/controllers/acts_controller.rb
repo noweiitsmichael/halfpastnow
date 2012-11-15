@@ -6,6 +6,10 @@ class ActsController < ApplicationController
 
   def show
     @act = Act.find(params[:id])
+
+    bookmark = Bookmark.where(:bookmarked_type => 'Act', :bookmarked_id => @act.id, :user_id => current_user.id).first
+    @bookmarkId = bookmark.nil? ? nil : bookmark.id
+
     @occurrences  = []
     @recurrences = []
     @pictures = []
