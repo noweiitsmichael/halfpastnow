@@ -2,7 +2,8 @@ require 'pp'
 require 'ruby-prof'
 
 class VenuesController < ApplicationController
-  before_filter :authenticate_user!, :only => [:index, :update, :edit, :actCreate]
+  # before_filter :authenticate_user!, :only => [:index, :update, :edit, :actCreate]
+  load_and_authorize_resource
   # skip_before_filter :authenticate_user!, :only => [:show, :find]
   #before_filter :only_allow_admin, :only => [ :index ]
   # GET /venues

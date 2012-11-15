@@ -1,6 +1,6 @@
 class Occurrence < ActiveRecord::Base
   belongs_to :event
-  belongs_to :recurrence
+  belongs_to :recurrence, :dependent => :delete
   has_many :histories
 
   # Bi-directional bookmarks association (find a user's bookmarked events, and users who have bookmarked this event)

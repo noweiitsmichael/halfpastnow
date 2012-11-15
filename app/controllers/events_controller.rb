@@ -13,6 +13,7 @@ class ZoomDelta
 end
 
 class EventsController < ApplicationController
+load_and_authorize_resource
 helper :content
 def splash
   respond_to do |format|
@@ -22,6 +23,7 @@ end
 
 
 def index
+
 
     unless(params[:channel_id].to_s.empty?)
       channel = Channel.find(params[:channel_id].to_i)
