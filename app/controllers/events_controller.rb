@@ -13,7 +13,6 @@ class ZoomDelta
 end
 
 class EventsController < ApplicationController
-load_and_authorize_resource
 helper :content
 def splash
   respond_to do |format|

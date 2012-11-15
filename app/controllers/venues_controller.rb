@@ -3,7 +3,6 @@ require 'ruby-prof'
 
 class VenuesController < ApplicationController
   # before_filter :authenticate_user!, :only => [:index, :update, :edit, :actCreate]
-  load_and_authorize_resource
   # skip_before_filter :authenticate_user!, :only => [:show, :find]
   #before_filter :only_allow_admin, :only => [ :index ]
   # GET /venues
@@ -115,6 +114,7 @@ class VenuesController < ApplicationController
   end
 
   def list_events
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     @venue = Venue.includes(:tags, :events => :tags).find(params[:id])
 
     # Is this even needed at all?
@@ -130,12 +130,14 @@ class VenuesController < ApplicationController
   end
 
   def list_raw_events
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     @venue = Venue.includes(:raw_venues => :raw_events).find(params[:id])
 
     render :layout => "admin"
   end
 
   def new_event
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     puts "new_event:"
     # puts params
     @venue = Venue.find(params[:id])
@@ -168,6 +170,7 @@ class VenuesController < ApplicationController
   # PUT /venues/1
   # PUT /venues/1.json
   def update
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     puts "update venues"
     authorize! :update, @user, :message => 'Not authorized as an administrator.'
     @venue = Venue.find(params[:id])
@@ -307,8 +310,9 @@ class VenuesController < ApplicationController
   end 
 
   def eventEdit
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     puts "eventEdit"
-    pp params
+    # pp params
     @venue = Venue.find(params[:venue_id])
     if(params[:id].to_s.empty?)
       @event = @venue.events.build

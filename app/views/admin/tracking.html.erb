@@ -50,8 +50,6 @@
 <h2>Select User:
 <% @users = User.find(:all, :conditions => { :role => [ "admin", "super_admin" ]}).sort_by{|a| a.firstname} %>
 
-
-
 <select id="user-select" name="user-select">
     <option class="" value=""></option>
   <% @users.each do |o| %>
