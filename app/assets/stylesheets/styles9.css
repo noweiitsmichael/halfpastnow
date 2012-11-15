@@ -2,7 +2,6 @@ html, body
 {
   margin: 0;
   padding: 0;
-  font-family: "Trebuchet MS",Arial,sans-serif;
   font-size: 16px;
   width:100%;
   height:100%;
@@ -64,7 +63,7 @@ H6
   background: rgba(201, 31, 159, 0.9);
   background: rgba(0, 0, 0, .8);
   background: #323232;
-  background: black;
+  background: rgba(0, 0, 0, .9);
 }
 
 #header.selected {
@@ -78,8 +77,15 @@ H6
   position: relative;
   z-index: 900;
   background-position: 0 43px;
-  background: white;
+  background: #f6f6f6;
 }
+#header > .one .stay-on-target {
+  overflow:hidden;
+  padding: 0;
+  width: 990px;
+  margin: 0 auto;
+}
+
 #header > .one .logo
 {
   float: left;
@@ -104,9 +110,9 @@ H6
   margin-top: 5px;
   font-size: 17px;
   font-weight: 700;
-  font-family: Alegreya SC;
   letter-spacing: .1em;
   text-transform: lowercase;
+  font-variant: small-caps;
 }
 #header > .one .menu-element.right
 {
@@ -198,8 +204,6 @@ input::-webkit-input-placeholder
 #content
 {
   margin-top: 108px; 
-  padding-bottom: 50px;
-  background: white;
   position: relative;
 }
 
@@ -210,6 +214,8 @@ input::-webkit-input-placeholder
     color:white;
     font-style:italic;
     margin-bottom: 3px;
+    font-size: 26px;
+    font-weight: 900;
 }
 
 #header .filterbar, #header .advancedbar
@@ -600,7 +606,6 @@ input::-webkit-input-placeholder
 }
 
 #header .filter.date .day-of-week .day {
-    font-family: Alegreya SC;
     font-size: 21px;
     line-height: 8px;
     margin-top: 7px;
@@ -806,18 +811,31 @@ input::-webkit-input-placeholder
 }
 
 #content #map {
-  width: 318px;
+  width: 316px;
   height: 414px;
   float: left;
-  margin-top: 5px;
+  margin-top: 9px;
   border: 1px solid #ccc;
+}
+
+#content .map-move {
+  clear:left;
+  float:left;
+  font-size:13px;
+}
+
+#content .map-move input {
+  margin-left:0px;
+  margin-right:0px;
+  position:relative;
+  top:2px
 }
 
 #content .main
 {
   margin-left: 336px;
   position: relative;
-  padding-top: 5px;
+  padding-top: 11px;
 }
 #content .main .inner
 {
@@ -828,8 +846,8 @@ input::-webkit-input-placeholder
 .filter-summary {
     padding: 8px 0 0px;
     font-weight:700;
-    margin-bottom: 9px;
-    font-size: 18px;
+    margin-bottom: 5px;
+    font-size: 16px;
     border-radius: 0 0 1px 1px;
 }
 
@@ -844,7 +862,6 @@ input::-webkit-input-placeholder
 
 .filter-summary .filter em {
     font-style:normal;
-    font-family: 'Alegreya SC';
 }
 
 .filter-summary .filter:after {
@@ -962,8 +979,6 @@ input::-webkit-input-placeholder
 }
 
 #header .filter-toggle .text-inner em {
-  font-style:normal;
-  font-family: Alegreya SC;
 }
 
 #header .filter-toggle.tags .text-inner {
@@ -996,11 +1011,6 @@ input::-webkit-input-placeholder
   height:auto;
   float: left;
   width: 200px;
-}
-
-#header .tags .filter-inner .children.tags-menu {
-  max-height:350px;
-  overflow-y: auto;
 }
 
 #header .tags .filter-inner .tags-menu li {
@@ -1069,7 +1079,11 @@ input::-webkit-input-placeholder
      overflow: visible;
     position: relative;
   
-     margin: 0 0 18px 0;}
+     
+    margin: 0 0 12px 0;
+    border-bottom: 9px solid #F6F6F6;
+    border-top: 0;
+}
 
 .mode .events {
   margin-top: 1px;
@@ -1105,7 +1119,6 @@ input::-webkit-input-placeholder
   display: inline-block;
   position: relative;
   text-transform: lowercase;
-  font-family: Alegreya SC;
   font-weight: 700;
   letter-spacing: .1em;
 }
@@ -1136,7 +1149,7 @@ input::-webkit-input-placeholder
 }
 
 #content .events .title {
-  color: #1F9FC9;
+  color: #6F376F;
   font-size: 17px;
   overflow: hidden;
 }
@@ -1166,7 +1179,6 @@ input::-webkit-input-placeholder
 
 #content .events .price {
     text-transform: lowercase;
-    font-family: Alegreya SC;
 }
 
 #content .events .datetime {
@@ -1197,26 +1209,30 @@ input::-webkit-input-placeholder
   background: rgba(0,0,0,.9);
 }
 
+#content .main .inner .events li.hover {
+    background: #F4FCFF;
+}
+
 #content .events li.hover .title {
-  color: rgba(0,0,0,.7);
+    color: #1F9FC9;
 }
 
 #content .events li .event-actions {
     display: none;
     position:absolute;
-    bottom: -10px;
+    bottom: 8px;
     right: 5px;
     text-align: right;
-    color: #888;
+    color: rgba(0, 0, 0, .8);
 }
 
 #content .events li .event-actions div {
     overflow: hidden;
     margin-bottom: -7px;
+    float: left;
 }
 
 #content .events li .event-actions .text {
-    font-family:'Alegreya SC';
     font-weight:700;
     font-size: 18px;
     position:relative;
@@ -1231,6 +1247,11 @@ input::-webkit-input-placeholder
     display: inline-block;
     float:right;
     width: 32px;
+}
+
+#content .events li .event-actions .icon-envelope-alt {
+    position:relative;
+    top:1px;
 }
 
 #content .events li .event-actions .icon-facebook-sign {
@@ -1252,13 +1273,8 @@ input::-webkit-input-placeholder
 }
 
 #content .events li .event-actions .icon:hover {
-    color:black;
+    color: #1F9FC9;
     text-shadow: 1px 1px 0 white;
-}
-
-#content .events li .event-actions .icon:hover + .text {
-    color:black;
-    display:inline-block;
 }
 
 #content .events li.hover .event-actions {
@@ -1345,9 +1361,7 @@ input::-webkit-input-placeholder
 }
 
 .events .description {
-  font-size: 11px;
-  overflow:hidden;
-  max-height: 30px;
+  font-size: 13px;
 }
 
 
@@ -1410,6 +1424,7 @@ input::-webkit-input-placeholder
   width:100%;
   height:100%;
   overflow:auto;
+  background: rgba(0, 0, 0, 0.75);
 }
 .mode .background {
   position:fixed;
@@ -1456,47 +1471,21 @@ input::-webkit-input-placeholder
 
 .mode .window.lite label {
     display:block;
-    font-size:14px;
-    font-family: Alegreya SC;
+    font-size: 15px;
     line-height: 13px;
     text-transform: lowercase;
+    font-variant: small-caps;
+    font-weight: bold;
 }
-/*
-.mode.shunt .window.lite {
-  width:800px;
-  background:transparent;
-  font-size:100px;
-  color:white;
-  font-style:italic;
-  font-weight:700;
-  text-align: center;
-  margin-top: 145px;
-}
-
-.mode.shunt .window.lite .inner {
-    color: #9DE7FF;
-    font-family: Alegreya SC;
-    font-style: normal;
-}
-
-.mode.shunt .window.lite a {
-    color:white;
-    text-decoration:none;
-    border-bottom: 3px dotted white;
-    display: inline-block;
-    line-height: 89px;
-    font-family: Alegreya;
-    font-style: italic;
-}*/
 
 .mode .window.lite h4 {
-  margin: 10px 0 10px;
+  margin: 0 0 10px;
   font-size: 24px;
   font-style: italic;
 }
 
 .mode.shunt .window.lite {
-  width: 520px;
+  width: 522px;
 }
 
 .mode.shunt .window.lite .inner {
@@ -1505,16 +1494,25 @@ input::-webkit-input-placeholder
 
 .mode.shunt .window.lite .method input {
     margin-bottom:10px;
+    width: 196px;
+    margin-left: 0;
 }
+
+.mode.shunt .window.lite .method input[type=submit] {
+    width:auto;
+}
+
 
 .mode.shunt .window.lite .method {
     background:white;
-    padding: 0 20px 20px;
+    padding: 0 30px 0;
     float:left;
-    width:220px;
+    width: 200px;
+    margin: 23px 0;
 }
 
 .mode.shunt .window.lite .method.signup {
+    border-right: 1px dotted #888;
 }
 
 .mode .window.lite .new-channel-name {
@@ -1609,7 +1607,6 @@ input::-webkit-input-placeholder
   font-size: 21px;
   margin-bottom: 5px;
   font-style: italic;
-  font-family: Alegreya;
   color: #0094C5;
 }
 
@@ -1653,7 +1650,6 @@ input::-webkit-input-placeholder
 
 .mode .window .sub-header li.datetime, .mode .window .sub-header li.price {
     text-transform:lowercase;
-    font-family:Alegreya SC;
 }
 
 .mode .window .sub-header li.tags {
@@ -1677,8 +1673,7 @@ input::-webkit-input-placeholder
 }
 
 .mode .window .block-inner {
-    font-family: Verdana;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .mode .window .bookmark-share {
@@ -1700,7 +1695,15 @@ input::-webkit-input-placeholder
 }
 
 .mode .window .bookmark-share span:hover {
-    color:black;
+    color: #1F9FC9;
+}
+
+.mode .window .bookmark-share span.bookmark.remove {
+    color: #1F9FC9;
+}
+
+.mode .window .bookmark-share span.bookmark.remove:hover {
+    color:#444;
 }
 
 .mode .window .description ul {
@@ -1791,17 +1794,17 @@ input::-webkit-input-placeholder
 }
 
 #info-content {
-  width: 990px;
-  margin: 0 auto;
+  width: 954px;
+  margin: 85px auto 0;
   background: white;
   font-size: 14px;
   overflow: hidden;
-  padding: 105px 0 18px;
+  padding: 8px 18px 5px 18px;
+  border: 1px solid #ccc;
 }
 
 #info-content > .info {
-    font-family:Verdana,sans-serif;
-    font-size:12px;
+    font-size: 13px;
 }
 
 #city-name {
@@ -1825,46 +1828,64 @@ input::-webkit-input-placeholder
 
 .mode form {
   display: inline-block;
+  width: 200px;
+}
+
+.mode a.fb-login {
+    margin-top: 27px;
+    display: block;
 }
 
 #content .main .inner .events li {
-    padding: 0 10px 0 224px; 
+    padding: 0 10px 0 219px; 
     min-height: 126px;
     font-size: 13px;
     color: #303030;
+    background: white;
+    border: 1px solid #DDD;
 }
+
+#content .main .inner .events li:first-child {
+}
+
+#content .main .inner .events li:first-child .picture {
+}
+
+#content .main .inner .events li:first-child .index {
+}
+
 #content .events li .index {
     border-radius: 0 0 0 0;
     width: 41px;
     height: 35px;
     padding: 0;
-    line-height: 30px;
+    line-height: 34px;
     text-align: center;
-    background: #268AAD;
+    background: #3D033D;
     position: absolute;
-    top: -6px;
-    left: -8px;
+    top: -1px;
+    left: -1px;
     z-index: 100;
-    border: 4px solid white;
-    font-size: 31px;
-    font-weight: 700;
+    border: 1px solid #ccc;
+    font-size: 23px;
+    font-weight: 900;
 }
 #content .events li .title {
     float: left; 
-    font-size: 22px;  
+    font-size: 20px;  
     text-align: left;   
-    line-height: 27px;  
+    line-height: 26px;  
     max-height: 54px; overflow: hidden;
     position: relative;
-    top: 0px;
+    margin-top: 8px;
     padding-right: 1px;
-    font-style: italic;
     font-weight: 900;
+    font-style: italic;
 }
 #content .events li .venue {
     clear: both;
     float: left;
-    font-size: 16px;
+    font-size: 15px;
     margin-top: -3px;
     padding: 2px 6px 2px 4px;
     margin-bottom: -2px;
@@ -1874,7 +1895,6 @@ input::-webkit-input-placeholder
 #content .events li .datetime {
     float: left;
     text-transform: lowercase;
-    font-family: Alegreya SC;
     font-weight: 600;
     font-style: normal;
     clear: both;
@@ -1917,12 +1937,12 @@ input::-webkit-input-placeholder
 }
 #content .events li .picture {
     position: absolute;
-    top: 50%;
+    top: 0;
     left: 0;
     width: 206px;
     height: 126px;
     overflow: hidden;
-    margin-top: -60px;
+    border-right: 1px solid #DDD;
 }
 #content .events li .picture-overlay {
   width:100%;
@@ -2030,8 +2050,8 @@ iframe {
 }
 
 html, body {
-  background: white;
-  font-family: Alegreya; font-style: normal; 
+  background: #f3f3f3;
+  font-family: Lato,Tahoma,sans-serif; font-style: normal; 
   font-weight: 400;
 }
 
@@ -2071,36 +2091,76 @@ html, body {
     background: transparent;
 }
 
-#header .bookmarkbar {
-    height: 44px;
-    background: transparent;
-    display: none;
-}
-
 #header .stream {
     padding: 0 11px 3px 11px;
     float: left;
     height: 27px;
-    font-size: 24px;
+    font-size: 20px;
     cursor: pointer;
     display:none;
-    font-weight: 700;
+    font-weight: 900;
     margin: 6px 6px 0 0;
     color: white;
     border-radius: 1px;
     border: 1px solid transparent;
-    line-height: 32px;
-    letter-spacing: -.05em;
+    line-height: 28px;
     background: rgba(255, 255, 255, .2);
     text-shadow: 1px 1px 0 rgba(0, 0, 0, 1);
     box-shadow: none;
-}
-
-#header .streambar .stream {
-    max-width:200px;
-    overflow: hidden;
+    text-transform: lowercase;
+    font-variant: small-caps;
+    max-width: 250px;
     text-overflow: ellipsis;
     white-space: nowrap;
+    overflow: hidden;
+}
+
+#header .streambar .stream.bookmark .icon {
+    margin-left: 9px;    
+    font-size: 16px;
+    position: relative;
+    top: 0px;
+}
+
+#header .streambar .stream.new {
+  margin-right: 0;
+  background: #0094C5;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 0px solid white;
+  height: 29px;
+  line-height: 31px;
+  float: right;
+  margin-left: 0;
+  display: none !important;
+}
+
+#header .stream.selected {
+    color: white;
+    background: #0094C5;
+    border-color: transparent;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .25);
+    margin-top: 12px;
+    border-radius: 2px 2px 0 0;
+}
+
+#header .bookmarkbar .stream.selected {
+    border-radius:2px;
+    margin-top:6px;
+}
+
+#header.selected .streambar .stream {
+
+}
+
+#header.selected .streambar .stream.selected {
+}
+
+#header .bookmarkbar {
+    height: 44px;
+    background: transparent;
+    display: none;
 }
 
 #header .bookmarkbar .stream {
@@ -2119,53 +2179,25 @@ html, body {
     top: 0px;
 }
 
-#header .stream.new {
-  margin-right: 0;
-  background: #0094C5;
-  color: white;
-  padding-left: 10px;
-  padding-right: 10px;
-  border: 0px solid white;
-  height: 29px;
-  line-height: 31px;
-  float: right;
-  margin-left: 0;
-  display: none !important;
-}
-
-#header .stream.selected {
-    color: white;
-    background: #0094C5;
-    border-color: white;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, .25);
-    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .25);
-}
-
-#header.selected .streambar .stream {
-
-}
-
-#header.selected .streambar .stream.selected {
-}
-
 #header .filter-toggle .pre-text {
-  color: #9DE7FF;
   height: 27px;
   display: inline-block;
   margin: 0;
   padding: 0px 7px 0 0;
   float: left;
-  font-size: 18px;
+  font-size: 19px;
   background: none;
   position: relative;
   top: 0;
-  font-family: Alegreya SC;
   text-transform: lowercase;
   font-weight: 700;
   text-shadow: 1px 1px 0 black;
+  font-variant: small-caps;
+  color: #9DE7FF;
 }
 
 #header.selected .header .filter-toggle .pre-text {
+  color:white;
 }
 
 #header .filter-toggle .text, #header .filter-action {
@@ -2186,9 +2218,8 @@ html, body {
   height: 28px;
   line-height: 27px;
   font-weight: bold;
-  font-family: Alegreya SC;
   margin-right: 0;
-  margin-left: 16px;
+  margin-left: 10px;
 }
 
 #header .filter-toggle.filter-action.action-save {
@@ -2239,8 +2270,10 @@ html, body {
   background:white;
   margin-right: -2px;
   height: 28px;
-  border-radius: 1px;
-  padding: 0 5px 0 0;
+  border-radius: 2px;
+  padding: 0 6px 0 0;
+  margin-left: 4px;
+  margin-top: 3px;
 }
 
 #header .pre-text .icon {
@@ -2284,18 +2317,21 @@ html, body {
   color: white;  /* Fix bleeding */  
   border: none;
   text-shadow: none;
-  font-size: 18px;
-  font-style: italic;
+  font-size: 16px;
   text-transform: lowercase;
   border-bottom: 1px dotted white;
-  height: 20px;
+  height: 19px;
   text-transform: none;
   text-shadow: 1px 1px 0 black;
+  margin-top: 3px;
+  font-style: italic;
 }
 
 
 
 #header.selected .header .filter-toggle .text {
+  color: white;
+  border-color: white;
 }
 
 #header .filter-toggle.selected .text {
@@ -2307,13 +2343,13 @@ html, body {
 .filterbar .stay-on-target {
   padding: 0;
   width: 990px;
-  height: 38px;
-  background: transparent;
+  height: 35px;
+  background: rgba(255, 255, 255, .2);
+  border-radius: 0 2px 0 0;
 }
 
 #header.selected .filterbar .stay-on-target {
   background: #0094C5;
-  background: transparent;
 }
 
 #header .filter-toggle.selected .pre-text {
@@ -2327,8 +2363,8 @@ html, body {
   border:none;
   width: 149px;
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .subbar-wrapper {
@@ -2373,9 +2409,7 @@ html, body {
 
 .sort-by {
     float: left;
-  
     text-transform: lowercase;
-    font-family: Alegreya SC;
     color: #9DE7FF;
     margin-left: 12px;
 }
@@ -2397,11 +2431,10 @@ html, body {
 #content .main .inner .events .no-results {
     cursor: auto;
 
-    font-size: 12px;
+    font-size: 15px;
     color: black;
     margin-top: 8px;
-    padding: 0;
-    font-family: Verdana;
+    padding: 10px 15px;
 }
 
 #content .main .inner .no-results-suggestions {
@@ -2419,13 +2452,13 @@ html, body {
     list-style: disc inside;
     cursor: auto;
     color: black;
-    font-size: 12px;
+    border: none;
+    font-size: 13px;
 }
 
 #content .main .inner .events .no-results h3 {
   font-size: 21px;
   font-style: italic;
-  font-family: 'Alegreya';
   padding-bottom: 3px;
 }
 

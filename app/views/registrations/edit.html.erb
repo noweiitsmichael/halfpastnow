@@ -55,13 +55,50 @@
           marginTop: '-' + Math.round(150 / coords.h * coords.y) + 'px'
         });
       }
+
+      $(function() {
+
+        $('.stream').on('click', ' .action.rename', function() {
+          var id = $(this).attr('stream-id');
+          var name = $(this).attr('stream-name');
+          $(this).parent('.uber-title').html("<input type='text' value='" + name + "' stream-id='" + id + "'/><button class='action save' stream-id='" + id + "'>save</button><button class='action cancel' stream-id='" + id + "' stream-name='" + name + "'>cancel</button>");
+          return false;
+        });
+
+        $('.stream').on('click', ' .action.save', function() {
+          var that = $(this);
+          var stream_name = $(this).siblings('input').val();
+          var stream_id = $(this).attr("stream-id");
+          $.get('/channels/rename/' + stream_id, { stream: { name: stream_name } },function(data) {
+            console.log(data);
+            that.parent('.uber-title').html("<span class='title'>" + stream_name + "</span><a href='' stream-id='" + stream_id + "' stream-name='" + stream_name + "' class='action rename'><span class='icon icon-edit'></span>rename</a>");
+          });
+        });
+
+        $('.stream').on('click', ' .action.cancel', function() {
+          var stream_name = $(this).attr("stream-name");
+          var stream_id = $(this).attr("stream-id");
+          $(this).parent('.uber-title').html("<span class='title'>" + stream_name + "</span><a href='' stream-id='" + stream_id + "' stream-name='" + stream_name + "' class='action rename'><span class='icon icon-edit'></span>rename</a>");
+        });
+
+        $('.stream').on('click', ' .action.delete', function() {
+          if(confirm("Are you sure you want to delete '" + $(this).attr('stream-name') + "'?")) {
+            var stream_id = $(this).attr("stream-id");
+            $.get('/channels/destroy/' + stream_id, function(data) {
+              console.log(data);
+              $('.stream[stream-id=' + stream_id + ']').remove();
+            });
+          }
+          return false;
+        });
+      });
   </script>
   <div id="profile-sidebar">
     <img src="/assets/profile.png" class="profile-pic"/>
     <!-- <h2><%= current_user.firstname %> <%= current_user.lastname %> </h2> -->
     <ul id="profile-nav">
       <li class="streams selected">Streams</li>
-      <li class="bookmarks">Bookmarks</li>
+      <% if false %><!-- <li class="bookmarks">Bookmarks</li> --><% end %>
       <li class="picture">Picture</li>
       <li class="settings">Settings</li>
       <li class="password">Password</li>
@@ -74,11 +111,49 @@
     <div class="streams selected">
       <h2>Streams</h2>
       <% current_user.channels.each do |channel| %>
-        <div><%= channel.name %></div>
+        <div class="stream" stream-id="<%= channel.id %>">
+          <div>
+            <span class="uber-title">
+              <span class="title"><%= channel.name %></span>
+              <a href="" stream-id="<%= channel.id %>" stream-name="<%= channel.name %>" class="action rename"><span class="icon icon-edit"></span>rename</a>
+            </span>
+            <a href="" stream-id="<%= channel.id %>" stream-name="<%= channel.name %>" class="action delete"><span class="icon icon-trash"></span>delete</a>
+          </div>
+          <div>
+            <% unless (channel.search.to_s.empty?) %>
+            <div><span class="filter name">search</span><span class="filter value"><%= channel.search %></span></div>
+            <% end %>
+            <% unless (channel.included_tags.to_s.empty?) %>
+            <div><span class="filter name">tags</span><span class="filter value"><%= Tag.find(channel.included_tags.split(",")).collect { |t| t.name } * ", " %></span></div>
+            <% end %>
+            <% unless (false) %>
+            <div><span class="filter name">time</span><span class="filter value">some time</span></div>
+            <% end %>
+                <!-- t.string   "day_of_week"
+                t.integer  "start_seconds"
+                t.integer  "end_seconds"
+                t.integer  "start_days"
+                t.integer  "end_days"
+                t.date     "start_date"
+                t.date     "end_date" -->
+            <% unless (channel.low_price.to_s.empty? && channel.high_price.to_s.empty?) %>
+              <% if(channel.low_price.to_s.empty?) 
+                  costStr = "Under $" + channel.high_price.to_s
+                 elsif(channel.high_price.to_s.empty?)
+                  costStr = "Over $" + channel.low_price.to_s
+                 else
+                  costStr = "$" + channel.low_price.to_s + " to $" + channel.high_price.to_s
+                 end
+              %>
+            <div><span class="filter name">cost</span><span class="filter value"><%= costStr %></span></div>
+            <% end %>
+          </div>
+        </div>
       <% end %>
     </div>
 
-    <div class="bookmarks">
+    <% if false %>
+   <!--  <div class="bookmarks">
       <h2>Bookmarks</h2>
       <% if current_user.bookmarked_events.size > 0 %>
         <h3>Bookmarked Events</h3>
@@ -98,7 +173,8 @@
           <div><%= act.name %></div>
         <% end %>
       <% end %>
-    </div>
+    </div> -->
+    <% end %>
     
     <div class="picture">
       <h2>Picture</h2>

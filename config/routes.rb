@@ -6,8 +6,6 @@ Myapp::Application.routes.draw do
 
   resources :histories
 
-  resources :bookmarks
-
   resources :venues
 
   get "info/about"

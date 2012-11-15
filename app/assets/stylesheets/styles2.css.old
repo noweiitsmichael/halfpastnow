@@ -63,6 +63,8 @@ H6
   background: #3A3A3A;
   background: rgba(201, 31, 159, 0.9);
   background: rgba(0, 0, 0, .8);
+  background: #323232;
+  background: black;
 }
 
 #header.selected {
@@ -195,7 +197,7 @@ input::-webkit-input-placeholder
 }
 #content
 {
-  margin-top: 134px; 
+  margin-top: 108px; 
   padding-bottom: 50px;
   background: white;
   position: relative;
@@ -554,7 +556,7 @@ input::-webkit-input-placeholder
 {
     overflow: hidden;
 }
-#header .filter.date .filters SPAN
+#header .filter .filters span
 {
   font-size: 15px;
   padding: 4px 0;
@@ -565,7 +567,7 @@ input::-webkit-input-placeholder
   width: 94px;
   text-align: center;
 }
-#header .filter.date .filters SPAN.selected {
+#header .filter .filters span.selected {
     background: black;
     color: white;
 }
@@ -771,6 +773,7 @@ input::-webkit-input-placeholder
   clear: both;
   overflow: hidden;
   width: 100%;
+  height: 0;
 }
 
 #header .expandobar .expandobar-inner {
@@ -799,21 +802,21 @@ input::-webkit-input-placeholder
   position:fixed;
   top:0;
   width: 990px;
-  margin-top: 134px;
+  margin-top: 124px;
 }
 
 #content #map {
   width: 318px;
   height: 414px;
   float: left;
-  margin-top: 38px;
+  margin-top: 5px;
 }
 
 #content .main
 {
   margin-left: 336px;
   position: relative;
-  padding-top: 37px;
+  padding-top: 5px;
 }
 #content .main .inner
 {
@@ -822,14 +825,45 @@ input::-webkit-input-placeholder
 }
 
 .filter-summary {
-    background: rgba(0, 0, 0, .5);
-    color:white;
-    padding: 3px 9px 3px;
+    padding: 8px 0 0px;
     font-weight:700;
-    margin-bottom: 18px;
+    margin-bottom: 9px;
     font-size: 18px;
-    text-align: right;
-    display: none;
+    border-radius: 0 0 1px 1px;
+}
+
+.filter-summary .filter, .filter-summary .sort-type > span {
+    cursor:pointer;
+    display:inline-block;
+    border-bottom:1px dotted;
+    line-height:15px;
+    color: #1F9FC9;
+    text-transform: lowercase;
+}
+
+.filter-summary .filter em {
+    font-style:normal;
+    font-family: 'Alegreya SC';
+}
+
+.filter-summary .filter:after {
+    content:'\f057';
+    font-size:14px;
+    margin-left: 3px;
+    font-family:'FontAwesome';
+    position:relative;
+    
+    top: 1px;
+}
+
+.filter-summary .end-block {
+    display:inline-block;
+    width: 11px;
+    height: 11px;
+    background:black;
+    position:relative;
+    top: 1px;
+    margin-right: 3px;
 }
 
 #header .header
@@ -838,7 +872,6 @@ input::-webkit-input-placeholder
   overflow: hidden;*/
   font-size: 20px;
   /*background-color: #5A5A76;*/
-  color: #CDBECE;
   padding: 0;
   z-index: 800;
   position: relative;
@@ -909,7 +942,6 @@ input::-webkit-input-placeholder
   color: white;       
   z-index: 900;
   background: white;
-  top: 6px;
 }
 
 #header .header .filter-toggle .filter-text {
@@ -934,17 +966,17 @@ input::-webkit-input-placeholder
 }
 
 #header .header .filter-toggle.tags .text-inner {
-  max-width: 160px;
+  max-width: 150px;
 }
 
 #header .header .filter-toggle.date .text-inner {
-  max-width: 150px;
+  max-width: 155px;
   text-transform: none;
 }
 
 #header .header .filter-dropdown {
   position:absolute;
-  top: 29px;
+  top: 35px;
   left: -1px;
   z-index: 800;
   display:none;
@@ -978,7 +1010,7 @@ input::-webkit-input-placeholder
 }
 
 #header .header .sort .filter-inner {
-  width: 176px;
+  width: 195px;
 }
 
 #header .header .filter-dropdown .filter-inner {
@@ -1019,12 +1051,6 @@ input::-webkit-input-placeholder
 {
   cursor:pointer;
 
-}
-#header .header .sort SPAN.selected
-{
-  text-decoration:none;
-  cursor:default;
-  color: #C5C5D9;
 }
 #header .header .location
 {
@@ -1167,6 +1193,70 @@ input::-webkit-input-placeholder
 
 #content .events li.hover .title {
   color: rgba(0,0,0,.7);
+}
+
+#content .events li .event-actions {
+    display: none;
+    position:absolute;
+    bottom: -10px;
+    right: 5px;
+    text-align: right;
+    color: #888;
+}
+
+#content .events li .event-actions div {
+    overflow: hidden;
+    margin-bottom: -7px;
+}
+
+#content .events li .event-actions .text {
+    font-family:'Alegreya SC';
+    font-weight:700;
+    font-size: 18px;
+    position:relative;
+    display: none;
+    float:right;
+    top: -2px;
+    text-shadow: 1px 1px 2px white;
+}
+
+#content .events li .event-actions .icon {
+    font-size:21px;
+    display: inline-block;
+    float:right;
+    width: 32px;
+}
+
+#content .events li .event-actions .icon-facebook-sign {
+    font-size: 25px;
+    position: relative;
+    right: 0px;
+}
+
+#content .events li .event-actions .icon-twitter-sign {
+    font-size: 25px;
+    position: relative;
+    right: 0px;
+}
+
+#content .events li .event-actions .icon-bookmark {
+    font-size: 30px;
+    position: relative;
+    right: 0px;
+}
+
+#content .events li .event-actions .icon:hover {
+    color:black;
+    text-shadow: 1px 1px 0 white;
+}
+
+#content .events li .event-actions .icon:hover + .text {
+    color:black;
+    display:inline-block;
+}
+
+#content .events li.hover .event-actions {
+    display:block;
 }
 
 #content .events li.hover .price {
@@ -1333,7 +1423,7 @@ input::-webkit-input-placeholder
 }
 
 .mode .window.lite {
-  width: 405px;
+  width: 437px;
   background:white;
 }
 
@@ -1358,17 +1448,67 @@ input::-webkit-input-placeholder
     opacity:1;
 }
 
-.mode .window.lite .field label {
+.mode .window.lite label {
     display:block;
     font-size:14px;
     font-family: Alegreya SC;
     line-height: 13px;
+    text-transform: lowercase;
 }
+/*
+.mode.shunt .window.lite {
+  width:800px;
+  background:transparent;
+  font-size:100px;
+  color:white;
+  font-style:italic;
+  font-weight:700;
+  text-align: center;
+  margin-top: 145px;
+}
+
+.mode.shunt .window.lite .inner {
+    color: #9DE7FF;
+    font-family: Alegreya SC;
+    font-style: normal;
+}
+
+.mode.shunt .window.lite a {
+    color:white;
+    text-decoration:none;
+    border-bottom: 3px dotted white;
+    display: inline-block;
+    line-height: 89px;
+    font-family: Alegreya;
+    font-style: italic;
+}*/
 
 .mode .window.lite h4 {
   margin: 10px 0 10px;
   font-size: 24px;
   font-style: italic;
+}
+
+.mode.shunt .window.lite {
+  width: 520px;
+}
+
+.mode.shunt .window.lite .inner {
+  padding:0;
+}
+
+.mode.shunt .window.lite .method input {
+    margin-bottom:10px;
+}
+
+.mode.shunt .window.lite .method {
+    background:white;
+    padding: 0 20px 20px;
+    float:left;
+    width:220px;
+}
+
+.mode.shunt .window.lite .method.signup {
 }
 
 .mode .window.lite .new-channel-name {
@@ -1384,6 +1524,10 @@ input::-webkit-input-placeholder
 .mode .window .inner {
   padding: 0 18px 18px 18px;
   color: #303030;
+}
+
+.mode .window.lite .inner {
+  padding-top:18px;
 }
 
 .mode .window .title {
@@ -1446,6 +1590,10 @@ input::-webkit-input-placeholder
   white-space: nowrap;
   font-weight: 700;
 }
+.mode .window.lite h1 {
+    width: 366px;
+}
+
 .mode .window h1 span {
     margin-right: 17px;
     position: relative;
@@ -1615,18 +1763,17 @@ input::-webkit-input-placeholder
 }
 
 #info-content {
-  width: 966px;
+  width: 990px;
   margin: 0 auto;
   background: white;
   font-size: 14px;
   overflow: hidden;
-  padding: 95px 12px 18px;
+  padding: 105px 0 18px;
 }
 
 #info-content > .info {
     font-family:Verdana,sans-serif;
     font-size:12px;
-    padding: 0 9px;
 }
 
 #city-name {
@@ -1855,7 +2002,7 @@ iframe {
 }
 
 html, body {
-  background: #eee;
+  background: white;
   font-family: Alegreya; font-style: normal; 
   font-weight: 400;
 }
@@ -1888,7 +2035,7 @@ html, body {
 #header > .one .logo {
   margin-top: 2px;
   height: 30px;
-  margin-left: -5px;
+  margin-left: -3px;
 }
 
 #header .streambar {
@@ -1897,16 +2044,29 @@ html, body {
 }
 
 #header .streambar .stream {
-    padding: 0 0 3px 0;
+    padding: 0 11px 3px 11px;
     float: left;
-    color: rgba(0,0,0,.9);
-    height: 29px;
+    height: 27px;
     font-size: 24px;
     cursor: pointer;
     display:none;
-    color: #9DE7FF;
-    font-weight: 900;
-    margin: 6px 4px 0 12px;
+    font-weight: 700;
+    margin: 6px 6px 0 0;
+    color: white;
+    border-radius: 1px;
+    border: 1px solid transparent;
+    line-height: 32px;
+    letter-spacing: -.05em;
+    background: rgba(255, 255, 255, .2);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 1);
+    box-shadow: none;
+}
+
+#header .streambar .stream.bookmark .icon {
+    margin-left: 9px;    
+    font-size: 16px;
+    position: relative;
+    top: 0px;
 }
 
 #header .streambar .stream.new {
@@ -1924,28 +2084,22 @@ html, body {
 }
 
 #header .streambar .stream.selected {
-  color: white;
-  box-shadow: none;
-  line-height: normal;
-  margin-bottom: 0px;
-  height: 30px;
-  position: relative;
-  border-bottom: 5px solid white;
+    color: white;
+    background: #0094C5;
+    border-color: white;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .25);
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .25);
 }
 
 #header.selected .streambar .stream {
-    color: white;
 
 }
 
 #header.selected .streambar .stream.selected {
-    border-color: #0094C5;
-
-    color: #9DE7FF;
 }
 
 #header .header .filter-toggle .pre-text {
-  color: #1F9FC9;
+  color: #9DE7FF;
   height: 27px;
   display: inline-block;
   margin: 0;
@@ -1958,6 +2112,7 @@ html, body {
   font-family: Alegreya SC;
   text-transform: lowercase;
   font-weight: 700;
+  text-shadow: 1px 1px 0 black;
 }
 
 #header.selected .header .filter-toggle .pre-text {
@@ -1975,9 +2130,8 @@ html, body {
 }
 
 #header .header .filter-toggle.filter-action {
-  float: left;
   cursor: pointer;
-  margin-top: 5px;
+  margin-top: 8px;
   font-size: 18px;
   padding: 0px;
   height: 28px;
@@ -1985,15 +2139,15 @@ html, body {
   font-weight: bold;
   font-family: Alegreya SC;
   margin-right: 0;
-  margin-left: 2px;
+  margin-left: 10px;
 }
 
-#header .header .filter-toggle.filter-action.action-clear {
-    margin-left: 11px;
+#header .header .filter-toggle.filter-action.action-save {
 }
 
 #header .header .filter-toggle.filter-action .pre-text {
-  color: #C50094;
+  color: white;
+  padding: 0;
 }
 
 #header.selected .filter-toggle.filter-action .pre-text{
@@ -2023,14 +2177,21 @@ html, body {
 }
 
 #header .filterbar {
-    height: 38px;
+    height: 35px;
 }
 
 #header .header .filter-toggle {
   height: 32px;
   padding: 3px 12px 0;
-  margin-top: 3px;
   margin-right: -11px;
+}
+
+#header .header .filter-toggle.search {
+  background:white;
+  margin-right: -2px;
+  height: 28px;
+  border-radius: 1px;
+  padding: 0;
 }
 
 #header .header .pre-text .icon {
@@ -2038,6 +2199,13 @@ html, body {
   font-size: 16px;
   position: relative;
   top: 1px;
+}
+
+#header .header .search .pre-text .icon {
+    color:#1F9FC9;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .1);
+    top: 2px;
+    margin-left: 6px;
 }
 
 #header .header .text .icon {
@@ -2064,15 +2232,16 @@ html, body {
   overflow: visible;
   text-decoration: none;
   white-space: nowrap;
-  color: black;  /* Fix bleeding */  
+  color: white;  /* Fix bleeding */  
   border: none;
   text-shadow: none;
   font-size: 18px;
   font-style: italic;
   text-transform: lowercase;
-  border-bottom: 1px dotted black;
+  border-bottom: 1px dotted white;
   height: 20px;
   text-transform: none;
+  text-shadow: 1px 1px 0 black;
 }
 
 
@@ -2085,22 +2254,25 @@ html, body {
 #header .header .filter-toggle.selected .text {
   color: black;
   border-color: black;
+  text-shadow: none;
 }
 
 .filterbar .stay-on-target {
   padding: 0;
   width: 990px;
   height: 38px;
-  background: white;
+  background: transparent;
 }
 
 #header.selected .filterbar .stay-on-target {
   background: #0094C5;
+  background: transparent;
 }
 
 #header .header .filter-toggle.selected .pre-text {
   
     color: #1F9FC9;
+    text-shadow: none;
 }
 
 .search-input {
@@ -2158,15 +2330,11 @@ html, body {
     margin-left: 12px;
 }
 
-.sort {
+.sort-type {
   
   font-style: italic;
-  font-family: Alegreya;
   display:inline-block;
-  cursor:pointer;
   border-bottom:1px dotted white;
-  color: white;
-  line-height: 18px;
 }
 
 .sort.selected {
@@ -2179,8 +2347,11 @@ html, body {
 #content .main .inner .events .no-results {
     cursor: auto;
 
-    padding: 16px;
-    font-size: 16px;
+    font-size: 12px;
+    color: black;
+    margin-top: 8px;
+    padding: 0;
+    font-family: Verdana;
 }
 
 #content .main .inner .no-results-suggestions {
@@ -2193,16 +2364,19 @@ html, body {
     margin: 0;
     min-height: inherit;
     box-shadow: none;
-    font-size: 16px;
     margin-left: 2px;
     margin-top: 3px;
     list-style: disc inside;
     cursor: auto;
+    color: black;
+    font-size: 12px;
 }
 
 #content .main .inner .events .no-results h3 {
-  font-size:24px;
+  font-size: 21px;
   font-style: italic;
+  font-family: 'Alegreya';
+  padding-bottom: 3px;
 }
 
 .tag .icon-ok-sign, .tag .icon-remove-sign {

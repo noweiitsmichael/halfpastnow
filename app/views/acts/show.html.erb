@@ -1,6 +1,7 @@
 <% content_for :title do %>
 	<h1><span class="icon-flag"></span><%= @act.name %></h1>
 <% end %>
+
 <% content_for :body do %>
 <%= javascript_include_tag "galleria-1.2.8.min" %>
 	<div class="col-1">
@@ -28,12 +29,11 @@
 		<% end %>
 	</div>
 	<div class="col-2">
-		<div class="block"><div class="block-inner">
-			<% if current_user %>
-				<% holding_tank = current_user.bookmarked_acts.where(:id => @act.id) %>
-			<% end %>
-			<%= render :partial => "layouts/bookmark", :locals => { :element => @act, :bookmark_type => "Act", :bookmark_already => holding_tank } %>
-		</div></div>
+		<div class="block">
+			<div class="block-inner">
+				<%= render :partial => "layouts/share_bookmark", :locals => { :type => 'act', :id => @act.id } %>
+			</div>
+		</div>
 
 		<% unless (@act.fb_picture.blank? && @act.pictures.nil?) %>
 		<div id="galleria">
