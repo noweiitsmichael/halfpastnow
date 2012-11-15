@@ -1,7 +1,7 @@
 
 
 <% content_for :title do %>
-	<h1><span class="icon-bolt"></span><%= @event.title %></h1><span class="edit_link">edit</span>
+	<h1><span class="icon-bolt"></span><%= @event.title %></h1>
 <% end %>
 
 <% content_for :body do %>
@@ -102,8 +102,12 @@
 			</div>
 		</div>
 		<% end %>
+		<% if can? :edit, Event %>
+		<div style="text-align:right;padding-top:10px;"><a href="/venues/list_events/<%=@event.venue.id%>#anchor<%=@occurrence.id%>">edit</a> </div>
+		<% end %>
 	</div>
 
+	
 	<div class="clear"></div>
 <% end %>
 

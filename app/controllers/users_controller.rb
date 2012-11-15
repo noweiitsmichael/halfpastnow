@@ -54,6 +54,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
       else
@@ -120,7 +121,7 @@ class UsersController < ApplicationController
     @array = []
     @array << ['User', 'Events', 'Venues', 'Acts']
     @usersList = User.find(:all, :conditions => { :role => [ "admin", "super_admin" ]}, :select => 'id, firstname, lastname')
-    
+
     case params[:daterange]
       when "24-hours"
         @usersList.each do |u|

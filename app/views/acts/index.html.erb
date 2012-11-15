@@ -80,7 +80,7 @@
 		</thead>
 		<tbody>
 		<% @acts.each do |act| %>
-			<tr>
+			<tr id="anchor<%=act.id%>">
 				<td data-order-by="<%= act.completedness %>">
 					<div class="act-completedness" act-id="<%= act.id %>" style="padding:1px;overflow:hidden;width:30px;margin:0 auto;background-color:rgba(<%= ((1 - act.completedness) * 192).round %>,<%= (act.completedness * 192).round %>,0,1);">
 						<div style="float:right;height:5px;width:<%= (30 * (1 - act.completedness)).round %>px;background-color:white;"></div>
