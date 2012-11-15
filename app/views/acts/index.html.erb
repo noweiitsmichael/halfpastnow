@@ -75,7 +75,6 @@
 			<tr>
 				<th class="type-float" style="cursor:pointer;">%</th>
 				<th class="type-string" style="cursor:pointer;text-align:left;">name</th>
-				<th class="type-int" style="cursor:pointer;">events</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -88,7 +87,6 @@
 					</div>
 				</td>
 				<td data-order-by="<%= act.name %>"><a href="#" class="act-name" act-id="<%= act.id %>"><%= act.name %></a></td>
-				<td data-order-by="<%= act.num_upcoming_events_one_month %>"><%= act.num_upcoming_events_one_month%></td>
 				<td><a href="#" class="act-delete" act-id="<%= act.id %>">[delete]</a></td>
 			</tr>
 		<% end %>
