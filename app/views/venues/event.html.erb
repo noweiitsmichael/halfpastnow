@@ -96,8 +96,10 @@
 
 		<div class="actions">
     		<%= e.submit %>
-    		<% if @event.id %><a href="" class="delete-event" eventId="<%= @event.id %>">Delete Event</a><% end %>
+    		<a href="#anchor<%=@event.nextOccurrence.id%>">  Top  </a>
+    		<% if @event.id %><a href="" class="delete-event" eventId="<%= @event.id %>">  Delete Event</a><% end %>
   		</div>
+
 
   		<div class="owner">
   			<% if @event.user_id %>

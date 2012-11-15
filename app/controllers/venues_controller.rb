@@ -2,7 +2,7 @@ require 'pp'
 require 'ruby-prof'
 
 class VenuesController < ApplicationController
-  before_filter :authenticate_user!, :only => [:index, :update, :edit, :actCreate]
+  # before_filter :authenticate_user!, :only => [:index, :update, :edit, :actCreate]
   # skip_before_filter :authenticate_user!, :only => [:show, :find]
   #before_filter :only_allow_admin, :only => [ :index ]
   # GET /venues
@@ -114,13 +114,15 @@ class VenuesController < ApplicationController
   end
 
   def list_events
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     @venue = Venue.includes(:tags, :events => :tags).find(params[:id])
 
-    @venue.events.build
-    @venue.events.each do |event| 
-      event.occurrences.build
-      event.recurrences.build
-    end
+    # Is this even needed at all?
+    # @venue.events.build
+    # @venue.events.each do |event| 
+    #   event.occurrences.build
+    #   event.recurrences.build
+    # end
 
     @parentTags = Tag.includes(:childTags).all(:conditions => {:parent_tag_id => nil})
 
@@ -128,12 +130,14 @@ class VenuesController < ApplicationController
   end
 
   def list_raw_events
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     @venue = Venue.includes(:raw_venues => :raw_events).find(params[:id])
 
     render :layout => "admin"
   end
 
   def new_event
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     puts "new_event:"
     # puts params
     @venue = Venue.find(params[:id])
@@ -166,6 +170,8 @@ class VenuesController < ApplicationController
   # PUT /venues/1
   # PUT /venues/1.json
   def update
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
+    puts "update venues"
     authorize! :update, @user, :message => 'Not authorized as an administrator.'
     @venue = Venue.find(params[:id])
 
@@ -304,8 +310,9 @@ class VenuesController < ApplicationController
   end 
 
   def eventEdit
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     puts "eventEdit"
-    pp params
+    # pp params
     @venue = Venue.find(params[:venue_id])
     if(params[:id].to_s.empty?)
       @event = @venue.events.build
@@ -313,10 +320,21 @@ class VenuesController < ApplicationController
     else
       @event = Event.find(params[:id])
     end
-    pp Embed.last
+
+    # unless params[:days_select].nil?
+    #   params[:days_select][1..-1].each_with_index do |day, i|
+    #     puts params[:event][:recurrences_attributes].size
+    #     puts i
+    #     tempHash = Hash.new()
+    #     tempHash[length+1+i] = {"test" => 1}
+    #     pp tempHash
+    #     params[:event][:recurrences_attributes].merge!(tempHash)
+    #   end
+    #   pp params[:event][:recurrences_attributes]
+    # end
+
     params[:event][:user_id] = current_user.id
     @event.update_attributes!(params[:event])
-    pp Embed.last
 
     unless params[:event][:pictures_attributes].nil?
       params[:event][:pictures_attributes].each do |pic|
@@ -328,13 +346,13 @@ class VenuesController < ApplicationController
       end
     end
 
-    pp Embed.last
-    puts "event....."
-    pp @event
+    # pp Embed.last
+    # puts "event....."
+    # pp @event
 
     respond_to do |format|
       if @event.save!
-        format.html { redirect_to :action => :edit, :id => @venue.id, :notice => 'yay' }
+        format.html { redirect_to :action => :list_events, :id => @venue.id }
         format.json { render json: { :from => "eventEdit", :result => true } }
       else
         format.html { redirect_to :action => :edit, :id => @venue.id, :notice => 'boo' }

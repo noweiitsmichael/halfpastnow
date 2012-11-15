@@ -52,6 +52,24 @@ class Event < ActiveRecord::Base
     return (phat + z*z/(2*n) - z * Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)
   end
 
+  def completedness
+    total_elements = 8
+    complete_elements = 0
+    unless(self.description.empty?)
+      complete_elements += 1
+    end
+    unless(self.cover_image.nil?)
+      complete_elements += 5
+    end
+    unless(self.tags.empty?)
+      complete_elements += 1
+    end
+    unless(self.pictures.empty?)
+      complete_elements += 1
+    end
+    return complete_elements.to_f / total_elements.to_f
+  end
+
   def nextOccurrence
     if self.occurrences.length == 0
       return nil

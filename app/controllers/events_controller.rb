@@ -23,6 +23,7 @@ end
 
 def index
 
+
     unless(params[:channel_id].to_s.empty?)
       channel = Channel.find(params[:channel_id].to_i)
 
@@ -555,6 +556,46 @@ def index
     respond_to do |format|
       format.html { redirect_to events_url }
       format.json { head :ok }
+    end
+  end
+
+  def upcoming
+    puts "upcoming....."
+    if params[:range] == "oneweek"
+      # @eventsList = Event.find(:all).map(&:nextOccurrence.to_proc).reject {|x| x.nil?}.delete_if { |x| x.start > 1.week.from_now}
+      # @eventsList = Event.find(:all, :conditions => ["(start > ?) AND (start < ?)", Time.now, 1.week.from_now])
+
+      eventsQuery = "
+        SELECT occurrences.recurrence_id, occurrences.id, events.id AS event_id, events.title, events.venue_id, occurrences.start, events.updated_at, events.user_id
+        FROM occurrences, events WHERE occurrences.event_id = events.id AND occurrences.deleted = false AND occurrences.recurrence_id IS NULL 
+             AND occurrences.start < now() + interval '1 week' AND occurrences.start >= now() 
+        UNION 
+        SELECT DISTINCT ON (occurrences.recurrence_id) occurrences.recurrence_id, occurrences.id, events.id AS event_id, events.title, events.venue_id, occurrences.start, events.updated_at, events.user_id
+        FROM occurrences, events WHERE occurrences.event_id = events.id AND occurrences.deleted = false AND occurrences.recurrence_id IS NOT NULL
+             AND occurrences.start < now() + interval '1 week' AND occurrences.start >= now()"
+      @eventsList = ActiveRecord::Base.connection.select_all(eventsQuery)
+    else params[:range] == "twoweeks"
+      # @eventsList = Event.find(:all).map(&:nextOccurrence.to_proc).reject {|x| x.nil?}.delete_if { |x| x.start > 2.week.from_now}
+      eventsQuery = "
+        SELECT occurrences.recurrence_id, occurrences.id, events.id AS event_id, events.title, events.venue_id, occurrences.start, events.updated_at, events.user_id
+        FROM occurrences, events WHERE occurrences.event_id = events.id AND occurrences.deleted = false AND occurrences.recurrence_id IS NULL 
+             AND occurrences.start < now() + interval '2 weeks' AND occurrences.start >= now() 
+        UNION 
+        SELECT DISTINCT ON (occurrences.recurrence_id) occurrences.recurrence_id, occurrences.id, events.id AS event_id, events.title, events.venue_id, occurrences.start, events.updated_at, events.user_id
+        FROM occurrences, events WHERE occurrences.event_id = events.id AND occurrences.deleted = false AND occurrences.recurrence_id IS NOT NULL
+             AND occurrences.start < now() + interval '2 weeks' AND occurrences.start >= now()"
+      @eventsList = ActiveRecord::Base.connection.select_all(eventsQuery)
+    end
+    @outputList = []
+
+    @eventsList.each do |e|
+      unless e["event_id"].nil?
+        # @outputList << {'id' => e.id, 'event_id' => e.event.id, 'event_title' => e.event.title,  'event_completedness' => e.event.completedness, 'venue_id' => e.event.venue.id, 'start' => e.start.strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e.event.user_id).exists? ? User.find(e.event.user_id).fullname : "", 'updated_at' => e.event.updated_at.strftime("%m/%d @ %I:%M %p")}
+        @outputList << {'id' => e["id"], 'event_id' => e["event_id"], 'event_title' => e["title"],  'event_completedness' => Event.find(e["event_id"]).completedness, 'venue_id' => e["venue_id"], 'start' => Time.parse(e["start"]).strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e["user_id"]).exists? ? User.find(e["user_id"]).fullname : "", 'updated_at' => Time.parse(e["updated_at"]).strftime("%m/%d @ %I:%M %p")}
+      end
+    end
+    respond_to do |format|
+      format.json { render json: @outputList }
     end
   end
   

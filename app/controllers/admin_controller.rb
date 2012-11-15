@@ -1,12 +1,14 @@
 
 class AdminController < ApplicationController
 	layout "admin"
-	before_filter :authenticate_user!
+	
 	
 	def controlPanel
 	end
 
 	def index
+		authorize! :index, @user, :message => 'Not authorized as an administrator.'
+		puts "index"
 	end
 
 	def test

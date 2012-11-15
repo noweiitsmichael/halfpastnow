@@ -24,6 +24,8 @@ class User < ActiveRecord::Base
   has_many :histories, :dependent => :destroy
   has_many :occurrences, :through => :histories
 
+  ROLES = %w[admin super_admin]
+
 
   # Cropping function
   def crop_profilepic
@@ -33,8 +35,6 @@ class User < ActiveRecord::Base
       profilepic.recreate_versions!
     end
   end
-
-  rolify
 
 
   # Include default devise modules. Others available are:

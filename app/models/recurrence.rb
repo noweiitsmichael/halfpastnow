@@ -56,9 +56,13 @@ class Recurrence < ActiveRecord::Base
   
 
   def gen_occurrences(number_of_occurrences = -1)
+
+    #set start and end dates for occurrence generation
     occurrences_exist = (self.occurrences.size > 0)
     puts "do occurrences exist? " + (occurrences_exist ? "YES" : "NO")
     until_time = (range_end && range_end.to_time < Time.now.advance(:years => 1)) ? range_end.to_time : Time.now.advance(:years => 1)
+
+    #counter_time is starts with last existing occurrence, or range_start, or now
     counter_time = occurrences_exist ? self.occurrences.last(:order => "start").start.to_date.to_time : ((range_start && range_start.to_date.to_time > Date.today.to_time) ? range_start.to_date.to_time : Date.today.to_time)
     puts "original time: " + counter_time.to_s
     puts "until time: " + until_time.to_s
@@ -69,6 +73,7 @@ class Recurrence < ActiveRecord::Base
         return false
       end
     else
+      #set counter_time to exact date of occurrence to be created
       if(day_of_week && week_of_month)
       	puts "monthly (week)"
         occurrence_this_month = counter_time.beginning_of_month.advance(:weeks => week_of_month, :days => (day_of_week - counter_time.beginning_of_month.wday)%7)

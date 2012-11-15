@@ -119,8 +119,8 @@ class UsersController < ApplicationController
   def adminStats
     @array = []
     @array << ['User', 'Events', 'Venues', 'Acts']
-    @usersList = User.find(19, 20, 22, 31, 32, 35, 36, 38, 39, 42, 43, 47, 48, 49, 50, 51, 52, 53, 56, 58, 59, :select => 'id, firstname, lastname')
-
+    @usersList = User.find(:all, :conditions => { :role => [ "admin", "super_admin" ]}, :select => 'id, firstname, lastname')
+    
     case params[:daterange]
       when "24-hours"
         @usersList.each do |u|

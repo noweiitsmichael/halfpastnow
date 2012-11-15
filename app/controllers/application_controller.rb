@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   rescue_from CanCan::AccessDenied do |exception|
-     redirect_to root_path, :alert => exception.message
+     redirect_to root_path, :alert => "Access Denied!"
    end
   
   # # Mobile stuff 
@@ -25,11 +25,6 @@ class ApplicationController < ActionController::Base
   #   request.format = :mobile if mobile_device?
   # end
  
-
-    rescue_from CanCan::AccessDenied do |exception|
-      flash[:error] = "Access denied!"
-      redirect_to root_url
-    end
   
    def logged_in?
      true

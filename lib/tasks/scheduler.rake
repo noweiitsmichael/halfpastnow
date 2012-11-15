@@ -283,7 +283,7 @@ namespace :api do
 					## time zone timezone hack :( probably needs to be fixed soon
 					## Dunno why facebook returns a time that is off by one hour. Daylight Savings?
 					if events['start_time'] != nil
-						event.start = event.start.to_datetime + 1.hours
+						event.start = event.start.to_datetime # + 1.hours
 					end
 
 					if events['end_time'] != nil
@@ -499,5 +499,4 @@ namespace :api do
 			raw_venue.save
 		end
 	end
-
 end
