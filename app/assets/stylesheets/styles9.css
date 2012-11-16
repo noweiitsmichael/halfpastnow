@@ -2221,6 +2221,10 @@ html, body {
   color:white;
 }
 
+#header.selected .header .filter-toggle.selected .pre-text {
+  color:#0094C5;
+}
+
 #header .filter-toggle .text, #header .filter-action {
     color: white;
     text-shadow:none;
@@ -2353,6 +2357,11 @@ html, body {
 #header.selected .header .filter-toggle .text {
   color: white;
   border-color: white;
+}
+
+#header.selected .header .filter-toggle.selected .text {
+  color: black;
+  border-color: black;
 }
 
 #header .filter-toggle.selected .text {
