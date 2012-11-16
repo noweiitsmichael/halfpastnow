@@ -16,7 +16,7 @@
 		<% end %>
 	</div>
 	<div class="picture">
-		<img src="<%= occurrence.event.cover_image || "/assets/placeholder.png" %>" />
+		<img src="<%= occurrence.event.cover_image.image_url(:cover_image) || "/assets/placeholder.png" %>" />
 		<div class="picture-overlay"></div>
 	</div>
 	<div class="event-actions">
