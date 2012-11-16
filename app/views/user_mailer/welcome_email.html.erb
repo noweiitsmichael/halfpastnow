@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Welcome to halfpastnow.com!</title>
+<style>
+  html, body
+  {
+    font-family: "Lato";
+  }
+</style>
+<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic,'>
+</head>
+<body>
+
+<table align="center" width="600" style="border: #666666 1px solid;" cellpadding="0" cellspacing="0">
+  <tr>
+    <td bgcolor="#efefef" style="border-bottom: #666666 1px solid;" ><br>
+      <TABLE border="0" style="padding: 0px 0px 16px 15px" align="left">
+        <TR>
+          <TD>Welcome to halfpastnow.com</TD>
+        </TR>
+      </TABLE>
+      <br>
+    </td>
+  </tr>
+  <tr>
+    <td><TABLE width="510" border="0" cellpadding="0" cellspacing="0" align="center">
+        <TR>
+          <TD><p style="font-family: arial,  helvetica, sans-serif;font-size: 16px;color: #666666;"><br>
+              Hi, <%= @user.firstname %></p>
+
+            <p style="font-family: arial,  helvetica, sans-serif;font-size: 12px;color: #666666;">We just wanted to welcome you to halfpastnow, you're on your way to finding the best events for you in Austin! </p>
+
+            <br>
+            <p style="font-family: arial,  helvetica, sans-serif;font-size: 15px;color: #666666;">Your login email address is: <%= @user.email %></p>
+            <p style="font-family: arial,  helvetica, sans-serif;font-size: 15px;color: #666666;">Create your streams</p>
+            <p style="font-family: arial,  helvetica, sans-serif;font-size: 12px;color: #666666;">One of the coolest things about halfpastnow is the ability to create your own streams. Simply select the tags and filters that meet your interests and needs, and click "+ New Stream". Now you'll never have to redo the same search over and over, just click on the stream tab at the top to see the latest events.</p>
+            <table width="200" align="right" border="0" cellspacing="5" cellpadding="5">
+              <tr>
+                <td><a href="http://www.halfpastnow.com">Start finding stuff!</a></td>
+              </tr>
+            </table>
+            <table width="100%" align="center" cellpadding="5" cellspacing="5" style="border: #666666 1px solid;">
+              <tr>
+                <td width="98%"><p style="font-family: arial,  helvetica, sans-serif;font-size: 12px;color: #666666;">- The halfpastnow Team</p></td>
+              </tr>
+            </table>
+            <br>
+          </TD>
+        </TR>
+      </TABLE>
+</table>
+</body>
+</html>

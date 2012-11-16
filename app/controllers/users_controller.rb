@@ -50,6 +50,7 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+    puts "created new user"
     @user = User.new(params[:user])
 
     respond_to do |format|
@@ -120,7 +121,7 @@ class UsersController < ApplicationController
     @array = []
     @array << ['User', 'Events', 'Venues', 'Acts']
     @usersList = User.find(:all, :conditions => { :role => [ "admin", "super_admin" ]}, :select => 'id, firstname, lastname')
-    
+
     case params[:daterange]
       when "24-hours"
         @usersList.each do |u|

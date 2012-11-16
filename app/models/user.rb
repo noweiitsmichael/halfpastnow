@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
 
   ROLES = %w[admin super_admin]
 
+  after_create :send_welcome_email
+
 
   # Cropping function
   def crop_profilepic
@@ -107,6 +109,14 @@ class User < ActiveRecord::Base
   def fullname
     return firstname + " " + lastname
   end
+
+  def send_welcome_email
+    puts "send_welcome_email"
+    unless self.email.include?('@halfpastnow.com') && Rails.env != 'test'
+      UserMailer.welcome_email(self).deliver
+    end
+  end
+
 
   # def password_required?
   #   super && provider.blank?
