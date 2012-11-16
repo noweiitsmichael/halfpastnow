@@ -58,11 +58,8 @@ def index
     # @amount = params[:amount] || 20
     # @offset = params[:offset] || 0
 
-    # @tags = Tag.includes(:parentTag, :childTags).all
-    # @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
-
-    @tags = []
-    @parentTags = []
+    @tags = Tag.includes(:parentTag, :childTags).all
+    @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
 
     search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
 
@@ -212,10 +209,10 @@ def index
     order_by = "occurrences.start"
     if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
       # order by event score when sorting by popularity
-      # order_by = "CASE events.views 
-      #               WHEN 0 THEN 0
-      #               ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
-      #             END DESC"
+      order_by = "CASE events.views 
+                    WHEN 0 THEN 0
+                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+                  END DESC"
     end
 
     # the big enchilada
@@ -263,7 +260,7 @@ def index
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
  
-    @allOccurrences = Occurrence.includes(:event => [:tags, :venue, :occurrences, :recurrences]).find(@occurrence_ids, :order => order_by)
+    @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
     @occurrences = @allOccurrences.drop(@offset).take(@amount)
 
     # generating tag list for occurrences
@@ -272,46 +269,46 @@ def index
 
     @tagCounts = []
 
-    # @parentTags.each do |parentTag|
-    #   @tagCounts[parentTag.id] = {
-    #     :count => 1,
-    #     :children => [],
-    #     :id => parentTag.id,
-    #     :name => parentTag.name,
-    #     :parent => nil
-    #   }
-    #   parentTag.childTags.each do |childTag|
-    #     @tagCounts[childTag.id] = {
-    #       :count => 1,
-    #       :children => [],
-    #       :id => childTag.id,
-    #       :name => childTag.name,
-    #       :parent => @tagCounts[parentTag.id]
-    #     }
-    #     @tagCounts[parentTag.id][:children].push(@tagCounts[childTag.id])
-    #   end
-    # end
+    @parentTags.each do |parentTag|
+      @tagCounts[parentTag.id] = {
+        :count => 0,
+        :children => [],
+        :id => parentTag.id,
+        :name => parentTag.name,
+        :parent => nil
+      }
+      parentTag.childTags.each do |childTag|
+        @tagCounts[childTag.id] = {
+          :count => 0,
+          :children => [],
+          :id => childTag.id,
+          :name => childTag.name,
+          :parent => @tagCounts[parentTag.id]
+        }
+        @tagCounts[parentTag.id][:children].push(@tagCounts[childTag.id])
+      end
+    end
 
-    # @allOccurrences.each do |occurrence|
-    #   occurrence.event.tags.each do |tag|
-    #      @tagCounts[tag.id][:count] += 1
-    #   end
-    # end
+    @allOccurrences.each do |occurrence|
+      occurrence.event.tags.each do |tag|
+         @tagCounts[tag.id][:count] += 1
+      end
+    end
 
-    # @parentTags.each do |parentTag|
-    #   @tagCounts[parentTag.id][:children] = @tagCounts[parentTag.id][:children].sort_by { |tagCount| tagCount[:count] }.reverse
-    # end
+    @parentTags.each do |parentTag|
+      @tagCounts[parentTag.id][:children] = @tagCounts[parentTag.id][:children].sort_by { |tagCount| tagCount[:count] }.reverse
+    end
 
-    # @tagCounts = @tagCounts.sort_by { |tagCount| tagCount ? tagCount[:count] : 0 }.compact.reverse
+    @tagCounts = @tagCounts.sort_by { |tagCount| tagCount ? tagCount[:count] : 0 }.compact.reverse
 
     if @event_ids.size > 0
-      # ActiveRecord::Base.connection.update("UPDATE events
-      #   SET views = views + 1
-      #   WHERE id IN (#{@event_ids * ','})")
+      ActiveRecord::Base.connection.update("UPDATE events
+        SET views = views + 1
+        WHERE id IN (#{@event_ids * ','})")
 
-      # ActiveRecord::Base.connection.update("UPDATE venues
-      #   SET views = views + 1
-      #   WHERE id IN (#{@venue_ids * ','})")
+      ActiveRecord::Base.connection.update("UPDATE venues
+        SET views = views + 1
+        WHERE id IN (#{@venue_ids * ','})")
     end
 
     respond_to do |format|
