@@ -1003,13 +1003,13 @@ input::-webkit-input-placeholder
 }
 
 #header .tags .filter-inner {
-  width: 400px;
+  width: 500px;
 }
 
 #header .tags .filter-inner .tags-menu {
-  height:auto;
+  height: 300px;
   float: left;
-  width: 200px;
+  width: 250px;
 }
 
 #header .tags .filter-inner .tags-menu li {
@@ -1879,7 +1879,7 @@ input::-webkit-input-placeholder
 }
 #content .events li .title {
     float: left; 
-    font-size: 20px;  
+    font-size: 18px;  
     text-align: left;   
     line-height: 26px;  
     max-height: 54px; overflow: hidden;
