@@ -1872,9 +1872,10 @@ input::-webkit-input-placeholder
     top: -1px;
     left: -1px;
     z-index: 100;
-    border: 1px solid #ccc;
     font-size: 23px;
     font-weight: 900;
+    border-radius: 0 0 3px 0;
+    box-shadow: 3px 3px 10px rgba(0,0,0,.3);
 }
 #content .events li .title {
     float: left; 
@@ -1967,6 +1968,7 @@ input::-webkit-input-placeholder
   height:100%;
   position: absolute;
   top: 0;
+  background-image: -webkit-radial-gradient(center, circle cover, transparent 0%,rgba(0, 0, 0, 0.23) 100%);
 }
 
 #content .events li .venue:hover {

@@ -16,7 +16,7 @@
 		<% end %>
 	</div>
 	<div class="picture">
-		<img src="http://flickholdr.com/250/150/<%= (index)%10 + 1 %>" />
+		<img src="<%= occurrence.event.cover_image || "/assets/placeholder.png" %>" />
 		<div class="picture-overlay"></div>
 	</div>
 	<div class="event-actions">
