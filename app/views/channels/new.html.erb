@@ -46,7 +46,8 @@
 
 		      $(".streambar .header .stream").removeClass('selected');
 		      $('.streambar .header .stream[stream-id=' + channel.id + ']').addClass('selected');
-		      
+		      $('#header').addClass('selected');
+
 		      demodal();
 
 		    }, "json");

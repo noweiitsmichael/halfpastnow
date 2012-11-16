@@ -3,7 +3,7 @@
 	<div class="title">
 		<%= occurrence.event.title %>
 	</div>
-	<div class="venue" link-id="<%= occurrence.event.venue.id %>" linkto="venue"><!-- <span class="at">@</span> -->at <span class="venue-inner"><%= occurrence.event.venue.name %></span></div>
+	<div class="venue" link-id="<%= occurrence.event.venue.id %>" linkto="venue"><!-- <span class="at">@</span> -->@ <span class="venue-inner"><%= occurrence.event.venue.name %></span></div>
 	<div class="datetime"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></div>
 	<% if occurrence.event.price %>
 		<div class="price"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></div>
@@ -15,9 +15,6 @@
 			<% end %>
 		<% end %>
 	</div>
-	<!-- <div class="description">
-		<%= "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"[rand(100), (rand(200)+200)] %> 
-	</div> -->
 	<div class="picture">
 		<img src="http://flickholdr.com/250/150/<%= (index)%10 + 1 %>" />
 		<div class="picture-overlay"></div>
@@ -26,7 +23,7 @@
 		<div><span class="icon icon-envelope-alt email" event-id="<%= occurrence.id %>"></span><span class="text">email</span></div>
 		<div><span class="icon icon-facebook-sign facebook" event-id="<%= occurrence.id %>"></span><span class="text">facebook</span></div>
 		<div><span class="icon icon-twitter-sign twitter" event-id="<%= occurrence.id %>"></span><span class="text">twitter</span></div>
-		<div><span class="icon icon-bookmark bookmark" event-id="<%= occurrence.id %>"></span><span class="text">bookmark</span></div>
+		<div><span class="icon icon-bookmark <%= current_user ? "bookmark" : "" %>" <%= current_user ? "" : "linkto='shunt'" %> event-id="<%= occurrence.id %>"></span><span class="text">bookmark</span></div>
 	</div>
 	<div style="display:none;">
 		<div class="latitude"><%= occurrence.event.venue.latitude %></div>

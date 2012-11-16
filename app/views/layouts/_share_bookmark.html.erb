@@ -58,9 +58,5 @@
 	<span class="icon icon-envelope-alt email"></span>
 	<span class="icon icon-facebook-sign facebook"></span>
 	<span class="icon icon-twitter-sign twitter"></span>
-	<span class="icon icon-bookmark bookmark <%= bookmarkId.nil? ? "add" : "remove" %>"></span>
-	<% if false %><!-- <span class="bookmark"><span class="icon icon-bookmark"></span><span class="text">bookmark</span></span>
-	<span class="email"><span class="icon icon-envelope-alt"></span><span class="text">email</span></span>
-	<span class="facebook"><span class="icon icon-facebook-sign"></span><span class="text">facebook</span></span>
-	<span class="twitter"><span class="icon icon-twitter-sign"></span><span class="text">twitter</span></span> --><% end %>
+	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span>
 </div>

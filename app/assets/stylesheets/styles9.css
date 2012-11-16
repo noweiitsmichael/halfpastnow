@@ -108,9 +108,8 @@ H6
   margin-left: 10px;
   margin-right: 20px;
   margin-top: 5px;
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: .1em;
+  font-size: 20px;
+  font-weight: 900;
   text-transform: lowercase;
   font-variant: small-caps;
 }
@@ -1787,6 +1786,13 @@ input::-webkit-input-placeholder
   position:absolute;
 }
 
+#infinite-loader {
+  width:160px;
+  margin: 10px auto 0;
+  display: block;
+  padding: 0 0 10px 0;
+}
+
 .marker-caching {
   position:fixed;
   left:-1000px;
@@ -1886,11 +1892,23 @@ input::-webkit-input-placeholder
     clear: both;
     float: left;
     font-size: 15px;
-    margin-top: -3px;
-    padding: 2px 6px 2px 4px;
-    margin-bottom: -2px;
-    font-weight: 700;
+    margin-top: -4px;
+    padding: 0px 6px 2px 4px;
+    margin-bottom: 2px;
+    font-weight: 900;
     margin-left: -4px;
+    color: rgb(121, 73, 121);
+    font-variant: small-caps;
+    text-transform: lowercase;
+}
+#content .events li .venue-inner { 
+    font-size:18px;  
+    position:relative;
+    top:1px;
+    display:inline-block;  
+}
+#content .events li.hover .venue {
+    color:#1F9FC9;
 }
 #content .events li .datetime {
     float: left;

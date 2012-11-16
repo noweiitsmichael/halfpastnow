@@ -98,25 +98,29 @@ $(function() {
       var url = 'http://www.facebook.com/sharer/sharer.php?u=' + link;
       window.open(url, '_blank');
       window.focus();
+      event.stopPropagation();
     } else if($(this).hasClass('twitter')) {
       console.log('twitter icon click');
       var url = 'https://twitter.com/intent/tweet?text=' + link;
       window.open(url, '_blank');
       window.focus();
+      event.stopPropagation();
     } else if($(this).hasClass('email')) {
       console.log('email icon click');
       var url = 'mailto:?body=' + link;
       window.open(url, '_blank');
       window.focus();
+      event.stopPropagation();
     } else if($(this).hasClass('bookmark')) {
       console.log('bookmark icon click');
       $.getJSON('/bookmarks/custom_create', { bookmark: { "type": "Occurrence", "id": id } }, function(data) {
         console.log("new bookmark");
         console.log(data);
       });
+      event.stopPropagation();
     }
 
-    event.stopPropagation();
+    
   });
 
 
@@ -1104,10 +1108,13 @@ function loading(command) {
         $('#loading').css('left', x + 'px');
         $('#loading').show();
       }
+    } else {
+      $('#infinite-loader').show();
     }
   } else if (command === 'hide') {
     $('.main .inner .header, .main .inner .events').css('opacity','1');
     $('#loading').hide();
+    $('#infinite-loader').hide();
     pulling = false;
   }
 }

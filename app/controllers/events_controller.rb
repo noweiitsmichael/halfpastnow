@@ -466,8 +466,12 @@ def index
     @event.clicks += 1
     @event.save
 
-    bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :user_id => current_user.id).first
-    @bookmarkId = bookmark.nil? ? nil : bookmark.id 
+    if(current_user)
+      bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :user_id => current_user.id).first
+      @bookmarkId = bookmark.nil? ? nil : bookmark.id 
+    else
+      @bookmarkId = nil
+    end
 
     @occurrences = []
     @recurrences = []

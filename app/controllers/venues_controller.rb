@@ -61,9 +61,13 @@ class VenuesController < ApplicationController
     @venue.clicks += 1
     @venue.save
 
-    bookmark = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => @venue.id, :user_id => current_user.id).first
-    @bookmarkId = bookmark.nil? ? nil : bookmark.id
-
+    if(current_user)
+      bookmark = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => @venue.id, :user_id => current_user.id).first
+      @bookmarkId = bookmark.nil? ? nil : bookmark.id
+    else
+      @bookmarkId = nil
+    end
+    
     @occurrences  = []
     @recurrences = []
     @occs = @venue.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now }  }.flatten.sort_by { |occ| occ.start }
