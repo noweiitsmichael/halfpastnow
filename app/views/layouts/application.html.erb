@@ -51,15 +51,34 @@
         });
 
     });
-    
-
     </script>
+
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36312888-1']);
+    _gaq.push(['_setDomainName', 'herokuapp.com']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
 
   <!-- for cropper -->
   <%= yield :head %>
 
 </head>
 <!-- <body onload="if(typeof initialize !== 'undefined') initialize();"> -->
+
+<div id="getsat-widget-2414"></div>
+<script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
+<script type="text/javascript">
+if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-widget-2414"}); }
+</script>
 <body>
 
 	<%= yield :code %>
