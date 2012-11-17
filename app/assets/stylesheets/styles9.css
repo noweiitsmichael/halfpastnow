@@ -13,6 +13,7 @@ html, body
   height:100%;
   overflow:auto;
   position:relative;
+  background: rgba(255, 255, 255, .6);
 }
 
 UL, LI
@@ -2071,9 +2072,10 @@ iframe {
 }
 
 html, body {
-  background: #f3f3f3;
+  /*background: #f3f3f3;*/
   font-family: Lato,Tahoma,sans-serif; font-style: normal; 
   font-weight: 400;
+  background: url(http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/creampaper.png);
 }
 
 #header > .one .menu-element.right {
@@ -2095,7 +2097,7 @@ html, body {
 }
 
 #header > .one .menu-element.right.pic a {
-    top: -8px;
+    top: -5px;
     display: inline-block;
     position: relative;
     color: black;
