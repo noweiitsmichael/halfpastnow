@@ -13,6 +13,7 @@ html, body
   height:100%;
   overflow:auto;
   position:relative;
+  background: rgba(255, 255, 255, .6);
 }
 
 UL, LI
@@ -1844,11 +1845,12 @@ input::-webkit-input-placeholder
 
 #content .main .inner .events li {
     padding: 0 10px 0 219px; 
-    min-height: 126px;
+    min-height: 120px;
     font-size: 13px;
     color: #303030;
     background: white;
     border: 1px solid #DDD;
+    overflow:hidden;
 }
 
 #content .main .inner .events li:first-child {
@@ -1880,7 +1882,7 @@ input::-webkit-input-placeholder
 #content .events li .title {
     float: left; 
     font-size: 16px;  
-    text-align: left;   
+    text-align: left;
     line-height: 21px;  
     max-height: 42px; overflow: hidden;
     position: relative;
@@ -2070,9 +2072,10 @@ iframe {
 }
 
 html, body {
-  background: #f3f3f3;
+  /*background: #f3f3f3;*/
   font-family: Lato,Tahoma,sans-serif; font-style: normal; 
   font-weight: 400;
+  background: url(http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/creampaper.png);
 }
 
 #header > .one .menu-element.right {
@@ -2094,7 +2097,7 @@ html, body {
 }
 
 #header > .one .menu-element.right.pic a {
-    top: -8px;
+    top: -5px;
     display: inline-block;
     position: relative;
     color: black;
@@ -2218,6 +2221,10 @@ html, body {
 
 #header.selected .header .filter-toggle .pre-text {
   color:white;
+}
+
+#header.selected .header .filter-toggle.selected .pre-text {
+  color:#0094C5;
 }
 
 #header .filter-toggle .text, #header .filter-action {
@@ -2352,6 +2359,11 @@ html, body {
 #header.selected .header .filter-toggle .text {
   color: white;
   border-color: white;
+}
+
+#header.selected .header .filter-toggle.selected .text {
+  color: black;
+  border-color: black;
 }
 
 #header .filter-toggle.selected .text {
