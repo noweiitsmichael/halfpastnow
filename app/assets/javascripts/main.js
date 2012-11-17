@@ -88,7 +88,7 @@ $(function() {
     var that = $(this);
     var id = $(this).attr('event-id');
     var type = "event";
-    var root_url = "http%3A%2F%2Flocalhost:3000";
+    var root_url = "http%3A%2F%2Fhalfpastnow.com";
     var link = root_url + "%3F" + type + "_id%3D" + id;
 
     if($(this).hasClass('facebook')) {
