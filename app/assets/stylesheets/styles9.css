@@ -1008,7 +1008,7 @@ input::-webkit-input-placeholder
 }
 
 #header .tags .filter-inner .tags-menu {
-  height: 300px;
+  height: 344px;
   float: left;
   width: 250px;
 }
@@ -1218,7 +1218,6 @@ input::-webkit-input-placeholder
 }
 
 #content .events li .event-actions {
-    display: none;
     position:absolute;
     bottom: 8px;
     right: 5px;
@@ -1228,8 +1227,7 @@ input::-webkit-input-placeholder
 
 #content .events li .event-actions div {
     overflow: hidden;
-    margin-bottom: -7px;
-    float: left;
+    margin-bottom: -5px;
 }
 
 #content .events li .event-actions .text {
@@ -1244,7 +1242,7 @@ input::-webkit-input-placeholder
 
 #content .events li .event-actions .icon {
     font-size:21px;
-    display: inline-block;
+    display: none;
     float:right;
     width: 32px;
 }
@@ -1272,13 +1270,18 @@ input::-webkit-input-placeholder
     right: 0px;
 }
 
+#content .events li .event-actions .icon-bookmark.remove {
+    display:inline-block;
+    color: #1F9FC9;
+}
+
 #content .events li .event-actions .icon:hover {
     color: #1F9FC9;
     text-shadow: 1px 1px 0 white;
 }
 
-#content .events li.hover .event-actions {
-    display:block;
+#content .events li.hover .event-actions .icon {
+    display:inline-block;
 }
 
 #content .events li.hover .price {
@@ -1702,10 +1705,6 @@ input::-webkit-input-placeholder
     color: #1F9FC9;
 }
 
-.mode .window .bookmark-share span.bookmark.remove:hover {
-    color:#444;
-}
-
 .mode .window .description ul {
     margin-left: 40px;
 }
@@ -2038,6 +2037,7 @@ input::-webkit-input-placeholder
   border: 0; 
   margin: 0;
   padding: 0;
+  padding: 2px 0;
 }
 
 .tags-menu.parents > li.selected {
@@ -2190,7 +2190,7 @@ html, body {
     display:inline-block;
 }
 
-#header .bookmarkbar .stream.title {
+#header .stream.title {
     background:transparent;
     padding-left:0px;
     padding-right: 5px;

@@ -161,6 +161,7 @@
 		<div class="streambar">
 			<div class="stay-on-target">
 				<div class="header">
+					<span class="stream title">Streams:</span>
 					<% @selectedChannel = params[:channel_id].coalesce_to 0 %>
 					<!-- <span class="stream <%= @selectedChannel == 0 ? "selected" : ""%>" channel-id="0">All Events</span> -->
 					<!-- <span class="stream new" <%= current_user ? "linkto='new-channel-2'" : "linkto='shunt'" %>>+ New Stream</span> -->
@@ -194,7 +195,7 @@
 				<span class="stream bookmark" bookmark-type="act"><span class="icon icon-flag"></span>Performers</span>
 				<span class="filter-toggle filter-action action-streams">
 					<span class="filter-text">
-						<span class="pre-text"><span class="icon icon-reorder"></span>streams + filters</span>
+						<span class="pre-text"><span class="icon icon-reorder"></span>back to streams + filters</span>
 					</span>
 				</span>
 			</div>
@@ -203,6 +204,7 @@
 			<div class="stay-on-target">
 				<div class="header">
 					<div class="toggle-wrapper">
+						<span class="stream title" style="float: left;    display: inline-block;    margin: 0px 0 6px 13px;">Filters:</span>
 						<span class="filter-toggle search">
 							<span class="filter-text">
 								<span class="pre-text"><span class="icon icon-search"></span></span>
