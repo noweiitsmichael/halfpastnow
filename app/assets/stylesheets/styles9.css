@@ -1879,10 +1879,10 @@ input::-webkit-input-placeholder
 }
 #content .events li .title {
     float: left; 
-    font-size: 18px;  
+    font-size: 16px;  
     text-align: left;   
-    line-height: 26px;  
-    max-height: 54px; overflow: hidden;
+    line-height: 21px;  
+    max-height: 42px; overflow: hidden;
     position: relative;
     margin-top: 8px;
     padding-right: 1px;
@@ -1892,7 +1892,7 @@ input::-webkit-input-placeholder
 #content .events li .venue {
     clear: both;
     float: left;
-    font-size: 15px;
+    font-size: 13px;
     margin-top: -4px;
     padding: 0px 6px 2px 4px;
     margin-bottom: 2px;
@@ -1903,9 +1903,9 @@ input::-webkit-input-placeholder
     text-transform: lowercase;
 }
 #content .events li .venue-inner { 
-    font-size:18px;  
+    font-size: 16px;  
     position:relative;
-    top:1px;
+    top: 0px;
     display:inline-block;  
 }
 #content .events li.hover .venue {
