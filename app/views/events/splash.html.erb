@@ -27,9 +27,6 @@
 					case "tonight":
 						dateTimeParams = "option_day=1&start_days=0&end_days=0&start_seconds=72000&end_seconds=86400";
 						break;
-					case "tomorrow":
-						dateTimeParams = "option_day=2&start_days=1&end_days=1";
-						break;
 					case "any":
 						dateTimeParams = "option_day=0&start_days=0&end_days=-1";
 						break;
@@ -48,7 +45,7 @@
 			<!-- <h1>half past now.</h1> -->
 			<div class="info-line">
 				<img src="/assets/halfpastnow_final-squat.png" class="logo"/>
-				<div class="description"><strong>half past now</strong>’s unique platform allows you to create and customize streams of events, such as live music. You can specify your preferences around interests, times, and cost and share great event ideas with friends. </div>
+				<div class="description"><strong>half past now</strong> is a new tool designed to help you find things to do that interest you in Austin, and share them with your friends. You can also create and customize personalized streams of events based on your interests.</div>
 			</div>
 			<div class="search-line">
 				<span>Show me</span>&nbsp;
@@ -62,7 +59,6 @@
 				<select name="datetime" tabindex="2" class="datetime">
 				  <option value="today">Today</option>
 				  <option value="tonight" selected="selected">Tonight</option>
-				  <option value="tomorrow">Tomorrow</option>
 				  <option value="any">Any Day</option>
 				</select>&nbsp;
 				<input class="go-button" type="submit" value="show me" />
