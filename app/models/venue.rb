@@ -36,7 +36,7 @@ class Venue < ActiveRecord::Base
   def completedness
     total_elements = 9
     complete_elements = 0
-    unless(self.description.empty?)
+    unless(self.description.to_s.empty?)
       complete_elements += 1
     end
     unless(self.phonenumber.nil?)
