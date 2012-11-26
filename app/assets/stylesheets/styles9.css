@@ -13,6 +13,7 @@ html, body
   height:100%;
   overflow:auto;
   position:relative;
+  background: rgba(255, 255, 255, .6);
 }
 
 UL, LI
@@ -108,9 +109,8 @@ H6
   margin-left: 10px;
   margin-right: 20px;
   margin-top: 5px;
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: .1em;
+  font-size: 20px;
+  font-weight: 900;
   text-transform: lowercase;
   font-variant: small-caps;
 }
@@ -1004,13 +1004,13 @@ input::-webkit-input-placeholder
 }
 
 #header .tags .filter-inner {
-  width: 400px;
+  width: 500px;
 }
 
 #header .tags .filter-inner .tags-menu {
-  height:auto;
+  height: 344px;
   float: left;
-  width: 200px;
+  width: 250px;
 }
 
 #header .tags .filter-inner .tags-menu li {
@@ -1218,7 +1218,6 @@ input::-webkit-input-placeholder
 }
 
 #content .events li .event-actions {
-    display: none;
     position:absolute;
     bottom: 8px;
     right: 5px;
@@ -1228,8 +1227,7 @@ input::-webkit-input-placeholder
 
 #content .events li .event-actions div {
     overflow: hidden;
-    margin-bottom: -7px;
-    float: left;
+    margin-bottom: -5px;
 }
 
 #content .events li .event-actions .text {
@@ -1244,7 +1242,7 @@ input::-webkit-input-placeholder
 
 #content .events li .event-actions .icon {
     font-size:21px;
-    display: inline-block;
+    display: none;
     float:right;
     width: 32px;
 }
@@ -1272,13 +1270,18 @@ input::-webkit-input-placeholder
     right: 0px;
 }
 
+#content .events li .event-actions .icon-bookmark.remove {
+    display:inline-block;
+    color: #1F9FC9;
+}
+
 #content .events li .event-actions .icon:hover {
     color: #1F9FC9;
     text-shadow: 1px 1px 0 white;
 }
 
-#content .events li.hover .event-actions {
-    display:block;
+#content .events li.hover .event-actions .icon {
+    display:inline-block;
 }
 
 #content .events li.hover .price {
@@ -1702,10 +1705,6 @@ input::-webkit-input-placeholder
     color: #1F9FC9;
 }
 
-.mode .window .bookmark-share span.bookmark.remove:hover {
-    color:#444;
-}
-
 .mode .window .description ul {
     margin-left: 40px;
 }
@@ -1787,6 +1786,13 @@ input::-webkit-input-placeholder
   position:absolute;
 }
 
+#infinite-loader {
+  width:160px;
+  margin: 10px auto 0;
+  display: block;
+  padding: 0 0 10px 0;
+}
+
 .marker-caching {
   position:fixed;
   left:-1000px;
@@ -1838,11 +1844,12 @@ input::-webkit-input-placeholder
 
 #content .main .inner .events li {
     padding: 0 10px 0 219px; 
-    min-height: 126px;
+    min-height: 120px;
     font-size: 13px;
     color: #303030;
     background: white;
     border: 1px solid #DDD;
+    overflow:hidden;
 }
 
 #content .main .inner .events li:first-child {
@@ -1866,16 +1873,17 @@ input::-webkit-input-placeholder
     top: -1px;
     left: -1px;
     z-index: 100;
-    border: 1px solid #ccc;
     font-size: 23px;
     font-weight: 900;
+    border-radius: 0 0 3px 0;
+    box-shadow: 3px 3px 10px rgba(0,0,0,.3);
 }
 #content .events li .title {
     float: left; 
-    font-size: 20px;  
-    text-align: left;   
-    line-height: 26px;  
-    max-height: 54px; overflow: hidden;
+    font-size: 16px;  
+    text-align: left;
+    line-height: 21px;  
+    max-height: 42px; overflow: hidden;
     position: relative;
     margin-top: 8px;
     padding-right: 1px;
@@ -1885,12 +1893,24 @@ input::-webkit-input-placeholder
 #content .events li .venue {
     clear: both;
     float: left;
-    font-size: 15px;
-    margin-top: -3px;
-    padding: 2px 6px 2px 4px;
-    margin-bottom: -2px;
-    font-weight: 700;
+    font-size: 13px;
+    margin-top: -4px;
+    padding: 0px 6px 2px 4px;
+    margin-bottom: 2px;
+    font-weight: 900;
     margin-left: -4px;
+    color: rgb(121, 73, 121);
+    font-variant: small-caps;
+    text-transform: lowercase;
+}
+#content .events li .venue-inner { 
+    font-size: 16px;  
+    position:relative;
+    top: 0px;
+    display:inline-block;  
+}
+#content .events li.hover .venue {
+    color:#1F9FC9;
 }
 #content .events li .datetime {
     float: left;
@@ -1949,6 +1969,7 @@ input::-webkit-input-placeholder
   height:100%;
   position: absolute;
   top: 0;
+  background-image: -webkit-radial-gradient(center, circle cover, transparent 0%,rgba(0, 0, 0, 0.23) 100%);
 }
 
 #content .events li .venue:hover {
@@ -2016,6 +2037,7 @@ input::-webkit-input-placeholder
   border: 0; 
   margin: 0;
   padding: 0;
+  padding: 2px 0;
 }
 
 .tags-menu.parents > li.selected {
@@ -2050,9 +2072,10 @@ iframe {
 }
 
 html, body {
-  background: #f3f3f3;
+  /*background: #f3f3f3;*/
   font-family: Lato,Tahoma,sans-serif; font-style: normal; 
   font-weight: 400;
+  background: url(http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/creampaper.png);
 }
 
 #header > .one .menu-element.right {
@@ -2074,7 +2097,7 @@ html, body {
 }
 
 #header > .one .menu-element.right.pic a {
-    top: -8px;
+    top: -5px;
     display: inline-block;
     position: relative;
     color: black;
@@ -2167,7 +2190,7 @@ html, body {
     display:inline-block;
 }
 
-#header .bookmarkbar .stream.title {
+#header .stream.title {
     background:transparent;
     padding-left:0px;
     padding-right: 5px;
@@ -2198,6 +2221,10 @@ html, body {
 
 #header.selected .header .filter-toggle .pre-text {
   color:white;
+}
+
+#header.selected .header .filter-toggle.selected .pre-text {
+  color:#0094C5;
 }
 
 #header .filter-toggle .text, #header .filter-action {
@@ -2332,6 +2359,11 @@ html, body {
 #header.selected .header .filter-toggle .text {
   color: white;
   border-color: white;
+}
+
+#header.selected .header .filter-toggle.selected .text {
+  color: black;
+  border-color: black;
 }
 
 #header .filter-toggle.selected .text {

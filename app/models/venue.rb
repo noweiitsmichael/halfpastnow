@@ -32,4 +32,25 @@ class Venue < ActiveRecord::Base
   		end
   	end).flatten.compact
   end
+
+  def completedness
+    total_elements = 9
+    complete_elements = 0
+    unless(self.description.to_s.empty?)
+      complete_elements += 1
+    end
+    unless(self.phonenumber.nil?)
+      complete_elements += 1
+    end
+    unless(self.address.nil?)
+      complete_elements += 5
+    end
+    unless(self.url.nil?)
+      complete_elements += 1
+    end
+    unless(self.pictures.empty?)
+      complete_elements += 1
+    end
+    return complete_elements.to_f / total_elements.to_f
+  end
 end

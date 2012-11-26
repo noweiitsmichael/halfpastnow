@@ -36,17 +36,20 @@
 		          stream_id: channel.id,
 		          start_date: (channel.start_date === null) ? "" : channel.start_date,
 		          end_date: (channel.end_date === null) ? "" : channel.end_date,
-		          day: channel.day_of_week ? channel.day_of_week.split(",").map(to_i) : [0,1,2,3,4,5,6],
+		          day: channel.day_of_week ? channel.day_of_week.split(",").map(to_i) : [0,1,2,3,4,5,6]
 		      };
 
 		      if(isNewChannel) {
 		        $(".streambar .stream").last().after("<span class='stream' stream-id='" + channel.id + "'>" + channelFilters[channel.id].name + "</span>");
 		        streamSelector();
+		        $('.stream[stream-id=' + channel.id + ']').click();
 		      }
 
-		      $(".streambar .header .stream").removeClass('selected');
-		      $('.streambar .header .stream[stream-id=' + channel.id + ']').addClass('selected');
-		      
+
+		      //$(".streambar .header .stream").removeClass('selected');
+		      //$('.streambar .header .stream[stream-id=' + channel.id + ']').addClass('selected');
+		      //$('#header').addClass('selected');
+
 		      demodal();
 
 		    }, "json");

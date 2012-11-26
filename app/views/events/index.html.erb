@@ -5,6 +5,83 @@
 		@channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
 
 	<script type="text/javascript">
+		//cookie redirect
+		(function ($, document, undefined) {
+
+			var pluses = /\+/g;
+
+			function raw(s) {
+				return s;
+			}
+
+			function decoded(s) {
+				return decodeURIComponent(s.replace(pluses, ' '));
+			}
+
+			var config = $.cookie = function (key, value, options) {
+
+				// write
+				if (value !== undefined) {
+					options = $.extend({}, config.defaults, options);
+
+					if (value === null) {
+						options.expires = -1;
+					}
+
+					if (typeof options.expires === 'number') {
+						var days = options.expires, t = options.expires = new Date();
+						t.setDate(t.getDate() + days);
+					}
+
+					value = config.json ? JSON.stringify(value) : String(value);
+
+					return (document.cookie = [
+						encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
+						options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+						options.path    ? '; path=' + options.path : '',
+						options.domain  ? '; domain=' + options.domain : '',
+						options.secure  ? '; secure' : ''
+					].join(''));
+				}
+
+				// read
+				var decode = config.raw ? raw : decoded;
+				var cookies = document.cookie.split('; ');
+				for (var i = 0, l = cookies.length; i < l; i++) {
+					var parts = cookies[i].split('=');
+					if (decode(parts.shift()) === key) {
+						var cookie = decode(parts.join('='));
+						return config.json ? JSON.parse(cookie) : cookie;
+					}
+				}
+
+				return null;
+			};
+
+			config.defaults = {};
+
+			$.removeCookie = function (key, options) {
+				if ($.cookie(key) !== null) {
+					$.cookie(key, null, options);
+					return true;
+				}
+				return false;
+			};
+
+		})(jQuery, document);
+
+		$(function() {
+		  var COOKIE_NAME = 'splash-page';
+		  var cookie = $.cookie(COOKIE_NAME);
+		  if (cookie == null) {
+		    $.cookie(COOKIE_NAME, true, { path: '/', expires: 9001 });
+		    window.location = "/events/splash";
+		  }
+		  else {
+		  }
+		});
+
+
 		var geocoder;
 		var map;
 		var markers = [];
@@ -150,6 +227,17 @@
 
 			Galleria.loadTheme('/assets/galleria.classic.min.js');
 		});
+
+		$(window).load(function() {
+			var stream_id = "<%= params['channel_id'] %>";
+			if(stream_id !== "") {
+				$('#header').addClass('selected');
+				$(".streambar .stream[stream-id=" + stream_id + "]").addClass('selected');
+				filter.stream_id = parseInt(stream_id);
+				filter.included_tags = channelFilters[parseInt(stream_id)].included_tags;
+				updateViewFromFilter();
+			}
+		});
 	</script>
 <% end %>
 
@@ -161,6 +249,7 @@
 		<div class="streambar">
 			<div class="stay-on-target">
 				<div class="header">
+					<span class="stream title">Streams:</span>
 					<% @selectedChannel = params[:channel_id].coalesce_to 0 %>
 					<!-- <span class="stream <%= @selectedChannel == 0 ? "selected" : ""%>" channel-id="0">All Events</span> -->
 					<!-- <span class="stream new" <%= current_user ? "linkto='new-channel-2'" : "linkto='shunt'" %>>+ New Stream</span> -->
@@ -178,7 +267,7 @@
 							<span class="pre-text"><span class="icon icon-remove-sign"></span>clear</span>
 						</span>
 					</span>
-					<span class="filter-toggle filter-action action-bookmarks">
+					<span class="filter-toggle filter-action <%= current_user ? "action-bookmarks" : "" %>" <%= current_user ? "" : "linkto='shunt'" %>>
 						<span class="filter-text">
 							<span class="pre-text"><span class="icon icon-bookmark"></span>bookmarks</span>
 						</span>
@@ -194,7 +283,7 @@
 				<span class="stream bookmark" bookmark-type="act"><span class="icon icon-flag"></span>Performers</span>
 				<span class="filter-toggle filter-action action-streams">
 					<span class="filter-text">
-						<span class="pre-text"><span class="icon icon-reorder"></span>streams + filters</span>
+						<span class="pre-text"><span class="icon icon-reorder"></span>back to streams + filters</span>
 					</span>
 				</span>
 			</div>
@@ -203,6 +292,7 @@
 			<div class="stay-on-target">
 				<div class="header">
 					<div class="toggle-wrapper">
+						<span class="stream title" style="float: left;    display: inline-block;    margin: 0 0 0 13px;">Filters:</span>
 						<span class="filter-toggle search">
 							<span class="filter-text">
 								<span class="pre-text"><span class="icon icon-search"></span></span>
@@ -327,6 +417,7 @@
 				<ul class="events">
 					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
 				</ul>
+				<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
 			</div>
 			<img id="loading" src="/assets/ajax-loader.gif" />
 		</div>

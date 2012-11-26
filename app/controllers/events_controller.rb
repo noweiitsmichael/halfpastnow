@@ -58,8 +58,9 @@ def index
     # @amount = params[:amount] || 20
     # @offset = params[:offset] || 0
 
-    @tags = Tag.all
+    @tags = Tag.includes(:parentTag, :childTags).all
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
+
     search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
 
     bookmarked = !params[:bookmark_type].to_s.empty?
@@ -253,12 +254,13 @@ def index
     end
 
     @ids = ActiveRecord::Base.connection.select_all(query)
+    
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
-
-    @allOccurrences = Occurrence.includes(:event => :tags, :event => :venue, :event => :occurrences, :event => :recurrences).find(@occurrence_ids, :order => order_by)
+ 
+    @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
     @occurrences = @allOccurrences.drop(@offset).take(@amount)
 
     # generating tag list for occurrences
@@ -466,8 +468,12 @@ def index
     @event.clicks += 1
     @event.save
 
-    bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :user_id => current_user.id).first
-    @bookmarkId = bookmark.nil? ? nil : bookmark.id 
+    if(current_user)
+      bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :user_id => current_user.id).first
+      @bookmarkId = bookmark.nil? ? nil : bookmark.id 
+    else
+      @bookmarkId = nil
+    end
 
     @occurrences = []
     @recurrences = []

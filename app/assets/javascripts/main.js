@@ -1,3 +1,4 @@
+
 /** jquery plugins **/
 
 // checks if element has a scrollbar
@@ -85,38 +86,47 @@ $(function() {
   scrollbarWidth = $.getScrollbarWidth();
 
   $('#content .events').on('click','.event-actions .icon',function() {
+    var that = $(this);
     var id = $(this).attr('event-id');
     var type = "event";
-    var root_url = "http%3A%2F%2Flocalhost:3000";
+    var root_url = "http%3A%2F%2Fhalfpastnow.com";
     var link = root_url + "%3F" + type + "_id%3D" + id;
 
-
-
-    console.log("icon click");
     if($(this).hasClass('facebook')) {
-      console.log('facebook icon click');
       var url = 'http://www.facebook.com/sharer/sharer.php?u=' + link;
       window.open(url, '_blank');
       window.focus();
+      event.stopPropagation();
     } else if($(this).hasClass('twitter')) {
-      console.log('twitter icon click');
       var url = 'https://twitter.com/intent/tweet?text=' + link;
       window.open(url, '_blank');
       window.focus();
+      event.stopPropagation();
     } else if($(this).hasClass('email')) {
-      console.log('email icon click');
       var url = 'mailto:?body=' + link;
       window.open(url, '_blank');
       window.focus();
+      event.stopPropagation();
     } else if($(this).hasClass('bookmark')) {
-      console.log('bookmark icon click');
-      $.getJSON('/bookmarks/custom_create', { bookmark: { "type": "Occurrence", "id": id } }, function(data) {
-        console.log("new bookmark");
-        console.log(data);
-      });
+      var bookmark_id = that.attr('bookmark-id');
+      if(that.hasClass('add')) {
+        $.getJSON('/bookmarks/custom_create', { bookmark: { "type": "Occurrence", "id": id } }, function(data) {
+          bookmark_id = data;
+          that.attr('bookmark-id',bookmark_id);
+          that.removeClass('add').addClass('remove');
+        });
+      } else {
+        console.log('removing 1');
+        $.getJSON('/bookmarks/destroy/', { id: bookmark_id }, function(data) {
+          console.log('removing 2');
+          console.log(data);
+          that.addClass('add').removeClass('remove');
+        });
+      }
+      event.stopPropagation();
     }
 
-    event.stopPropagation();
+    
   });
 
 
@@ -230,6 +240,9 @@ $(function() {
   // accordion for tag menu
 
   $("#header .filter-inner, #header .advancedbar").on("mouseover", '.tags-menu.parents .tag-header', function1);
+  // $("#header .filter-inner, #header .advancedbar").on("mouseover", '.tags-menu.parents .tag-header .name, .tags-menu.parents .tag-header .include', function() {
+  //   $(this).parent().click();
+  // });
   $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.parents .tag-header', function1);
   function function1() {
     $('.tags-menu .toggler').removeClass('icon-caret-right').addClass('icon-chevron-right');
@@ -1104,10 +1117,13 @@ function loading(command) {
         $('#loading').css('left', x + 'px');
         $('#loading').show();
       }
+    } else {
+      $('#infinite-loader').show();
     }
   } else if (command === 'hide') {
     $('.main .inner .header, .main .inner .events').css('opacity','1');
     $('#loading').hide();
+    $('#infinite-loader').hide();
     pulling = false;
   }
 }

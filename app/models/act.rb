@@ -36,4 +36,9 @@ class Act < ActiveRecord::Base
     end
   	return complete_elements.to_f / total_elements.to_f
   end
+
+  def num_upcoming_events_one_month
+    return self.events.map(&:nextOccurrence.to_proc).reject {|x| x.nil?}.delete_if { |x| x.start > 1.month.from_now}.count
+  end
+
 end
