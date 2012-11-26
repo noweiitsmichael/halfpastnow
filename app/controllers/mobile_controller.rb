@@ -809,7 +809,7 @@ class MobileController < ApplicationController
     respond_to do |format|
 
       format.html { render :layout => "mode" }
-      format.json { render json: { :occurrences => @occevents.to_json(:include => [:tags,:occurrences]), :recurrences => @recevents.to_json(:include => [:tags,:recurrences]), :venue => @venue.to_json } } 
+      format.json { render json: { :pictures =>@venue.pictures ,:occurrences => @occevents.to_json(:include => [:tags,:occurrences]), :recurrences => @recevents.to_json(:include => [:tags,:recurrences]), :venue => @venue.to_json } } 
     end  
   end
 
@@ -882,6 +882,14 @@ end
   def unbookmarkact
     @bookmark = Bookmark.find_by_bookmarked_id(params[:actid])
     @bookmark.destroy
+  end
+
+  def getchannel
+      respond_to do |format|
+      
+        format.json { render json: {:tags=>Tag.all} }
+      
+      end
   end
 
   def update
