@@ -18,15 +18,16 @@
   <%= javascript_include_tag "application" %>
   <%= javascript_include_tag "underscore" %>
   <%= javascript_include_tag "jquery-ui" %>
-  <%= javascript_include_tag "jquery-ui-timepicker-addon" %>
+  <%#= javascript_include_tag "jquery-ui-timepicker-addon" %>
   <%= javascript_include_tag "viewport" %>
   <%= javascript_include_tag "date" %>
   <%= javascript_include_tag "main" %>
-  <%= javascript_include_tag "tokeninput" %>
+  <%#= javascript_include_tag "tokeninput" %>
   <%= javascript_include_tag "dropkick" %>
-  <%= javascript_include_tag "jquery.tabSlideOut.v1.3" %>
+  <%#= javascript_include_tag "jquery.tabSlideOut.v1.3" %>
   <%= javascript_include_tag "galleria-1.2.8.min" %>
   <%= javascript_include_tag "jquery.form" %>
+  <%= javascript_include_tag "jquery.history" %>
   
 
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
@@ -41,6 +42,7 @@
   
   <%= csrf_meta_tags %>
 
+  <% if false %><!--
   <script type="text/javascript">
     $(function(){
         $('.slide-out-div').tabSlideOut({
@@ -51,7 +53,8 @@
         });
 
     });
-    </script>
+    </script>-->
+  <% end %>
 
   <script type="text/javascript">
 
@@ -109,12 +112,13 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
   <div id="overlays">
     <%= yield :overlay %>
   </div>
+  <% if false %><!--
   <div class="slide-out-div">
 	<a class="handle" href="http://link-for-non-js-users.html">Content</a>
 	<h3>Got some feedback?</h3>
 	<p>Let us know! We really appreciate it.</p>
 	<%= render 'feedbacks/form' %>
   </div>
-
+  --><% end %>
 </body>
 </html>

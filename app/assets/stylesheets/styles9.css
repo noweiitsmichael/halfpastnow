@@ -2249,7 +2249,16 @@ html, body {
   margin-left: 10px;
 }
 
+#header .filter-toggle.filter-action.right {
+  float:right;
+}
+
 #header .filter-toggle.filter-action.action-save {
+}
+
+#header .filter-toggle.filter-action.action-clear {
+    margin:0;
+    margin-right:9px;
 }
 
 #header .filter-toggle.filter-action .pre-text {
@@ -2301,6 +2310,7 @@ html, body {
   padding: 0 6px 0 0;
   margin-left: 4px;
   margin-top: 3px;
+  display: none;
 }
 
 #header .pre-text .icon {

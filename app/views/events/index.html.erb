@@ -262,12 +262,7 @@
 							<span class="pre-text"><span class="icon icon-plus-sign"></span>new stream</span>
 						</span>
 					</span>
-					<span class="filter-toggle filter-action action-clear">
-						<span class="filter-text">
-							<span class="pre-text"><span class="icon icon-remove-sign"></span>clear</span>
-						</span>
-					</span>
-					<span class="filter-toggle filter-action <%= current_user ? "action-bookmarks" : "" %>" <%= current_user ? "" : "linkto='shunt'" %>>
+					<span class="right filter-toggle filter-action <%= current_user ? "action-bookmarks" : "" %>" <%= current_user ? "" : "linkto='shunt'" %>>
 						<span class="filter-text">
 							<span class="pre-text"><span class="icon icon-bookmark"></span>bookmarks</span>
 						</span>
@@ -281,7 +276,7 @@
 				<span class="stream bookmark selected" bookmark-type="event"><span class="icon icon-bolt"></span>Events</span>
 				<span class="stream bookmark" bookmark-type="venue"><span class="icon icon-home"></span>Venues</span>
 				<span class="stream bookmark" bookmark-type="act"><span class="icon icon-flag"></span>Performers</span>
-				<span class="filter-toggle filter-action action-streams">
+				<span class="right filter-toggle filter-action action-streams">
 					<span class="filter-text">
 						<span class="pre-text"><span class="icon icon-reorder"></span>back to streams + filters</span>
 					</span>
@@ -385,6 +380,12 @@
 								</div>
 							</div>
 						</span>
+						<span class="right filter-toggle filter-action action-clear">
+							<span class="filter-text">
+								<span class="pre-text"><span class="icon icon-remove-sign"></span>clear</span>
+							</span>
+						</span>
+					</span>
 					</div>
 				</div>
 			</div>

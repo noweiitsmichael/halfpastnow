@@ -876,7 +876,7 @@ function streamSelector() {
   $('#dk_container_stream-select').remove();
   $('.streambar .stream.selector').remove();
 
-  var parentWidth = $('.streambar .header').width() - $('.action-bookmarks').outerWidth(true) - $('.action-save').outerWidth(true) - $('.action-clear').outerWidth(true); //- $('.stream.new').width();
+  var parentWidth = $('.streambar .header').width() - $('.action-bookmarks').outerWidth(true) - $('.action-save').outerWidth(true) /*- $('.action-clear').outerWidth(true)*/; //- $('.stream.new').width();
   var sumWidth = 0;
   var maxWidth = 0;
   var overflowIndex = 0;
@@ -980,7 +980,7 @@ function boundsChanged() {
 
 function closeMode() {
   //console.log("closeMode");
-  history.pushState({}, "main mode", "/");
+  window.History.pushState({}, /* "main mode" */ null, "/");
   demodal();
 }
 
@@ -1179,7 +1179,7 @@ function loadModal(event) {
   //console.log(thing.id);
   //var thing = {type:$(this).attr("linkto"), id: $(this).attr("link-id")};
   if($(this).attr("linkto") !== "shunt" && $(this).attr("linkto") !== "new-channel" && $(this).attr("linkto") !== "new-channel-2" ) {
-    history.pushState({}, thing.type + " mode", thing.url());
+    window.History.pushState({}, /* thing.type + " mode" */ null, thing.url());
   }
   if($(this).is("#content .main .events li .venue")) {
      event.stopPropagation();
