@@ -51,6 +51,12 @@
 			window.open(url, '_blank');
 			window.focus();
 		});
+		
+		$('.bookmark-share .gcal').click(function() {
+			var url = 'https://twitter.com/intent/tweet?text=' + link;
+			window.open(url, '_blank');
+			window.focus();
+		});
 	});
 </script>
 
@@ -58,5 +64,6 @@
 	<span class="icon icon-envelope-alt email"></span>
 	<span class="icon icon-facebook-sign facebook"></span>
 	<span class="icon icon-twitter-sign twitter"></span>
+	<span class="icon icon-calendar gcal"></span>
 	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span>
 </div>

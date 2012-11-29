@@ -129,11 +129,12 @@ class PicturesController < ApplicationController
     # unless @event.nil?
       if params[:picType] == "Event"
         @event = Event.find(params[:id])
-        event_hash = {"cover_image" => params[:cover_image]}
+        pp params
+        event_hash = {"cover_image" => params[:cover_image], "cover_image_url" => Picture.find(params[:cover_image]).image_url(:cover)}
         @event.update_attributes!(event_hash)
       elsif params[:picType] == "rawEvent"
         @event = RawEvent.find(params[:id])
-        event_hash = {"cover_image" => params[:cover_image]}
+        event_hash = {"cover_image" => params[:cover_image], "cover_image_url" => Picture.find(params[:cover_image]).image_url(:cover)}
         @event.update_attributes!(event_hash)
       end
     # end

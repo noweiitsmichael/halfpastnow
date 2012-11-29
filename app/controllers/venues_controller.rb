@@ -227,6 +227,7 @@ class VenuesController < ApplicationController
 
     @raw_event = RawEvent.find(params[:raw_event_id])
     @event.cover_image = @raw_event.cover_image
+    @event.cover_image_url = @raw_event.cover_image_url
     
     if @event.save
       @raw_event.submitted = true

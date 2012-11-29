@@ -16,7 +16,7 @@
 		<% end %>
 	</div>
 	<div class="picture">
-		<img src="<%= occurrence.event.cover_image ? (Picture.find_by_id(occurrence.event.cover_image) ? Picture.find_by_id(occurrence.event.cover_image).image_url(:cover) : "/assets/placeholder.png") : "/assets/placeholder.png" %>" />
+		<img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
 		<div class="picture-overlay"></div>
 	</div>
 	<div class="event-actions">
