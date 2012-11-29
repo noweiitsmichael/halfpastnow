@@ -96,8 +96,8 @@ ActiveRecord::Schema.define(:version => 20121128233743) do
     t.string   "title"
     t.text     "description"
     t.decimal  "price"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.integer  "venue_id"
     t.integer  "clicks",          :default => 0
     t.integer  "views",           :default => 0
@@ -105,7 +105,7 @@ ActiveRecord::Schema.define(:version => 20121128233743) do
     t.boolean  "suggested"
     t.text     "fb_picture"
     t.text     "url"
-    t.integer  "cover_image"
+    t.text     "cover_image"
     t.text     "event_url"
     t.string   "cover_image_url"
   end
@@ -122,13 +122,13 @@ ActiveRecord::Schema.define(:version => 20121128233743) do
   add_index "events_tags", ["tag_id"], :name => "index_events_tags_on_tag_id"
 
   create_table "feedbacks", :force => true do |t|
+    t.integer  "feedback_type"
     t.string   "subject"
     t.string   "description"
     t.integer  "status"
     t.integer  "user_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
-    t.integer  "feedback_type"
   end
 
   create_table "histories", :force => true do |t|
@@ -175,13 +175,13 @@ ActiveRecord::Schema.define(:version => 20121128233743) do
     t.text     "url"
     t.string   "raw_id"
     t.string   "from"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.boolean  "deleted"
     t.boolean  "submitted"
     t.integer  "raw_venue_id"
     t.text     "fb_picture"
-    t.integer  "cover_image"
+    t.text     "cover_image"
     t.text     "event_url"
     t.string   "cover_image_url"
   end
@@ -261,12 +261,12 @@ ActiveRecord::Schema.define(:version => 20121128233743) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                   :default => "", :null => false
-    t.string   "encrypted_password",      :default => "", :null => false
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",           :default => 0
+    t.integer  "sign_in_count",          :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -276,10 +276,6 @@ ActiveRecord::Schema.define(:version => 20121128233743) do
     t.string   "firstname"
     t.string   "lastname"
     t.string   "username"
-    t.string   "profilepic_file_name"
-    t.string   "profilepic_content_type"
-    t.integer  "profilepic_file_size"
-    t.datetime "profilepic_updated_at"
     t.string   "profilepic"
     t.string   "provider"
     t.string   "uid"

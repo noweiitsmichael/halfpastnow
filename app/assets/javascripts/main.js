@@ -96,17 +96,17 @@ $(function() {
       var url = 'http://www.facebook.com/sharer/sharer.php?u=' + link;
       window.open(url, '_blank');
       window.focus();
-      event.stopPropagation();
+      stopPropagation(event);
     } else if($(this).hasClass('twitter')) {
       var url = 'https://twitter.com/intent/tweet?text=' + link;
       window.open(url, '_blank');
       window.focus();
-      event.stopPropagation();
+      stopPropagation(event);
     } else if($(this).hasClass('email')) {
       var url = 'mailto:?body=' + link;
       window.open(url, '_blank');
       window.focus();
-      event.stopPropagation();
+      stopPropagation(event);
     } else if($(this).hasClass('bookmark')) {
       var bookmark_id = that.attr('bookmark-id');
       if(that.hasClass('add')) {
@@ -123,7 +123,7 @@ $(function() {
           that.addClass('add').removeClass('remove');
         });
       }
-      event.stopPropagation();
+      stopPropagation(event);
     }
 
     
@@ -136,7 +136,7 @@ $(function() {
 
   // onclick include or exclude tags
   $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.parents .include', function(event) {
-    event.stopPropagation();
+    stopPropagation(event);
 
     var tagID = $(this).attr('tag-id');
 
@@ -772,11 +772,11 @@ $(function() {
   });
 
   $('.filter-toggle:not(.filter-action)').click(function(event) {
-    event.stopPropagation();
+    stopPropagation(event);
   });
 
   $('#ui-datepicker-div').click(function(event) {
-    event.stopPropagation();
+    stopPropagation(event);
   });
 
   $('html').click(function() {
@@ -980,7 +980,8 @@ function boundsChanged() {
 
 function closeMode() {
   //console.log("closeMode");
-  window.History.pushState({}, /* "main mode" */ null, "/");
+  //window.History.pushState({}, /* "main mode" */ null, "/");
+  history.pushState({}, /* "main mode" */ null, "/");
   demodal();
 }
 
@@ -1171,6 +1172,14 @@ function checkInfinite() {
   }
 }
 
+function stopPropagation(event) {
+  if (event && event.stopPropagation) {
+    event.stopPropagation();
+  } else if (window.event) {
+    window.event.cancelBubble = true;
+  }
+}
+
 function loadModal(event) {
   //console.log('loadModal');
   var thing = spawn(things[$(this).attr("linkto")],{id: $(this).attr("link-id")});
@@ -1179,10 +1188,11 @@ function loadModal(event) {
   //console.log(thing.id);
   //var thing = {type:$(this).attr("linkto"), id: $(this).attr("link-id")};
   if($(this).attr("linkto") !== "shunt" && $(this).attr("linkto") !== "new-channel" && $(this).attr("linkto") !== "new-channel-2" ) {
-    window.History.pushState({}, /* thing.type + " mode" */ null, thing.url());
+    //window.History.pushState({}, /* thing.type + " mode" */ null, thing.url());
+    history.pushState({}, /* thing.type + " mode" */ null, thing.url());
   }
   if($(this).is("#content .main .events li .venue")) {
-     event.stopPropagation();
+     stopPropagation(event);
   }
   modal(thing);
   return false;
