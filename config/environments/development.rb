@@ -38,5 +38,4 @@ Myapp::Application.configure do
   config.action_mailer.default :charset => "utf-8"
   
   
-  config.log_level = :debug
 end

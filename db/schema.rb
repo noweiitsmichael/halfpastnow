@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121115023957) do
+ActiveRecord::Schema.define(:version => 20121128233743) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -99,14 +99,15 @@ ActiveRecord::Schema.define(:version => 20121115023957) do
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
     t.integer  "venue_id"
-    t.integer  "clicks",      :default => 0
-    t.integer  "views",       :default => 0
+    t.integer  "clicks",          :default => 0
+    t.integer  "views",           :default => 0
     t.integer  "user_id"
     t.boolean  "suggested"
     t.text     "fb_picture"
     t.text     "url"
-    t.text     "cover_image"
+    t.integer  "cover_image"
     t.text     "event_url"
+    t.string   "cover_image_url"
   end
 
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
@@ -121,13 +122,13 @@ ActiveRecord::Schema.define(:version => 20121115023957) do
   add_index "events_tags", ["tag_id"], :name => "index_events_tags_on_tag_id"
 
   create_table "feedbacks", :force => true do |t|
-    t.integer  "feedback_type"
     t.string   "subject"
     t.string   "description"
     t.integer  "status"
     t.integer  "user_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.integer  "feedback_type"
   end
 
   create_table "histories", :force => true do |t|
@@ -180,8 +181,9 @@ ActiveRecord::Schema.define(:version => 20121115023957) do
     t.boolean  "submitted"
     t.integer  "raw_venue_id"
     t.text     "fb_picture"
-    t.text     "cover_image"
+    t.integer  "cover_image"
     t.text     "event_url"
+    t.string   "cover_image_url"
   end
 
   add_index "raw_events", ["raw_venue_id"], :name => "index_raw_events_on_raw_venue_id"
@@ -259,12 +261,12 @@ ActiveRecord::Schema.define(:version => 20121115023957) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "email",                   :default => "", :null => false
+    t.string   "encrypted_password",      :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
+    t.integer  "sign_in_count",           :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -274,6 +276,10 @@ ActiveRecord::Schema.define(:version => 20121115023957) do
     t.string   "firstname"
     t.string   "lastname"
     t.string   "username"
+    t.string   "profilepic_file_name"
+    t.string   "profilepic_content_type"
+    t.integer  "profilepic_file_size"
+    t.datetime "profilepic_updated_at"
     t.string   "profilepic"
     t.string   "provider"
     t.string   "uid"
