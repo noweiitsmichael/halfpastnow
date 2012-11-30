@@ -159,6 +159,17 @@ var eventActs = {};
       });
     });
 
+    this.find(".date-input").each(function() {
+      
+      var dDate = Date.parse($(this).siblings('.date-hidden').val());
+      
+      $(this).datepicker({
+        ampm: true,
+        dateFormat: 'D M d, yy',
+        defaultDate: dDate
+      });
+    });
+
     this.find(".time-input").timepicker({
       ampm: true,
       timeFormat: 'h:mm tt'
@@ -166,6 +177,9 @@ var eventActs = {};
 
     this.find(".datetime-input").change(dateTimeChange);
     this.find(".datetime-input").blur(dateTimeChange);
+
+    this.find(".date-input").change(dateChange);
+    this.find(".date-input").blur(dateChange);
 
     this.find(".time-input").change(timeChange);
     this.find(".time-input").blur(timeChange);
@@ -341,6 +355,11 @@ var eventActs = {};
   function dateTimeChange() {
     var date = $(this).datetimepicker("getDate");
     $(this).siblings(".datetime-hidden").val(date ? date.toString("yyyy-MM-ddTHH:mm:ss") : "");
+  }
+
+  function dateChange() {
+    var date = $(this).datepicker("getDate");
+    $(this).siblings(".date-hidden").val(date ? date.toString("yyyy-MM-dd") : "");
   }
 
   function timeChange() {

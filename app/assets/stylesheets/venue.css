@@ -108,7 +108,7 @@ input.price {
 }
 
 .main.event .occurrence label, .main.event .recurrence label {
-  width:50px;
+  width:120px;
 }
 
 .occurrence .remove, .recurrence .remove {

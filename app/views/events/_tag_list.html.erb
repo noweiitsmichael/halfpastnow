@@ -1,28 +1,32 @@
 <div class="tags-display">&nbsp;</div>
 <ul class="tags-menu parents">
 	<% tagCounts.select{|tagCount| tagCount[:parent].nil? }.each do |parentTagCount| %>
-		<li>
-			<div class="tag-header <%= parentTagCount[:count] == 0 ? "no-results" : "" %>" tag-id="<%= parentTagCount[:id] %>">
-				<!-- <span class="exclude icon-ban-circle" tag-id="<%= parentTagCount[:id] %>" title="don't show events with this tag"></span> -->
-				<span class="include icon-check-empty" tag-id="<%= parentTagCount[:id] %>" title="show events with this tag"><span></span></span>
-				<span class="name"><%= parentTagCount[:name] %><!-- <em><%= parentTagCount[:count] == 0 ? "" : "[#{parentTagCount[:count]}]" %></em> --></span>
-				<% if parentTagCount[:children].size > 0 %>
-					<span class="toggler icon-chevron-right"></span>
-				<% end %>
-			</div>
-		</li>
+		<% unless parentTagCount[:name] == "Streams" %>
+			<li>
+				<div class="tag-header <%= parentTagCount[:count] == 0 ? "no-results" : "" %>" tag-id="<%= parentTagCount[:id] %>">
+					<!-- <span class="exclude icon-ban-circle" tag-id="<%= parentTagCount[:id] %>" title="don't show events with this tag"></span> -->
+					<span class="include icon-check-empty" tag-id="<%= parentTagCount[:id] %>" title="show events with this tag"><span></span></span>
+					<span class="name"><%= parentTagCount[:name] %><!-- <em><%= parentTagCount[:count] == 0 ? "" : "[#{parentTagCount[:count]}]" %></em> --></span>
+					<% if parentTagCount[:children].size > 0 %>
+						<span class="toggler icon-chevron-right"></span>
+					<% end %>
+				</div>
+			</li>
+		<% end %>
 	<% end %>
 </ul>
 <ul class="tags-menu children">
 	<% tagCounts.select{|tagCount| tagCount[:parent].nil? }.each do |parentTagCount| %>
-		<% parentTagCount[:children].each do |childTagCount| %>
-			<li parent-id="<%= parentTagCount[:id] %>">
-				<div class="tag-header <%= childTagCount[:count] == 0 ? "no-results" : "" %>" tag-id="<%= childTagCount[:id] %>">
-					<!-- <span class="exclude icon-ban-circle" tag-id="<%= childTagCount[:id] %>" title="don't show events with this tag"></span> -->
-					<span class="include icon-check" tag-id="<%= childTagCount[:id] %>" title="show events with this tag"><span></span></span>
-					<span class="name"><%= childTagCount[:name] %><!-- <em><%= childTagCount[:count] == 0 ? "" : "[#{childTagCount[:count]}]" %></em> --></span>
-				</div>
-			</li>
+		<% unless parentTagCount[:name] == "Streams" %>
+			<% parentTagCount[:children].each do |childTagCount| %>
+				<li parent-id="<%= parentTagCount[:id] %>">
+					<div class="tag-header <%= childTagCount[:count] == 0 ? "no-results" : "" %>" tag-id="<%= childTagCount[:id] %>">
+						<!-- <span class="exclude icon-ban-circle" tag-id="<%= childTagCount[:id] %>" title="don't show events with this tag"></span> -->
+						<span class="include icon-check" tag-id="<%= childTagCount[:id] %>" title="show events with this tag"><span></span></span>
+						<span class="name"><%= childTagCount[:name] %><!-- <em><%= childTagCount[:count] == 0 ? "" : "[#{childTagCount[:count]}]" %></em> --></span>
+					</div>
+				</li>
+			<% end %>
 		<% end %>
 	<% end %>
 </ul>
