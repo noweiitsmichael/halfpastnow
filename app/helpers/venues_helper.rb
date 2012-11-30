@@ -14,4 +14,13 @@ module VenuesHelper
   def display_time(datetime)
   	return datetime ? datetime.to_time.strftime("%-I:%M %P") : nil
   end
+
+  def display_date(datetime)
+    return datetime ? datetime.to_time.strftime("%a %b %-d, %Y") : nil
+  end
+
+
+  def hidden_date(datetime)
+    return datetime ? datetime.to_time.strftime("%Y-%m-%d") : nil
+  end
 end
