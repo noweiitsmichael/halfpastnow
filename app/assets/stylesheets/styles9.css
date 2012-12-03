@@ -2556,3 +2556,21 @@ html, body {
   top: 0;
   z-index: 1000;
 }
+
+.form-indicators {
+    display:inline-block;
+    position:relative;
+    top:2px;
+    margin-left:5px;
+}
+
+.form-success {
+    color:#009900;
+    font-size:19px;
+}
+
+
+.form-failure {
+    color:#990000;
+    font-size:19px;
+}

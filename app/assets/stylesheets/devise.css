@@ -12,14 +12,18 @@
 #location { color: #999999;}
 a.logout { text-decoration:none; text-transform:lowercase; color:black; font-weight:bold; font-style:italic; margin-right:4px; margin-top:4px; display: block;}
 .profile-pic { width:120px; display:block; }
-.streams { font-size:16px; }
-.streams .stream { margin-top: 12px; border-top: 1px dotted; padding-top: 12px;}
-.stream .title { font-size: 21px; font-weight: 700; margin-right:9px; }
+#profile-menu .streams { font-size:16px; }
+.streams .stream { margin-bottom: 12px; border-top: 1px dotted; padding-top: 12px;}
+.stream .title { font-size: 18px; font-weight: 700; margin-right:9px; }
 .stream .action { display:inline-block; line-height:14px; margin-right:9px; font-size: 18px; font-weight: 700; text-decoration: none; color: #888;}
 .stream .action .icon { font-size:14px; margin-right:3px; }
 .stream .action:hover { color:#333; border-bottom:1px dotted; }
 .stream .filter.name { font-weight: 700; margin-right: 5px;}
 .stream .filter.value { font-style:italic; }
+.stream .stream-details { overflow:hidden; }
+.stream .stream-details > div { float:left; margin-right:15px; }
+.stream .stream-details > div:after { content: "/"; margin-left:15px; }
+.stream .stream-details > div:last-child:after { content: none; margin-left:0; }
 html, body
 {
   margin: 0;
