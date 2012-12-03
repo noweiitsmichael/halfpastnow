@@ -1,7 +1,7 @@
 
 
 
-<label>Add a new time or recurrence</label><br>
+<label>Add a new time or recurrence:</label>
 <div class="occurrence recurrence">
 	<div class="toggle-recurring">
 		<input type="checkbox" /> Make Recurring
@@ -60,6 +60,7 @@
 		<% end %>
 	</div>
 </div>
+<div class="occ">
 <label>Existing times:</label>
 <% event.occurrences.sort_by{ |occurrence| occurrence.id || 0 }.each do |occurrence| %>
   <%= e.fields_for :occurrences, occurrence do |o| %>
@@ -82,19 +83,28 @@
 	<% end %>
   <% end %>
 <% end %>
+</div>
+<div class="occ">
 <br><label>Existing Recurrences: </label> <br>
 <% event.recurrences.sort_by{ |recurrence| recurrence.id || 0 }.each do |recurrence| %>
   <%= e.fields_for :recurrences, recurrence do |r| %>
     <% unless (recurrence.id.nil?) %>
 	    <div class="recurrence">
-	    	<span><%= "every " + ((recurrence.every_other.nil? || recurrence.every_other == 0) ? "" : ((recurrence.every_other == 1) ? "other" : to_ordinal(recurrence.every_other))) %></span>
-	    	<span><%= (recurrence.day_of_week && recurrence.week_of_month) ? to_ordinal(recurrence.week_of_month) + " " + @week[recurrence.day_of_week] : (recurrence.day_of_month ? to_ordinal(recurrence.day_of_month) : (recurrence.day_of_week ? @week[recurrence.day_of_week] : "day")) %></span>
+	    	<span><%= "every " + ((recurrence.every_other.nil? || recurrence.every_other == 0) ? "" : ((recurrence.every_other == 1) ? "other" : to_ordinal(recurrence.every_other))) %>
+	    	</span>
+	    	<span><%= (recurrence.day_of_week && recurrence.week_of_month) ? to_ordinal(recurrence.week_of_month) + " " + @week[recurrence.day_of_week] : (recurrence.day_of_month ? to_ordinal(recurrence.day_of_month) : (recurrence.day_of_week ? @week[recurrence.day_of_week] : "day")) %> 	    		
+	    	</span>
 	    	<% if recurrence.end %>
 		    	<span>from <%= recurrence.start.to_time.strftime("%I:%M%P") %></span>
 		    	<span>to <%= recurrence.end.to_time.strftime("%I:%M%P") %></span>
 		    <% else %>
 		    	<span>at <%= recurrence.start.to_time.strftime("%I:%M%P") %></span>
 		    <% end %>
+		    
+		    <% if recurrence.range_start %>		    
+		    	<span><%= " from " + (recurrence.range_start.strftime("%b %d")) + " to " + (recurrence.range_end.strftime("%b %d")) %></span>
+	    	<% end %>
+
 		    <div class="remove">
 				<%= r.check_box :_destroy %>
 				<%= r.label :_destroy, "remove recurrence" %>
@@ -103,3 +113,4 @@
     <% end %>
   <% end %>
 <% end %><br>
+</div>

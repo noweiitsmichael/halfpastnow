@@ -108,7 +108,7 @@ input.price {
 }
 
 .main.event .occurrence label, .main.event .recurrence label {
-  width:120px;
+  width:130px;
 }
 
 .occurrence .remove, .recurrence .remove {
@@ -130,6 +130,10 @@ select.interval {
 
 .tags.field label {
   float:left;
+}
+
+.tags.field .occ label {
+  float:none;
 }
 
 .input-tags {
