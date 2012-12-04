@@ -63,21 +63,24 @@ def index
 
     search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
 
+    @amount = 200
+    @offset = 0
     bookmarked = !params[:bookmark_type].to_s.empty?
     isCollection = !params[:collection_type].to_s.empty?
 
-    # amount/offset
-    @amount = 20
-    unless(params[:amount].to_s.empty?)
-      @amount = params[:amount].to_i
-    end
-
-    @offset = 0
-    unless(params[:offset].to_s.empty?)
-      @offset = params[:offset].to_i
-    end
-
     unless(bookmarked || isCollection)
+      # amount/offset
+      @amount = 20
+      unless(params[:amount].to_s.empty?)
+        @amount = params[:amount].to_i
+      end
+
+      @offset = 0
+      unless(params[:offset].to_s.empty?)
+        @offset = params[:offset].to_i
+      end
+
+
       # search
       unless(params[:search].to_s.empty?)
         search = params[:search].gsub(/[^0-9a-z ]/i, '').upcase
@@ -342,7 +345,7 @@ def index
           render :partial => "combo", :locals => { :occurrences => @occurrences, :tagCounts => @tagCounts, :parentTags => @parentTags, :offset => @offset }
         end
       end
-      format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+      format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
     end
     
   end
