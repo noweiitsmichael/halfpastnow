@@ -193,9 +193,9 @@
                 if(!channel.start_date.to_s.empty? || !channel.end_date.to_s.empty?)
                   dateString = channel.start_date.strftime("%-m/%-d") + "&ndash;" + channel.end_date.strftime("%-m/%-d")
                 elsif (channel.start_days == 0 && channel.end_days == 6)
-                  dayArray = channel.day_of_week.split(",")
+                  dayArray = (channel.day_of_week || "").split(",")
                   num_days = dayArray.size
-                  if(num_days.size == 7)
+                  if(num_days == 7 || num_days == 0)
                     dateString = "This Week"
                   else
                     dayArray.each do |day|
