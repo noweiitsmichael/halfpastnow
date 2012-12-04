@@ -56,18 +56,18 @@ box-sizing: border-box;
 
 
 /* title bar */
-.ui-header.ui-bar-a{
+/*.ui-header.ui-bar-a{
 background:url(/assets/header_bg.png);
-}
-.ui-header .ui-title {
+}*/
+/*.ui-header .ui-title {
 text-indent:-9999px;
 font-size:0px;
-background:url(/assets/halfpastnowMobile.png) no-repeat center center ;
+background:url(/assets/halfpastnow_final_header.png) no-repeat center center ;
 height:33px;
 padding:5px 0 5px 50px;
 margin:0px;
 }
-
+*/
 .ui-header  .ui-btn-up-a  {
 background:rgba(255, 255, 255, 0.1);
 box-shadow:none;
