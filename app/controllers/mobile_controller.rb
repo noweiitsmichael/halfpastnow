@@ -136,10 +136,10 @@ class MobileController < ApplicationController
     # @amount = params[:amount] || 20
     # @offset = params[:offset] || 0
 
-    @tags = Tag.all
+    @tags = Tag.includes(:parentTag, :childTags).all
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
     search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
-
+    bookmarked = !params[:bookmark_type].to_s.empty?
     # amount/offset
     @amount = 20
     unless(params[:amount].to_s.empty?)
@@ -171,9 +171,18 @@ class MobileController < ApplicationController
     end_date_check = start_time_check = end_time_check = day_check = "TRUE"
     occurrence_start_time = "((EXTRACT(HOUR FROM occurrences.start) * 3600) + (EXTRACT(MINUTE FROM occurrences.start) * 60))"
 
-    event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
-    event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_s == "INFINITY") ? 365000 : params[:end_days].to_i + 1))
-
+    event_start_date = event_end_date = nil
+    if(!params[:start_date].to_s.empty?)
+      event_start_date = Date.parse(params[:start_date])
+    else
+      event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
+    end
+    if(!params[:end_date].to_s.empty?)
+      event_end_date = Date.parse(params[:end_date]).advance(:days => 1)
+    else
+      event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_i == -1) ? 365000 : params[:end_days].to_i + 1))
+    end
+    
     start_date_check = "occurrences.start >= '#{event_start_date}'"
     end_date_check = "occurrences.start <= '#{event_end_date}'"
 
@@ -239,13 +248,15 @@ class MobileController < ApplicationController
     unless(params[:included_tags].to_s.empty?)
       tags_mush = params[:included_tags] * ','
 
-      tag_include_match = "events.id IN (
-                    SELECT event_id 
-                      FROM events, tags, events_tags 
-                      WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{tags_mush}) 
-                      GROUP BY event_id 
-                      HAVING COUNT(tag_id) >= #{ params[:included_tags].count }
-                  )"
+      # tag_include_match = "events.id IN (
+      #               SELECT event_id 
+      #                 FROM events, tags, events_tags 
+      #                 WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{tags_mush}) 
+      #                 GROUP BY event_id 
+      #                 HAVING COUNT(tag_id) >= #{ params[:included_tags].count }
+      #             )"
+
+      tag_include_match = "tags.id IN (#{tags_mush})"
     end
 
     unless(params[:excluded_tags].to_s.empty?)
@@ -300,59 +311,45 @@ class MobileController < ApplicationController
 
     # generating tag list for occurrences
 
+    # generating tag list for occurrences
+
     @occurringTags = {}
-    @allOccurrences.each do |occurrence|
-      occurrence.event.tags.each do |tag|
-        unless(tag.parent_tag_id)
-          if(!@occurringTags[tag.id])
-            @occurringTags[tag.id] = { :tag => Tag.new(:name => tag.name), :count => 1 }
-          else
-            @occurringTags[tag.id][:count] += 1
-          end
-        end
+
+    @tagCounts = []
+
+    @parentTags.each do |parentTag|
+      @tagCounts[parentTag.id] = {
+        :count => 0,
+        :children => [],
+        :id => parentTag.id,
+        :name => parentTag.name,
+        :parent => nil
+      }
+      parentTag.childTags.each do |childTag|
+        @tagCounts[childTag.id] = {
+          :count => 0,
+          :children => [],
+          :id => childTag.id,
+          :name => childTag.name,
+          :parent => @tagCounts[parentTag.id]
+        }
+        @tagCounts[parentTag.id][:children].push(@tagCounts[childTag.id])
       end
     end
 
     @allOccurrences.each do |occurrence|
       occurrence.event.tags.each do |tag|
-        unless(!tag.parent_tag_id)
-          if(!@occurringTags[tag.id])
-            @occurringTags[tag.id] = { :tag => Tag.new(:name => tag.name, :parent_tag_id => tag.parent_tag_id), :count => 1 }
-            @occurringTags[tag.id][:tag].id = tag.id
-            if(@occurringTags[tag.parent_tag_id])
-              @occurringTags[tag.parent_tag_id][:tag].childTags.push(@occurringTags[tag.id][:tag])
-            end
-          else
-            @occurringTags[tag.id][:count] += 1
-          end
-        end
+         @tagCounts[tag.id][:count] += 1
       end
     end
 
-    tags_list = ((params[:included_tags].to_s.empty?) ? [] : params[:included_tags].collect { |str| str.to_i }) + ((params[:excluded_tags].to_s.empty?) ? [] : params[:excluded_tags].collect { |str| str.to_i })
-    tags_list.each do |tag_id|
-      tag = Tag.find(tag_id)
-      parent_tag = tag.parentTag
-
-      if(parent_tag)
-        unless(@occurringTags[parent_tag.id])
-          @occurringTags[parent_tag.id] = { :tag => Tag.new(:name => parent_tag.name), :count => 0 }
-        end
-
-        unless(@occurringTags[tag.id])
-          @occurringTags[tag.id] = { :tag => Tag.new(:name => tag.name, :parent_tag_id => tag.parent_tag_id), :count => 0 }
-          @occurringTags[tag.id][:tag].id = tag.id
-          @occurringTags[parent_tag.id][:tag].childTags.push(@occurringTags[tag.id][:tag])
-        end
-      else
-        unless(@occurringTags[tag.id])
-          @occurringTags[tag.id] = { :tag => Tag.new(:name => tag.name), :count => 0 }
-        end
-      end
+    @parentTags.each do |parentTag|
+      @tagCounts[parentTag.id][:children] = @tagCounts[parentTag.id][:children].sort_by { |tagCount| tagCount[:count] }.reverse
     end
 
-    @occurringTags = Hash[@occurringTags.sort_by { |id, tuple| id }]
+    @tagCounts = @tagCounts.sort_by { |tagCount| tagCount ? tagCount[:count] : 0 }.compact.reverse
 
+    
     # pp @occurringTags
     # puts ""
     # puts "- - - - - - - - - - - - -"
@@ -471,7 +468,7 @@ class MobileController < ApplicationController
     # @amount = params[:amount] || 20
     # @offset = params[:offset] || 0
 
-    @tags = Tag.all
+    @tags = Tag.includes(:parentTag, :childTags).all
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
     search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
 
