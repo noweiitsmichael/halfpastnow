@@ -607,11 +607,14 @@ input::-webkit-input-placeholder
 }
 
 #header .filter.date .day-of-week .day {
-    font-size: 21px;
+    font-size: 24px;
     line-height: 8px;
     margin-top: 7px;
+    font-variant: small-caps;
+    margin-bottom: 7px;
 }
 #header .filter.date .day-of-week .date {
+    margin-bottom: 6px;
 
 }
 #header .time-range, #header .price-range, #header .date-range
