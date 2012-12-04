@@ -267,7 +267,6 @@ input::-webkit-input-placeholder
 
 #header .advancedbar .col.one {
   width: 205px;
-  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/assets/scaletake2b.png");
   color: white;
   overflow: hidden;
   font-size: 13px;
@@ -343,7 +342,6 @@ input::-webkit-input-placeholder
   font-size: 18px;
   color: #342B34;
   padding: 1px 5px 0px;
-  background: -webkit-linear-gradient(top, white 0%, #EBDCEB 100%);
   border-radius: 2px;
   display: block;
   font-weight: normal;
@@ -479,7 +477,6 @@ input::-webkit-input-placeholder
 
 
 .child-tags-menu {
-  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("/assets/scaletake2b.png");
   display:none;
   background: white;
   border-top: 1px solid #D0BDD0;
@@ -2057,7 +2054,6 @@ input::-webkit-input-placeholder
 }
 
 #header .streambar {
-background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/assets/scaletake2b.png");
 position: relative;
 height: 43px;
 background-position: 0 11px;

@@ -8,6 +8,15 @@ html, body {
 
 body {
 	background-image: -webkit-radial-gradient(center, circle cover, rgba(139, 56, 139, 0.99) 0%,rgba(53, 0, 53, 0.99) 100%);
+
+	background: #8b388b; /* Old browsers */
+	background: -moz-radial-gradient(center, circle cover, #8b388b 0%, #350035 100%); /* FF3.6+ */
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#8b388b), color-stop(100%,#350035)); /* Chrome,Safari4+ */
+	background: -webkit-radial-gradient(center, circle cover, #8b388b 0%,#350035 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-radial-gradient(center, circle cover, #8b388b 0%,#350035 100%); /* Opera 12+ */
+	background: -ms-radial-gradient(center, circle cover, #8b388b 0%,#350035 100%); /* IE10+ */
+	background: radial-gradient(circle at center, #8b388b 0%,#350035 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8b388b', endColorstr='#350035',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
 #content-outer {
@@ -64,10 +73,16 @@ body {
  	font-family: Lato, Tahoma, sans-serif;
  	font-size: 29px;
 	color: #ffffff;
-	background: #146600;
-	background: -moz-linear-gradient(top, #42ff42 0%, #146600);
 	
- 	background: -webkit-gradient(linear, left top, left bottom, from(#57C7EC), to(#1982A5));
+ 	background: #57c7ec; /* Old browsers */
+	background: -moz-linear-gradient(top, #57c7ec 0%, #1982a5 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#57c7ec), color-stop(100%,#1982a5)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #57c7ec 0%,#1982a5 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #57c7ec 0%,#1982a5 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #57c7ec 0%,#1982a5 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #57c7ec 0%,#1982a5 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#57c7ec', endColorstr='#1982a5',GradientType=0 ); /* IE6-9 */
+ 	
  	border-radius: 5px;
  	border: 1px solid black;
  	text-shadow: -1px -1px 0px rgba(0,0,0,0.6);
