@@ -1,6 +1,5 @@
-<%# TODO: put this stuff in the controller eventually %>
-
 <% content_for :code do %>
+<%# TODO: put this stuff in the controller eventually %>
 	<% 	@now = DateTime.now.change(:hour => 0)
 		@channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
 
@@ -231,7 +230,7 @@
 		$(window).load(function() {
 			var stream_id = "<%= params['channel_id'] %>";
 			if(stream_id !== "") {
-				$('#header').addClass('selected');
+				// $('#header').addClass('selected');
 				$(".streambar .stream[stream-id=" + stream_id + "]").addClass('selected');
 				filter.stream_id = parseInt(stream_id);
 				filter.included_tags = channelFilters[parseInt(stream_id)].included_tags;
@@ -246,31 +245,7 @@
 
 
 	<div class="bar-wrapper">
-		<div class="streambar">
-			<div class="stay-on-target">
-				<div class="header">
-					<span class="stream title">Streams:</span>
-					<% @selectedChannel = params[:channel_id].coalesce_to 0 %>
-					<!-- <span class="stream <%= @selectedChannel == 0 ? "selected" : ""%>" channel-id="0">All Events</span> -->
-					<!-- <span class="stream new" <%= current_user ? "linkto='new-channel-2'" : "linkto='shunt'" %>>+ New Stream</span> -->
-					<% @channels.each do |channel| %>
-						<span class="stream <%= (@selectedChannel.to_i == channel.id) ? "selected" : ""%>" stream-id="<%= channel.id %>"><%= channel.name %></span>
-					<% end %>
-					<!-- <span class="stream bookmark">Bookmarks<span class="icon icon-bookmark"></span></span> -->
-					<span class="filter-toggle filter-action action-save" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>
-						<span class="filter-text">
-							<span class="pre-text"><span class="icon icon-plus-sign"></span>new stream</span>
-						</span>
-					</span>
-					<span class="right filter-toggle filter-action <%= current_user ? "action-bookmarks" : "" %>" <%= current_user ? "" : "linkto='shunt'" %>>
-						<span class="filter-text">
-							<span class="pre-text"><span class="icon icon-bookmark"></span>bookmarks</span>
-						</span>
-					</span>
-				</div>
-			</div>
-		</div>
-		<div class="bookmarkbar">
+		<!-- <div class="bookmarkbar">
 			<div class="stay-on-target">
 				<span class="stream title">Bookmarks:</span>
 				<span class="stream bookmark selected" bookmark-type="event"><span class="icon icon-bolt"></span>Events</span>
@@ -282,12 +257,12 @@
 					</span>
 				</span>
 			</div>
-		</div>
-		<div class="filterbar">
-			<div class="stay-on-target">
+		</div> -->
+		<div class="doublebar">
+		<div class="stay-on-target bullseye-womprats">
+			<div class="filterbar">
 				<div class="header">
 					<div class="toggle-wrapper">
-						<span class="stream title" style="float: left;    display: inline-block;    margin: 0 0 0 13px;">Filters:</span>
 						<span class="filter-toggle search">
 							<span class="filter-text">
 								<span class="pre-text"><span class="icon icon-search"></span></span>
@@ -298,9 +273,9 @@
 						</span>
 						<span class="filter-toggle tags">
 							<span class="filter-text">
-								<span class="pre-text"><!-- <span class="icon icon-tags"></span> -->Tags</span>
+								<span class="pre-text"><!-- <span class="icon icon-tags"></span> -->Categories</span>
 								<span class="text">
-									<span class="text-inner">Any Tag</span>
+									<span class="text-inner">Any Category</span>
 									<span class="icon icon-caret-down"></span>
 								</span>
 							</span>
@@ -389,6 +364,29 @@
 					</div>
 				</div>
 			</div>
+			<div class="streambar">
+				<div class="header">
+					<span class="stream title">Saved Searches:</span>
+					<% @selectedChannel = params[:channel_id].coalesce_to 0 %>
+					<!-- <span class="stream <%= @selectedChannel == 0 ? "selected" : ""%>" channel-id="0">All Events</span> -->
+					<!-- <span class="stream new" <%= current_user ? "linkto='new-channel-2'" : "linkto='shunt'" %>>+ New Stream</span> -->
+					<% @channels.each do |channel| %>
+						<span class="stream <%= (@selectedChannel.to_i == channel.id) ? "selected" : ""%>" stream-id="<%= channel.id %>"><%= channel.name %></span>
+					<% end %>
+					<!-- <span class="stream bookmark">Bookmarks<span class="icon icon-bookmark"></span></span> -->
+					<span class="filter-toggle filter-action action-save" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>
+						<span class="filter-text">
+							<span class="pre-text"><span class="icon icon-plus-sign"></span>save search</span>
+						</span>
+					</span>
+					<!-- <span class="right filter-toggle filter-action <%= current_user ? "action-bookmarks" : "" %>" <%= current_user ? "" : "linkto='shunt'" %>>
+						<span class="filter-text">
+							<span class="pre-text"><span class="icon icon-bookmark"></span>bookmarks</span>
+						</span>
+					</span> -->
+				</div>
+			</div>
+		</div>
 		</div>
 	</div>
 	<!-- <div class="expandobar">

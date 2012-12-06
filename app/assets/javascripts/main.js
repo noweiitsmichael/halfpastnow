@@ -55,7 +55,7 @@ var MAX_HOURS = 24;
 var MAX_SECONDS = 86400;
 var ANY_TIME_TEXT = "Any Time";
 var ANY_PRICE_TEXT = "Any Price";
-var ANY_TAG_TEXT = "Any Tag";
+var ANY_TAG_TEXT = "Any Category";
 
 var O_ANYDAY = 0;
 var O_TODAY = 1;
@@ -256,11 +256,11 @@ $(function() {
   }
 
   $('#header').on('click', '.stream:not(.new, .selected, .bookmark)', function() {
-    $('#header').addClass('selected');
+    // $('#header').addClass('selected');
 
-    $("#dk_container_stream-select").removeClass('selected');
-    $(this).siblings().removeClass('selected');
-    $(this).addClass('selected');
+    // $("#dk_container_stream-select").removeClass('selected');
+    // $(this).siblings().removeClass('selected');
+    // $(this).addClass('selected');
     
     var streamID = $(this).attr('stream-id') || 0;
 
@@ -268,9 +268,9 @@ $(function() {
     updateViewFromFilter();
   });
 
-  $('#header').on('click', '.stream.selected:not(.bookmark)', function() {
-    $('.filter-action.action-clear').click();
-  });
+  // $('#header').on('click', '.stream.selected:not(.bookmark)', function() {
+  //   $('.filter-action.action-clear').click();
+  // });
 
   $('.filter-summary').on('click', '.filter', function() {
     if($(this).hasClass("datetime")) {
@@ -434,14 +434,14 @@ function updateViewFromFilter(pullEventsFlag, options) {
   // var channelStr = filter.name === "" ? "All Events" : filter.name;
   // $('.filter-toggle.channels .text-inner').html(channelStr);
 
-  $('.streambar .stream').removeClass('selected');
-  var stream_id = filter.stream_id;
-  if(typeof stream_id !== 'undefined' && stream_id !== "") {
-    $('.streambar .stream[stream-id=' + stream_id + ']').addClass('selected');
-    $('.filter-action.action-save .pre-text').html('<span class="icon icon-save"></span>save stream');
-  } else {
-    $('.filter-action.action-save .pre-text').html('<span class="icon icon-plus-sign"></span>new stream');
-  }
+  // $('.streambar .stream').removeClass('selected');
+  // var stream_id = filter.stream_id;
+  // if(typeof stream_id !== 'undefined' && stream_id !== "") {
+  //   // $('.streambar .stream[stream-id=' + stream_id + ']').addClass('selected');
+  //   $('.filter-action.action-save .pre-text').html('<span class="icon icon-save"></span>save stream');
+  // } else {
+  //   $('.filter-action.action-save .pre-text').html('<span class="icon icon-plus-sign"></span>new stream');
+  // }
 
   ////////////// TAGS ////////////// 
 
@@ -876,7 +876,7 @@ function streamSelector() {
   $('#dk_container_stream-select').remove();
   $('.streambar .stream.selector').remove();
 
-  var parentWidth = $('.streambar .header').width() - $('.action-bookmarks').outerWidth(true) - $('.action-save').outerWidth(true) /*- $('.action-clear').outerWidth(true)*/; //- $('.stream.new').width();
+  var parentWidth = $('.streambar .header').width(); /* - $('.action-bookmarks').outerWidth(true) - $('.action-save').outerWidth(true) - $('.action-clear').outerWidth(true)*/; //- $('.stream.new').width();
   var sumWidth = 0;
   var maxWidth = 0;
   var overflowIndex = 0;
@@ -928,8 +928,8 @@ function streamSelector() {
       width: maxWidth,
       change: function (value, label) {
         $("#dk_container_stream-select").addClass('selected');
-        $(".streambar .stream").removeClass('selected');
-        $('#header').addClass('selected');
+        // $(".streambar .stream").removeClass('selected');
+        // $('#header').addClass('selected');
 
         var channelID = parseInt(value);
         filter = $.extend(true, {}, channelFilters[channelID]);
