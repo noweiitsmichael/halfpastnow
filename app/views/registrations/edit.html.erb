@@ -11,13 +11,21 @@
         $('#profile-menu > div').removeClass('selected');
         $('#profile-menu > div:nth-child(' + ($(this).index() + 1) + ')').addClass('selected');
       });
+
       $('.profile .edit_user').ajaxForm({
         dataType: 'json',
         success: function() { alert('weeee'); }
       });
+
       $('.update-picture .edit_user').ajaxForm({
         dataType: 'json',
+        beforeSubmit: function() {
+          $('.update-picture .form-indicator').hide();
+          $('.update-picture .form-loading').show();
+        },
         success: function(user) {
+          $('.update-picture .form-indicator').hide();
+          $('.update-picture .form-success').show();
           console.log(user.profilepic.url);
           $('#cropbox').attr('src',user.profilepic.url);
           $('#preview').attr('src',user.profilepic.url);
@@ -32,15 +40,46 @@
           });
         }
       });
+
       $('.crop-picture .edit_user').ajaxForm({
         dataType: 'json',
+        beforeSubmit: function() {
+          $('.crop-picture .form-indicator').hide();
+          $('.crop-picture .form-loading').show();
+        },
         success: function(user) {
+          $('.crop-picture .form-indicator').hide();
+          $('.crop-picture .form-success').show();
           $('#existing-pic').attr('src',user.profilepic.thumb.url);
           $('.crop-picture').hide();
           $('.update-picture').show();
           jcrop_api.destroy();
         }
       });
+
+      $('#edit_settings').ajaxForm({
+        beforeSubmit: function() {
+          $('#edit_settings .form-indicator').hide();
+          $('#edit_settings .form-loading').show();
+        },
+        success: function() {
+          $('#edit_settings .form-indicator').hide();
+          $('#edit_settings .form-success').show();
+        }
+      });
+
+      $('#edit_password').ajaxForm({
+        beforeSubmit: function() {
+          $('#edit_password .form-indicator').hide();
+          $('#edit_password .form-loading').show();
+        },
+        success: function(data) {
+          console.log(data);
+          $('#edit_password .form-indicator').hide();
+          $('#edit_password .form-success').show();
+        }
+      });
+
     });
 
     function updateCrop(coords) {
@@ -94,7 +133,7 @@
       });
   </script>
   <div id="profile-sidebar">
-    <img src="/assets/profile.png" class="profile-pic"/>
+    <%= image_tag resource.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic" %>
     <!-- <h2><%= current_user.firstname %> <%= current_user.lastname %> </h2> -->
     <ul id="profile-nav">
       <li class="streams selected">Streams</li>
@@ -110,32 +149,76 @@
 
     <div class="streams selected">
       <h2>Streams</h2>
+      <% hours = ['midnight','1am','2am','3am','4am','5am','6am','7am','8am','9am','10am','11am','noon','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm','midnight'] %>
       <% current_user.channels.each do |channel| %>
         <div class="stream" stream-id="<%= channel.id %>">
-          <div>
+          <div class="stream-title">
             <span class="uber-title">
               <span class="title"><%= channel.name %></span>
               <a href="" stream-id="<%= channel.id %>" stream-name="<%= channel.name %>" class="action rename"><span class="icon icon-edit"></span>rename</a>
             </span>
             <a href="" stream-id="<%= channel.id %>" stream-name="<%= channel.name %>" class="action delete"><span class="icon icon-trash"></span>delete</a>
           </div>
-          <div>
+          <div class="stream-details">
             <% unless (channel.search.to_s.empty?) %>
             <div><span class="filter name">search</span><span class="filter value"><%= channel.search %></span></div>
             <% end %>
             <% unless (channel.included_tags.to_s.empty?) %>
             <div><span class="filter name">tags</span><span class="filter value"><%= Tag.find(channel.included_tags.split(",")).collect { |t| t.name } * ", " %></span></div>
             <% end %>
-            <% unless (false) %>
-            <div><span class="filter name">time</span><span class="filter value">some time</span></div>
+
+            <% 
+                dateString = ""
+                timeString = ""
+                start_hours = (channel.start_seconds || 0) / 3600
+                end_hours = (channel.end_seconds || 86400) / 3600
+                
+                # timeString
+                unless (start_hours == 0 && end_hours == 24)
+                  if(end_hours == 24)
+                    timeString = "after <em>" + hours[start_hours] + "</em>"
+                  elsif(start_hours == 0)
+                    timeString = "before <em>" + hours[end_hours] + "</em>"
+                  else
+                    timeOne = hours[start_hours]
+                    timeTwo = hours[end_hours]
+                    timeString = "<em>" + timeOne + "&ndash;" + timeTwo + "</em>"
+                  end
+                end
+
+                dow_short = ['Su','M','T','W','Th','F','Sa']
+                dow_medium = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+                dow_long = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+
+                if(!channel.start_date.to_s.empty? || !channel.end_date.to_s.empty?)
+                  dateString = channel.start_date.strftime("%-m/%-d") + "&ndash;" + channel.end_date.strftime("%-m/%-d")
+                elsif (channel.start_days == 0 && channel.end_days == 6)
+                  dayArray = (channel.day_of_week || "").split(",")
+                  num_days = dayArray.size
+                  if(num_days == 7 || num_days == 0)
+                    dateString = "This Week"
+                  else
+                    dayArray.each do |day|
+                      day = day.to_i
+                      if(num_days == 1)
+                        dateString += "+" + dow_long[day]
+                      elsif (num_days == 2)
+                        dateString += "+" + dow_medium[day]
+                      else
+                        dateString += "/" + dow_short[day]
+                      end
+                    end
+                    dateString = dateString[1..-1]
+                  end
+                elsif(channel.start_days == 0 && channel.end_days == 0)
+                  dateString = "Today"
+                end
+
+                dateTimeString = dateString + " " + timeString
+            %>
+            <% unless (dateTimeString.blank?) %>
+            <div><span class="filter name">time</span><span class="filter value"><%= raw dateTimeString %></span></div>
             <% end %>
-                <!-- t.string   "day_of_week"
-                t.integer  "start_seconds"
-                t.integer  "end_seconds"
-                t.integer  "start_days"
-                t.integer  "end_days"
-                t.date     "start_date"
-                t.date     "end_date" -->
             <% unless (channel.low_price.to_s.empty? && channel.high_price.to_s.empty?) %>
               <% if(channel.low_price.to_s.empty?) 
                   costStr = "Under $" + channel.high_price.to_s
@@ -179,13 +262,11 @@
     <div class="picture">
       <h2>Picture</h2>
       <div class="update-picture">
-        <% if resource.profilepic %>
-          <%= image_tag resource.profilepic_url(:thumb), :id => "existing-pic" %>
-        <% end %>
+        <%= image_tag resource.profilepic_url(:thumb) || "/assets/profile.png", :id => "existing-pic" %>
         <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put, :multipart => true }) do |f| %>
             <%= f.label :profilepic, "File name" %><%= f.file_field :profilepic %><br />
             <%= f.label :remote_profilepic_url, "Or image URL" %><%= f.text_field :remote_profilepic_url %>
-          <div><%= f.submit "Update" %></div>
+          <div><%= f.submit "Update" %><%= render :partial => "layouts/loading" %></div>
         <% end %>
       </div>
       <div class="crop-picture" style="display:none;">
@@ -202,7 +283,7 @@
               <%= f.hidden_field "crop_#{attribute}"%>
             <% end %>
 
-            <%= f.submit "Update" %>
+            <%= f.submit "Update" %><%= render :partial => "layouts/loading" %>
           </div>
         <% end %>
       </div>
@@ -210,9 +291,9 @@
 
     <div class="settings">
       <h2>Settings</h2>
-      <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put }) do |f| %>
-        <p><%= f.label :username %><br />
-        <%= f.text_field :username %></p>
+      <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put, :id => "edit_settings" }) do |f| %>
+        <!-- <p><%= f.label :username %><br />
+        <%= f.text_field :username %></p> -->
 
         <p><%= f.label :firstname %><br />
         <%= f.text_field :firstname %></p>
@@ -223,14 +304,14 @@
         <div><%= f.label :email %><br />
         <%= f.email_field :email %></div>
 
-        <div><%= f.submit "Update" %></div>
+        <div><%= f.submit "Update" %><%= render :partial => "layouts/loading" %></div>
       <% end %>
     </div>
 
     <div class="password">
       <h2>Password</h2>
-      <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put }) do |f| %>
-        <div><%= f.label :password %> <em>(leave blank if you don't want to change it)</em><br />
+      <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put, :id => "edit_password" }) do |f| %>
+        <div><%= f.label :password %><br />
           <%= f.password_field :password, :autocomplete => "off" %></div>
 
           <div><%= f.label :password_confirmation %><br />
@@ -239,7 +320,7 @@
           <div><%= f.label :current_password %> <em>(we need your current password to confirm your changes)</em><br />
           <%= f.password_field :current_password %></div>
 
-          <div><%= f.submit "Update" %></div>
+          <div><%= f.submit "Update" %><%= render :partial => "layouts/loading" %></div>
       <% end %>
     </div>
   </div>

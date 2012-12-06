@@ -92,14 +92,16 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
       <div class="one">
         <div>
           <div class="stay-on-target">
-            <a href="/"><img class="logo" src="/assets/halfpastnow_final_header.png" /></a>
+            <a href="/"><img class="logo" src="/assets/halfpastnow_final_beta-header.png" /></a>
             <div class="menu-element right pic">
               <% if user_signed_in? %>
                 <%#= link_to('my profile', :controller => "users", :action => "show")  %><%= link_to(current_user.firstname + " " + current_user.lastname, edit_user_registration_path) %>
+                <%= image_tag resource.profilepic_url(:mini) || "/assets/profile.png", :class => "top-profile-pic" %>
               <% else %>
                 <a href="#" linkto="shunt">sign up</a> <span style="position:relative;top:-8px;">|</span> <a href="#" linkto="shunt">log in</a>
+                <img src="/assets/profile.png" class="top-profile-pic" />
               <% end %>
-              <img src="/assets/profile.png" class="top-profile-pic" />
+              
             </div>
             <!-- <div class="menu-element right"><a href="/info/contact">contact us</a></div> -->
             <div class="menu-element right"><a href="/info/about">about us</a></div>

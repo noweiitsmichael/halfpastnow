@@ -50,9 +50,9 @@
     content:"\f0d7";
     font-family:FontAwesome;
     margin-left: 8px;
-    
-    float: right;
+    position:absolute;
     margin-top: 2px;
+    right:3px;
 }
 
 .dk_theme_alegreya.selected { 

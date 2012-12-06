@@ -267,7 +267,6 @@ input::-webkit-input-placeholder
 
 #header .advancedbar .col.one {
   width: 205px;
-  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/assets/scaletake2b.png");
   color: white;
   overflow: hidden;
   font-size: 13px;
@@ -343,7 +342,6 @@ input::-webkit-input-placeholder
   font-size: 18px;
   color: #342B34;
   padding: 1px 5px 0px;
-  background: -webkit-linear-gradient(top, white 0%, #EBDCEB 100%);
   border-radius: 2px;
   display: block;
   font-weight: normal;
@@ -479,7 +477,6 @@ input::-webkit-input-placeholder
 
 
 .child-tags-menu {
-  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("/assets/scaletake2b.png");
   display:none;
   background: white;
   border-top: 1px solid #D0BDD0;
@@ -610,11 +607,14 @@ input::-webkit-input-placeholder
 }
 
 #header .filter.date .day-of-week .day {
-    font-size: 21px;
+    font-size: 24px;
     line-height: 8px;
     margin-top: 7px;
+    font-variant: small-caps;
+    margin-bottom: 7px;
 }
 #header .filter.date .day-of-week .date {
+    margin-bottom: 6px;
 
 }
 #header .time-range, #header .price-range, #header .date-range
@@ -2057,7 +2057,6 @@ input::-webkit-input-placeholder
 }
 
 #header .streambar {
-background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/assets/scaletake2b.png");
 position: relative;
 height: 43px;
 background-position: 0 11px;
@@ -2555,4 +2554,22 @@ html, body {
   position: fixed;
   top: 0;
   z-index: 1000;
+}
+
+.form-indicators {
+    display:inline-block;
+    position:relative;
+    top:2px;
+    margin-left:5px;
+}
+
+.form-success {
+    color:#009900;
+    font-size:19px;
+}
+
+
+.form-failure {
+    color:#990000;
+    font-size:19px;
 }

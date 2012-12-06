@@ -85,7 +85,7 @@ $(function() {
 
   scrollbarWidth = $.getScrollbarWidth();
 
-  $('#content .events').on('click','.event-actions .icon',function() {
+  $('#content .events').on('click','.event-actions .icon',function(event) {
     var that = $(this);
     var id = $(this).attr('event-id');
     var type = "event";
@@ -929,6 +929,7 @@ function streamSelector() {
       change: function (value, label) {
         $("#dk_container_stream-select").addClass('selected');
         $(".streambar .stream").removeClass('selected');
+        $('#header').addClass('selected');
 
         var channelID = parseInt(value);
         filter = $.extend(true, {}, channelFilters[channelID]);
