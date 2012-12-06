@@ -4,6 +4,7 @@ require 'pp'
 require 'htmlentities'
 require 'rubygems'
 require 'sanitize'
+require 'eventful/api'
 include REXML
 
 namespace :test do 
@@ -17,6 +18,23 @@ namespace :test do
 				occurrence.end = occurrence.end.advance({:days => difference_in_days})
 			end
 			occurrence.save
+		end
+	end
+end
+
+namespace :maintenance do 
+	desc "refactoring bookmarks..."
+	task :bookmarks => :environment do
+		User.all.each do |u|
+			main_bookmarks_list = BookmarkList.where(:user_id => u.id, :main_bookmarks_list => true)
+			if main_bookmarks_list.empty?
+				new_list = BookmarkList.create(:name => "Bookmarks", :description => "Bookmarks", :public => false, 
+									:featured => false, :main_bookmarks_list => true, :user_id => u.id)
+				Bookmark.where(:user_id => u.id).each do |b|
+					b.bookmark_list_id = new_list.id
+					b.save
+				end
+			end
 		end
 	end
 end
@@ -104,6 +122,38 @@ namespace :api do
 			raw_venue.venue_id = venue.id
 			raw_venue.save
 		end
+	end
+
+	desc "pull eventful data"
+	task :get_eventful_data => :environment do
+		# First, create our Eventful::API object
+		eventful = Eventful::API.new '24BqTx7vtBvRCxVP'
+
+		# This is the cool part!
+		results = eventful.call 'events/search',
+		                       :keywords => 'Austin Open air market',
+		                       :location => 'Austin',
+		                       :page_size => 1
+
+		# If we couldn't find anything, ask the user again
+		if results['events'].nil? then
+		 puts
+		 puts "Hmm. I couldn't find anything. Sorry."
+		 puts
+		 next
+		end
+
+		pp results
+
+		# # Output the results
+		# results['events']['event'].each do |event|
+		#  puts
+		#  puts "http://eventful.com/events/" + event['id']
+		#  puts event['title']
+		#  puts "  at " + event['venue_name']
+		#  puts "  on " + event['start_time'].to_s #Time.parse(event['start_time']).strftime("%a, %b %d, %I:%M %p") if event['start_time']
+		# end
+		# puts
 	end
 
 	desc "pull venues from facebook events"

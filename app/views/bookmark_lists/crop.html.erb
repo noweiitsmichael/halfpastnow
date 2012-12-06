@@ -1,0 +1,33 @@
+<script type="text/javascript">
+  $(function () {
+      $('.submit').click( function (){
+        console.log("click");
+        $('.loaderimg').toggle();
+       });
+    });
+</script>
+
+<h2>Crop Picture</h2>
+
+<% content_for (:head) do %>
+<%= stylesheet_link_tag "jcrop" %>
+<%= javascript_include_tag "bookmark_list" %>
+<% end %>
+
+<%= image_tag @bookmarklist.picture_url(:large), :id => "cropbox" %>
+
+<h4>Preview</h4>
+<div style="width:100px; height:100px; overflow:hidden;">
+  <%= image_tag @bookmarklist.picture.url(:large), :id => "preview" %>
+</div>
+
+<%= form_for(@bookmarklist) do |f| %>
+  <div class="actions">
+    <% %w[x y w h].each do |attribute| %>
+      <%= f.hidden_field "crop_#{attribute}"%>
+    <% end %>
+    <br>
+    <%= f.submit "Crop", :class => "submit" %>
+    <img class="loaderimg" src="/assets/admin-load.gif">
+  </div>
+<% end %>

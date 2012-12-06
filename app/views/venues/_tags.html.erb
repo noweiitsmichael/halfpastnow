@@ -16,7 +16,6 @@ $(document).ready(function() {
 	<label>Tags</label>
 	<div class="input-tags">
 		<% @parentTags.sort { |a,b| a.name <=> b.name }.each do |tag| %>
-		<% unless tag.name == "Streams" %>
 			<br>
 			<div class="parent tag">
 				<%= check_box_tag @iStrName, tag.id, element.id.nil? ? false : element.tags.include?(tag), :id => (@iStrId + tag.id.to_s), :class => "parent-check-box" %>
@@ -32,26 +31,5 @@ $(document).ready(function() {
 			<% end %>
 			</div>
 	    <% end %>
-	    <% end %>
-    </div>
-</div>
-
-<div class="tags field">
-	<label>Streams</label>
-	<div class="input-tags">
-		<% streamsTag = Tag.find_by_name("Streams") %>
-			<br>
-			<div class="parent tag">
-				<%= check_box_tag @iStrName, streamsTag.id, element.id.nil? ? false : element.tags.include?(streamsTag), :id => (@iStrId + streamsTag.id.to_s), :class => "parent-check-box" %>
-				<%= label_tag @iStrName, streamsTag.name, :for => (@iStrId + streamsTag.id.to_s) %>
-			</div>
-
-			<div class="children">
-			<% streamsTag.childTags.sort { |a,b| a.name <=> b.name }.each do |childTag| %>
-				<div class="child tag">
-				<%= check_box_tag @iStrName, childTag.id, element.id.nil? ? false : element.tags.include?(childTag), :id => (@iStrId + childTag.id.to_s), :class => "child-tag", 'parent-id' => streamsTag.id %>
-				<%= label_tag @iStrName, childTag.name, :for => (@iStrId + childTag.id.to_s) %>
-				</div>
-			<% end %>
     </div>
 </div>

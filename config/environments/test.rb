@@ -39,4 +39,6 @@ Myapp::Application.configure do
   
   # ActionMailer Config
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+
+  config.log_level = :warn
 end

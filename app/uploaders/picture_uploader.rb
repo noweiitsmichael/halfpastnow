@@ -20,6 +20,7 @@ class PictureUploader < CarrierWave::Uploader::Base
    def cache_dir
      "#{Rails.root}/tmp/uploads"
    end
+
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url
   #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
@@ -33,6 +34,22 @@ class PictureUploader < CarrierWave::Uploader::Base
   # end
 
   # Create different versions of your uploaded files:
+
+  version :mini do
+    process :crop
+    process :resize_to_limit => [35, 35]
+  end
+
+  version :tiny do
+    process :crop
+    process :resize_to_limit => [60, 60]
+  end
+
+  version :cover do
+    process :crop
+    process :resize_to_limit => [120, 120]
+  end
+
   version :thumb do
     process :crop
     process :resize_to_limit => [150, 150]
@@ -45,6 +62,7 @@ class PictureUploader < CarrierWave::Uploader::Base
 
   def crop
     if model.crop_x.present?
+      resize_to_limit(500,500)
       manipulate! do |img|
         x = model.crop_x.to_i
         y = model.crop_y.to_i
@@ -54,6 +72,7 @@ class PictureUploader < CarrierWave::Uploader::Base
       end
     end
   end
+
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   # def extension_white_list

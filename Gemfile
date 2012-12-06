@@ -73,3 +73,4 @@ gem 'delayed_job_active_record'
 
 gem 'therubyracer'
 gem 'will_paginate'
+gem 'eventfulapi'

@@ -304,6 +304,9 @@ nav li:last-child a {
   background-color: #DDD;
   padding: 10px 10px 10px 10px;
 }
+.loaderimg{
+  display:none;
+}
 
 #date-select{
   display: inline;
@@ -313,6 +316,19 @@ nav li:last-child a {
 
 #date-select a{
   margin: 5px 5px 5px 5px;
+}
+
+.spacer {
+  padding-left: 138px;
+}
+
+.field label {
+    width:125px;
+  margin-top: 3px;
+  vertical-align: top;
+  display:inline-block;
+  text-align:right;
+  margin-right:10px;
 }
 
 .button {

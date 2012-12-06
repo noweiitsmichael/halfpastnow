@@ -8,6 +8,8 @@ Myapp::Application.routes.draw do
 
   resources :venues
 
+  resources :bookmark_lists
+
   get "info/about"
 
   get "info/contact"
@@ -90,6 +92,7 @@ Myapp::Application.routes.draw do
   match 'admin' => 'admin#index'
   match 'admin/venues' => 'venues#index'
   match 'admin/artists' => 'acts#index'
+  match 'admin/bookmark_lists' => 'bookmark_lists#index'
   match 'venues/new_event' => 'venues#new_event'
   match 'feedbacks' => 'feedbacks#index'
   match 'users' => 'users#index', :as => "user"

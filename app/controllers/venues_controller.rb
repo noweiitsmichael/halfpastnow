@@ -213,6 +213,11 @@ class VenuesController < ApplicationController
     @event = @venue.events.build()
     @event.user_id = current_user.id
     @event.update_attributes!(params[:event])
+
+    if params[:bookmark_lists_add]
+      bAdd = Bookmark.new(:bookmarked_type => "Bookmark List", :bookmarked_id => params[:bookmark_lists_add], :user_id => current_user.id )
+      bAdd.save!
+    end
     
 
     newpictures = Picture.where(:pictureable_type => "RawEvent", :pictureable_id => params[:raw_event_id]) 
@@ -321,7 +326,7 @@ class VenuesController < ApplicationController
   def eventEdit
     authorize! :index, @user, :message => 'Not authorized as an administrator.'
     puts "eventEdit"
-    # pp params
+    pp params
     @venue = Venue.find(params[:venue_id])
     if(params[:id].to_s.empty?)
       @event = @venue.events.build
@@ -341,6 +346,10 @@ class VenuesController < ApplicationController
     #   end
     #   pp params[:event][:recurrences_attributes]
     # end
+    if params[:bookmark_lists_add]
+      bAdd = Bookmark.new(:bookmarked_type => "Bookmark List", :bookmarked_id => params[:bookmark_lists_add], :user_id => current_user.id )
+      bAdd.save!
+    end
 
     params[:event][:user_id] = current_user.id
     @event.update_attributes!(params[:event])
