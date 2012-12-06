@@ -12,10 +12,10 @@ class Venue < ActiveRecord::Base
   belongs_to :user
 
   # Bi-directional bookmarks association (find a user's bookmarked venues, and users who have bookmarked this venue)
-  has_many :bookmarks, :as => :bookmarked
+  has_many :bookmarks, :as => :bookmarked, :dependent => :destroy 
   belongs_to :bookmarked, :polymorphic => true
   # Allows you to search for users that bookmarked this venue by calling "venue.bookmarked_by"
-  has_many :bookmarked_by, :through => :bookmarks, :source => :user
+  # has_many :bookmarked_by, :through => :bookmarks, :source => :user
 
   accepts_nested_attributes_for :events, :reject_if => lambda { |a| a[:title].blank? }, :allow_destroy => true
   accepts_nested_attributes_for :embeds, :allow_destroy => true

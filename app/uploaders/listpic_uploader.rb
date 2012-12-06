@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class ProfilepicUploader < CarrierWave::Uploader::Base
+class ListpicUploader < CarrierWave::Uploader::Base
   
   # Include RMagick or MiniMagick support:
    include CarrierWave::RMagick
@@ -45,6 +45,11 @@ class ProfilepicUploader < CarrierWave::Uploader::Base
     process :resize_to_limit => [60, 60]
   end
 
+  version :cover do
+    process :crop
+    process :resize_to_limit => [120, 120]
+  end
+
   version :thumb do
     process :crop
     process :resize_to_limit => [150, 150]
@@ -57,7 +62,6 @@ class ProfilepicUploader < CarrierWave::Uploader::Base
 
   def crop
     if model.crop_x.present?
-      resize_to_limit(500,500)
       manipulate! do |img|
         x = model.crop_x.to_i
         y = model.crop_y.to_i

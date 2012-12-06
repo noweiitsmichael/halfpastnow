@@ -15,10 +15,14 @@ class User < ActiveRecord::Base
   has_many :venues, :foreign_key => :updated_by
 
   # Allows you to search for bookmarked venues/events/acts by calling "user.bookmarked_type"
-  has_many :bookmarks  
-  has_many :bookmarked_venues, :through => :bookmarks, :source => :bookmarked, :source_type => "Venue"
-  has_many :bookmarked_events, :through => :bookmarks, :source => :bookmarked, :source_type => "Occurrence"
-  has_many :bookmarked_acts, :through => :bookmarks, :source => :bookmarked, :source_type => "Act"
+  has_many :bookmark_lists
+  # has_many :bookmarks  
+  # has_many :bookmarked_venues, :through => :bookmarks, :source => :bookmarked, :source_type => "Venue"
+  # has_many :bookmarked_events, :through => :bookmarks, :source => :bookmarked, :source_type => "Occurrence"
+  # has_many :bookmarked_acts, :through => :bookmarks, :source => :bookmarked, :source_type => "Act"
+  #has_many :followed_lists, :through => :bookmarks, :source => :bookmarked, :source_type => "Bookmark List"
+
+
 
   # History (attended events)
   has_many :histories, :dependent => :destroy
@@ -27,6 +31,7 @@ class User < ActiveRecord::Base
   ROLES = %w[admin super_admin]
 
   after_create :send_welcome_email
+  after_create :create_default_list
 
 
   # Cropping function
@@ -110,12 +115,35 @@ class User < ActiveRecord::Base
     return firstname + " " + lastname
   end
 
+  def bookmarked_venues
+    return BookmarkList.where(:user_id => self.id, :main_bookmarks_list => true).first.bookmarked_venues
+  end
+
+  def bookmarked_acts
+    return BookmarkList.where(:user_id => self.id, :main_bookmarks_list => true).first.bookmarked_acts
+  end
+
+  def bookmarked_events
+    return BookmarkList.where(:user_id => self.id, :main_bookmarks_list => true).first.bookmarked_events
+  end
+
+  def main_bookmark_list
+    return BookmarkList.where(:user_id => self.id, :main_bookmarks_list => true).first
+  end
+
   def send_welcome_email
     puts "send_welcome_email"
     unless self.email.include?('@halfpastnow.com') && Rails.env != 'test'
       UserMailer.welcome_email(self).deliver
     end
   end
+
+  def create_default_list
+    puts "creating default list"
+    BookmarkList.create(:name => "Bookmarks", :description => "Bookmarks", :public => false, 
+                        :featured => false, :main_bookmarks_list => true, :user_id => self.id)
+  end
+
 
 
   # def password_required?

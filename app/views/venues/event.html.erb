@@ -36,6 +36,8 @@
 
 		<%= render :partial => "tags", :locals => { :element => @event } %>
 
+		<%= render :partial => "bookmark_lists" %>
+
 		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => @event, :validate_occurrence => false  } %>
 
 		<br>

@@ -1,0 +1,12 @@
+<div class="bookmarklist field">
+	<label>Add to Featured List</label>
+
+    <div>
+		<select>
+            <option></option>
+			<% BookmarkList.where(:featured => true).sort { |a,b| a.name <=> b.name }.each do |list| %>
+			<option value="<%= list.id %>"><%= list.name%></option>
+			<% end %>
+		</select>
+    </div> 
+</div>

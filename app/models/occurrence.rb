@@ -7,7 +7,7 @@ class Occurrence < ActiveRecord::Base
   belongs_to :bookmarked, :polymorphic => true
   has_many :bookmarks, :as => :bookmarked
   # Allows you to search for users that bookmarked this event by calling "event.bookmarked_by"
-  has_many :bookmarked_by, :through => :bookmarks, :source => :user
+  # has_many :bookmarked_by, :through => :bookmarks, :source => :user
 
   validates_presence_of :start
   # validates :end, :presence => true

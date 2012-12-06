@@ -12,9 +12,9 @@ class Act < ActiveRecord::Base
 
   # Bi-directional bookmarks association (find a user's bookmarked performers, and users who have bookmarked this performer)
   belongs_to :bookmarked, :polymorphic => true
-  has_many :bookmarks, :as => :bookmarked
+  has_many :bookmarks, :as => :bookmarked, :dependent => :destroy
   # Allows you to search for users that bookmarked this artist by calling "act.bookmarked_by"
-  has_many :bookmarked_by, :through => :bookmarks, :source => :user
+  #has_many :bookmarked_by, :through => :bookmarks, :source => :user
 
   def completedness
   	total_elements = 5

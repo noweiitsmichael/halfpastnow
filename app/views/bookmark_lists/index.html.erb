@@ -1,0 +1,21 @@
+<h2><b>Top Picks Lists (Bookmark Lists) </b></h2>
+<br><br>
+<h3><%= link_to 'Create New List', new_bookmark_list_path %></h3>
+<br>
+<br>
+	<table id="acts-table">
+		<thead>
+			<tr>
+				<th class="type-string" style="cursor:pointer;text-align:left;">Name</th>
+				<th>delete</th>
+			</tr>
+		</thead>
+		<tbody>
+		<% @bookmarklists.each do |bl| %>
+			<tr id="anchor<%=bl.id%>">
+				<td data-order-by="<%= bl.name %>"><%= link_to bl.name, edit_bookmark_list_path(bl) %></td>
+				<td><%= link_to '[delete]', bl, confirm: 'Are you sure you want to delete this List?', method: :delete %></td>
+			</tr>
+		<% end %>
+		</tbody>
+	</table>
