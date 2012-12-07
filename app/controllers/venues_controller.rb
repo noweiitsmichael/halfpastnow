@@ -215,8 +215,7 @@ class VenuesController < ApplicationController
     @event.update_attributes!(params[:event])
 
     if params[:bookmark_lists_add]
-      bAdd = Bookmark.new(:bookmarked_type => "Bookmark List", :bookmarked_id => params[:bookmark_lists_add], :user_id => current_user.id )
-      bAdd.save!
+      Bookmark.create(:bookmarked_type => "Occurrence", :bookmarked_id => @event.nextOccurrence.id, :bookmark_list_id => params[:bookmark_lists_add] )
     end
     
 
@@ -346,13 +345,14 @@ class VenuesController < ApplicationController
     #   end
     #   pp params[:event][:recurrences_attributes]
     # end
-    if params[:bookmark_lists_add]
-      bAdd = Bookmark.new(:bookmarked_type => "Bookmark List", :bookmarked_id => params[:bookmark_lists_add], :user_id => current_user.id )
-      bAdd.save!
-    end
+
 
     params[:event][:user_id] = current_user.id
     @event.update_attributes!(params[:event])
+
+    if params[:bookmark_lists_add]
+      Bookmark.create(:bookmarked_type => "Occurrence", :bookmarked_id => @event.nextOccurrence.id, :bookmark_list_id => params[:bookmark_lists_add] )
+    end
 
     unless params[:event][:pictures_attributes].nil?
       params[:event][:pictures_attributes].each do |pic|

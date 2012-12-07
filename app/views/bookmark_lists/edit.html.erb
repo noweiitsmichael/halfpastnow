@@ -1,6 +1,44 @@
 <h1>Editing List: <%= @bookmarklist.name %></h1>
+<%= link_to 'Back', bookmark_lists_path %>
 <br>
 <%= render 'form' %>
+<br>
+<table id="bookmarks-table">
+	<thead>
+		<tr>
+			<th class="type-string" style="cursor:pointer;text-align:left;">Bookmark Type</th>
+			<th class="type-string" style="cursor:pointer;text-align:left;">Name / Title</th>
+			<th>delete</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% Bookmark.where(:bookmark_list_id => @bookmarklist.id).each do |bm| %>
 
+			<tr id="anchor<%=bm.id%>">
+				<td>
+					<% if bm.bookmarked_type == "Occurrence" %>
+						Event
+					<% else %>
+						<%= bm.bookmarked_type %>
+					<% end %>
+				</td>
+				<td>
+					<% if bm.bookmarked_type == "Occurrence" %>
+						<%= Occurrence.find(bm.bookmarked_id).event.title %>
+					<% elsif bm.bookmarked_type == "Venue" %>
+						<%= Venue.find(bm.bookmarked_id).name %>
+					<%elsif bm.bookmarked_type == "Act" %>
+						<%= Act.find(bm.bookmarked_id).name %>
+					<% end %>
+				</td>
+				<td><%= link_to '[delete]', bm, confirm: 'Are you sure you want to delete this from the list?', method: :delete %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+
+
+
+<br>
 <%= link_to 'Show', @bookmarklist %> |
 <%= link_to 'Back', bookmark_lists_path %>

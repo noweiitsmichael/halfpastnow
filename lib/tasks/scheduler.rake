@@ -23,7 +23,7 @@ namespace :test do
 end
 
 namespace :maintenance do 
-	desc "refactoring bookmarks..."
+	desc "migrating bookmarks..."
 	task :bookmarks => :environment do
 		User.all.each do |u|
 			main_bookmarks_list = BookmarkList.where(:user_id => u.id, :main_bookmarks_list => true)
@@ -34,6 +34,47 @@ namespace :maintenance do
 					b.bookmark_list_id = new_list.id
 					b.save
 				end
+			end
+		end
+	end
+
+	desc "migrating pick lists..."
+	task :lists => :environment do
+		parent_id = Tag.find_by_name("Streams").id;
+		Tag.where(:parent_tag_id => parent_id).each do |t| # For each tag that currently represents a list
+			
+			EventsTags.where(:tag_id => t.id).each do |le| # For each relationship that currently represents Events-List
+				puts "Working on Stream called #{t.name}"
+				if BookmarkList.find_by_name(t.name).nil?
+					new_list = BookmarkList.create(:name => t.name, :description => t.name, :public => true, 
+									:featured => true, :main_bookmarks_list => false, :user_id => "17")
+					puts "!!!Created BookmarkList for #{t.name}"
+					listId = new_list.id
+				else
+					listId = BookmarkList.find_by_name(t.name).id
+				end
+
+				b = Bookmark.create(:bookmarked_type => "Occurrence", :bookmarked_id => Event.find(le.event_id).nextOccurrence.id, :bookmark_list_id => listId)
+				puts "!!!!Created bookmark for #{Event.find(le.event_id).title}"
+				pp b
+			end
+
+			ActsTags.where(:tag_id => t.id).each do |le| # For each relationship that currently represents Events-List
+				if BookmarkList.find_by_name(t.name).nil?
+					new_list = BookmarkList.create(:name => t.name, :description => t.name, :public => true, 
+									:featured => true, :main_bookmarks_list => false, :user_id => "17")
+					listId = new_list.id
+				else
+					listId = BookmarkList.find_by_name(t.name).id
+				end
+
+				Bookmark.create(:bookmarked_type => "Act", :bookmarked_id => le.act_id, :bookmark_list_id => listId)
+				puts "!!!Created bookmark for #{Act.find(le.act_id).name}"
+			end
+
+			if BookmarkList.find_by_name(t.name).nil?
+				BookmarkList.create(:name => t.name, :description => t.name, :public => true, 
+									:featured => true, :main_bookmarks_list => false, :user_id => "17")
 			end
 		end
 	end

@@ -4,7 +4,8 @@ class BookmarkListsController < ApplicationController
 	layout "admin"
 
   def index
-    @bookmarklists = BookmarkList.all
+  	authorize! :index, @user, :message => 'Not authorized as an administrator.'
+    @bookmarklists = BookmarkList.where(:featured => true)
 
     respond_to do |format|
       format.html # index.html.erb
