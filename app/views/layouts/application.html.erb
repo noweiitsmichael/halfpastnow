@@ -93,8 +93,8 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
         <div>
           <div class="stay-on-target">
             <a href="/"><img class="logo" src="/assets/halfpastnow_final_beta-dark-header.png" /></a>
-            <a class="menu-element selected" href="/">Search</a>
-            <a class="menu-element" href="/">Top Picks</a>
+            <a class="main menu-element <%= params[:controller] == "events" ? "selected" : "" %>" href="/">Search</a>
+            <a class="main menu-element <%= params[:controller] == "picks" ? "selected" : "" %>" href="/picks">Top Picks</a>
             <% if user_signed_in? %>
               <div class="menu-element right pic">
                 <%= link_to(current_user.firstname + " " + current_user.lastname, edit_user_registration_path) %>
@@ -127,3 +127,5 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
   --><% end %>
 </body>
 </html>
+<% puts "--------------------PARAMS--------------------" %>
+<% puts params %>

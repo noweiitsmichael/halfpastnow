@@ -2,7 +2,7 @@ html, body
 {
   margin: 0;
   padding: 0;
-  font-size: 16px;
+  font-size: 13px;
   width:100%;
   height:100%;
   overflow:hidden;
@@ -111,31 +111,41 @@ H6
   float: left;
   color: white;
   cursor: pointer;
-  margin-left: 9px;
-  margin-top: 6px;
+  margin-left: 18px;
+  margin-top: 8px;
   font-size: 15px;
   font-weight: normal;
-  margin-right: 9px;
   text-transform: lowercase;
+  font-weight:700;
+}
+
+#header > .one .menu-element.main {
+  padding: 0px 12px 7px;
+  font-size:21px;
+  font-weight:900;
+  font-variant:small-caps;
+  margin-top:4px;
+  line-height:24px;
 }
 
 #header > .one .menu-element.selected {
   background:white;
   color: #333;
   font-weight: 900;
-  padding: 4px 12px 7px;
   border-radius: 2px 2px 0 0;
-  font-size: 17px;
+  position:relative;
+  top:2px
 }
 
 #header > .one .menu-element.right
 {
 }
+
 #header .top-profile-pic {
     height: 25px;
     margin-left: 3px;
     position: absolute;
-    top: -1px;
+    top: -4px;
     right: 0;
     border: 1px solid white;
 }
@@ -221,10 +231,22 @@ input::-webkit-input-placeholder
 }
 #content
 {
-  margin-top: 108px; 
+  margin-top: 121px; 
   position: relative;
 }
+
+#content.pick-content { margin-top:90px; }
+
+#content.pick-content #map-wrapper { margin-top:90px; }
+
 .doublebar {
+  background: white;
+}
+.titlebar {
+  background: white;
+  overflow: hidden;
+}
+.bar-wrapper {
   background: white;
 }
 /*
@@ -238,11 +260,10 @@ input::-webkit-input-placeholder
 }*/
 
 #header .titlebar h1 {
-    color:white;
-    font-style:italic;
-    margin-bottom: 3px;
     font-size: 26px;
     font-weight: 900;
+    margin: 3px 0;
+    font-style: italic;
 }
 
 #header .filterbar, #header .advancedbar
@@ -832,14 +853,13 @@ input::-webkit-input-placeholder
   position:fixed;
   top:0;
   width: 990px;
-  margin-top: 111px;
+  margin-top: 121px;
 }
 
 #content #map {
   width: 316px;
   height: 414px;
   float: left;
-  margin-top: 9px;
   border: 1px solid #ccc;
 }
 
@@ -869,11 +889,12 @@ input::-webkit-input-placeholder
 }
 
 .filter-summary {
-    padding: 8px 0 0px;
+    padding: 0;
     font-weight:700;
     margin-bottom: 5px;
     font-size: 16px;
     border-radius: 0 0 1px 1px;
+    margin-top: -5px;
 }
 
 .filter-summary .filter, .filter-summary .sort-type > span {
@@ -1824,12 +1845,11 @@ input::-webkit-input-placeholder
 }
 
 #info-content {
-  width: 954px;
+  width: 990px;
   margin: 85px auto 0;
   background: white;
-  font-size: 14px;
+  font-size: 13px;
   overflow: hidden;
-  padding: 8px 18px 5px 18px;
   border: 1px solid #ccc;
 }
 
@@ -2129,6 +2149,7 @@ html, body {
   margin-top: 2px;
   height: 30px;
   margin-left: -3px;
+  width: 233px;
 }
 
 #header .streambar {
@@ -2585,3 +2606,98 @@ html, body {
     color:#990000;
     font-size:19px;
 }
+
+.picklist {
+    float:left;
+    width: 451px;
+    border:1px solid #ccc;
+    margin-left: 12px;
+    margin-top: 12px;
+    padding:12px;
+    overflow:hidden;
+}
+
+.picklist-details {
+    float:left;
+    width: 310px;
+    margin-left: 12px;
+}
+
+.picklist-details h3 {
+    font-size:16px;
+}
+
+.picklist-sidebar {
+    float:left;
+}
+
+.picklist-sidebar .picture {
+    border: 1px solid #ccc;
+}
+
+.picklist-sidebar .follow-button {
+    border:1px solid #999;
+    text-align:center;
+    padding:4px 0;
+    border-radius:2px;
+    font-weight:700;
+    font-style:italic;
+    cursor:pointer;
+}
+
+.picklist-sidebar .follow-button:hover {
+     background:#f6f6f6;   
+     border-color:#eeeeee;
+     color:#333;
+}
+
+.picklist-description {
+    margin-top:6px;
+    
+    margin-bottom:9px;
+}
+
+.picklist-events li {
+    border:1px solid #ccc;
+    margin-top:4px;
+    padding: 4px;
+}
+
+.picklist-events li .title {
+    font-weight:700;
+}
+
+.picklist-events li .venue {
+    font-style:italic;
+}
+
+.picklist-events li .datetime {
+    text-transform:lowercase;
+    font-size:11px;
+}
+
+.picks-info {
+    border:1px solid #ccc;
+    background:white;
+    overflow:hidden;
+    padding: 9px;
+    margin-bottom:18px;
+}
+
+.picks-info .picture {
+    float:left;
+    width:61px;
+}
+
+.picks-details {
+    float:left;
+    overflow:hidden;
+    width:550px;
+    margin-left: 12px;
+}
+
+.picks-details .title {
+    font-size: 16px;
+    font-weight:700;
+}
+

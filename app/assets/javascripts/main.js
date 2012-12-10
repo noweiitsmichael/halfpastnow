@@ -943,8 +943,8 @@ function streamSelector() {
 }
 
 function scrollHeader() {
-  var headerTop = -(Math.min($('#body').scrollTop(),$('#header .one').outerHeight()));
-  $('#header, #content #map-wrapper').css('top',headerTop+'px');
+  // var headerTop = -(Math.min($('#body').scrollTop(),$('#header .one').outerHeight()));
+  // $('#header, #content #map-wrapper').css('top',headerTop+'px');
 }
 
 //user is "finished typing," do something

@@ -45,13 +45,13 @@ class BookmarksController < ApplicationController
   	id = params[:bookmark][:id]
   	type = params[:bookmark][:type]
 
-  	unless(Bookmark.where(:bookmarked_type => type, :bookmarked_id => id, :user_id => current_user.id).first.nil?)
+  	unless(Bookmark.where(:bookmarked_type => type, :bookmarked_id => id, :bookmark_list_id => current_user.main_bookmark_list.id).first.nil?)
   		respond_to do |format|
   			format.json { render json: nil, status: :unprocessable_entity }
   		end
   	end
 
-  	@bookmark = current_user.bookmarks.build
+  	@bookmark = current_user.main_bookmark_list.bookmarks.build
   	@bookmark.bookmarked_id = id
   	@bookmark.bookmarked_type = type
 
