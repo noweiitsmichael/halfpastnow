@@ -222,10 +222,10 @@ namespace :api do
 		puts "page Items: #{resultCount['page_items']}"
 		puts "Events Length: #{resultCount['events']['event'].count}"
 
-
+		numResults = resultCount['total_items']
 		pageNumber = 1
 
-		while pageNumber <= resultCount['page_count'] 
+		while pageNumber <= (numResults/100)
 			events = eventful.call 'events/search',
                        :keywords => '',
                        :location => 'Austin',
@@ -242,7 +242,7 @@ namespace :api do
 			end
 			# event = events['events']['event'] # for testing
 			events['events']['event'].each do |event|
-				puts "*****Processing Event called #{event['title']}"
+				puts "*****Processing Event called #{event['title']} #{event['id']}"
 				time_shifter = 0
 				# pp event
 				# pp events['events']
