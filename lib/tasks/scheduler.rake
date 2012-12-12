@@ -23,7 +23,7 @@ namespace :test do
 	end
 end
 
-namespace :maintenance do 
+namespace :m do 
 	desc "migrating bookmarks..."
 	task :bookmarks => :environment do
 		User.all.each do |u|
@@ -39,7 +39,7 @@ namespace :maintenance do
 		end
 	end
 
-	task :just_testing => :environment do
+	task :test => :environment do
 		# for i in 6..8
 		# 	for j in 0..5
 		# 	   if j < 2 then
@@ -51,11 +51,29 @@ namespace :maintenance do
 		# 	puts "Value is #{i}"
 		# end
 
-		if "324222ffdfae".to_datetime > Date.today 
-			EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => recur_event['id'], :data_type => "instance", 
-								:element_type => "RawEvent", :element_id => new_event.id , :data => inst + time_shifter) rescue nil
-		end 
-		puts "yay"
+		# if "324222ffdfae".to_datetime > Date.today 
+		# 	EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => recur_event['id'], :data_type => "instance", 
+		# 						:element_type => "RawEvent", :element_id => new_event.id , :data => inst + time_shifter) rescue nil
+		# end 
+		# puts "yay"
+
+		for i in 0..2	
+
+			puts "Page #{i+1}"
+			puts ""	
+		   eventful = Eventful::API.new '24BqTx7vtBvRCxVP'
+
+		   # This is the cool part!
+		   resultCount = eventful.call 'events/search',
+				             :keywords => '',
+				             :location => 'Austin',
+				             :sort_order => 'date',
+				             :page_size => 10
+		   
+		   resultCount['events']['event'].each do |r|
+		      puts r['title']
+		   end
+		end
 	end
 
 	desc "migrating pick lists..."
@@ -194,6 +212,7 @@ namespace :api do
 		resultCount = eventful.call 'events/search',
 		                       :keywords => '',
 		                       :location => 'Austin',
+		                       :sort_order => 'date',
 		                       :page_size => 10000
 
 		puts "Num Results #{resultCount['total_items']}"
@@ -210,6 +229,7 @@ namespace :api do
 			events = eventful.call 'events/search',
                        :keywords => '',
                        :location => 'Austin',
+		               :sort_order => 'date',
                        :page_size => 100,
                        :page_number => pageNumber
 
@@ -306,14 +326,14 @@ namespace :api do
 										puts "Saving venue pictures from...."
 										# pp open(pic['url'].gsub("/images/small/", "/images/original/"))
 										Picture.create(:pictureable_id => new_venue.id, :pictureable_type => "Venue", 
-												   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
+												   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) ) rescue nil
 									end
 								elsif venue['images']['image'].instance_of?(Hash)
 										puts "Saving venue pictures from...."
 										# pp venue['images']['image']
 										# pp open(venue['images']['image']['url'].gsub("/images/small/", "/images/original/"))
 										Picture.create(:pictureable_id => new_venue.id, :pictureable_type => "Venue", 
-												   	   :image => open(venue['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
+												   	   :image => open(venue['images']['image']['url'].gsub("/images/small/", "/images/original/")) ) rescue nil
 								end
 							end
 
@@ -383,13 +403,13 @@ namespace :api do
 									puts "Saving pictures...."
 									# pp open(pic['url'].gsub("/images/small/", "/images/original/"))
 									Picture.create(:pictureable_id => new_event.id, :pictureable_type => "RawEvent", 
-												   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
+												   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) ) rescue nil
 								end
 							elsif event['images']['image'].instance_of?(Hash)
 								puts "Saving picture...., inside"
 								# pp open(event['images']['image']['url'].gsub("/images/small/", "/images/original/"))
 								Picture.create(:pictureable_id => new_event.id, :pictureable_type => "RawEvent", 
-											   :image => open(event['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
+											   :image => open(event['images']['image']['url'].gsub("/images/small/", "/images/original/")) ) rescue nil
 							end
 						else
 							puts "No images processed"
@@ -486,12 +506,12 @@ namespace :api do
 												performer['images']['image'].each do |pic|
 													puts "Saving performer pictures...."
 													Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
-															   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
+															   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) ) rescue nil
 												end
 											elsif performer['images']['image'].instance_of?(Hash)
 													puts "Saving performer pictures...."
 													Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
-															   	   :image => open(performer['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
+															   	   :image => open(performer['images']['image']['url'].gsub("/images/small/", "/images/original/")) ) rescue nil
 											end
 										end
 
@@ -565,12 +585,12 @@ namespace :api do
 											performer['images']['image'].each do |pic|
 												puts "Saving performer pictures...."
 												Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
-														   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
+														   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) ) rescue nil
 											end
 										elsif performer['images']['image'].instance_of?(Hash)
 												puts "Saving venue pictures...."
 												Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
-														   	   :image => open(performer['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
+														   	   :image => open(performer['images']['image']['url'].gsub("/images/small/", "/images/original/")) ) rescue nil
 										end
 									end
 
