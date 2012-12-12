@@ -198,6 +198,11 @@
         </span></span>
       <% end %>
     <% end %>
+    <% @rawEvent.pictures.each_with_index do |pic, index| %>
+    <span class="pictures field gallery_<%=@rawEvent.id%> pic-field" index="<%= index %>">
+      <a href="" class="pic-edit" event-id="<%= @rawEvent.id %>" pic-url="<%= pic.image_url(:large).to_s %>" pic-id="<%= pic.id%>"><%= image_tag pic.image_url(:thumb).to_s %></a>
+    </span>
+    <% end %>
 
     <span class="eventThumbs_<%=@rawEvent.id%> pic-field"></span>
 

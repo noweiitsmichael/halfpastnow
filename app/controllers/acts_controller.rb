@@ -64,11 +64,12 @@ class ActsController < ApplicationController
       @act = Act.find(params[:act][:id])
     end
     puts "act update"
-    puts params[:act]
+    # puts params[:act]
     @act.updated_by = current_user.id
+    @act.completion = @act.completedness
     @act.update_attributes!(params[:act])
     puts "act embeds"
-    pp @act.embeds
+    # pp @act.embeds
     unless params[:pictures].nil? 
       params[:pictures].each do |pic|
           #puts pic
@@ -83,7 +84,7 @@ class ActsController < ApplicationController
     respond_to do |format|
       if @act.save
         format.html { redirect_to :action => :index, :notice => 'yay' }
-        format.json { render json: { :name => @act.name, :text => @act.name, :id => @act.id, :tags => (@act.tags.collect { |t| t.id.to_s } * ","), :completedness => @act.completedness } }
+        format.json { render json: { :name => @act.name, :text => @act.name, :id => @act.id, :tags => (@act.tags.collect { |t| t.id.to_s } * ","), :completedness => @act.completion} }
       else
         format.html { redirect_to :action => :index, :notice => 'boo' }
         format.json { render json: false }

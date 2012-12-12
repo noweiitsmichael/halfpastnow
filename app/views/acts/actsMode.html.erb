@@ -87,6 +87,16 @@
 		  <%= e.text_area :bio, :class => "cleditor" %>
 		</div>
 
+    <% if @act.pop_source == "eventful" %>
+      <div class="links-list" style="font-size:small;color:gray;font-style:italic;">
+        Possible artist websites scraped from Eventful (copy into above field if correct):<br>
+        <% EventfulData.where(:element_type => "Act", :element_id => @act.id, :data_type => "link").each do |d| %>
+          <%= d.data2 %>: <a href="<%=d.data %>"><%=d.data %></a><br>
+        <% end %>
+        <br>
+      </div>
+    <% end %>
+
 		<div class="field">
 		  <%= e.label :website %>
 		  <%= e.text_field :website %>
@@ -99,6 +109,16 @@
 		
 		<% @iStrName = "act[tag_ids][]" %>
 		<% @iStrId = "act_tag_ids_" %>
+
+    <% if @act.pop_source == "eventful" %>
+      <div class="links-list" style="font-size:small;color:gray;font-style:italic;">
+        Other possible tags scraped from Eventful: <br>
+        <% EventfulData.where(:element_type => "Act", :element_id => @act.id, :data_type => "tag").each do |d| %>
+          <%= d.data %>, 
+        <% end %>
+        <br>
+      </div>
+    <% end %>
 		
 		<%= render :partial => "/venues/tags", :locals => { :element => @act } %>
 

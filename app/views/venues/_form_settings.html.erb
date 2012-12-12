@@ -86,6 +86,17 @@
       <%= f.label :url %>
       <%= f.text_field :url %>
     </div>
+
+    <div class="links-list" style="font-size:small;color:gray;font-style:italic;">
+      Possible event links scraped from Eventful (copy into above field if desired):<br>
+      <% EventfulData.where(:element_type => "Venue", :element_id => @venue.id, :data_type => "link").each do |d| %>
+        <% unless d.data.include? "reverbnation" %>
+          <%= d.data2 %>: <a href="<%=d.data %>"><%= d.data %></a><br>
+        <% end %>
+      <% end %>
+      <br>
+    </div>
+
     <div class="field">
       <%= f.label :description %>
       <%= f.text_area :description, :class => 'cleditor' %>

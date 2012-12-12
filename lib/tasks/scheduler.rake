@@ -5,6 +5,7 @@ require 'htmlentities'
 require 'rubygems'
 require 'sanitize'
 require 'eventful/api'
+require 'carrierwave'
 include REXML
 
 namespace :test do 
@@ -35,6 +36,19 @@ namespace :maintenance do
 					b.save
 				end
 			end
+		end
+	end
+
+	task :just_testing => :environment do
+		for i in 6..8
+			for j in 0..5
+			   if j < 2 then
+			      next
+			   else
+			   		puts "Value of local variable is #{j}"
+			   end
+			end
+			puts "Value is #{i}"
 		end
 	end
 
@@ -171,30 +185,416 @@ namespace :api do
 		eventful = Eventful::API.new '24BqTx7vtBvRCxVP'
 
 		# This is the cool part!
-		results = eventful.call 'events/search',
-		                       :keywords => 'Austin Open air market',
+		resultCount = eventful.call 'events/search',
+		                       :keywords => '',
 		                       :location => 'Austin',
-		                       :page_size => 1
+		                       :page_size => 10000
 
-		# If we couldn't find anything, ask the user again
-		if results['events'].nil? then
-		 puts
-		 puts "Hmm. I couldn't find anything. Sorry."
-		 puts
-		 next
+		puts "Num Results #{resultCount['total_items']}"
+		puts "Page Size: #{resultCount['page_size']}"
+		puts "Page Count: #{resultCount['page_count']}"
+		puts "page Number: #{resultCount['page_number']}"
+		puts "page Items: #{resultCount['page_items']}"
+		puts "Events Length: #{resultCount['events']['event'].count}"
+
+
+		pageNumber = 1
+
+		while pageNumber <= resultCount['page_count'] 
+			events = eventful.call 'events/search',
+                       :keywords => '',
+                       :location => 'Austin',
+                       :page_size => 100,
+                       :page_number => pageNumber
+
+            puts "PAGENUMBER= #{pageNumber}"
+
+			# If we couldn't find anything, quit
+			if events['events'].nil? then
+			 puts "The frack? I couldn't find anything. Sorry."
+			 return
+			end
+			# event = events['events']['event'] # for testing
+			events['events']['event'].each do |event|
+				puts "*****Processing Event called #{event['title']}"
+				# pp event
+				# pp events['events']
+				
+				if event['venue_id'] != nil && !event['venue_name'].blank?
+
+########## First check to see if venue exists ###########
+					puts "....checking venue"
+					venue = eventful.call 'venues/get',
+											:id => event['venue_id']
+					# pp venue['name']
+					if venue["description"] == "There is no venue with that identifier."
+					 puts "skipping because location doesn't seem to exist"
+					 next
+					end
+
+					# Add RawVenue unless it already exists
+					if RawVenue.where(:from => "eventful", :raw_id => venue['id']).empty?
+						puts "Creating rawvenue with id #{venue['id']}"
+
+						raw_venue = RawVenue.create!(
+							:name => venue['name'],
+							:address => venue['address'],
+							:city => venue['city'],
+							:state_code => venue['region_abbr'],
+							:zip => venue['postal_code'],
+							:latitude => venue['latitude'],
+							:longitude => venue['longitude'],
+							# :phone => venue['phone'],
+							# :url => venue['website'],
+							:description => venue['description'],
+							:raw_id => venue['id'],
+							:from => "eventful"
+						)
+						raw_venue.save
+					
+						# Now make actual venue if it doesn't already exist
+
+						#regex_replace( regex_replace( regexp_replace(lower("The Breaker's of the World"), '\'', ''), '^the ', ''), ' the ', ' ')
+						if Venue.find(:first, :conditions => [ "lower(name) = ?", venue['name'].downcase ]) == nil
+							puts "....Creating real venue for #{venue['name']} #{venue['id']}"
+							new_venue = Venue.create!(
+								:name => raw_venue.name,
+								:address => raw_venue.address,
+								:city => raw_venue.city,
+								:state => raw_venue.state_code,
+								:zip => raw_venue.zip,
+								:latitude => raw_venue.latitude,
+								:longitude => raw_venue.longitude,
+								:phonenumber => raw_venue.phone,
+								:url => raw_venue.url,
+								:description => raw_venue.description,
+								:fb_picture => raw_venue.fb_picture
+							)
+							raw_venue.venue_id = new_venue.id
+							raw_venue.save
+
+							# Save links
+							if !venue['links'].nil? 
+								if venue['links']['link'].instance_of?(Array)
+									venue['links']['link'].each do |link|
+										puts "Saving Links..."
+										 puts new_venue.id
+										# pp link
+										EventfulData.create(:eventful_origin_type => "Venue", :eventful_origin_id => venue['id'], :data_type => "link", 
+															:element_type => "Venue", :element_id => new_venue.id.to_i , :data => link['url'], :data2 => link['type'], :data3 => link['time'])
+									end
+								elsif venue['links']['link'].instance_of?(Hash)
+									puts "Saving Links..."
+										puts new_venue.id
+										# pp venue['links']['link']
+										EventfulData.create(:eventful_origin_type => "Venue", :eventful_origin_id => venue['id'], :data_type => "link", 
+															:element_type => "Venue", :element_id => new_venue.id.to_i , :data => venue['links']['link']['url'], :data2 => venue['links']['link']['type'], :data3 => venue['links']['link']['time'])
+								end
+							end
+
+							# Create pictures
+							if !venue['images'].nil? 
+								if venue['images']['image'].instance_of?(Array)
+									venue['images']['image'].each do |pic|
+										puts "Saving venue pictures from...."
+										# pp open(pic['url'].gsub("/images/small/", "/images/original/"))
+										Picture.create(:pictureable_id => new_venue.id, :pictureable_type => "Venue", 
+												   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
+									end
+								elsif venue['images']['image'].instance_of?(Hash)
+										puts "Saving venue pictures from...."
+										# pp venue['images']['image']
+										# pp open(venue['images']['image']['url'].gsub("/images/small/", "/images/original/"))
+										Picture.create(:pictureable_id => new_venue.id, :pictureable_type => "Venue", 
+												   	   :image => open(venue['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
+								end
+							end
+
+						else
+							puts "Venue already exists for " + venue['name']
+							raw_venue.venue_id = Venue.find(:first, :conditions => [ "lower(name) = ?", venue['name'].downcase ]).id
+							raw_venue.save
+						end
+					else
+						puts "Venue info for " + venue['name'] + " already exists"
+					end
+
+########## Now add to Raw Events ############
+					if Event.find_by_title(event['title']) == nil && RawEvent.where(:title => event['title'], :from => "eventful").empty?
+						puts "....Creating event " + event['title'] + " for " + event['venue_name'] + " " + event['venue_id']
+						# pp event
+						new_event = RawEvent.create!(
+							:title => event['title'],
+							:description => event['description'],
+							:start => event['start_time'],
+							:end => event['stop_time'],
+							# :url => event['website'],
+							:raw_venue_id => RawVenue.find_by_raw_id(event['venue_id'].to_s).id,
+							:from => "eventful",
+							:raw_id => event['id']
+						)
+						
+						# Create Links
+						if event['link_count'] == nil
+							new_event.url = event['url']
+							new_event.save!
+						elsif !event['links'].nil? 
+							if event['links']['link'].instance_of?(Array)
+								event['links']['link'].each do |link|
+									puts "Saving Links..."
+									EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => event['id'], :data_type => "link", 
+														:element_type => "Event", :element_id => new_event.id , :data => link['url'], :data2 => link['type'], :data3 => link['time'])
+								end
+							elsif event['links']['link'].instance_of?(Hash)
+								puts "Saving Link..."
+								EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => event['links']['link']['id'], :data_type => "link", 
+													:element_type => "Event", :element_id => new_event.id , :data => event['links']['link']['url'], :data2 => event['links']['link']['type'], :data3 => event['links']['link']['time'])
+							end
+						end
+
+						# Create pictures
+						if !event['images'].nil? 
+							if event['images']['image'].instance_of?(Array)
+								event['images']['image'].each do |pic|
+									puts "Saving pictures...."
+									# pp open(pic['url'].gsub("/images/small/", "/images/original/"))
+									Picture.create(:pictureable_id => new_event.id, :pictureable_type => "RawEvent", 
+												   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
+								end
+							elsif event['images']['image'].instance_of?(Hash)
+								puts "Saving picture...., inside"
+								# pp open(event['images']['image']['url'].gsub("/images/small/", "/images/original/"))
+								Picture.create(:pictureable_id => new_event.id, :pictureable_type => "RawEvent", 
+											   :image => open(event['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
+							end
+						else
+							puts "No images processed"
+						end
+
+						# Create tags
+						if !event['tags'].nil? 
+							if event['tags']['tag'].instance_of?(Array)
+								event['tags']['tag'].each do |tag|
+									puts "Saving tags..."
+									EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => event['id'], :data_type => "tag", 
+														:element_type => "Event", :element_id => new_event.id , :data => tag['title'], :data2 => tag['id'])
+								end
+							elsif event['tags']['tag'].instance_of?(Hash)
+								puts "Saving tag..."
+								EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => ['id'], :data_type => "tag", 
+													:element_type => "Event", :element_id => new_event.id , :data => event['tags']['tag']['title'], :data2 => event['tags']['tag']['id'])
+							end
+						end
+
+						# Check to see if it is a recurring event
+						if !event['recur_string'].blank?
+							puts "logging recurrence"
+							puts event['recur_string']
+							EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => event['id'], :data_type => "recurrence", 
+												:element_type => "RawEvent", :element_id => new_event.id , :data => event['recur_string'])
+
+							if event['recur_string'] == "on various days"
+								recur_event = eventful.call 'events/get', :id => event['id']
+								# pp recur_event
+								if recur_event['recurrence']['rdates']['rdate'].instance_of?(Array)
+									recur_event['recurrence']['rdates']['rdate'].each do |inst|
+										puts "creating recurrence"
+										# pp inst
+										if inst.to_datetime > Date.today 
+											EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => recur_event['id'], :data_type => "instance", 
+																:element_type => "RawEvent", :element_id => new_event.id , :data => inst) rescue nil
+										end
+									end
+								elsif recur_event['recurrence']['rdates']['rdate'].instance_of?(Hash)
+									puts "creating recurrence"
+										pp inst
+										EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => recur_event['id'], :data_type => "instance", 
+											:element_type => "RawEvent", :element_id => new_event.id , :data => recur_event['recurrence']['rdates']['rdate'])  rescue nil
+								end
+							else
+								puts "----------------------------Not on various days"
+							end
+						end
+
+						puts "Successfully created event for " + event['title']
+
+
+############## Now create artists ################
+						puts "....checking artists"
+						if !event['performers'].nil?
+							if event['performers']['performer'].instance_of?(Array)
+								event['performers']['performer'].each do |perf|
+									if Act.find(:first, :conditions => [ "lower(name) = ?", perf['name'].downcase ]) == nil
+										performer = eventful.call 'performers/get', :id => perf['id']
+
+										# Create Act
+										new_act = Act.create!(
+											:name => performer['name'],
+											:description => performer['short_bio'],
+											:bio => performer['long_bio'],
+											:pop_id => performer['id'],
+											:pop_likes => performer['demand_member_count'],
+											:pop_link => performer['url'],
+											:pop_source => "eventful"
+
+										)
+
+										# Save links
+										if !performer['links'].nil? 
+											if performer['links']['link'].instance_of?(Array)
+												performer['links']['link'].each do |link|
+													puts "Saving Links..."
+													EventfulData.create(:eventful_origin_type => "Performer", :eventful_origin_id => performer['id'], :data_type => "link", 
+																		:element_type => "Act", :element_id => new_act.id, :data => link['url'], :data2 => link['type'], :data3 => link['time'])
+												end
+											elsif performer['links']['link'].instance_of?(Hash)
+												puts "Saving Link..."
+													EventfulData.create(:eventful_origin_type => "Performer", :eventful_origin_id => performer['id'], :data_type => "link", 
+																		:element_type => "Act", :element_id => new_act.id , :data => performer['links']['link']['url'], :data2 => performer['links']['link']['type'], :data3 => performer['links']['link']['time'])
+											end
+										end
+
+										# Create pictures
+										if !performer['images'].nil? 
+											if performer['images']['image'].instance_of?(Array)
+												performer['images']['image'].each do |pic|
+													puts "Saving performer pictures...."
+													Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
+															   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
+												end
+											elsif performer['images']['image'].instance_of?(Hash)
+													puts "Saving venue pictures...."
+													Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
+															   	   :image => open(performer['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
+											end
+										end
+
+										# Create tags
+										if !performer['tags'].nil? 
+											if performer['tags']['tag'].instance_of?(Array)
+												performer['tags']['tag'].each do |tag|
+													puts "Saving tags..."
+													EventfulData.create(:eventful_origin_type => "Performer", :eventful_origin_id => performer['id'], :data_type => "tag", 
+																		:element_type => "Act", :element_id => new_act.id , :data => tag['title'], :data2 => tag['id'])
+												end
+											elsif performer['tags']['tag'].instance_of?(Hash)
+												puts "Saving tag..."
+												EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => ['id'], :data_type => "tag", 
+																	:element_type => "Event", :element_id => new_act.id , :data => performer['tags']['tag']['title'], :data2 => event['tags']['tag']['id'])
+											end
+										end
+
+										# Mark categories
+										if !performer['categories'].nil? 
+											category_string = ""
+											if performer['categories']['category'].instance_of?(Array)
+												performer['categories']['category'].each do |cat|
+													category_string += cat['id']
+													category_string += ", "
+												end
+											elsif performer['categories']['category'].instance_of?(Hash)
+												category_string = performer['categories']['category']['id']
+											end
+											new_act.genre = category_string
+											new_act.save!
+										end
+									end
+								end
+
+							elsif event['performers']['performer'].instance_of?(Hash)
+								if Act.find(:first, :conditions => [ "lower(name) = ?", event['performers']['performer']['name'].downcase ]) == nil
+									puts "Creating new act"
+									performer = eventful.call 'performers/get', :id => event['performers']['performer']['id']
+
+									# Create Act
+									new_act = Act.create!(
+										:name => performer['name'],
+										:description => performer['short_bio'],
+										:bio => performer['long_bio'],
+										:pop_id => performer['id'],
+										:pop_likes => performer['demand_member_count'],
+										:pop_link => performer['url'],
+										:pop_source => "eventful"
+
+									)
+
+									# Save links
+									if !performer['links'].nil? 
+										if performer['links']['link'].instance_of?(Array)
+											performer['links']['link'].each do |link|
+												puts "Saving Links..."
+												EventfulData.create(:eventful_origin_type => "Performer", :eventful_origin_id => performer['id'], :data_type => "link", 
+																	:element_type => "Act", :element_id => new_act.id, :data => link['url'], :data2 => link['type'], :data3 => link['time'])
+											end
+										elsif performer['links']['link'].instance_of?(Hash)
+											puts "Saving Link..."
+												EventfulData.create(:eventful_origin_type => "Performer", :eventful_origin_id => performer['id'], :data_type => "link", 
+																	:element_type => "Act", :element_id => new_act.id , :data => performer['links']['link']['url'], :data2 => performer['links']['link']['type'], :data3 => performer['links']['link']['time'])
+										end
+									end
+
+									# Create pictures
+									if !performer['images'].nil? 
+										if performer['images']['image'].instance_of?(Array)
+											performer['images']['image'].each do |pic|
+												puts "Saving performer pictures...."
+												Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
+														   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
+											end
+										elsif performer['images']['image'].instance_of?(Hash)
+												puts "Saving venue pictures...."
+												Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
+														   	   :image => open(performer['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
+										end
+									end
+
+									# Create tags
+									if !performer['tags'].nil? 
+										if performer['tags']['tag'].instance_of?(Array)
+											performer['tags']['tag'].each do |tag|
+												puts "Saving tags..."
+												EventfulData.create(:eventful_origin_type => "Performer", :eventful_origin_id => performer['id'], :data_type => "tag", 
+																	:element_type => "Act", :element_id => new_act.id , :data => tag['title'], :data2 => tag['id'])
+											end
+										elsif performer['tags']['tag'].instance_of?(Hash)
+											puts "Saving tag..."
+											EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => ['id'], :data_type => "tag", 
+																:element_type => "Event", :element_id => new_act.id , :data => performer['tags']['tag']['title'], :data2 => performer['tags']['tag']['id'])
+										end
+									end
+
+									# Mark categories
+									if !performer['categories'].nil? 
+										category_string = ""
+										if performer['categories']['category'].instance_of?(Array)
+											performer['categories']['category'].each do |cat|
+												category_string += cat['id']
+												category_string += ", "
+											end
+										elsif performer['categories']['category'].instance_of?(Hash)
+											category_string = performer['categories']['category']['id']
+										end
+										new_act.genre = category_string
+										new_act.save!
+									end
+								end
+							end
+
+						else
+							puts "Performer #{venue['name']} already exists"
+						end
+
+					else
+						puts "Event #{event['title']} already exists!"
+					end
+
+				end
+			# # Output the results
+			 end
+
+			pageNumber = pageNumber + 1
+			puts "Yay! moving on to page #{pageNumber}"
 		end
-
-		pp results
-
-		# # Output the results
-		# results['events']['event'].each do |event|
-		#  puts
-		#  puts "http://eventful.com/events/" + event['id']
-		#  puts event['title']
-		#  puts "  at " + event['venue_name']
-		#  puts "  on " + event['start_time'].to_s #Time.parse(event['start_time']).strftime("%a, %b %d, %I:%M %p") if event['start_time']
-		# end
-		# puts
 	end
 
 	desc "pull venues from facebook events"
@@ -419,9 +819,10 @@ namespace :api do
 					:website => full_artist['website'],
 					:genre => full_artist['genre'],
 					:bio => full_artist['bio'],
-					:fb_id => full_artist['id'],
-					:fb_likes => full_artist['likes'],
-					:fb_link => full_artist['link'],
+					:pop_id => full_artist['id'],
+					:pop_likes => full_artist['likes'],
+					:pop_link => full_artist['link'],
+					:pop_source => "facebook"
 				)
 				new_artist.fb_picture = @graph.get_picture(full_artist['id'], :type => "large")
 				new_artist.save
@@ -436,9 +837,10 @@ namespace :api do
 				end
 				search_artist.website = full_artist['website']
 				search_artist.genre = full_artist['genre']
-				search_artist.fb_id = full_artist['id']
-				search_artist.fb_likes = full_artist['likes']
-				search_artist.fb_link = full_artist['link']
+				search_artist.pop_id = full_artist['id']
+				search_artist.pop_likes = full_artist['likes']
+				search_artist.pop_link = full_artist['link']
+				search_artist.pop_source = "facebook"
 				search_artist.fb_picture = @graph.get_picture(full_artist['id'], :type => "large")
 				search_artist.save
 				puts "Successfully updated artist " +  search_artist.name

@@ -390,3 +390,12 @@ html,body {
   margin-left: 139px;
 }
 
+.bookmarklist-box {
+  display:inline;
+}
+
+.links-list{
+  display:block;
+  margin-left:135px;
+}
+
