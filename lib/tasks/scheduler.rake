@@ -217,6 +217,7 @@ namespace :api do
 			# event = events['events']['event'] # for testing
 			events['events']['event'].each do |event|
 				puts "*****Processing Event called #{event['title']}"
+				time_shifter = ""
 				# pp event
 				# pp events['events']
 				
@@ -322,12 +323,19 @@ namespace :api do
 ########## Now add to Raw Events ############
 					if Event.find_by_title(event['title']) == nil && RawEvent.where(:title => event['title'], :from => "eventful").empty?
 						puts "....Creating event " + event['title'] + " for " + event['venue_name'] + " " + event['venue_id']
+						puts "--------------Time Start #{event['start_time']}"
 						# pp event
+						
+						if event['start_time'].zone == "CST"
+							time_shifter = 6.hours
+						elsif event['start_time'].zone == "CDT" 
+							time_shifter = 5.hours
+						end
 						new_event = RawEvent.create!(
 							:title => event['title'],
 							:description => event['description'],
-							:start => event['start_time'],
-							:end => event['stop_time'],
+							:start => event['start_time'] + time_shifter,
+							:end => event['stop_time'].nil? ? nil : event['stop_time'] + time_shifter,
 							# :url => event['website'],
 							:raw_venue_id => RawVenue.find_by_raw_id(event['venue_id'].to_s).id,
 							:from => "eventful",
@@ -402,14 +410,14 @@ namespace :api do
 										# pp inst
 										if inst.to_datetime > Date.today 
 											EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => recur_event['id'], :data_type => "instance", 
-																:element_type => "RawEvent", :element_id => new_event.id , :data => inst) rescue nil
+																:element_type => "RawEvent", :element_id => new_event.id , :data => inst + time_shifter) rescue nil
 										end
 									end
 								elsif recur_event['recurrence']['rdates']['rdate'].instance_of?(Hash)
 									puts "creating recurrence"
 										pp inst
 										EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => recur_event['id'], :data_type => "instance", 
-											:element_type => "RawEvent", :element_id => new_event.id , :data => recur_event['recurrence']['rdates']['rdate'])  rescue nil
+											:element_type => "RawEvent", :element_id => new_event.id , :data => recur_event['recurrence']['rdates']['rdate'] + time_shifter)  rescue nil
 								end
 							else
 								puts "----------------------------Not on various days"
