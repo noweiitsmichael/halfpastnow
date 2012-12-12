@@ -343,6 +343,10 @@ namespace :api do
 						elsif event['start_time'].zone == "CDT" 
 							time_shifter = 5.hours
 						end
+						if event['start_time'].instance_of? (String)
+							puts "still string....."
+						end
+						puts "Adding #{event['id']} starting at #{event['start_time']} offset by #{time_shifter}"
 						new_event = RawEvent.create!(
 							:title => event['title'],
 							:description => event['description'],
