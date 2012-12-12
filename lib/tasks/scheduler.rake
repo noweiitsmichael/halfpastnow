@@ -223,7 +223,7 @@ namespace :api do
 			# event = events['events']['event'] # for testing
 			events['events']['event'].each do |event|
 				puts "*****Processing Event called #{event['title']}"
-				time_shifter = ""
+				time_shifter = 0
 				# pp event
 				# pp events['events']
 				
