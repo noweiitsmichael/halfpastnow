@@ -67,10 +67,10 @@ namespace :maintenance do
 				else
 					listId = BookmarkList.find_by_name(t.name).id
 				end
-
-				b = Bookmark.create(:bookmarked_type => "Occurrence", :bookmarked_id => Event.find(le.event_id).nextOccurrence.id, :bookmark_list_id => listId)
-				puts "!!!!Created bookmark for #{Event.find(le.event_id).title}"
-				pp b
+				unless Event.find(le.event_id).nextOccurrence.nil?
+					b = Bookmark.create(:bookmarked_type => "Occurrence", :bookmarked_id => Event.find(le.event_id).nextOccurrence.id, :bookmark_list_id => listId)
+					puts "!!!!Created bookmark for #{Event.find(le.event_id).title}"
+				end
 			end
 
 			ActsTags.where(:tag_id => t.id).each do |le| # For each relationship that currently represents Events-List
