@@ -40,16 +40,22 @@ namespace :maintenance do
 	end
 
 	task :just_testing => :environment do
-		for i in 6..8
-			for j in 0..5
-			   if j < 2 then
-			      next
-			   else
-			   		puts "Value of local variable is #{j}"
-			   end
-			end
-			puts "Value is #{i}"
-		end
+		# for i in 6..8
+		# 	for j in 0..5
+		# 	   if j < 2 then
+		# 	      next
+		# 	   else
+		# 	   		puts "Value of local variable is #{j}"
+		# 	   end
+		# 	end
+		# 	puts "Value is #{i}"
+		# end
+
+		if "324222ffdfae".to_datetime > Date.today 
+			EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => recur_event['id'], :data_type => "instance", 
+								:element_type => "RawEvent", :element_id => new_event.id , :data => inst + time_shifter) rescue nil
+		end 
+		puts "yay"
 	end
 
 	desc "migrating pick lists..."
@@ -293,23 +299,23 @@ namespace :api do
 								end
 							end
 
-							# Create pictures
-							if !venue['images'].nil? 
-								if venue['images']['image'].instance_of?(Array)
-									venue['images']['image'].each do |pic|
-										puts "Saving venue pictures from...."
-										# pp open(pic['url'].gsub("/images/small/", "/images/original/"))
-										Picture.create(:pictureable_id => new_venue.id, :pictureable_type => "Venue", 
-												   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
-									end
-								elsif venue['images']['image'].instance_of?(Hash)
-										puts "Saving venue pictures from...."
-										# pp venue['images']['image']
-										# pp open(venue['images']['image']['url'].gsub("/images/small/", "/images/original/"))
-										Picture.create(:pictureable_id => new_venue.id, :pictureable_type => "Venue", 
-												   	   :image => open(venue['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
-								end
-							end
+							# # Create pictures
+							# if !venue['images'].nil? 
+							# 	if venue['images']['image'].instance_of?(Array)
+							# 		venue['images']['image'].each do |pic|
+							# 			puts "Saving venue pictures from...."
+							# 			# pp open(pic['url'].gsub("/images/small/", "/images/original/"))
+							# 			Picture.create(:pictureable_id => new_venue.id, :pictureable_type => "Venue", 
+							# 					   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
+							# 		end
+							# 	elsif venue['images']['image'].instance_of?(Hash)
+							# 			puts "Saving venue pictures from...."
+							# 			# pp venue['images']['image']
+							# 			# pp open(venue['images']['image']['url'].gsub("/images/small/", "/images/original/"))
+							# 			Picture.create(:pictureable_id => new_venue.id, :pictureable_type => "Venue", 
+							# 					   	   :image => open(venue['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
+							# 	end
+							# end
 
 						else
 							puts "Venue already exists for " + venue['name']
@@ -326,7 +332,13 @@ namespace :api do
 						puts "--------------Time Start #{event['start_time']}"
 						# pp event
 						
-						if event['start_time'].zone == "CST"
+						if event['start_time'].instance_of? (String)
+							puts "CHECK THIS TIME!!!!!!!!!!"
+							event['start_time'] = Time.parse(event['start_time'])
+							if event['stop_time'].instance_of? (String)
+								event['stop_time'] = Time.parse(event['stop_time'])
+							end
+						elsif event['start_time'].zone == "CST"
 							time_shifter = 6.hours
 						elsif event['start_time'].zone == "CDT" 
 							time_shifter = 5.hours
@@ -361,23 +373,23 @@ namespace :api do
 						end
 
 						# Create pictures
-						if !event['images'].nil? 
-							if event['images']['image'].instance_of?(Array)
-								event['images']['image'].each do |pic|
-									puts "Saving pictures...."
-									# pp open(pic['url'].gsub("/images/small/", "/images/original/"))
-									Picture.create(:pictureable_id => new_event.id, :pictureable_type => "RawEvent", 
-												   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
-								end
-							elsif event['images']['image'].instance_of?(Hash)
-								puts "Saving picture...., inside"
-								# pp open(event['images']['image']['url'].gsub("/images/small/", "/images/original/"))
-								Picture.create(:pictureable_id => new_event.id, :pictureable_type => "RawEvent", 
-											   :image => open(event['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
-							end
-						else
-							puts "No images processed"
-						end
+						# if !event['images'].nil? 
+						# 	if event['images']['image'].instance_of?(Array)
+						# 		event['images']['image'].each do |pic|
+						# 			puts "Saving pictures...."
+						# 			# pp open(pic['url'].gsub("/images/small/", "/images/original/"))
+						# 			Picture.create(:pictureable_id => new_event.id, :pictureable_type => "RawEvent", 
+						# 						   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
+						# 		end
+						# 	elsif event['images']['image'].instance_of?(Hash)
+						# 		puts "Saving picture...., inside"
+						# 		# pp open(event['images']['image']['url'].gsub("/images/small/", "/images/original/"))
+						# 		Picture.create(:pictureable_id => new_event.id, :pictureable_type => "RawEvent", 
+						# 					   :image => open(event['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
+						# 	end
+						# else
+						# 	puts "No images processed"
+						# end
 
 						# Create tags
 						if !event['tags'].nil? 
@@ -404,20 +416,22 @@ namespace :api do
 							if event['recur_string'] == "on various days"
 								recur_event = eventful.call 'events/get', :id => event['id']
 								# pp recur_event
-								if recur_event['recurrence']['rdates']['rdate'].instance_of?(Array)
-									recur_event['recurrence']['rdates']['rdate'].each do |inst|
-										puts "creating recurrence"
-										# pp inst
-										if inst.to_datetime > Date.today 
-											EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => recur_event['id'], :data_type => "instance", 
-																:element_type => "RawEvent", :element_id => new_event.id , :data => inst + time_shifter) rescue nil
+								if !recur_event['recurrence']['rdates'].nil?
+									if recur_event['recurrence']['rdates']['rdate'].instance_of?(Array)
+										recur_event['recurrence']['rdates']['rdate'].each do |inst|
+											puts "creating recurrence for #{inst}"
+											# pp inst
+											if inst.to_datetime > Date.today 
+												EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => recur_event['id'], :data_type => "instance", 
+																	:element_type => "RawEvent", :element_id => new_event.id , :data => inst + time_shifter) rescue nil
+											end rescue nil
 										end
+									elsif recur_event['recurrence']['rdates']['rdate'].instance_of?(Hash)
+										puts "creating recurrence"
+											pp inst
+											EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => recur_event['id'], :data_type => "instance", 
+												:element_type => "RawEvent", :element_id => new_event.id , :data => recur_event['recurrence']['rdates']['rdate'] + time_shifter)  rescue nil
 									end
-								elsif recur_event['recurrence']['rdates']['rdate'].instance_of?(Hash)
-									puts "creating recurrence"
-										pp inst
-										EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => recur_event['id'], :data_type => "instance", 
-											:element_type => "RawEvent", :element_id => new_event.id , :data => recur_event['recurrence']['rdates']['rdate'] + time_shifter)  rescue nil
 								end
 							else
 								puts "----------------------------Not on various days"
@@ -463,19 +477,19 @@ namespace :api do
 										end
 
 										# Create pictures
-										if !performer['images'].nil? 
-											if performer['images']['image'].instance_of?(Array)
-												performer['images']['image'].each do |pic|
-													puts "Saving performer pictures...."
-													Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
-															   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
-												end
-											elsif performer['images']['image'].instance_of?(Hash)
-													puts "Saving performer pictures...."
-													Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
-															   	   :image => open(performer['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
-											end
-										end
+										# if !performer['images'].nil? 
+										# 	if performer['images']['image'].instance_of?(Array)
+										# 		performer['images']['image'].each do |pic|
+										# 			puts "Saving performer pictures...."
+										# 			Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
+										# 					   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
+										# 		end
+										# 	elsif performer['images']['image'].instance_of?(Hash)
+										# 			puts "Saving performer pictures...."
+										# 			Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
+										# 					   	   :image => open(performer['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
+										# 	end
+										# end
 
 										# Create tags
 										if !performer['tags'].nil? 
@@ -513,7 +527,7 @@ namespace :api do
 								if Act.find(:first, :conditions => [ "lower(name) = ?", event['performers']['performer']['name'].downcase ]) == nil
 									puts "Creating new act"
 									performer = eventful.call 'performers/get', :id => event['performers']['performer']['id']
-									puts "Creating performer with id #{perf['id']} "
+									puts "Creating performer with id #{event['performers']['performer']['id']} "
 									# Create Act
 									new_act = Act.create!(
 										:name => performer['name'],
@@ -541,20 +555,20 @@ namespace :api do
 										end
 									end
 
-									# Create pictures
-									if !performer['images'].nil? 
-										if performer['images']['image'].instance_of?(Array)
-											performer['images']['image'].each do |pic|
-												puts "Saving performer pictures...."
-												Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
-														   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
-											end
-										elsif performer['images']['image'].instance_of?(Hash)
-												puts "Saving venue pictures...."
-												Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
-														   	   :image => open(performer['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
-										end
-									end
+									# # Create pictures
+									# if !performer['images'].nil? 
+									# 	if performer['images']['image'].instance_of?(Array)
+									# 		performer['images']['image'].each do |pic|
+									# 			puts "Saving performer pictures...."
+									# 			Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
+									# 					   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
+									# 		end
+									# 	elsif performer['images']['image'].instance_of?(Hash)
+									# 			puts "Saving venue pictures...."
+									# 			Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
+									# 					   	   :image => open(performer['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
+									# 	end
+									# end
 
 									# Create tags
 									if !performer['tags'].nil? 
