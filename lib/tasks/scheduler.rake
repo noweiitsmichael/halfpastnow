@@ -434,7 +434,7 @@ namespace :api do
 								event['performers']['performer'].each do |perf|
 									if Act.find(:first, :conditions => [ "lower(name) = ?", perf['name'].downcase ]) == nil
 										performer = eventful.call 'performers/get', :id => perf['id']
-
+										puts "Creating performer with id #{perf['id']} "
 										# Create Act
 										new_act = Act.create!(
 											:name => performer['name'],
@@ -471,7 +471,7 @@ namespace :api do
 															   	   :image => open(pic['url'].gsub("/images/small/", "/images/original/")) )
 												end
 											elsif performer['images']['image'].instance_of?(Hash)
-													puts "Saving venue pictures...."
+													puts "Saving performer pictures...."
 													Picture.create(:pictureable_id => new_act.id, :pictureable_type => "Act", 
 															   	   :image => open(performer['images']['image']['url'].gsub("/images/small/", "/images/original/")) )
 											end
@@ -513,7 +513,7 @@ namespace :api do
 								if Act.find(:first, :conditions => [ "lower(name) = ?", event['performers']['performer']['name'].downcase ]) == nil
 									puts "Creating new act"
 									performer = eventful.call 'performers/get', :id => event['performers']['performer']['id']
-
+									puts "Creating performer with id #{perf['id']} "
 									# Create Act
 									new_act = Act.create!(
 										:name => performer['name'],
