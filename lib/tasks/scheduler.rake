@@ -213,7 +213,7 @@ namespace :api do
 		                       :keywords => '',
 		                       :location => 'Austin',
 		                       :sort_order => 'date',
-		                       :page_size => 10000
+		                       :page_size => 100
 
 		puts "Num Results #{resultCount['total_items']}"
 		puts "Page Size: #{resultCount['page_size']}"
@@ -223,13 +223,19 @@ namespace :api do
 		puts "Events Length: #{resultCount['events']['event'].count}"
 
 		numResults = resultCount['total_items']
+		catArray = ["Concerts", "Conferences", "Education", "Family", "Festivals", "Film", "Food", "Fundraisers", "Galleries", "Health", "Literary", "Museums", "Neighborhood", "Networking"
+					"Nightlife", "On Campus", "Organizations", "Outdoors", "Performing Arts", "Pets", "Politics", "Sales", "Science", "Spirituality", "Sports", "Technology", "Other"]
 		pageNumber = 1
 
+
+		catArray.each do |cat|
+			puts "Category #{cat}"
 		while pageNumber <= (numResults/100)
 			events = eventful.call 'events/search',
                        :keywords => '',
                        :location => 'Austin',
 		               :sort_order => 'date',
+		               :category => cat,
                        :page_size => 100,
                        :page_number => pageNumber
 
@@ -640,6 +646,7 @@ namespace :api do
 
 			pageNumber = pageNumber + 1
 			puts "Yay! moving on to page #{pageNumber}"
+		end
 		end
 	end
 
