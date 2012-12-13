@@ -2,7 +2,7 @@ html, body
 {
   margin: 0;
   padding: 0;
-  font-size: 16px;
+  font-size: 13px;
   width:100%;
   height:100%;
   overflow:hidden;
@@ -68,7 +68,9 @@ H6
   background: rgba(201, 31, 159, 0.9);
   background: rgba(0, 0, 0, .8);
   background: #323232;
-  background: rgba(0, 0, 0, .9);
+  background: transparent;
+  color: black;
+  box-shadow: 0 3px 3px rgba(0,0,0,.1);
 }
 
 #header.selected {
@@ -77,12 +79,11 @@ H6
 
 #header > .one
 {
-  height: 34px;
+  height: 35px;
   overflow: hidden;
   position: relative;
   z-index: 900;
-  background-position: 0 43px;
-  background: #f6f6f6;
+  background: #333;
 }
 #header > .one .stay-on-target {
   overflow:hidden;
@@ -102,28 +103,51 @@ H6
 #header > .one a 
 {
   text-decoration:none;
-  color: #444;
+  color: white;
 }
 
 #header > .one .menu-element
 {
   float: left;
-  color: black;
+  color: white;
   cursor: pointer;
-  margin-left: 10px;
-  margin-right: 20px;
-  margin-top: 5px;
-  font-size: 20px;
-  font-weight: 900;
+  margin-left: 18px;
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: normal;
   text-transform: lowercase;
-  font-variant: small-caps;
+  font-weight:700;
 }
+
+#header > .one .menu-element.main {
+  padding: 3px 12px 7px;
+  font-size: 18px;
+  font-weight:900;
+  margin-top:4px;
+  line-height:24px;
+  text-transform: none;
+}
+
+#header > .one .menu-element.selected {
+  background:white;
+  color: #333;
+  font-weight: 900;
+  border-radius: 2px 2px 0 0;
+  position:relative;
+  top:2px
+}
+
 #header > .one .menu-element.right
 {
 }
+
 #header .top-profile-pic {
     height: 25px;
     margin-left: 3px;
+    position: absolute;
+    top: -4px;
+    right: 0;
+    border: 1px solid white;
 }
 #header > .two
 {
@@ -207,19 +231,63 @@ input::-webkit-input-placeholder
 }
 #content
 {
-  margin-top: 108px; 
+  margin-top: 121px; 
   position: relative;
 }
 
-.stay-on-target {
+#content.pick-content { margin-top:90px; }
+
+#content.pick-content #map-wrapper { margin-top:90px; }
+
+.doublebar {
+  background: white;
+}
+.titlebar {
+  background: white;
+  overflow: hidden;
+  font-size:18px;
+  font-weight: 700;
+  padding:6px 0;
+}
+.titlebar span {
+    font-weight: 900;
+  
+}
+.titlebar em {
+  margin:0 10px;
+  color: #720F72;
+  font-size:12px;
+  position:relative;
+  top:-3px;
+  display: inline-block;
+}
+.titlebar a {
+  text-decoration:none;
+  color: rgb(143, 71, 143);
+  
+  border-bottom: 1px dotted;
+  display: inline-block;
+  height: 20px;
 }
 
+.bar-wrapper {
+  background: white;
+}
+/*
+.stay-on-target.bullseye-womprats {
+    background:white;
+    overflow:hidden;
+    padding:12px 12px 0 12px;
+    border-radius:5px;
+    margin-top:12px;
+    border: 6px solid rgb(138, 138, 138);
+}*/
+
 #header .titlebar h1 {
-    color:white;
-    font-style:italic;
-    margin-bottom: 3px;
     font-size: 26px;
     font-weight: 900;
+    margin: 3px 0;
+    font-style: italic;
 }
 
 #header .filterbar, #header .advancedbar
@@ -362,7 +430,7 @@ input::-webkit-input-placeholder
   }
 
 .tags-display {
-  font-size: 16px;
+  font-size: 13px;
   overflow: hidden;
   border: 1px solid black;
   padding: 2px 7px;
@@ -391,7 +459,7 @@ input::-webkit-input-placeholder
 }
 
 .tags-menu {
-  font-size: 16px;
+  font-size: 13px;
   overflow:auto;
   height: 190px;
 }
@@ -443,7 +511,7 @@ input::-webkit-input-placeholder
 .tags-menu li .name {
   float:left;
   position: relative;
-  top: 3px;
+  top: 6px;
   display: inline-block;
   cursor: pointer;
 }
@@ -565,7 +633,6 @@ input::-webkit-input-placeholder
 }
 #header .filter .filters span
 {
-  font-size: 15px;
   padding: 4px 0;
   cursor: pointer;
   display:block;
@@ -626,7 +693,6 @@ input::-webkit-input-placeholder
     text-align: right;
     margin-right: 3px;
     text-transform: lowercase;
-    font-size: 16px;
     font-style: italic;
     margin-top: -5px;
 }
@@ -811,25 +877,28 @@ input::-webkit-input-placeholder
   position:fixed;
   top:0;
   width: 990px;
-  margin-top: 124px;
+  margin-top: 121px;
 }
 
 #content #map {
   width: 316px;
   height: 414px;
   float: left;
-  margin-top: 9px;
   border: 1px solid #ccc;
+  clear: left;
 }
 
 #content .map-move {
   clear:left;
   float:left;
   font-size:13px;
+  text-align: right;
+  width: 318px;
+  margin-top: 6px;
 }
 
 #content .map-move input {
-  margin-left:0px;
+  margin-left: 6px;
   margin-right:0px;
   position:relative;
   top:2px
@@ -839,7 +908,7 @@ input::-webkit-input-placeholder
 {
   margin-left: 336px;
   position: relative;
-  padding-top: 11px;
+  padding-top: 0px;
 }
 #content .main .inner
 {
@@ -848,11 +917,12 @@ input::-webkit-input-placeholder
 }
 
 .filter-summary {
-    padding: 8px 0 0px;
+    padding: 0;
     font-weight:700;
     margin-bottom: 5px;
     font-size: 16px;
     border-radius: 0 0 1px 1px;
+    margin-top: -5px;
 }
 
 .filter-summary .filter, .filter-summary .sort-type > span {
@@ -892,12 +962,10 @@ input::-webkit-input-placeholder
 {
   /*height: 60px;
   overflow: hidden;*/
-  font-size: 20px;
   /*background-color: #5A5A76;*/
   padding: 0;
   z-index: 800;
   position: relative;
-  font-weight: 700;
 } 
 
 #header .filter-toggle.channels {
@@ -964,6 +1032,9 @@ input::-webkit-input-placeholder
   color: white;       
   z-index: 900;
   background: white;
+  border-bottom: none;
+  border-radius: 2px 2px 0 0;
+  padding-bottom: 1px;
 }
 
 #header .filter-toggle .filter-text {
@@ -986,35 +1057,33 @@ input::-webkit-input-placeholder
 }
 
 #header .filter-toggle.tags .text-inner {
-  max-width: 150px;
+  max-width: 126px;
 }
 
 #header .filter-toggle.date .text-inner {
-  max-width: 155px;
-  text-transform: none;
+  max-width: 141px;
 }
 
 #header .filter-dropdown {
   position:absolute;
-  top: 35px;
+  top: 29px;
   left: -1px;
   z-index: 800;
   display:none;
   overflow:hidden;
-  font-size: 14px;
   color: black;
-  border: 1px solid black;
+  border: 1px solid #DDD;
   border-top: none;
 }
 
 #header .tags .filter-inner {
-  width: 500px;
+  width: 424px;
 }
 
 #header .tags .filter-inner .tags-menu {
   height: 344px;
   float: left;
-  width: 250px;
+  width: 212px;
 }
 
 #header .tags .filter-inner .tags-menu li {
@@ -1804,17 +1873,21 @@ input::-webkit-input-placeholder
 }
 
 #info-content {
-  width: 954px;
+  width: 990px;
   margin: 85px auto 0;
   background: white;
-  font-size: 14px;
+  font-size: 13px;
   overflow: hidden;
-  padding: 8px 18px 5px 18px;
   border: 1px solid #ccc;
 }
 
 #info-content > .info {
     font-size: 13px;
+}
+
+#info-content.padded {
+    padding:12px 18px;
+    width: 954px;
 }
 
 #city-name {
@@ -1855,6 +1928,7 @@ input::-webkit-input-placeholder
     border: 1px solid #DDD;
     overflow:hidden;
 }
+
 
 #content .main .inner .events li:first-child {
 }
@@ -1944,10 +2018,23 @@ input::-webkit-input-placeholder
     font-size: 13px;
 }
 
+#content .events li .picklists {
+    clear:left;
+    float:left;
+    padding-top:9px;
+    padding-bottom:9px;
+    font-weight:700;
+}
+
+#content .events li .picklists .picklist-picture {
+    height:20px;
+}
+
 #content .events li .price {
     float: left;
     margin-left: 5px;
     font-weight: 700;
+    
 }
 
 #content .events li .price:before {
@@ -2041,7 +2128,7 @@ input::-webkit-input-placeholder
   border: 0; 
   margin: 0;
   padding: 0;
-  padding: 2px 0;
+  padding: 0px 0;
 }
 
 .tags-menu.parents > li.selected {
@@ -2058,7 +2145,7 @@ input::-webkit-input-placeholder
 
 #header .streambar {
 position: relative;
-height: 43px;
+height: 35px;
 background-position: 0 11px;
 }
 
@@ -2092,53 +2179,44 @@ html, body {
     position: relative;
     top: -1px;
     left: 18px;
-    color: #444;
+    color: #ddd;
+    display: none;
 }
 
 #header > .one .menu-element.right.pic::after {
     content:"";
 }
 
-#header > .one .menu-element.right.pic a {
-    top: -5px;
-    display: inline-block;
-    position: relative;
-    color: black;
+#header > .one .menu-element.pic {
+    position:relative;
+    padding-right: 34px;
 }    
 
 #header > .one .logo {
   margin-top: 2px;
   height: 30px;
   margin-left: -3px;
+  width: 233px;
 }
 
 #header .streambar {
-    height: 44px;
-    background: transparent;
+    color: #666;
+    z-index: 500;
 }
 
 #header .stream {
-    padding: 0 11px 3px 11px;
+    padding: 0;
     float: left;
-    height: 27px;
-    font-size: 20px;
+    font-size: 13px;
     cursor: pointer;
     display:none;
-    font-weight: 900;
-    margin: 6px 6px 0 0;
-    color: white;
-    border-radius: 2px;
-    border: 1px solid transparent;
-    line-height: 28px;
-    background: rgba(255, 255, 255, .2);
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 1);
+    margin: 8px 13px 0 0;
     box-shadow: none;
-    text-transform: lowercase;
-    font-variant: small-caps;
     max-width: 250px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    border-bottom: 1px dotted;
 }
 
 #header .streambar .stream.bookmark .icon {
@@ -2197,6 +2275,9 @@ html, body {
     background:transparent;
     padding-left:0px;
     padding-right: 5px;
+    border: none;
+    font-weight: 700;
+    color: #333;
 }
 
 #header .stream.bookmark .icon {
@@ -2206,20 +2287,17 @@ html, body {
 }
 
 #header .filter-toggle .pre-text {
-  height: 27px;
+  color: #A700A7;
   display: inline-block;
   margin: 0;
-  padding: 0px 7px 0 0;
+  padding: 3px 7px 0 0;
   float: left;
-  font-size: 19px;
-  background: none;
   position: relative;
   top: 0;
-  text-transform: lowercase;
   font-weight: 700;
-  text-shadow: 1px 1px 0 black;
+  text-transform: lowercase;
   font-variant: small-caps;
-  color: #9DE7FF;
+  font-size: 15px;
 }
 
 #header.selected .header .filter-toggle .pre-text {
@@ -2231,7 +2309,6 @@ html, body {
 }
 
 #header .filter-toggle .text, #header .filter-action {
-    color: white;
     text-shadow:none;
     height: 23px;
     float: left;
@@ -2243,7 +2320,6 @@ html, body {
 #header .filter-toggle.filter-action {
   cursor: pointer;
   margin-top: 8px;
-  font-size: 18px;
   padding: 0px;
   height: 28px;
   line-height: 27px;
@@ -2257,15 +2333,27 @@ html, body {
 }
 
 #header .filter-toggle.filter-action.action-save {
+    margin: 3px 0 0 0; border: none; background: transparent; padding: 0;
+    float: right;
+    display: none;
+}
+
+#header .filter-toggle.filter-action.action-save .filter-text {
+    padding:0;
 }
 
 #header .filter-toggle.filter-action.action-clear {
-    margin:0;
-    margin-right:9px;
+    margin: 3px 0 0 9px;
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
+#header .filter-toggle.filter-action.action-clear .filter-text {
+    padding:0;
 }
 
 #header .filter-toggle.filter-action .pre-text {
-  color: white;
   padding: 0;
 }
 
@@ -2287,7 +2375,7 @@ html, body {
 
 #header .filter-toggle .filter-text {
 
-    padding: 0;
+    padding: 0px 12px 0;
     
 
     margin: 0;
@@ -2295,25 +2383,32 @@ html, body {
     
 }
 
+#header .filter-toggle.search .filter-text {
+    padding:0;
+}
+
 #header .filterbar {
     height: 35px;
+    font-size: 13px;
 }
 
 #header .filter-toggle {
-  height: 32px;
-  padding: 3px 12px 0;
-  margin-right: -11px;
+  height: 28px;
+  margin-left: 3px;
+  border: 1px solid #DDD;
+  margin-top: 3px;
+  border-radius: 2px;
+  background: #f6f6f6;
 }
 
 #header .filter-toggle.search {
   background:white;
-  margin-right: -2px;
   height: 28px;
   border-radius: 2px;
   padding: 0 6px 0 0;
-  margin-left: 4px;
   margin-top: 3px;
-  display: none;
+  border: 1px solid #ccc;
+  margin-left: 0;
 }
 
 #header .pre-text .icon {
@@ -2331,12 +2426,13 @@ html, body {
 }
 
 #header .text .icon {
-  margin-left: 3px;
+  margin-left: 5px;
   font-size: 16px;
   position: relative;
-  top: 1px;
+  top: -2px;
   float: left;
   display: block;
+  color: #333;
 }
 
 #header .icon-sort {
@@ -2353,18 +2449,12 @@ html, body {
   cursor: pointer;
   overflow: visible;
   text-decoration: none;
-  white-space: nowrap;
-  color: white;  /* Fix bleeding */  
+  white-space: nowrap;  /* Fix bleeding */  
   border: none;
   text-shadow: none;
-  font-size: 16px;
   text-transform: lowercase;
-  border-bottom: 1px dotted white;
   height: 19px;
-  text-transform: none;
-  text-shadow: 1px 1px 0 black;
-  margin-top: 3px;
-  font-style: italic;
+  margin-top: 5px;
 }
 
 
@@ -2573,3 +2663,160 @@ html, body {
     color:#990000;
     font-size:19px;
 }
+
+.picklist {
+    float:left;
+    width: 451px;
+    border:1px solid #ccc;
+    margin-left: 12px;
+    margin-top: 12px;
+    padding:12px;
+    overflow:hidden;
+}
+
+.picklist-details {
+    float:left;
+    width: 310px;
+    margin-left: 12px;
+}
+
+.picklist-details h3 {
+    font-size:16px;
+}
+
+.picklist-sidebar {
+    float:left;
+}
+
+.picklist-sidebar .picture {
+    border: 1px solid #ccc;
+}
+
+
+.nice-button {
+    text-align:center;
+    padding:2px 0 4px;
+    border-radius:2px;
+    font-weight:700;
+    font-style:italic;
+    cursor:pointer;
+    color:white;
+    text-shadow:1px 1px 0 rgba(0,0,0,.3);
+    font-size:16px;
+    background-image: -moz-linear-gradient(top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.1)), color-stop(100%,rgba(0,0,0,0.3))); /* Chrome,Safari4+ */
+    background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.3) 100%); /* Chrome10+,Safari5.1+ */
+    background-image: -o-linear-gradient(top, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.3) 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(top, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.3) 100%); /* IE10+ */
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.3) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1a000000', endColorstr='#4d000000',GradientType=0 ); /* IE6-9 */
+}
+
+.nice-button:hover {
+    background-image: -moz-linear-gradient(top, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 100%); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.2)), color-stop(100%,rgba(0,0,0,0.4))); /* Chrome,Safari4+ */
+    background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.4) 100%); /* Chrome10+,Safari5.1+ */
+    background-image: -o-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.4) 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.4) 100%); /* IE10+ */
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.4) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#66000000',GradientType=0 ); /* IE6-9 */
+}
+
+.nice-button:active {
+    background-image: -moz-linear-gradient(top, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.3)), color-stop(100%,rgba(0,0,0,0.5))); /* Chrome,Safari4+ */
+    background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.5) 100%); /* Chrome10+,Safari5.1+ */
+    background-image: -o-linear-gradient(top, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.5) 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(top, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.5) 100%); /* IE10+ */
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.5) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d000000', endColorstr='#80000000',GradientType=0 ); /* IE6-9 */
+}
+
+.follow.button {
+    background-color:#0099ff;
+    width: 128px;
+}
+
+.unfollow.button {
+    background-color:#bb00bb;
+    width: 128px;
+}
+
+.picklist-description {
+    margin-top:6px;
+    
+    margin-bottom:9px;
+}
+
+.picklist-events li {
+    border:1px solid #ccc;
+    margin-top:4px;
+    padding: 4px;
+    cursor:pointer;
+}
+
+.picklist-events li:hover {
+    background:#eee;
+}
+
+.picklist-events li.see-more {
+    border:none;
+    text-align:center;
+}
+
+.picklist-events li .title {
+    font-weight:700;
+}
+
+.picklist-events li .venue {
+    font-style:italic;
+}
+
+.picklist-events li .datetime {
+    text-transform:lowercase;
+    font-size:11px;
+}
+
+.picks-info {
+    border:1px solid #ccc;
+    background:white;
+    overflow:hidden;
+    padding: 9px;
+    margin-bottom:18px;
+}
+
+.picks-info .picture {
+    float:left;
+    width:61px;
+}
+
+.picks-details {
+    float:left;
+    width:550px;
+    margin-left: 12px;
+}
+
+.picks-details .title {
+    font-size: 18px;
+    font-weight:900;
+    margin-bottom: 4px;
+    display:inline-block;
+    float: left;
+}
+
+.picks-details .nice-button {
+    display:inline-block;
+    width:auto;
+    padding-left:18px;
+    padding-right:18px;
+    margin-left:12px;
+    position:relative;
+    top:-2px;
+    float: left;
+}
+
+.picks-details .description {
+     margin-top:4px;   
+     clear: both;
+}
+

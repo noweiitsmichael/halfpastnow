@@ -1,0 +1,71 @@
+<% content_for :code do %>
+	<script type="text/javascript">
+		$(function() {
+			$('.follow.button').click(function() {
+				var $that = $(this);
+				var listID = $that.attr('picklist-id');
+				$.getJSON('/users/followBookmarkList/' + listID, function(data) {
+					if(data.success) {
+						$that.hide();
+						$that.siblings('.unfollow.button').show();
+					} else {
+						console.log(data.error);
+					}
+				});
+			});
+
+			$('.unfollow.button').click(function() {
+				var $that = $(this);
+				var listID = $that.attr('picklist-id');
+				$.getJSON('/users/unfollowBookmarkList/' + listID, function(data) {
+					if(data.success) {
+						$that.hide();
+						$that.siblings('.follow.button').show();
+					} else {
+						console.log(data.error);
+					}
+				});
+			});
+		});
+	</script>
+<% end %>
+
+<% content_for :header do %>
+	<div class="titlebar">
+		<div class="stay-on-target">
+			<a href="/picks">Top Lists</a><em>&bull;</em><span>Followed Lists</span> 
+		</div>
+	</div>
+<% end %>
+
+<% content_for :body do %>
+	<div id="info-content">
+		<% hidden = "style=\"display:none;\""
+		@featuredLists.each do |featuredList|
+		currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id) %>
+			<div class="picklist">
+				<div class="picklist-sidebar">
+					<img class="picture" src="/assets/picklist-placeholder.png" />
+					<div class="follow button nice-button" picklist-id="<%= featuredList.id %>" <%= raw hidden if currentUserIsFollowing %> >follow</div>
+					<div class="unfollow button nice-button" picklist-id="<%= featuredList.id %>" <%= raw hidden unless currentUserIsFollowing %> >following</div>
+				</div>
+				<div class="picklist-details">
+					<h3><a href="/picks/find/<%= featuredList.id %>"><%= featuredList.name %></a></h3>
+					<div><em><%= featuredList.bookmarked_events.size %> <%= featuredList.bookmarked_events.size == 1 ? "event" : "events" %></em></div>
+					<div class="picklist-description"><%= featuredList.description %></div>
+					<% if (featuredList.bookmarked_events.size > 0) %>
+					<ul class="picklist-events">
+						<% featuredList.bookmarked_events.take(3).each do |occurrence| %>
+						<li>
+							<div class="title"><%= occurrence.event.title %></div>
+							<div class="venue"><%= occurrence.event.venue.name %></div>
+							<div class="datetime"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></div>
+						</li>
+						<% end %>
+					</ul>
+					<% end %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+<% end %>

@@ -71,6 +71,9 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.integer "user_id"
   end
 
+  add_index "bookmark_lists_users", ["bookmark_list_id"], :name => "index_bookmark_lists_users_on_bookmark_list_id"
+  add_index "bookmark_lists_users", ["user_id"], :name => "index_bookmark_lists_users_on_user_id"
+
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id"
     t.datetime "created_at",       :null => false
@@ -133,8 +136,8 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.string   "title"
     t.text     "description"
     t.decimal  "price"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.integer  "venue_id"
     t.integer  "clicks",          :default => 0
     t.integer  "views",           :default => 0
@@ -142,7 +145,7 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.boolean  "suggested"
     t.text     "fb_picture"
     t.text     "url"
-    t.integer  "cover_image"
+    t.text     "cover_image"
     t.text     "event_url"
     t.string   "cover_image_url"
     t.float    "completion"
@@ -160,13 +163,13 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
   add_index "events_tags", ["tag_id"], :name => "index_events_tags_on_tag_id"
 
   create_table "feedbacks", :force => true do |t|
+    t.integer  "feedback_type"
     t.string   "subject"
     t.string   "description"
     t.integer  "status"
     t.integer  "user_id"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
-    t.integer  "feedback_type"
   end
 
   create_table "histories", :force => true do |t|
@@ -180,8 +183,8 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.datetime "start"
     t.datetime "end"
     t.integer  "event_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.integer  "recurrence_id"
     t.integer  "day_of_week"
     t.boolean  "deleted"
@@ -213,12 +216,12 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.text     "url"
     t.string   "raw_id"
     t.string   "from"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.boolean  "deleted"
     t.boolean  "submitted"
     t.text     "fb_picture"
-    t.integer  "cover_image"
+    t.text     "cover_image"
     t.text     "event_url"
     t.string   "cover_image_url"
     t.integer  "raw_venue_id"
@@ -238,8 +241,8 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.integer  "review_count"
     t.text     "categories"
     t.text     "neighborhoods"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "raw_id"
     t.string   "from"
     t.integer  "venue_id"
@@ -262,8 +265,8 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.date     "range_end"
     t.datetime "start"
     t.datetime "end"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.integer  "event_id"
   end
 
@@ -273,8 +276,8 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.string   "name"
     t.integer  "resource_id"
     t.string   "resource_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
@@ -283,8 +286,8 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
   create_table "tags", :force => true do |t|
     t.string   "name"
     t.integer  "parent_tag_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   add_index "tags", ["parent_tag_id"], :name => "index_tags_on_parent_tag_id"
@@ -292,30 +295,26 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
   create_table "tags_venues", :id => false, :force => true do |t|
     t.integer  "venue_id"
     t.integer  "tag_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                   :default => "", :null => false
-    t.string   "encrypted_password",      :default => "", :null => false
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",           :default => 0
+    t.integer  "sign_in_count",          :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.string   "firstname"
     t.string   "lastname"
     t.string   "username"
-    t.string   "profilepic_file_name"
-    t.string   "profilepic_content_type"
-    t.integer  "profilepic_file_size"
-    t.datetime "profilepic_updated_at"
     t.string   "profilepic"
     t.string   "provider"
     t.string   "uid"
@@ -344,8 +343,8 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.integer  "zip"
     t.float    "latitude"
     t.float    "longitude"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
     t.string   "phonenumber"
     t.text     "url"
     t.integer  "clicks",      :default => 0

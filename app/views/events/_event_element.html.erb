@@ -15,6 +15,15 @@
 			<% end %>
 		<% end %>
 	</div>
+	<% picklists = occurrence.bookmarks.collect { |b| b.bookmark_list if (b.bookmark_list && b.bookmark_list.featured) }.compact %>
+	<% if picklists.size > 0 %>
+	<div class="picklists">
+		<% picklists.take(3).each do |pList| %>
+			<a href="/picks/find/<%= pList.id %>" /><%= image_tag pList.picture_url(:mini) || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
+		<% end %>
+		<em style="position: relative;top: -5px;margin-left: 2px;">on <%= picklists.size %> top picks <%= picklists.size == 1 ? "list" : "lists" %></em>
+	</div>
+	<% end %>
 	<div class="picture">
 		<img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
 		<div class="picture-overlay"></div>
@@ -25,7 +34,7 @@
 		<div><span class="icon icon-twitter-sign twitter" event-id="<%= occurrence.id %>"></span><span class="text">twitter</span></div>
 		<% 
 			if(current_user)
-		      bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :user_id => current_user.id).first
+		      bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
 		      bookmarkId = bookmark.nil? ? nil : bookmark.id 
 		    else
 		      bookmarkId = nil

@@ -48,6 +48,7 @@ class BookmarkListsController < ApplicationController
   def create
   	pp "Create"
   	pp params
+    
     @bookmarklist = BookmarkList.new(params[:bookmark_list])
 
     pp @bookmarklist

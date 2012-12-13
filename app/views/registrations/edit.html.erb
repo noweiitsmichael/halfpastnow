@@ -136,7 +136,7 @@
     <%= image_tag resource.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic" %>
     <!-- <h2><%= current_user.firstname %> <%= current_user.lastname %> </h2> -->
     <ul id="profile-nav">
-      <li class="streams selected">Streams</li>
+      <li class="streams selected">Saved Searches</li>
       <% if false %><!-- <li class="bookmarks">Bookmarks</li> --><% end %>
       <li class="picture">Picture</li>
       <li class="settings">Settings</li>
@@ -148,7 +148,7 @@
   <div id="profile-menu">
 
     <div class="streams selected">
-      <h2>Streams</h2>
+      <h2>Saved Searches</h2>
       <% hours = ['midnight','1am','2am','3am','4am','5am','6am','7am','8am','9am','10am','11am','noon','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm','midnight'] %>
       <% current_user.channels.each do |channel| %>
         <div class="stream" stream-id="<%= channel.id %>">
