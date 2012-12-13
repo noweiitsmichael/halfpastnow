@@ -354,7 +354,7 @@ namespace :api do
 					if Event.find_by_title(event['title']) == nil && RawEvent.where(:title => event['title'], :from => "eventful").empty?
 						puts "....Creating event " + event['title'] + " for " + event['venue_name'] + " " + event['venue_id']
 						puts "--------------Time Start #{event['start_time']}"
-						# pp event
+						 pp event
 						
 						if event['start_time'].instance_of? (String)
 							puts "CHECK THIS TIME!!!!!!!!!!"
@@ -420,17 +420,17 @@ namespace :api do
 						end
 
 						# Create tags
-						if !event['tags'].nil? 
-							if event['tags']['tag'].instance_of?(Array)
-								event['tags']['tag'].each do |tag|
+						if !event['categories'].nil? 
+							if event['categories']['category'].instance_of?(Array)
+								event['categories']['category'].each do |tag|
 									puts "Saving tags..."
 									EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => event['id'], :data_type => "tag", 
-														:element_type => "Event", :element_id => new_event.id , :data => tag['title'], :data2 => tag['id']) rescue nil
+														:element_type => "Event", :element_id => new_event.id , :data => tag['name'], :data2 => tag['id']) rescue nil
 								end
-							elsif event['tags']['tag'].instance_of?(Hash)
+							elsif event['categories']['category'].instance_of?(Hash)
 								puts "Saving tag..."
 								EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => ['id'], :data_type => "tag", 
-													:element_type => "Event", :element_id => new_event.id , :data => event['tags']['tag']['title'], :data2 => event['tags']['tag']['id']) rescue nil
+													:element_type => "Event", :element_id => new_event.id , :data => event['categories']['category']['name'], :data2 => event['categories']['category']['id']) rescue nil
 							end
 						end
 
