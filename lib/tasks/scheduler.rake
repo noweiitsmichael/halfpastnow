@@ -67,9 +67,11 @@ namespace :m do
 		   resultCount = eventful.call 'events/search',
 				             :keywords => '',
 				             :location => 'Austin',
-				             :sort_order => 'date',
-				             :page_size => 10
+				             :sort_order => 'relevance',
+				             :page_size => 10,
+				             :page_number => i+1
 		   
+		   puts "Results: #{resultCount['total_items']}"
 		   resultCount['events']['event'].each do |r|
 		      puts r['title']
 		   end
@@ -212,7 +214,7 @@ namespace :api do
 		resultCount = eventful.call 'events/search',
 		                       :keywords => '',
 		                       :location => 'Austin',
-		                       :sort_order => 'date',
+		                       :sort_order => 'relevance',
 		                       :page_size => 100
 
 		puts "Num Results #{resultCount['total_items']}"
@@ -223,22 +225,18 @@ namespace :api do
 		puts "Events Length: #{resultCount['events']['event'].count}"
 
 		numResults = resultCount['total_items']
-		catArray = ["Concerts", "Conferences", "Education", "Family", "Festivals", "Film", "Food", "Fundraisers", "Galleries", "Health", "Literary", "Museums", "Neighborhood", "Networking"
-					"Nightlife", "On Campus", "Organizations", "Outdoors", "Performing Arts", "Pets", "Politics", "Sales", "Science", "Spirituality", "Sports", "Technology", "Other"]
 		pageNumber = 1
 
-
-		catArray.each do |cat|
-			puts "Category #{cat}"
-		while pageNumber <= (numResults/100)
+		while pageNumber <= resultCount['page_count'] #(numResults/100)
 			events = eventful.call 'events/search',
                        :keywords => '',
                        :location => 'Austin',
-		               :sort_order => 'date',
-		               :category => cat,
+		               :sort_order => 'relevance',
                        :page_size => 100,
                        :page_number => pageNumber
 
+            puts "Num Results: #{events['total_items']}"
+            puts "Total Pages: #{resultCount['page_count']}"
             puts "PAGENUMBER= #{pageNumber}"
 
 			# If we couldn't find anything, quit
@@ -647,7 +645,7 @@ namespace :api do
 			pageNumber = pageNumber + 1
 			puts "Yay! moving on to page #{pageNumber}"
 		end
-		end
+		# end
 	end
 
 	desc "pull venues from facebook events"
