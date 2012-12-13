@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   has_many :venues, :foreign_key => :updated_by
 
   # Allows you to search for bookmarked venues/events/acts by calling "user.bookmarked_type"
+  has_and_belongs_to_many :followedLists, :class_name => "BookmarkList", :join_table => "bookmark_lists_users"
   has_many :bookmark_lists
   # has_many :bookmarks  
   # has_many :bookmarked_venues, :through => :bookmarks, :source => :bookmarked, :source_type => "Venue"

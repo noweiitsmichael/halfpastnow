@@ -2,7 +2,10 @@ class PicksController < ApplicationController
 helper :content
 	def index
 		@featuredLists = BookmarkList.where(:featured => true)
-		puts @featuredLists
+	end
+
+	def followed
+		@featuredLists = current_user ? current_user.followedLists : []
 	end
 
 	def find

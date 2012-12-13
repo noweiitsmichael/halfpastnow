@@ -7,12 +7,12 @@
 <% content_for :header do %>
 	<div class="titlebar">
 		<div class="stay-on-target">
-			<h1><%= yield :title %></h1>
+			<span><%= yield :title %></span>
 		</div>
 	</div>
 <% end %>
 <% content_for :body do %>
-	<div id="info-content">
+	<div id="info-content" class="padded">
 		<%= yield :content %>
 	</div>
 <% end %>

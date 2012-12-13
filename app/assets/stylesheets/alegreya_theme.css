@@ -1,21 +1,21 @@
 .dk_theme_alegreya {
-       
-    font-size: 20px;
-    margin: 6px 0 0 0;
-    height: 27px;
+    margin: 2px 0 0 0;
+    height: 22px;
     border-radius: 2px;
-    border: 1px solid transparent;
-    background: rgba(255, 255, 255, .2);
+    background: white;
     float: left;
-    padding: 0 11px 3px 11px;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 1);
     line-height: 28px;
     font-family: Lato,sans-serif;
-    text-transform: lowercase;
-    font-variant: small-caps;
-    font-weight: 900;
+    font-weight: normal;
+    color:#666;
+    text-shadow:none;
+    font-size: 13px;
+    border-bottom: 1px dotted;
+    padding-left:4px;
+    white-space: nowrap;
 }
 
+/*
 .dk_theme_alegreya.selected {
     color: white; background: #0094C5; 
     border-color: transparent; 
@@ -24,7 +24,7 @@
     
     margin-top: 12px;
     border-radius: 2px 2px 0 0;
-}
+}*/
 
 .dk_theme_alegreya.dk_open {
     box-shadow:none;
@@ -37,14 +37,9 @@
     height: 33px;
     border-radius: 0;
     border: none;
-    color: white;
     background: transparent;
 }
 
-.dk_theme_alegreya.selected .dk_toggle,
-.dk_theme_alegreya.dk_open.selected .dk_toggle { 
-   border: none;   
-}
 
 .dk_theme_alegreya .dk_label:after {
     content:"\f0d7";
@@ -71,15 +66,13 @@
 }
 
 .dk_theme_alegreya.dk_open .dk_options {
-    top: 32px !important;
+    top: 23px !important;
 }
 
 .dk_theme_alegreya .dk_options a {
-    font-weight: 900;
-
-    height: 20px;
-    line-height: 19px;
-    font-size: 20px;
+    font-weight: 700;
+    font-size: 13px;
+    padding:0 0 0 4px;
 }
 
 .dk_theme_alegreya .dk_options a:hover,

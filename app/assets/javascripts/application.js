@@ -6,5 +6,14 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require rails.validations
 //= require jcrop
+//= require underscore
+//= require jquery-ui
+//= require viewport
+//= require date
+//= require dropkick
+//= require galleria-1.2.8.min
+//= require jquery.form
+//= require history.min
+//= require h5utils
+//= require half.main

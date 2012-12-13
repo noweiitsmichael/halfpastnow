@@ -32,7 +32,7 @@
 				disableDefaultUI: true,
 				zoomControl: true,
 				scrollwheel: false,
-				zoomControlOptions: { position: google.maps.ControlPosition.TOP_LEFT, style: google.maps.ZoomControlStyle.LARGE }
+				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 3 }
 			};
 
 			var styledMap = new google.maps.StyledMapType(styles,
@@ -68,7 +68,7 @@
 <% content_for :header do %>
 	<div class="titlebar">
 		<div class="stay-on-target">
-			<h1><%= @bookmarkList.name %></h1>
+			<span><%= @bookmarkList.name %></span><em>&bull;</em><a href="/picks">Top Picks</a> 
 		</div>
 	</div>
 <% end %>

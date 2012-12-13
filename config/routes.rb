@@ -10,6 +10,8 @@ Myapp::Application.routes.draw do
 
   resources :bookmark_lists
 
+  resources :bookmarks
+
   get "info/about"
 
   get "info/contact"

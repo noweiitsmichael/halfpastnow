@@ -2,60 +2,20 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
   <title>half past now.</title>
-  
-  <!-- <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Alegreya:regular,italic,700,700italic,900,900italic,'>
-  <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Alegreya+SC:regular,italic,700,700italic,900,900italic,'>
-  <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Overlock:regular,italic,700,700italic,900,900italic,'>
-  <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Overlock+SC:regular,'>
-  <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Tinos:regular,italic,700,700italic,'> -->
 
   <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic,'>
-
-  <%#= render :partial => "layouts/font_test" %>
   
   <link rel="shortcut icon" href="/assets/favicon.ico" />
   
   <%= javascript_include_tag "application" %>
-  <%= javascript_include_tag "underscore" %>
-  <%= javascript_include_tag "jquery-ui" %>
-  <%#= javascript_include_tag "jquery-ui-timepicker-addon" %>
-  <%= javascript_include_tag "viewport" %>
-  <%= javascript_include_tag "date" %>
-  <%= javascript_include_tag "main" %>
-  <%#= javascript_include_tag "tokeninput" %>
-  <%= javascript_include_tag "dropkick" %>
-  <%#= javascript_include_tag "jquery.tabSlideOut.v1.3" %>
-  <%= javascript_include_tag "galleria-1.2.8.min" %>
-  <%= javascript_include_tag "jquery.form" %>
-  <%= javascript_include_tag "history.min" %>
-  
 
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
-  <%= javascript_include_tag "markerwithlabel" %>
-
-  <%= stylesheet_link_tag    "font-awesome" %>  
-  <%= stylesheet_link_tag    ("styles" + (params[:style] || "9")) %>
-  <%= stylesheet_link_tag    "jquery-ui" %>
-  <%= stylesheet_link_tag "dropkick" %>
-  <%= stylesheet_link_tag "alegreya_theme" %>
-  <%= stylesheet_link_tag "galleria.classic" %>
+  
+  <%= stylesheet_link_tag    "application" %>
   
   <%= csrf_meta_tags %>
-
-  <% if false %><!--
-  <script type="text/javascript">
-    $(function(){
-        $('.slide-out-div').tabSlideOut({
-            tabHandle: '.handle',                     //class of the element that will become your tab
-            pathToTabImage: '/assets/feedback_tab_v.jpg', //path to the image for the tab //Optionally can be set using css
-            imageHeight: '122px',                     //height of tab image           //Optionally can be set using css
-            imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
-        });
-
-    });
-    </script>-->
-  <% end %>
 
   <script type="text/javascript">
 
@@ -76,13 +36,6 @@
   <%= yield :head %>
 
 </head>
-<!-- <body onload="if(typeof initialize !== 'undefined') initialize();"> -->
-
-<div id="getsat-widget-2414"></div>
-<script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
-<script type="text/javascript">
-if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-widget-2414"}); }
-</script>
 <body>
 
 	<%= yield :code %>
@@ -105,7 +58,6 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
                   <a href="#" linkto="shunt">Sign Up</a> <span>/</span> <a href="#" linkto="shunt">Login</a>
               </div>
             <% end %>
-            <!-- <div class="menu-element right"><a href="/info/contact">contact us</a></div> -->
             <div class="menu-element right"><a href="/info/about">About Us</a></div>
           </div>
         </div>
@@ -117,15 +69,11 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
   <div id="overlays">
     <%= yield :overlay %>
   </div>
-  <% if false %><!--
-  <div class="slide-out-div">
-	<a class="handle" href="http://link-for-non-js-users.html">Content</a>
-	<h3>Got some feedback?</h3>
-	<p>Let us know! We really appreciate it.</p>
-	<%= render 'feedbacks/form' %>
-  </div>
-  --><% end %>
+  
+  <div id="getsat-widget-2414"></div>
+  <script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
+  <script type="text/javascript">
+  if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-widget-2414"}); }
+  </script>
 </body>
 </html>
-<% puts "--------------------PARAMS--------------------" %>
-<% puts params %>

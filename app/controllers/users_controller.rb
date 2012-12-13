@@ -179,5 +179,34 @@ class UsersController < ApplicationController
     end
   end
 
+  def followBookmarkList
+    list = BookmarkList.first(:conditions => { :id => params[:id] })
+    if list.nil?
+      render :json => { :success => false, :error => "List could not be found." }
+    end
 
+    if(current_user.followedLists.exists?(list))
+      render :json => { :success => false, :error => "User is already following list." }
+    end
+
+    if current_user.followedLists << list
+      render :json => { :success => true }
+    else 
+      render :json => { :success => false, :error => "Unable to follow list." }
+    end
+  end
+
+  def unfollowBookmarkList
+    list = current_user.followedLists.first(:conditions => { :id => params[:id] })
+
+    if(list.nil?)
+      render :json => { :success => false, :error => "User is not following list." }
+    end
+
+    if current_user.followedLists.delete(list)
+      render :json => { :success => true }
+    else 
+      render :json => { :success => false, :error => "Unable to follow list." }
+    end
+  end
 end

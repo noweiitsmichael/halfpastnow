@@ -1,5 +1,5 @@
 <% content_for :title do %>
-	<h1>Save Current Filters as Stream</h1>
+	<h1>Save Current Filters as Search</h1>
 <% end %>
 
 <% content_for :body do %>
@@ -75,7 +75,7 @@
 	</script>
 	<input type="radio" class="current field-selector" checked name="field-selector" />
 	<div class="field selected">
-		<label>current streams</label>
+		<label>current saved searches</label>
 		<select class="save-channel" name="no-dropkick">
 			<% @channels.reverse.each do |channel| %>
 				<option value="<%= channel.id %>"><%= channel.name %></option>
@@ -84,8 +84,8 @@
 	</div>
 	<input type="radio" class="new field-selector" name="field-selector" />
 	<div class="field">
-		<label>new stream</label>
+		<label>new saved search</label>
 		<input class="new-channel-name" type="text" placeholder="new stream name" />
 	</div>
-	<button class="new-channel-create">Save Stream</button>
+	<button class="new-channel-create">Save Search</button>
 <% end %>

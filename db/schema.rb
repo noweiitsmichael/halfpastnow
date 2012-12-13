@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121208001330) do
+ActiveRecord::Schema.define(:version => 20121210170555) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -65,10 +65,8 @@ ActiveRecord::Schema.define(:version => 20121208001330) do
   end
 
   create_table "bookmark_lists_users", :id => false, :force => true do |t|
-    t.integer  "bookmark_list_id"
-    t.integer  "user_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.integer "bookmark_list_id"
+    t.integer "user_id"
   end
 
   add_index "bookmark_lists_users", ["bookmark_list_id"], :name => "index_bookmark_lists_users_on_bookmark_list_id"

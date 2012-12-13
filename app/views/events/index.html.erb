@@ -1,5 +1,10 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "half.dynamics" %>
+<% end %>
+
 <% content_for :code do %>
 <%# TODO: put this stuff in the controller eventually %>
+
 	<% 	@now = DateTime.now.change(:hour => 0)
 		@channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
 
@@ -132,7 +137,7 @@
 				disableDefaultUI: true,
 				zoomControl: true,
 				scrollwheel: false,
-				zoomControlOptions: { position: google.maps.ControlPosition.TOP_LEFT, style: google.maps.ZoomControlStyle.LARGE }
+				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 3 }
 			};
 
 			var styledMap = new google.maps.StyledMapType(styles,
@@ -208,13 +213,6 @@
 				  end_date: "",
 				  sort: 0 };
 
-			// filter.search = "<%= params[:search] %>";
-			<% if false %>
-				// <% @tags.each do |tag| %>
-				// tags[<%= tag.id %>] = "<%= tag.name %>";
-				// <% end %>
-			<% end %>
-
 			<% @tagCounts.each do |tagCount| %>
 			tags['<%= tagCount[:id] %>'] = 
 				{ name: "<%= tagCount[:name] %>",
@@ -225,6 +223,24 @@
 			<% end %>
 
 			Galleria.loadTheme('/assets/galleria.classic.min.js');
+
+			var event_id = <%= params[:event_id] || "null" %>;
+			var venue_id = <%= params[:venue_id] || "null" %>;
+			var act_id = <%= params[:act_id] || "null" %>;
+			var modality;
+
+			if(event_id) {
+				modality = spawn(modalities["event"],{id: event_id});
+				modal(modality);
+			}
+			if(venue_id) {
+				modality = spawn(modalities["venue"],{id: venue_id});
+				modal(modality);
+			}
+			if(act_id) {
+				modality = spawn(modalities["act"],{id: act_id});
+				modal(modality);   
+			}
 		});
 
 		$(window).load(function() {
@@ -355,7 +371,7 @@
 								</div>
 							</div>
 						</span>
-						<span class="right filter-toggle filter-action action-clear">
+						<span class="filter-toggle filter-action action-clear">
 							<span class="filter-text">
 								<span class="pre-text"><span class="icon icon-remove-sign"></span>clear</span>
 							</span>
@@ -405,7 +421,8 @@
 		<div id="map-wrapper">
 			<div id="map"></div>
 			<div class="map-move">
-				<input type="checkbox" checked id="unnecessarily-long-id-for-toggling-search-on-map-move-and-zoom"/> redo search based on map
+				<strong>zoom and move around the map to see events</strong><br />
+				redo search based on map move + zoom<input type="checkbox" checked id="unnecessarily-long-id-for-toggling-search-on-map-move-and-zoom"/>
 			</div>
 		</div>
 		<div class="main">

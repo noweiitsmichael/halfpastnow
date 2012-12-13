@@ -120,12 +120,12 @@ H6
 }
 
 #header > .one .menu-element.main {
-  padding: 0px 12px 7px;
-  font-size:21px;
+  padding: 3px 12px 7px;
+  font-size: 18px;
   font-weight:900;
-  font-variant:small-caps;
   margin-top:4px;
   line-height:24px;
+  text-transform: none;
 }
 
 #header > .one .menu-element.selected {
@@ -245,7 +245,31 @@ input::-webkit-input-placeholder
 .titlebar {
   background: white;
   overflow: hidden;
+  font-size:18px;
+  font-weight: 700;
+  padding:6px 0;
 }
+.titlebar span {
+    font-weight: 900;
+  
+}
+.titlebar em {
+  margin:0 10px;
+  color: #720F72;
+  font-size:12px;
+  position:relative;
+  top:-3px;
+  display: inline-block;
+}
+.titlebar a {
+  text-decoration:none;
+  color: rgb(143, 71, 143);
+  
+  border-bottom: 1px dotted;
+  display: inline-block;
+  height: 20px;
+}
+
 .bar-wrapper {
   background: white;
 }
@@ -867,10 +891,13 @@ input::-webkit-input-placeholder
   clear:left;
   float:left;
   font-size:13px;
+  text-align: right;
+  width: 318px;
+  margin-top: 6px;
 }
 
 #content .map-move input {
-  margin-left:0px;
+  margin-left: 6px;
   margin-right:0px;
   position:relative;
   top:2px
@@ -1029,11 +1056,11 @@ input::-webkit-input-placeholder
 }
 
 #header .filter-toggle.tags .text-inner {
-  max-width: 150px;
+  max-width: 126px;
 }
 
 #header .filter-toggle.date .text-inner {
-  max-width: 155px;
+  max-width: 141px;
 }
 
 #header .filter-dropdown {
@@ -1857,6 +1884,10 @@ input::-webkit-input-placeholder
     font-size: 13px;
 }
 
+#info-content.padded {
+    padding:12px 18px;
+}
+
 #city-name {
   float: right;
   line-height: 1;
@@ -1895,6 +1926,7 @@ input::-webkit-input-placeholder
     border: 1px solid #DDD;
     overflow:hidden;
 }
+
 
 #content .main .inner .events li:first-child {
 }
@@ -1984,10 +2016,23 @@ input::-webkit-input-placeholder
     font-size: 13px;
 }
 
+#content .events li .picklists {
+    clear:left;
+    float:left;
+    padding-top:9px;
+    padding-bottom:9px;
+    font-weight:700;
+}
+
+#content .events li .picklists .picklist-picture {
+    height:20px;
+}
+
 #content .events li .price {
     float: left;
     margin-left: 5px;
     font-weight: 700;
+    
 }
 
 #content .events li .price:before {
@@ -2286,14 +2331,24 @@ html, body {
 }
 
 #header .filter-toggle.filter-action.action-save {
+    margin: 3px 0 0 0; border: none; background: transparent; padding: 0;
+    float: right;
     display: none;
 }
 
+#header .filter-toggle.filter-action.action-save .filter-text {
+    padding:0;
+}
+
 #header .filter-toggle.filter-action.action-clear {
-    margin: 3px 0 0 0;
+    margin: 3px 0 0 9px;
     border: none;
     background: transparent;
     padding: 0;
+}
+
+#header .filter-toggle.filter-action.action-clear .filter-text {
+    padding:0;
 }
 
 #header .filter-toggle.filter-action .pre-text {
@@ -2635,20 +2690,51 @@ html, body {
     border: 1px solid #ccc;
 }
 
-.picklist-sidebar .follow-button {
-    border:1px solid #999;
+.picklist-sidebar .follow.button {
+    background-color:#0099ff;
+}
+
+.picklist-sidebar .unfollow.button {
+    background-color:#bb00bb;
+}
+
+.nice-button {
     text-align:center;
-    padding:4px 0;
+    padding:2px 0 4px;
     border-radius:2px;
     font-weight:700;
     font-style:italic;
     cursor:pointer;
+    color:white;
+    text-shadow:1px 1px 0 rgba(0,0,0,.3);
+    font-size:16px;
+    background-image: -moz-linear-gradient(top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.1)), color-stop(100%,rgba(0,0,0,0.3))); /* Chrome,Safari4+ */
+    background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.3) 100%); /* Chrome10+,Safari5.1+ */
+    background-image: -o-linear-gradient(top, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.3) 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(top, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.3) 100%); /* IE10+ */
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.3) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1a000000', endColorstr='#4d000000',GradientType=0 ); /* IE6-9 */
 }
 
-.picklist-sidebar .follow-button:hover {
-     background:#f6f6f6;   
-     border-color:#eeeeee;
-     color:#333;
+.nice-button:hover {
+    background-image: -moz-linear-gradient(top, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.4) 100%); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.2)), color-stop(100%,rgba(0,0,0,0.4))); /* Chrome,Safari4+ */
+    background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.4) 100%); /* Chrome10+,Safari5.1+ */
+    background-image: -o-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.4) 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.4) 100%); /* IE10+ */
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.4) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#66000000',GradientType=0 ); /* IE6-9 */
+}
+
+.nice-button:active {
+    background-image: -moz-linear-gradient(top, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.3)), color-stop(100%,rgba(0,0,0,0.5))); /* Chrome,Safari4+ */
+    background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.5) 100%); /* Chrome10+,Safari5.1+ */
+    background-image: -o-linear-gradient(top, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.5) 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(top, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.5) 100%); /* IE10+ */
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.5) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4d000000', endColorstr='#80000000',GradientType=0 ); /* IE6-9 */
 }
 
 .picklist-description {
@@ -2661,6 +2747,16 @@ html, body {
     border:1px solid #ccc;
     margin-top:4px;
     padding: 4px;
+    cursor:pointer;
+}
+
+.picklist-events li:hover {
+    background:#eee;
+}
+
+.picklist-events li.see-more {
+    border:none;
+    text-align:center;
 }
 
 .picklist-events li .title {

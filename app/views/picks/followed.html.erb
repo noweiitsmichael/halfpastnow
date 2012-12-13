@@ -26,24 +26,6 @@
 					}
 				});
 			});
-
-			var event_id = <%= params[:event_id] || "null" %>;
-			var venue_id = <%= params[:venue_id] || "null" %>;
-			var act_id = <%= params[:act_id] || "null" %>;
-			var modality;
-
-			if(event_id) {
-				modality = spawn(modalities["event"],{id: event_id});
-				modal(modality);
-			}
-			if(venue_id) {
-				modality = spawn(modalities["venue"],{id: venue_id});
-				modal(modality);
-			}
-			if(act_id) {
-				modality = spawn(modalities["act"],{id: act_id});
-				modal(modality);   
-			}
 		});
 	</script>
 <% end %>
@@ -51,7 +33,7 @@
 <% content_for :header do %>
 	<div class="titlebar">
 		<div class="stay-on-target">
-			<span>Top Lists</span><em>&bull;</em><a href="/picks/followed">Followed Lists</a> 
+			<a href="/picks">Top Lists</a><em>&bull;</em><span>Followed Lists</span> 
 		</div>
 	</div>
 <% end %>
@@ -74,30 +56,16 @@
 					<% if (featuredList.bookmarked_events.size > 0) %>
 					<ul class="picklist-events">
 						<% featuredList.bookmarked_events.take(3).each do |occurrence| %>
-						<li linkto="event" link-id="<%= occurrence.id %>">
+						<li>
 							<div class="title"><%= occurrence.event.title %></div>
 							<div class="venue"><%= occurrence.event.venue.name %></div>
 							<div class="datetime"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></div>
 						</li>
 						<% end %>
-						<li class="see-more">
-							<a href="/picks/find/<%= featuredList.id %>">see all events</a>
-						</li>
 					</ul>
 					<% end %>
 				</div>
 			</div>
 		<% end %>
-	</div>
-<% end %>
-
-<% content_for :overlay do %>
-	<div class="mode">
-		<div class="overlay">
-			<div class="insert-point">
-				<div class="window">
-				</div>
-			</div>
-		</div>
 	</div>
 <% end %>
