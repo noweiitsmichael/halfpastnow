@@ -30,6 +30,17 @@
 		  <%= e.label "Event Link / Registration Link" %>
 		  <%= e.text_field :event_url, :class => "event_url" %>
 		</div>
+
+		<div class="links-list" style="font-size:small;color:gray;font-style:italic;">
+		<% if @rawEvent.from == "eventful" %>
+			Possible event links scraped from Eventful (copy into above field if desired):<br>
+			<% EventfulData.where(:element_type => "Event", :element_id => @rawEvent.id, :data_type => "link").each do |d| %>
+				Type: <%= d.data2 %>: <%=d.data %><br>
+			<% end %>
+			<br>
+		<% end %>
+		</div>
+
 		<div class="field">
 		  <label>Description<br /><em style="font-size:small;color:gray;">(make sure to rewrite pre-populated descriptions)</em></label>
 		  <%= e.text_area :description, :class => "cleditor" %>
@@ -41,9 +52,34 @@
 
 		<%= render :partial => "acts", :locals => { :event => event, :rawEvent => @rawEvent } %>
 
+		<% if @rawEvent.from == "eventful" %>
+			<div class="links-list" style="font-size:small;color:gray;font-style:italic;">
+				Possible tags scraped from Eventful:<br>
+			<% EventfulData.where(:element_type => "Event", :element_id => @rawEvent.id, :data_type => "tag").each do |d| %>
+				<%=d.data + ", "%>
+			<% end %>
+			</div>
+			<br>
+		<% end %>
+
 		<%= render :partial => "tags", :locals => { :element => event } %>
 
 		<%= render :partial => "bookmark_lists" %>
+
+		<div class="links-list" style="font-size:small;color:red;font-style:italic;font-weight:bold;">
+		<% recur_string = EventfulData.where(:element_type => "RawEvent", :element_id => @rawEvent.id, :data_type => "recurrence").first %>
+		<% if @rawEvent.from == "eventful" && !EventfulData.where(:element_type => "RawEvent", :element_id => @rawEvent.id, :data_type => "recurrence").blank?%>
+			Recurrence found!!! PLEASE make sure recurrence is put in:<br>
+			<%= recur_string.data %>
+			<% if recur_string.data == "on various days" %>
+				:<br>
+				<% EventfulData.where(:element_type => "RawEvent", :element_id => @rawEvent.id, :data_type => "instance").each do |i| %>
+					<%= i.data.to_datetime.strftime("%Y-%m-%d at %I:%M %p") %><br>
+				<% end %>
+			<% end %>
+			<br>
+		<% end %>
+		</div>
 
 		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => event, :validate_occurrence => false  } %>
 

@@ -26,6 +26,7 @@ class PicturesController < ApplicationController
   end
 
   def new
+    puts "Pic new"
     @picture = Picture.new
 
     respond_to do |format|

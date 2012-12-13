@@ -11,6 +11,9 @@ CarrierWave.configure do |config|
   if ENV['RAILS_ENV'] != 'production'
       config.delete_tmp_file_after_storage = false
   end
+
+  OpenURI::Buffer.send :remove_const, 'StringMax' if OpenURI::Buffer.const_defined?('StringMax')
+  OpenURI::Buffer.const_set 'StringMax', 0
 end
 
 ## Alternative, using Carrierwave's built-in S3 adapter (which is based on fog???)

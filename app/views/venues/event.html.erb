@@ -38,6 +38,21 @@
 
 		<%= render :partial => "bookmark_lists" %>
 
+		<div class="links-list" style="font-size:small;color:red;font-style:italic;font-weight:bold;">
+		<% recur_string = EventfulData.where(:element_type => "Event", :element_id => @event.id, :data_type => "recurrence").first %>
+		<% if !recur_string.nil? %>
+			Recurrence found!!! PLEASE make sure recurrence is put in:<br>
+			<%= recur_string.data %>
+			<% if recur_string.data == "on various days" %>
+				:<br>
+				<% EventfulData.where(:element_type => "Event", :element_id => @event.id, :data_type => "instance").each do |i| %>
+					<%= i.data.to_datetime.strftime("%Y-%m-%d at %I:%M %p") %><br>
+				<% end %>
+			<% end %>
+			<br>
+		<% end %>
+		</div>
+
 		<%= render :partial => "occurrences_recurrences", :locals => { :e => e, :event => @event, :validate_occurrence => false  } %>
 
 		<br>

@@ -12,8 +12,10 @@ $(document).ready(function() {
     });
 });
 </script>
+
 <div class="tags field">
 	<label>Tags</label>
+
 	<div class="input-tags">
 		<% @parentTags.sort { |a,b| a.name <=> b.name }.each do |tag| %>
 			<br>

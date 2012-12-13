@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121210170555) do
+ActiveRecord::Schema.define(:version => 20121211230936) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -25,10 +25,12 @@ ActiveRecord::Schema.define(:version => 20121210170555) do
     t.text     "website"
     t.text     "genre"
     t.text     "bio"
-    t.string   "fb_id"
-    t.string   "fb_likes"
-    t.string   "fb_link"
+    t.string   "pop_id"
+    t.string   "pop_likes"
+    t.string   "pop_link"
     t.integer  "updated_by"
+    t.string   "pop_source"
+    t.float    "completion"
   end
 
   add_index "acts", ["event_id"], :name => "index_acts_on_event_id"
@@ -116,6 +118,20 @@ ActiveRecord::Schema.define(:version => 20121210170555) do
 
   add_index "embeds", ["embedable_id"], :name => "index_embeds_on_act_id"
 
+  create_table "eventful_data", :force => true do |t|
+    t.string   "eventful_origin_type"
+    t.string   "eventful_origin_id"
+    t.integer  "element_id"
+    t.string   "element_type"
+    t.string   "data_type"
+    t.text     "data"
+    t.text     "data2"
+    t.text     "data3"
+    t.text     "data4"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
   create_table "events", :force => true do |t|
     t.string   "title"
     t.text     "description"
@@ -132,6 +148,7 @@ ActiveRecord::Schema.define(:version => 20121210170555) do
     t.text     "cover_image"
     t.text     "event_url"
     t.string   "cover_image_url"
+    t.float    "completion"
   end
 
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
@@ -203,14 +220,12 @@ ActiveRecord::Schema.define(:version => 20121210170555) do
     t.datetime "updated_at",      :null => false
     t.boolean  "deleted"
     t.boolean  "submitted"
-    t.integer  "raw_venue_id"
     t.text     "fb_picture"
     t.text     "cover_image"
     t.text     "event_url"
     t.string   "cover_image_url"
+    t.integer  "raw_venue_id"
   end
-
-  add_index "raw_events", ["raw_venue_id"], :name => "index_raw_events_on_raw_venue_id"
 
   create_table "raw_venues", :force => true do |t|
     t.string   "name"
@@ -339,6 +354,7 @@ ActiveRecord::Schema.define(:version => 20121210170555) do
     t.text     "fb_picture"
     t.string   "admin_owner"
     t.integer  "updated_by"
+    t.float    "completion"
   end
 
 end

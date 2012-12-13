@@ -163,6 +163,7 @@ class VenuesController < ApplicationController
   def create
     @venue = Venue.new(params[:venue])
     @venue.updated_by = current_user.id
+    @venue.completion = @venue.completedness
 
     respond_to do |format|
       if @venue.save
@@ -191,6 +192,7 @@ class VenuesController < ApplicationController
       end
     end
 
+    @venue.completion = @venue.completedness
     @venue.updated_by = current_user.id
 
     respond_to do |format|
@@ -212,13 +214,21 @@ class VenuesController < ApplicationController
      # pp params
     @event = @venue.events.build()
     @event.user_id = current_user.id
+    y params
     @event.update_attributes!(params[:event])
 
     if params[:bookmark_lists_add]
       Bookmark.create(:bookmarked_type => "Occurrence", :bookmarked_id => @event.nextOccurrence.id, :bookmark_list_id => params[:bookmark_lists_add] )
     end
-    
 
+    EventfulData.where(:element_type => "RawEvent", :element_id => params[:raw_event_id]).each do |i|
+      if i.data_type == "recurrence" || i.data_type == "instance"
+        i.element_type = "Event"
+        i.element_id = @event.id
+        i.save!
+      end
+    end
+    
     newpictures = Picture.where(:pictureable_type => "RawEvent", :pictureable_id => params[:raw_event_id]) 
     unless newpictures.nil?
       newpictures.each do |pic|
@@ -232,6 +242,7 @@ class VenuesController < ApplicationController
     @raw_event = RawEvent.find(params[:raw_event_id])
     @event.cover_image = @raw_event.cover_image
     @event.cover_image_url = @raw_event.cover_image_url
+    @event.completion = @event.completedness
     
     if @event.save
       @raw_event.submitted = true
@@ -346,7 +357,7 @@ class VenuesController < ApplicationController
     #   pp params[:event][:recurrences_attributes]
     # end
 
-
+    @event.completion = @event.completedness
     params[:event][:user_id] = current_user.id
     @event.update_attributes!(params[:event])
 
