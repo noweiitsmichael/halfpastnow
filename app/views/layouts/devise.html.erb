@@ -1,8 +1,6 @@
 <% content_for :head do %>
 	<%= stylesheet_link_tag "devise" %>
- 	<%= javascript_include_tag "jquery.form" %>
  	<%= stylesheet_link_tag "jcrop" %>
-    <% if false %><%= javascript_include_tag "users" %><% end %>
 <% end %>
 <% content_for :header do %>
 	<div class="titlebar">
@@ -16,4 +14,16 @@
 		<%= yield :content %>
 	</div>
 <% end %>
+
+<% content_for :overlay do %>
+	<div class="mode">
+		<div class="overlay">
+			<div class="insert-point">
+				<div class="window">
+				</div>
+			</div>
+		</div>
+	</div>
+<% end %>
+
 <%= render :template => 'layouts/application' %>

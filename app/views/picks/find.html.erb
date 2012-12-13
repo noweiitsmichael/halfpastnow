@@ -53,22 +53,49 @@
 			
 			placeMarkers({points: locations});
 
-			google.maps.event.addListener(map, 'idle', boundsChanged);
+			//google.maps.event.addListener(map, 'idle', boundsChanged);
 		}
 
 		function to_i(obj) {
 			return parseInt(obj);
 		}
+		
+		Galleria.loadTheme('/assets/galleria.classic.min.js');
+		
+		$(function() {
+			$('.follow.button').click(function() {
+				var $that = $(this);
+				var listID = $that.attr('picklist-id');
+				$.getJSON('/users/followBookmarkList/' + listID, function(data) {
+					if(data.success) {
+						$that.hide();
+						$that.siblings('.unfollow.button').show();
+					} else {
+						console.log(data.error);
+					}
+				});
+			});
 
-			Galleria.loadTheme('/assets/galleria.classic.min.js');
-
+			$('.unfollow.button').click(function() {
+				var $that = $(this);
+				var listID = $that.attr('picklist-id');
+				$.getJSON('/users/unfollowBookmarkList/' + listID, function(data) {
+					if(data.success) {
+						$that.hide();
+						$that.siblings('.follow.button').show();
+					} else {
+						console.log(data.error);
+					}
+				});
+			});
+		});
 	</script>
 <% end %>
 
 <% content_for :header do %>
 	<div class="titlebar">
 		<div class="stay-on-target">
-			<span><%= @bookmarkList.name %></span><em>&bull;</em><a href="/picks">Top Picks</a> 
+			<%= render :partial => "title", :locals => { :page_action => params[:action], :bookmark_list_name => @bookmarkList ? @bookmarkList.name : nil } %>
 		</div>
 	</div>
 <% end %>
@@ -76,20 +103,28 @@
 <% content_for :body do %>
 	<div id="content" class="pick-content">
 		<div id="map-wrapper">
+			<% if(@isFollowedLists) %>
+				<div style="float: left;position: relative;margin-top: -5px;font-weight: 700;margin-bottom: 11px;font-size: 16px;"><a href="/picks/followed">List View</a> | Event View</div>
+			<% end %>
 			<div id="map"></div>
-			<!-- <div class="map-move">
-				<input type="checkbox" checked id="unnecessarily-long-id-for-toggling-search-on-map-move-and-zoom"/> redo search based on map
-			</div> -->
 		</div>
 		<div class="main">
 			<div class="inner">
-				<div class="picks-info">
-					<img class="picture" src="/assets/picklist-placeholder.png" />
-					<div class="picks-details">
-						<div class="title"><%= @bookmarkList.name %></div>
-						<div class="description"><%= @bookmarkList.description %></div>
+				<% unless @isMyBookmarksList || @isFollowedLists %>
+				<% currentUserIsFollowing = current_user && current_user.followedLists.exists?(@bookmarkList.id)
+				hidden = "style=\"display:none;\"" %>
+					<div class="picks-info">
+						<%= image_tag @bookmarkList.picture_url(:thumb) || "/assets/picklist-placeholder.png", :class => "picture" %>
+						<div class="picks-details">
+							<div class="title"><%= @bookmarkList.name %></div>
+							<% if current_user %>
+								<div class="follow button nice-button" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden if currentUserIsFollowing %> >follow</div>
+								<div class="unfollow button nice-button" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden unless currentUserIsFollowing %> >following</div>
+							<% end %>
+							<div class="description"><%= @bookmarkList.description %></div>							
+						</div>
 					</div>
-				</div>
+				<% end %>
 				<ul class="events">
 					<%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences } %>
 				</ul>

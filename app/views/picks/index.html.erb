@@ -51,19 +51,22 @@
 <% content_for :header do %>
 	<div class="titlebar">
 		<div class="stay-on-target">
-			<span>Top Lists</span><em>&bull;</em><a href="/picks/followed">Followed Lists</a> 
+			<%= render :partial => "title", :locals => { :page_action => params[:action] } %>
 		</div>
 	</div>
 <% end %>
 
 <% content_for :body do %>
 	<div id="info-content">
+		<% if(@isFollowedLists) %>
+			<div style="font-weight: 700;margin: 9px 0 0 11px;font-size: 16px;">List View | <a href="/picks/followed?events=true">Event View</a></div>
+		<% end %>
 		<% hidden = "style=\"display:none;\""
 		@featuredLists.each do |featuredList|
 		currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id) %>
 			<div class="picklist">
 				<div class="picklist-sidebar">
-					<img class="picture" src="/assets/picklist-placeholder.png" />
+    				<%= image_tag featuredList.picture_url(:thumb) || "/assets/picklist-placeholder.png", :class => "picture" %>
 					<div class="follow button nice-button" picklist-id="<%= featuredList.id %>" <%= raw hidden if currentUserIsFollowing %> >follow</div>
 					<div class="unfollow button nice-button" picklist-id="<%= featuredList.id %>" <%= raw hidden unless currentUserIsFollowing %> >following</div>
 				</div>

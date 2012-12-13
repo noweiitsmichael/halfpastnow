@@ -10,6 +10,7 @@ Myapp::Application.routes.draw do
 
   resources :bookmark_lists
 
+  match 'bookmarks/custom_create' => 'bookmarks#custom_create'
   resources :bookmarks
 
   get "info/about"

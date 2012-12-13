@@ -52,9 +52,9 @@ $(function() {
     var that = $(this);
     var id = $(this).attr('event-id');
     var type = "event";
-    var root_url = "http%3A%2F%2Fhalfpastnow.com";
+    var root_url = encodeURIComponent(window.location.origin);
     var link = root_url + "%3F" + type + "_id%3D" + id;
-
+    
     if($(this).hasClass('facebook')) {
       var url = 'http://www.facebook.com/sharer/sharer.php?u=' + link;
       window.open(url, '_blank');
@@ -79,10 +79,7 @@ $(function() {
           that.removeClass('add').addClass('remove');
         });
       } else {
-        console.log('removing 1');
-        $.getJSON('/bookmarks/destroy/', { id: bookmark_id }, function(data) {
-          console.log('removing 2');
-          console.log(data);
+        $.getJSON('/bookmarks/destroy/' + bookmark_id, function(data) {
           that.addClass('add').removeClass('remove');
         });
       }
