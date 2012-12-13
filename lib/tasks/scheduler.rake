@@ -391,12 +391,12 @@ namespace :api do
 								event['links']['link'].each do |link|
 									puts "Saving Links..."
 									EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => event['id'], :data_type => "link", 
-														:element_type => "Event", :element_id => new_event.id , :data => link['url'], :data2 => link['type'], :data3 => link['time'])
+														:element_type => "Event", :element_id => new_event.id , :data => link['url'], :data2 => link['type'], :data3 => link['time']) rescue nil
 								end
 							elsif event['links']['link'].instance_of?(Hash)
 								puts "Saving Link..."
 								EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => event['links']['link']['id'], :data_type => "link", 
-													:element_type => "Event", :element_id => new_event.id , :data => event['links']['link']['url'], :data2 => event['links']['link']['type'], :data3 => event['links']['link']['time'])
+													:element_type => "Event", :element_id => new_event.id , :data => event['links']['link']['url'], :data2 => event['links']['link']['type'], :data3 => event['links']['link']['time']) rescue nil
 							end
 						end
 
@@ -425,12 +425,12 @@ namespace :api do
 								event['tags']['tag'].each do |tag|
 									puts "Saving tags..."
 									EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => event['id'], :data_type => "tag", 
-														:element_type => "Event", :element_id => new_event.id , :data => tag['title'], :data2 => tag['id'])
+														:element_type => "Event", :element_id => new_event.id , :data => tag['title'], :data2 => tag['id']) rescue nil
 								end
 							elsif event['tags']['tag'].instance_of?(Hash)
 								puts "Saving tag..."
 								EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => ['id'], :data_type => "tag", 
-													:element_type => "Event", :element_id => new_event.id , :data => event['tags']['tag']['title'], :data2 => event['tags']['tag']['id'])
+													:element_type => "Event", :element_id => new_event.id , :data => event['tags']['tag']['title'], :data2 => event['tags']['tag']['id']) rescue nil
 							end
 						end
 
@@ -495,12 +495,12 @@ namespace :api do
 												performer['links']['link'].each do |link|
 													puts "Saving Links..."
 													EventfulData.create(:eventful_origin_type => "Performer", :eventful_origin_id => performer['id'], :data_type => "link", 
-																		:element_type => "Act", :element_id => new_act.id, :data => link['url'], :data2 => link['type'], :data3 => link['time'])
+																		:element_type => "Act", :element_id => new_act.id, :data => link['url'], :data2 => link['type'], :data3 => link['time']) rescue nil
 												end
 											elsif performer['links']['link'].instance_of?(Hash)
 												puts "Saving Link..."
 													EventfulData.create(:eventful_origin_type => "Performer", :eventful_origin_id => performer['id'], :data_type => "link", 
-																		:element_type => "Act", :element_id => new_act.id , :data => performer['links']['link']['url'], :data2 => performer['links']['link']['type'], :data3 => performer['links']['link']['time'])
+																		:element_type => "Act", :element_id => new_act.id , :data => performer['links']['link']['url'], :data2 => performer['links']['link']['type'], :data3 => performer['links']['link']['time']) rescue nil
 											end
 										end
 
@@ -525,12 +525,12 @@ namespace :api do
 												performer['tags']['tag'].each do |tag|
 													puts "Saving tags..."
 													EventfulData.create(:eventful_origin_type => "Performer", :eventful_origin_id => performer['id'], :data_type => "tag", 
-																		:element_type => "Act", :element_id => new_act.id , :data => tag['title'], :data2 => tag['id'])
+																		:element_type => "Act", :element_id => new_act.id , :data => tag['title'], :data2 => tag['id']) rescue nil
 												end
 											elsif performer['tags']['tag'].instance_of?(Hash)
 												puts "Saving tag..."
 												EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => ['id'], :data_type => "tag", 
-																	:element_type => "Event", :element_id => new_act.id , :data => performer['tags']['tag']['title'], :data2 => event['tags']['tag']['id'])
+																	:element_type => "Event", :element_id => new_act.id , :data => performer['tags']['tag']['title'], :data2 => event['tags']['tag']['id']) rescue nil
 											end
 										end
 
@@ -574,12 +574,12 @@ namespace :api do
 											performer['links']['link'].each do |link|
 												puts "Saving Links..."
 												EventfulData.create(:eventful_origin_type => "Performer", :eventful_origin_id => performer['id'], :data_type => "link", 
-																	:element_type => "Act", :element_id => new_act.id, :data => link['url'], :data2 => link['type'], :data3 => link['time'])
+																	:element_type => "Act", :element_id => new_act.id, :data => link['url'], :data2 => link['type'], :data3 => link['time']) rescue nil
 											end
 										elsif performer['links']['link'].instance_of?(Hash)
 											puts "Saving Link..."
 												EventfulData.create(:eventful_origin_type => "Performer", :eventful_origin_id => performer['id'], :data_type => "link", 
-																	:element_type => "Act", :element_id => new_act.id , :data => performer['links']['link']['url'], :data2 => performer['links']['link']['type'], :data3 => performer['links']['link']['time'])
+																	:element_type => "Act", :element_id => new_act.id , :data => performer['links']['link']['url'], :data2 => performer['links']['link']['type'], :data3 => performer['links']['link']['time']) rescue nil
 										end
 									end
 
@@ -604,12 +604,12 @@ namespace :api do
 											performer['tags']['tag'].each do |tag|
 												puts "Saving tags..."
 												EventfulData.create(:eventful_origin_type => "Performer", :eventful_origin_id => performer['id'], :data_type => "tag", 
-																	:element_type => "Act", :element_id => new_act.id , :data => tag['title'], :data2 => tag['id'])
+																	:element_type => "Act", :element_id => new_act.id , :data => tag['title'], :data2 => tag['id']) rescue nil
 											end
 										elsif performer['tags']['tag'].instance_of?(Hash)
 											puts "Saving tag..."
 											EventfulData.create(:eventful_origin_type => "Event", :eventful_origin_id => ['id'], :data_type => "tag", 
-																:element_type => "Event", :element_id => new_act.id , :data => performer['tags']['tag']['title'], :data2 => performer['tags']['tag']['id'])
+																:element_type => "Event", :element_id => new_act.id , :data => performer['tags']['tag']['title'], :data2 => performer['tags']['tag']['id']) rescue nil
 										end
 									end
 
