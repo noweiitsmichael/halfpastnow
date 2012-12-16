@@ -220,12 +220,14 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.datetime "updated_at",      :null => false
     t.boolean  "deleted"
     t.boolean  "submitted"
+    t.integer  "raw_venue_id"
     t.text     "fb_picture"
     t.text     "cover_image"
     t.text     "event_url"
     t.string   "cover_image_url"
-    t.integer  "raw_venue_id"
   end
+
+  add_index "raw_events", ["raw_venue_id"], :name => "index_raw_events_on_raw_venue_id"
 
   create_table "raw_venues", :force => true do |t|
     t.string   "name"

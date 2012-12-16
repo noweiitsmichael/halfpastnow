@@ -57,7 +57,7 @@
 			</div>
 		</div>
 		<% unless (@event.venue.fb_picture.blank? && @event.fb_picture.blank? && @event.pictures.nil? && @event.acts.nil? )%>
-		<div id="galleria">
+		<div id="galleria" style="height:358px;width:358px;">
 			<% unless @event.venue.fb_picture.blank?%>
 				<img src="<%=@event.venue.fb_picture%>" data-title="<%= @event.venue.name %>" >
 			<% end %>
@@ -84,14 +84,8 @@
         </div>
     	<% end %>
         <script type="text/javascript">
-         	$(function() {
-            	
-	            $('#galleria').galleria({
-			        width:358,
-			        height:358,
-			        lightbox:true
-			    });
-			});
+            Galleria.loadTheme('/assets/galleria.classic.min.js');
+            Galleria.run('#galleria');
         </script>
 
 		<% unless @occurrences.length == 0 && @recurrences.length == 0 %>

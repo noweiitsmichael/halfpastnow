@@ -50,15 +50,11 @@
 		    <% end %>
         </div>
         <% end %>
-
-        <script>
-             Galleria.loadTheme('assets/galleria.classic.min.js');
-            $('#galleria').galleria({
-		        width:358,
-		        height:358,
-		        lightbox:true
-		    });
+        <script type="text/javascript">
+            Galleria.loadTheme('/assets/galleria.classic.min.js');
+            Galleria.run('#galleria');
         </script>
+        
       	<div style="text-align:right;padding-top:10px;"><a href="/venues/edit/<%=@venue.id%>" target="_blank">edit</a> </div>
 	</div>
 	<div class="clear"></div>

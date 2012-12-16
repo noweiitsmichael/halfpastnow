@@ -223,7 +223,7 @@ namespace :api do
 		puts "Events Length: #{resultCount['events']['event'].count}"
 
 		numResults = resultCount['total_items']
-		catArray = ["Concerts", "Conferences", "Education", "Family", "Festivals", "Film", "Food", "Fundraisers", "Galleries", "Health", "Literary", "Museums", "Neighborhood", "Networking"
+		catArray = ["Concerts", "Conferences", "Education", "Family", "Festivals", "Film", "Food", "Fundraisers", "Galleries", "Health", "Literary", "Museums", "Neighborhood", "Networking",
 					"Nightlife", "On Campus", "Organizations", "Outdoors", "Performing Arts", "Pets", "Politics", "Sales", "Science", "Spirituality", "Sports", "Technology", "Other"]
 		pageNumber = 1
 

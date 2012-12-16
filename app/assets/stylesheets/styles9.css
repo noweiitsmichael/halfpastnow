@@ -2821,3 +2821,7 @@ html, body {
      clear: both;
 }
 
+#galleria {
+    width:358px;
+    height:358px;
+}
