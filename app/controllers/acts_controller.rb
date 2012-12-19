@@ -66,8 +66,9 @@ class ActsController < ApplicationController
     puts "act update"
     # puts params[:act]
     @act.updated_by = current_user.id
-    @act.completion = @act.completedness
     @act.update_attributes!(params[:act])
+    @act.completion = @act.completedness
+    @act.save!
     puts "act embeds"
     # pp @act.embeds
     unless params[:pictures].nil? 

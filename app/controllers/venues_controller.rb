@@ -335,8 +335,8 @@ class VenuesController < ApplicationController
 
   def eventEdit
     authorize! :index, @user, :message => 'Not authorized as an administrator.'
-    puts "eventEdit"
-    pp params
+    #puts "eventEdit"
+    #pp params
     @venue = Venue.find(params[:venue_id])
     if(params[:id].to_s.empty?)
       @event = @venue.events.build
@@ -359,11 +359,17 @@ class VenuesController < ApplicationController
 
     @event.completion = @event.completedness
     params[:event][:user_id] = current_user.id
+    if params[:event][:cover_image]
+      @event.cover_image_url = Picture.find(params[:event][:cover_image]).image_url(:cover)
+    end
+
     @event.update_attributes!(params[:event])
 
     if params[:bookmark_lists_add]
       Bookmark.create(:bookmarked_type => "Occurrence", :bookmarked_id => @event.nextOccurrence.id, :bookmark_list_id => params[:bookmark_lists_add] )
     end
+
+
 
     unless params[:event][:pictures_attributes].nil?
       params[:event][:pictures_attributes].each do |pic|
