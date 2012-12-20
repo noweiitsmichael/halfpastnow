@@ -353,16 +353,19 @@ var eventActs = {};
   }
 
   function dateTimeChange() {
+    console.log("datetime change");
     var date = $(this).datetimepicker("getDate");
     $(this).siblings(".datetime-hidden").val(date ? date.toString("yyyy-MM-ddTHH:mm:ss") : "");
   }
 
   function dateChange() {
+    console.log("date change");
     var date = $(this).datepicker("getDate");
     $(this).siblings(".date-hidden").val(date ? date.toString("yyyy-MM-dd") : "");
   }
 
   function timeChange() {
+    console.log("time change");
     var date = $(this).datetimepicker("getDate");
     $(this).siblings(".time-hidden").val(date ? date.toString("yyyy-MM-ddTHH:mm:ss") : "");
   }

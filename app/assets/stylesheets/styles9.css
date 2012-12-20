@@ -2669,9 +2669,14 @@ html, body {
     width: 451px;
     border:1px solid #ccc;
     margin-left: 12px;
-    margin-top: 12px;
     padding:12px;
     overflow:hidden;
+    height: 418px;
+    margin-bottom: 12px;
+}
+
+.picklist:nth-child(1), .picklist:nth-child(2) {
+    margin-top: 12px;
 }
 
 .picklist-details {
@@ -2745,8 +2750,9 @@ html, body {
 
 .picklist-description {
     margin-top:6px;
-    
     margin-bottom:9px;
+    overflow: hidden;
+    max-height: 112px;
 }
 
 .picklist-events li {
@@ -2762,11 +2768,24 @@ html, body {
 
 .picklist-events li.see-more {
     border:none;
+    background:#eee;
     text-align:center;
+    font-weight:bold;
+    cursor:auto;
+    padding-bottom:6px;   
+}
+
+.picklist-events li.see-more a {
+    font-size:16px;
+    color:black;
+    text-decoration:none;
+    border-bottom:1px dotted black;
 }
 
 .picklist-events li .title {
     font-weight:700;
+    overflow:hidden;
+    max-height:32px;
 }
 
 .picklist-events li .venue {

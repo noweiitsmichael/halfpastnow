@@ -119,7 +119,7 @@
 								<div class="follow button nice-button" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden if currentUserIsFollowing %> >follow</div>
 								<div class="unfollow button nice-button" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden unless currentUserIsFollowing %> >following</div>
 							<% end %>
-							<div class="description"><%= @bookmarkList.description %></div>							
+							<div class="description"><%= raw @bookmarkList.description %></div>							
 						</div>
 					</div>
 				<% end %>

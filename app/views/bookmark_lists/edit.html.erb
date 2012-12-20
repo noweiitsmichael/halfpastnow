@@ -23,11 +23,11 @@
 					<% end %>
 				</td>
 				<td>
-					<% if bm.bookmarked_type == "Occurrence" %>
+					<% if bm.bookmarked_type == "Occurrence" && Occurrence.exists?(bm.bookmarked_id) %>
 						<%= Occurrence.find(bm.bookmarked_id).event.title %>
-					<% elsif bm.bookmarked_type == "Venue" %>
+					<% elsif bm.bookmarked_type == "Venue" && Venue.exists?(bm.bookmarked_id) %>
 						<%= Venue.find(bm.bookmarked_id).name %>
-					<%elsif bm.bookmarked_type == "Act" %>
+					<%elsif bm.bookmarked_type == "Act" && Act.exists?(bm.bookmarked_id) %>
 						<%= Act.find(bm.bookmarked_id).name %>
 					<% end %>
 				</td>

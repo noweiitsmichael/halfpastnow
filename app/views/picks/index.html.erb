@@ -73,7 +73,7 @@
 				<div class="picklist-details">
 					<h3><a href="/picks/find/<%= featuredList.id %>"><%= featuredList.name %></a></h3>
 					<div><em><%= featuredList.bookmarked_events.size %> <%= featuredList.bookmarked_events.size == 1 ? "event" : "events" %></em></div>
-					<div class="picklist-description"><%= featuredList.description %></div>
+					<div class="picklist-description"><%= raw featuredList.description %></div>
 					<% if (featuredList.bookmarked_events.size > 0) %>
 					<ul class="picklist-events">
 						<% featuredList.bookmarked_events.take(3).each do |occurrence| %>
