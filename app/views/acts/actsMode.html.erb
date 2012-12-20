@@ -7,8 +7,8 @@
 		event.stopPropagation();
 		});
 
-		$('.mode .actions').click(function() {
-			$('<span class="ajaxLoader"><img src="/assets/ajax-loader.gif"></span>').appendTo('.actions');
+		$('.mode .picspinner').click(function() {
+			$('<span class="ajaxLoader"><img src="/assets/ajax-loader.gif"></span>').appendTo('.picspinner');
 		});
 	  	
 	    var actForm = $("#act-form");
@@ -143,10 +143,10 @@
     <%= e.fields_for newPic, :url => "/pictures/create", :html => {:multipart => true} do |g| %>
         <p>
           <label>Add Artist Picture:</label>
+          <%= e.text_field :remote_image_url, :html => {:class => "picurl"} %>
           <%= hidden_field_tag :pictureable_attributes %>
           <%= hidden_field_tag :pictureable_type, "Act" %>
           <%= hidden_field_tag :pictureable_id, @act.id %>
-          <%= e.text_field :remote_image_url, :html => {:class => "picurl"} %>
           <a href="" id="new_pic">Add pic</a>
         </p>
     <% end %>
@@ -173,13 +173,13 @@
           var picData = 
             {"picture":
               { "pictureable_id": parseInt($("#pictureable_id").val()),
-                "pictureable_type": $("#pictureable_type").val(), 
+                "pictureable_type": "Act", 
                 "remote_image_url": $("#act_remote_image_url").val()
               }
             };
         }
         $.post("/pictures/create",picData,function(data) {
-          console.log(data);
+          // console.log(data);
           var numThumbs = document.getElementsByClassName("gallery");
           var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs.length + ' ">';
           newPicThumb += '<input type="hidden" name="pictures[' + numThumbs.length + '][id]" value="' + data.id + '" />';
@@ -272,7 +272,7 @@
 		<%= render :partial => "/venues/embeds", :locals => { :type => 'act', :obj => @act, :type_ind => 'act' } %>
     </div>
 
-		<div class="actions">
+		<div class="actions picspinner">
     		<%= e.submit %>
   		</div>
     </div>

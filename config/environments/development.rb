@@ -29,6 +29,7 @@ Myapp::Application.configure do
   config.assets.debug = true
 
   config.log_level = :warn
+  # config.log_level = :debug
   
   # Mail options 
   ##TODO: Verify this is the correct host
