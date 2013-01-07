@@ -212,7 +212,7 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
 
-  config.omniauth :facebook, '475386955806720', '80d74b0e6d0c97b4d857ce97fe46138a',
+  config.omniauth :facebook, '449267651794206', '46c1d7221630208250e09fa65066ad66',
            :scope => 'email,user_birthday,read_stream,
                       user_activities,user_checkins, user_likes,user_interests,
                       friends_activities,friends_checkins,friends_likes,friends_interests', :display => 'popup'
