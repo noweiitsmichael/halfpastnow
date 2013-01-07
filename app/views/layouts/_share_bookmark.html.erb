@@ -52,11 +52,11 @@
 			window.focus();
 		});
 		
-		// $('.bookmark-share .gcal').click(function() {
-		// 	var url = 'https://twitter.com/intent/tweet?text=' + link;
-		// 	window.open(url, '_blank');
-		// 	window.focus();
-		// });
+		$('.bookmark-share .gcal').click(function() {
+			var url = 'http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fplatform&width=292&height=590&show_faces=true&colorscheme=light&stream=true&border_color&header=true&appId=449267651794206';
+			window.open(url, '_blank');
+			window.focus();
+		});
 	});
 </script>
 
@@ -64,6 +64,7 @@
 	<span class="icon icon-envelope-alt email"></span>
 	<span class="icon icon-facebook-sign facebook"></span>
 	<span class="icon icon-twitter-sign twitter"></span>
-<!--	<span class="icon icon-calendar gcal"></span> -->
 	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span>
+	<span class="icon icon-calendar gcal"></span> 
+	
 </div>
