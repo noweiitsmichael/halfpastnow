@@ -1,4 +1,8 @@
 class MobileController < ApplicationController
+  def og 
+    
+    render :layout => "og" 
+  end
   def new
     email = params[:email]
     password = params[:password]
