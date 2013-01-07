@@ -1,3 +1,4 @@
+<script src="//connect.facebook.net/en_US/all.js"></script>
 <script type="text/javascript">
 	var id = "<%= id  %>";
 	var type = "<%= type %>";
@@ -53,7 +54,7 @@
 		});
 		
 		$('.bookmark-share .gcal').click(function() {
-			var url = 'http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fsecret-citadel-5147.herokuapp.com%2F%3Fevent_id%3D1&width=292&height=590&show_faces=true&colorscheme=light&stream=true&border_color&header=true&appId=449267651794206';
+			var url = 'http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fsecret-citadel-5147.herokuapp.com%2F%3Fevent_id%3D1&send=false&layout=standard&width=450&show_faces=true&font&colorscheme=light&action=like&height=80&appId=449267651794206';
 			window.open(url, '_blank');
 			window.focus();
 		});
