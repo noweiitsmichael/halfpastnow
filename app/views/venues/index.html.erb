@@ -39,6 +39,7 @@
                                                { "asSorting": [ "desc", "asc"], "aTargets": [ 2,3,4 ] }]
                               });
       iTable.fnDraw();
+      $('.ajaxLoader').detach();
     });
     // });
   });
@@ -81,11 +82,12 @@
       }
     });
   });
+
 </script>
 <h1>Find Venue</h1>
-
 <a href="/venues/new">New Venue</a><br /><br />
 <div id="tableContainer"></div>
+<div class="ajaxLoader" style="color:red; font-style:italic bold"><br>loading...</div>
 <!-- <table id="venues"class="display" data-source="<%= venues_url(format: "json") %>">
   <thead>
   <tr>
