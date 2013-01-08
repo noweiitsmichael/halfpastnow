@@ -1,20 +1,47 @@
 
 <script type="text/javascript">
-  $(document).ready(function() {
-  oTable = $('#venues').dataTable({
-    "bJQueryUI": true,
-    "sPaginationType": "full_numbers",
-    "iDisplayLength": 50,
-    "bProcessing": true,
-    "bServerSide": true,
-    "sAjaxSource": $('#venues').data('source'),
-    "aaSorting": [[4, 'desc']],
-    "aoColumnDefs": [{ "sWidth": "30%", "aTargets": [ 0, 1 ] },
-                     { "asSorting": [ "desc", "asc"], "aTargets": [ 2,3,4 ] }]
-  }).fnSetFilteringDelay();
+//   $(document).ready(function() {
+//   oTable = $('#venues').dataTable({
+//     "bJQueryUI": true,
+//     "sPaginationType": "full_numbers",
+//     "iDisplayLength": 50,
+//     "bProcessing": true,
+//     "bServerSide": true,
+//     "sAjaxSource": $('#venues').data('source'),
+//     "aaSorting": [[4, 'desc']],
+//     "aoColumnDefs": [{ "sWidth": "30%", "aTargets": [ 0, 1 ] },
+//                      { "asSorting": [ "desc", "asc"], "aTargets": [ 2,3,4 ] }]
+//   }).fnSetFilteringDelay();
    
 
-} );
+// } );
+
+  $(function() {
+    // $('#user-select').on("change", function (){
+       // $(this).append('<div class="ajaxLoader"><br><br><br><img src="/assets/ajax-loader.gif"></div>');
+    $.get('/events/venuesTable', function(data) {
+      // $('.ajaxLoader').detach();
+      var tableData = "<table id='venues'><thead><tr><th>Venue</th><th>Address</th><th>Popularity</th><th>Events</th><th>Raw Events</th></tr></thead><tbody>"
+      for (var i=0;i<data.length;i++) {
+        tableData += "<tr><td><a href='/venues/edit/"+data[i].id+"'>"+data[i].name+"</a></td>";
+        tableData += "<td>" + data[i].address + "</td>"; //<td>" + data[i].event_completedness+"</td>";
+        tableData += "<td>" + data[i].views + "</td>";
+        tableData += "<td>"+data[i].num_events+"</td><td>"+data[i].num_raw_events+"</td></tr>";
+      }
+      tableData += "</tbody></table>"
+      $('#tableContainer').html(tableData);
+      var iTable =  $('#venues').dataTable({ 
+                              "bJQueryUI": true,
+                              "sPaginationType": "full_numbers",
+                              "iDisplayLength": 50,
+                              "aaSorting": [[4, 'desc']],
+                              "aoColumnDefs": [{ "sWidth": "30%", "aTargets": [ 0, 1 ] },
+                                               { "asSorting": [ "desc", "asc"], "aTargets": [ 2,3,4 ] }]
+                              });
+      iTable.fnDraw();
+    });
+    // });
+  });
   var venue_id = null;
 
   $(function() {
@@ -58,8 +85,8 @@
 <h1>Find Venue</h1>
 
 <a href="/venues/new">New Venue</a><br /><br />
-
-<table id="venues"class="display" data-source="<%= venues_url(format: "json") %>">
+<div id="tableContainer"></div>
+<!-- <table id="venues"class="display" data-source="<%= venues_url(format: "json") %>">
   <thead>
   <tr>
     <th>Venue</th>
@@ -71,5 +98,5 @@
 </thead>
 <tbody>
 </tbody>
-</table>
+</table> -->
 

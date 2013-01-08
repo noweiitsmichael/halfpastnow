@@ -398,6 +398,7 @@ class VenuesController < ApplicationController
 end
   # GET /venues/find
 
+
 private
 
   def only_allow_admin
