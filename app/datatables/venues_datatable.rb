@@ -90,7 +90,7 @@ private
     if params[:sSearch].present?
       # puts "Search term detected: " + params[:sSearch].downcase
       # venues = venues.select {|s| s["name"].downcase.include? params[:sSearch].downcase}
-      venues_query += " WHERE v2.name ilike '%" + params[:sSearch].sub(/'/, '\'\'') + "%' "
+      venues_query += " WHERE v2.name ilike '%" + params[:sSearch].sub("'", "''") + "%'"
     end
 
     venues_query += " ORDER BY " + sort_column + " " + sort_direction
@@ -160,7 +160,7 @@ private
       ON v1.venue_id = v2.venue_id"
 
     if params[:sSearch].present?
-      venues_query += " WHERE v2.name ilike '%" + params[:sSearch] + "%'"
+      venues_query += " WHERE v2.name ilike '%" + params[:sSearch].sub("'", "''") + "%'"
     end
 
     num_results = ActiveRecord::Base.connection.select_all("SELECT COUNT(*) FROM ( " + venues_query + " ) AS numResults")
