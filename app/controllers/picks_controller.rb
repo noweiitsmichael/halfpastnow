@@ -13,7 +13,7 @@ helper :content
 		    @long = -97.742808
 		    @zoom = 11
 
-			@occurrences = current_user.followedLists.collect { |list| list.bookmarked_events }.flatten
+			@occurrences = current_user.followedLists.collect { |list| list.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime } }.flatten
 			render "find"
 		else
 			@featuredLists = current_user ? current_user.followedLists : []
@@ -27,7 +27,7 @@ helper :content
 	    @zoom = 11
 
 		@bookmarkList = BookmarkList.find(params[:id])
-		@occurrences = @bookmarkList.bookmarked_events
+		@occurrences = @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
 	end
 
 	def myBookmarks
@@ -36,7 +36,7 @@ helper :content
 	    @zoom = 11
 
 		@bookmarkList = current_user.main_bookmark_list
-		@occurrences = @bookmarkList.bookmarked_events
+		@occurrences = @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
 
 		@isMyBookmarksList = true
 
