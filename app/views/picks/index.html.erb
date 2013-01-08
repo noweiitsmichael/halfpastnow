@@ -74,9 +74,9 @@
 					<h3><a href="/picks/find/<%= featuredList.id %>"><%= featuredList.name %></a></h3>
 					<div><em><%= featuredList.bookmarked_events.size %> <%= featuredList.bookmarked_events.size == 1 ? "event" : "events" %></em></div>
 					<div class="picklist-description"><%= raw featuredList.description %></div>
-					<% if (featuredList.bookmarked_events.size > 0) %>
+					<% if (featuredList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }.size > 0) %>
 					<ul class="picklist-events">
-						<% featuredList.bookmarked_events.take(3).each do |occurrence| %>
+						<% featuredList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }.take(3).each do |occurrence| %>
 						<li linkto="event" link-id="<%= occurrence.id %>">
 							<div class="title"><%= occurrence.event.title %></div>
 							<div class="venue"><%= occurrence.event.venue.name %></div>
