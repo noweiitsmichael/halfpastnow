@@ -90,7 +90,7 @@ private
     if params[:sSearch].present?
       # puts "Search term detected: " + params[:sSearch].downcase
       # venues = venues.select {|s| s["name"].downcase.include? params[:sSearch].downcase}
-      venues_query += " WHERE v2.name ilike '%" + params[:sSearch] + "%'"
+      venues_query += " WHERE v2.name ilike '%" + params[:sSearch].sub(/'/, "\'") + "%' ESCAPE "
     end
 
     venues_query += " ORDER BY " + sort_column + " " + sort_direction

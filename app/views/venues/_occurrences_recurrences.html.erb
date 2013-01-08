@@ -97,12 +97,14 @@
 	    	<% if recurrence.end %>
 		    	<span>from <%= recurrence.start.to_time.strftime("%I:%M%P") %></span>
 		    	<span>to <%= recurrence.end.to_time.strftime("%I:%M%P") %></span>
-		    <% else %>
+		    <% elsif recurrence.start %>
 		    	<span>at <%= recurrence.start.to_time.strftime("%I:%M%P") %></span>
 		    <% end %>
 		    
-		    <% if recurrence.range_start %>		    
+		    <% if recurrence.range_end %>		    
 		    	<span><%= " from " + (recurrence.range_start.strftime("%b %d")) + " to " + (recurrence.range_end.strftime("%b %d")) %></span>
+		    <% elsif recurrence.range_start%>		    
+		    	<span><%= " from " + (recurrence.range_start.strftime("%b %d"))%></span>
 	    	<% end %>
 
 		    <div class="remove">
