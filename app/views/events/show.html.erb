@@ -96,9 +96,12 @@
 			</div>
 		</div>
 		<% end %>
-		<% if can? :edit, Event %>
-		<div style="text-align:right;padding-top:10px;"><a href="/venues/list_events/<%=@event.venue.id%>#anchor<%=@occurrence.id%>" target="_blank">edit</a> </div>
+		<% if false %>
+			<% if can? :edit, Event %>
+			<div style="text-align:right;padding-top:10px;"><a href="/venues/list_events/<%=@event.venue.id%>#anchor<%=@occurrence.id%>" target="_blank">edit</a> </div>
+			<% end %>
 		<% end %>
+		<div style="text-align:right;padding-top:10px;"><a href="/userSubmission/eventEdit1/<%=@event.id%>" target="_blank">edit</a> </div>
 	</div>
 
 	
