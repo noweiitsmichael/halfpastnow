@@ -117,6 +117,41 @@ class UsersController < ApplicationController
     end
   end
 
+  def venueslist
+    @user = User.find(params[:user_id])
+    @venuesList = []
+
+    @venuesList << {'user_id' => @user.id, 'total_venues' => Venue.where(:admin_owner => @user.id.to_s).count, 'total_events' => @user.assigned_events, 'total_raw_events' => @user.assigned_raw_events, 'total_activity_week' => @user.total_activity_week}
+
+    Venue.where(:admin_owner => @user.id.to_s).each do |v|
+      @venuesList << {'name' => v.name, 'address' => v.address, 'id' => v.id,
+                      'num_events' => v.events.select { |oc| oc.nextOccurrence ? (oc.nextOccurrence.start > Time.now) : nil}.sort_by { |event| event.nextOccurrence ? event.nextOccurrence.start : DateTime.new(1970,1,1) }.count,
+                      'num_raw_events' => v.raw_venues.collect { |rv| rv.raw_events }.flatten.select{ |re| !(re.deleted || re.submitted) && re.start > Time.now }.count}
+    end    
+
+    respond_to do |format|
+      format.json { render json: @venuesList }
+    end
+  end
+
+  def recentActivity
+    @recentActivity = []
+    @recentActivity << ['Day', 'Events', 'Venues', 'Acts']
+    @recentActivity << ['Today', Event.find(:all, :conditions => {:user_id => current_user.id, :updated_at => Date.today.to_time...Time.now}).count,
+                          Venue.find(:all, :conditions => {:updated_by => current_user.id, :updated_at => Date.today.to_time...Time.now}).count,
+                          Act.find(:all, :conditions => {:updated_by => current_user.id, :updated_at => Date.today.to_time...Time.now}).count]
+    (1..6).each do |i|
+      @recentActivity << [(Date.today-i).strftime("%a, %m-%d"), Event.find(:all, :conditions => {:user_id => current_user.id, :updated_at => Date.today-i...Date.today-(i-1)}).count,
+                          Venue.find(:all, :conditions => {:updated_by => current_user.id, :updated_at => Date.today-i...Date.today-(i-1)}).count,
+                          Act.find(:all, :conditions => {:updated_by => current_user.id, :updated_at => Date.today-i...Date.today-(i-1)}).count]
+    end
+
+    respond_to do |format|
+      format.json { render json: @recentActivity }
+    end
+  end
+
+
   def adminStats
     @array = []
     @array << ['User', 'Events', 'Venues', 'Acts']

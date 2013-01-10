@@ -1,1 +1,128 @@
-<h2>Venue Assignments </h2>
+<script type="text/javascript" src="/assets/stupidtable.js"></script>
+<script type="text/javascript">
+	
+$(function() {
+	$('#summary-table').stupidtable();
+	$('#user-select').on("change", pageUpdate);
+});
+  
+   var venue_id = null;
+   function pageUpdate() {
+		$.get('/users/venueslist/?user_id=' + $('#user-select option:selected').val(), function(data) {
+		  var tableData = "<br><h2>User Summary:</h2><br>Number of assigned Venues: <b>" + data[0].total_venues + "</b><br>Total number Remaining Raw Events: <b>"+ data[0].total_raw_events+ "</b><br>Total number of active events: <b>" + data[0].total_events + "</b><br><br>Assign venue to user: <input id='venue-name' /> <button id='venue-go'>Add</button><br><br>"
+
+		  tableData += "<table id='assigned-venues-table'><thead><tr><th>Name</th><th>Address</th><th>Events</th><th>Raw Events</th></tr></thead><tbody>"
+	      for (var i=1;i<data.length;i++) {
+	        tableData += "<tr><td><a href='/venues/edit/"+data[i].id+"' target='_blank'>"+ data[i].name +"</a></td><td>"+ data[i].address +"</td><td>"+data[i].num_events+"</td><td>"+data[i].num_raw_events+"</td>";
+	      }
+	      tableData += "</tbody></table>"
+	    $('#assignments-content').html(tableData);
+		    $("#venue-go").click(function() {
+		      if(venue_id) {
+		        // console.log("/venues/edit/" + venue_id);
+		        $.post("/venues/setOwner/?venue_id=" + venue_id + "&user_id=" + $('#user-select option:selected').val(), function(data){
+		        	console.log("Posted to Venue");
+		        	pageUpdate();
+		        },
+        		"json");
+		      }
+		    });
+	        $( "#venue-name" ).autocomplete({
+		      source: function( request, response ) {
+		        $.getJSON("/venues/find?contains=" + request.term, function (data) {
+		          // console.log(data);
+		          response(data);
+		        });
+		      },
+		      minLength: 2,
+		      select: function( event, ui ) {
+		        $("#venue-name").val(ui.item.label);
+		        venue_id = ui.item.id;
+
+		        console.log( ui.item ?
+		          "Selected: " + ui.item.label :
+		          "Nothing selected, input was " + this.value);
+		      },
+		      open: function() {
+		        $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+		      },
+		      close: function() {
+		        $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+		      }
+		    });
+		var iTable =  $('#assigned-venues-table').dataTable({ 
+			                              "bJQueryUI": true,
+                              "bRetrieve" : true,
+                              "bPaginate" : false,
+                              "aoColumnDefs": [{ "sWidth": "50%", "aTargets": [ 1 ] }
+                                              ],
+                              "aaSorting" : [[3, 'desc']]
+                              });
+      		iTable.fnDraw();
+		});
+  };
+</script>
+<style type="text/css">
+	#summary-table {
+		margin:20px 10px;
+		border-spacing: 0;
+		border-collapse:collapse;
+	}
+
+	#summary-table th {
+
+	}
+	#summary-table td, #summary-table th {
+		padding:5px;
+	}
+	#summary-table td:nth-child(1) {
+		width:200px;
+	}
+	#summary-table td:nth-child(2) {
+		width:100px;
+	}
+	#summary-table td:nth-child(3) {
+		width:100px;
+		text-align:center;
+	}
+	#summary-table td:nth-child(4) {
+		width:100px;
+		text-align:center;
+	}
+	#summary-table tbody tr:nth-child(odd) {
+		background:#eeeeee;
+	}
+</style>
+<h3>Select Specific User:
+<% @users = User.find(:all, :conditions => { :role => [ "admin", "super_admin" ]}).sort_by{|a| a.firstname} %>
+
+<select id="user-select" name="user-select">
+    <option class="" value=""></option>
+  <% @users.each do |o| %>
+    <option class="user-<%=o.id%>" value="<%=o.id%>"><%=o.fullname%></option>
+    <% end %>
+</select>
+</h3>
+<div id="assignments-content">
+<br>
+<h2>Assignments Overview:</h2>
+<% @users = User.find(:all, :conditions => { :role => [ "admin", "super_admin" ]}).sort_by{|a| a.firstname} %>
+<table id="summary-table">
+	<thead><tr>
+		<th class="type-string" style="cursor:pointer;">Admin Name</th>
+		<th class="type-int" style="cursor:pointer;"># Venues</th>
+		<th class="type-int" style="cursor:pointer;"># Raw Events</th>
+		<th class="type-int" style="cursor:pointer;"># Events</th>
+		<th class="type-int" style="cursor:pointer;">Activity This Wk</th>
+	</tr></thead>
+	<tbody>
+		<% @users.each do |o| %>
+			<tr><td><%=o.fullname%></td><td><%=Venue.where(:admin_owner => o.id.to_s).count %></td><td><%=o.assigned_raw_events%></td><td><%=o.assigned_events%></td><td><%=o.total_activity_week%></td></tr>
+		<% end %>
+	</tbody>
+</table>
+</div>
+
+
+
+<!-- Venue name: <input id="venue-name" /> <button id="venue-go">Go</button> -->
