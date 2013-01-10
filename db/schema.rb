@@ -296,6 +296,7 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
 
   create_table "tags", :force => true do |t|
     t.string   "name"
+
     t.integer  "parent_tag_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -308,6 +309,15 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.integer  "tag_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+
+  end
+
+  create_table "things", :force => true do |t|
+    t.string   "name"
+    t.integer  "parent_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+
   end
 
   create_table "users", :force => true do |t|
