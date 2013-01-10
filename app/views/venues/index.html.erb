@@ -23,7 +23,7 @@
       // $('.ajaxLoader').detach();
       var tableData = "<table id='venues'><thead><tr><th>Venue</th><th>Address</th><th>Popularity</th><th>Events</th><th>Raw Events</th></tr></thead><tbody>"
       for (var i=0;i<data.length;i++) {
-        tableData += "<tr><td><a href='/venues/edit/"+data[i].id+"'>"+data[i].name+"</a></td>";
+        tableData += "<tr><td><a href='/venues/edit/"+data[i].id+"' target='_blank'>"+data[i].name+"</a></td>";
         tableData += "<td>" + data[i].address + "</td>"; //<td>" + data[i].event_completedness+"</td>";
         tableData += "<td>" + data[i].views + "</td>";
         tableData += "<td>"+data[i].num_events+"</td><td>"+data[i].num_raw_events+"</td></tr>";

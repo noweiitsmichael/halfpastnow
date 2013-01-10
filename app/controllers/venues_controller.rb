@@ -140,6 +140,7 @@ class VenuesController < ApplicationController
   def list_raw_events
     authorize! :index, @user, :message => 'Not authorized as an administrator.'
     @venue = Venue.includes(:raw_venues => :raw_events).find(params[:id])
+    puts @venue
 
     render :layout => "admin"
   end
@@ -332,6 +333,16 @@ class VenuesController < ApplicationController
     
     render :layout => false
   end 
+
+  def setOwner
+    puts "set owner"
+    pp params
+    @venue = Venue.find(params[:venue_id])
+    @venue.admin_owner = params[:user_id]
+    @venue.save!
+
+    render json: {:venue_id => @venue.id}
+  end
 
   def eventEdit
     authorize! :index, @user, :message => 'Not authorized as an administrator.'
