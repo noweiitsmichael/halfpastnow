@@ -90,7 +90,7 @@
         <br>
         
         <ul>
-          <li><a href="/admin">Assigned Events</a></li>
+          <li><a href="/admin">My Dashboard</a></li>
           <li><a href="/admin/venues">Venue Search</a></li>
           <li><a href="/admin/artists">Artist Search</a></li>
           <li><a href="/admin/events">Event Search</a></li>
@@ -99,6 +99,7 @@
           <% if current_user.role == "super_admin" %>
           <li><a href="/admin/stats">Overall Stats</a></li>
           <li><a href="/admin/tracking">Individual Stats</a></li>
+          <li><a href="/admin/assignments">Venue Assignments</a></li>
           <% end %>
         </ul>
       </div>

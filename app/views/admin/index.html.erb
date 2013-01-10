@@ -1,1 +1,92 @@
-index.html
+<% content_for :head do %>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    
+      google.load('visualization', '1.0', {'packages':['corechart']});
+      google.setOnLoadCallback(drawChart);
+    
+	var chart;
+
+	$(function () {
+		chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+	    drawChart();
+
+		$.get('/users/itemslist/?user_id=<%= current_user.id%>', function(data) {
+	      // console.log(data);
+	      var tableData = "<table id='itemsTable'><thead><tr><th></th><th>Type</th><th>Name/Title</th><th>Edited Date</th><th>Edit</th></tr></thead><tbody>"
+	      for (var i=0;i<data.length;i++) {
+	        tableData += "<tr><td></td><td>"+ data[i].type +"</td><td><a href='/?"+data[i].type.toLowerCase()+"_id="+data[i].id+"' target='_blank'>"+data[i].name+"</a></td><td>"+data[i].date+"</td>";
+	        if (data[i].type === "Act")
+	          tableData += "<td><a href='/acts/index' target='_blank'>Edit</a></tr>"
+	        else if (data[i].type === "Event")
+	          tableData += "<td><a href='/venues/list_events/" + data[i].venue_id + "#anchor" + data[i].id + "' target='_blank'>Edit</a></tr>"
+	        else if (data[i].type === "Venue")
+	          tableData += "<td><a href='/venues/edit/" + data[i].id + "' target='_blank'>Edit</a></tr>"
+	      }
+	      tableData += "</tbody></table>"
+	      $('#tableContainer').html(tableData);
+	      var iTable =  $('#itemsTable').dataTable({ 
+	                              "fnDrawCallback": function ( oSettings ) {
+	                                /* Need to redo the counters if filtered or sorted */
+	                                if ( oSettings.bSorted || oSettings.bFiltered )
+	                                {
+	                                  for ( var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++ )
+	                                  {
+	                                    $('td:eq(0)', oSettings.aoData[ oSettings.aiDisplay[i] ].nTr ).html( i+1 );
+	                                  }
+	                                }
+	                              },
+	                              "bJQueryUI": true,
+	                              "bRetrieve" : true,
+	                              "bPaginate" : false,
+	                              "aoColumnDefs": [{ "sWidth": "60%", "aTargets": [ 2 ] },
+	                                               { "bSortable": false, "aTargets": [ 0 ] }
+	                                              ],
+	                              "aaSorting" : [[3, 'desc']]
+	                              });
+	      iTable.fnDraw();
+	    });
+
+	});
+
+	function drawChart() {
+		var jsonData = $.ajax ({
+			url:"/users/recentActivity/",
+			dataType:"json",
+			async: false,
+			}).responseText;
+
+		arrayData = $.parseJSON(jsonData);
+		console.log(arrayData);
+		var data = new google.visualization.arrayToDataTable(arrayData);
+		var options = {'title':'My Recent Activity',
+                 'width':580,
+                 'height':300,
+				 'vAxis': {title: "Day"},
+    			 'hAxis': {title: "Entries Made"},
+             	 'isStacked':true,
+             	 'chartArea':{left:50,top:50,width:"70%",height:"68%"},
+             	 'backgroundColor': '#F3F3FA',
+             	 animation:{
+			        duration: 1000,
+			        easing: 'out'}
+					 };
+
+		chart.draw(data, options);
+	};
+
+    </script>
+<% end %>
+
+<h2>My Dashboard</h2><br>
+<div class="summary-stats" style="float:left"><br>
+My activity this week: <b><%= current_user.total_activity_week %> items edited </b><br><br>
+Number of assigned Venues: <b><%= Venue.where(:admin_owner => current_user.id.to_s).count %></b><br><br>
+Total number Remaining Raw Events: <b><%= current_user.assigned_raw_events%></b><br><br>
+Total number of active events: <b><%= current_user.assigned_events%></b><br>
+<br>
+</div>
+<div id="chart_div" style="width:600; height:500; float:right"></div>
+<div style="display:block;margin-top:257px"><br><Br>
+<h3>My Entries</h3><br>
+<div id="tableContainer" style="margin-top:3px"></div></div>

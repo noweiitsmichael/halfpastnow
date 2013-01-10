@@ -6,7 +6,11 @@ Myapp::Application.routes.draw do
 
   resources :histories
 
-  resources :venues
+  resources :venues do 
+    collection do 
+      get 'find'
+    end 
+  end
 
   resources :bookmark_lists
 

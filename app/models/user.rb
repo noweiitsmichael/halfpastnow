@@ -116,6 +116,30 @@ class User < ActiveRecord::Base
     return firstname + " " + lastname
   end
 
+  def assigned_events
+    total_events = 0;
+    Venue.where(:admin_owner => self.id.to_s).each do |v|
+      total_events += v.events.select { |oc| oc.nextOccurrence ? (oc.nextOccurrence.start > Time.now) : nil}.sort_by { |event| event.nextOccurrence ? event.nextOccurrence.start : DateTime.new(1970,1,1) }.count
+    end
+    return total_events
+  end
+
+  def assigned_raw_events
+    total_events = 0;
+    Venue.where(:admin_owner => self.id.to_s).each do |v|
+      total_events += v.raw_venues.collect { |rv| rv.raw_events }.flatten.select{ |re| !(re.deleted || re.submitted) && re.start > Time.now }.count
+    end
+    return total_events
+  end
+
+  def total_activity_week
+    total_activity = 0;
+    total_activity += Event.find(:all, :conditions => ["(user_id = ?) AND (updated_at > ?)", self.id, 168.hours.ago]).count
+    total_activity += Venue.find(:all, :conditions => ["(updated_by = ?) AND (updated_at > ?)", self.id, 168.hours.ago]).count
+    total_activity += Act.find(:all, :conditions => ["(updated_by = ?) AND (updated_at > ?)", self.id, 168.hours.ago]).count
+    return total_activity
+  end
+
   def bookmarked_venues
     return BookmarkList.where(:user_id => self.id, :main_bookmarks_list => true).first.bookmarked_venues
   end
