@@ -57,7 +57,6 @@
 			}).responseText;
 
 		arrayData = $.parseJSON(jsonData);
-		console.log(arrayData);
 		var data = new google.visualization.arrayToDataTable(arrayData);
 		var options = {'title':'My Recent Activity',
                  'width':580,

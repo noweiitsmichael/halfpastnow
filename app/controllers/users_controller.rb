@@ -97,19 +97,25 @@ class UsersController < ApplicationController
 
     @user.acts.each do |e|
       unless e.updated_at.nil?
-        @itemsList << {'type' => 'Act', 'id' => e.id, 'name' => e.name, 'date' => e.updated_at.strftime("%Y-%m-%d at %I:%M %p")}
+        if e.updated_at > 1.month.ago
+          @itemsList << {'type' => 'Act', 'id' => e.id, 'name' => e.name, 'date' => e.updated_at.strftime("%Y-%m-%d at %I:%M %p")}
+        end
       end
     end
 
     @user.venues.each do |e|
       unless e.updated_at.nil?
-        @itemsList << {'type' => 'Venue', 'id' => e.id, 'name' => e.name, 'date' => e.updated_at.strftime("%Y-%m-%d at %I:%M %p")}
+        if e.updated_at > 1.month.ago
+          @itemsList << {'type' => 'Venue', 'id' => e.id, 'name' => e.name, 'date' => e.updated_at.strftime("%Y-%m-%d at %I:%M %p")}
+        end
       end
     end
 
     @user.events.each do |e|
       unless e.updated_at.nil?
-        @itemsList << {'type' => 'Event', 'id' => (e.nextOccurrence.nil? ? "" : e.nextOccurrence.id), 'venue_id' => e.venue.id, 'name' => e.title, 'date' => e.updated_at.strftime("%Y-%m-%d at %I:%M %p")}
+        if e.updated_at > 1.month.ago
+          @itemsList << {'type' => 'Event', 'id' => (e.nextOccurrence.nil? ? "" : e.nextOccurrence.id), 'venue_id' => e.venue.id, 'name' => e.title, 'date' => e.updated_at.strftime("%Y-%m-%d at %I:%M %p")}
+        end
       end
     end
     respond_to do |format|
