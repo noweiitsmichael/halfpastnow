@@ -11,9 +11,9 @@ $(function() {
 		$.get('/users/venueslist/?user_id=' + $('#user-select option:selected').val(), function(data) {
 		  var tableData = "<br><h2>User Summary:</h2><br>Number of assigned Venues: <b>" + data[0].total_venues + "</b><br>Total number Remaining Raw Events: <b>"+ data[0].total_raw_events+ "</b><br>Total number of active events: <b>" + data[0].total_events + "</b><br><br>Assign venue to user: <input id='venue-name' /> <button id='venue-go'>Add</button><br><br>"
 
-		  tableData += "<table id='assigned-venues-table'><thead><tr><th>Name</th><th>Address</th><th>Events</th><th>Raw Events</th></tr></thead><tbody>"
+		  tableData += "<table id='assigned-venues-table'><thead><tr><th>Name</th><th>Address</th><th>Events</th><th>Raw Events</th><th>Unassign</th></tr></thead><tbody>"
 	      for (var i=1;i<data.length;i++) {
-	        tableData += "<tr><td><a href='/venues/edit/"+data[i].id+"' target='_blank'>"+ data[i].name +"</a></td><td>"+ data[i].address +"</td><td>"+data[i].num_events+"</td><td>"+data[i].num_raw_events+"</td>";
+	        tableData += "<tr><td><a href='/venues/edit/"+data[i].id+"' target='_blank'>"+ data[i].name +"</a></td><td>"+ data[i].address +"</td><td>"+data[i].num_events+"</td><td>"+data[i].num_raw_events+"</td><td><button class='remove-venue' value='" + data[i].id + "'>[remove]</button></td>";
 	      }
 	      tableData += "</tbody></table>"
 	    $('#assignments-content').html(tableData);
@@ -26,6 +26,12 @@ $(function() {
 		        },
         		"json");
 		      }
+		    });
+		    $(".remove-venue").click(function() {
+		        $.post("/venues/removeOwner/?venue_id=" + this.getAttribute("value") + "&user_id=" + $('#user-select option:selected').val(), function(data){
+		        	pageUpdate();
+		        },
+        		"json");
 		    });
 	        $( "#venue-name" ).autocomplete({
 		      source: function( request, response ) {

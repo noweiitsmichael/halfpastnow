@@ -220,6 +220,7 @@ class VenuesController < ApplicationController
 
     if params[:bookmark_lists_add]
       Bookmark.create(:bookmarked_type => "Occurrence", :bookmarked_id => @event.nextOccurrence.id, :bookmark_list_id => params[:bookmark_lists_add] )
+      @event.clicks += 100
     end
 
     EventfulData.where(:element_type => "RawEvent", :element_id => params[:raw_event_id]).each do |i|
@@ -335,10 +336,16 @@ class VenuesController < ApplicationController
   end 
 
   def setOwner
-    puts "set owner"
-    pp params
     @venue = Venue.find(params[:venue_id])
     @venue.admin_owner = params[:user_id]
+    @venue.save!
+
+    render json: {:venue_id => @venue.id}
+  end
+
+  def removeOwner
+    @venue = Venue.find(params[:venue_id])
+    @venue.admin_owner = nil
     @venue.save!
 
     render json: {:venue_id => @venue.id}
@@ -356,18 +363,6 @@ class VenuesController < ApplicationController
       @event = Event.find(params[:id])
     end
 
-    # unless params[:days_select].nil?
-    #   params[:days_select][1..-1].each_with_index do |day, i|
-    #     puts params[:event][:recurrences_attributes].size
-    #     puts i
-    #     tempHash = Hash.new()
-    #     tempHash[length+1+i] = {"test" => 1}
-    #     pp tempHash
-    #     params[:event][:recurrences_attributes].merge!(tempHash)
-    #   end
-    #   pp params[:event][:recurrences_attributes]
-    # end
-
     @event.completion = @event.completedness
     params[:event][:user_id] = current_user.id
     if params[:event][:cover_image]
@@ -378,9 +373,8 @@ class VenuesController < ApplicationController
 
     if params[:bookmark_lists_add]
       Bookmark.create(:bookmarked_type => "Occurrence", :bookmarked_id => @event.nextOccurrence.id, :bookmark_list_id => params[:bookmark_lists_add] )
+      @event.clicks += 100
     end
-
-
 
     unless params[:event][:pictures_attributes].nil?
       params[:event][:pictures_attributes].each do |pic|
@@ -391,10 +385,6 @@ class VenuesController < ApplicationController
         end
       end
     end
-
-    # pp Embed.last
-    # puts "event....."
-    # pp @event
 
     respond_to do |format|
       if @event.save!
