@@ -19,6 +19,7 @@
 			<div class="block-inner">
 				<%= render :partial => "layouts/share_bookmark", :locals => { :type => 'event', :id => @occurrence.id, :bookmarkId => @bookmarkId } %>
 			</div>
+			
 		</div>
 		<% unless @event.description.to_s.empty? %>
 			<div class="description block">
