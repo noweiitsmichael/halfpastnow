@@ -10,6 +10,7 @@ class MobileController < ApplicationController
     @list = BookmarkList.find(params[:id])
     @urlimage = @list.picture
     @url= 'http://secret-citadel-5147.herokuapp.com/mobile/tp/'+params[:id]
+    @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
     render :layout => "tp"
   end
   def new
