@@ -978,7 +978,7 @@ end
 
   def getList
     @bookmarkList = BookmarkList.find(params[:id])
-    @occurrences = @bookmarkList.bookmarked_events
+    @occurrences = @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
     @es = @occurrences.collect { |occ| occ.event }
     @esinfo =[]
     @es.each{
