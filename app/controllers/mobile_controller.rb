@@ -6,6 +6,12 @@ class MobileController < ApplicationController
     @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/'+params[:id]
     render :layout => "og"
   end
+  def tp
+    @list = BookmarkList.find(params[:id])
+    @urlimage = @list.picture
+    @url= 'http://secret-citadel-5147.herokuapp.com/mobile/tp/'+params[:id]
+    render :layout => "og"
+  end
   def new
     email = params[:email]
     password = params[:password]
