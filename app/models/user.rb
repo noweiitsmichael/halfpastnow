@@ -117,17 +117,28 @@ class User < ActiveRecord::Base
   end
 
   def assigned_events
+    # Events from assigned venues that will happen in the next 2 months
     total_events = 0;
     Venue.where(:admin_owner => self.id.to_s).each do |v|
-      total_events += v.events.select { |oc| oc.nextOccurrence ? (oc.nextOccurrence.start > Time.now) : nil}.sort_by { |event| event.nextOccurrence ? event.nextOccurrence.start : DateTime.new(1970,1,1) }.count
+      total_events += v.events.select { |oc| oc.nextOccurrence ? ((oc.nextOccurrence.start > Time.now) && (oc.nextOccurrence.start < 2.months.from_now)) : nil}.sort_by { |event| event.nextOccurrence ? event.nextOccurrence.start : DateTime.new(1970,1,1) }.count
     end
     return total_events
   end
 
   def assigned_raw_events
+    # Raw Events from assigned venues that will happen in the next 2 months
     total_events = 0;
     Venue.where(:admin_owner => self.id.to_s).each do |v|
-      total_events += v.raw_venues.collect { |rv| rv.raw_events }.flatten.select{ |re| !(re.deleted || re.submitted) && re.start > Time.now }.count
+      total_events += v.raw_venues.collect { |rv| rv.raw_events }.flatten.select{ |re| !(re.deleted || re.submitted) && (re.start > Time.now) && (re.start < 2.months.from_now)}.count
+    end
+    return total_events
+  end
+
+  def total_raw_events
+    # Raw Events from assigned venues that will happen in the next 2 months
+    total_events = 0;
+    Venue.where(:admin_owner => self.id.to_s).each do |v|
+      total_events += v.raw_venues.collect { |rv| rv.raw_events }.flatten.select{ |re| !(re.deleted || re.submitted) && (re.start > Time.now)}.count
     end
     return total_events
   end

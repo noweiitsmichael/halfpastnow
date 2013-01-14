@@ -145,6 +145,14 @@ class VenuesController < ApplicationController
     render :layout => "admin"
   end
 
+  def list_deleted_events
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
+    @venue = Venue.includes(:raw_venues => :raw_events).find(params[:id])
+    puts @venue
+
+    render :layout => "admin"
+  end
+
   def new_event
     authorize! :index, @user, :message => 'Not authorized as an administrator.'
     puts "new_event:"
