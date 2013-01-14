@@ -34,53 +34,20 @@
         }
       }
 
-      $(function(){
-        // Set up so we handle click on the buttons
-        $('#postToWall').click(function() {
-          FB.ui(
-            {
-              method : 'feed',
-              link   : $(this).attr('data-url')
-            },
-            function (response) {
-              // If response is null the user canceled the dialog
-              if (response != null) {
-                logResponse(response);
-              }
-            }
-          );
-        });
-
-        $('#sendToFriends').click(function() {
-          FB.ui(
-            {
-              method : 'send',
-              link   : $(this).attr('data-url')
-            },
-            function (response) {
-              // If response is null the user canceled the dialog
-              if (response != null) {
-                logResponse(response);
-              }
-            }
-          );
-        });
-
-        $('#sendRequest').click(function() {
-          FB.ui(
-            {
-              method  : 'apprequests',
-              message : $(this).attr('data-message')
-            },
-            function (response) {
-              // If response is null the user canceled the dialog
-              if (response != null) {
-                logResponse(response);
-              }
-            }
-          );
-        });
-      });
+      function postCook()
+      {
+          FB.api(
+            '/me/hpnevent:attend',
+            'post',
+            { event: "<%= @url %>" },
+            function(response) {
+               if (!response || response.error) {
+                  alert('Error occured');
+               } else {
+                  alert('Cook was successful! Action ID: ' + response.id);
+               }
+            });
+      }
     </script>
 
     <!--[if IE]>
@@ -92,6 +59,33 @@
     <![endif]-->
   </head>
   <body>
-   
+   <body>
+  <div id="fb-root"></div>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '273167206143082', // App ID
+        status     : true, // check login status
+        cookie     : true, // enable cookies to allow the server to access the session
+        xfbml      : true  // parse XFBML
+      });
+    };
+
+    // Load the SDK Asynchronously
+    (function(d){
+      var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+      js = d.createElement('script'); js.id = id; js.async = true;
+      js.src = "//connect.facebook.net/en_US/all.js";
+      d.getElementsByTagName('head')[0].appendChild(js);
+    }(document));
+  </script>
+
+  <h3>Post Event</h3>
+  
+  <br>
+  <form>
+    <input type="button" value="Post It!!!" onclick="postCook()" />
+  </form>
+</body>
   </body>
 </html>
