@@ -30,7 +30,7 @@
           FB.api(
             '/me/hpnevent:following',
             'post',
-            { event: "<%= @url %>" },
+            { toppick: "<%= @url %>" },
             function(response) {
                if (!response || response.error) {
                   alert('Error occured');
