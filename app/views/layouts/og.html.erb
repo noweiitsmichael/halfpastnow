@@ -17,7 +17,14 @@
     <meta property="fb:app_id" content="273167206143082" />
 
     <script type="text/javascript" src="/javascripts/jquery-1.7.1.min.js"></script>
-
+    <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=273167206143082";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
     <script type="text/javascript">
       function logResponse(response) {
         if (console && console.log) {
@@ -89,6 +96,7 @@
   <form>
     <input type="button" value="Bookmark It!!!" onclick="bookmark()" />
   </form>
+  <div class="fb-like" data-href="<%= @url %>" data-send="true" data-width="450" data-show-faces="true"></div>
 </body>
   </body>
 </html>
