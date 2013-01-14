@@ -105,7 +105,7 @@
 Assigned Events: <b><div style="display:inline;color:red"><%= current_user.assigned_raw_events%> items remaining</div></b><br>
 (Raw Events between now and 2 weeks from now)<br><br>
 My activity this week: <b><%= current_user.total_activity_week %> items edited </b><br><br>
-Number of assigned Venues: <b><%= Venue.where(:admin_owner => current_user.id.to_s).count %></b><br><br>
+Number of assigned Venues: <b><%= current_user.venues.count %></b><br><br>
 Total number of active events: <b><%= current_user.assigned_events%></b><br>
 <br>
 </div>

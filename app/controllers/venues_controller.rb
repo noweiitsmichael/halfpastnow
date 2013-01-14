@@ -345,7 +345,7 @@ class VenuesController < ApplicationController
 
   def setOwner
     @venue = Venue.find(params[:venue_id])
-    @venue.admin_owner = params[:user_id]
+    @venue.assigned_admin = params[:user_id]
     @venue.save!
 
     render json: {:venue_id => @venue.id}
@@ -353,7 +353,7 @@ class VenuesController < ApplicationController
 
   def removeOwner
     @venue = Venue.find(params[:venue_id])
-    @venue.admin_owner = nil
+    @venue.assigned_admin = nil
     @venue.save!
 
     render json: {:venue_id => @venue.id}

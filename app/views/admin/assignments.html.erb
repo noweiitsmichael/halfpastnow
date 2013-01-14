@@ -172,12 +172,11 @@ $(function() {
 		<th class="type-int" style="cursor:pointer;"># Venues</th>
 		<th class="type-int" style="cursor:pointer;"># Events</th>
 		<th class="type-int" style="cursor:pointer;"># Raw To Do</th>
-		<th class="type-int" style="cursor:pointer;"># Total Raw</th>
 		<th class="type-int" style="cursor:pointer;">Activity This Wk</th>
 	</tr></thead>
 	<tbody>
 		<% @users.each do |o| %>
-			<tr><td><%=o.fullname%></td><td><%=Venue.where(:admin_owner => o.id.to_s).count %></td><td><%=o.assigned_events%></td><td><%=o.assigned_raw_events%></td><td><%=o.total_raw_events%></td><td><%=o.total_activity_week%></td></tr>
+			<tr><td><%=o.fullname%></td><td><%=o.venues.count %></td><td><%=o.assigned_events%></td><td><%=o.assigned_raw_events%></td><td><%=o.total_activity_week%></td></tr>
 		<% end %>
 	</tbody>
 </table>
