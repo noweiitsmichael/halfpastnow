@@ -3,7 +3,7 @@ class MobileController < ApplicationController
     @eventid = Occurrence.find(params[:id]).event_id
     @event = Event.find(@eventid);
     @urlimage ='http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/3/large_wilfork-300x200.jpg'
-    @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
+    @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/'+params[:id]
     render :layout => "og"
   end
   def new
