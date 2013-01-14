@@ -8,15 +8,6 @@
     <link rel="stylesheet" href="stylesheets/screen.css" media="Screen" type="text/css" />
     <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-width: 480px), only screen and (max-device-width: 480px)" type="text/css" />
 
-    <!--[if IEMobile]>
-    <link rel="stylesheet" href="mobile.css" media="screen" type="text/css"  />
-    <![endif]-->
-
-    <!-- These are Open Graph tags.  They add meta data to your  -->
-    <!-- site that facebook uses when your content is shared     -->
-    <!-- over facebook.  You should fill these tags in with      -->
-    <!-- your data.  To learn more about Open Graph, visit       -->
-    <!-- 'https://developers.facebook.com/docs/opengraph/'       -->
     <meta property="og:title" content="<%= @event['title'] %>" />
     <meta property="og:type" content="hpnevent:event" />
     <meta property="og:url" content="<%= @url %>" />
@@ -44,19 +35,12 @@
                if (!response || response.error) {
                   alert('Error occured');
                } else {
-                  alert('Cook was successful! Action ID: ' + response.id);
+                  alert('Post event was successful! Action ID: ' + response.id);
                }
             });
       }
     </script>
 
-    <!--[if IE]>
-      <script type="text/javascript">
-        var tags = ['header', 'section'];
-        while(tags.length)
-          document.createElement(tags.pop());
-      </script>
-    <![endif]-->
   </head>
   <body>
    <body>
