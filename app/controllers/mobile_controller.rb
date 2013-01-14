@@ -1,7 +1,10 @@
 class MobileController < ApplicationController
   def og 
-    
-    render :layout => "og" 
+    @eventid = Occurrence.find(params[:id]).event_id
+    @event = Event.find(@eventid);
+    @urlimage ='http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/3/large_wilfork-300x200.jpg'
+    @url= 'http://localhost:3000/?event_id=4792'
+    render :layout => "og"
   end
   def new
     email = params[:email]

@@ -52,6 +52,8 @@ gem 'cancan'
 gem 'rolify'
 gem 'omniauth-facebook'
 gem 'koala'
+gem 'sinatra'
+
 
 #file attachments and Amazon S3
 gem 'carrierwave'
