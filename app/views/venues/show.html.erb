@@ -1,9 +1,9 @@
-<% content_for :title do %>
-	<h1><span class="icon-home"></span><%= @venue.name %></h1>
+<% content_for :mode_title do %>
+	<h1>Venue: <%= @venue.name %></h1>
 <% end %>
 
 
-<% content_for :body do %>
+<% content_for :mode_body do %>
 <%= javascript_include_tag "galleria-1.2.8.min" %>
 	<div class="col-1">
 		<div class="block">
@@ -23,7 +23,7 @@
 			<div class="calendar block">
 				<h2>Calendar</h2>
 				<div class="block-inner">
-					<%= render :partial => "events/calendar", :locals => { :occurrences => @occurrences, :recurrences => @recurrences, :options => { :venue => false } } %>
+					<%= render :partial => "events/calendar", :locals => { :occurrences => @occurrences, :recurrences => @recurrences, :options => { :venue => false, :fullmode => @fullmode  } } %>
 				</div>
 			</div>
 		<% end %>

@@ -56,6 +56,8 @@ class VenuesController < ApplicationController
   # GET /venues/1
   # GET /venues/1.json
   def show
+    @fullmode = !params[:fullmode].to_s.empty?
+
     @venue = Venue.find(params[:id])
 
     @venue.clicks += 1
@@ -83,8 +85,11 @@ class VenuesController < ApplicationController
     end
 
     respond_to do |format|
-
-      format.html { render :layout => "mode" }
+      if @fullmode
+        format.html { render :layout => "fullmode" }
+      else
+        format.html { render :layout => "mode" }
+      end
       format.json { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), :venue => @venue.to_json } } 
       format.mobile { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), :venue => @venue.to_json } } 
 

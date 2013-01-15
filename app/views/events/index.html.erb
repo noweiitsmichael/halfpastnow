@@ -222,15 +222,15 @@
 				}
 			<% end %>
 
-			var event_id = <%= params[:event_id] || "null" %>;
+			// var event_id = <%= params[:event_id] || "null" %>;
 			var venue_id = <%= params[:venue_id] || "null" %>;
 			var act_id = <%= params[:act_id] || "null" %>;
 			var modality;
 
-			if(event_id) {
-				modality = spawn(modalities["event"],{id: event_id});
-				modal(modality);
-			}
+			// if(event_id) {
+			// 	modality = spawn(modalities["event"],{id: event_id});
+			// 	modal(modality);
+			// }
 			if(venue_id) {
 				modality = spawn(modalities["venue"],{id: venue_id});
 				modal(modality);
@@ -442,8 +442,6 @@
 <% content_for :overlay do %>
 	<div class="mode">
 		<div class="overlay">
-			<!-- <div class="background">
-			</div> -->	
 			<div class="insert-point">
 				<div class="window">
 				</div>

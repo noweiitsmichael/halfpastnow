@@ -1,10 +1,8 @@
-
-
-<% content_for :title do %>
-	<h1><span class="icon-bolt"></span><%= @event.title %></h1>
+<% content_for :mode_title do %>
+	<h1>Event: <%= @event.title %></h1>
 <% end %>
 
-<% content_for :body do %>
+<% content_for :mode_body do %>
 	<div class="col-1">
 		<ul class="sub-header">
 			<li class="datetime"><span class="icon icon-time"></span><%= @occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
@@ -33,7 +31,11 @@
 				<h2>Featuring</h2>
 				<div class="block-inner">
 					<% @event.acts.each_with_index do |act,index| %>
-						<span link-id="<%= act.id %>" linkto="act" class="act-name"><%= act.name %></span><%= (index != @event.acts.length - 1) ? ", " : "" %>
+						<% if @fullmode %>
+							<a href="/acts/show/<%= act.id %>?fullmode=true" class="act-name"><%= act.name %></a><%= (index != @event.acts.length - 1) ? ", " : "" %>
+						<% else %>
+							<span link-id="<%= act.id %>" linkto="act" class="act-name"><%= act.name %></span><%= (index != @event.acts.length - 1) ? ", " : "" %>
+						<% end %>
 					<% end %>
 					<div class="embeds">
 					<% @event.acts.each do |act| %>
@@ -51,7 +53,13 @@
 		<div class="block">
 			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&sensor=false"/></a>
 			<div class="block-inner">
-				<div class="venue"><a linkto="venue" link-id="<%= @event.venue.id %>" href="#"><%= @event.venue.name %></a></div>
+				<div class="venue">
+					<% if @fullmode %>
+						<a href="/venues/<%= @event.venue.id %>?fullmode=true"><%= @event.venue.name %></a>
+					<% else %>
+						<a linkto="venue" link-id="<%= @event.venue.id %>" href="#"><%= @event.venue.name %></a>
+					<% end %>
+				</div>
 				<div class="address one"><%= @event.venue.address %></div>
 				<div class="address two"><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></div>
 			</div>
@@ -92,48 +100,18 @@
 		<div class="calendar block">
 			<h2>Other Times</h2>
 			<div class="block-inner">
-				<%= render :partial => "events/calendar", :locals => { :occurrences => @occurrences, :recurrences => @recurrences, :options => { :datetime_only => true } } %>
+				<%= render :partial => "events/calendar", :locals => { :occurrences => @occurrences, :recurrences => @recurrences, :options => { :datetime_only => true, :fullmode => @fullmode } } %>
 			</div>
 		</div>
 		<% end %>
-		<% if false %>
-			<% if can? :edit, Event %>
-			<div style="text-align:right;padding-top:10px;"><a href="/venues/list_events/<%=@event.venue.id%>#anchor<%=@occurrence.id%>" target="_blank">edit</a> </div>
-			<% end %>
+		
+		<% if can? :edit, Event %>
+		<div style="text-align:right;padding-top:10px;"><a href="/venues/list_events/<%=@event.venue.id%>#anchor<%=@occurrence.id%>" target="_blank">edit</a> </div>
 		<% end %>
-		<div style="text-align:right;padding-top:10px;"><a href="/userSubmission/eventEdit1/<%=@event.id%>" target="_blank">edit</a> </div>
+		
+		<% if false %><div style="text-align:right;padding-top:10px;"><a href="/userSubmission/eventEdit1/<%=@event.id%>" target="_blank">edit</a> <% end %></div>
 	</div>
 
 	
 	<div class="clear"></div>
-<% end %>
-
-
-
-<% if false %><!--
-	<div class="col-2">
-
-
-		<div class="block">
-
-			<% hist = History.new %>
-
-			<%= form_for hist, :url => "/histories/create" do |f| %>
-				<div><%= f.hidden_field :occurrence_id, :value => @occurrence.id %></div>
-				<div><%= f.hidden_field :user_id, :value => current_user.id %></div>
-				<%= f.submit "Done it!" %>
-			<% end %>
-
-			<br>Others that have been here: </br>
-			<% @done_by = @occurrence.histories %>
-			<ol>
-				<% @done_by.each do |d| %>
-					<li><%= d.user_id %></li>
-				<% end %>
-			</ol>
-
-		</div>
-
-
-	</div>-->
 <% end %>

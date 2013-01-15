@@ -51,7 +51,7 @@
             <a href="/"><img class="logo" src="/assets/halfpastnow_final_beta-dark-header.png" /></a>
             <a class="main menu-element <%= params[:controller] == "events" ? "selected" : "" %>" href="/">Search</a>
             <a class="main menu-element <%= params[:controller] == "picks" ? "selected" : "" %>" href="/picks">Top Picks</a>
-            <a class="main menu-element <%= params[:controller] == "user_submission" ? "selected" : "" %>" href="/userSubmission/eventSearch">Add Event</a>
+            <% if false %><!-- <a class="main menu-element <%= params[:controller] == "user_submission" ? "selected" : "" %>" href="/userSubmission/eventSearch">Add Event</a> --><% end %>
             <% if user_signed_in? %>
               <div class="menu-element right pic">
                 <%= link_to(current_user.firstname + " " + current_user.lastname, edit_user_registration_path) %>
