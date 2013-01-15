@@ -288,6 +288,10 @@ input::-webkit-input-placeholder
     font-weight: 900;
     margin: 3px 0;
     font-style: italic;
+    text-overflow:ellipsis;
+    height:31px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #header .filterbar, #header .advancedbar
