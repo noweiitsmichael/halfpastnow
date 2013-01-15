@@ -1,0 +1,52 @@
+<%= render 'venues_nav' %>
+<script type="text/javascript" src="/assets/stupidtable.js"></script>
+<script type="text/javascript">
+$(function() {
+	$('#summary-table').stupidtable();
+});
+</script>
+<style type="text/css">
+	#summary-table {
+		margin:20px 10px;
+		border-spacing: 0;
+		border-collapse:collapse;
+	}
+
+	#summary-table th {
+
+	}
+	#summary-table td, #summary-table th {
+		padding:5px;
+	}
+	#summary-table td:nth-child(1) {
+		width:350px;
+	}
+	#summary-table td:nth-child(2) {
+		width:175px;
+	}
+	#summary-table td:nth-child(3) {
+		width:100px;
+		text-align:center;
+	}
+	#summary-table td:nth-child(4) {
+		width:175px;
+		text-align:center;
+	}
+	#summary-table tbody tr:nth-child(odd) {
+		background:#eeeeee;
+	}
+</style>
+
+<table id="summary-table">
+	<thead><tr>
+		<th class="type-string" style="cursor:pointer;">Event Name</th>
+		<th class="type-int" style="cursor:pointer;">Event Time</th>
+		<th class="type-string" style="cursor:pointer;">Pulled From</th>
+		<th class="type-int" style="cursor:pointer;">Deleted On</th>
+	</tr></thead>
+	<tbody>
+		<% @venue.deleted_raw_events.each do |d| %>
+			<tr><td><%=d.title%></td><td><%=d.start.strftime("%Y-%m-%d at %I:%M %p")%></td><td><%=d.from%></td><td><%=d.updated_at.strftime("%Y-%m-%d at %I:%M %p")%></td></tr>
+		<% end %>
+	</tbody>
+</table>

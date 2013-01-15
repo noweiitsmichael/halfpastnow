@@ -1,0 +1,107 @@
+<% content_for :mode_title do %>
+	<h1><span class="icon-bolt"></span><%= event.title %></h1>
+<% end %>
+
+<% content_for :mode_body do %>
+	<div class="col-1">
+		<ul class="sub-header">
+			<li class="datetime"><span class="icon icon-time"></span><%= occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
+			<% if event.price %>
+				<li class="price"><span class="icon icon-credit-card"></span><%= event.price != 0 ? "$" + number_with_precision(event.price, :precision => 2) : "FREE" %></li>
+			<% end %>
+			<% unless event.tags.length == 0 %>
+				<li class="tags"><span class="icon icon-tags"></span><%= event.tags.collect { |tag| tag.name } * " / " %></li>
+			<% end %>
+		</ul>
+		<div class="block">
+			<div class="block-inner">
+				<%= render :partial => "layouts/share_bookmark", :locals => { :type => 'event', :id => occurrence.id, :bookmarkId => bookmarkId } %>
+			</div>
+		</div>
+		<% unless event.description.to_s.empty? %>
+			<div class="description block">
+				<h2>Details</h2>
+				<div class="block-inner">
+					<%= raw(event.description) %>
+				</div>
+			</div>
+		<% end %>
+		<% unless event.acts.length == 0 %>
+			<div class="featuring block">
+				<h2>Featuring</h2>
+				<div class="block-inner">
+					<% event.acts.each_with_index do |act,index| %>
+						<span link-id="<%= act.id %>" linkto="act" class="act-name"><%= act.name %></span><%= (index != event.acts.length - 1) ? ", " : "" %>
+					<% end %>
+					<div class="embeds">
+					<% event.acts.each do |act| %>
+						<% act.embeds.select { |e| e.primary }.each do |embed| %>
+							<div class="embed-act-name"><%= act.name %></div>
+							<%= raw(embed.source) %>
+						<% end %>
+					<% end %>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<div class="col-2">
+		<div class="block">
+			<a class="map-link" href="http://maps.google.com/maps?q=<%= event.venue.latitude %>,<%= event.venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:gray%7C<%= event.venue.latitude %>,<%= event.venue.longitude %>&sensor=false"/></a>
+			<div class="block-inner">
+				<div class="venue"><a linkto="venue" link-id="<%= event.venue.id %>" href="#"><%= event.venue.name %></a></div>
+				<div class="address one"><%= event.venue.address %></div>
+				<div class="address two"><%= event.venue.city + ", " + event.venue.state + " " + event.venue.zip.to_s %></div>
+			</div>
+		</div>
+		<% unless (event.venue.fb_picture.blank? && event.fb_picture.blank? && event.pictures.nil? && event.acts.nil? )%>
+		<div id="galleria" style="height:358px;width:358px;">
+			<% unless event.venue.fb_picture.blank?%>
+				<img src="<%=event.venue.fb_picture%>" data-title="<%= event.venue.name %>" >
+			<% end %>
+            <% event.venue.pictures.each do |pic| %>
+			    <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= event.venue.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+		    <% end %>
+
+		    <% unless event.fb_picture.blank?%>
+				<img src="<%=event.fb_picture%>" data-title="<%= event.title %>" >
+			<% end %>
+		    <% event.pictures.each do |pic| %>
+				<a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= event.title.first(25) %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+		    <% end %>
+
+		    <% event.acts.each do |artists| %>
+			    <% unless artists.fb_picture.blank?%>
+					<img src="<%= artists.fb_picture %>" data-title="<%= artists.name %>" >
+				<% end %>
+		    	<% artists.pictures.each do |pic| %>
+		    		<a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= artists.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+		    	<% end %>
+		    	<br>
+		    <% end %>
+        </div>
+    	<% end %>
+        <script type="text/javascript">
+            Galleria.loadTheme('/assets/galleria.classic.min.js');
+            Galleria.run('#galleria');
+        </script>
+
+		<% unless occurrences.length == 0 && recurrences.length == 0 %>
+		<div class="calendar block">
+			<h2>Other Times</h2>
+			<div class="block-inner">
+				<%= render :partial => "events/calendar", :locals => { :occurrences => occurrences, :recurrences => recurrences, :options => { :datetime_only => true } } %>
+			</div>
+		</div>
+		<% end %>
+		<% if false %>
+			<% if can? :edit, Event %>
+			<div style="text-align:right;padding-top:10px;"><a href="/venues/list_events/<%=event.venue.id%>#anchor<%=occurrence.id%>" target="_blank">edit</a> </div>
+			<% end %>
+		<% end %>
+		<div style="text-align:right;padding-top:10px;"><a href="/userSubmission/eventEdit1/<%=event.id%>" target="_blank">edit</a> </div>
+	</div>
+
+	
+	<div class="clear"></div>
+<% end %>

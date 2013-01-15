@@ -12,7 +12,7 @@
 				var bookmarked_type = "";
 				switch(type) {
 					case "event":
-						bookmarked_type = "Occurrence";
+						(bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
 						break;
 					case "venue":
 						bookmarked_type = "Venue";

@@ -56,6 +56,9 @@ class VenuesController < ApplicationController
   # GET /venues/1
   # GET /venues/1.json
   def show
+    @fullmode = !params[:fullmode].to_s.empty?
+    @modeType = "venue"
+    
     @venue = Venue.find(params[:id])
 
     @venue.clicks += 1
@@ -83,8 +86,11 @@ class VenuesController < ApplicationController
     end
 
     respond_to do |format|
-
-      format.html { render :layout => "mode" }
+      if @fullmode
+        format.html { render :layout => "fullmode" }
+      else
+        format.html { render :layout => "mode" }
+      end
       format.json { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), :venue => @venue.to_json } } 
       format.mobile { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), :venue => @venue.to_json } } 
 
@@ -138,6 +144,14 @@ class VenuesController < ApplicationController
   end
 
   def list_raw_events
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
+    @venue = Venue.includes(:raw_venues => :raw_events).find(params[:id])
+    puts @venue
+
+    render :layout => "admin"
+  end
+
+  def list_deleted_events
     authorize! :index, @user, :message => 'Not authorized as an administrator.'
     @venue = Venue.includes(:raw_venues => :raw_events).find(params[:id])
     puts @venue
@@ -337,7 +351,7 @@ class VenuesController < ApplicationController
 
   def setOwner
     @venue = Venue.find(params[:venue_id])
-    @venue.admin_owner = params[:user_id]
+    @venue.assigned_admin = params[:user_id]
     @venue.save!
 
     render json: {:venue_id => @venue.id}
@@ -345,7 +359,7 @@ class VenuesController < ApplicationController
 
   def removeOwner
     @venue = Venue.find(params[:venue_id])
-    @venue.admin_owner = nil
+    @venue.assigned_admin = nil
     @venue.save!
 
     render json: {:venue_id => @venue.id}

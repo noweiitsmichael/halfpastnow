@@ -58,6 +58,18 @@ namespace :m do
 		end
 	end
 
+
+	desc "migrate admin_owner to assigned_admin column"
+	task :shift => :environment do
+		Venue.find(:all).each do |v|
+			if !v.admin_owner.nil?
+				v.assigned_admin = v.admin_owner
+				v.save!
+			end
+		end
+		puts "done!"
+	end
+
 	task :test => :environment do
 		# for i in 6..8
 		# 	for j in 0..5

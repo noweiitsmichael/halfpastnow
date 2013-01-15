@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121211230936) do
+ActiveRecord::Schema.define(:version => 20130115003752) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -136,8 +136,8 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.string   "title"
     t.text     "description"
     t.decimal  "price"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
     t.integer  "venue_id"
     t.integer  "clicks",          :default => 0
     t.integer  "views",           :default => 0
@@ -183,8 +183,8 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.datetime "start"
     t.datetime "end"
     t.integer  "event_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.integer  "recurrence_id"
     t.integer  "day_of_week"
     t.boolean  "deleted"
@@ -216,8 +216,8 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.text     "url"
     t.string   "raw_id"
     t.string   "from"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.boolean  "deleted"
     t.boolean  "submitted"
     t.integer  "raw_venue_id"
@@ -243,8 +243,8 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.integer  "review_count"
     t.text     "categories"
     t.text     "neighborhoods"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "raw_id"
     t.string   "from"
     t.integer  "venue_id"
@@ -267,8 +267,8 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.date     "range_end"
     t.datetime "start"
     t.datetime "end"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.integer  "event_id"
   end
 
@@ -278,28 +278,18 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.string   "name"
     t.integer  "resource_id"
     t.string   "resource_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
-  create_table "students", :force => true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-    t.string   "videoname"
-    t.string   "videonametest"
-  end
-
   create_table "tags", :force => true do |t|
     t.string   "name"
-
     t.integer  "parent_tag_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   add_index "tags", ["parent_tag_id"], :name => "index_tags_on_parent_tag_id"
@@ -307,17 +297,8 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
   create_table "tags_venues", :id => false, :force => true do |t|
     t.integer  "venue_id"
     t.integer  "tag_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-
-  end
-
-  create_table "things", :force => true do |t|
-    t.string   "name"
-    t.integer  "parent_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -331,13 +312,12 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.string   "firstname"
     t.string   "lastname"
     t.string   "username"
     t.string   "profilepic"
-    t.string   "authentication_token"
     t.string   "provider"
     t.string   "uid"
     t.string   "fb_access_token"
@@ -365,29 +345,18 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.integer  "zip"
     t.float    "latitude"
     t.float    "longitude"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.string   "phonenumber"
     t.text     "url"
-    t.integer  "clicks",      :default => 0
-    t.integer  "views",       :default => 0
+    t.integer  "clicks",         :default => 0
+    t.integer  "views",          :default => 0
     t.string   "events_url"
     t.boolean  "suggested"
     t.text     "fb_picture"
-    t.string   "admin_owner"
     t.integer  "updated_by"
     t.float    "completion"
-  end
-
-  create_table "videos", :force => true do |t|
-    t.integer  "eventID"
-    t.integer  "venueId"
-    t.text     "comment"
-    t.float    "longitude"
-    t.float    "altitude"
-    t.string   "url"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "assigned_admin"
   end
 
 end

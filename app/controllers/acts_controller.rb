@@ -5,6 +5,9 @@ class ActsController < ApplicationController
   layout "venues"
 
   def show
+    @fullmode = !params[:fullmode].to_s.empty?
+    @modeType = "act"
+    
     @act = Act.find(params[:id])
 
     if(current_user)
@@ -34,7 +37,11 @@ class ActsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { render :layout => "mode" }
+      if @fullmode
+        format.html { render :layout => "fullmode" }
+      else
+        format.html { render :layout => "mode" }
+      end
       format.json { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), 
                                    :act => @act.to_json, :pictures => @pictures.to_json } } 
     end

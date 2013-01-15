@@ -234,7 +234,12 @@ input::-webkit-input-placeholder
   margin-top: 121px; 
   position: relative;
 }
-
+#mode-content
+{
+  margin: 121px auto 0;
+  position: relative;
+  width:990px;
+}
 #content.pick-content { margin-top:90px; }
 
 #content.pick-content #map-wrapper { margin-top:90px; }
@@ -288,6 +293,10 @@ input::-webkit-input-placeholder
     font-weight: 900;
     margin: 3px 0;
     font-style: italic;
+    text-overflow:ellipsis;
+    height:31px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #header .filterbar, #header .advancedbar
@@ -1445,11 +1454,15 @@ input::-webkit-input-placeholder
   font-weight:bold;
   cursor:pointer;
   font-size: 18px;
+  color: #333;
+  text-decoration:underline;
 }
 
 .venue-name {
   font-style:italic;
   cursor:pointer;
+  text-decoration:underline;
+  color:#666;
 }
 
 .act-name {
@@ -2157,7 +2170,7 @@ background-position: 0 11px;
     padding: 4px 10px;
 }
 
-iframe {
+.mode iframe {
   background: url(/assets/spinner.gif) no-repeat center center;
 }
 
