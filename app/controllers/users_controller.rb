@@ -127,9 +127,9 @@ class UsersController < ApplicationController
     @user = User.find(params[:user_id])
     @venuesList = []
 
-    @venuesList << {'user_id' => @user.id, 'total_venues' => Venue.where(:admin_owner => @user.id.to_s).count, 'total_events' => @user.assigned_events, 'total_raw_events' => @user.assigned_raw_events, 'total_activity_week' => @user.total_activity_week}
+    @venuesList << {'user_id' => @user.id, 'total_venues' => @user.venues.count, 'total_events' => @user.assigned_events, 'total_raw_events' => @user.assigned_raw_events, 'total_activity_week' => @user.total_activity_week}
 
-    Venue.where(:admin_owner => @user.id.to_s).each do |v|
+    @user.venues.each do |v|
       @venuesList << {'name' => v.name, 'address' => v.address, 'id' => v.id,
                       'num_events' => v.events.select { |oc| oc.nextOccurrence ? (oc.nextOccurrence.start > Time.now) : nil}.sort_by { |event| event.nextOccurrence ? event.nextOccurrence.start : DateTime.new(1970,1,1) }.count,
                       'num_raw_events' => v.raw_venues.collect { |rv| rv.raw_events }.flatten.select{ |re| !(re.deleted || re.submitted) && re.start > Time.now && re.start < 2.months.from_now }.count}
