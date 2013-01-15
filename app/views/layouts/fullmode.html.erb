@@ -6,8 +6,8 @@
 	</div>
 <% end %>
 <% content_for :body do %>
-	<div id="content">
-		<div class="mode" style="display:block;">
+	<div id="mode-content">
+		<div class="mode <%= @modeType %>" style="display:block;">
 			<div class="window" style="z-index:1;padding:12px;margin-top:-52px;margin-left:-12px;">
 				<%= yield :mode_body %>
 			</div>

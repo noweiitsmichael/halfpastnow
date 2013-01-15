@@ -6,7 +6,8 @@ class ActsController < ApplicationController
 
   def show
     @fullmode = !params[:fullmode].to_s.empty?
-
+    @modeType = "act"
+    
     @act = Act.find(params[:id])
 
     if(current_user)

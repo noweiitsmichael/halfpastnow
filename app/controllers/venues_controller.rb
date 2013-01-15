@@ -57,7 +57,8 @@ class VenuesController < ApplicationController
   # GET /venues/1.json
   def show
     @fullmode = !params[:fullmode].to_s.empty?
-
+    @modeType = "venue"
+    
     @venue = Venue.find(params[:id])
 
     @venue.clicks += 1

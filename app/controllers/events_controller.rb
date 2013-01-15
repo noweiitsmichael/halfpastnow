@@ -141,6 +141,7 @@ def index
   # GET /events/1.json
   def show
     @fullmode = !params[:fullmode].to_s.empty?
+    @modeType = "event"
 
     @occurrence = Occurrence.find(params[:id])
     @event = @occurrence.event
