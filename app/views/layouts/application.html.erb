@@ -2,7 +2,8 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta property="og:image" content="http://www.halfpastnow.com/assets/halfpastnow_final-squat.png" />
+  
+  <% unless @fullmode %><meta property="og:image" content="http://www.halfpastnow.com/assets/halfpastnow_final-squat.png" /><% end %>
 
   <title><%= @pageTitle || "half past now." %></title>
 
@@ -38,10 +39,6 @@
 
 </head>
 <body>
-  <script type="text/javascript">
-      if (Galleria) { console.log("galleria works in page"); }
-  </script>
-
 	<%= yield :code %>
 	
   <div id="body">
