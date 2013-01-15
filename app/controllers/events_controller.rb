@@ -143,8 +143,10 @@ def index
     @fullmode = !params[:fullmode].to_s.empty?
     @modeType = "event"
 
+
     @occurrence = Occurrence.find(params[:id])
     @event = @occurrence.event
+    @pageTitle = @event.title + " | half past now."
 
     @event.clicks += 1
     @event.save

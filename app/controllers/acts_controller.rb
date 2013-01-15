@@ -7,8 +7,9 @@ class ActsController < ApplicationController
   def show
     @fullmode = !params[:fullmode].to_s.empty?
     @modeType = "act"
-    
+
     @act = Act.find(params[:id])
+    @pageTitle = @act.name + " | half past now."
 
     if(current_user)
       bookmark = Bookmark.where(:bookmarked_type => 'Act', :bookmarked_id => @act.id, :user_id => current_user.id).first
