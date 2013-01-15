@@ -25,12 +25,19 @@ class Venue < ActiveRecord::Base
   #validates :zip, :length => { :minimum => 5, :maximum => 5}, :numericality => true, :presence => true,  ##removed b/c facebook 
 
   def raw_events (params = {})
-
   	return (self.raw_venues.collect do |raw_venue| 
   		raw_venue.raw_events.select do |raw_event| 
   			raw_event.submitted == params[:submitted] && raw_event.deleted == params[:deleted] 
   		end
   	end).flatten.compact
+  end
+
+  def deleted_raw_events (params = {})
+    return (self.raw_venues.collect do |raw_venue| 
+      raw_venue.raw_events.select do |raw_event| 
+        raw_event.submitted == params[:submitted] && raw_event.deleted == true && raw_event.start > Time.now 
+      end
+    end).flatten.compact
   end
 
   def completedness

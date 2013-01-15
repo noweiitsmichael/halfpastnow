@@ -24,6 +24,12 @@ namespace :test do
 end
 
 namespace :m do 
+	## Random helper commands
+
+	# # update completedness if it errors out
+	# Venue.find(:all).each {|d| d.completion = d.completedness; d.save!;}
+	# Event.find(:all).each {|d| d.completion = d.completedness; d.save!;}
+
 	desc "migrating bookmarks..."
 	task :bookmarks => :environment do
 		User.all.each do |u|
@@ -37,6 +43,31 @@ namespace :m do
 				end
 			end
 		end
+	end
+
+	desc "bumping up bookmarked events"
+	task :bookmark_bump => :environment do
+		Bookmark.where(:bookmark_list_id => [92,93,95,96,98,99,100,101,102,103,105,113]).each do |b|
+			if b.bookmarked_type == "Occurrence"
+				unless Occurrence.where(:id => b.bookmarked_id).empty?
+					e = Occurrence.find(b.bookmarked_id).event
+					e.clicks = e.clicks + 100
+					e.save!
+				end
+			end
+		end
+	end
+
+
+	desc "migrate admin_owner to assigned_admin column"
+	task :shift => :environment do
+		Venue.find(:all).each do |v|
+			if !v.admin_owner.nil?
+				v.assigned_admin = v.admin_owner
+				v.save!
+			end
+		end
+		puts "done!"
 	end
 
 	task :test => :environment do

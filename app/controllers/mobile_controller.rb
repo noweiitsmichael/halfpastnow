@@ -1,4 +1,8 @@
 class MobileController < ApplicationController
+  def og 
+    
+    render :layout => "og" 
+  end
   def new
     email = params[:email]
     password = params[:password]
@@ -385,17 +389,31 @@ class MobileController < ApplicationController
       @tags = @tagss.collect{|t| [t.id,t.name]}
       @bookmarks= Bookmark.where("user_id=?",@user.id)
       @occurrenceids= @user.bookmarked_events.collect(&:id)
-      @eventids = Occurrence.find(@occurrenceids).collect(&:event_id)
-      @tmps = Occurrence.find(@occurrenceids)
-      @events = Event.includes(:tags, :venue, :recurrences,:acts).find(@eventids) 
+      # @eventids = Occurrence.find(@occurrenceids).collect(&:event_id)
+      # @tmps = Occurrence.find(@occurrenceids)
+      # @events = Event.includes(:tags, :venue, :recurrences,:acts).find(@eventids) 
+      # @eventinfo =[]
+      # @events.each{
+      #   |o| 
+      #   @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
+      #   @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
+      #   @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts}
+      #   @eventinfo << @item
+      # }
+
+
       @eventinfo =[]
-      @events.each{
-        |o| 
-        @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
-        @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
-        @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts}
+      @occurrenceids.each{
+        |oid|
+        @eventids = Occurrence.find(oid).event_id
+        @events = Event.includes(:tags, :venue, :recurrences,:acts).find(@eventids) 
+        @rcs=Recurrence.find(@events.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
+        @ocs=@events.occurrences.select{|o| o.recurrence_id==nil}
+        @item = {event: @events, tags: @events.tags, venue: @events.venue, recurrences: @rcs, occurrences: @ocs, act: @events.acts,ocid: oid}
         @eventinfo << @item
       }
+
+
     end
     # Create events from occurrence
     @es = @occurrences.collect { |occ| occ.event }
@@ -420,7 +438,7 @@ class MobileController < ApplicationController
         # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
         format.json { render json: {:events=>@esinfo} }
       else 
-        format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo,:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues }} 
+        format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo,:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten }} 
         # format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       
       end
@@ -736,17 +754,35 @@ class MobileController < ApplicationController
       @tags = @tagss.collect{|t| [t.id,t.name]}
       @bookmarks= Bookmark.where("user_id=?",@user.id)
       @occurrenceids= @user.bookmarked_events.collect(&:id)
-      @eventids = Occurrence.find(@occurrenceids).collect(&:event_id)
-      @tmps = Occurrence.find(@occurrenceids)
-      @events = Event.includes(:tags, :venue, :recurrences,:acts).find(@eventids) 
+
       @eventinfo =[]
-      @events.each{
-        |o| 
-        @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
-        @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
-        @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts}
+      @occurrenceids.each{
+        |oid|
+        @eventids = Occurrence.find(oid).event_id
+        @events = Event.includes(:tags, :venue, :recurrences,:acts).find(@eventids) 
+        @rcs=Recurrence.find(@events.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
+        @ocs=@events.occurrences.select{|o| o.recurrence_id==nil}
+        @item = {event: @events, tags: @events.tags, venue: @events.venue, recurrences: @rcs, occurrences: @ocs, act: @events.acts,ocid: oid}
         @eventinfo << @item
       }
+
+
+
+      # @eventids = Occurrence.find(@occurrenceids).collect(&:event_id)
+      # @tmps = Occurrence.find(@occurrenceids)
+      # @events = Event.includes(:tags, :venue, :recurrences,:acts).find(@eventids) 
+      # @eventinfo =[]
+      # @i=0
+      # @events.each{
+      #   |o| 
+      #   @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
+      #   @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
+      #   @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts,ocid: @occurrenceids[@i]}
+      #   @eventinfo << @item
+      #   @i=@i+1
+      # }
+      # @item ={ocid:@occurrenceids}
+      # @eventinfo << @item
     end
     # Create events from occurrence
     @es = @occurrences.collect { |occ| occ.event }
@@ -771,7 +807,7 @@ class MobileController < ApplicationController
         # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
         format.json { render json: {:events=>@esinfo} }
       else 
-        format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo,:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues }} 
+        format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo,:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues,:listids=>@user.followedLists.collect { |list| list.id }.flatten }} 
         # format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       
       end
@@ -779,7 +815,45 @@ class MobileController < ApplicationController
     
   end
 
+  def eventsList
+    email = params[:email]
+    @user=User.find_by_email(email)
+    # @occurrences = @user.followedLists.collect { |list| list.bookmarked_events }.flatten
+    # @es = @occurrences.collect { |occ| occ.event }
+    # @esinfo =[]
+    # @es.each{
+    #   |o| 
+    #   @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
+    #   @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
+    #   @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts}
+    #   @esinfo << @item
+    # }
+    # respond_to do |format|
+    #   format.json { render json: { :events =>@esinfo  } } 
+    # end
+    @ids = params[:ids].to_s.empty? ? nil : params[:ids].split(',')
+    @lists = BookmarkList.find(@ids)
+    @esinfo =[]
+    @lists.each{
+      |list|
+      @occurrences = list.bookmarked_events
+      @es = @occurrences.collect { |occ| occ.event }
+      @tmps =[]
+      @es.each{
+        |o| 
+        @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
+        @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
+        @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts,tp: list.name}
+        @esinfo << @item
+      }
+      
 
+    }
+    respond_to do |format|
+      format.json { render json: { :events =>@esinfo  } } 
+    end
+
+  end
 
   def showVenue
     @venue = Venue.find(params[:id])
@@ -839,27 +913,30 @@ def showact
     end
 end
   def bookmark
-    @userid = User.find_by_email(params[:email]).id
+   
     @occurrenceid = Occurrence.find_by_event_id(params[:event_id]).id
-    @bookmark = Bookmark.new
+    current_user =  User.find_by_email(params[:email])
+    @bookmark = current_user.main_bookmark_list.bookmarks.build
     @bookmark.bookmarked_id = @occurrenceid
     @bookmark.bookmarked_type = "Occurrence"
-    @bookmark.user_id = @userid
     @bookmark.save!
+    respond_to do |format|
+      format.json { render json: { :ids =>@occurrenceid  } } 
+    end
   end
   
   def unbookmark
     @userid = User.find_by_email(params[:email]).id
-    @occurrenceid = Occurrence.find_by_event_id(params[:event_id]).id
-    @bookmark = Bookmark.find_by_bookmarked_id(@occurrenceid)
+    current_user =  User.find_by_email(params[:email])
+    @list = current_user.main_bookmark_list
+    @bookmark=@list.bookmarks.find_by_bookmarked_id(params[:event_id])
     @bookmark.destroy
   end
   def bookmarkvenue
-    @userid = User.find_by_email(params[:email]).id
-    @bookmark = Bookmark.new
+    current_user =  User.find_by_email(params[:email])
+    @bookmark = current_user.main_bookmark_list.bookmarks.build
     @bookmark.bookmarked_id = params[:venueid]
     @bookmark.bookmarked_type = "Venue"
-    @bookmark.user_id = @userid
     @bookmark.save!
   end
   def unbookmarkvenue
@@ -868,17 +945,52 @@ end
   end
   
   def bookmarkact
-    @userid = User.find_by_email(params[:email]).id
-    @bookmark = Bookmark.new
+    current_user =  User.find_by_email(params[:email])
+    @bookmark = current_user.main_bookmark_list.bookmarks.build
     @bookmark.bookmarked_id = params[:actid]
     @bookmark.bookmarked_type = "Act"
-    @bookmark.user_id = @userid
     @bookmark.save!
+
+
+
   end
-  
+  def followBookmarkList
+    list = BookmarkList.first(:conditions => { :id => params[:id] })
+    current_user = User.find_by_email(params[:email])
+    current_user.followedLists << list  
+  end
+  def unfollowBookmarkList
+    list = BookmarkList.first(:conditions => { :id => params[:id] })
+    current_user = User.find_by_email(params[:email])
+    current_user.followedLists.delete(list)
+  end
   def unbookmarkact
     @bookmark = Bookmark.find_by_bookmarked_id(params[:actid])
     @bookmark.destroy
+  end
+
+  def getTopLists
+    @featuredLists = BookmarkList.where(:featured => true)
+    respond_to do |format|
+      format.json { render json: { :lists =>@featuredLists  } } 
+    end
+  end
+
+  def getList
+    @bookmarkList = BookmarkList.find(params[:id])
+    @occurrences = @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
+    @es = @occurrences.collect { |occ| occ.event }
+    @esinfo =[]
+    @es.each{
+      |o| 
+      @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
+      @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
+      @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts}
+      @esinfo << @item
+    }
+    respond_to do |format|
+      format.json { render json: { :event =>@esinfo  } } 
+    end
   end
 
   def getchannel

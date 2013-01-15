@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121211230936) do
+ActiveRecord::Schema.define(:version => 20130114233239) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -356,14 +356,15 @@ ActiveRecord::Schema.define(:version => 20121211230936) do
     t.datetime "updated_at"
     t.string   "phonenumber"
     t.text     "url"
-    t.integer  "clicks",      :default => 0
-    t.integer  "views",       :default => 0
+    t.integer  "clicks",         :default => 0
+    t.integer  "views",          :default => 0
     t.string   "events_url"
     t.boolean  "suggested"
     t.text     "fb_picture"
     t.string   "admin_owner"
     t.integer  "updated_by"
     t.float    "completion"
+    t.integer  "assigned_admin"
   end
 
 end
