@@ -95,7 +95,7 @@
             { toppick: "<%= @url %>" },
             function(response) {
                if (!response || response.error) {
-                  alert('Error occured');
+                  alert('Error occured'+response);
                } else {
                   alert('Post list was successful! Action ID: ' + response.id);
                }
@@ -113,16 +113,12 @@
             { event: "<%= @url %>" },
             function(response) {
                if (!response || response.error) {
-                  alert('Error occured');
+                  alert('Error occured'+response);
                } else {
                   alert('Post event was successful! Action ID: ' + response.id);
                }
             });
       }
-
-		
-
-
 </script>
 <div class="bookmark-share">
 	<span class="icon icon-envelope-alt email"></span>
