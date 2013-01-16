@@ -171,8 +171,8 @@ def index
 
     respond_to do |format|
       if @fullmode
-        # format.html { render :layout => "fullmode" }
-        format.html { render :layout => "og" }
+        format.html { render :layout => "fullmode" }
+
       else
         format.html { render :layout => "mode" }
       end
