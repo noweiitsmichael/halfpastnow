@@ -29,7 +29,7 @@ class BookmarkList < ActiveRecord::Base
 		@bookmarked_events = Bookmark.where(:bookmark_list_id => self.id, :bookmarked_type => "Occurrence")
 		@bookmarked_events.collect! do |b|
 			unless Occurrence.exists?(b.bookmarked_id)
-				return nil
+				nil
 			end
 			o = Occurrence.find(b.bookmarked_id)
 			if o.start >= Date.today.to_datetime && !o.deleted
