@@ -1,6 +1,21 @@
 class UserSubmissionController < ApplicationController
 helper :content
 
+
+	def eventSubmit1
+		authorize! :eventSubmit1, @user, :message => 'Not authorized as an administrator.'
+		if params[:event][:id]
+			@event = Event.find(params[:event][:id])
+		else
+			@event = Event.new
+		end
+
+		@event.completion = @event.completedness
+	    params[:event][:user_id] = current_user.id
+	    @event.update_attributes!(params[:event])
+
+
+	end
 	def eventSearch
 	end
 

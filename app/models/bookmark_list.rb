@@ -9,7 +9,7 @@ class BookmarkList < ActiveRecord::Base
     has_many :bookmarked_events, :through => :bookmarks, :source => :bookmarked, :source_type => "Occurrence"
     has_many :bookmarked_acts, :through => :bookmarks, :source => :bookmarked, :source_type => "Act"
 	# Allows you to search for users that bookmarked this artist by calling "act.bookmarked_by"
-	#has_many :followed_by, :through => :bookmarks, :source => :user
+	# has_many :followed_by, :through => :bookmarks, :source => :user
 
 	mount_uploader :picture, PictureUploader
 	attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
@@ -23,6 +23,23 @@ class BookmarkList < ActiveRecord::Base
 		  pp "Recreating with crop"
 		  picture.recreate_versions!
 		end
+	end
+
+	def bookmarked_events
+		@bookmarked_events = Bookmark.where(:bookmark_list_id => self.id, :bookmarked_type => "Occurrence")
+		@bookmarked_events.collect! do |b|
+			unless Occurrence.exists?(b.bookmarked_id)
+				return nil
+			end
+			o = Occurrence.find(b.bookmarked_id)
+			if o.start >= Date.today.to_datetime && !o.deleted
+				o
+			else
+				o.event.nextOccurrence
+			end
+		end
+
+		return @bookmarked_events.compact
 	end
 
 end

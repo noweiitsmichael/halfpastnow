@@ -78,14 +78,13 @@
 			  <%= e.text_field :title %>
 			</div>
 		    <div class="field">
-		      <%= e.label "Event Link / Registration Link" %>
-		      <%= e.text_field :event_url %>
-		    </div>
-
-		    <div class="field">
 		    	<%= e.label "Venue Name" %>
 		    	<%= e.text_field :venue, :id => "venue-name" %>
 		    	<%= e.hidden_field :venue_id %>
+		    </div>
+		    <div class="field">
+		      <%= e.label "Event Link / Registration Link" %>
+		      <%= e.text_field :event_url %>
 		    </div>
 			<div class="field">
 			  <%= e.label :description %>
