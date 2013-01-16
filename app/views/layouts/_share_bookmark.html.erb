@@ -4,6 +4,7 @@
 	var root_url = "http%3A%2F%2Fhalfpastnow.com";
 	var link = root_url + "%3F" + type + "_id%3D" + id;
 	var bookmark_id = "<%= bookmarkId.to_s %>";
+
 	$(function() {
 		 	window.fbAsyncInit = function() {
 		    console.log("Loaded FB 2");
@@ -41,6 +42,17 @@
 				switch(type) {
 					case "event":
 						(bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
+						FB.api(
+				            '/me/hpnevent:bookmark',
+				            'post',
+				            { event: "<%= @url %>" },
+				            function(response) {
+				               // if (!response || response.error) {
+				               //    alert('Error occured'+response);
+				               // } else {
+				               //    alert('Post event was successful! Action ID: ' + response.id);
+				               // }
+				        });
 						break;
 					case "venue":
 						bookmarked_type = "Venue";
@@ -55,18 +67,8 @@
 					that.removeClass('add').addClass('remove');
 					bookmark_id = data;
 				});
-				console.log("<%= @url %>");
-		          FB.api(
-		            '/me/hpnevent:bookmark',
-		            'post',
-		            { event: "<%= @url %>" },
-		            function(response) {
-		               if (!response || response.error) {
-		                  alert('Error occured'+response);
-		               } else {
-		                  alert('Post event was successful! Action ID: ' + response.id);
-		               }
-		            });
+				
+		          
 			} else if(that.hasClass('remove')) {
 				$.getJSON('/bookmarks/destroy/', { id: bookmark_id }, function(data) {
 					that.addClass('add').removeClass('remove');
