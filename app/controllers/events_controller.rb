@@ -175,7 +175,7 @@ def index
     @url1= 'http://secret-citadel-5147.herokuapp.com/events/show/'
     @url1.concat(params[:id])
     @url1.concat('?fullmode=true')
-    @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
+    # @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
     respond_to do |format|
       if @fullmode
         format.html { render :layout => "fullmode" }
