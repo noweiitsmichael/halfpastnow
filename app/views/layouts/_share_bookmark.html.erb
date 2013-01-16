@@ -26,6 +26,18 @@
 					that.removeClass('add').addClass('remove');
 					bookmark_id = data;
 				});
+				console.log("<%= @url %>");
+		          FB.api(
+		            '/me/hpnevent:bookmark',
+		            'post',
+		            { event: "<%= @url %>" },
+		            function(response) {
+		               if (!response || response.error) {
+		                  alert('Error occured'+response);
+		               } else {
+		                  alert('Post event was successful! Action ID: ' + response.id);
+		               }
+		            });
 			} else if(that.hasClass('remove')) {
 				$.getJSON('/bookmarks/destroy/', { id: bookmark_id }, function(data) {
 					that.addClass('add').removeClass('remove');
@@ -35,17 +47,7 @@
 		
 		$('.bookmark-share .email').click(function() {
 			var url = 'mailto:?body=' + link;
-			FB.api(
-            '/me/hpnevent:bookmark',
-            'post',
-            { event: "<%= @url %>" },
-            function(response) {
-               if (!response || response.error) {
-                  alert('Error occured'+response);
-               } else {
-                  alert('Post event was successful! Action ID: ' + response.id);
-               }
-            });
+
 	      	window.open(url, '_blank');
 	      	window.focus();
 
