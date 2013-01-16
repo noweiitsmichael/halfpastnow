@@ -79,18 +79,15 @@
 		      js.src = "//connect.facebook.net/en_US/all.js";
 		      d.getElementsByTagName('head')[0].appendChild(js);
 		    }(document));
-		});
+	});
+	
+
 
 
 </script>
-<script type="text/javascript">
-      function logResponse(response) {
-        if (console && console.log) {
-          console.log('The response was', response);
-        }
-      }
 
-      function postList()
+<script>
+	function postList()
       {
           FB.api(
             '/me/hpnevent:following',
@@ -109,6 +106,7 @@
 
       function bookmark()
       {
+      	console.log("<%= @url %>");
           FB.api(
             '/me/hpnevent:bookmark',
             'post',
@@ -122,8 +120,9 @@
             });
       }
 
-</script>
-<script>
+		
+
+
 </script>
 <div class="bookmark-share">
 	<span class="icon icon-envelope-alt email"></span>
