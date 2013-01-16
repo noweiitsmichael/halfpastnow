@@ -22,52 +22,7 @@
   <%= javascript_include_tag "application" %>
 
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
-  <script>(function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=273167206143082";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-    </script>
-    <script type="text/javascript">
-      function logResponse(response) {
-        if (console && console.log) {
-          console.log('The response was', response);
-        }
-      }
-
-      function postCook()
-      {
-          FB.api(
-            '/me/hpnevent:attend',
-            'post',
-            { event: "<%= @url %>" },
-            function(response) {
-               if (!response || response.error) {
-                  alert('Error occured');
-               } else {
-                  alert('Post event was successful! Action ID: ' + response.id);
-               }
-            });
-      }
-
-      function bookmark()
-      {
-          FB.api(
-            '/me/hpnevent:bookmark',
-            'post',
-            { event: "<%= @url %>" },
-            function(response) {
-               if (!response || response.error) {
-                  alert('Error occured');
-               } else {
-                  alert('Post event was successful! Action ID: ' + response.id);
-               }
-            });
-      }
-
-    </script>
+ 
   <%= stylesheet_link_tag    "application" %>
   
   <%= csrf_meta_tags %>
