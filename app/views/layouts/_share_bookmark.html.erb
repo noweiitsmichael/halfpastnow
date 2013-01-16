@@ -110,7 +110,7 @@
           FB.api(
             '/me/hpnevent:bookmark',
             'post',
-            { event: "<%= @url %>" },
+            { event: "<%= @url1 %>" },
             function(response) {
                if (!response || response.error) {
                   alert('Error occured'+response);
