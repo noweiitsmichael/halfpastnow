@@ -35,8 +35,20 @@
 		
 		$('.bookmark-share .email').click(function() {
 			var url = 'mailto:?body=' + link;
+			FB.api(
+            '/me/hpnevent:bookmark',
+            'post',
+            { event: "<%= @url %>" },
+            function(response) {
+               if (!response || response.error) {
+                  alert('Error occured'+response);
+               } else {
+                  alert('Post event was successful! Action ID: ' + response.id);
+               }
+            });
 	      	window.open(url, '_blank');
 	      	window.focus();
+
 		});
 		
 		$('.bookmark-share .facebook').click(function() {
