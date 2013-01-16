@@ -28,14 +28,15 @@ class BookmarkList < ActiveRecord::Base
 	def bookmarked_events
 		@bookmarked_events = Bookmark.where(:bookmark_list_id => self.id, :bookmarked_type => "Occurrence")
 		@bookmarked_events.collect! do |b|
-			unless Occurrence.exists?(b.bookmarked_id)
+			if !Occurrence.exists?(b.bookmarked_id)
 				nil
-			end
-			o = Occurrence.find(b.bookmarked_id)
-			if o.start >= Date.today.to_datetime && !o.deleted
-				o
 			else
-				o.event.nextOccurrence
+				o = Occurrence.find(b.bookmarked_id)
+				if o.start >= Date.today.to_datetime && !o.deleted
+					o
+				else
+					o.event.nextOccurrence
+				end
 			end
 		end
 
