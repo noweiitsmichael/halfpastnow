@@ -170,6 +170,8 @@ def index
         end
       end
     end
+    @url ='http://secret-citadel-5147.herokuapp.com/?event_id='
+    @url .concat(params[:id])
 
     respond_to do |format|
       if @fullmode
