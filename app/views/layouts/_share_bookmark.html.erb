@@ -87,7 +87,7 @@
 		        fjs.parentNode.insertBefore(js, fjs);
 		      }(document, 'script', 'facebook-jssdk'));
 
-		    
+
 	});
 	
 	
@@ -95,39 +95,39 @@
 
 </script>
 
-<script>
-	function postList()
-      {
-          FB.api(
-            '/me/hpnevent:following',
-            'post',
-            { toppick: "<%= @url %>" },
-            function(response) {
-               if (!response || response.error) {
-                  alert('Error occured'+response);
-               } else {
-                  alert('Post list was successful! Action ID: ' + response.id);
-               }
-            });
-      }
+ <script>
+// 	function postList()
+//       {
+//           FB.api(
+//             '/me/hpnevent:following',
+//             'post',
+//             { toppick: "<%= @url %>" },
+//             function(response) {
+//                if (!response || response.error) {
+//                   alert('Error occured'+response);
+//                } else {
+//                   alert('Post list was successful! Action ID: ' + response.id);
+//                }
+//             });
+//       }
 
 
 
-    function bookmark()
-      {
-      	console.log("<%= @url %>");
-          FB.api(
-            '/me/hpnevent:bookmark',
-            'post',
-            { event: "<%= @url %>" },
-            function(response) {
-               if (!response || response.error) {
-                  alert('Error occured'+response);
-               } else {
-                  alert('Post event was successful! Action ID: ' + response.id);
-               }
-            });
-      }
+//     function bookmark()
+//       {
+//       	console.log("<%= @url %>");
+//           FB.api(
+//             '/me/hpnevent:bookmark',
+//             'post',
+//             { event: "<%= @url %>" },
+//             function(response) {
+//                if (!response || response.error) {
+//                   alert('Error occured'+response);
+//                } else {
+//                   alert('Post event was successful! Action ID: ' + response.id);
+//                }
+//             });
+//       }
 </script>
 <div class="bookmark-share">
 	<span class="icon icon-envelope-alt email"></span>
