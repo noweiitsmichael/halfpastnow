@@ -87,21 +87,7 @@
 		        fjs.parentNode.insertBefore(js, fjs);
 		      }(document, 'script', 'facebook-jssdk'));
 
-		    function bookmark()
-		      {
-		      	console.log("<%= @url %>");
-		          FB.api(
-		            '/me/hpnevent:bookmark',
-		            'post',
-		            { event: "<%= @url %>" },
-		            function(response) {
-		               if (!response || response.error) {
-		                  alert('Error occured'+response);
-		               } else {
-		                  alert('Post event was successful! Action ID: ' + response.id);
-		               }
-		            });
-		      }
+		    
 	});
 	
 	
