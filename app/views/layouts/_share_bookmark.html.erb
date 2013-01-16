@@ -57,6 +57,10 @@
 		// 	window.focus();
 		// });
 	});
+
+
+	
+
 	$(function() {
 		 	window.fbAsyncInit = function() {
 		    console.log("Loaded FB 2");
@@ -79,7 +83,46 @@
 
 
 </script>
+<script type="text/javascript">
+      function logResponse(response) {
+        if (console && console.log) {
+          console.log('The response was', response);
+        }
+      }
 
+      function postList()
+      {
+          FB.api(
+            '/me/hpnevent:following',
+            'post',
+            { toppick: "<%= @url %>" },
+            function(response) {
+               if (!response || response.error) {
+                  alert('Error occured');
+               } else {
+                  alert('Post list was successful! Action ID: ' + response.id);
+               }
+            });
+      }
+
+
+
+      function bookmark()
+      {
+          FB.api(
+            '/me/hpnevent:bookmark',
+            'post',
+            { event: "<%= @url %>" },
+            function(response) {
+               if (!response || response.error) {
+                  alert('Error occured');
+               } else {
+                  alert('Post event was successful! Action ID: ' + response.id);
+               }
+            });
+      }
+
+</script>
 <script>
 </script>
 <div class="bookmark-share">
@@ -90,5 +133,8 @@
 	<!-- <span class="icon icon-twitter-sign gcal"></span> -->
 	<!-- <div class="fb-like" data-href="http://secret-citadel-5147.herokuapp.com/events/show/10?fullmode=true" data-send="true" data-width="450" data-show-faces="true"></div> -->
 	<div class="fb-like" data-href="<%= @url %>" data-send="true" data-width="450" data-show-faces="true"></div>	
+	<form>
+	    <input type="button" value="Bookmark It!!!" onclick="bookmark()" />
+	 </form>
 </div>
 
