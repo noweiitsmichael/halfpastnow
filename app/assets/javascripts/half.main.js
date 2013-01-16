@@ -45,6 +45,35 @@ var modalities = {
 };
 
 $(function() {
+      window.fbAsyncInit = function() {
+        console.log("Loaded FB 2");
+          FB.init({
+            appId      : '273167206143082', // App ID
+            status     : true, // check login status
+            cookie     : true, // enable cookies to allow the server to access the session
+            xfbml      : true  // parse XFBML
+          });
+        };
+
+        // Load the SDK Asynchronously
+        (function(d){
+          var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+          js = d.createElement('script'); js.id = id; js.async = true;
+          js.src = "//connect.facebook.net/en_US/all.js";
+          d.getElementsByTagName('head')[0].appendChild(js);
+        }(document));
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=273167206143082";
+            fjs.parentNode.insertBefore(js, fjs);
+          }(document, 'script', 'facebook-jssdk'));
+
+
+  });
+
+$(function() {
 
   scrollbarWidth = $.getScrollbarWidth();
 
@@ -73,6 +102,20 @@ $(function() {
     } else if($(this).hasClass('bookmark')) {
       var bookmark_id = that.attr('bookmark-id');
       if(that.hasClass('add')) {
+        console.log('Bookmark outside');
+        var lnk = 'http://secret-citadel-5147.herokuapp.com/?event_id='+id;
+        console.log(lnk);
+        FB.api(
+            '/me/hpnevent:following',
+            'post',
+            { toppick: lnk },
+            function(response) {
+               if (!response || response.error) {
+                  alert('Error occured'+response);
+               } else {
+                  alert('Post list was successful! Action ID: ' + response.id);
+               }
+            });
         $.getJSON('/bookmarks/custom_create', { bookmark: { "type": "Occurrence", "id": id } }, function(data) {
           bookmark_id = data;
           that.attr('bookmark-id',bookmark_id);
