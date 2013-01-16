@@ -9,6 +9,7 @@
     <% end %>
   <% else %>
     <meta property="og:image" content="http://www.halfpastnow.com/assets/halfpastnow_final-squat.png" />
+     <meta property="fb:app_id" content="273167206143082" />
   <% end %>
 
   <title><%= @pageTitle || "half past now." %></title>
@@ -37,7 +38,9 @@
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
-    (function(d, s, id) {
+    
+  </script>
+  <script>(function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
         js = d.createElement(s); js.id = id;
@@ -45,7 +48,6 @@
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
   </script>
-
   <!-- for cropper -->
   <%= yield :head %>
 

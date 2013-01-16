@@ -76,13 +76,13 @@
       js.src = "//connect.facebook.net/en_US/all.js";
       d.getElementsByTagName('head')[0].appendChild(js);
     }(document));
-  </script>
+</script>
 <div class="bookmark-share">
 	<span class="icon icon-envelope-alt email"></span>
 	<span class="icon icon-facebook-sign facebook"></span>
 	<span class="icon icon-twitter-sign twitter"></span>
 	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span>
 	<!-- <span class="icon icon-twitter-sign gcal"></span> -->
-	
+	<div class="fb-like" data-href="http://www.halfpastnow.com/?event_id=154793" data-send="true" data-width="450" data-show-faces="true"></div>	
 </div>
-<div class="fb-like" data-href="http://www.halfpastnow.com/?event_id=154793" data-send="true" data-width="450" data-show-faces="true"></div>
+
