@@ -78,9 +78,9 @@ $(function() {
         var lnk = 'http://secret-citadel-5147.herokuapp.com/?event_id='+id;
         console.log(lnk);
         FB.api(
-            '/me/hpnevent:following',
+            '/me/hpnevent:bookmark',
             'post',
-            { toppick: lnk },
+            { event: lnk },
             function(response) {
                if (!response || response.error) {
                   alert('Error occured'+response);
