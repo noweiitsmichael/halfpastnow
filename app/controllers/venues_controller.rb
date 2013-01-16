@@ -58,8 +58,9 @@ class VenuesController < ApplicationController
   def show
     @fullmode = !params[:fullmode].to_s.empty?
     @modeType = "venue"
-    
+
     @venue = Venue.find(params[:id])
+    @pageTitle = @venue.name + " | half past now."
 
     @venue.clicks += 1
     @venue.save
