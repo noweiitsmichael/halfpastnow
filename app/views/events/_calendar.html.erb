@@ -24,9 +24,17 @@ end
 		</div>
 	<% unless options[:datetime_only] %>
 		<div class="details">
-			<span class="event-name" link-id="<%= rec.occurrences.first.id %>" linkto="event"><%= rec.event.title %></span>
+			<% if options[:fullmode] %>
+				<a href="/events/show/<%= rec.occurrences.first.id %>?fullmode=true" class="event-name"><%= rec.event.title %></a>
+			<% else %>
+				<span class="event-name" link-id="<%= rec.occurrences.first.id %>" linkto="event"><%= rec.event.title %></span>
+			<% end %>
 		<% if options[:venue] %>
-			<span class="venue-name" link-id="<%= rec.event.venue.id %>" linkto="venue">at <%= rec.event.venue.name %></span>
+			<% if options[:fullmode] %>
+				<a class="venue-name" href="/venues/show/<%= rec.event.venue.id %>?fullmode=true">at <%= rec.event.venue.name %></a>
+			<% else %>
+				<span class="venue-name" link-id="<%= rec.event.venue.id %>" linkto="venue">at <%= rec.event.venue.name %></span>
+			<% end %>
 		<% end %>
 		</div>
 		<div class="description"><span><strong><%= rec.event.price ? ((rec.event.price != 0) ? number_to_currency(rec.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span><%= strip_tags(rec.event.description) %></span></div>
@@ -41,9 +49,17 @@ end
 		</div>
 	<% unless options[:datetime_only] %>
 		<div class="details">
-			<span class="event-name" link-id="<%= occ.id %>" linkto="event"><%= occ.event.title %></span>
+			<% if options[:fullmode] %>
+				<a href="/events/show/<%= occ.id %>?fullmode=true" class="event-name"><%= occ.event.title %></a>
+			<% else %>
+				<span class="event-name" link-id="<%= occ.id %>" linkto="event"><%= occ.event.title %></span>
+			<% end %>
 		<% if options[:venue] %>
-			<span class="venue-name" link-id="<%= occ.event.venue.id %>" linkto="venue">at <%= occ.event.venue.name %></span>
+			<% if options[:fullmode] %>
+				<a class="venue-name" href="/venues/show/<%= occ.event.venue.id %>?fullmode=true">at <%= occ.event.venue.name %></a>
+			<% else %>
+				<span class="venue-name" link-id="<%= occ.event.venue.id %>" linkto="venue">at <%= occ.event.venue.name %></span>
+			<% end %>
 		<% end %>
 		</div>
 		<div class="description"><span><strong><%= occ.event.price ? ((occ.event.price != 0) ? number_to_currency(occ.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span><%= strip_tags(occ.event.description) %></span></div>

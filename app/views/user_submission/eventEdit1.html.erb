@@ -1,0 +1,87 @@
+<% content_for :header do %>
+	<div class="titlebar">
+		<div class="stay-on-target">
+			<%= @event.id ? "Edit" : "Create" %> Event
+		</div>
+	</div>
+<% end %>
+
+<% content_for :code do %>
+	<style type="text/css">
+		label { display:block; margin-top:5px; }
+		input[type=text] { width: 500px; }
+		input#event_price { width: 100px; }
+		.field.tags label { display:inline; margin:0; cursor:pointer; }
+		.tag-thing { margin-top: 5px; }
+	</style>
+
+	<%= javascript_include_tag "jquery.cleditor.min" %>
+  	<%= stylesheet_link_tag    "jquery.cleditor" %>
+	<script type="text/javascript">
+		$(function() {
+			$('.cleditor').cleditor({
+		      controls:     "bold italic underline size " +
+		                    " | bullets numbering | undo redo | " +
+		                    "rule image link unlink | source",   
+		      sizes:        "1,2,3,4,5,6,7",
+		      bodyStyle:    // style to assign to document body contained within the editor
+		                    "margin:4px; font:10pt Arial,Verdana; cursor:text"
+		    });
+
+			$('.field.tags .parent input').click(function() {
+				$('.field.tags .child').hide();
+				$('.field.tags .child#parent_' + $(this).attr('id')).show();
+			});
+
+			$('.field.tags .parent label').click(function() {
+				$('.field.tags .child').hide();
+				$('.field.tags .child#parent_' + $(this).attr('fake-for')).show();
+			});
+
+		});
+	</script>
+<% end %>
+
+<% content_for :body do %>
+	<div id="info-content" class="padded">
+		<h3>Step 1</h3>
+		<%= form_for @event, :url => "/userSubmission/eventSubmit1/" + @event.id.to_s, :html => { :multipart => true, :id => "event" + @event.id.to_s } do |e| %>
+			<div class="field">
+			  <%= e.label :title %>
+			  <%= e.text_field :title %>
+			</div>
+		    <div class="field">
+		      <%= e.label "Event Link / Registration Link" %>
+		      <%= e.text_field :event_url %>
+		    </div>
+			<div class="field">
+			  <%= e.label :description %>
+			  <%= e.text_area :description, :class => "cleditor" %>
+			</div>
+			<div class="field">
+			  <%= e.label :price %>
+			  <%= e.text_field :price %>
+			</div>
+			<div class="field tags">
+				<h5 style="margin-top:10px;">Tags</h5>
+				<div style="float:left;width:179px;" class="parent">
+					<% @parentTags.each do |parentTag|  %>
+						<div class="tag-thing"><input type="checkbox" id="event_tag_<%= parentTag.id %>"/><label fake-for="event_tag_<%= parentTag.id %>"><%= parentTag.name %></label></div>
+					<% end %>
+				</div>
+				<% @parentTags.each do |parentTag|  %>
+					<% if parentTag.childTags.size > 0 %>
+						<div style="float:left;width:400px;display:none;" id="parent_event_tag_<%= parentTag.id %>" class="child">
+						<% parentTag.childTags.each do |childTag| %>
+							<div class="tag-thing"><input type="checkbox" id="event_tag_<%= childTag.id %>"/><label for="event_tag_<%= childTag.id %>"><%= childTag.name %></label></div>
+						<% end %>
+						</div>
+					<% end %>
+				<% end %>
+			</div>
+			<div class="actions" style="float:right;clear:both;">
+	    		<%= e.submit "Save / Next Step >" %>
+	  		</div>
+		<% end %>
+	</div>
+<% end %>
