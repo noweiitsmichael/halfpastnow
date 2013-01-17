@@ -7,7 +7,7 @@ helper :content
 	def followed
 		@isFollowedLists = true
 		@showAsEventsList = !params[:events].nil?
-
+        
 		if(@showAsEventsList)
 			@lat = 30.268093
 		    @long = -97.742808
@@ -25,9 +25,10 @@ helper :content
 		@lat = 30.268093
 	    @long = -97.742808
 	    @zoom = 11
-
+	    @url = 'http://secret-citadel-5147.herokuapp.com/picks/find/'+params[:id]
 		@bookmarkList = BookmarkList.find(params[:id])
 		@occurrences = @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
+		@pick = true
 	end
 
 	def myBookmarks
