@@ -29,6 +29,8 @@ helper :content
 		@bookmarkList = BookmarkList.find(params[:id])
 		@occurrences = @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
 		@pick = true
+		@pageTitle = @bookmarkList.name
+		
 	end
 
 	def myBookmarks
