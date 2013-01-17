@@ -22,14 +22,16 @@ helper :content
 	end
 
 	def find
+		@pick = true
+		@bookmarkList = BookmarkList.find(params[:id])
+		@pageTitle =  @bookmarkList.name + " | half past now."
 		@lat = 30.268093
 	    @long = -97.742808
 	    @zoom = 11
 	    @url = 'http://secret-citadel-5147.herokuapp.com/picks/find/'+params[:id]
-		@bookmarkList = BookmarkList.find(params[:id])
 		@occurrences = @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
-		@pick = true
-		@pageTitle =  @bookmarkList.name + " | half past now."
+		
+		
 		
 		
 	end
