@@ -10,11 +10,12 @@
   <% else %>
     <meta property="og:image" content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png" />
   <% end %>
+  
   <meta property="fb:app_id" content="475386955806720" />
   
   <% if @pick %>
     <meta property="og:type" content="halfpastnow:toppick" />
-   <!--  <meta property="og:title" content="<%= @pageTitle %>" /> -->
+    <meta property="og:image" content="<%= @bookmarkList.picture %>" />
   <% else %>
     <meta property="og:type" content="halfpastnow:event" />
   <% end %>

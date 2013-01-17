@@ -105,7 +105,7 @@ $(function() {
 
 
         console.log('Bookmark outside');
-        var lnk = 'http://halfpastnow.com/?event_id='+id;
+        var lnk = 'http://halfpastnow.com/events/show/'+id+'?fullmode=true'; 
         console.log(lnk);
         FB.api(
             '/me/halfpastnow:bookmark',

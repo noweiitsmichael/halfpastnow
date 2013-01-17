@@ -170,11 +170,9 @@ def index
         end
       end
     end
-    @url ='http://halfpastnow.com/?event_id='
-    @url.concat(params[:id])
-    @url1= 'http://halfpastnow.com/events/show/'
-    @url1.concat(params[:id])
-    @url1.concat('?fullmode=true')
+    # http://secret-citadel-5147.herokuapp.com/events/show/11?fullmode=true
+    @url ='http://halfpastnow.com/events/show/'+params[:id]+'?fullmode=true'
+    
     # @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
     respond_to do |format|
       if @fullmode
