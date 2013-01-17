@@ -5,8 +5,10 @@
 				var $that = $(this);
 				var listID = $that.attr('picklist-id');
 				var url = 'http://secret-citadel-5147.herokuapp.com/picks/find/'+listID
+				console.log(url);
+
 				FB.api(
-				            '/me/hpnevent:toppick',
+				            '/me/hpnevent:following',
 				            'post',
 				            { toppick: url },
 				            function(response) {
