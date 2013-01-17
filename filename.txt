@@ -1,0 +1,500 @@
+  261  gem install json -v '1.7.6' 
+  262  brew tap homebrew/dupes
+  263  brew install apple-gcc42
+  264  which gcc
+  265  ln -s /usr/bin/gcc /usr/bin/gcc-4.2
+  266  bundle install
+  267  gem install json -v '1.7.6' 
+  268  ln -s /usr/bin/gcc /usr/bin/gcc-4.2
+  269  sudo ln -s /usr/bin/gcc /usr/bin/gcc-4.2
+  270  gem install json -v '1.7.6' 
+  271  bundle install
+  272  rails sgit 
+  273  git init
+  274  git add .
+  275  git commit -m "initial"
+  276  git remote add origin git@github.com:lmkhoa/first_app.git
+  277  git push -u origin master
+  278  git pull origin master
+  279  git add .
+  280  git commit -m "initial"
+  281  git push -u origin master
+  282  heroku create
+  283  git push heroku master
+  284  heroku bundle install
+  285  heroku run bundle install
+  286  heroku  bundle install
+  287  bundle install
+  288  git add .
+  289  git commit -m "initial"
+  290  git push heroku master
+  291  heroku open
+  292  git add .
+  293  git commit -m "initial"
+  294  git push heroku master
+  295  heroku open
+  296  rails generate model mobile
+  297  rails generate controller mobile
+  298  rake routes
+  299  bundle install
+  300  rake routes
+  301  rake routes
+  302  rake routes
+  303  ruby script/generate controller opengraph
+  304  ruby generate controller opengraph
+  305  ls
+  306  ls script
+  307  ls script/rails
+  308  ruby script/rails/generate controller opengraph
+  309  rails generate controller opengraph
+  310  rake routes
+  311  bundle install
+  312  rake routes
+  313  rake routes
+  314  rake db:migrate
+  315  rails s
+  316  git add .
+  317  git commit -m "initial"
+  318  git push heroku master
+  319  heroku open
+  320  git add .
+  321  git commit -m "initial"
+  322  git push heroku master
+  323  heroku open
+  324  git add .
+  325  git commit -m "initial"
+  326  git push heroku master
+  327  heroku open
+  328  git add .
+  329  git commit -m "initial"
+  330  git push heroku master
+  331  heroku open
+  332  git add .
+  333  git commit -m "initial"
+  334  git push heroku master
+  335  heroku open
+  336  rails s
+  337  git pull orgin master
+  338  cd ../..
+  339  mkdir FBHPN
+  340  cd FBHPN
+  341  git clone git@github.com:spyd3rr/halfpastnow.git halfpastnow
+  342  cd FBHPN
+  343  ls
+  344  cd halfpastnow
+  345  git init
+  346  git add .
+  347  git commit -am "Initial set up"
+  348  bundle install
+  349  rake db:migrate
+  350  rails s
+  351  rails s
+  352  rails c
+  353  rails s
+  354  rails s
+  355  ifconfig |grep inet
+  356  ifconfig |grep inet
+  357  git add .
+  358  git commit -m "Update change Jan 14"
+  359  git pull origin master
+  360  cd ..
+  361  cd ..
+  362  mkdir eventForHPN
+  363  cd eventForHPN
+  364  heroku login
+  365  git clone git@heroku.com:infinite-bastion-1955.git -o heroku
+  366  git clone git@heroku.com:infinite-bastion-1955.git -o heroku
+  367  cd ../testHPN/halfpastnow
+  368  rails s
+  369  rails s
+  370  bundle install
+  371  rails c
+  372  git push heroku master
+  373  git add .
+  374  git commit -m "Add FB header"
+  375  git push heroku master
+  376  git add .
+  377  git commit -m "Add FB header"
+  378  git push heroku master
+  379  git add .
+  380  git commit -m "Add FB header"
+  381  git push heroku master
+  382  git push heroku master
+  383  git add .
+  384  git commit -m "Add FB header"
+  385  git push heroku master
+  386  git add .
+  387  git commit -m "Add FB header"
+  388  git push heroku master
+  389  heroku run rails c
+  390  heroku run rails console
+  391  heroku run -a secret-citadel-5147  rails console
+  392  heroku run rails console
+  393  heroku run -a secret-citadel-5147  rails console
+  394  git add .
+  395  git commit -am "Update FB header"
+  396  git add .
+  397  git commit -am "Update FB header"
+  398  git push heroku master
+  399  git add .
+  400  git commit -am "Update FB header"
+  401  git push heroku master
+  402  git add .
+  403  git commit -am "Update FB header"
+  404  git push heroku master
+  405  git add .
+  406  git commit -am "Update FB header"
+  407  git push heroku master
+  408  git add .
+  409  git commit -am "Update FB header"
+  410  git push heroku master
+  411  git add .
+  412  git commit -am "Update FB header"
+  413  git push heroku master
+  414  git add .
+  415  git commit -am "Update FB header"
+  416  git push heroku master
+  417  git add .
+  418  git commit -am "Update FB header"
+  419  git push heroku master
+  420  git push heroku master
+  421  git add .
+  422  git commit -am "Update FB header"
+  423  git push heroku master
+  424  git add .
+  425  git commit -am "Update FB header"
+  426  git push heroku master
+  427  git add .
+  428  git commit -am "Update FB header"
+  429  git push heroku master
+  430  git add .
+  431  git commit -am "Update FB header"
+  432  git push heroku master
+  433  git add .
+  434  git commit -am "Update FB header"
+  435  git push heroku master
+  436  git add .
+  437  git commit -am "Update FB header"
+  438  git push heroku master
+  439  git add .
+  440  git commit -am "Update FB header"
+  441  git push heroku master
+  442  cd /Users/tle/Documents/khoa/ruby/testHPN/halfpastnow
+  443  rails c
+  444  git remote -v
+  445  git push heroku secret-citadel-5147
+  446  git push origin secret-citadel-5147
+  447  git push heroku secret-citadel-5147
+  448  git push heroku secret-citadel-5147 master
+  449  git branch
+  450  heroku create
+  451  git remote -v
+  452  git push heroku master
+  453  git add .
+  454  git commit -am "Add header"
+  455  git pull origin master
+  456  git add .
+  457  git commit -am "Update"
+  458  git push heroku master
+  459  git add .
+  460  git commit -am "Add FB permission in Profile page"
+  461  git pull orgin master
+  462  git pull origin master
+  463  git add .
+  464  git commit -am "update header"
+  465  heroku run -a secret-citadel-5147  rails console
+  466  git push -a secret-citadel-5147 master
+  467  git push secret-citadel-5147 master
+  468  ls
+  469  heroku login
+  470  git push secret-citadel-5147 master
+  471  git push secret-citadel-5147 master
+  472  git push -a secret-citadel-5147 master
+  473  git push --a secret-citadel-5147 master
+  474  git push secret-citadel-5147 master
+  475  git push heroku -a secret-citadel-5147 master
+  476  git remote -v
+  477  git push heroku -a secret-citadel-5147 master
+  478  git push -a secret-citadel-5147 master
+  479  git remote -v
+  480  git push secret-citadel-5147 master
+  481  git push heroku secret-citadel-5147
+  482  git add .
+  483  git commit -am "Add header"
+  484  git push heroku secret-citadel-5147
+  485  git show-ref
+  486  touch README
+  487  git add README
+  488  git add (all other files)
+  489  git add .
+  490  git commit -m 'FIX src refspec'
+  491  git push heroku secret-citadel-5147
+  492  bundle install
+  493  rake db:migrate
+  494  git add .
+  495  git commit -am "run rake"
+  496  git push heroku secret-citadel-5147
+  497  git add .
+  498  git commit -m "add header"
+  499  rails s
+  500  git add .
+  501  git commit -m "add header"
+  502  git push heroku secret-citadel-5147
+  503  git push heroku secret-citadel-5147
+  504  git push heroku secret-citadel-5147
+  505  git push heroku master
+  506  git push heroku master
+  507  git push heroku master
+  508  git push heroku master
+  509  git push heroku master
+  510  git push heroku master
+  511  git add .
+  512  git commit -m "add header"
+  513  git push heroku master
+  514  git push heroku master
+  515  git push heroku master
+  516  git push heroku master
+  517  git push heroku master
+  518  git push heroku master
+  519  heroku open
+  520  heroku open --app secret-citadel-5147
+  521  git add .
+  522  git commit -m "add header"
+  523  git push heroku master
+  524  git add .
+  525  git commit -m "add header"
+  526  git push heroku master
+  527  git add .
+  528  git commit -m "add header"
+  529  git push heroku master
+  530  git add .
+  531  git commit -m "add header"
+  532  git push heroku master
+  533  git add .
+  534  git commit -m "add header"
+  535  git push heroku master
+  536  git add .
+  537  git commit -m "add header"
+  538  git push heroku master
+  539  git add .
+  540  git commit -m "add header"
+  541  git push heroku master
+  542  git add .
+  543  git commit -m "add header"
+  544  git push heroku master
+  545  heroku open
+  546  heroku open --app secret-citadel-5147
+  547  git add .
+  548  git commit -m "add header"
+  549  git push heroku master
+  550  git push heroku master
+  551  heroku open
+  552  heroku open --app secret-citadel-5147
+  553  git push heroku master
+  554  git add .
+  555  git commit -m "add header"
+  556  git push heroku master
+  557  git push heroku master
+  558  git add .
+  559  git commit -m "add header"
+  560  git push heroku master
+  561  git add .
+  562  git commit -m "add header"
+  563  git push heroku master
+  564  git add .
+  565  git commit -m "add header"
+  566  git push heroku master
+  567  git add .
+  568  git commit -m "add header"
+  569  git push heroku master
+  570  git add .
+  571  git commit -m "add header"
+  572  git push heroku master
+  573  git add .
+  574  git commit -m "add header"
+  575  git push heroku master
+  576  git add .
+  577  git commit -m "add header"
+  578  git push heroku master
+  579  git add .
+  580  git commit -m "add header"
+  581  git push heroku master
+  582  git add .
+  583  git commit -m "add header"
+  584  git push heroku master
+  585  git add .
+  586  git commit -m "add header"
+  587  git push heroku master
+  588  git add .
+  589  git commit -m "add header"
+  590  git push heroku master
+  591  git add .
+  592  git commit -m "add header"
+  593  git push heroku master
+  594  git add .
+  595  git commit -m "add header"
+  596  git push heroku master
+  597  git add .
+  598  git commit -m "add header"
+  599  git push heroku master
+  600  git add .
+  601  git commit -m "add header"
+  602  git push heroku master
+  603  git add .
+  604  git commit -m "add header"
+  605  git push heroku master
+  606  git add .
+  607  git commit -m "add header"
+  608  git push heroku master
+  609  git add .
+  610  git commit -m "add header"
+  611  git push heroku master
+  612  git add .
+  613  git commit -m "add header"
+  614  git push heroku master
+  615  git add .
+  616  git commit -m "add header"
+  617  git push heroku master
+  618  git add .
+  619  git commit -m "add header"
+  620  git push heroku master
+  621  git add .
+  622  git commit -m "add header"
+  623  git push heroku master
+  624  git add .
+  625  git commit -m "add header"
+  626  git push heroku master
+  627  git add .
+  628  git commit -m "add header"
+  629  git push heroku master
+  630  git add .
+  631  git commit -m "add header"
+  632  git push heroku master
+  633  git add .
+  634  git commit -m "add header"
+  635  git push heroku master
+  636  git add .
+  637  git commit -m "add header"
+  638  git push heroku master
+  639  git add .
+  640  git commit -m "add header"
+  641  git push heroku master
+  642  git add .
+  643  git commit -m "add header"
+  644  git push heroku master
+  645  git add .
+  646  git commit -m "add header"
+  647  git push heroku master
+  648  git add .
+  649  git commit -m "add header"
+  650  git push heroku master
+  651  heroku open --app secret-citadel-5147
+  652  git push heroku master
+  653  git push heroku master
+  654  git add .
+  655  git commit -m "add header"
+  656  git push heroku master
+  657  git add .
+  658  git commit -m "add header"
+  659  git push heroku master
+  660  git add .
+  661  git commit -m "add header"
+  662  git push heroku master
+  663  git add .
+  664  git commit -m "add header"
+  665  git push heroku master
+  666  git add .
+  667  git commit -m "add header"
+  668  git push heroku master
+  669  git add .
+  670  git commit -m "add header"
+  671  git push heroku master
+  672  git add .
+  673  git commit -m "add header"
+  674  git push heroku master
+  675  heroku run -app secret-citadel-5147 rails console
+  676  heroku run --app secret-citadel-5147 rails console
+  677  git add .
+  678  git commit -m "add header"
+  679  git push heroku master
+  680  git add .
+  681  git commit -m "add header"
+  682  git push heroku master
+  683  git add .
+  684  git commit -m "add header"
+  685  git push heroku master
+  686  git add .
+  687  git commit -m "add header"
+  688  git push heroku master
+  689  git commit -m "add header"
+  690  git add .
+  691  git commit -m "add header"
+  692  git push heroku master
+  693  git add .
+  694  git commit -m "add header"
+  695  git push heroku master
+  696  git add .
+  697  git commit -m "add header"
+  698  git push heroku master
+  699  git add .
+  700  git commit -m "add header"
+  701  git push heroku master
+  702  git add .
+  703  git add .
+  704  git commit -m "add header"
+  705  git push heroku master
+  706  git pull origin master
+  707  git add .
+  708  git commit -am "Update new pull"
+  709  git add .
+  710  git commit -am "Update new pull"
+  711  git pull origin master
+  712  git add .
+  713  git commit -am "Update new pull"
+  714  git push heroku master
+  715  heroku run -a secret-citadel-5147 rails server
+  716  git add .
+  717  git commit -am "Update new pull"
+  718  git push heroku master
+  719  git add .
+  720  git commit -am "Update new pull"
+  721  git push heroku master
+  722  git add .
+  723  git commit -am "Update new pull"
+  724  git push heroku master
+  725  git add .
+  726  git commit -am "Update new pull"
+  727  git push heroku master
+  728  git add .
+  729  git commit -am "Update new pull"
+  730  git push heroku master
+  731  git add .
+  732  git commit -am "Update new pull"
+  733  git push heroku master
+  734  git pull origin master
+  735  git push origin master
+  736  git add .
+  737  git commit -am "Like button"
+  738  git push heroku master
+  739  heroku open
+  740  heroku open --app secret-citadel-5147
+  741  git push heroku master
+  742  git push hpnstaging master
+  743  git push heroku hpnstaging
+  744  git push hpnstaging master
+  745  clear
+  746  git push hpnstaging master
+  747  git push hpnstaging master
+  748  git -help
+  749  git --help
+  750  git push hpnstaging master
+  751  git push hpnstaging master
+  752  git push master hpnstaging 
+  753  clear
+  754  git push hpnstaging master
+  755  clear
+  756  git branch
+  757  git rev-list --all --remotes
+  758  history
+  759  edit .bash_history
+  760  history >> filename.txt
