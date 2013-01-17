@@ -84,7 +84,7 @@ $(function() {
       window.fbAsyncInit = function() {
         console.log("Loaded FB 2");
           FB.init({
-            appId      : '273167206143082', // App ID
+            appId      : '475386955806720', // App ID
             status     : true, // check login status
             cookie     : true, // enable cookies to allow the server to access the session
             xfbml      : true  // parse XFBML
@@ -105,7 +105,7 @@ $(function() {
 
 
         console.log('Bookmark outside');
-        var lnk = 'http://secret-citadel-5147.herokuapp.com/?event_id='+id;
+        var lnk = 'http://halfpastnow.com/?event_id='+id;
         console.log(lnk);
         FB.api(
             '/me/hpnevent:bookmark',
