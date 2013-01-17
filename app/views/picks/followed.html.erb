@@ -4,20 +4,7 @@
 			$('.follow.button').click(function() {
 				var $that = $(this);
 				var listID = $that.attr('picklist-id');
-				var url = 'http://secret-citadel-5147.herokuapp.com/picks/find/'+listID
-				console.log(url);
-
-				FB.api(
-				            '/me/hpnevent:following',
-				            'post',
-				            { toppick: url },
-				            function(response) {
-				               // if (!response || response.error) {
-				               //    alert('Error occured'+response);
-				               // } else {
-				               //    alert('Post event was successful! Action ID: ' + response.id);
-				               // }
-				        });
+				
 				$.getJSON('/users/followBookmarkList/' + listID, function(data) {
 					if(data.success) {
 						$that.hide();
