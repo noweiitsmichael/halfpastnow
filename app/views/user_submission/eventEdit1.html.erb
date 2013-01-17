@@ -38,7 +38,32 @@
 				$('.field.tags .child#parent_' + $(this).attr('fake-for')).show();
 			});
 
+			$( "#venue-name" ).autocomplete({
+				source: function( request, response ) {
+					$.getJSON("/venues/find?contains=" + request.term, function (data) {
+					  // console.log(data);
+					  response(data);
+					});
+				},
+				minLength: 2,
+				select: function( event, ui ) {
+					$("#venue-name").val(ui.item.label);
+					$("#event_venue_id").val(ui.item.id);
+
+					console.log( ui.item ?
+					  "Selected: " + ui.item.label :
+					  "Nothing selected, input was " + this.value);
+				},
+				open: function() {
+				$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+				},
+				close: function() {
+				$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+				}
+			});
+
 		});
+
 	</script>
 <% end %>
 
@@ -46,10 +71,17 @@
 	<div id="info-content" class="padded">
 		<h3>Step 1</h3>
 		<%= form_for @event, :url => "/userSubmission/eventSubmit1/" + @event.id.to_s, :html => { :multipart => true, :id => "event" + @event.id.to_s } do |e| %>
+
+			<%= e.hidden_field :id %>
 			<div class="field">
 			  <%= e.label :title %>
 			  <%= e.text_field :title %>
 			</div>
+		    <div class="field">
+		    	<%= e.label "Venue Name" %>
+		    	<%= e.text_field :venue, :id => "venue-name" %>
+		    	<%= e.hidden_field :venue_id %>
+		    </div>
 		    <div class="field">
 		      <%= e.label "Event Link / Registration Link" %>
 		      <%= e.text_field :event_url %>

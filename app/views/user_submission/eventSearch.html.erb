@@ -10,7 +10,7 @@
 	<script type="text/javascript">
 		$(function() {
 			$('#create-event').click(function() {
-				window.location = "/userSubmission/eventCreate1";
+				window.location = "/userSubmission/eventCreate1?new_title=" + $("#event-title").val();
 			})
 
 			$("#event-title").keyup(function() {
@@ -18,9 +18,9 @@
 				$.getJSON("/userSubmission/eventSearchTerm?term=" + term, function (data) {
 		            $('#event-results').empty();
 		            $("<li><h4 style='margin-top:10px;'>Existing Events:</h4></li>").appendTo('#event-results');
-		            console.log(data);
+		            // console.log(data);
 		            $.each(data, function() {
-		            	$("<li style='margin-top:10px;'><h5>" + this.title + "</h5><span>" + this.venue.name + "</span><a style='float:right;' href='/userSubmission/eventEdit1/" + this.id + "'>[edit]</a></li>").appendTo('#event-results');
+		            	$("<li style='margin-top:10px;overflow:hidden;'><a style='float:left;margin-right:10px;' href='/userSubmission/eventEdit1/" + this.event.id + "'>[edit]</a><div style='float:left'><h5><a href='/?event_id=" + this.id + "' target='_blank'>"+ this.event.title + "</a></h5><span>" + this.event.venue.name + "</span></div></li>").appendTo('#event-results');
 		            });
 		        });
 			});

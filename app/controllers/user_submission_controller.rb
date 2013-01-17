@@ -1,6 +1,21 @@
 class UserSubmissionController < ApplicationController
 helper :content
 
+
+	def eventSubmit1
+		authorize! :eventSubmit1, @user, :message => 'Not authorized as an administrator.'
+		if params[:event][:id]
+			@event = Event.find(params[:event][:id])
+		else
+			@event = Event.new
+		end
+
+		@event.completion = @event.completedness
+	    params[:event][:user_id] = current_user.id
+	    @event.update_attributes!(params[:event])
+
+
+	end
 	def eventSearch
 	end
 
@@ -11,6 +26,7 @@ helper :content
 
 	def eventCreate1
 		@event = Event.new
+		@event.title = params[:new_title]
     	@parentTags = Tag.includes(:parentTag, :childTags).all.select{ |tag| tag.parentTag.nil? }
     	pp @parentTags
 		render "eventEdit1"
@@ -27,21 +43,25 @@ helper :content
 
 			search_match_arr = []
 			searches.each do |word|
-			search_match_arr.push("(upper(venues.name) LIKE '%#{word}%' OR upper(events.description) LIKE '%#{word}%' OR upper(events.title) LIKE '%#{word}%')")
+			search_match_arr.push("(venues.name ILIKE '%#{word}%' OR events.description ILIKE '%#{word}%' OR events.title ILIKE '%#{word}%' OR acts.name ILIKE '%#{word}%')")
+		
 			end
 
 			search_match = search_match_arr * " AND "
 
-			query = "SELECT events.id AS event_id FROM events
+			query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id FROM occurrences
+					INNER JOIN events ON occurrences.event_id = events.id
 		         	INNER JOIN venues ON events.venue_id = venues.id
-		         		WHERE #{search_match}"
+                    LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
+                    LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
+		         		WHERE #{search_match} AND occurrences.deleted != true
+		         		ORDER BY events.id, occurrences.start LIMIT 20"
 
-		    @event_ids = ActiveRecord::Base.connection.select_all(query).collect { |e| e["event_id"] }
-
-		    @events = Event.includes(:venue).find(@event_ids)
+		    @occurrence_ids = ActiveRecord::Base.connection.select_all(query).collect { |e| e["occurrence_id"].to_i }
+		    @occurrences = Occurrence.find(@occurrence_ids)
 
 		    respond_to do |format|
-		    	format.json { render json: @events.to_json(:include => :venue) }
+		    	format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:venue, :acts] }})}
 		    end
 	    end
 
