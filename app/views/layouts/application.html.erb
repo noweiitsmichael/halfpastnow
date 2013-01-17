@@ -12,16 +12,17 @@
     
   <% end %>
   <meta property="fb:app_id" content="273167206143082" />
-  <title><%= @pageTitle || "half past now." %></title>
+  
   <% if @pick %>
     <meta property="og:type" content="hpnevent:toppick" />
     <meta property="og:title" content="<%= @pageTitle %>" />
-    <title><%= @pageTitle  %></title>
+    
   <% else %>
     <meta property="og:type" content="hpnevent:event" />
    <% end %>
-  
-  
+  <!-- <title><%= @pageTitle || "half past now." %></title> -->
+  <title>half past now.</title>
+  <title><%= @pageTitle %></title>
   <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic,'>
   
   <link rel="shortcut icon" href="/assets/favicon.ico" />
