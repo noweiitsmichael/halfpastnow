@@ -30,7 +30,7 @@
 					case "event":
 						(bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
 						FB.api(
-				            '/me/hpnevent:bookmark',
+				            '/me/halfpastnow:bookmark',
 				            'post',
 				            { event: "<%= @url %>" },
 				            function(response) {
@@ -102,7 +102,7 @@
 	function postList()
       {
           FB.api(
-            '/me/hpnevent:following',
+            '/me/halfpastnow:following',
             'post',
             { toppick: "<%= @url %>" },
             function(response) {
@@ -120,7 +120,7 @@
       {
       	console.log("<%= @url %>");
           FB.api(
-            '/me/hpnevent:bookmark',
+            '/me/halfpastnow:bookmark',
             'post',
             { event: "<%= @url %>" },
             function(response) {

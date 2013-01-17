@@ -108,7 +108,7 @@ $(function() {
         var lnk = 'http://halfpastnow.com/?event_id='+id;
         console.log(lnk);
         FB.api(
-            '/me/hpnevent:bookmark',
+            '/me/halfpastnow:bookmark',
             'post',
             { event: lnk },
             function(response) {
