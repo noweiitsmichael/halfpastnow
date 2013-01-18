@@ -128,17 +128,15 @@
 
     function likeit()
       {
-      	console.log("Like me!!!!");
-      	console.log("<%= @url1 %>");
-          FB.api(
+      	   FB.api(
             '/me/og.likes',
             'post',
             { object: "<%= @url1 %>" },
             function(response) {
                if (!response || response.error) {
-                  alert('Error occured'+response);
+                  // alert('Error occured'+response);
                } else {
-                  alert('Post event was successful! Action ID: ' + response.id);
+                  // alert('');
                }
             });
           window.open(url, '_blank');
