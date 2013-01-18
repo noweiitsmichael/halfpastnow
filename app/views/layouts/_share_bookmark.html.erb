@@ -151,7 +151,20 @@
       }
 </script>
 <div class="bookmark-share">
-	<div id="fb-root"></div>
+
+	<span class="icon icon-envelope-alt email"></span>
+	<span class="icon icon-facebook-sign facebook"></span>
+	<span class="icon icon-twitter-sign twitter"></span>
+	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span>
+	<!-- <span class="icon icon-twitter-sign gcal"></span> -->
+	<!-- <div class="fb-like" data-href="http://secret-citadel-5147.herokuapp.com/events/show/10?fullmode=true" data-send="true" data-width="450" data-show-faces="true"></div> -->
+		
+	<!-- <div class="fb-like" data-href="http://secret-citadel-5147.herokuapp.com/?event_id=10" data-send="false" data-width="450" data-show-faces="true"></div> -->
+	<!-- <form>
+    <input type="button" value="Bookmark It!!!" onclick="bookmark()" />
+  </form> -->
+</div>
+<div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
@@ -159,16 +172,5 @@
   js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=475386955806720";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-	<span class="icon icon-envelope-alt email"></span>
-	<span class="icon icon-facebook-sign facebook"></span>
-	<span class="icon icon-twitter-sign twitter"></span>
-	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span>
-	<!-- <span class="icon icon-twitter-sign gcal"></span> -->
-	<!-- <div class="fb-like" data-href="http://secret-citadel-5147.herokuapp.com/events/show/10?fullmode=true" data-send="true" data-width="450" data-show-faces="true"></div> -->
-	<div class="fb-like" data-href="<%= @url %>" data-send="true" data-width="450" data-show-faces="true"></div>	
-	<!-- <div class="fb-like" data-href="http://secret-citadel-5147.herokuapp.com/?event_id=10" data-send="false" data-width="450" data-show-faces="true"></div> -->
-	<!-- <form>
-    <input type="button" value="Bookmark It!!!" onclick="bookmark()" />
-  </form> -->
-</div>
+<div class="fb-like" data-href="<%= @url %>" data-send="true" data-width="450" data-show-faces="true"></div>
 
