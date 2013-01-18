@@ -8,10 +8,11 @@
 	$(function() {
 		 	
 		    (function(d, s, id) {
+		    	console.log("Loading FB API");
 		        var js, fjs = d.getElementsByTagName(s)[0];
 		        if (d.getElementById(id)) return;
 		        js = d.createElement(s); js.id = id;
-		        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=273167206143082";
+		        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=475386955806720";
 		        fjs.parentNode.insertBefore(js, fjs);
 		      }(document, 'script', 'facebook-jssdk'));
 		    
@@ -102,7 +103,7 @@
 	function postList()
       {
           FB.api(
-            '/me/halfpastnow:following',
+            '/me/halfpastnow:following_',
             'post',
             { toppick: "<%= @url %>" },
             function(response) {
@@ -139,7 +140,7 @@
 	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span>
 	<!-- <span class="icon icon-twitter-sign gcal"></span> -->
 	<!-- <div class="fb-like" data-href="http://secret-citadel-5147.herokuapp.com/events/show/10?fullmode=true" data-send="true" data-width="450" data-show-faces="true"></div> -->
-	<!-- <div class="fb-like" data-href="<%= @url %>" data-send="true" data-width="450" data-show-faces="true"></div> -->	
+	<div class="fb-like" data-href="<%= @url %>" data-send="true" data-width="450" data-show-faces="true"></div>	
 	<!-- <div class="fb-like" data-href="http://secret-citadel-5147.herokuapp.com/?event_id=10" data-send="false" data-width="450" data-show-faces="true"></div> -->
 	<!-- <form>
     <input type="button" value="Bookmark It!!!" onclick="bookmark()" />

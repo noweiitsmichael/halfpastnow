@@ -7,7 +7,7 @@
 
 	<% 	@now = DateTime.now.change(:hour => 0)
 		@channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
-
+	
 	<script type="text/javascript">
 		//cookie redirect
 		(function ($, document, undefined) {

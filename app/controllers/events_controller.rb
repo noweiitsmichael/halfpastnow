@@ -171,7 +171,7 @@ def index
       end
     end
     # http://secret-citadel-5147.herokuapp.com/events/show/11?fullmode=true
-    @url ='http://halfpastnow.com/events/show/'+params[:id]+'?fullmode=true'
+    @url ='http://halfpastnow.com/?event_id='+params[:id]
     
     # @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
     respond_to do |format|

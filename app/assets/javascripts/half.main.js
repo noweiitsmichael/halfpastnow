@@ -98,14 +98,8 @@ $(function() {
           js.src = "//connect.facebook.net/en_US/all.js";
           d.getElementsByTagName('head')[0].appendChild(js);
         }(document));// delete below
-        
-        
-
-
-
-
         console.log('Bookmark outside');
-        var lnk = 'http://halfpastnow.com/events/show/'+id+'?fullmode=true'; 
+        var lnk = 'http://halfpastnow.com/?event_id='+id; 
         console.log(lnk);
         FB.api(
             '/me/halfpastnow:bookmark',
