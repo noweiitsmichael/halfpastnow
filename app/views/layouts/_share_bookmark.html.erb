@@ -5,37 +5,37 @@
 	var link = root_url + "%3F" + type + "_id%3D" + id;
 	var bookmark_id = "<%= bookmarkId.to_s %>";
 
-	$(function() {
+	// $(function() {
 		 	
-		    (function(d, s, id) {
-		    	console.log("Loading FB API");
-		        var js, fjs = d.getElementsByTagName(s)[0];
-		        if (d.getElementById(id)) return;
-		        js = d.createElement(s); js.id = id;
-		        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=475386955806720";
-		        fjs.parentNode.insertBefore(js, fjs);
-		      }(document, 'script', 'facebook-jssdk'));
+	// 	    (function(d, s, id) {
+	// 	    	console.log("Loading FB API");
+	// 	        var js, fjs = d.getElementsByTagName(s)[0];
+	// 	        if (d.getElementById(id)) return;
+	// 	        js = d.createElement(s); js.id = id;
+	// 	        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=475386955806720";
+	// 	        fjs.parentNode.insertBefore(js, fjs);
+	// 	      }(document, 'script', 'facebook-jssdk'));
 		    
 
-		    window.fbAsyncInit = function() {
-			        console.log("Loaded FB 2");
-			          FB.init({
-			            appId      : '475386955806720', // App ID
-			            status     : true, // check login status
-			            cookie     : true, // enable cookies to allow the server to access the session
-			            xfbml      : true  // parse XFBML
-			          });
-			        };
+	// 	    window.fbAsyncInit = function() {
+	// 		        console.log("Loaded FB 2");
+	// 		          FB.init({
+	// 		            appId      : '475386955806720', // App ID
+	// 		            status     : true, // check login status
+	// 		            cookie     : true, // enable cookies to allow the server to access the session
+	// 		            xfbml      : true  // parse XFBML
+	// 		          });
+	// 		        };
 
-			        // Load the SDK Asynchronously
-			        (function(d){
-			          var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-			          js = d.createElement('script'); js.id = id; js.async = true;
-			          js.src = "//connect.facebook.net/en_US/all.js";
-			          d.getElementsByTagName('head')[0].appendChild(js);
-			        }(document));// delete below
+	// 		        // Load the SDK Asynchronously
+	// 		        (function(d){
+	// 		          var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+	// 		          js = d.createElement('script'); js.id = id; js.async = true;
+	// 		          js.src = "//connect.facebook.net/en_US/all.js";
+	// 		          d.getElementsByTagName('head')[0].appendChild(js);
+	// 		        }(document));// delete below
 
-	});
+	// });
 	
 	
 	$(function() {
@@ -151,6 +151,14 @@
       }
 </script>
 <div class="bookmark-share">
+	<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=475386955806720";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 	<span class="icon icon-envelope-alt email"></span>
 	<span class="icon icon-facebook-sign facebook"></span>
 	<span class="icon icon-twitter-sign twitter"></span>
