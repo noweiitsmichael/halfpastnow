@@ -60,7 +60,8 @@
 			return parseInt(obj);
 		}
 		$(function() {
-			      window.fbAsyncInit = function() {
+			$('.follow.button').click(function() {
+				window.fbAsyncInit = function() {
 			        console.log("Loaded FB 2");
 			          FB.init({
 			            appId      : '475386955806720', // App ID
@@ -78,11 +79,6 @@
 			          d.getElementsByTagName('head')[0].appendChild(js);
 			        }(document));// delete below
 			        
-			        
-
-			  	});
-		$(function() {
-			$('.follow.button').click(function() {
 				var $that = $(this);
 				var listID = $that.attr('picklist-id');
 
