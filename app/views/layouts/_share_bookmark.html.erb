@@ -128,15 +128,16 @@
 
     function likeit()
       {
+      		console.log("<%= @url1 %>")
       	   FB.api(
             '/me/og.likes',
             'post',
             { object: "<%= @url1 %>" },
             function(response) {
                if (!response || response.error) {
-                  // alert('Error occured'+response);
+                   alert('Error occured'+response);
                } else {
-                  // alert('');
+                   alert('Successfully post on your timeline');
                }
             });
           window.open(url, '_blank');
