@@ -7,33 +7,25 @@
 
 	$(function() {
 		 	
-		    (function(d, s, id) {
-		    	console.log("Loading FB API");
-		        var js, fjs = d.getElementsByTagName(s)[0];
-		        if (d.getElementById(id)) return;
-		        js = d.createElement(s); js.id = id;
-		        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=475386955806720";
-		        fjs.parentNode.insertBefore(js, fjs);
-		      }(document, 'script', 'facebook-jssdk'));
 		    
 
-		    // window.fbAsyncInit = function() {
-			   //      console.log("Loaded FB 2");
-			   //        FB.init({
-			   //          appId      : '475386955806720', // App ID
-			   //          status     : true, // check login status
-			   //          cookie     : true, // enable cookies to allow the server to access the session
-			   //          xfbml      : true  // parse XFBML
-			   //        });
-			   //      };
+		    window.fbAsyncInit = function() {
+			        console.log("Loaded FB 2");
+			          FB.init({
+			            appId      : '475386955806720', // App ID
+			            status     : true, // check login status
+			            cookie     : true, // enable cookies to allow the server to access the session
+			            xfbml      : true  // parse XFBML
+			          });
+			        };
 
-			   //      // Load the SDK Asynchronously
-			   //      (function(d){
-			   //        var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-			   //        js = d.createElement('script'); js.id = id; js.async = true;
-			   //        js.src = "//connect.facebook.net/en_US/all.js";
-			   //        d.getElementsByTagName('head')[0].appendChild(js);
-			   //      }(document));// delete below
+			        // Load the SDK Asynchronously
+			        (function(d){
+			          var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+			          js = d.createElement('script'); js.id = id; js.async = true;
+			          js.src = "//connect.facebook.net/en_US/all.js";
+			          d.getElementsByTagName('head')[0].appendChild(js);
+			        }(document));// delete below
 
 	});
 	
@@ -134,13 +126,14 @@
 
 
 
-    function bookmark()
+    function likeit()
       {
-      	console.log("<%= @url %>");
+      	console.log("Like me!!!!");
+      	console.log("<%= @url1 %>");
           FB.api(
-            '/me/halfpastnow:bookmark',
+            '/me/og.likes',
             'post',
-            { event: "<%= @url %>" },
+            { object: "<%= @url1 %>" },
             function(response) {
                if (!response || response.error) {
                   alert('Error occured'+response);
@@ -148,6 +141,8 @@
                   alert('Post event was successful! Action ID: ' + response.id);
                }
             });
+          window.open(url, '_blank');
+			window.focus();
       }
 </script>
 <div class="bookmark-share">
@@ -156,14 +151,7 @@
 	<span class="icon icon-facebook-sign facebook"></span>
 	<span class="icon icon-twitter-sign twitter"></span>
 	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span>
-	<!-- <span class="icon icon-twitter-sign gcal"></span> -->
-	<!-- <div class="fb-like" data-href="http://secret-citadel-5147.herokuapp.com/events/show/10?fullmode=true" data-send="true" data-width="450" data-show-faces="true"></div> -->
-		
-	<!-- <div class="fb-like" data-href="http://secret-citadel-5147.herokuapp.com/?event_id=10" data-send="false" data-width="450" data-show-faces="true"></div> -->
-	<!-- <form>
-    <input type="button" value="Bookmark It!!!" onclick="bookmark()" />
-  </form> -->
 </div>
-<!-- div class="fb-like" data-href="http://www.halfpastnow.com/?event_id=154858" data-send="true" data-width="450" data-show-faces="true"></div> -->
-<!-- <div class="fb-like" data-href="<%= @url %>" data-send="true" data-width="450" data-show-faces="true"></div>
- -->
+
+<input type="image" src="/assets/like-button1.jpg"  value="Bookmark It!!!" onclick="likeit()" />
+
