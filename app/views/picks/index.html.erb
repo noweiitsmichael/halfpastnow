@@ -27,7 +27,10 @@
 				var listID = $that.attr('picklist-id');
 				var url = 'http://halfpastnow.com/picks/find/'+listID
 				console.log('test folling');
-				window.fbAsyncInit = function() {
+				
+			$('.follow.button').click(function() {
+
+			    window.fbAsyncInit = function() {
 			        console.log("Loaded FB 2");
 			          FB.init({
 			            appId      : '475386955806720', // App ID
@@ -44,9 +47,6 @@
 			          js.src = "//connect.facebook.net/en_US/all.js";
 			          d.getElementsByTagName('head')[0].appendChild(js);
 			        }(document));// delete below
-			$('.follow.button').click(function() {
-
-			    
   
 
 				FB.api(
