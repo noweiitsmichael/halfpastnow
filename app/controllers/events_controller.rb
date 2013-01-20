@@ -142,8 +142,7 @@ def index
   def show
     @fullmode = !params[:fullmode].to_s.empty?
     @modeType = "event"
-
-
+    
     @occurrence = Occurrence.find(params[:id])
     @event = @occurrence.event
     @pageTitle = @event.title + " | half past now."
@@ -174,6 +173,7 @@ def index
     @url ='http://halfpastnow.com/?event_id='+params[:id]
     @url1='http://halfpastnow.com/events/show/'+params[:id]+'?fullmode=true'
     @ur = 'https://www.facebook.com/plugins/like.php?href='+'http://halfpastnow.com/events/show/'+params[:id]+'?fullmode=true'
+    @ur = 'https://www.facebook.com/plugins/like.php?href=http://www.halfpastnow.com/picks/find/93'
     # http://www.halfpastnow.com/?event_id=15599
     # @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
     respond_to do |format|
@@ -183,8 +183,10 @@ def index
       else
         format.html { render :layout => "mode" }
       end
+
       format.json { render json: @event.to_json(:include => [:occurrences, :venue]) }
       format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }
+      
     end
   end
 
