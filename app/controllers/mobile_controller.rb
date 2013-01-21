@@ -1,9 +1,15 @@
 class MobileController < ApplicationController
   def og 
+    @occurrence = Occurrence.find(params[:id])
+    @event = @occurrence.event
+    @pageTitle = @event.title + " | half past now."
+
+
     @eventid = Occurrence.find(params[:id]).event_id
     @event = Event.find(@eventid);
-    @urlimage ='http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/3/large_wilfork-300x200.jpg'
-    @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/'+params[:id]
+
+    @urlimage =@event.cover_image_url
+    @url= 'http://www.halfpastnow.com/events/show/154155?fullmode=true'
     render :layout => "og"
   end
   def tp
