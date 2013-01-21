@@ -4,7 +4,7 @@
 	var root_url = "http%3A%2F%2Fhalfpastnow.com";
 	var link = root_url + "%3F" + type + "_id%3D" + id;
 	var bookmark_id = "<%= bookmarkId.to_s %>";
-
+	console.log(id+' '+bookmark_id)
 	$(function() {
 		 	
 		    
@@ -66,10 +66,15 @@
 				});
 				
 		          
-			} else if(that.hasClass('remove')) {
-				$.getJSON('/bookmarks/destroy/', { id: bookmark_id }, function(data) {
-					that.addClass('add').removeClass('remove');
-				});
+			} 
+			else if(that.hasClass('remove')) {
+				// $.getJSON('/bookmarks/destroy/', { id: bookmark_id }, function(data) {
+				// 	that.addClass('add').removeClass('remove');
+				// });
+				 $.getJSON('/bookmarks/destroy/' + bookmark_id, function(data) {
+		          that.addClass('add').removeClass('remove');
+		        });
+
 			}
 		});
 		
