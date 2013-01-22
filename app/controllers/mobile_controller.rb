@@ -947,8 +947,19 @@ end
     @userid = User.find_by_email(params[:email]).id
     current_user =  User.find_by_email(params[:email])
     @list = current_user.main_bookmark_list
-    @bookmark=@list.bookmarks.find_by_bookmarked_id(params[:event_id])
-    @bookmark.destroy
+    @event= Occurrence.find(params[:event_id]).event
+    @bms= @list.bookmarks
+    @bms.each{|bm|
+      occu = Occurrence.find(bm.bookmarked_id)
+      eventt = occu.event
+      if eventt.id == @event.id
+        @bookmark=@list.bookmarks.find_by_bookmarked_id(bm.bookmarked_id)
+        @bookmark.destroy
+        break
+      end
+    }
+    # @bookmark=@list.bookmarks.find_by_bookmarked_id(params[:event_id])
+    # @bookmark.destroy
   end
   def bookmarkvenue
     current_user =  User.find_by_email(params[:email])
