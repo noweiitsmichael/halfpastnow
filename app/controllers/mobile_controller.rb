@@ -951,12 +951,16 @@ end
     @bms= @list.bookmarks
     @idd = params[:event_id]
     @bms.each{|bm|
-      occu = Occurrence.find(bm.bookmarked_id)
-      eventt = occu.event
-      if eventt.id == @event.id
-        @idd = bm.bookmarked_id
-        break
+      if bm.bookmarked_id != 1
+        occu = Occurrence.find(bm.bookmarked_id)
+        eventt = occu.event
+        if eventt.id == @event.id
+          @idd = bm.bookmarked_id
+          
+          break
+        end
       end
+      
     }
     @bookmark=@list.bookmarks.find_by_bookmarked_id(@idd)
     @bookmark.destroy
