@@ -973,7 +973,11 @@ end
     @bookmark.save!
   end
   def unbookmarkvenue
-    @bookmark = Bookmark.find(params[:venueid])
+    @venue = Venue.find(params[:venueid])
+    current_user=User.find_by_email(params[:email])
+    bookmark = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => @venue.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
+    @bookmarkId = bookmark.nil? ? nil : bookmark.id
+    @bookmark = Bookmark.find(@bookmarkId)
     @bookmark.destroy
   end
   
@@ -998,7 +1002,11 @@ end
     current_user.followedLists.delete(list)
   end
   def unbookmarkact
-    @bookmark = Bookmark.find(params[:actid])
+    @act = Act.find(params[:actid])
+    current_user=User.find_by_email(params[:email])
+    bookmark = Bookmark.where(:bookmarked_type => 'Act', :bookmarked_id => @act.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
+    @bookmarkId = bookmark.nil? ? nil : bookmark.id
+    @bookmark = Bookmark.find(@bookmarkId)
     @bookmark.destroy
   end
 
