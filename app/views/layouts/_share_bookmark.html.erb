@@ -111,7 +111,7 @@
 	function postList()
       {
           FB.api(
-            '/me/halfpastnow:favorite',
+            '/me/halfpastnow:subscribe',
             'post',
             { toppick: "<%= @url %>" },
             function(response) {
