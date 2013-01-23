@@ -973,7 +973,7 @@ end
     @bookmark.save!
   end
   def unbookmarkvenue
-    @bookmark = Bookmark.find_by_bookmarked_id(params[:venueid])
+    @bookmark = Bookmark.find(params[:venueid])
     @bookmark.destroy
   end
   
@@ -998,7 +998,7 @@ end
     current_user.followedLists.delete(list)
   end
   def unbookmarkact
-    @bookmark = Bookmark.find_by_bookmarked_id(params[:actid])
+    @bookmark = Bookmark.find(params[:actid])
     @bookmark.destroy
   end
 
