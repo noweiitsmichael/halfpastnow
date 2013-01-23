@@ -107,8 +107,8 @@
 			<div class="picklist">
 				<div class="picklist-sidebar">
     				<%= image_tag featuredList.picture_url(:thumb) || "/assets/picklist-placeholder.png", :class => "picture" %>
-					<div class="follow button nice-button" picklist-id="<%= featuredList.id %>" <%= raw hidden if currentUserIsFollowing %> >follow</div>
-					<div class="unfollow button nice-button" picklist-id="<%= featuredList.id %>" <%= raw hidden unless currentUserIsFollowing %> >following</div>
+					<div class="follow button nice-button" picklist-id="<%= featuredList.id %>" <%= raw hidden if currentUserIsFollowing %> >subscribe</div>
+					<div class="unfollow button nice-button" picklist-id="<%= featuredList.id %>" <%= raw hidden unless currentUserIsFollowing %> >subscribing</div>
 				</div>
 				<div class="picklist-details">
 					<h3><a href="/picks/find/<%= featuredList.id %>"><%= featuredList.name %></a></h3>
