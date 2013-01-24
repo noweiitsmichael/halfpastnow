@@ -2461,6 +2461,10 @@ background-position: 0 11px;
   background: url(/assets/spinner.gif) no-repeat center center;
 }
 
+.mode iframe.no-spin-zone {
+  background: transparent;
+}
+
 html, body {
   /*background: #f3f3f3;*/
   font-family: Lato,Tahoma,sans-serif; font-style: normal; 

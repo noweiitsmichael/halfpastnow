@@ -6,6 +6,32 @@
 	var bookmark_id = "<%= bookmarkId.to_s %>";
 
 	$(function() {
+		 	
+		    
+
+		    window.fbAsyncInit = function() {
+			        console.log("Loaded FB 2");
+			          FB.init({
+			            appId      : '475386955806720', // App ID
+			            status     : true, // check login status
+			            cookie     : true, // enable cookies to allow the server to access the session
+			            xfbml      : true  // parse XFBML
+			          });
+			        };
+
+			        // Load the SDK Asynchronously
+			        (function(d){
+			          var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+			          js = d.createElement('script'); js.id = id; js.async = true;
+			          js.src = "//connect.facebook.net/en_US/all.js";
+			          d.getElementsByTagName('head')[0].appendChild(js);
+			        }(document));// delete below
+
+	});
+	
+	
+	$(function() {
+		
 		$('.bookmark-share .bookmark').click(function() {
 			var that = $(this);
 			if(that.hasClass('add')) {
@@ -13,6 +39,17 @@
 				switch(type) {
 					case "event":
 						(bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
+						FB.api(
+				            '/me/halfpastnow:bookmark',
+				            'post',
+				            { event: "<%= @url %>" },
+				            function(response) {
+				               // if (!response || response.error) {
+				               //    alert('Error occured'+response);
+				               // } else {
+				               //    alert('Post event was successful! Action ID: ' + response.id);
+				               // }
+				        });
 						break;
 					case "venue":
 						bookmarked_type = "Venue";
@@ -27,6 +64,8 @@
 					that.removeClass('add').addClass('remove');
 					bookmark_id = data;
 				});
+				
+		          
 			} else if(that.hasClass('remove')) {
 				$.getJSON('/bookmarks/destroy/', { id: bookmark_id }, function(data) {
 					that.addClass('add').removeClass('remove');
@@ -36,8 +75,10 @@
 		
 		$('.bookmark-share .email').click(function() {
 			var url = 'mailto:?body=' + link;
+
 	      	window.open(url, '_blank');
 	      	window.focus();
+
 		});
 		
 		$('.bookmark-share .facebook').click(function() {
@@ -58,14 +99,53 @@
 		// 	window.focus();
 		// });
 	});
+
 </script>
 
+ <script>
+	function postList()
+      {
+          FB.api(
+            '/me/halfpastnow:subscribe',
+            'post',
+            { toppick: "<%= @url %>" },
+            function(response) {
+               if (!response || response.error) {
+                  alert('Error occured'+response);
+               } else {
+                  alert('Post list was successful! Action ID: ' + response.id);
+               }
+            });
+      }
+
+
+
+    function likeit()
+      {
+      		console.log("<%= @url1 %>")
+      	   FB.api(
+            '/me/og.likes',
+            'post',
+            { object: "<%= @url1 %>" },
+            function(response) {
+               if (!response || response.error) {
+                   alert('Error occured'+response);
+               } else {
+                   alert('Successfully post on your timeline');
+               }
+            });
+          window.open(url, '_blank');
+			window.focus();
+      }
+</script>
 <div class="bookmark-share">
+
 	<span class="icon icon-envelope-alt email"></span>
 	<span class="icon icon-facebook-sign facebook"></span>
 	<span class="icon icon-twitter-sign twitter"></span>
 	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span>
-	<!-- <span class="icon icon-twitter-sign gcal"></span> -->
-	
 </div>
+<iframe src="<%= @ur %>"
+        scrolling="no" frameborder="0"
+        style="border:none; width:450px; height:80px" class="no-spin-zone"></iframe>
 

@@ -7,7 +7,7 @@ helper :content
 	def followed
 		@isFollowedLists = true
 		@showAsEventsList = !params[:events].nil?
-
+        
 		if(@showAsEventsList)
 			@lat = 30.268093
 		    @long = -97.742808
@@ -22,12 +22,18 @@ helper :content
 	end
 
 	def find
+		@pick = true
+		@bookmarkList = BookmarkList.find(params[:id])
+		@pageTitle =  @bookmarkList.name + " | half past now."
 		@lat = 30.268093
 	    @long = -97.742808
 	    @zoom = 11
-
-		@bookmarkList = BookmarkList.find(params[:id])
+	    @url = 'http://halfpastnow.com/picks/find/'+params[:id]
 		@occurrences = @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
+		
+		
+		
+		
 	end
 
 	def myBookmarks

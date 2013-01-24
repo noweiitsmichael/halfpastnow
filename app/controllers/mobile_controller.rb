@@ -1,8 +1,23 @@
 class MobileController < ApplicationController
   def og 
-    
-    render :layout => "og" 
+    @occurrence = Occurrence.find(params[:id])
+    @event = @occurrence.event
+    @pageTitle = @event.title + " | half past now."
+
+
+    @eventid = Occurrence.find(params[:id]).event_id
+    @event = Event.find(@eventid);
+
+    @urlimage =@event.cover_image_url
+    @url= 'http://www.halfpastnow.com/events/show/'+params[:id]+'?fullmode=true'
+    render :layout => "og"
   end
+  # def tp
+  #   @list = BookmarkList.find(params[:id])
+  #   @urlimage = @list.picture
+  #   @url= 'http://secret-citadel-5147.herokuapp.com/mobile/tp/'+params[:id]
+  #   render :layout => "tp"
+  # end
   def new
     email = params[:email]
     password = params[:password]

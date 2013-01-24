@@ -213,13 +213,13 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
 
   config.omniauth :facebook, '475386955806720', '80d74b0e6d0c97b4d857ce97fe46138a',
-           :scope => 'email,user_birthday,read_stream,
+           :scope => 'email,user_birthday,read_stream,publish_actions,
                       user_activities,user_checkins, user_likes,user_interests,
                       friends_activities,friends_checkins,friends_likes,friends_interests', :display => 'popup'
            #ENV["FACEBOOK_KEY"], ENV["FACEBOOK_SECRET"],
 
 # '475386955806720', '80d74b0e6d0c97b4d857ce97fe46138a', 'omniauth_callbacks'
-
+# '273167206143082', '330f1528fc40c5ccd0c467f554ff1719',
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

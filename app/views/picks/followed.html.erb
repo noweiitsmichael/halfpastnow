@@ -4,6 +4,7 @@
 			$('.follow.button').click(function() {
 				var $that = $(this);
 				var listID = $that.attr('picklist-id');
+				
 				$.getJSON('/users/followBookmarkList/' + listID, function(data) {
 					if(data.success) {
 						$that.hide();

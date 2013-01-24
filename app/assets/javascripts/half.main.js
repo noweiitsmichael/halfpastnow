@@ -1,6 +1,9 @@
 /** jquery plugins **/
 
 // checks if element has a scrollbar
+
+
+
 $.fn.hasScrollBar = function() {
     return this.get(0).scrollHeight > this.innerHeight();
 }
@@ -44,6 +47,9 @@ var modalities = {
   "new-channel-2": spawn(baseModality, {type: "new-channel-2", internal_url: function() { return "/channels/new2"; }, url: function() { return "?new-channel-2"; }})
 };
 
+
+  
+ 
 $(function() {
 
   scrollbarWidth = $.getScrollbarWidth();
@@ -73,6 +79,39 @@ $(function() {
     } else if($(this).hasClass('bookmark')) {
       var bookmark_id = that.attr('bookmark-id');
       if(that.hasClass('add')) {
+
+
+      window.fbAsyncInit = function() {
+        console.log("Loaded FB 2");
+          FB.init({
+            appId      : '475386955806720', // App ID
+            status     : true, // check login status
+            cookie     : true, // enable cookies to allow the server to access the session
+            xfbml      : true  // parse XFBML
+          });
+        };
+
+        // Load the SDK Asynchronously
+        (function(d){
+          var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+          js = d.createElement('script'); js.id = id; js.async = true;
+          js.src = "//connect.facebook.net/en_US/all.js";
+          d.getElementsByTagName('head')[0].appendChild(js);
+        }(document));// delete below
+        console.log('Bookmark outside');
+        var lnk = 'http://halfpastnow.com/?event_id='+id; 
+        console.log(lnk);
+        FB.api(
+            '/me/halfpastnow:bookmark',
+            'post',
+            { event: lnk },
+            function(response) {
+               // if (!response || response.error) {
+               //    alert('Error occured'+response);
+               // } else {
+               //    alert('Post list was successful! Action ID: ' + response.id);
+               // }
+            });
         $.getJSON('/bookmarks/custom_create', { bookmark: { "type": "Occurrence", "id": id } }, function(data) {
           bookmark_id = data;
           that.attr('bookmark-id',bookmark_id);

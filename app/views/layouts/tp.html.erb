@@ -4,23 +4,24 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
 
-    <title><%= @event['title'] %></title>
+    <title><%= @list['name'] %></title>
     <link rel="stylesheet" href="stylesheets/screen.css" media="Screen" type="text/css" />
     <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-width: 480px), only screen and (max-device-width: 480px)" type="text/css" />
 
-    <meta property="og:title" content="<%= @pageTitle %>" />
-    <meta property="og:type" content="halfpastnow:event" />
+    <meta property="og:title" content="<%= @list['name'] %>" />
+    <meta property="og:type" content="hpnevent:toppick" />
     <meta property="og:url" content="<%= @url %>" />
     <meta property="og:image" content="<%= @urlimage %>" />
-    <meta property="og:site_name" content="<%= @pageTitle %>" />
-    <meta property="fb:app_id" content="475386955806720" />
+    <meta property="og:site_name" content="<%= @list['name'] %>" />
+    <meta property="og:description" content="<%= @list['description'] %>" />
+    <meta property="fb:app_id" content="273167206143082" />
 
     <script type="text/javascript" src="/javascripts/jquery-1.7.1.min.js"></script>
     <script>(function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
         js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=475386955806720";
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=273167206143082";
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
     </script>
@@ -31,20 +32,22 @@
         }
       }
 
-      function postCook()
+      function postList()
       {
           FB.api(
-            '/me/hpnevent:attend',
+            '/me/hpnevent:following',
             'post',
-            { event: "<%= @url %>" },
+            { toppick: "<%= @url %>" },
             function(response) {
                if (!response || response.error) {
                   alert('Error occured');
                } else {
-                  alert('Post event was successful! Action ID: ' + response.id);
+                  alert('Post list was successful! Action ID: ' + response.id);
                }
             });
       }
+
+
 
       function bookmark()
       {
@@ -86,7 +89,13 @@
     }(document));
   </script>
 
+  <h3>Follow A List </h3>
   
+  <br>
+  <form>
+    <input type="button" value="Follow a List!!!" onclick="postList()" />
+  </form>
+  <div class="fb-like" data-href="<%= @url %>" data-send="true" data-width="450" data-show-faces="true"></div>
 </body>
   </body>
 </html>
