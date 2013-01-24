@@ -929,16 +929,17 @@ def showact
 end
   def bookmark
    # @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
-    @occurrenceid = Occurrence.find_by_event_id(params[:event_id]).id
+    @event = Event.find(params[:event_id])
+    @occurrenceid =  @event.occurrences.select { |occ| occ.start >= Date.today.to_datetime }.sort_by { |occ| occ.start }.first.id
     # @occurrenceid = params[:event_id]
     # @event = Event.find(params[:event_id])
     # @occurrenceid = @event.occurrences.select{ |o| o.start >= Date.today.to_datetime }.last
     current_user =  User.find_by_email(params[:email])
-    # bbookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrenceid, :bookmark_list_id => current_user.main_bookmark_list.id).first
+    bbookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrenceid, :bookmark_list_id => current_user.main_bookmark_list.id).first
       
-    @bookmarkId =  bookmark.id 
+    @bookmarkId =  bbookmark.id 
     @bookmark = current_user.main_bookmark_list.bookmarks.build
-    @bookmark.bookmarked_id = @occurrenceid
+    @bookmark.bookmarked_id = @bookmarkId
     @bookmark.bookmarked_type = "Occurrence"
     @bookmark.save!
     respond_to do |format|
