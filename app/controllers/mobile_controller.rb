@@ -932,10 +932,12 @@ end
     @occurrenceid = Occurrence.find_by_event_id(params[:event_id]).id
     # @event = Event.find(params[:event_id])
     # @occurrenceid = @event.occurrences.select{ |o| o.start >= Date.today.to_datetime }.last
-
     current_user =  User.find_by_email(params[:email])
+    bbookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrenceid, :bookmark_list_id => current_user.main_bookmark_list.id).first
+      
+    @bookmarkId =  bookmark.id 
     @bookmark = current_user.main_bookmark_list.bookmarks.build
-    @bookmark.bookmarked_id = @occurrenceid
+    @bookmark.bookmarked_id = @bookmarkId
     @bookmark.bookmarked_type = "Occurrence"
     @bookmark.save!
     respond_to do |format|
@@ -948,10 +950,10 @@ end
     current_user =  User.find_by_email(params[:email])
     @list = current_user.main_bookmark_list
     @event= Occurrence.find(params[:event_id]).event
-    @bms= @list.bookmarks
+    @bms= @list.bookmarks.select{ |o| o.bookmarked_type == 'Occurrence' }
     @idd = params[:event_id]
     @bms.each{|bm|
-      if bm.bookmarked_id != 1
+      if bm.bookmarked_id != 1 && bm.bookmarked_id != nil
         occu = Occurrence.find(bm.bookmarked_id)
         eventt = occu.event
         if eventt.id == @event.id
