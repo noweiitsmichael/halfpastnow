@@ -6,9 +6,9 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui-1.10.0.custom.min
 //= require jcrop
 //= require underscore
-//= require jquery-ui
 //= require viewport
 //= require date
 //= require dropkick

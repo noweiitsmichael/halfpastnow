@@ -7,10 +7,12 @@ class Interval
 end
 
 class Recurrence < ActiveRecord::Base
-  has_many :occurrences, :dependent => :destroy
+  has_many :occurrences
   belongs_to :event
 
   validates_presence_of :start
+
+  before_destroy :delete_occurrences
 
   def create
     puts "generating occurrences (create)"
@@ -28,6 +30,12 @@ class Recurrence < ActiveRecord::Base
       self.gen_occurrences
     end
     super
+  end
+
+  def delete_occurrences
+    self.occurrences.each do |d|
+      d.delete
+    end
   end
 
   def next_occurrence(time)

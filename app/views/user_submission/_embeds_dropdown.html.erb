@@ -1,0 +1,82 @@
+<script type="text/javascript">
+	$(function() {
+
+		$(".embeds-wrapper").on("change", ".site-select", function(){
+			$(this).siblings(".site-embed-input").hide();
+			$(this).siblings(".site-url-input").hide();
+			if ($(this).val() === "custom") {
+				console.log("is custom");
+				$(this).siblings(".site-embed-input").show();
+			} else if ($(this).val() !== "") {
+				$(this).siblings(".site-url-input").show();
+			}
+		});
+
+		$("#add-embed-<%=obj.id%><%=type_ind%>").click(function() {
+				console.log("click");
+				var embedIndex = ((typeof $('.embeds-<%=obj.id%><%=type_ind%>.field').last().attr("index") !== 'undefined') ? parseInt($('.embeds-<%=obj.id%><%=type_ind%>.field').last().attr("index")) + 1 : 0);
+				var firstEmbed = $('.embeds-<%=obj.id%><%=type_ind%>.field').first();
+				var $newEmbed = firstEmbed.clone().insertBefore('.add-embed-button-field');
+
+				// $('.embeds-<%=obj.id%><%=type_ind%>.field').last().after(firstEmbed.clone());
+				$newEmbed.attr('index',embedIndex);
+				$newEmbed.find("input[type=checkbox]").attr('name','<%=type%>[embeds_attributes][' + embedIndex + '][primary]');
+				$newEmbed.append('<input type="hidden" name="<%=type%>[embeds_attributes][' + embedIndex + '][embedable_type]" value="<%= type.titleize %>" />');
+				$newEmbed.find("textarea.embed-final-form").attr('name','<%=type%>[embeds_attributes][' + embedIndex + '][source]');
+				$newEmbed.show();
+				return false;
+		});
+
+		$('.embeds-wrapper').on("click", ".remove-embed", function() {
+			console.log("click");
+			var index = $(this).parents(".embeds-<%=obj.id%><%=type_ind%>.field").attr("index");
+			if(typeof index !== 'undefined') {
+				$(this).after("<input type='hidden' name='<%=type%>[embeds_attributes][" + index + "][_destroy]' value='1' />");
+				$(this).parents(".embeds-<%=obj.id%><%=type_ind%>.field").hide();
+			} else {
+				$(this).parents(".embeds-<%=obj.id%><%=type_ind%>.field").remove();
+			}
+			return false;
+		});
+
+		if ($(".embeds-<%=obj.id%><%=type_ind%>").length < 2) {
+			$("#add-embed-<%=obj.id%><%=type_ind%>").click();
+		};
+	});
+</script>
+
+<div class="embeds-wrapper">
+	<div class="embeds-<%=obj.id%><%=type_ind%> field embeds-single" style="display:none;">
+		<select class="site-select" name="site-select">
+		    <option class="" value="">Choose a site...</option>
+		    <option class="site-youtube" value="youtube">YouTube URL</option>
+		    <option class="site-vimeo" value="vimeo">Vimeo URL</option>
+		    <option class="site-reverbnation" value="reverbnation">ReverbNation URL</option>
+		    <option class="site-soundcloud" value="soundcloud">SoundCloud URL</option>
+		    <option class="site-custom" value="custom">Custom Embed Code...</option>
+		</select>
+		<input class="site-url-input" type="text" style="display:none;width='300'"></input>
+		<textarea class="site-embed-input" style="display:none"></textarea>
+		<textarea class="embed-final-form" style="display:none;"></textarea>
+
+		<label>
+			<input type="checkbox" checked="checked" value="1" style="display:none"/>
+			<div class="remove-embed">X</div>
+		</label>
+	</div>
+
+	<div class="add-embed-button-field">
+		<a href="" id="add-embed-<%=obj.id%><%=type_ind%>" class="add-embed">+ Add Another Embed</a>
+	</div>
+
+	<div class="existing-embeds-wrapper">
+	<% obj.embeds.each_with_index do |embed, index| %>
+		<div class="embeds-<%=obj.id%><%=type_ind%> field embeds-single" index="<%= index %>">
+			<input type="hidden" name="<%=type%>[embeds_attributes][<%= index %>][id]" value="<%= embed.id %>" />
+			<div class="embed-code"><%= raw embed.source %></div>
+			<div href="" class="remove-embed">X</div>
+		</div>
+	<% end %>
+	</div>
+	<br>
+</div>

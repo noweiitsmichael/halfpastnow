@@ -105,12 +105,13 @@
 			</div>
 		</div>
 		<% end %>
-		
+		<% if false %>
 		<% if can? :edit, Event %>
 		<div style="text-align:right;padding-top:10px;"><a href="/venues/list_events/<%=@event.venue.id%>#anchor<%=@occurrence.id%>" target="_blank">edit</a> </div>
 		<% end %>
+		<% end %>
 		
-		<% if false %><div style="text-align:right;padding-top:10px;"><a href="/userSubmission/eventEdit1/<%=@event.id%>" target="_blank">edit</a> <% end %></div>
+		<div style="text-align:right;padding-top:10px;"><a href="/userSubmission/eventEdit1/<%=@event.id%>" target="_blank">edit</a></div>
 	</div>
 
 	

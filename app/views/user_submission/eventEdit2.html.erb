@@ -1,0 +1,250 @@
+<% content_for :header do %>
+	<div class="titlebar">
+		<div class="stay-on-target">
+			<%= @event.id ? "Edit" : "Create" %> Event: Pictures
+		</div>
+	</div>
+<% end %>
+
+<% content_for :body do %>
+	<div id="info-content" class="padded">
+		Your event has been submitted! You can also improve the event listing by adding pictures and updating the primary image below.
+
+
+		<%= form_for @event, :url => "/userSubmission/eventSubmit2/" + @event.id.to_s, :html => { :multipart => true, :id => "event" + @event.id.to_s } do |e| %>
+
+			<%= e.hidden_field :id %>
+
+		<!-- Pictures Section -->
+		    <div class="picture_parts">
+		    <div><h5>Pictures</h5></div>
+		    <% newPic = Picture.new %>
+		    <%= e.fields_for newPic, :url => "/pictures/create", :html => {:multipart => true} do |g| %>
+		          <label class="piclabel">Add Picture from URL:</label>
+		          <%= hidden_field_tag :pictureable_attributes %>
+		          <%= hidden_field_tag :pictureable_type, "Event" %>
+		          <%= hidden_field_tag :pictureable_id, @event.id %>
+		          <%= e.text_field :remote_image_url, :class => "picurl", :size => "20" %>
+		          <a href="" id="new_pic">Add pic</a>
+		    <% end %>
+		    <br>
+		    <% newPic2 = Picture.new %>
+		    <%= e.fields_for newPic2, :html => { :multipart => true} do |g| %>
+		      <label class="piclabel">Or upload file:</label>
+		      <%= hidden_field_tag :pictureable_attributes %>
+		      <%= e.file_field :image, :class => "picchoosefile" %>
+		      <a href="" id="fileclick">Add pic</a>
+		    <% end %>
+		    <br><br>
+
+		    <script type="text/javascript">
+		    	var jcrop_api;
+			    $(function () {
+					$('#new_pic').click( function (){
+						console.log("new pic click");
+						if ($("#event_remote_image_url").val() == ""){
+						  confirmURL("nourl");
+						  return false;
+						} 
+						else {
+						  $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('#eventThumbs');
+						  var picData = 
+						    {"picture":
+						      { "pictureable_id": parseInt($("#pictureable_id").val()),
+						        "pictureable_type": $("#pictureable_type").val(), 
+						        "remote_image_url": $("#event_remote_image_url").val()
+						      }
+						    };
+						}
+						$.post("/pictures/create",picData,function(data) {
+						  var numThumbs = document.getElementsByClassName("gallery");
+						  var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
+						  newPicThumb += '<div class="pictures field gallery" index="' + numThumbs + '">';
+						  newPicThumb += '<input type="hidden" name="event[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+						  newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '">';
+						  newPicThumb += '<div href="" class="remove-pic">X</div></div>';
+						  $('.ajaxLoader').detach();
+						  $(newPicThumb).appendTo('#eventThumbs');
+						},
+						"json");
+						return false;
+					});
+
+			        $("#fileclick").click(function() {
+						console.log("file pic click");
+			          if ($("#event_image").val() == ""){
+			            confirmURL("nofile");
+			          } else {
+			            $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('#eventThumbs');
+			            $("#event-form").ajaxSubmit({
+			              beforeSerialize: function(form, options) {
+			              },
+			              url: "/pictures/createForEvent",
+			              success:function(data) {
+			                var numThumbs = document.getElementsByClassName("gallery");
+			                var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
+			                newPicThumb += '<div class="pictures field gallery" index="' + numThumbs + '">';
+			                newPicThumb += '<input type="hidden" name="event[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+			                newPicThumb += '<img style="margin-right:3px;" alt="image_thumb" src="' + data.image.thumb.url + '">';
+			                newPicThumb += '<div style="margin-right:3px;" href="" class="remove-pic">X</div></div>';
+			                $('.ajaxLoader').detach();
+			                $(newPicThumb).appendTo('#eventThumbs');
+			              },
+			              type: "post",
+			              dataType: "json"
+			            });
+			          }
+			          return false;
+			        });
+
+				    $('.picture_parts').on("click", ".remove-pic", function() {	
+				        console.log("click");
+				      var index = $(this).parents(".pictures.field").attr("index");
+				      if(typeof index !== 'undefined') {
+				        $(this).after("<input type='hidden' name='event[pictures_attributes][" + index + "][_destroy]' value='1' />");
+				        $(this).parents(".pictures.field").hide();
+				      } else {
+				        $(this).parents(".pictures.field").remove();
+				      }
+				      return false;
+				    });
+
+				    $('.pic-element-wrapper').on("click", "[name=crop-radio-button]", function () {
+
+				    	if ($(".pic-crop-wrapper strong").is(":visible") || $(".pic-crop-wrapper .existing-cover-image").is(":visible")) {	
+					    	$(".pic-crop-wrapper strong").hide();
+					    	$(".pic-crop-wrapper .existing-cover-image").hide();
+					    	$("<div class='preview-wrapper' style='width:250px; height:120px; overflow:hidden;'><img src='" + $(this).attr("picurl") + "' class='preview' /></div>").insertBefore($(".pic-crop-wrapper img").last());
+					    	$("<div class='arrow-outer-wrapper'><div class='arrow-inner-wrapper'><span class='icon-arrow-left'></span></div></div>").insertBefore($(".pic-crop-wrapper img").last());
+				    	} else {
+				    		console.log("wtf");
+				    		jcrop_api.destroy();
+				    		$(".preview-wrapper img").attr("src", $(this).attr("picurl"));
+				    	}
+				    	$(".pic-crop-wrapper .cropbox").attr("src", $(this).attr("picurl"));
+				    	$(".pic-crop-wrapper .cropbox").attr("picid", $(this).attr("picid"));
+				    	$(".cover_image").val($(this).attr("picid"));
+
+				    	$('.cropbox').Jcrop({
+					      aspectRatio: 2.083,
+					      setSelect: [0, 0, 500, 500],
+					      onSelect: updateCrop, // @update,
+					      onChange: updateCrop  // @update
+					  	},function(){
+						    jcrop_api = this;
+						});
+				    });
+
+				    $('.form-submit').click( function (){
+				        console.log("click");
+				        $('<div class="ajaxLoader pictures field gallery"><img src="/assets/ajax-loader.gif"></div>').appendTo('.actions');
+				       			// console.log(parseInt($(".picture_crop_x").val()));
+					         //    console.log(parseInt($(".picture_crop_y").val()));
+					         //    console.log(parseInt($(".picture_crop_w").val()));
+					         //    console.log(parseInt($(".picture_crop_h").val()));
+					      var picData = 
+					        {"picture":
+					          { "crop_x": parseInt($(".picture_crop_x").val()),
+					            "crop_y": parseInt($(".picture_crop_y").val()),
+					            "crop_w": parseInt($(".picture_crop_w").val()),
+					            "crop_h": parseInt($(".picture_crop_h").val()),
+					            "remote_image_url": $("remote_image_url").val(),
+					            "id": parseInt($(".cover_image").val())
+					          },
+					          "id": parseInt($(".id").val()),
+					          "picType": $(".picType").val(),
+					          "cover_image": parseInt($(".cover_image").val())
+					        };
+					    
+				        $.post("/pictures/coverImageAdd",picData,function(data) {
+				          	$('.cover-image').html('<input type="hidden" name="event[cover_image]" value="' + data.pictures.id + '">');
+				          	$("#event<%= @event.id.to_s %>").submit();
+				        },"json");
+				        return false;
+				      });
+				    });
+
+					function updateCrop(coords) {
+				      $('.picture_crop_x').val(coords.x);
+				      $('.picture_crop_y').val(coords.y);
+				      $('.picture_crop_w').val(coords.w);
+				      $('.picture_crop_h').val(coords.h);
+				      $('.preview').css({
+				        width: Math.round(250 / coords.w * $('.cropbox').width()) + 'px',
+				        height: Math.round(120 / coords.h * $('.cropbox').height()) + 'px',
+				        marginLeft: '-' + Math.round(250 / coords.w * coords.x) + 'px',
+				        marginTop: '-' + Math.round(120 / coords.h * coords.y) + 'px'
+				      });
+				    }
+
+		    </script>
+
+			    <br>
+			    <div class="pic-gallery-wrapper"<% if @event.pictures.empty? && @event.venue.pictures.empty? && @event.acts.collect { |a| a.pictures }.flatten.empty? %> style="display:none"<% end %>>
+
+			    	<strong>Event Pictures</strong>
+			    	<div id="eventThumbs">
+					    <% @event.pictures.each_with_index do |pic, index| %>
+					    <div class="pictures field gallery" index="<%= index %>">
+					      <input type="hidden" name="event[pictures_attributes][<%= index %>][id]" value="<%= pic.id %>" />
+					      <%= image_tag pic.image_url(:thumb).to_s %>
+					      <div class="pic-element-wrapper">
+						      <div href="" class="remove-pic">X</div>
+						      <div class="crop-radio"><input type="radio" name="crop-radio-button" picurl="<%= pic.image_url(:large).to_s %>" picid = "<%= pic.id %>" /></div>
+					  	  </div>
+					    </div>
+					    <% end %>
+					</div>
+
+					<strong> Pictures from event venue/performers</strong>
+					<div id="otherThumbs">
+					    <% @event.venue.pictures.each do |pic| %>
+					    <div class="pictures field gallery">
+					      <%= image_tag pic.image_url(:thumb).to_s %>
+					      <div class="pic-element-wrapper">
+						      <div class="crop-radio"><input type="radio" name="crop-radio-button" picurl="<%= pic.image_url(:large).to_s %>" picid = "<%= pic.id %>" /></div>
+						  </div>
+					    </div>
+					    <% end %>
+
+					    <% @event.acts.each do |a| %>
+					    	<% a.pictures.each do |pic| %>
+							    <div class="pictures field gallery">
+							      <%= image_tag pic.image_url(:thumb).to_s %>
+					      		  <div class="pic-element-wrapper">
+					      		    <div class="crop-radio"><input type="radio" name="crop-radio-button" picurl="<%= pic.image_url(:large).to_s %>" picid = "<%= pic.id %>" /></div>
+					      		  </div>
+							    </div>
+							<% end %>
+					    <% end %>
+					</div>
+				</div>
+		    </div>
+		<!-- End Pictures Section -->
+			<label><h5>Front Page Image</h5></label>
+			<div class="pic-crop-wrapper">
+				<% if @event.cover_image.nil? %>
+					<strong style="color:purple;"> Please choose front page image from pictures above</strong>
+						<img src="" class="cropbox" />
+				<% else %>
+					<%= image_tag Picture.find(@event.cover_image).image_url(:cover).to_s, :class => "existing-cover-image" %>
+						<img src="" class="cropbox" />
+				<% end %>
+			</div>
+
+			<% %w[x y w h].each do |attribute| %>
+			  <input type="hidden" class="picture_crop_<%= attribute %>" name="picture_crop_<%= attribute %>" value="">
+		    <% end %>
+			
+			<% unless @event.nil? %><%= hidden_field_tag(:id, @event.id, :class => "id") %><%end%>
+			<%= hidden_field_tag(:cover_image, "", :class => "cover_image") %>
+			<%= hidden_field_tag(:picType, "Event", :class => "picType") %>
+
+			<div class="actions" style="float:left;clear:both;" >
+	    		<%= e.submit "Save", :class => "nice-button form-submit" %>
+	    		<% # the return false; in the form-submit click action in the javascript cancels the actual submit, which is re-triggered after upload success %>
+	  		</div>
+
+		<% end %>
+	</div>
+<% end %>

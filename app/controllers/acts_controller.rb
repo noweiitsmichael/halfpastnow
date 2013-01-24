@@ -64,7 +64,7 @@ class ActsController < ApplicationController
   end
 
   def actCreate
-    #pp params
+    pp params
     authorize! :actCreate, @user, :message => 'Not authorized as an administrator.'  
     if (params[:act][:id].to_s.empty?)
       @act = Act.new()
@@ -105,6 +105,16 @@ class ActsController < ApplicationController
     if(params[:contains])
       # @acts = Act.where("name ilike ?", "%#{params[:contains]}%").collect {|a| { :name => "#{a.name}", :text => "#{a.name}", :id => a.id, :fb_picture => a.fb_picture, :tags => (a.tags.collect { |t| t.id.to_s } * ",") , :pictures => a.pictures } }
       @acts = Act.where("name ilike ?", "%#{params[:contains]}%").collect {|a| { :name => "#{a.name}", :text => "#{a.name}", :id => a.id, :fb_picture => a.fb_picture, :tags => (a.tags.collect { |t| t.id.to_s } * ",") , :pictures => a.pictures } }
+    else
+      @acts = []
+    end
+
+    render json: @acts
+  end
+
+  def eventActFind
+    if(params[:contains])
+      @acts = Act.where("name ilike ?", "%#{params[:contains]}%").collect {|a| { :label => "#{a.name}", :value => "#{a.name}", :tags => a.tags.collect { |t| t.id}, :id => a.id } }
     else
       @acts = []
     end

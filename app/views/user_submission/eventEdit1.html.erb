@@ -12,31 +12,33 @@
 		input[type=text] { width: 500px; }
 		input#event_price { width: 100px; }
 		.field.tags label { display:inline; margin:0; cursor:pointer; }
-		.tag-thing { margin-top: 5px; }
 	</style>
 
 	<%= javascript_include_tag "jquery.cleditor.min" %>
+	<%= javascript_include_tag "jquery-ui-timepicker-addon" %>
   	<%= stylesheet_link_tag    "jquery.cleditor" %>
 	<script type="text/javascript">
+		var num_act_wrappers = 1;
+
+		function addNewPerformer(data) {
+			console.log("add new performer!")
+			var newPerformer = '<div class="act-wrapper"><span><a href="/?act_id="' + data.id + '" target="_blank">' + data.name + '</a><a href="" class="delete-act">x</a></span><input checked="checked" class="hidden" id="event_act_ids_" name="event[act_ids][]" type="checkbox" value="' + data.id + '"></div>';
+			$(".act-wrapper").last().prev().before(newPerformer);
+
+			for (var i in data.tags) {
+				$(".tag-thing input[type=checkbox][value=" + data.tags[i] + "]").prop("checked", true);
+			}
+		}
+
 		$(function() {
 			$('.cleditor').cleditor({
-		      controls:     "bold italic underline size " +
+		      controls:     "bold italic underline size | color highlight removeformat" +
 		                    " | bullets numbering | undo redo | " +
 		                    "rule image link unlink | source",   
 		      sizes:        "1,2,3,4,5,6,7",
 		      bodyStyle:    // style to assign to document body contained within the editor
 		                    "margin:4px; font:10pt Arial,Verdana; cursor:text"
 		    });
-
-			$('.field.tags .parent input').click(function() {
-				$('.field.tags .child').hide();
-				$('.field.tags .child#parent_' + $(this).attr('id')).show();
-			});
-
-			$('.field.tags .parent label').click(function() {
-				$('.field.tags .child').hide();
-				$('.field.tags .child#parent_' + $(this).attr('fake-for')).show();
-			});
 
 			$( "#venue-name" ).autocomplete({
 				source: function( request, response ) {
@@ -62,6 +64,59 @@
 				}
 			});
 
+			function clonePerformerInput() {
+				var $act_clone = $('<div><div class="act-wrapper">' + $('#hidden-act').html() + '</div></div>');
+				// $act_clone.find('input').each(function() {
+				// 	if(typeof $(this).attr('name') !== 'undefined')
+				// 		$(this).attr('name', $(this).attr('name').replace(/0/g, num_act_wrappers));
+				// 	if(typeof $(this).attr('id') !== 'undefined')
+				// 		$(this).attr('id', $(this).attr('id').replace(/0/g, num_act_wrappers));
+				// });
+				// console.log($(".performers").append($act_clone.html()));
+
+				$($act_clone.html()).appendTo(".performers").find(".act-name").autocomplete({
+					source: function( request, response ) {
+						$.getJSON("/acts/eventActFind?contains=" + request.term, function (data) {
+						  var newPerformer = {'id': 0, 'label': '... Add a New Performer'} //, 'value': '<a href="/userSubmission/actEdit" target="_blank">Add New Performer</a>'}
+						  data.push(newPerformer);
+						  console.log(data);
+						  response(data);
+						});
+					},
+					minLength: 2,
+					select: function( event, ui ) {
+						if (ui.item.id === 0){
+							window.open('/userSubmission/actCreate?new_name=' + $(".act-name").last().val(),'_blank');
+							$(".act-name").last().val("");
+							return false;
+						} else {
+							$(this).siblings("input[type=checkbox]").val(ui.item.id);
+							$(this).after("<span>" + ui.item.label + "</span><a href='' style='float:right'>[x] remove</a> ");
+							$(this).autocomplete("destroy");
+							$(this).remove();
+
+							for (var i in ui.item.tags) {
+								$(".tag-thing input[type=checkbox][value=" + ui.item.tags[i] + "]").prop("checked", true);
+							}
+
+							clonePerformerInput();
+						}
+					},
+					open: function() {
+					$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+					},
+					close: function() {
+					$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+					}
+				});
+			};
+			clonePerformerInput();
+
+			$('.performers').on('click','.delete-act',function() {
+				$(this).parent().remove();
+				return false;
+			});
+			
 		});
 
 	</script>
@@ -69,50 +124,245 @@
 
 <% content_for :body do %>
 	<div id="info-content" class="padded">
-		<h3>Step 1</h3>
 		<%= form_for @event, :url => "/userSubmission/eventSubmit1/" + @event.id.to_s, :html => { :multipart => true, :id => "event" + @event.id.to_s } do |e| %>
 
 			<%= e.hidden_field :id %>
 			<div class="field">
-			  <%= e.label :title %>
+			  <h5><%= e.label :title %></h5>
 			  <%= e.text_field :title %>
 			</div>
 		    <div class="field">
-		    	<%= e.label "Venue Name" %>
-		    	<%= e.text_field :venue, :id => "venue-name" %>
-		    	<%= e.hidden_field :venue_id %>
+		    	<h5><%= e.label "Venue Name" %></h5>
+		    	<input type="text" id="venue-name" value="<%= (@event.venue ? @event.venue.name : "") %>" />
+		    	<%= e.hidden_field :venue_id, :value => (@event.venue ? @event.venue.id : nil) %>
 		    </div>
+
+			<script type="text/javascript">
+				var num_occurrence_wrappers = 1;
+
+				$(function() {
+					toggleDisability($('.occurrence-list .occurrence-toggle, .occurrence-list .recurrence-toggle'));
+
+					$(".occurrence-list .occurrence-toggle [name^='helper_start'], .occurrence-list .occurrence-toggle [name^='helper_end']").each(function() {
+						dateTimeAssign($(this).attr('name'));
+					});
+					$(".occurrence-list .recurrence-toggle [name^='helper_from'], .occurrence-list .recurrence-toggle [name^='helper_to']").each(function() {
+						dateAssign($(this).attr('name'));
+					});
+					$(".occurrence-list .recurrence-toggle [name^='helper_start'], .occurrence-list .recurrence-toggle [name^='helper_end']").each(function() {
+						timeAssign($(this).attr('name'));
+					});
+
+					$(".occurrence-list").on('change', '[name$="[interval]"]', recurrenceSet);
+
+					$('.occurrence-list').on('click','.recurrence-switch',function() {
+						$(this).siblings('.occurrence-toggle').toggle();
+						$(this).siblings('.recurrence-toggle').toggle();
+						toggleDisability($(this).siblings('.occurrence-toggle'));
+						toggleDisability($(this).siblings('.recurrence-toggle'));
+
+					});
+
+					function toggleDisability($that) {
+						if($that.is(':visible')) {
+							$that.find("select,input").removeAttr('disabled');
+						} else {
+							$that.find("select,input").attr("disabled","disabled");
+						}
+					}
+
+					$('.occurrence-list').on('click','.delete-occurrence',function() {
+						var $occurrence_wrapper = $(this).parents('.occurrence-wrapper');
+						$occurrence_wrapper.find("[name^='helper_start'], [name^='helper_end']").datetimepicker("destroy");
+						$occurrence_wrapper.find("[name^='helper_start'], [name^='helper_end']").unbind("click");
+
+						if ($occurrence_wrapper.find(".occurrence-destroy").length > 0) {
+							var $occurrence_destroy = $occurrence_wrapper.find(".occurrence-destroy");
+							$occurrence_wrapper.after("<div style='display:none;'>" + $occurrence_destroy.html() + "</div>");
+							// Click the checkbox to add delete
+							$occurrence_wrapper.next().find("input").click();
+						}
+						$occurrence_wrapper.remove();
+						return false;
+					});
+
+					$('.occurrence-list').on('click','.delete-recurrence',function() {
+						var $occurrence_wrapper = $(this).parents('.occurrence-wrapper');
+						$occurrence_wrapper.find("[name^='helper_start'], [name^='helper_end']").datepicker("destroy");
+						$occurrence_wrapper.find("[name^='helper_start'], [name^='helper_end']").timepicker("destroy");
+						$occurrence_wrapper.find("[name^='helper_start'], [name^='helper_end']").unbind("click");
+						$occurrence_wrapper.find("[name$='[interval]']").unbind("change");
+
+						if ($occurrence_wrapper.find(".recurrence-destroy").length > 0) {
+							
+
+							var $recurrence_destroy = $occurrence_wrapper.find(".recurrence-destroy");
+							$occurrence_wrapper.after("<div style='display:none;'>" + $recurrence_destroy.html() + "</div>");
+							// Click the checkbox to add delete
+							console.log("clicks bound: " + $occurrence_wrapper.next().find("input").length);
+							$occurrence_wrapper.next().find("input").click(function(){
+								console.log("clicked");
+							});
+							$occurrence_wrapper.next().find("input").click();
+						}
+						$occurrence_wrapper.remove();
+						return false;
+					});
+
+					function recurrenceSet() {
+						console.log("weeee");
+						$(this).siblings(".recur-parameter").hide();
+						switch($(this).val())
+						{
+						case "0":
+						  $(this).siblings(".recur-parameter.day").show(); break;
+						case "1":
+						  $(this).siblings(".recur-parameter.day-of-week").show(); break;
+						case "2":
+						  $(this).siblings(".recur-parameter.day-of-month").show(); break;
+						case "3":
+						  $(this).siblings(".recur-parameter.day-of-week").show();
+						  $(this).siblings(".recur-parameter.week-of-month").show(); break;
+						}
+					}
+
+					function dateTimeChange() {
+						// console.log("datetime change");
+						var date = $(this).datetimepicker("getDate");
+						$(this).siblings(".datetime-hidden").val(date ? date.toString("yyyy-MM-ddTHH:mm:ss") : "");
+					}
+					function dateTimeAssign(name) {
+						// console.log($("[name='" + name + "']").attr("name"));
+						$("[name='" + name + "']").datetimepicker({
+							ampm: true,
+							dateFormat: 'D M d, yy',
+							timeFormat: 'h:mm tt',
+							hourGrid: 6,
+							minuteGrid: 15,
+							stepMinute: 15,
+							minDate: Date.today(),
+							separator: ' at ',
+							defaultDate: Date.parse($("[name='" + name + "']").val())
+						});
+						$("[name='" + name + "']").change(dateTimeChange);
+					}
+
+					function dateChange() {
+						// console.log("date change");
+						var date = $(this).datepicker("getDate");
+						$(this).siblings(".date-hidden").val(date ? date.toString("yyyy-MM-ddTHH:mm:ss") : "");
+					}
+					function dateAssign(name) {
+						// console.log("dateAssign:" + $("[name='" + name + "']").attr("name"));
+						$("[name='" + name + "']").datepicker({
+							ampm: true,
+							dateFormat: 'D M d, yy',
+							timeFormat: 'h:mm tt',
+							separator: ' at ',
+							minDate: Date.today(),
+							defaultDate: Date.parse($("[name='" + name + "']").val())
+						});
+						$("[name='" + name + "']").change(dateChange);
+					}
+
+					function timeChange() {
+						console.log("time change");
+						var date = $(this).datetimepicker("getDate");
+						console.log(date);
+						$(this).siblings(".time-hidden").val(date ? date.toString("yyyy-MM-ddTHH:mm:ss") : "");
+					}
+					function timeAssign(name) {
+						console.log("timeAssign:" + $("[name='" + name + "']").attr("name"));
+						$("[name='" + name + "']").timepicker({
+					      ampm: true,
+						  stepMinute: 15,
+						  minuteGrid: 15,
+					      timeFormat: 'h:mm tt'
+					    });
+						$("[name='" + name + "']").change(timeChange);
+					}
+
+					$('#add-occurrence').click(function() {
+						num_occurrence_wrappers = Math.max(num_occurrence_wrappers + 1, $('.occurrence-wrapper').length);
+						
+						// make this html string into a jquery html element
+						// find all the inputs, etc that have 0's in them and replace their ids and names with num_occurrence_wrappers
+						// get the html from that and put it in 
+						var $occurrence_clone = $('<div></div>').append($('#hidden-occurrence').html());
+						$occurrence_clone.find('select, input').each(function() {
+							if(typeof $(this).attr('name') !== 'undefined')
+								$(this).attr('name', $(this).attr('name').replace(/0/g, num_occurrence_wrappers));
+							if(typeof $(this).attr('id') !== 'undefined')
+								$(this).attr('id', $(this).attr('id').replace(/0/g, num_occurrence_wrappers));
+						});
+						$occurrence_clone.find('.occurrence-wrapper').addClass('new');
+						$(this).before($occurrence_clone.html());
+
+						dateTimeAssign("helper_start_event[occurrences_attributes][" + num_occurrence_wrappers + "]");
+						dateTimeAssign("helper_end_event[occurrences_attributes][" + num_occurrence_wrappers + "]");
+						dateAssign("helper_from_event[recurrences_attributes][" + num_occurrence_wrappers + "]");
+						dateAssign("helper_to_event[recurrences_attributes][" + num_occurrence_wrappers + "]");
+						timeAssign("helper_start_event[recurrences_attributes][" + num_occurrence_wrappers + "]");
+						timeAssign("helper_end_event[recurrences_attributes][" + num_occurrence_wrappers + "]");
+						toggleDisability($('.occurrence-list .occurrence-toggle, .occurrence-list .recurrence-toggle'));
+
+						$(".occurrence-list '[name$='[interval]']'").each(recurrenceSet);
+
+						return false;
+					});
+
+					$('#add-occurrence').click();
+			    });
+			</script>	
+		    <h5><label>Date & Time</label></h5>
+		    <div style="display:none;" id="hidden-occurrence">
+		   		<%= render :partial => "occurrences", :locals => { :e => e, :event => @event, :recurrence => nil, :occurrence => nil } %>
+		    </div>
+		    <div class="occurrence-list">
+		    	<% if @event.recurrences.size > 0 || @event.occurrences.select { |o| o.id.nil? || ((o.deleted != true) && (o.start >= Date.today) && (o.recurrence_id == nil)) }.size > 0 %><h6>Existing Occurrences:</h6><% end %>
+		    	<% @event.recurrences.each do |recurrence| %>
+			    	<%= render :partial => "occurrences", :locals => { :e => e, :event => @event, :recurrence => recurrence, :occurrence => nil } %>
+			    <% end %>
+			    <% @event.occurrences.select { |o| o.id.nil? || ((o.deleted != true) && (o.start >= Date.today) && (o.recurrence_id == nil)) }.each do |occurrence| %>
+			    	<%= render :partial => "occurrences", :locals => { :e => e, :event => @event, :recurrence => nil, :occurrence => occurrence } %>
+			    <% end %>
+			<% if @event.recurrences.size > 0 || @event.occurrences.size > 0 %> <h6><span>New Occurrences:</span></h6><% end %>
+			    <a href="" id="add-occurrence">+ Add Another Occurrence</a>
+			</div>
+
+			<div class="performers">
+				<h5><%= e.label :performers %></h5>
+				<div id="hidden-act" style="display:none">
+			    	<input type="text" class="act-name" value="" />
+			    	<%= check_box_tag "event[act_ids][]", 0, true, :class => 'hidden' %>
+		    	</div>
+		    	<% @event.acts.each do |a| %>
+		    		<div class="act-wrapper">
+				    	 <span><a href='/?act_id=<%= a.id %>' target="_blank"><%= a.name %></a><a href='' class="delete-act">x</a></span>
+				    	<%= check_box_tag "event[act_ids][]", a.id, true, :class => 'hidden' %>
+		    		</div>
+		    	<% end %>
+
+		    	<% if @event.acts.size > 0 %> <div style="margin-top:9px">Add another Performer: </div> <% end %>
+			</div>
+
 		    <div class="field">
-		      <%= e.label "Event Link / Registration Link" %>
+		      <h5><%= e.label "Event Link / Registration Link" %></h5>
 		      <%= e.text_field :event_url %>
 		    </div>
 			<div class="field">
-			  <%= e.label :description %>
+			  <h5><%= e.label :description %></h5>
 			  <%= e.text_area :description, :class => "cleditor" %>
 			</div>
 			<div class="field">
-			  <%= e.label :price %>
+			  <h5><%= e.label :price %></h5>
 			  <%= e.text_field :price %>
 			</div>
-			<div class="field tags">
-				<h5 style="margin-top:10px;">Tags</h5>
-				<div style="float:left;width:179px;" class="parent">
-					<% @parentTags.each do |parentTag|  %>
-						<div class="tag-thing"><input type="checkbox" id="event_tag_<%= parentTag.id %>"/><label fake-for="event_tag_<%= parentTag.id %>"><%= parentTag.name %></label></div>
-					<% end %>
-				</div>
-				<% @parentTags.each do |parentTag|  %>
-					<% if parentTag.childTags.size > 0 %>
-						<div style="float:left;width:400px;display:none;" id="parent_event_tag_<%= parentTag.id %>" class="child">
-						<% parentTag.childTags.each do |childTag| %>
-							<div class="tag-thing"><input type="checkbox" id="event_tag_<%= childTag.id %>"/><label for="event_tag_<%= childTag.id %>"><%= childTag.name %></label></div>
-						<% end %>
-						</div>
-					<% end %>
-				<% end %>
-			</div>
-			<div class="actions" style="float:right;clear:both;">
-	    		<%= e.submit "Save / Next Step >" %>
+
+			<%= render :partial => "tags", :locals => { :element => @event, :type => "event" } %>
+
+			<div class="actions" style="float:left;clear:both;">
+	    		<%= e.submit "Save / Next Step >", :class => "nice-button form-submit"%>
 	  		</div>
 		<% end %>
 	</div>

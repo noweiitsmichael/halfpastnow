@@ -1,0 +1,97 @@
+<% unless occurrence %>
+	<% occurrence = event.occurrences.build %>
+<% end %> 
+<% unless recurrence %>
+	<% recurrence = event.recurrences.build %>
+<% end %> 
+<% @ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] %>
+<% week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] %>
+<% hidden = "style='display:none;'" %>
+<div class="occurrence-wrapper">
+	<%= e.fields_for :recurrences, recurrence do |r| %>
+		<div class="recurrence-toggle" <%= hidden if recurrence.id.nil? %>>
+		<% if recurrence.id %>
+			<span><%= "every " + ((recurrence.every_other.nil? || recurrence.every_other == 0) ? "" : ((recurrence.every_other == 1) ? "other" : to_ordinal(recurrence.every_other))) %>
+	    	</span>
+	    	<span><%= (recurrence.day_of_week && recurrence.week_of_month) ? to_ordinal(recurrence.week_of_month) + " " + week[recurrence.day_of_week] : (recurrence.day_of_month ? to_ordinal(recurrence.day_of_month) : (recurrence.day_of_week ? week[recurrence.day_of_week] : "day")) %>
+	    	</span>
+	    	<% if recurrence.end %>
+		    	<span>from <%= recurrence.start.to_time.strftime("%I:%M%P") %></span>
+		    	<span>to <%= recurrence.end.to_time.strftime("%I:%M%P") %></span>
+		    <% elsif recurrence.start %>
+		    	<span>at <%= recurrence.start.to_time.strftime("%I:%M%P") %></span>
+		    <% end %>
+		    
+		    <% if recurrence.range_end %>		    
+		    	<span><%= " from " + (recurrence.range_start.strftime("%b %d")) + " to " + (recurrence.range_end.strftime("%b %d")) %></span>
+		    <% elsif recurrence.range_start%>		    
+		    	<span><%= " from " + (recurrence.range_start.strftime("%b %d"))%></span>
+	    	<% end %>
+		<% else %>
+		    <div class="start-end"><div class="field">
+		    	<label>Start Time</label><input type="text" class="time-input" name="helper_start_<%= r.object_name %>" value="<%= display_time(recurrence.start) %>"/>
+		    	<%= r.hidden_field :start, :value => hidden_datetime(recurrence.start), :class => "time-hidden" %> 
+		    </div>
+		    <div class="field">
+		    	<label>End Time</label><input type="text" class="time-input" name="helper_end_<%= r.object_name %>" value="<%= display_time(recurrence.end) %>"/>
+		    	<%= r.hidden_field :end, :value => hidden_datetime(recurrence.end), :class => "time-hidden" %>
+		    </div></div><br>
+			<div class="start-end"><div class="field">
+		    	<label>Recurring From</label><input type="text" class="date-input" name="helper_from_<%= r.object_name %>" value="<%= display_date(occurrence.start) %>"/>
+		    	<%= r.hidden_field :range_start, :value => hidden_date(recurrence.start), :class => "date-hidden" %> 
+		    </div>
+		    <div class="field">
+		    	<label>Until</label><input type="text" class="date-input" name="helper_to_<%= r.object_name %>" value="<%= display_date(recurrence.start) %>"/>
+		    	<%= r.hidden_field :range_end, :value => hidden_date(recurrence.end), :class => "date-hidden" %>
+		    </div></div><br>
+		    Recurring:<br>
+		    <%= r.select :interval, ["Daily","Weekly","Monthly (by day)", "Monthly (by week)"].zip((0..3).to_a) %>:&nbsp;&nbsp;
+			<%= r.select :every_other, ((1..7).to_a.map{|num| "Every " + ((num == 1) ? "" : (num == 2) ? "other" : to_ordinal(num))}).zip((0..6).to_a) %>
+			<div class="recur-parameter day">day</div>
+			<div class="recur-parameter week-of-month"><%= r.select :week_of_month, [["[week of month]",nil]] + ((1..4).to_a.map{|day| to_ordinal(day)}).zip((1..4).to_a), :selected => nil %></div>
+			<div class="recur-parameter day-of-week"><%= r.select :day_of_week, [["[day of week]",nil]] + Date::DAYNAMES.zip((0..6).to_a), :selected => nil %></div>
+			<div class="recur-parameter day-of-month"><%= r.select :day_of_month, [["[day of month]",nil]] + (((1..31).to_a.map{|day| to_ordinal(day)}).zip((1..31).to_a)), :selected => nil %></div>
+		<% end %>
+			<div class="field" style="text-align:right">
+	    		<a href='' class='delete-recurrence'>delete [x]</a>
+	    	</div>
+			<div class="recurrence-destroy" style="display:none;">
+				<%= r.check_box :_destroy %>
+				<%= r.hidden_field :id %>
+			</div>
+		</div>
+	<% end %>
+	<%= e.fields_for :occurrences, occurrence do |o| %>
+		<div class="occurrence-toggle" <%= hidden unless recurrence.id.nil? %>>
+		    <div class="start-end"><div class="field">
+		    	<label>Start</label><input type="text" name="helper_start_<%= o.object_name %>" value="<%= display_datetime(occurrence.start) %>" class="datetime-input" />
+		    	<%= o.hidden_field :start, :value => hidden_datetime(occurrence.start), :class => "datetime-hidden" %> 
+		    </div>
+		    <div class="field">
+		    	<label>End</label><input type="text" name="helper_end_<%= o.object_name %>" value="<%= display_datetime(occurrence.end) %>" class="datetime-input" />
+		    	<%= o.hidden_field :end, :value => hidden_datetime(occurrence.end), :class => "datetime-hidden" %>
+		    </div></div>
+		    <div class="occurrence-destroy" style="display:none;">
+				<%= o.check_box :deleted %>
+				<%= o.hidden_field :id %>
+			</div>
+
+			<div class="field" style="float:right">
+			    <a href='' class='delete-occurrence'>delete [x]</a>
+			</div>
+		</div>
+	<% end %>
+		<% if recurrence.id.nil? && occurrence.id.nil? %>
+			<input type='checkbox' class='recurrence-switch'> Repeats...
+		<% end %>
+</div>
+		
+<% if occurrence.id.nil? 
+	event.occurrences.delete(occurrence)
+   end %>
+
+<% if recurrence.id.nil? 
+	event.recurrences.delete(recurrence)
+   end %>
+
+

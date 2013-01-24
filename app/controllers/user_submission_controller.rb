@@ -1,22 +1,12 @@
 class UserSubmissionController < ApplicationController
 helper :content
 
-
-	def eventSubmit1
-		authorize! :eventSubmit1, @user, :message => 'Not authorized as an administrator.'
-		if params[:event][:id]
-			@event = Event.find(params[:event][:id])
-		else
-			@event = Event.new
-		end
-
-		@event.completion = @event.completedness
-	    params[:event][:user_id] = current_user.id
-	    @event.update_attributes!(params[:event])
-
-
-	end
-	def eventSearch
+	def eventCreate1
+		@event = Event.new
+		@event.title = params[:new_title]
+    	@parentTags = Tag.includes(:parentTag, :childTags).all.select{ |tag| tag.parentTag.nil? }
+    	# pp @parentTags
+		render "eventEdit1"
 	end
 
 	def eventEdit1
@@ -24,12 +14,96 @@ helper :content
     	@parentTags = Tag.includes(:parentTag, :childTags).all.select{ |tag| tag.parentTag.nil? }
 	end
 
-	def eventCreate1
-		@event = Event.new
-		@event.title = params[:new_title]
+	def eventEdit2
+		@event = Event.find(params[:id])
+	end
+
+	def eventSubmit1
+		authorize! :eventSubmit1, @user, :message => 'Please log in to add events.'
+
+		if !params[:event][:id].to_s.empty?
+			@event = Event.find(params[:event][:id])
+		else
+			@event = Event.new
+		end
+		
+	    params[:event][:user_id] = current_user.id
+	    params[:event][:occurrences_attributes].select! { |k,v| !v["start"].blank? || ( !v["id"].blank? && v["deleted"] == "1") }
+	    params[:event][:recurrences_attributes].select! { |k,v| !v["start"].blank? || ( !v["id"].blank? && v["_destroy"] == "1") }
+	    params[:event][:act_ids].select! { |a| a != "0" }
+
+	    pp params[:event][:occurrences_attributes]
+
+	    @event.update_attributes!(params[:event])
+	    @event.completion = @event.completedness
+	    @event.save!
+
+	    redirect_to :action => :eventEdit2, :id => @event.id
+	end
+
+	def eventSubmit2
+		authorize! :eventSubmit1, @user, :message => 'Please log in to add events.'
+		@event = Event.find(params[:event][:id])
+
+	    @event.update_attributes!(params[:event])
+	    @event.completion = @event.completedness
+	    @event.save!
+
+	    unless params[:pictures].nil? 
+	      params[:pictures].each do |pic|
+	          addedPic = Picture.find(pic[1]["id"])
+	          addedPic.pictureable_id = @event.id
+	          addedPic.save!
+	      end
+	    end
+
+	end
+
+	def eventSearch
+	end
+
+	def actCreate
+		@act = Act.new
+		@act.name = params[:new_name]
     	@parentTags = Tag.includes(:parentTag, :childTags).all.select{ |tag| tag.parentTag.nil? }
-    	pp @parentTags
-		render "eventEdit1"
+		# pp @act
+		render "actEdit"
+	end
+
+	def actEdit
+		@act = Act.find(params[:id])
+    	@parentTags = Tag.includes(:parentTag, :childTags).all.select{ |tag| tag.parentTag.nil? }
+	end
+
+	def actSubmit
+		authorize! :eventSubmit1, @user, :message => 'Not authorized as an administrator.'
+		pp params
+
+		if !params[:act][:id].to_s.empty?
+			@act = Act.find(params[:act][:id])
+		else
+			@act = Act.new
+		end
+	    
+	    params[:act][:embeds_attributes].select! { |k,v| !v["source"].blank? || !v["_destroy"].blank? }
+
+	    @act.update_attributes!(params[:act])
+	    @act.completion = @act.completedness
+	    @act.save!
+
+	    unless params[:pictures].nil? 
+	      params[:pictures].each do |pic|
+	          #puts pic
+	          #puts pic[1]["id"]
+	          addedPic = Picture.find(pic[1]["id"])
+	          addedPic.pictureable_id = @act.id
+	          addedPic.save!
+	      end
+	    end
+	    respond_to do |format|
+			format.json {render :json => { :tags => @act.tags.collect { |t| t.id}, :id => @act.id, :name => @act.name }}
+			format.html 
+		end
 	end
 
 	def eventSearchTerm
