@@ -930,6 +930,7 @@ end
   def bookmark
    # @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
     @occurrenceid = Occurrence.find_by_event_id(params[:event_id]).id
+    @occurrenceid = params[:event_id]
     # @event = Event.find(params[:event_id])
     # @occurrenceid = @event.occurrences.select{ |o| o.start >= Date.today.to_datetime }.last
     current_user =  User.find_by_email(params[:email])
