@@ -25,19 +25,28 @@ class BookmarkList < ActiveRecord::Base
 		end
 	end
 
+	# def bookmarked_events
+	# 	@bookmarked_events = Bookmark.where(:bookmark_list_id => self.id, :bookmarked_type => "Occurrence")
+	# 	@bookmarked_events.collect! do |b|
+	# 		if !Occurrence.exists?(b.bookmarked_id)
+	# 			nil
+	# 		else
+	# 			o = Occurrence.find(b.bookmarked_id)
+	# 			if o.start >= Date.today.to_datetime && !o.deleted
+	# 				o
+	# 			else
+	# 				o.event.nextOccurrence
+	# 			end
+	# 		end
+	# 	end
+
+	# 	return @bookmarked_events.compact
+	# end
+
 	def bookmarked_events
 		@bookmarked_events = Bookmark.where(:bookmark_list_id => self.id, :bookmarked_type => "Occurrence")
 		@bookmarked_events.collect! do |b|
-			if !Occurrence.exists?(b.bookmarked_id)
-				nil
-			else
-				o = Occurrence.find(b.bookmarked_id)
-				if o.start >= Date.today.to_datetime && !o.deleted
-					o
-				else
-					o.event.nextOccurrence
-				end
-			end
+			b.bookmarked_event
 		end
 
 		return @bookmarked_events.compact
