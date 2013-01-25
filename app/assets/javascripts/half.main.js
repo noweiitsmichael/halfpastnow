@@ -54,6 +54,10 @@ $(function() {
 
   scrollbarWidth = $.getScrollbarWidth();
 
+  $('#content .events').on('click','.picklists .picklist-link',function(event) {
+    stopPropagation(event);
+  });
+
   $('#content .events').on('click','.event-actions .icon',function(event) {
     var that = $(this);
     var id = $(this).attr('event-id');
