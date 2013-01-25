@@ -1,0 +1,53 @@
+<style type="text/css">
+.tag-thing { cursor: pointer; padding: 4px 0 4px 2px; }
+</style>
+<script type="text/javascript">
+	$(function() {
+		$('.field.tags .parent .tag-thing').click(tagSelect);
+		$('.field.tags .parent .tag-thing').mouseover(tagSelect);
+
+
+		$('.field.tags .child input').click(function() {
+			var parentID = $(this).parent().attr('parent-id');
+			var $parentInput = $('.field.tags .tag-thing[this-id=' + parentID + ']').find('input[type=checkbox]');
+			$parentInput.prop('checked', true);
+		});	
+
+		$('.field.tags .parent input[type=checkbox]').click(function() {
+				console.log('true 1');
+			if(!$(this).prop('checked')) {
+				console.log('true 2');
+				var parentID = $(this).parent().attr('this-id');
+				$('.tag-thing[parent-id=' + parentID + '] input[type=checkbox]').prop('checked',false);
+			}
+		});
+
+		function tagSelect () {
+			$('.field.tags .parent .tag-thing').removeClass('selected');
+			$(this).addClass('selected');
+
+			$('.field.tags .child').hide();
+			$('.field.tags .child[parent-id=' + $(this).attr('this-id') + ']').show();
+		};
+	});
+</script>
+
+<div class="field tags">
+	<h5 style="margin-top:10px;">Categories</h5>
+	<div class="parent">
+		<% @parentTags.each do |parentTag|  %>
+			<div class="tag-thing" this-id="<%= parentTag.id %>"><%= check_box_tag (type + "[tag_ids][]"), parentTag.id, element.tags.include?(parentTag) %>
+				<label><%= parentTag.name %></label></div>
+			
+		<% end %>
+	</div>
+	<% @parentTags.each do |parentTag|  %>
+		<% if parentTag.childTags.size > 0 %>
+			<div style="display:none;" parent-id="<%= parentTag.id %>" class="child">
+			<% parentTag.childTags.each do |childTag| %>
+				<div class="tag-thing" parent-id="<%= parentTag.id %>"><%= check_box_tag (type + "[tag_ids][]"), childTag.id, element.tags.include?(childTag) %><label for="<%= type %>_tag_<%= childTag.id %>"><%= childTag.name %></label></div>
+			<% end %>
+			</div>
+		<% end %>
+	<% end %>
+</div>

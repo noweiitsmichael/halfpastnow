@@ -8,6 +8,7 @@
 
 <% content_for :code do %>
 	<script type="text/javascript">
+		$( "button" ).button();
 		$(function() {
 			$('#create-event').click(function() {
 				window.location = "/userSubmission/eventCreate1?new_title=" + $("#event-title").val();
@@ -17,10 +18,10 @@
 				var term = $(this).val();
 				$.getJSON("/userSubmission/eventSearchTerm?term=" + term, function (data) {
 		            $('#event-results').empty();
-		            $("<li><h4 style='margin-top:10px;'>Existing Events:</h4></li>").appendTo('#event-results');
+		            $("<h4 style='margin-top:10px;'>Existing Events:</h4>").appendTo('#event-results');
 		            // console.log(data);
 		            $.each(data, function() {
-		            	$("<li style='margin-top:10px;overflow:hidden;'><a style='float:left;margin-right:10px;' href='/userSubmission/eventEdit1/" + this.event.id + "'>[edit]</a><div style='float:left'><h5><a href='/?event_id=" + this.id + "' target='_blank'>"+ this.event.title + "</a></h5><span>" + this.event.venue.name + "</span></div></li>").appendTo('#event-results');
+		            	$("<li style='overflow:hidden'><a style='float:left;margin-right:10px;margin-top:6px' href='/userSubmission/eventEdit1/" + this.event.id + "'>[edit]</a><div class='result-element'><h5><a href='/?event_id=" + this.id + "' target='_blank' class='resultEventName'>"+ this.event.title + "</a></h5><span>" + this.event.venue.name + "</span></div></li>").appendTo('#event-results');
 		            });
 		        });
 			});
@@ -31,7 +32,9 @@
 
 <% content_for :body do %>
 	<div id="info-content" class="padded">
-		Event Title <input type="text" id="event-title" style="width:300px;"/> <button id="create-event">Create New Event</button>
+		<h5>Event Title</h5> 
+		Type in the event title, and if it doesn't already exist in our database, simply hit create!
+		<br><br><input type="text" id="event-title" style="width:400px;"/> <button id="create-event" class="nice-button">Create New Event</button>
 		<ul id="event-results">
 		</ul>
 	</div>

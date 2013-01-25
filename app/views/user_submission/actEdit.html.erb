@@ -1,0 +1,231 @@
+<% content_for :header do %>
+	<div class="titlebar">
+		<div class="stay-on-target">
+			<%= @act.id ? "Edit" : "Create" %> Performer
+		</div>
+	</div>
+<% end %>
+
+<% content_for :code do %>
+	<style type="text/css">
+		label { display:block; margin-top:5px; }
+		input[type=text] { width: 500px; }
+		.field.tags label { display:inline; margin:0; cursor:pointer; }
+	</style>
+	<%= javascript_include_tag "jquery.cleditor.min" %>
+  	<%= stylesheet_link_tag    "jquery.cleditor" %>
+	<script type="text/javascript">
+	$(function() {
+		$('.cleditor').cleditor({
+	      controls:     "bold italic underline size | color highlight removeformat" +
+	                    " | bullets numbering | undo redo | " +
+	                    "rule image link unlink | source",   
+	      sizes:        "1,2,3,4,5,6,7",
+	      bodyStyle:    // style to assign to document body contained within the editor
+	                    "margin:4px; font:10pt Arial,Verdana; cursor:text"
+	    });
+
+	    if (window.opener) {
+			$("#act-form").ajaxForm({
+	            beforeSerialize: function(form, options) {
+	            	// do some embed manips
+	            	$('.site-select').each(function() {
+	            		var finalVal = "";
+	            		switch($(this).val()) {
+	            			case "youtube":
+	            				finalVal = '<iframe width="100%" height="280" src="http://www.youtube.com/embed/' + getEmbedValue($(this).siblings('.site-url-input').val())[3] + '" frameborder="0" allowfullscreen></iframe>';
+	            			break;
+	            			case "vimeo":
+	            				finalVal = '<iframe src="http://player.vimeo.com/video/' + getEmbedValue($(this).siblings('.site-url-input').val())[1] + '" width="100%" height="280" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+	            			break;
+	            			case "reverbnation":
+	            				finalVal = '<iframe class="widget_iframe" src="http://www.reverbnation.com/widget_code/html_widget/' + getEmbedValue($(this).siblings('.site-url-input').val())[1] + '" width="100%" height="250" frameborder="0" scrolling="no"></iframe>';
+	            			break;
+	            			case "soundcloud":
+	            				finalVal = "<iframe width='100%' height='350' scrolling='no' frameborder='no' src='https://w.soundcloud.com/player/?url=" + $(this).siblings('.site-url-input').val() + "'></iframe>";
+	            			break;
+	            			case "custom":
+	            				var customEmbed = $($(this).siblings('.site-embed-input').val());
+	            				customEmbed.css({width:"100%"});
+	            				finalVal = $("<div></div>").append(customEmbed).html();
+	            			break;
+	            		}
+	            		$(this).siblings('.embed-final-form').val(finalVal);
+	            		console.log(finalVal);
+	            	});
+	            },
+	            beforeSubmit: function(arr, $form, options) { 
+	            	console.log("before submit");
+				},
+	            success:function(data) {
+					window.opener.addNewPerformer(data);
+					window.close();
+	            },
+	            type: "post",
+	            dataType: "json"
+	        });
+		}
+		});
+
+		function getEmbedValue(url) {
+			var arr = url.split("://");
+			var baseUrl = arr[arr.length - 1];
+			console.log(baseUrl);
+			return baseUrl.split(/[/?=&]/);
+		}
+	</script>
+<% end %>
+
+<% content_for :body do %>
+	<div id="info-content" class="padded">
+	<%= form_for @act, :url => "/userSubmission/actSubmit/", :html => { :id => "act-form", :multipart => true} do |e| %>
+		<% if @act.id %><%= e.hidden_field :id %><% end %>
+			<div class="field">
+			  <h5><%= e.label :name %></h5>
+			  <%= e.text_field :name %>
+			</div>
+			<div class="field">
+			  <h5><%= e.label :description %></h5>
+			  <%= e.text_area :description, :class => "cleditor" %>
+			</div>
+
+			<% if false %>
+			<!-- <div class="field">
+			  <h5><%= e.label :bio %></h5>
+			  <%= e.text_area :bio, :class => "cleditor" %>
+			</div> -->
+			 <% end %>
+
+			<div class="field">
+			  <h5><%= e.label :website %></h5>
+			  <%= e.text_field :website %>
+			</div>
+
+			<%= render :partial => "tags", :locals => { :element => @act, :type => "act" } %>
+
+
+
+		<!-- Pictures Section -->
+		    <div class="picture_parts">
+		    <div><h5>Pictures</h5></div>
+		    <% newPic = Picture.new %>
+		    <%= e.fields_for newPic, :url => "/pictures/create", :html => {:multipart => true} do |g| %>
+		          <label class="piclabel">Add Picture from URL:</label>
+		          <%= hidden_field_tag :pictureable_attributes %>
+		          <%= hidden_field_tag :pictureable_type, "Act" %>
+		          <%= hidden_field_tag :pictureable_id, @act.id %>
+		          <%= e.text_field :remote_image_url, :class => "picurl", :size => "20" %>
+		          <a href="" id="new_pic">Add pic</a>
+		    <% end %>
+		    <br>
+		    <% newPic2 = Picture.new %>
+		    <%= e.fields_for newPic2, :html => { :multipart => true} do |g| %>
+		      <label class="piclabel">Or upload file:</label>
+		      <%= hidden_field_tag :pictureable_attributes %>
+		      <%= e.file_field :image, :class => "picchoosefile" %>
+		      <a href="" id="fileclick">Add pic</a>
+		    <% end %>
+		    <br><br>
+
+
+		    <script type="text/javascript">
+			    $(function () {
+					$('#new_pic').click( function (){
+						console.log("new pic click");
+						if ($("#act_remote_image_url").val() == ""){
+						  confirmURL("nourl");
+						  return false;
+						} 
+						else {
+						  $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('#actThumbs');
+						  var picData = 
+						    {"picture":
+						      { "pictureable_id": parseInt($("#pictureable_id").val()),
+						        "pictureable_type": $("#pictureable_type").val(), 
+						        "remote_image_url": $("#act_remote_image_url").val()
+						      }
+						    };
+						}
+						$.post("/pictures/create",picData,function(data) {
+						  var numThumbs = document.getElementsByClassName("gallery");
+						  var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
+						  newPicThumb += '<div class="pictures field gallery" index="' + numThumbs + '">';
+						  newPicThumb += '<input type="hidden" name="act[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+						  newPicThumb += '<div href="" class="remove-pic">X</div>';
+						  newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '"></div>';
+						  $('.ajaxLoader').detach();
+						  $(newPicThumb).appendTo('#actThumbs');
+						},
+						"json");
+						return false;
+					});
+
+			        $("#fileclick").click(function() {
+						console.log("file pic click");
+			          if ($("#act_image").val() == ""){
+			            confirmURL("nofile");
+			          } else {
+			            $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('#actThumbs');
+			            $("#act-form").ajaxSubmit({
+			              beforeSerialize: function(form, options) {
+			              },
+			              url: "/pictures/createForAct",
+			              success:function(data) {
+			                var numThumbs = document.getElementsByClassName("gallery");
+			                var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
+			                newPicThumb += '<div class="pictures field gallery" index="' + numThumbs + '">';
+			                newPicThumb += '<input type="hidden" name="act[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+			                newPicThumb += '<img style="margin-right:3px;" alt="image_thumb" src="' + data.image.thumb.url + '">';
+			                newPicThumb += '<div style="margin-right:3px;" href="" class="remove-pic">X</div></div>';
+			                $('.ajaxLoader').detach();
+			                $(newPicThumb).appendTo('#actThumbs');
+			              },
+			              type: "post",
+			              dataType: "json"
+			            });
+			          }
+			          return false;
+			        });
+
+				    $('.picture_parts').on("click", ".remove-pic", function() {
+				        console.log("click");
+				      var index = $(this).parents(".pictures.field").attr("index");
+				      if(typeof index !== 'undefined') {
+				        $(this).after("<input type='hidden' name='act[pictures_attributes][" + index + "][_destroy]' value='1' />");
+				        $(this).parents(".pictures.field").hide();
+				      } else {
+				        $(this).parents(".pictures.field").remove();
+				      }
+				      return false;
+				    });
+			    });
+
+		    </script>
+
+		    
+			    <Br>
+			    <div class="pic-gallery-wrapper"<% if @act.pictures.empty? %> style="display:none"<% end %>>
+				    <% @act.pictures.each_with_index do |pic, index| %>
+				    <div class="pictures field gallery" index="<%= index %>">
+				      <input type="hidden" name="act[pictures_attributes][<%= index %>][id]" value="<%= pic.id %>" />
+				      <%= image_tag pic.image_url(:thumb).to_s %>
+				      <div href="" class="remove-pic">X</div>
+				    </div>
+				    <% end %>
+
+			   		<span id="actThumbs"></span>
+				</div>
+
+		    
+		    </div>
+		<!-- End Pictures Section -->
+
+		<h5>Embeds</h5>
+
+		<%= render :partial => "embeds_dropdown", :locals => { :obj => @act, :type => "act", :type_ind => "act" } %>
+		<br><br>
+		<%= e.submit :class => "nice-button form-submit" %>
+	<% end %>
+	</div>
+
+<% end %>

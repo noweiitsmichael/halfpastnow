@@ -10,7 +10,6 @@
 //= require jquery-ui-timepicker-addon
 //= require jcrop
 //= require underscore
-//= require jquery-ui
 //= require viewport
 //= require date
 //= require dropkick

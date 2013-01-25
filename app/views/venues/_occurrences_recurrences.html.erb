@@ -10,7 +10,7 @@
 	<div class="new-occurrence">
 
 		<% @occurrence = event.occurrences.select { |occ| occ.id.nil? }.first %>
-		
+
 		<%= e.fields_for :occurrences, @occurrence do |o| %>
 			<div class="field">
 		    	<label>Start</label><input type="text" class="datetime-input <% if validate_occurrence %>required<% end %>" value="<%= display_datetime(@occurrence.start) %>"/>
@@ -68,11 +68,11 @@
     <% if occurrence.recurrence.nil? && !occurrence.id.nil? %>
 	    <div class="occurrence">
 	    	<div class="field">
-		    	<label>Start</label><input type="text" class="datetime-input required" value="<%= display_datetime(occurrence.start) %>"/>
+		    	<label>From</label><input type="text" class="datetime-input required" value="<%= display_datetime(occurrence.start) %>"/>
 		    	<%= o.hidden_field :start, :value => hidden_datetime(occurrence.start), :class => "datetime-hidden" %> 
 		    </div>
 		    <div class="field">
-		    	<label>End</label><input type="text" class="datetime-input" value="<%= display_datetime(occurrence.end) %>"/>
+		    	<label>to</label><input type="text" class="datetime-input" value="<%= display_datetime(occurrence.end) %>"/>
 		    	<%= o.hidden_field :end, :value => hidden_datetime(occurrence.end), :class => "datetime-hidden" %>
 		    </div>
 			<div class="remove">

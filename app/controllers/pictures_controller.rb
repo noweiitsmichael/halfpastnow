@@ -123,7 +123,7 @@ class PicturesController < ApplicationController
 
   def coverImageAdd
      puts "cover Picture Crop function"
-     # pp params
+     pp params
     @picture = Picture.find(params[:picture][:id])
 
     # Saves to either raw event or event, we'll copy the cover_image over to raw event later
