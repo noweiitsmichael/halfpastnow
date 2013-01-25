@@ -927,6 +927,20 @@ def showact
                                    :act => @act, :pictures => @pictures, :embeds => @act.embeds, :tags => @act.tags, :venues =>@venues } } 
     end
 end
+
+# def bookmark
+   
+#     @occurrenceid = Occurrence.find_by_event_id(params[:event_id]).id
+#     current_user =  User.find_by_email(params[:email])
+#     @bookmark = current_user.main_bookmark_list.bookmarks.build
+#     @bookmark.bookmarked_id = @occurrenceid
+#     @bookmark.bookmarked_type = "Occurrence"
+#     @bookmark.save!
+#     respond_to do |format|
+#       format.json { render json: { :ids =>@occurrenceid  } } 
+#     end
+#   end
+
   def bookmark
    # @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
     @event = Event.find(params[:event_id])
@@ -935,10 +949,10 @@ end
     # @event = Event.find(params[:event_id])
     # @occurrenceid = @event.occurrences.select{ |o| o.start >= Date.today.to_datetime }.last
     current_user =  User.find_by_email(params[:email])
-    #bbookmark= Bookmark.new
+    # bbookmark= Bookmark.new
     # bbookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrenceid, :bookmark_list_id => current_user.main_bookmark_list.id).first
       
-    @bookmarkId =  bbookmark.id 
+    
     @bookmark = current_user.main_bookmark_list.bookmarks.build
     @bookmark.bookmarked_id = @occurrenceid
     @bookmark.bookmarked_type = "Occurrence"
