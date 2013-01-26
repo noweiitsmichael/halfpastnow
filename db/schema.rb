@@ -285,15 +285,6 @@ ActiveRecord::Schema.define(:version => 20130115003752) do
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
-  create_table "students", :force => true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-    t.string   "videoname"
-    t.string   "videonametest"
-  end
-
   create_table "tags", :force => true do |t|
     t.string   "name"
     t.integer  "parent_tag_id"
@@ -306,6 +297,13 @@ ActiveRecord::Schema.define(:version => 20130115003752) do
   create_table "tags_venues", :id => false, :force => true do |t|
     t.integer  "venue_id"
     t.integer  "tag_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "things", :force => true do |t|
+    t.string   "name"
+    t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -327,7 +325,6 @@ ActiveRecord::Schema.define(:version => 20130115003752) do
     t.string   "lastname"
     t.string   "username"
     t.string   "profilepic"
-    t.string   "authentication_token"
     t.string   "provider"
     t.string   "uid"
     t.string   "fb_access_token"
@@ -367,17 +364,6 @@ ActiveRecord::Schema.define(:version => 20130115003752) do
     t.integer  "updated_by"
     t.float    "completion"
     t.integer  "assigned_admin"
-  end
-
-  create_table "videos", :force => true do |t|
-    t.integer  "eventID"
-    t.integer  "venueId"
-    t.text     "comment"
-    t.float    "longitude"
-    t.float    "altitude"
-    t.string   "url"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
   end
 
 end

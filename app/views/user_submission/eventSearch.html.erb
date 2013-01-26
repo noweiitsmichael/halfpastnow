@@ -8,7 +8,6 @@
 
 <% content_for :code do %>
 	<script type="text/javascript">
-		$( "button" ).button();
 		$(function() {
 			$('#create-event').click(function() {
 				window.location = "/userSubmission/eventCreate1?new_title=" + $("#event-title").val();
@@ -19,9 +18,18 @@
 				$.getJSON("/userSubmission/eventSearchTerm?term=" + term, function (data) {
 		            $('#event-results').empty();
 		            $("<h4 style='margin-top:10px;'>Existing Events:</h4>").appendTo('#event-results');
-		            // console.log(data);
-		            $.each(data, function() {
-		            	$("<li style='overflow:hidden'><a style='float:left;margin-right:10px;margin-top:6px' href='/userSubmission/eventEdit1/" + this.event.id + "'>[edit]</a><div class='result-element'><h5><a href='/?event_id=" + this.id + "' target='_blank' class='resultEventName'>"+ this.event.title + "</a></h5><span>" + this.event.venue.name + "</span></div></li>").appendTo('#event-results');
+		             console.log(data);
+		             console.log(data.events);
+		            $.each(data.events, function() {
+		            	console.log(this);
+		            	var topPicksButton;
+		            	if (data.existingBookmarks.indexOf(this.event.id) === -1 ) {
+		            		topPicksButton = "<a class='nice-button add-to-picks' href=''>Add to Picks</a>"
+		            	} else {
+		            		topPicksButton = "<a class='nice-button remove-from-picks' href=''>Remove</a>"
+
+		            	}
+		            	$("<li style='overflow:hidden'><div class='result-element-actions'><a href='/userSubmission/eventEdit1/" + this.event.id + "'>[edit]</a><% if user_signed_in? %><% if (current_user.role == 'admin') || (current_user.role == 'super_admin') %>" + topPicksButton + "<% end %><% end %></div><div class='result-element'><h5><a href='/?event_id=" + this.id + "' target='_blank' class='resultEventName'>"+ this.event.title + "</a></h5><span>" + this.event.venue.name + "</span></div></li>").appendTo('#event-results');
 		            });
 		        });
 			});

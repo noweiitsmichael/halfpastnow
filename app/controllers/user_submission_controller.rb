@@ -134,8 +134,11 @@ helper :content
 		    @occurrence_ids = ActiveRecord::Base.connection.select_all(query).collect { |e| e["occurrence_id"].to_i }
 		    @occurrences = Occurrence.find(@occurrence_ids)
 
+
+		    @bookmarkResults = BookmarkList.where(:user_id => current_user.id, :featured => true).collect { |b| b.bookmarks }.flatten.bookmarked_event
+
 		    respond_to do |format|
-		    	format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:venue, :acts] }})}
+		    	format.json { render json:  @occurrences.to_json(:include => {:event => {:include => :venue} } )}
 		    end
 	    end
 
