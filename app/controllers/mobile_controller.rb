@@ -927,9 +927,23 @@ def showact
                                    :act => @act, :pictures => @pictures, :embeds => @act.embeds, :tags => @act.tags, :venues =>@venues } } 
     end
 end
-  def bookmark
+
+# def bookmark
    
-    @occurrenceid = Occurrence.find_by_event_id(params[:event_id]).id
+#     @occurrenceid = Occurrence.find_by_event_id(params[:event_id]).id
+#     current_user =  User.find_by_email(params[:email])
+#     @bookmark = current_user.main_bookmark_list.bookmarks.build
+#     @bookmark.bookmarked_id = @occurrenceid
+#     @bookmark.bookmarked_type = "Occurrence"
+#     @bookmark.save!
+#     respond_to do |format|
+#       format.json { render json: { :ids =>@occurrenceid  } } 
+#     end
+#   end
+
+  def bookmark
+    @event = Event.find(params[:event_id])
+    @occurrenceid =  @event.occurrences.select { |occ| occ.start >= Date.today.to_datetime }.sort_by { |occ| occ.start }.first.id
     current_user =  User.find_by_email(params[:email])
     @bookmark = current_user.main_bookmark_list.bookmarks.build
     @bookmark.bookmarked_id = @occurrenceid
@@ -944,7 +958,22 @@ end
     @userid = User.find_by_email(params[:email]).id
     current_user =  User.find_by_email(params[:email])
     @list = current_user.main_bookmark_list
-    @bookmark=@list.bookmarks.find_by_bookmarked_id(params[:event_id])
+    @event= Occurrence.find(params[:event_id]).event
+    @bms= @list.bookmarks.select{ |o| o.bookmarked_type == 'Occurrence' }
+    @idd = params[:event_id]
+    @bms.each{|bm|
+      if bm.bookmarked_id != 1 && bm.bookmarked_id != nil
+        occu = Occurrence.find(bm.bookmarked_id)
+        eventt = occu.event
+        if eventt.id == @event.id
+          @idd = bm.bookmarked_id
+          
+          break
+        end
+      end
+      
+    }
+    @bookmark=@list.bookmarks.find_by_bookmarked_id(@idd)
     @bookmark.destroy
   end
   def bookmarkvenue
@@ -955,7 +984,11 @@ end
     @bookmark.save!
   end
   def unbookmarkvenue
-    @bookmark = Bookmark.find_by_bookmarked_id(params[:venueid])
+    @venue = Venue.find(params[:venueid])
+    current_user=User.find_by_email(params[:email])
+    bookmark = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => @venue.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
+    @bookmarkId = bookmark.nil? ? nil : bookmark.id
+    @bookmark = Bookmark.find(@bookmarkId)
     @bookmark.destroy
   end
   
@@ -980,7 +1013,11 @@ end
     current_user.followedLists.delete(list)
   end
   def unbookmarkact
-    @bookmark = Bookmark.find_by_bookmarked_id(params[:actid])
+    @act = Act.find(params[:actid])
+    current_user=User.find_by_email(params[:email])
+    bookmark = Bookmark.where(:bookmarked_type => 'Act', :bookmarked_id => @act.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
+    @bookmarkId = bookmark.nil? ? nil : bookmark.id
+    @bookmark = Bookmark.find(@bookmarkId)
     @bookmark.destroy
   end
 

@@ -19,7 +19,7 @@
 	<% if picklists.size > 0 %>
 	<div class="picklists">
 		<% picklists.take(3).each do |pList| %>
-			<a href="/picks/find/<%= pList.id %>" /><%= image_tag pList.picture_url(:mini) || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
+			<a href="/picks/find/<%= pList.id %>" class="picklist-link"><%= image_tag pList.picture_url(:mini) || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
 		<% end %>
 		<em style="position: relative;top: -5px;margin-left: 2px;">on <%= picklists.size %> top picks <%= picklists.size == 1 ? "list" : "lists" %></em>
 	</div>

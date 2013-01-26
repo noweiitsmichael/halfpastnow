@@ -150,8 +150,11 @@ def index
     @event.clicks += 1
     @event.save
 
+   
+
     if(current_user)
-      bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :user_id => current_user.id).first
+      bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
+      # bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :user_id => current_user.id).first
       @bookmarkId = bookmark.nil? ? nil : bookmark.id 
     else
       @bookmarkId = nil

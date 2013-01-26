@@ -220,6 +220,7 @@ Devise.setup do |config|
 
 # '475386955806720', '80d74b0e6d0c97b4d857ce97fe46138a', 'omniauth_callbacks'
 # '273167206143082', '330f1528fc40c5ccd0c467f554ff1719',
+# mobile 560627683952100
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

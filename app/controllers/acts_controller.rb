@@ -10,9 +10,8 @@ class ActsController < ApplicationController
 
     @act = Act.find(params[:id])
     @pageTitle = @act.name + " | half past now."
-
     if(current_user)
-      bookmark = Bookmark.where(:bookmarked_type => 'Act', :bookmarked_id => @act.id, :user_id => current_user.id).first
+      bookmark = Bookmark.where(:bookmarked_type => 'Act', :bookmarked_id => @act.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
       @bookmarkId = bookmark.nil? ? nil : bookmark.id
     else
       @bookmarkId = nil

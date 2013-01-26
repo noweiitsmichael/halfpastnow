@@ -2367,6 +2367,11 @@ input::-webkit-input-placeholder
     height:20px;
 }
 
+.picklist-events {
+    clear: left;
+
+}
+
 #content .events li .price {
     float: left;
     margin-left: 5px;
@@ -3006,28 +3011,24 @@ html, body {
 }
 
 .picklist {
-    float:left;
-    width: 451px;
     border:1px solid #ccc;
-    margin-left: 12px;
-    padding:12px;
+    margin: 12px 0;
+    padding: 10px;
     overflow:hidden;
-    height: 418px;
-    margin-bottom: 12px;
 }
 
-.picklist:nth-child(1), .picklist:nth-child(2) {
-    margin-top: 12px;
+.picklist:nth-child(1), .picklist:nth-child(2),.picklist:nth-child(3) {
 }
 
 .picklist-details {
-    float:left;
-    width: 310px;
-    margin-left: 12px;
+    width: 223px;
+    float: left;
+    margin-left: 6PX;
 }
 
 .picklist-details h3 {
     font-size:16px;
+    margin-bottom: 6px;
 }
 
 .picklist-sidebar {
@@ -3036,7 +3037,8 @@ html, body {
 
 .picklist-sidebar .picture {
     border: 1px solid #ccc;
-    width: 126px;
+    width: 60px;
+    
 }
 
 
@@ -3082,18 +3084,21 @@ html, body {
 .follow.button {
     background-color:#0099ff;
     width: 128px;
+    font-size: 13px;
 }
 
 .unfollow.button {
     background-color:#bb00bb;
     width: 128px;
+    font-size: 13px;
 }
 
 .picklist-description {
     margin-top:6px;
     margin-bottom:9px;
     overflow: hidden;
-    max-height: 112px;
+    max-height: 48px;
+    font-size: 12px;
 }
 
 .picklist-events li {
@@ -3217,4 +3222,10 @@ html, body {
   padding-top:6px;
   font-size: 10px;
   font-weight:lighter;
+}
+.list{
+  
+  width: 313px;
+  float: left;
+  margin-left: 12px;
 }
