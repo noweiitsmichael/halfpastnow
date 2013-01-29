@@ -213,12 +213,3 @@
 		</div>
 	</div>
 <% end %>
-
-<% content_for :overlay do %>
-	<div class="mode">
-		<div class="overlay">			
-			<div class="window">
-			</div>
-		</div>
-	</div>
-<% end %>
