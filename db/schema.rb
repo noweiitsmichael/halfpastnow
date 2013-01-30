@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130115003752) do
+ActiveRecord::Schema.define(:version => 20130125213827) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(:version => 20130115003752) do
     t.integer  "bookmarked_id"
     t.string   "bookmarked_type"
     t.integer  "bookmark_list_id"
+    t.text     "comment"
   end
 
   create_table "channels", :force => true do |t|

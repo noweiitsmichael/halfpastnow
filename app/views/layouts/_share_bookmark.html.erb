@@ -4,6 +4,8 @@
 	var root_url = "http%3A%2F%2Fhalfpastnow.com";
 	var link = root_url + "%3F" + type + "_id%3D" + id;
 	var bookmark_id = "<%= bookmarkId.to_s %>";
+	var bookmarkList_id = "<%= id %>";
+	var toggle = false;
 	console.log(id+' '+bookmark_id)
 	$(function() {
 		 	
@@ -31,8 +33,9 @@
 	
 	
 	$(function() {
-		
+		console.log("Loaded share stuff");
 		$('.bookmark-share .bookmark').click(function() {
+
 			var that = $(this);
 			if(that.hasClass('add')) {
 				var bookmarked_type = "";
@@ -97,14 +100,67 @@
 			window.open(url, '_blank');
 			window.focus();
 		});
-		
+		$('.bookmark-share .comment-tp .add-tp').click(function() {
+			var that = $('.add-tp');
+			if (toggle) {
+				$('.popup-box').hide();
+				$('.popup-box-1').hide();
+			}
+			else {
+				if(that.hasClass('add')) {
+					$('.popup-box').show();
+				}
+				else{
+					$('.popup-box-1').show();
+				}
+				
+			}
+			toggle = !toggle;
+			
+			
+
+			// $('.bookmark-share .comment-tp .popup-box').hidden;
+		});
 		// $('.bookmark-share .gcal').click(function() {
 		// 	var url = '<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fsecret-citadel-5147.herokuapp.com%2F%3Fevent_id%3D1&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=80&amp;appId=449267651794206" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>';
 		// 	window.open(url, '_blank');
 		// 	window.focus();
 		// });
 	});
-
+	function submit_comment()
+      {	
+      	var text = $('.comment-text').val();
+      	$('.popup-box').hide();
+      	that = $('.add-tp');
+      	toggle = !toggle;
+      	that.removeClass('add').addClass('remove');
+      	$.getJSON('/bookmarks/add_to_featuredlist', { bookmark: { "type": "Occurrence", "id": <%= id  %>, "comment":text } }, function(data) {
+					bookmark_id = data;
+				});
+      
+      	$(".comment-text-1").val(text);
+      }
+    function deleteTP()
+      {	
+      	
+      	$('.popup-box-1').hide();
+      	toggle = !toggle;
+      	that = $('.add-tp');
+      	$.getJSON('/bookmarks/destroyBookmarkedList/' + bookmarkList_id, function(data) {
+		          that.removeClass('remove').addClass('add');
+		        });
+      }
+	  function edit_comment()
+	  {	
+	  	$('.popup-box-1').hide();
+      	toggle = !toggle;
+      	var text = $('.comment-text-1').val();
+      	console.log("Edit comment"+text);
+	    $.getJSON('/bookmarks/update_comment', { bookmark: { "type": "Occurrence", "id": bookmarkList_id, "comment": text } }, function(data) {
+	          bookmark_id = data;
+	          
+        });
+	  }
 </script>
 
  <script>
@@ -149,7 +205,26 @@
 	<span class="icon icon-facebook-sign facebook"></span>
 	<span class="icon icon-twitter-sign twitter"></span>
 	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span>
+	<% if type == 'event' %>
+		<% if (!current_user.nil?) && current_user.role_at_least?("top_picker")  %>
+			<div class="comment-tp">
+				<span class="add-tp  <%= @bookmarkFeaturedListId.nil? ? "add" : "remove" %>">TP</span>
+				<div class="popup-box">
+					<label> Add comment (Optional)</label>
+					<textarea class="comment-text" style="color:black;" placeholder="Comment"></textarea>
+					<button onclick='return submit_comment()'>Add comment</button>
+				</div>
+				<div class="popup-box-1">
+					<label> Edit comment (Optional)</label>
+					<textarea class="comment-text-1" style="color:black;" placeholder="Comment"><%=(@occurrence.event_bookmarks_with_comments(current_user.featured_list.id).first.nil? ) ? '' : @occurrence.event_bookmarks_with_comments(current_user.featured_list.id).first.comment%></textarea>
+					<button class="edit-btn" onclick='return edit_comment()'>Edit comment</button>
+					<button class="delete-btn" onclick='return deleteTP()'>UnTP</button>
+				</div>
+			</div>
+		<% end %>
+	<% end %>
 </div>
+
 <iframe src="<%= @ur %>"
         scrolling="no" frameborder="0"
         style="border:none; width:450px; height:80px" class="no-spin-zone"></iframe>

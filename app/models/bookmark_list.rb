@@ -42,8 +42,33 @@ class BookmarkList < ActiveRecord::Base
 
 	# 	return @bookmarked_events.compact
 	# end
+	
+	def bookmarked_events(num)
+		occurrences = []
+		
+		self.bookmarks.each do |bookmark|
+			if(num && occurrences.size == num)
+				break
+			end
+			
+			occurrence = bookmark.bookmarked_event
+			unless(occurrence.nil?)
+				occurrences.push(occurrence)
+			end
+		end
+		return occurrences
+		
 
-	def bookmarked_events
+
+		# @bookmarked_events = Bookmark.where(:bookmark_list_id => self.id, :bookmarked_type => "Occurrence")
+		# @bookmarked_events.collect! do |b|
+		# 	b.bookmarked_event
+		# end
+
+		# return @bookmarked_events.compact
+	end
+
+	def all_bookmarked_events
 		@bookmarked_events = Bookmark.where(:bookmark_list_id => self.id, :bookmarked_type => "Occurrence")
 		@bookmarked_events.collect! do |b|
 			b.bookmarked_event
@@ -52,4 +77,13 @@ class BookmarkList < ActiveRecord::Base
 		return @bookmarked_events.compact
 	end
 
+	def first_legit_bookmarked_event
+		self.bookmarks.each do |bookmark|
+			occurrence = bookmark.bookmarked_event
+			unless(occurrence.nil?)
+				return occurrence
+			end
+		end
+		return nil
+	end
 end

@@ -1780,11 +1780,101 @@ input::-webkit-input-placeholder
     color:#444;
 }
 
+.mode .window .bookmark-share span.add-tp {
+    background-color: #444;
+    
+    color: white;
+    font-size: 16px;
+    height: 26px;
+    width: 26px;
+    text-align: center;
+    line-height: 25px;
+    border-radius: 13px;
+    position: relative;
+    top: -2px;
+}
+.mode .window .bookmark-share span.add-tp.remove {
+    background-color: #1F9FC9;
+    color:white;
+}
+.mode .window .bookmark-share span.add-tp:hover {
+    background-color: #1F9FC9;
+    color:white;
+}
+
+.mode .window .bookmark-share .comment-tp {
+    
+    display:inline-block;
+    position:relative;
+}
+.mode .window .bookmark-share .comment-tp .popup-box {
+    
+   display:none;
+    position:absolute;
+    width:300px;
+    height:100px;
+    background-color:red;
+    top:36px;
+    
+}
+.mode .window .bookmark-share .comment-tp .popup-box label {
+   font-size: 16px;
+   color:white;
+   margin-left:10px; 
+}
+.mode .window .bookmark-share .comment-tp .popup-box textarea {
+   font-size: 16px;
+   color:white;
+   margin-left:10px;
+   width:270px; 
+}
+.mode .window .bookmark-share .comment-tp .popup-box button {
+    margin-right:10px;
+    float:right;
+}
 .mode .window .bookmark-share span.bookmark {
     font-size:36px;
     position:relative;
     top:7px;
 }
+
+
+.mode .window .bookmark-share .comment-tp .popup-box-1 {
+    
+   display:none;
+    position:absolute;
+    width:300px;
+    height:100px;
+    
+   background-color: #1F9FC9;
+    top:36px;
+    
+}
+.mode .window .bookmark-share .comment-tp .popup-box-1 label {
+   font-size: 16px;
+   color:white;
+   margin-left:10px; 
+}
+.mode .window .bookmark-share .comment-tp .popup-box-1 textarea {
+   font-size: 16px;
+   color:white;
+   margin-left:10px;
+   width:270px; 
+}
+.edit-btn  {
+    margin-right:10px;
+    float:right;
+}
+.delete-btn  {
+    margin-left:10px;
+    float:left;
+}
+.mode .window .bookmark-share span.bookmark {
+    font-size:36px;
+    position:relative;
+    top:7px;
+}
+
 
 .mode .window .bookmark-share span:hover {
     color: #1F9FC9;
@@ -2174,6 +2264,11 @@ input::-webkit-input-placeholder
   border: 1px solid #ccc;
 }
 
+#info-content.top-picks {
+    background:transparent;
+    border:none;
+}
+
 #info-content > .info {
     font-size: 13px;
 }
@@ -2218,7 +2313,15 @@ input::-webkit-input-placeholder
     margin-top: 27px;
     display: block;
 }
-
+.edit-popup-box {
+    display: none;
+    position: absolute;
+    width: 300px;
+    height: 100px;
+    background-color: #1F9FC9;
+    top: -147px;
+    left: 77px;
+}
 #content .main .inner .events li {
     padding: 0 10px 0 219px; 
     min-height: 120px;
@@ -2228,6 +2331,37 @@ input::-webkit-input-placeholder
     border: 1px solid #DDD;
     overflow:hidden;
 }
+
+.events li .bookmark-comment {
+    border:1px solid #ccc;
+    clear:left;
+    padding:5px;
+    font-size:12px;
+    margin-bottom:10px;
+    width: 339px;
+}
+
+.events li .bookmark-comment:before, 
+.events li .bookmark-comment:after {
+    font-weight:normal;
+    font-size:22px;
+    position:relative;
+    top:-14px;
+    display:inline-block;
+    height:0px;
+}
+
+.events li .bookmark-comment:before {
+    content:"\201C";
+    margin-right:2px;
+    
+}
+
+.events li .bookmark-comment:after {
+    content:"\201D";
+    margin-left:2px;
+}
+
 
 
 #content .main .inner .events li:first-child {
@@ -2330,9 +2464,12 @@ input::-webkit-input-placeholder
     height:20px;
 }
 
+
 .picklist-events {
     clear: left;
 
+    border-top: 1px solid #ddd;
+    background: #eeeeee;
 }
 
 #content .events li .price {
@@ -2974,34 +3111,41 @@ html, body {
 }
 
 .picklist {
-    border:1px solid #ccc;
+    border: 1px solid #ddd;
     margin: 12px 0;
-    padding: 10px;
     overflow:hidden;
+    background: white;
+    border-radius: 1px;
 }
 
-.picklist:nth-child(1), .picklist:nth-child(2),.picklist:nth-child(3) {
-}
 
 .picklist-details {
-    width: 223px;
+    width: 204px;
     float: left;
-    margin-left: 6PX;
+    margin: 12px 12px 12px 0;
 }
 
 .picklist-details h3 {
-    font-size:16px;
+    font-size: 18px;
     margin-bottom: 6px;
+    margin-top: -4px;
+}
+
+.picklist-details h3 a {
+    text-decoration:none;
+    font-style:italic;
+    color:black;
 }
 
 .picklist-sidebar {
     float:left;
+    margin: 12px;
 }
 
 .picklist-sidebar .picture {
-    border: 1px solid #ccc;
-    width: 60px;
+    width: 80px;
     
+    display: block;
 }
 
 
@@ -3046,29 +3190,35 @@ html, body {
 
 .follow.button {
     background-color:#0099ff;
-    width: 128px;
+    width: 80px;
     font-size: 13px;
+    border-radius: 0 0 2px 2px;
 }
 
 .unfollow.button {
     background-color:#bb00bb;
-    width: 128px;
+    width: 80px;
     font-size: 13px;
+    border-radius:  0 0 2px 2px;
 }
 
 .picklist-description {
-    margin-top:6px;
-    margin-bottom:9px;
+    margin-top: 0px;
     overflow: hidden;
-    max-height: 48px;
+    max-height: 76px;
     font-size: 12px;
 }
 
 .picklist-events li {
-    border:1px solid #ccc;
-    margin-top:4px;
-    padding: 4px;
     cursor:pointer;
+    position: relative;
+    padding: 12px;
+}
+
+.picklist-events li .picture{
+    width:80px;
+    position: absolute;
+    border: 1px solid #ccc;
 }
 
 .picklist-events li:hover {
@@ -3076,16 +3226,15 @@ html, body {
 }
 
 .picklist-events li.see-more {
-    border:none;
-    background:#eee;
-    text-align:center;
+    text-align: right;
     font-weight:bold;
-    cursor:auto;
-    padding-bottom:6px;   
+    cursor:auto;   
+    border-top: none;
+    padding-top: 0;
 }
 
 .picklist-events li.see-more a {
-    font-size:16px;
+    font-size: 13px;
     color:black;
     text-decoration:none;
     border-bottom:1px dotted black;
@@ -3095,15 +3244,18 @@ html, body {
     font-weight:700;
     overflow:hidden;
     max-height:32px;
+    margin-left: 92px;
 }
 
 .picklist-events li .venue {
     font-style:italic;
+    margin-left: 92px;
 }
 
 .picklist-events li .datetime {
     text-transform:lowercase;
     font-size:11px;
+    margin-left: 92px;
 }
 
 .picks-info {
@@ -3153,10 +3305,63 @@ html, body {
     width:358px;
     height:358px;
 }
-.list{
-  
-  width: 313px;
+
+.list{ 
+  width: 322px;
   float: left;
-  margin-left: 12px;
+  margin-right: 12px;
+}
+
+.list:last-child {
+    margin-right:0px;
+}
+
+#list-cat{
+    margin: 0;
+ 
+}
+.edit-add-tp{
+  display:inline-block;
+  position:relative;
+}
+.edit-add-tp{
+    background-color: #444;
+    
+    color: white;
+    font-size: 16px;
+    height: 36px;
+    width: 36px;
+    text-align: center;
+    line-height: 36px;
+    border-radius: 18px;
+    position: relative;
+    top: -40px;
+    margin-left: 10px;
+    top: -6px;
+}
+
+.delete-tp{
+  display:inline-block;
+  position:relative;
+}
+.delete-tp{
+    background-color: #444;
+    
+    color: white;
+    font-size: 9px;
+    height: 36px;
+    width: 36px;
+    text-align: center;
+    line-height: 36px;
+    border-radius: 18px;
+    position: relative;
+    top: -40px;
+    margin-left: 7px;
+    top: -9px;
+}
+.edit-comment-tp {
+    
+    display:inline-block;
+    position:relative;
 }
 

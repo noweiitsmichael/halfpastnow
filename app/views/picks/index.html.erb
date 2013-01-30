@@ -24,7 +24,11 @@
 		// 	  });
 		$(function() {
 
-				
+			$('#list-cat').change(function(){
+				window.location = "/picks/index/"+$(this).val()
+
+
+			});
 			$('.follow.button').click(function() {
 
 			   
@@ -97,23 +101,29 @@
 <% end %>
 
 <% content_for :body do %>
+
 <% def insert_picklist(picklist,currentUserIsFollowing,hidden) %>
+
 		<div class="picklist">
+
 					<div class="picklist-sidebar">
-	    				<%= image_tag picklist.picture_url(:tiny) || "/assets/picklist-placeholder.png", :class => "picture" %>
+	    				<%= image_tag picklist.picture_url(:thumb) || "/assets/picklist-placeholder.png", :class => "picture" %>
+	    				<div class="follow button nice-button" picklist-id="<%= picklist.id %>" <%= raw hidden if currentUserIsFollowing %> >subscribe</div>
+						<div class="unfollow button nice-button" picklist-id="<%= picklist.id %>" <%= raw hidden unless currentUserIsFollowing %> >subscribing</div>
+						
 					</div>
 					<div class="picklist-details">
 						<h3><a href="/picks/find/<%= picklist.id %>"><%= picklist.name %></a></h3>
-						<div class="follow button nice-button" picklist-id="<%= picklist.id %>" <%= raw hidden if currentUserIsFollowing %> >subscribe</div>
-						<div class="unfollow button nice-button" picklist-id="<%= picklist.id %>" <%= raw hidden unless currentUserIsFollowing %> >subscribing</div>
-						<!-- <div><em><%=picklist.bookmarked_events.size %> <%= picklist.bookmarked_events.size == 1 ? "event" : "events" %></em></div> -->
+						
 						<div class="picklist-description"><%= raw picklist.description %></div>
 						
 					</div>
-					<% if (picklist.bookmarked_events.size > 0) %>
+					<% occurrences = picklist.bookmarked_events(2) 
+					   unless (occurrences.empty?) %>
 						<ul class="picklist-events">
-							<% picklist.bookmarked_events.take(1).each do |occurrence| %>
+							<% occurrences.each do |occurrence| %>
 							<li linkto="event" link-id="<%= occurrence.id %>">
+								<img class="picture" src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
 								<div class="title"><%= occurrence.event.title %></div>
 								<div class="venue"><%= occurrence.event.venue.name %></div>
 								<div class="datetime"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></div>
@@ -122,20 +132,32 @@
 							<li class="see-more">
 								<a href="/picks/find/<%= picklist.id %>">see all events</a>
 							</li>
-						</ul>
-					<% end %>
+						</ul><% end %>
 				</div>
-
 	<% end %>
-	<div id="info-content">
+	<div id="info-content" class="top-picks">
+		<% unless(@isFollowedLists) %>
+		<span id="list-cat-label">Top Picks Category:</span>
+		<select id="list-cat">
+			<option> All Categories </option>
+			<% @parentTags.each do |prTg|%>
+				<% if(params[:id]==prTg.id.to_s)  %>
+					<option selected="selected" value="<%= prTg.id =%>" > <%= prTg.name =%> </option>
+				<% else %>
+				    <option  value="<%= prTg.id =%>" > <%= prTg.name =%> </option>
+				<% end %>
+			<% end %>
+		</select>
+		<% end %>
 		<% if(@isFollowedLists) %>
 			<div style="font-weight: 700;margin: 9px 0 0 11px;font-size: 16px;">List View | <a href="/picks/followed?events=true">Event View</a></div>
 		<% end %>
 		<% hidden = "style=\"display:none;\"" %>
-		<div class="list">
+		<div class='outter-list'>
+			<div class="list">
 			<% @featuredLists.each_with_index do |featuredList, index|
 				currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
-				if (index % 3 == 0) 
+				if (index % 3 == 0)
 					
 					insert_picklist(featuredList,currentUserIsFollowing,hidden)
 				end
@@ -144,7 +166,7 @@
 		<div  class="list">
 			<% @featuredLists.each_with_index do |featuredList, index|
 				currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
-				if index % 3 == 1 
+				if (index % 3 == 1)
 					insert_picklist(featuredList,currentUserIsFollowing,hidden)
 				end
 			end %>
@@ -152,11 +174,13 @@
 		<div  class="list">
 			<% @featuredLists.each_with_index do |featuredList, index|
 				currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
-				if index % 3 == 2
+				if (index % 3 == 2)
 					insert_picklist(featuredList,currentUserIsFollowing,hidden)
 				end
 			end %>
 		</div>
+		</div>
+		
 	</div>
 
 

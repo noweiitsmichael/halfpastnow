@@ -167,6 +167,10 @@ class User < ActiveRecord::Base
     return BookmarkList.where(:user_id => self.id, :main_bookmarks_list => true).first
   end
 
+  def featured_list
+    return BookmarkList.where(:user_id => self.id, :featured => true).first
+  end
+
   def send_welcome_email
     puts "send_welcome_email"
     unless self.email.include?('@halfpastnow.com') && Rails.env != 'test'
@@ -181,6 +185,18 @@ class User < ActiveRecord::Base
   end
 
 
+  def self.role_list 
+    return ["guest","user","top_picker","admin","super_admin"]
+  end
+
+  def role_at_least? (title)
+    if(!User.role_list.index(title) || !User.role_list.index(self.role))
+      return false
+    else
+      return (User.role_list.index(self.role) >= User.role_list.index(title))
+    end
+
+  end
 
   # def password_required?
   #   super && provider.blank?

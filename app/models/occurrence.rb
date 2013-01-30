@@ -30,6 +30,34 @@ class Occurrence < ActiveRecord::Base
     self.save
   end
 
+  def event_bookmarks
+    query = "SELECT bookmarks.id FROM occurrences
+             INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
+             WHERE occurrences.event_id = #{ self.event_id } AND bookmarks.bookmarked_type = 'Occurrence'"
+    results = ActiveRecord::Base.connection.select_all(query)
+    return Bookmark.find(results.collect { |e| e["id"] }.uniq)
+  end
+
+  def event_bookmarks_with_comments (bookmarklistID)
+    query = "SELECT bookmarks.id FROM occurrences
+             INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
+             INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
+             WHERE occurrences.event_id = #{ self.event_id } AND bookmarks.bookmarked_type = 'Occurrence'
+             AND bookmark_lists.id = #{ bookmarklistID } AND bookmarks.comment IS NOT NULL"
+    results = ActiveRecord::Base.connection.select_all(query)
+    return Bookmark.find(results.collect { |e| e["id"] }.uniq)
+  end
+
+  def all_event_bookmarks (bookmarklistID)
+    query = "SELECT bookmarks.id FROM occurrences
+             INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
+             INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
+             WHERE occurrences.event_id = #{ self.event_id } AND bookmarks.bookmarked_type = 'Occurrence'
+             AND bookmark_lists.id = #{ bookmarklistID }"
+    results = ActiveRecord::Base.connection.select_all(query)
+    return Bookmark.find(results.collect { |e| e["id"] }.uniq)
+  end
+
   def self.find_with(params)
     user_id = params[:user_id]
 

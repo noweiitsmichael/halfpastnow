@@ -1,10 +1,39 @@
-
-<% if (page_action == "index") %>
+<% if current_user.nil? %>
+	<% if (page_action == "index") %>
 	<span>Top Lists</span><% if current_user %><em>&bull;</em><a href="/picks/followed">Followed Lists</a><em>&bull;</em><a href="/picks/myBookmarks">My Bookmarks</a><% end %>
-<% elsif (page_action == "followed") %>
-	<a href="/picks">Top Lists</a><em>&bull;</em><span>Followed Lists</span><em>&bull;</em><a href="/picks/myBookmarks">My Bookmarks</a>
-<% elsif (page_action == "myBookmarks") %>
-	<a href="/picks">Top Lists</a><em>&bull;</em><a href="/picks/followed">Followed Lists</a><em>&bull;</em><span>My Bookmarks</span>
-<% elsif (page_action == "find") %>
-	<span><%= bookmark_list_name %></span><em>&bull;</em><a href="/picks">Top Lists</a><% if current_user %><em>&bull;</em><a href="/picks/followed">Followed Lists</a><em>&bull;</em><a href="/picks/myBookmarks">My Bookmarks</a><% end %>
+	<% elsif (page_action == "followed") %>
+		<a href="/picks">Top Lists</a><em>&bull;</em><span>Followed Lists</span><em>&bull;</em><a href="/picks/myBookmarks">My Bookmarks</a>
+	<% elsif (page_action == "myBookmarks") %>
+		<a href="/picks">Top Lists</a><em>&bull;</em><a href="/picks/followed">Followed Lists</a><em>&bull;</em><span>My Bookmarks</span>
+	
+	<% elsif (page_action == "find") %>
+		<span><%= bookmark_list_name %></span><em>&bull;</em><a href="/picks">Top Lists</a><% if current_user %><em>&bull;</em><a href="/picks/followed">Followed Lists</a><em>&bull;</em><a href="/picks/myBookmarks">My Bookmarks</a><em>&bull;</em><a href="/picks/myTopPicks">My Top Picks</a><% end %>
+	<% end %>
+<% else %>
+	<% if current_user.role_at_least?("top_picker") %>
+
+	<% if (page_action == "index") %>
+	<span>Top Lists</span><% if current_user %><em>&bull;</em><a href="/picks/followed">Followed Lists</a><em>&bull;</em><a href="/picks/myBookmarks">My Bookmarks</a><em>&bull;</em><a href="/picks/myTopPicks">My Top Picks</a><% end %>
+	<% elsif (page_action == "followed") %>
+	<a href="/picks">Top Lists</a><em>&bull;</em><span>Followed Lists</span><em>&bull;</em><a href="/picks/myBookmarks">My Bookmarks</a><em>&bull;</em><a href="/picks/myTopPicks">My Top Picks</a>
+	<% elsif (page_action == "myBookmarks") %>
+	<a href="/picks">Top Lists</a><em>&bull;</em><a href="/picks/followed">Followed Lists</a><em>&bull;</em><span>My Bookmarks</span><em>&bull;</em><a href="/picks/myTopPicks">My Top Picks</a>
+	<% elsif (page_action == "myTopPicks") %>
+	<a href="/picks">Top Lists</a><em>&bull;</em><a href="/picks/followed">Followed Lists</a><em>&bull;</em><a href="/picks/myBookmarks">My Bookmarks</a><em>&bull;</em><span>My Top Picks</span>
+	<% elsif (page_action == "find") %>
+	<span><%= bookmark_list_name %></span><em>&bull;</em><a href="/picks">Top Lists</a><% if current_user %><em>&bull;</em><a href="/picks/followed">Followed Lists</a><em>&bull;</em><a href="/picks/myBookmarks">My Bookmarks</a><em>&bull;</em><a href="/picks/myTopPicks">My Top Picks</a><% end %>
+	<% end %>
+<% else %>
+	<% if (page_action == "index") %>
+	<span>Top Lists</span><% if current_user %><em>&bull;</em><a href="/picks/followed">Followed Lists</a><em>&bull;</em><a href="/picks/myBookmarks">My Bookmarks</a><% end %>
+	<% elsif (page_action == "followed") %>
+		<a href="/picks">Top Lists</a><em>&bull;</em><span>Followed Lists</span><em>&bull;</em><a href="/picks/myBookmarks">My Bookmarks</a>
+	<% elsif (page_action == "myBookmarks") %>
+		<a href="/picks">Top Lists</a><em>&bull;</em><a href="/picks/followed">Followed Lists</a><em>&bull;</em><span>My Bookmarks</span>
+	
+	<% elsif (page_action == "find") %>
+		<span><%= bookmark_list_name %></span><em>&bull;</em><a href="/picks">Top Lists</a><% if current_user %><em>&bull;</em><a href="/picks/followed">Followed Lists</a><em>&bull;</em><a href="/picks/myBookmarks">My Bookmarks</a><em>&bull;</em><a href="/picks/myTopPicks">My Top Picks</a><% end %>
+	<% end %>
 <% end %>
+<% end %>
+

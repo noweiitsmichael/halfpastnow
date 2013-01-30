@@ -161,7 +161,7 @@
 					</div>
 				<% end %>
 				<ul class="events">
-					<%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences } %>
+					<%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences, :bookmarkList => @bookmarkList } %>
 				</ul>
 				<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
 			</div>
