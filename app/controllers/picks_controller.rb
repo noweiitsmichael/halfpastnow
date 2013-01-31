@@ -12,17 +12,13 @@ helper :content
 	    listIDs = result.collect { |e| e["id"] }.uniq
 	    tagIDs = result.collect { |e| e["tag_id"].to_i }.uniq
 
-	    pp result
-
-		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| tagIDs.include?(tag.id) }
+		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| tagIDs.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
 		tag_id = params[:id]
 		if tag_id.to_s.empty?
 			@featuredLists = BookmarkList.where(:featured=>true)
 		else
 			@featuredLists = BookmarkList.find(result.select { |r| r["tag_id"] == tag_id.to_s }.collect { |e| e["id"] }.uniq)
 		end
-		
-		
 	end
 
 	def followed
