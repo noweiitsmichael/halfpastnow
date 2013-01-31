@@ -4,8 +4,7 @@ class Bookmark < ActiveRecord::Base
   belongs_to :bookmarked, :polymorphic => true
   validates_uniqueness_of :bookmarked_id, :scope => [:bookmarked_type, :bookmark_list_id], :unless =>  Proc.new { |obj| obj.bookmarked_type == "Bookmark List" }
 
-  
-  def bookmarked_event
+ def bookmarked_event
 		if !Occurrence.exists?(self.bookmarked_id)
 			return nil
 		else

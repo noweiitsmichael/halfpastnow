@@ -51,13 +51,84 @@ var modalities = {
   
  
 $(function() {
-
+  var toggle = false;
   scrollbarWidth = $.getScrollbarWidth();
-
+  var item_id;
+  $('#content .events').on('click','li',function(event) {
+    if ($(".edit-popup-box:visible").length > 0) {
+      stopPropagation(event);
+      $(".edit-popup-box").hide();
+        var that = $('.edit-popup-box');
+        if (that.hasClass("remove")) {
+          that.removeClass('remove').addClass('add');
+        }
+    }
+  });
   $('#content .events').on('click','.picklists .picklist-link',function(event) {
     stopPropagation(event);
   });
+  $('#content .events').on('click','.edit-popup-box',function(event) {
+    stopPropagation(event);
+  });
+  $('#content .events').on('click','.edit-label',function(event) {
+    stopPropagation(event);
+  });
+  $('#content .events').on('click','.edit-button',function(event) {
+    stopPropagation(event);
+   
+  });
+  $('#content .events').on('click','.edit-comment-text',function(event) {
+    stopPropagation(event);
+  });
 
+  $("body").click
+  (
+    function(e)
+    {
+      if(e.target.className !== "edit-popup-box")
+      {
+        $(".edit-popup-box").hide();
+        var that = $('.edit-popup-box');
+        if (that.hasClass("remove")) {
+          that.removeClass('remove').addClass('add');
+        }
+
+      }
+    }
+  );
+
+  $('#content .events').on('click','.edit-add-tp',function(event) {
+    stopPropagation(event);
+    var id = $(this).attr('event-id');
+    var item='.'+id+' '+'.edit-popup-box';
+    var item1='.'+id+' '+'.edit-popup-box-1';
+    // console.log("Comment Edit "+item);
+    item_id=id;
+    var that = $(item);
+    var that1= $(item1);
+    if (that.hasClass("add")){
+        that.removeClass('add').addClass('remove');
+        that.show();
+        that1.hide();
+        
+      }
+      else if (that.hasClass("remove")) {
+        that.removeClass('remove').addClass('add');
+        that.hide();
+        that1.show();
+      }
+  });
+
+  $('#content .events').on('click','.delete-tp',function(event) {
+    stopPropagation(event);
+    var id = $(this).attr('event-id');
+    $.getJSON('/bookmarks/destroyBookmarkedList/' + id, function(data) {
+              
+            });
+
+    // document.getElementById(id).parentNode.remove();
+    $(this).parents("#content .events li").html("<div><br><br><br>Top Pick Removed</div>");
+  });
   $('#content .events').on('click','.event-actions .icon',function(event) {
     var that = $(this);
     var id = $(this).attr('event-id');
@@ -344,7 +415,87 @@ function spawn(classObject, extendParams) {
 }
 
 
+var toggle = false;
+  var item_id;
+  function show(id) {
+    console.log("Hovering"+id);
+     var item = '.event-tp-comment-id';
+     $(id).show();
+  }
+    function hide(id) {
+      console.log("Out Hovering"+id);
+      // document.getElementById(id).style.visibility = "hidden";
+       $(id).hide();
+    }
 
+    function addToFeaturedList(id)
+      { 
+        var itemText='.'+id+' '+'.edit-popup-box-1 .edit-comment-text';
+        var item='.'+id+' '+'.edit-popup-box-1';
+        var that = $(item);
+      if (that.hasClass("add")){
+          $(item).removeClass('add').addClass('remove');
+          $(item).show();
+        }
+        else if ($(item).hasClass("remove")){
+          $(item).removeClass('remove').addClass('add');
+          $(item).hide();
+        }
+        var text = $('.edit-comment-text').val();
+        
+        
+        $.getJSON('/bookmarks/add_to_featuredlist', { bookmark: { "type": "Occurrence", "id": id , "comment":text } }, function(data) {
+          bookmark_id = data;
+        });
+      
+        
+      }
+
+    function submit_edit_comment(id)
+      { 
+        var itemText='.'+id+' '+'.edit-popup-box .edit-comment-text';
+        var text = $(itemText).val();
+        var item='.'+id+' '+'.edit-popup-box';
+      console.log("Edit comment"+text);
+      $.getJSON('/bookmarks/update_comment', { bookmark: { "type": "Occurrence", "id": id, "comment": text } }, function(data) {
+            bookmark_id = data;
+            
+        });
+       
+      console.log("Comment EEdit "+item);
+      var that = $(item);
+      if (that.hasClass("add")){
+          $(item).removeClass('add').addClass('remove');
+          $(item).show();
+        }
+        else if ($(item).hasClass("remove")){
+          $(item).removeClass('remove').addClass('add');
+          $(item).hide();
+        }
+       item = '.'+id;
+       document.getElementById(id).innerHTML = text;
+       
+       
+    }
+    function deleteTP(id)
+      { 
+        var itemText='.'+id+' '+'.edit-popup-box .edit-comment-text';
+        var item='.'+id+' '+'.edit-popup-box';
+        var that = $(item);
+      if (that.hasClass("add")){
+          $(item).removeClass('add').addClass('remove');
+          $(item).show();
+        }
+        else if ($(item).hasClass("remove")){
+          $(item).removeClass('remove').addClass('add');
+          $(item).hide();
+        }
+        $.getJSON('/bookmarks/destroyBookmarkedList/' + id, function(data) {
+              that.removeClass('remove').addClass('add');
+            });
+        document.getElementById(id).parentNode.innerHTML = "<div><br><br><br>Top Picked Removed</div>";
+      }
+  
 
 
 

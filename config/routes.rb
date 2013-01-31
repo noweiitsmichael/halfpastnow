@@ -15,6 +15,9 @@ Myapp::Application.routes.draw do
   resources :bookmark_lists
 
   match 'bookmarks/custom_create' => 'bookmarks#custom_create'
+  match 'bookmarks/add_to_featuredlist' => 'bookmarks#add_to_featuredlist'
+  match 'bookmarks/update_comment' => 'bookmarks#update_comment'
+  match 'bookmarks/destroyBookmarkedList' => 'bookmarks#destroyBookmarkedList'
   resources :bookmarks
 
   get "info/about"

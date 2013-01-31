@@ -1,3 +1,4 @@
+
 <li linkto="event" link-id="<%= occurrence.id %>">
 	<div class="index <%= ((index + 1) >= 100) ? "over100" : ""%>"><%= index ? (index + 1) : "" %></div>
 	<div class="title">
@@ -15,15 +16,51 @@
 			<% end %>
 		<% end %>
 	</div>
-	<% picklists = occurrence.bookmarks.collect { |b| b.bookmark_list if (b.bookmark_list && b.bookmark_list.featured) }.compact %>
+	<% picklists = occurrence.event_bookmarks.collect { |b| b.bookmark_list if (b.bookmark_list && b.bookmark_list.featured) }.compact %>
 	<% if picklists.size > 0 %>
 	<div class="picklists">
-		<% picklists.take(3).each do |pList| %>
-			<a href="/picks/find/<%= pList.id %>" class="picklist-link"><%= image_tag pList.picture_url(:mini) || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
+		<% picklists.take(3).each_with_index do |pList,index| %>
+			<a href="/picks/find/<%= pList.id %>" onMouseOver="show('.event-tp-comment-<%= pList.id %>-<%=occurrence.id %>')" onMouseOut="hide('.event-tp-comment-<%= pList.id %>-<%=occurrence.id %>')" class="picklist-link"><%= image_tag pList.picture_url(:mini) || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
+			<% first_commented_occurrence = occurrence.event_bookmarks_with_comments(pList.id).first %>
+			<% if first_commented_occurrence %>
+			<% @comment_string = first_commented_occurrence.comment %>
+			<% unless @comment_string.eql?'' %>
+				<div class="event-tp-comment-<%= pList.id %>-<%=occurrence.id %> popup-comment">
+					<%=  @comment_string %>
+				</div>
+			<% end %>
+			<% end %> 
 		<% end %>
 		<em style="position: relative;top: -5px;margin-left: 2px;">on <%= picklists.size %> top picks <%= picklists.size == 1 ? "list" : "lists" %></em>
 	</div>
 	<% end %>
+	<% if ((defined? bookmarkList) && !(bookmarkList.nil?) && (bookmarkList.featured))
+		list_bookmark = occurrence.event_bookmarks_with_comments(bookmarkList.id).first
+			if (list_bookmark ) %>
+			<div id="<%= occurrence.id %>" class="bookmark-comment"><%= list_bookmark.comment %></div>
+			
+			<% if (@isMyTopPicksList) && (current_user.role_at_least?("top_picker")) %>
+				<div class="edit-comment-tp <%= (occurrence.all_event_bookmarks(current_user.featured_list.id).size > 0) ? "add" : "remove" %> ">
+				<div class="edit-add-tp" event-id="<%= occurrence.id %>">Edit</div>
+				<div class="delete-tp" event-id="<%= occurrence.id %>">Remove</div>
+				<div class="<%= occurrence.id %>">
+					<div class="edit-popup-box add" >
+						
+						<label class="edit-label" style="font-size: 16px; color:white; margin-left:10px; "> Edit comment (Optional)</label>
+						<textarea class="edit-comment-text" style="color:black; font-size: 16px; margin-left:10px; width:270px; " placeholder="Comment"><%=list_bookmark.comment %></textarea>
+						<button class="edit-button" onclick='return submit_edit_comment(<%= occurrence.id %>)' style="margin-right:10px; float:right;">Edit Comment</button>
+						<button class="delete-btn" onclick='return deleteTP(<%= occurrence.id %>)'>UnTP</button>
+					
+					</div>
+				</div>
+				</div>
+			
+			<% end %>
+			
+		
+		<% end
+	end %>
+
 	<div class="picture">
 		<img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
 		<div class="picture-overlay"></div>

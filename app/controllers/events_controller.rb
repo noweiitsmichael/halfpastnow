@@ -154,10 +154,13 @@ def index
 
     if(current_user)
       bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
-      # bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :user_id => current_user.id).first
       @bookmarkId = bookmark.nil? ? nil : bookmark.id 
+      # bookmarkFeaturedList=Bookmark.where(:bookmarked_type => "Occurrence",:bookmark_list_id => current_user.featured_list.id, :bookmarked_id =>@occurrence.id).first
+      bookmarkFeaturedList=@occurrence.all_event_bookmarks(current_user.featured_list.id).first
+      @bookmarkFeaturedListId = bookmarkFeaturedList.nil? ? nil : bookmarkFeaturedList.id 
     else
       @bookmarkId = nil
+      @bookmarkFeaturedListId = nil
     end
 
     @occurrences = []
@@ -179,6 +182,7 @@ def index
     
     # http://www.halfpastnow.com/?event_id=15599
     # @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
+
     respond_to do |format|
       if @fullmode
         format.html { render :layout => "fullmode" }

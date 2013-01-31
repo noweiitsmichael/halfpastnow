@@ -1,10 +1,28 @@
 class PicksController < ApplicationController
 helper :content
 	def index
-		@featuredLists = BookmarkList.where(:featured => true)
+		query = "SELECT bookmark_lists.id, tags.id AS tag_id FROM bookmark_lists
+				INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
+				INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
+				INNER JOIN events ON occurrences.event_id = events.id
+                INNER JOIN events_tags ON events.id = events_tags.event_id
+                INNER JOIN tags ON events_tags.tag_id = tags.id
+                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE"
+        result = ActiveRecord::Base.connection.select_all(query)
+	    listIDs = result.collect { |e| e["id"] }.uniq
+	    tagIDs = result.collect { |e| e["tag_id"].to_i }.uniq
+
+		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| tagIDs.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
+		tag_id = params[:id]
+		if tag_id.to_s.empty?
+			@featuredLists = BookmarkList.where(:featured=>true)
+		else
+			@featuredLists = BookmarkList.find(result.select { |r| r["tag_id"] == tag_id.to_s }.collect { |e| e["id"] }.uniq)
+		end
 	end
 
 	def followed
+		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil})
 		@isFollowedLists = true
 		@showAsEventsList = !params[:events].nil?
         
@@ -13,7 +31,7 @@ helper :content
 		    @long = -97.742808
 		    @zoom = 11
 
-			@occurrences = current_user.followedLists.collect { |list| list.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime } }.flatten
+			@occurrences = current_user.followedLists.collect { |list| list.all_bookmarked_events.select{ |o| o.start >= Date.today.to_datetime } }.flatten.uniq{|x| x.id}
 			render "find"
 		else
 			@featuredLists = current_user ? current_user.followedLists : []
@@ -29,7 +47,7 @@ helper :content
 	    @long = -97.742808
 	    @zoom = 11
 	    @url = 'http://halfpastnow.com/picks/find/'+params[:id]
-		@occurrences = @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
+		@occurrences = @bookmarkList.all_bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }.sort_by { |o| o.start }
 		
 		
 		
@@ -42,12 +60,24 @@ helper :content
 	    @zoom = 11
 
 		@bookmarkList = current_user.main_bookmark_list
-		@occurrences = @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
+		@occurrences = @bookmarkList.all_bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }.sort_by { |o| o.start }
 
 		@isMyBookmarksList = true
 
 		render "find"
 	end
 
+	def myTopPicks
+		@lat = 30.268093
+	    @long = -97.742808
+	    @zoom = 11
+
+		@bookmarkList = BookmarkList.where(:user_id => current_user.id, :featured => true).first
+		@occurrences = (!@bookmarkList.nil?) ? @bookmarkList.all_bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }.sort_by { |o| o.start } : []
+
+		@isMyBookmarksList = true
+		@isMyTopPicksList = true
+		render "find"
+	end
 
 end
