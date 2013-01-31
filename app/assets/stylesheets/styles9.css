@@ -2453,7 +2453,8 @@ input::-webkit-input-placeholder
 .picklist-events {
     clear: left;
 
-    background: #eeeeee;
+    background: #Fafafa;
+    border-top: 1px solid rgba(0,0,0,.2);
 }
 
 #content .events li .price {
@@ -3099,12 +3100,12 @@ html, body {
     overflow:hidden;
     background: white;
     border-radius: 1px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 
 .picklist-details {
-    width: 204px;
+    width: 300px;
     float: left;
     margin: 12px 12px 12px 0;
 }
@@ -3127,7 +3128,7 @@ html, body {
 }
 
 .picklist-sidebar .picture {
-    width: 80px;
+    width: 150px;
     
     display: block;
 }
@@ -3174,14 +3175,14 @@ html, body {
 
 .follow.button {
     background-color:#0099ff;
-    width: 80px;
+    width: 150px;
     font-size: 13px;
     border-radius: 0 0 2px 2px;
 }
 
 .unfollow.button {
     background-color:#bb00bb;
-    width: 80px;
+    width: 150px;
     font-size: 13px;
     border-radius:  0 0 2px 2px;
 }
@@ -3189,7 +3190,7 @@ html, body {
 .picklist-description {
     margin-top: 0px;
     overflow: hidden;
-    max-height: 80px;
+    max-height: 144px;
     font-size: 12px;
     line-height: 16px;
 }
@@ -3210,18 +3211,20 @@ html, body {
     background:#eee;
 }
 
-.picklist-events li.see-more {
-    text-align: right;
-    font-weight:bold;
-    cursor:auto;   
-    border-top: none;
-    padding-top: 0;
+.picklist-events li.see-more {   
 }
 
 .picklist-events li.see-more a {
     font-size: 13px;
     color:black;
     text-decoration:none;
+    text-align: right; font-weight: bold; cursor: auto; border-top: none; 
+    padding-top: 0px; 
+    padding-bottom: 0px;
+    display: block;
+}
+
+.picklist-events li.see-more a span {
     border-bottom:1px dotted black;
 }
 
@@ -3292,9 +3295,10 @@ html, body {
 }
 
 .list{ 
-  width: 321px;
+  width: 487px;
   float: left;
   margin-right: 12px;
+  margin-left: 1px;
 }
 
 .list:last-child {
