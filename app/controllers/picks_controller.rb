@@ -1,7 +1,7 @@
 class PicksController < ApplicationController
 helper :content
 	def index
-		query = "SELECT bookmark_lists.id, tags.id AS tag_id FROM bookmark_lists
+		query = "SELECT bookmark_lists.id,  occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
 				INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
 				INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
 				INNER JOIN events ON occurrences.event_id = events.id
@@ -20,9 +20,10 @@ helper :content
 			@list=[]
 			rs = result.select { |r| r["tag_id"] == tag_id.to_s }.uniq
 			rs.uniq.each{ |r|
-				id = r["id"]
-				unless BookmarkList.find(id).first_legit_bookmarked_event.nil?
-					@list << id
+				id = r["occurrence_id"]
+				lID = r["id"]
+				unless Occurrence.find(id).deleted
+					@list << lID
 				end
 			}
 			@featuredLists = BookmarkList.find(@list)
