@@ -77,7 +77,7 @@ helper :content
 	    @zoom = 11
 
 		@bookmarkList = BookmarkList.where(:user_id => current_user.id, :featured => true).first
-		@occurrences = @bookmarkList.all_bookmarked_events().select{ |o| o.start >= Date.today.to_datetime }.sort_by { |o| o.start }
+		@occurrences = (!@bookmarkList.nil?) ? @bookmarkList.all_bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }.sort_by { |o| o.start } : []
 
 		@isMyBookmarksList = true
 		@isMyTopPicksList = true
