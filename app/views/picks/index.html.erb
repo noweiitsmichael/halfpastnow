@@ -137,17 +137,19 @@
 	<% end %>
 	<div id="info-content" class="top-picks">
 		<% unless(@isFollowedLists) %>
-		<span id="list-cat-label">Top Picks Category:</span>
-		<select id="list-cat">
-			<option value="">All Categories</option>
-			<% @parentTags.each do |prTg|%>
-				<% if(params[:id]==prTg.id.to_s)  %>
-					<option selected="selected" value="<%= prTg.id =%>" > <%= prTg.name =%> </option>
-				<% else %>
-				    <option value="<%= prTg.id =%>" > <%= prTg.name =%> </option>
+		<div id="list-cat-wrapper">
+			<span id="list-cat-label">Top Lists in</span>
+			<select id="list-cat">
+				<option value="">All Categories</option>
+				<% @parentTags.each do |prTg|%>
+					<% if(params[:id]==prTg.id.to_s)  %>
+						<option selected="selected" value="<%= prTg.id =%>" > <%= prTg.name =%> </option>
+					<% else %>
+					    <option value="<%= prTg.id =%>" > <%= prTg.name =%> </option>
+					<% end %>
 				<% end %>
-			<% end %>
-		</select>
+			</select>
+		</div>
 		<% end %>
 		<% if(@isFollowedLists) %>
 			<div style="font-weight: 700;margin: 9px 0 0 11px;font-size: 16px;">List View | <a href="/picks/followed?events=true">Event View</a></div>
