@@ -24,10 +24,6 @@ helper :content
 				lID = r["id"]
 				unless Occurrence.find(id).deleted
 					@list << lID
-				else 
-					unless o.event.nextOccurrence.deleted && !o.recurrence_id.nil?
-						@list << lID
-					end
 				end
 			}
 			@featuredLists = BookmarkList.find(@list)
