@@ -17,10 +17,28 @@ helper :content
 		if tag_id.to_s.empty?
 			@featuredLists = BookmarkList.where(:featured=>true)
 		else
-			@featuredLists = BookmarkList.find(result.select { |r| r["tag_id"] == tag_id.to_s }.collect { |e| e["id"] }.uniq)
+			@list=[]
+			rs = result.select { |r| r["tag_id"] == tag_id.to_s }.uniq
+			rs.uniq.each{ |r|
+				id = r["id"]
+				unless BookmarkList.find(id).first_legit_bookmarked_event.nil?
+					@list << id
+				end
+			}
+			@featuredLists = BookmarkList.find(@list)
+
+			# @featuredLists = BookmarkList.find(result.select { |r| r["tag_id"] == tag_id.to_s }.collect { |e| e["id"] }.uniq)
 		end
 	end
 
+	# @listIDs=[]
+	# 		result.uniq.each{ |r|
+	# 			id = r["id"]
+	# 			if BookmarkList.find(id).all_bookmarked_events.size > 0
+	# 				@listIDs << id
+	# 			end
+	# 		}
+	# 		@featuredLists = BookmarkList.find(@listIDs)
 	def followed
 		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil})
 		@isFollowedLists = true
