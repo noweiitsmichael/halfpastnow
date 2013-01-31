@@ -1807,26 +1807,21 @@ input::-webkit-input-placeholder
     display:inline-block;
     position:relative;
 }
-.mode .window .bookmark-share .comment-tp .popup-box {
+.mode .window .bookmark-share .comment-tp .popup-box, 
+.mode .window .bookmark-share .comment-tp .popup-box-1 {
     
    display:none;
     position:absolute;
     width:300px;
-    height:100px;
-    background-color:red;
-    top:36px;
     
+   background-color: #1F9FC9;
+    top:36px;
+   overflow: hidden;
 }
 .mode .window .bookmark-share .comment-tp .popup-box label {
    font-size: 16px;
    color:white;
    margin-left:10px; 
-}
-.mode .window .bookmark-share .comment-tp .popup-box textarea {
-   font-size: 16px;
-   color:white;
-   margin-left:10px;
-   width:270px; 
 }
 .mode .window .bookmark-share .comment-tp .popup-box button {
     margin-right:10px;
@@ -1838,29 +1833,20 @@ input::-webkit-input-placeholder
     top:7px;
 }
 
-
-.mode .window .bookmark-share .comment-tp .popup-box-1 {
-    
-   display:none;
-    position:absolute;
-    width:300px;
-    height:100px;
-    
-   background-color: #1F9FC9;
-    top:36px;
-    
-}
 .mode .window .bookmark-share .comment-tp .popup-box-1 label {
    font-size: 16px;
    color:white;
    margin-left:10px; 
 }
+
+.mode .window .bookmark-share .comment-tp .popup-box textarea, 
 .mode .window .bookmark-share .comment-tp .popup-box-1 textarea {
-   font-size: 16px;
    color:white;
    margin-left:10px;
    width:270px; 
+   height: 100px;
 }
+
 .edit-btn  {
     margin-right:10px;
     float:right;
@@ -2328,38 +2314,31 @@ input::-webkit-input-placeholder
     font-size: 13px;
     color: #303030;
     background: white;
-    border: 1px solid #DDD;
+    border: none;
     overflow:hidden;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
 }
 
 .events li .bookmark-comment {
-    border:1px solid #ccc;
     clear:left;
-    padding:5px;
+    padding: 7px;
     font-size:12px;
     margin-bottom:10px;
-    width: 339px;
+    background: #eee;
+    margin-right: 1px;
 }
 
 .events li .bookmark-comment:before, 
 .events li .bookmark-comment:after {
-    font-weight:normal;
-    font-size:22px;
-    position:relative;
-    top:-14px;
-    display:inline-block;
-    height:0px;
 }
 
 .events li .bookmark-comment:before {
     content:"\201C";
-    margin-right:2px;
     
 }
 
 .events li .bookmark-comment:after {
     content:"\201D";
-    margin-left:2px;
 }
 
 
@@ -2458,6 +2437,12 @@ input::-webkit-input-placeholder
     padding-top:9px;
     padding-bottom:9px;
     font-weight:700;
+    position: relative;
+}
+
+#content .events li .picklists .popup-comment {
+    position: absolute; background-color: gray; bottom: 41px; left: 0px; color: white; display: none; opacity: 0.9; padding: 6px; 
+    width: 381px; 
 }
 
 #content .events li .picklists .picklist-picture {
@@ -2468,7 +2453,6 @@ input::-webkit-input-placeholder
 .picklist-events {
     clear: left;
 
-    border-top: 1px solid #ddd;
     background: #eeeeee;
 }
 
@@ -3111,11 +3095,11 @@ html, body {
 }
 
 .picklist {
-    border: 1px solid #ddd;
     margin: 12px 0;
     overflow:hidden;
     background: white;
     border-radius: 1px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -3308,7 +3292,7 @@ html, body {
 }
 
 .list{ 
-  width: 322px;
+  width: 321px;
   float: left;
   margin-right: 12px;
 }
