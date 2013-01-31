@@ -13,6 +13,10 @@
 		<%= render :partial => "tag_list", :locals => { :tagCounts => @tagCounts, :parentTags => @parentTags } %>
 	</div>
 
+	<div id="combo_andtag_list">
+		<%= render :partial => "andtags_list", :locals => { :tagCounts => @tagCounts } %>
+	</div>
+
 	<div id="combo_total_occurrences">
 		<%= @allOccurrences.size %>
 	</div>

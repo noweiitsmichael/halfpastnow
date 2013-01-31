@@ -101,7 +101,8 @@
 		  low_price: <%= params[:low_price].coalesce_to "''" %>,
 		  high_price: <%= params[:high_price].coalesce_to "''" %>,
 		  included_tags: <%= params[:included_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[]" %>,
-		  excluded_tags: <%= params[:excluded_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[]" %>,
+		  excluded_tags: <%= params[:excluded_tags] ? "[" + (params[:excluded_tags] * ",") + "]" : "[]" %>,
+		  and_tags: <%= params[:and_tags] ? "[" + (params[:and_tags] * ",") + "]" : "[]" %>,
 		  lat_min: "",
 		  lat_max: "",
 		  long_min: "",
@@ -120,14 +121,51 @@
 			geocoder = new google.maps.Geocoder();
 
 			var styles = [
-			    {
-			      stylers: [
-			        { saturation: 0 },
-			        { invert_lightness: false },
-			        { gamma: 1 },
-			        { lightness: 0 }
-			      ]
-			    }];
+							  {
+							    "featureType": "road.highway",
+							    "elementType": "geometry.stroke",
+							    "stylers": [
+							      { "color": "#804580" }
+							    ]
+							  },{
+							    "featureType": "road.highway",
+							    "elementType": "labels.text.stroke",
+							    "stylers": [
+							      { "color": "#d5b5d5" }
+							    ]
+							  },{
+							    "featureType": "road.arterial",
+							    "elementType": "labels.text.stroke",
+							    "stylers": [
+							      { "color": "#f1e6f3" }
+							    ]
+							  },{
+							    "elementType": "geometry.fill",
+							    "stylers": [
+							      { "gamma": 1.54 },
+							      { "lightness": 12 }
+							    ]
+							  },{
+							    "featureType": "road.arterial",
+							    "elementType": "geometry.fill",
+							    "stylers": [
+							      { "color": "#e0dae0" }
+							    ]
+							  },{
+							    "featureType": "road.arterial",
+							    "elementType": "geometry.stroke",
+							    "stylers": [
+							      { "color": "#b8abb8" }
+							    ]
+							  },{
+							    "featureType": "road.highway",
+							    "elementType": "geometry.fill",
+							    "stylers": [
+							      { "color": "#af96af" }
+							    ]
+							  },{
+							  }
+							];
 
 			var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
 			var myOptions = {
@@ -137,7 +175,8 @@
 				disableDefaultUI: true,
 				zoomControl: true,
 				scrollwheel: false,
-				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 3 }
+				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 3 },
+    			backgroundColor: '#FFFFFF'
 			};
 
 			var styledMap = new google.maps.StyledMapType(styles,
@@ -178,6 +217,7 @@
 				  high_price: <%= channel.high_price || "''" %>,
 				  included_tags: <%= channel.included_tags ? "'" + channel.included_tags + "'.split(',')" : "[]" %>,
 				  excluded_tags: <%= channel.excluded_tags ? "'" + channel.excluded_tags + "'.split(',')" : "[]" %>,
+				  and_tags: <%= channel.and_tags ? "'" + channel.and_tags + "'.split(',')" : "[]" %>,
 				  lat_min: "",
 				  lat_max: "",
 				  long_min: "",
@@ -201,6 +241,7 @@
 				  low_price: '',
 				  high_price: '',
 				  included_tags: [],
+				  and_tags: [],
 				  excluded_tags: [],
 				  lat_min: "",
 				  lat_max: "",
@@ -285,7 +326,7 @@
 								</span>
 							</span>
 						</span>
-						<span class="filter-toggle tags">
+						<span class="filter-toggle tags ortags">
 							<span class="filter-text">
 								<span class="pre-text"><!-- <span class="icon icon-tags"></span> -->Categories</span>
 								<span class="text">
@@ -299,6 +340,22 @@
 								</div>
 							</div>
 						</span>
+
+						<span class="filter-toggle tags andtags">
+							<span class="filter-text">
+								<span class="pre-text"><!-- <span class="icon icon-tags"></span> -->Tags</span>
+								<span class="text">
+									<span class="text-inner">Any Tag</span>
+									<span class="icon icon-caret-down"></span>
+								</span>
+							</span>
+							<div class="filter-dropdown">
+								<div class="filter-inner">
+									<%= render :partial => "andtags_list", :locals => { :tagCounts => @tagCounts}  %>
+								</div>
+							</div>
+						</span>
+
 						<span class="filter-toggle date">
 							<span class="filter-text">
 								<span class="pre-text"><!-- <span class="icon icon-time"></span> -->Time</span>
@@ -351,24 +408,6 @@
 								</div>
 							</div>
 						</span>
-						<span class="filter-toggle sort">
-							<span class="filter-text">
-								<span class="pre-text"><!-- <span class="icon icon-sort"></span> -->Sort</span> 
-								<span class="text">
-									<span class="text-inner">Popularity</span>
-									<span class="icon icon-caret-down"></span>
-								</span>
-							</span>
-							<div class="filter-dropdown">
-								<div class="filter-inner">
-									<div class="filter sort">
-										<div class="filters">
-											<span class="popularity selected">popularity</span><span class="date">date</span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</span>
 						<span class="filter-toggle filter-action action-clear">
 							<span class="filter-text">
 								<span class="pre-text"><span class="icon icon-remove-sign"></span>clear</span>
@@ -387,6 +426,26 @@
 					<% @channels.each do |channel| %>
 						<span class="stream <%= (@selectedChannel.to_i == channel.id) ? "selected" : ""%>" stream-id="<%= channel.id %>"><%= channel.name %></span>
 					<% end %>
+
+					<span class="filter-toggle sort">
+						<span class="filter-text">
+							<span class="pre-text"><!-- <span class="icon icon-sort"></span> -->Sort By</span> 
+							<span class="text">
+								<span class="text-inner">Popularity</span>
+								<span class="icon icon-caret-down"></span>
+							</span>
+						</span>
+						<div class="filter-dropdown">
+							<div class="filter-inner">
+								<div class="filter sort">
+									<div class="filters">
+										<span class="popularity selected">popularity</span><span class="date">date</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</span>
+
 					<!-- <span class="stream bookmark">Bookmarks<span class="icon icon-bookmark"></span></span> -->
 					<span class="filter-toggle filter-action action-save" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>
 						<span class="filter-text">
@@ -428,7 +487,7 @@
 		<div class="main">
 			<div class="inner">
 				<div class="filter-summary">
-					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sort-type" style="display:none;">[by popularity/<span class="sort date">date</span>]</span> 
+					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sort-type" style="display:none;">[by popularity/<span class="sort date">date</span>]</span> 
 				</div>
 				<ul class="events">
 					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>

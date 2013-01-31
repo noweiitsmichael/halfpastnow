@@ -134,7 +134,7 @@ $(function() {
 });
 
 function defaultTo(parameter, parameterDefault) {
-  return (typeof parameter !== 'undefined') ? parameter : parameterDefault;
+  return (typeof parameter !== 'undefined' && parameter !== null) ? parameter : parameterDefault;
 }
 
 $(function() {
@@ -242,7 +242,7 @@ function showPageMarkers() {
   if(numVisibleEvents > 0) {
     var start = parseInt($('#content .main .inner .events li:in-viewport .index').html());
     var end = start + numVisibleEvents - 1;
-    start -= fuzz; end += fuzz;
+    start -= fuzz; end += (fuzz + 15);
     for(var i in markers) {
       markers[i].setVisible(markers[i].index >= start && markers[i].index <= end);
     }

@@ -52,14 +52,33 @@ H5
   font-size: 16px;
 }
 H6
+
+label { display:block; margin-top:5px; }
+
 {
   font-size: 14px;
 }
 .hidden {
   display:none;
 }
+
+.error {
+  color: red;
+}
+
+input.error {
+  border-color: red;
+}
+
+label.error {
+  display: inline;
+  margin-left: 15px;
+}
+
 #header {
 }
+
+
 
 #header {
   z-index: 500;
@@ -313,9 +332,7 @@ input::-webkit-input-placeholder
     font-style: italic;
     text-overflow:ellipsis;
     height:31px;
-    overflow: hidden;
-    white-space: nowrap;
-}
+    overflow: hidden;}
 
 #header .filterbar, #header .advancedbar
 {
@@ -1087,8 +1104,12 @@ input::-webkit-input-placeholder
   max-width: 126px;
 }
 
+#header .filter-toggle.tags.andtags .text-inner {
+  max-width: 86px;
+}
+
 #header .filter-toggle.date .text-inner {
-  max-width: 141px;
+  max-width: 120px;
 }
 
 #header .filter-dropdown {
@@ -1166,8 +1187,14 @@ input::-webkit-input-placeholder
 #header .sort SPAN
 {
   cursor:pointer;
-
 }
+
+#header .filter-toggle.sort {
+  border: none;
+  background: none;
+  float:right;
+}
+
 #header .location
 {
   color: #EAEAF6;
@@ -1904,11 +1931,13 @@ input::-webkit-input-placeholder
 }
 
 .act-wrapper {
-  display: inline-block;
+  display: block;
+  margin-top: 4px;
+  margin-bottom:6px;
 }
 .act-wrapper span {
   width: 480px;
-  margin-bottom: 11px;
+  margin-bottom: 5px;
   border: 1px solid #777;
   border-radius: 4px;
   background-color: #eee;
@@ -2014,6 +2043,19 @@ input::-webkit-input-placeholder
   text-align:center;
 }
 
+.remove-from-picks.nice-button {
+  display: inline-block;
+  border:1px solid #522752;
+  font-style:normal;
+  font-size:12px;
+  background-color: #1F9FC9;
+  color: white;
+  padding: 1px 3px;
+  margin: 5px 0 0 0;
+  text-decoration: none;
+  text-align:center;
+}
+
 #event-results li {
   margin: 6px 0px;
 }
@@ -2061,6 +2103,12 @@ input::-webkit-input-placeholder
 
 .field.tags {
   overflow:hidden;
+}
+
+.field.tags label { 
+  display:inline; 
+  margin:0; 
+  cursor:pointer; 
 }
 
 .piclabel {
@@ -2586,6 +2634,10 @@ html, body {
   display: none !important;
 }
 
+#header .streambar .header .save-searches-list {
+  width:500px;
+}
+
 #header .stream.selected {
     color: white;
     background: #0094C5;
@@ -2635,7 +2687,7 @@ html, body {
 #header .filter-toggle .pre-text {
   color: #A700A7;
   display: inline-block;
-  margin: 0;
+  margin: 0px 0 0 0;
   padding: 3px 7px 0 0;
   float: left;
   position: relative;
@@ -2679,8 +2731,8 @@ html, body {
 }
 
 #header .filter-toggle.filter-action.action-save {
-    margin: 3px 0 0 0; border: none; background: transparent; padding: 0;
-    float: right;
+    margin: 1px 0 0 6px; border: none; background: transparent; padding: 0;
+    float: left;
     display: none;
 }
 

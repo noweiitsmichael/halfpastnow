@@ -8,13 +8,12 @@
 
 <% content_for :code do %>
 	<style type="text/css">
-		label { display:block; margin-top:5px; }
 		input[type=text] { width: 500px; }
 		input#event_price { width: 100px; }
-		.field.tags label { display:inline; margin:0; cursor:pointer; }
 	</style>
 
 	<%= javascript_include_tag "jquery.cleditor.min" %>
+	<%= javascript_include_tag "jquery.validate" %>
 	<%= javascript_include_tag "jquery-ui-timepicker-addon" %>
   	<%= stylesheet_link_tag    "jquery.cleditor" %>
 	<script type="text/javascript">
@@ -31,6 +30,75 @@
 		}
 
 		$(function() {
+
+			jQuery.validator.addMethod("performer-field", function( value, element ) {
+				console.log("checking");
+				if ((value === null || value === "")) {
+					return true;
+				} else {
+					return false;
+				}
+			}, "Please select an artist from the dropdown or create a new one.");
+
+			$("#event").validate({
+    			ignore: ":disabled", //:hidden.time-hidden, :hidden.date-hidden, :hidden.datetime-hidden",
+    			// debug: true,
+			    invalidHandler: function(form, validator) {
+			      var errors = validator.numberOfInvalids();
+			      console.log("errors:");
+			      console.log(errors);
+			      console.log(validator);
+			    },
+			    rules: {
+					"event[venue_id]": "required",
+					"event[title]": "required",
+					"event[tag_ids][]": "required",
+					"event[event_url]": "url",
+				},
+			    messages: {
+					"event[venue_id]": {
+						required: "<div style='display:inline;position:absolute;width:400px'>Please select an existing venue from the list. <br> If your venue does not exist, send us a note and we'll add it for you! <br><a href='mailto:support@halfpastnow.com'>support@halfpastnow.com</a></div>"
+					},
+					"event[title]": {
+						required: "Please enter an event title"
+					},
+					"input[name^=helper_start_event]": {
+						required: "Please enter a start time"
+					},
+					"event[title]": {
+						required: "Please enter an event title"
+					},
+					"event[event_url]": {
+						url: "Please use a valid URL"
+					},
+					"event[tag_ids][]": {
+						required: "Please select at least one category"
+					}
+				},
+				errorPlacement: function(error, element) {
+					console.log("what it is");
+					console.log(element); 
+		            if ( element.is("#event_tag_ids_") ) {
+		                error.appendTo(element.parent().parent().parent()); 
+		            } else if (element.is(".performer-field")) {
+		            	error.appendTo(element.parent().parent());
+		            // } else if ( element.is(".date-hidden") ) {
+		            //     error.appendTo(element.parent().parent().parent().parent()); 
+		            // } else if ( element.is(".time-hidden") ) {
+		            //     error.appendTo(element.parent().parent().parent().parent()); 
+		            // } else if ( element.is(".datetime-hidden") ) {
+		            //     error.appendTo(element.parent().parent().parent().parent()); 
+		            } else {
+		            	error.appendTo(element.parent());
+		            };
+		        },
+		        debug:true
+			    // rules: {
+			    // }
+			});
+
+
+
 			$('.cleditor').cleditor({
 		      controls:     "bold italic underline size | color highlight removeformat" +
 		                    " | bullets numbering | undo redo | " +
@@ -48,6 +116,7 @@
 					});
 				},
 				minLength: 2,
+				delay: 0,
 				select: function( event, ui ) {
 					$("#venue-name").val(ui.item.label);
 					$("#event_venue_id").val(ui.item.id);
@@ -66,13 +135,6 @@
 
 			function clonePerformerInput() {
 				var $act_clone = $('<div><div class="act-wrapper">' + $('#hidden-act').html() + '</div></div>');
-				// $act_clone.find('input').each(function() {
-				// 	if(typeof $(this).attr('name') !== 'undefined')
-				// 		$(this).attr('name', $(this).attr('name').replace(/0/g, num_act_wrappers));
-				// 	if(typeof $(this).attr('id') !== 'undefined')
-				// 		$(this).attr('id', $(this).attr('id').replace(/0/g, num_act_wrappers));
-				// });
-				// console.log($(".performers").append($act_clone.html()));
 
 				$($act_clone.html()).appendTo(".performers").find(".act-name").autocomplete({
 					source: function( request, response ) {
@@ -84,6 +146,7 @@
 						});
 					},
 					minLength: 2,
+					delay: 0,
 					select: function( event, ui ) {
 						if (ui.item.id === 0){
 							window.open('/userSubmission/actCreate?new_name=' + $(".act-name").last().val(),'_blank');
@@ -91,7 +154,7 @@
 							return false;
 						} else {
 							$(this).siblings("input[type=checkbox]").val(ui.item.id);
-							$(this).after("<span>" + ui.item.label + "</span><a href='' style='float:right'>[x] remove</a> ");
+							$(this).after("<span><a href='' class='.delete-act'>" + ui.item.label + " [x] </a></span>");
 							$(this).autocomplete("destroy");
 							$(this).remove();
 
@@ -118,7 +181,6 @@
 			});
 			
 		});
-
 	</script>
 <% end %>
 
@@ -129,12 +191,12 @@
 			<%= e.hidden_field :id %>
 			<div class="field">
 			  <h5><%= e.label :title %></h5>
-			  <%= e.text_field :title %>
+			  <%= e.text_field :title, :class => "required"%>
 			</div>
 		    <div class="field">
 		    	<h5><%= e.label "Venue Name" %></h5>
-		    	<input type="text" id="venue-name" value="<%= (@event.venue ? @event.venue.name : "") %>" />
-		    	<%= e.hidden_field :venue_id, :value => (@event.venue ? @event.venue.id : nil) %>
+		    	<input type="text" id="venue-name" value="<%= (@event.venue ? @event.venue.name : "") %>"/>
+		    	<%= e.hidden_field :venue_id, :value => (@event.venue ? @event.venue.id : nil), :class => "required"%> 
 		    </div>
 
 			<script type="text/javascript">
@@ -164,11 +226,13 @@
 					});
 
 					function toggleDisability($that) {
-						if($that.is(':visible')) {
-							$that.find("select,input").removeAttr('disabled');
-						} else {
-							$that.find("select,input").attr("disabled","disabled");
-						}
+						$that.each( function () {
+							if($(this).is(':visible')) {
+								$(this).find("select,input").removeAttr('disabled');
+							} else {
+								$(this).find("select,input").attr("disabled","disabled");
+							}
+						});
 					}
 
 					$('.occurrence-list').on('click','.delete-occurrence',function() {
@@ -210,7 +274,6 @@
 					});
 
 					function recurrenceSet() {
-						console.log("weeee");
 						$(this).siblings(".recur-parameter").hide();
 						switch($(this).val())
 						{
@@ -224,6 +287,12 @@
 						  $(this).siblings(".recur-parameter.day-of-week").show();
 						  $(this).siblings(".recur-parameter.week-of-month").show(); break;
 						}
+					}
+
+					function requiredSet() {
+						console.log("setting required for");
+						console.log($(this));
+						$(this).addClass("required");
 					}
 
 					function dateTimeChange() {
@@ -290,12 +359,14 @@
 						// get the html from that and put it in 
 						var $occurrence_clone = $('<div></div>').append($('#hidden-occurrence').html());
 						$occurrence_clone.find('select, input').each(function() {
+
 							if(typeof $(this).attr('name') !== 'undefined')
 								$(this).attr('name', $(this).attr('name').replace(/0/g, num_occurrence_wrappers));
 							if(typeof $(this).attr('id') !== 'undefined')
 								$(this).attr('id', $(this).attr('id').replace(/0/g, num_occurrence_wrappers));
 						});
 						$occurrence_clone.find('.occurrence-wrapper').addClass('new');
+						$occurrence_clone.find("[id$=_start]").each(requiredSet);
 						$(this).before($occurrence_clone.html());
 
 						dateTimeAssign("helper_start_event[occurrences_attributes][" + num_occurrence_wrappers + "]");
@@ -312,6 +383,12 @@
 					});
 
 					$('#add-occurrence').click();
+
+				  //   $('.form-submit').click( function (){
+						// $("#event").validate();
+				  //       alert("click");
+				  //       return false;
+				  //   });
 			    });
 			</script>	
 		    <h5><label>Date & Time</label></h5>
@@ -332,9 +409,10 @@
 
 			<div class="performers">
 				<h5><%= e.label :performers %></h5>
+				Type slowly to find performers in our artist database<br>
 				<div id="hidden-act" style="display:none">
-			    	<input type="text" class="act-name" value="" />
-			    	<%= check_box_tag "event[act_ids][]", 0, true, :class => 'hidden' %>
+			    	<input type="text" class="act-name" value="" name="performer-field"/>
+			    	<%= check_box_tag "event[act_ids][]", 0, true, :class => 'hidden' %><br>
 		    	</div>
 		    	<% @event.acts.each do |a| %>
 		    		<div class="act-wrapper">
@@ -348,7 +426,7 @@
 
 		    <div class="field">
 		      <h5><%= e.label "Event Link / Registration Link" %></h5>
-		      <%= e.text_field :event_url %>
+		      <%= e.text_field :event_url, :class => "url" %>
 		    </div>
 			<div class="field">
 			  <h5><%= e.label :description %></h5>
@@ -365,5 +443,17 @@
 	    		<%= e.submit "Save / Next Step >", :class => "nice-button form-submit"%>
 	  		</div>
 		<% end %>
+	</div>
+<% end %>
+
+
+<% content_for :overlay do %>
+	<div class="mode">
+		<div class="overlay">
+			<div class="insert-point">
+				<div class="window">
+				</div>
+			</div>
+		</div>
 	</div>
 <% end %>
