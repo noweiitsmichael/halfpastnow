@@ -139,12 +139,12 @@
 		<% unless(@isFollowedLists) %>
 		<span id="list-cat-label">Top Picks Category:</span>
 		<select id="list-cat">
-			<option> All Categories </option>
+			<option value="">All Categories</option>
 			<% @parentTags.each do |prTg|%>
 				<% if(params[:id]==prTg.id.to_s)  %>
 					<option selected="selected" value="<%= prTg.id =%>" > <%= prTg.name =%> </option>
 				<% else %>
-				    <option  value="<%= prTg.id =%>" > <%= prTg.name =%> </option>
+				    <option value="<%= prTg.id =%>" > <%= prTg.name =%> </option>
 				<% end %>
 			<% end %>
 		</select>

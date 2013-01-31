@@ -21,11 +21,14 @@
 	<div class="picklists">
 		<% picklists.take(3).each_with_index do |pList,index| %>
 			<a href="/picks/find/<%= pList.id %>" onMouseOver="show('.event-tp-comment-<%= pList.id %>-<%=occurrence.id %>')" onMouseOut="hide('.event-tp-comment-<%= pList.id %>-<%=occurrence.id %>')" class="picklist-link"><%= image_tag pList.picture_url(:mini) || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
-			<% @comment_string = occurrence.event_bookmarks_with_comments(pList.id).first.comment %>
+			<% first_commented_occurrence = occurrence.event_bookmarks_with_comments(pList.id).first %>
+			<% if first_commented_occurrence %>
+			<% @comment_string = first_commented_occurrence.comment %>
 			<% unless @comment_string.eql?'' %>
 				<a class="event-tp-comment-<%= pList.id %>-<%=occurrence.id %>"  style="display:none;position:absolute; width:300px; height:50px; background-color:gray; opacity:0.7; filter:alpha(opacity=70); top:37px; right:<%=123-index*20 %>px;color:white">
 					<%=  @comment_string %>
 				</a>
+			<% end %>
 			<% end %> 
 		<% end %>
 		<em style="position: relative;top: -5px;margin-left: 2px;">on <%= picklists.size %> top picks <%= picklists.size == 1 ? "list" : "lists" %></em>

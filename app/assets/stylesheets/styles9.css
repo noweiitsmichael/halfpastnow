@@ -3205,8 +3205,9 @@ html, body {
 .picklist-description {
     margin-top: 0px;
     overflow: hidden;
-    max-height: 76px;
+    max-height: 80px;
     font-size: 12px;
+    line-height: 16px;
 }
 
 .picklist-events li {
