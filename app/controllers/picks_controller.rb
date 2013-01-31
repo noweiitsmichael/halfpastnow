@@ -22,8 +22,11 @@ helper :content
 			rs.uniq.each{ |r|
 				id = r["occurrence_id"]
 				lID = r["id"]
-				unless Occurrence.find(id).deleted
+				occ = Occurrence.find(id)
+				if ( !occ.deleted ) || ( !occ.recurrence_id.nil? )
 					@list << lID
+				
+
 				end
 			}
 			@featuredLists = BookmarkList.find(@list)
