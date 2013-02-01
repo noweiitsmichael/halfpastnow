@@ -25,12 +25,13 @@ helper :content
 				occ = Occurrence.find(id)
 				if ( !occ.deleted )
 					@list << lID
-				# else if !occ.recurrence_id.nil
-				# 	rec = Recurrence.find(occ.recurrence_id)
-				# 	if rec.range_end.nil? || rec.range_end > Date.today()
-				# 		@list << lID
-				# 	end
-				# end
+				else 
+					if !occ.recurrence_id.nil?
+						rec = Recurrence.find(occ.recurrence_id)
+						if rec.range_end.nil? || rec.range_end > Date.today()
+							@list << lID
+						end
+					end
 
 
 				end
