@@ -1,7 +1,7 @@
 class PicksController < ApplicationController
 helper :content
 	def index
-		query = "SELECT bookmark_lists.id, occurrences.recurrence_id AS recurrence_id,occurrences.deleted AS deleted, occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
+		query = "SELECT bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, occurrences.start AS start,occurrences.deleted AS deleted, occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
 				INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
 				INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
 				INNER JOIN events ON occurrences.event_id = events.id
@@ -43,12 +43,12 @@ helper :content
 				lID = r["id"]
 				recurrence_id = r["recurrence_id"]
 				deleted = r["deleted"]
-				# occ = Occurrence.find(id)
+				start = r["start"]
 				if ( !deleted )
 					if !recurrence_id.nil?
 						@list << lID
 					else
-						if occ.start > Date.today()
+						if start > Date.today()
 							@list << lID
 						else
 							@exclude << r 
