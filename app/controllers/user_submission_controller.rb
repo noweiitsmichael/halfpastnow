@@ -44,6 +44,7 @@ helper :content
 	end
 
 	def eventSubmit2
+		pp params
 		authorize! :eventSubmit1, @user, :message => 'Please log in to add events.'
 		@event = Event.find(params[:event][:id])
 

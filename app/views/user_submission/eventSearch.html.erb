@@ -17,10 +17,14 @@
 
 			$("#event-results").on("click", ".picks", function() {
 				if ($(this).hasClass("add-to-picks")) {
+					$.getJSON('/bookmarks/add_to_featuredlist', { bookmark: { "type": "Occurrence", "id": $(this).attr("bookmark-id") } }, function(data) {
+			          bookmark_id = data;
+			        });
 					$(this).removeClass("add-to-picks");
 					$(this).addClass("remove-from-picks");
 					$(this).html("Remove Pick");
 				} else {
+					$.getJSON('/bookmarks/destroyBookmarkedList/' + $(this).attr("bookmark-id"));
 					$(this).removeClass("remove-from-picks");
 					$(this).addClass("add-to-picks");
 					$(this).html("Add to Picks");
@@ -36,9 +40,9 @@
 		            $.each(data, function() {
 		            	var topPicksButton;
 		            	if (existing.indexOf(this.event.id) === -1 ) {
-		            		topPicksButton = "<a class='nice-button picks add-to-picks' href=''>Add to Picks</a>"
+		            		topPicksButton = "<a class='nice-button picks add-to-picks' href='' bookmark-id='" + this.id + "'>Add to Picks</a>"
 		            	} else {
-		            		topPicksButton = "<a class='nice-button picks remove-from-picks' href=''>Remove Pick</a>"
+		            		topPicksButton = "<a class='nice-button picks remove-from-picks' href='' bookmark-id='" + this.id + "'>Remove Pick</a>"
 		            	}
 		            	$("<li style='overflow:hidden'><div class='result-element-actions'><a href='/userSubmission/eventEdit1/" + this.event.id + "'>[edit]</a><% if user_signed_in? %><% if (current_user.role == 'admin') || (current_user.role == 'super_admin') %>" + topPicksButton + "<% end %><% end %></div><div class='result-element'><h5><a href='/?event_id=" + this.id + "' target='_blank' class='resultEventName'>"+ this.event.title + "</a></h5><span>" + this.event.venue.name + "</span></div></li>").appendTo('#event-results');
 		            });

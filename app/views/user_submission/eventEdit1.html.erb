@@ -31,23 +31,33 @@
 
 		$(function() {
 
-			jQuery.validator.addMethod("performer-field", function( value, element ) {
-				console.log("checking");
-				if ((value === null || value === "")) {
-					return true;
-				} else {
-					return false;
-				}
-			}, "Please select an artist from the dropdown or create a new one.");
+			// jQuery.validator.addMethod(".act-name", function( value, element ) {
+			// 	console.log("checking");
+			// 	if ((value === null || value === "")) {
+			// 		console.log("empty");
+			// 		return true;
+			// 	} else {
+			// 		console.log("not empty");
+			// 		return false;
+			// 	}
+			// }, "Please select an artist from the dropdown or create a new one.");
 
 			$("#event").validate({
-    			ignore: ":disabled", //:hidden.time-hidden, :hidden.date-hidden, :hidden.datetime-hidden",
-    			// debug: true,
+    			ignore: ":disabled", 
 			    invalidHandler: function(form, validator) {
 			      var errors = validator.numberOfInvalids();
 			      console.log("errors:");
 			      console.log(errors);
-			      console.log(validator);
+			      // //console.log(validator);
+					if (errors) {
+						var message = errors == 1
+							? 'You missed 1 field. It has been highlighted below'
+							: 'You missed ' + errors + ' fields.  See notes above';
+						$(".actions").append("<span class='error' style='float:left;margin-top:30px;margin-left:20px'>" + message + "</span>");
+						$("div.error").show();
+					} else {
+						$("div.error").hide();
+					}
 			    },
 			    rules: {
 					"event[venue_id]": "required",
@@ -81,7 +91,8 @@
 		            if ( element.is("#event_tag_ids_") ) {
 		                error.appendTo(element.parent().parent().parent()); 
 		            } else if (element.is(".performer-field")) {
-		            	error.appendTo(element.parent().parent());
+		            	error.appendTo(element.parent().parent().parent());
+		            	console.log(element.parent().parent().parent());
 		            // } else if ( element.is(".date-hidden") ) {
 		            //     error.appendTo(element.parent().parent().parent().parent()); 
 		            // } else if ( element.is(".time-hidden") ) {
@@ -91,8 +102,7 @@
 		            } else {
 		            	error.appendTo(element.parent());
 		            };
-		        },
-		        debug:true
+		        }
 			    // rules: {
 			    // }
 			});
@@ -439,8 +449,8 @@
 
 			<%= render :partial => "tags", :locals => { :element => @event, :type => "event" } %>
 
-			<div class="actions" style="float:left;clear:both;">
-	    		<%= e.submit "Save / Next Step >", :class => "nice-button form-submit"%>
+			<div class="actions">
+	    		<%= e.submit "Save / Add Pictures >", :class => "nice-button form-submit"%>
 	  		</div>
 		<% end %>
 	</div>

@@ -41,52 +41,67 @@
 		    	var jcrop_api;
 			    $(function () {
 					$('#new_pic').click( function (){
-						console.log("new pic click");
-						if ($("#event_remote_image_url").val() == ""){
-						  confirmURL("nourl");
+						  // First check image to see if it actually exists
+						  var img = new Image();
+						  img.onload = function() {
+							  $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('#eventThumbs');
+							  var picData = 
+							    {"picture":
+							      { "pictureable_id": parseInt($("#pictureable_id").val()),
+							        "pictureable_type": $("#pictureable_type").val(), 
+							        "remote_image_url": $("#event_remote_image_url").val()
+							      }
+							    };
+							  $.post("/pictures/create",picData,function(data) {
+			                	  var numThumbs = $(".gallery").length;
+								  var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
+								  newPicThumb += '<input type="hidden" name="event[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+								  newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '">';
+								  newPicThumb += '<div href="" class="remove-pic">X</div>';
+			                	  newPicThumb += '<div class="crop-radio"><input type="radio" name="crop-radio-button" picurl="' + data.image.large.url + '" picid = ' + data.id + '" /></div>'
+								  $('.ajaxLoader').detach();
+								  $(newPicThumb).appendTo('#eventThumbs');
+								},
+								"json");
+							return false;
+						  };
+						  img.onerror = function() {
+			          		if ($('#new_pic').siblings("a").first().next().hasClass("error")){
+						    	$('#new_pic').siblings("a").first().next().html("Please input a valid image URL");
+						    } else {
+					    		$('#new_pic').siblings("a").first().after("<div class='error' style='margin-left:540px'>Please input a valid image URL</div>");
+							}
+						    return false;
+						  };
+
+						  img.src = $("#event_remote_image_url").val();
 						  return false;
-						} 
-						else {
-						  $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('#eventThumbs');
-						  var picData = 
-						    {"picture":
-						      { "pictureable_id": parseInt($("#pictureable_id").val()),
-						        "pictureable_type": $("#pictureable_type").val(), 
-						        "remote_image_url": $("#event_remote_image_url").val()
-						      }
-						    };
-						}
-						$.post("/pictures/create",picData,function(data) {
-						  var numThumbs = document.getElementsByClassName("gallery");
-						  var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
-						  newPicThumb += '<div class="pictures field gallery" index="' + numThumbs + '">';
-						  newPicThumb += '<input type="hidden" name="event[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
-						  newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '">';
-						  newPicThumb += '<div href="" class="remove-pic">X</div></div>';
-						  $('.ajaxLoader').detach();
-						  $(newPicThumb).appendTo('#eventThumbs');
-						},
-						"json");
-						return false;
 					});
 
 			        $("#fileclick").click(function() {
-						console.log("file pic click");
-			          if ($("#event_image").val() == ""){
-			            confirmURL("nofile");
+			          if (pictureCheck($("#event_image").val()) === false) {
+			          		console.log("is false");
+			          		if ($('#new_pic').siblings("a").first().next().hasClass("error")){
+						    	$('#new_pic').siblings("a").first().next().html("Please select an image. <br> Valid image types are jpeg, jpg, png, gif, svg, tiff, and bmp.");
+						    } else {
+					    		$('#new_pic').siblings("a").first().after("<div class='error' style='margin-left:540px'>Please select an image. <br> Valid image types are jpeg, jpg, png, gif, svg, tiff, and bmp.</div>");
+							}
+						    return false;
 			          } else {
+			          	console.log("file good")
 			            $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('#eventThumbs');
-			            $("#event-form").ajaxSubmit({
+			            $("#event<%= @event.id %>").ajaxSubmit({
 			              beforeSerialize: function(form, options) {
 			              },
 			              url: "/pictures/createForEvent",
 			              success:function(data) {
-			                var numThumbs = document.getElementsByClassName("gallery");
+			              	console.log(data);
+			                var numThumbs = $(".gallery").length;
 			                var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
-			                newPicThumb += '<div class="pictures field gallery" index="' + numThumbs + '">';
 			                newPicThumb += '<input type="hidden" name="event[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
 			                newPicThumb += '<img style="margin-right:3px;" alt="image_thumb" src="' + data.image.thumb.url + '">';
-			                newPicThumb += '<div style="margin-right:3px;" href="" class="remove-pic">X</div></div>';
+			                newPicThumb += '<div style="margin-right:3px;" href="" class="remove-pic">X</div>';
+			                newPicThumb += '<div class="crop-radio"><input type="radio" name="crop-radio-button" picurl="' + data.image.large.url + '" picid = ' + data.id + '" /></div></div>'
 			                $('.ajaxLoader').detach();
 			                $(newPicThumb).appendTo('#eventThumbs');
 			              },
@@ -109,12 +124,12 @@
 				      return false;
 				    });
 
-				    $('.pic-element-wrapper').on("click", "[name=crop-radio-button]", function () {
+				    $('.pic-gallery-wrapper').on("click", "[name=crop-radio-button]", function () {
 
 				    	if ($(".pic-crop-wrapper strong").is(":visible") || $(".pic-crop-wrapper .existing-cover-image").is(":visible")) {	
 					    	$(".pic-crop-wrapper strong").hide();
 					    	$(".pic-crop-wrapper .existing-cover-image").hide();
-					    	$("<div class='preview-wrapper' style='width:250px; height:120px; overflow:hidden;'><img src='" + $(this).attr("picurl") + "' class='preview' /></div>").insertBefore($(".pic-crop-wrapper img").last());
+					    	$("<div class='preview-wrapper' style='width:206px; height:126px; overflow:hidden;'><img src='" + $(this).attr("picurl") + "' class='preview' /></div>").insertBefore($(".pic-crop-wrapper img").last());
 					    	$("<div class='arrow-outer-wrapper'><div class='arrow-inner-wrapper'><span class='icon-arrow-left'></span></div></div>").insertBefore($(".pic-crop-wrapper img").last());
 				    	} else {
 				    		console.log("wtf");
@@ -126,7 +141,7 @@
 				    	$(".cover_image").val($(this).attr("picid"));
 
 				    	$('.cropbox').Jcrop({
-					      aspectRatio: 2.083,
+					      aspectRatio: 1.635,
 					      setSelect: [0, 0, 500, 500],
 					      onSelect: updateCrop, // @update,
 					      onChange: updateCrop  // @update
@@ -142,6 +157,12 @@
 					         //    console.log(parseInt($(".picture_crop_y").val()));
 					         //    console.log(parseInt($(".picture_crop_w").val()));
 					         //    console.log(parseInt($(".picture_crop_h").val()));
+					      if (($(".picture_crop_x").val() === null) || ($(".picture_crop_x").val() === "")) {
+				          	$("#event<%= @event.id.to_s %>").submit();
+					      	return false;
+					      }
+
+					      console.log("going on...");
 					      var picData = 
 					        {"picture":
 					          { "crop_x": parseInt($(".picture_crop_x").val()),
@@ -164,16 +185,43 @@
 				      });
 				    });
 
+					function pictureCheck(data) {
+					    var extension = data.substr( (data.lastIndexOf('.') +1) );
+					    switch(extension) {
+					        case 'jpg':
+					        case 'png':
+					        case 'gif':
+					        case 'jpeg':
+					        case 'svg':
+					        case 'tiff':
+					        case 'bmp':
+					            return true;  // There's was a typo in the example where
+					        default:
+					            return false;
+					    }
+					};
+
+					function confirmURL(confirmType) {
+				        $( "#" + confirmType ).dialog({
+				            modal: true,
+				            buttons: {
+				                Ok: function() {
+				                    $( this ).dialog( "close" );
+				                }
+				            }
+				        });
+				    };
+
 					function updateCrop(coords) {
 				      $('.picture_crop_x').val(coords.x);
 				      $('.picture_crop_y').val(coords.y);
 				      $('.picture_crop_w').val(coords.w);
 				      $('.picture_crop_h').val(coords.h);
 				      $('.preview').css({
-				        width: Math.round(250 / coords.w * $('.cropbox').width()) + 'px',
-				        height: Math.round(120 / coords.h * $('.cropbox').height()) + 'px',
-				        marginLeft: '-' + Math.round(250 / coords.w * coords.x) + 'px',
-				        marginTop: '-' + Math.round(120 / coords.h * coords.y) + 'px'
+				        width: Math.round(206 / coords.w * $('.cropbox').width()) + 'px',
+				        height: Math.round(126 / coords.h * $('.cropbox').height()) + 'px',
+				        marginLeft: '-' + Math.round(206 / coords.w * coords.x) + 'px',
+				        marginTop: '-' + Math.round(126 / coords.h * coords.y) + 'px'
 				      });
 				    }
 
@@ -221,10 +269,10 @@
 				</div>
 		    </div>
 		<!-- End Pictures Section -->
-			<label><h5>Front Page Image</h5></label>
+			<label><h5>Front Page Image</h5></label><% if @event.cover_image.nil? %><strong style="color:red;"> (This is important! This picture is what shows up on search results and event listings.) </strong><% end %>
 			<div class="pic-crop-wrapper">
 				<% if @event.cover_image.nil? %>
-					<strong style="color:purple;"> Please choose front page image from pictures above</strong>
+					<strong style="color:purple;"> Please choose front page image from pictures above, or upload a new one. </strong>
 						<img src="" class="cropbox" />
 				<% else %>
 					<%= image_tag Picture.find(@event.cover_image).image_url(:cover).to_s, :class => "existing-cover-image" %>
@@ -247,4 +295,11 @@
 
 		<% end %>
 	</div>
+	  <div id="nourl" title="No image url?" style="display:none; font-size:14px;">
+	    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Please input a valid URL for an image.</p>
+	  </div>
+
+	  <div id="nofile" title="No image selected?" style="display:none; font-size:14px;">
+	    <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Please select an image. Valid image types are jpeg, jpg, png, gif, svg, tiff, and bmp.</p>
+	  </div>
 <% end %>

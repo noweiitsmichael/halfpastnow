@@ -2090,7 +2090,8 @@ input::-webkit-input-placeholder
   padding: 8px 10px;
   margin: 20px 0;
   text-decoration: none;
-  display:block;
+  display:inline;
+  float:left;
   text-align:center;
 }
 
