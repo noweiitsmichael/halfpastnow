@@ -144,7 +144,7 @@ helper :content
 		    @long = -97.742808
 		    @zoom = 11
 
-			@occurrences = current_user.followedLists.collect { |list| list.all_bookmarked_events.select{ |o| o.start >= Date.today.to_datetime } }.flatten.uniq{|x| x.id}
+			@occurrences = current_user.followedLists.collect { |list| list.all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time } }.flatten.uniq{|x| x.id}
 			render "find"
 		else
 			@featuredLists = current_user ? current_user.followedLists : []
@@ -160,7 +160,7 @@ helper :content
 	    @long = -97.742808
 	    @zoom = 11
 	    @url = 'http://halfpastnow.com/picks/find/'+params[:id]
-		@occurrences = @bookmarkList.all_bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }.sort_by { |o| o.start }
+		@occurrences = @bookmarkList.all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
 		
 		
 		
@@ -173,7 +173,7 @@ helper :content
 	    @zoom = 11
 
 		@bookmarkList = current_user.main_bookmark_list
-		@occurrences = @bookmarkList.all_bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }.sort_by { |o| o.start }
+		@occurrences = @bookmarkList.all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
 
 		@isMyBookmarksList = true
 
