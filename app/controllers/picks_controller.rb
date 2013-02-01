@@ -48,7 +48,7 @@ helper :content
 					if !recurrence_id.nil?
 						@list << lID
 					else
-						if Date.strptime(start) > Date.today()
+						if start.to_time > Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
 							@list << lID
 						else
 							@exclude << r 
@@ -59,7 +59,7 @@ helper :content
 				else 
 					if !recurrence_id.nil?
 						rec = Recurrence.find(recurrence_id)
-						if rec.range_end.nil? || rec.range_end > Date.today()
+						if rec.range_end.nil? || rec.range_end > Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
 							@list << lID
 						else
 							@exclude << r 
@@ -100,7 +100,7 @@ helper :content
 				if !recurrence_id.nil?
 					@list << lID
 				else
-					if Date.strptime(start) > Date.today()
+					if start.to_time > Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
 						@list << lID
 					else
 						@exclude << r 
@@ -111,7 +111,7 @@ helper :content
 			else 
 				if !recurrence_id.nil?
 					rec = Recurrence.find(recurrence_id)
-					if rec.range_end.nil? || rec.range_end > Date.today()
+					if rec.range_end.nil? || rec.range_end > Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
 						@list << lID
 					else
 						@exclude << r 
