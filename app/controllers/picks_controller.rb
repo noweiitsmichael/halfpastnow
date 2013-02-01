@@ -24,7 +24,14 @@ helper :content
 				lID = r["id"]
 				occ = Occurrence.find(id)
 				if ( !occ.deleted )
-					@list << lID
+					if !occ.recurrence_id.nil?
+						@list << lID
+					else
+						if occ.start > Date.today()
+							@list << lID
+						end
+					end
+					
 				else 
 					if !occ.recurrence_id.nil?
 						rec = Recurrence.find(occ.recurrence_id)
