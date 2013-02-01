@@ -21,8 +21,9 @@ Myapp::Application.routes.draw do
   resources :bookmarks
 
   get "info/about"
-
   get "info/contact"
+  get "info/privacy"
+  get "info/terms"
 
   devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"}
 

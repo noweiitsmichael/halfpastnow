@@ -100,7 +100,8 @@ class VenuesController < ApplicationController
   # GET /venues/find
   def find
     if(params[:contains])
-      @venues = Venue.where("name ilike ?", "%#{params[:contains]}%").collect {|v| { :label => "#{v.name} (#{v.address})", :value => "#{v.name} (#{v.address})", :id => v.id } }
+      searchterm = params[:contains].gsub(/[^0-9a-z ]/i, '').upcase
+      @venues = Venue.where("regexp_replace(name, '[^0-9a-zA-Z ]', '') ilike '%#{searchterm}%'").collect {|v| { :label => "#{v.name} (#{v.address})", :value => "#{v.name} (#{v.address})", :id => v.id } }
     else
       @venues = []
     end

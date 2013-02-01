@@ -8,20 +8,43 @@
 
 <% content_for :code do %>
 	<script type="text/javascript">
-		$( "button" ).button();
 		$(function() {
+
+			var existing = [<%= BookmarkList.where(:user_id => current_user.id, :featured => true).collect { |b| b.bookmarks }.flatten.collect { |e| Occurrence.find(e.bookmarked_id).event.id } * "," %>];
 			$('#create-event').click(function() {
 				window.location = "/userSubmission/eventCreate1?new_title=" + $("#event-title").val();
-			})
+			});
+
+			$("#event-results").on("click", ".picks", function() {
+				if ($(this).hasClass("add-to-picks")) {
+					$.getJSON('/bookmarks/add_to_featuredlist', { bookmark: { "type": "Occurrence", "id": $(this).attr("bookmark-id") } }, function(data) {
+			          bookmark_id = data;
+			        });
+					$(this).removeClass("add-to-picks");
+					$(this).addClass("remove-from-picks");
+					$(this).html("Remove Pick");
+				} else {
+					$.getJSON('/bookmarks/destroyBookmarkedList/' + $(this).attr("bookmark-id"));
+					$(this).removeClass("remove-from-picks");
+					$(this).addClass("add-to-picks");
+					$(this).html("Add to Picks");
+				}
+				return false;
+			});
 
 			$("#event-title").keyup(function() {
 				var term = $(this).val();
 				$.getJSON("/userSubmission/eventSearchTerm?term=" + term, function (data) {
 		            $('#event-results').empty();
 		            $("<h4 style='margin-top:10px;'>Existing Events:</h4>").appendTo('#event-results');
-		            // console.log(data);
 		            $.each(data, function() {
-		            	$("<li style='overflow:hidden'><a style='float:left;margin-right:10px;margin-top:6px' href='/userSubmission/eventEdit1/" + this.event.id + "'>[edit]</a><div class='result-element'><h5><a href='/?event_id=" + this.id + "' target='_blank' class='resultEventName'>"+ this.event.title + "</a></h5><span>" + this.event.venue.name + "</span></div></li>").appendTo('#event-results');
+		            	var topPicksButton;
+		            	if (existing.indexOf(this.event.id) === -1 ) {
+		            		topPicksButton = "<a class='nice-button picks add-to-picks' href='' bookmark-id='" + this.id + "'>Add to Picks</a>"
+		            	} else {
+		            		topPicksButton = "<a class='nice-button picks remove-from-picks' href='' bookmark-id='" + this.id + "'>Remove Pick</a>"
+		            	}
+		            	$("<li style='overflow:hidden'><div class='result-element-actions'><a href='/userSubmission/eventEdit1/" + this.event.id + "'>[edit]</a><% if user_signed_in? %><% if (current_user.role == 'admin') || (current_user.role == 'super_admin') %>" + topPicksButton + "<% end %><% end %></div><div class='result-element'><h5><a href='/?event_id=" + this.id + "' target='_blank' class='resultEventName'>"+ this.event.title + "</a></h5><span>" + this.event.venue.name + "</span></div></li>").appendTo('#event-results');
 		            });
 		        });
 			});
@@ -37,5 +60,6 @@
 		<br><br><input type="text" id="event-title" style="width:400px;"/> <button id="create-event" class="nice-button">Create New Event</button>
 		<ul id="event-results">
 		</ul>
+		<%= hidden_field_tag "existing-bookmarks", BookmarkList.where(:user_id => current_user.id, :featured => true).collect { |b| b.bookmarks }.flatten.collect { |e| Occurrence.find(e.bookmarked_id).event.id } %>
 	</div>
 <% end %>

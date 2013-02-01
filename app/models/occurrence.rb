@@ -73,6 +73,7 @@ class Occurrence < ActiveRecord::Base
       params[:high_price] ||= channel.high_price || ""
       params[:included_tags] ||= channel.included_tags ? channel.included_tags.split(',') : nil
       params[:excluded_tags] ||= channel.excluded_tags ? channel.excluded_tags.split(',') : nil
+      params[:and_tags] ||= channel.and_tags ? channel.and_tags.split(',') : nil
       params[:lat_min] ||= ""
       params[:lat_max] ||= ""
       params[:long_min] ||= ""
@@ -91,10 +92,14 @@ class Occurrence < ActiveRecord::Base
       params[:excluded_tags] = params[:excluded_tags].split(",")
     end
 
+    if(params[:and_tags] && params[:and_tags].is_a?(String))
+      params[:and_tags] = params[:and_tags].split(",")
+    end
+
     # @tags = Tag.includes(:parentTag, :childTags).all
     # @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
 
-    search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
+    search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = tag_and_match = low_price_match = high_price_match = "TRUE"
 
     @amount = 200
     @offset = 0
@@ -246,30 +251,36 @@ class Occurrence < ActiveRecord::Base
 
       location_match = "venues.id = events.venue_id AND venues.latitude >= #{@lat_min} AND venues.latitude <= #{@lat_max} AND venues.longitude >= #{@long_min} AND venues.longitude <= #{@long_max}"
 
-      # tags
+      # categories
       unless(params[:included_tags].to_s.empty?)
         tags_mush = params[:included_tags] * ','
 
-        # tag_include_match = "events.id IN (
-        #               SELECT event_id 
-        #                 FROM events, tags, events_tags 
-        #                 WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{tags_mush}) 
-        #                 GROUP BY event_id 
-        #                 HAVING COUNT(tag_id) >= #{ params[:included_tags].count }
-        #             )"
 
         tag_include_match = "tags.id IN (#{tags_mush})"
       end
 
-      unless(params[:excluded_tags].to_s.empty?)
-        tags_mush = params[:excluded_tags] * ','
-        tag_exclude_match = "events.id NOT IN (
+      # tags
+      unless(params[:and_tags].to_s.empty?)
+        tags_mush = params[:and_tags] * ','
+
+        tag_and_match = "events.id IN (
                       SELECT event_id 
                         FROM events, tags, events_tags 
                         WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{tags_mush}) 
-                        GROUP BY event_id
+                        GROUP BY event_id 
+                        HAVING COUNT(tag_id) >= #{ params[:and_tags].count }
                     )"
       end
+
+      # unless(params[:excluded_tags].to_s.empty?)
+      #   tags_mush = params[:excluded_tags] * ','
+      #   tag_exclude_match = "events.id NOT IN (
+      #                 SELECT event_id 
+      #                   FROM events, tags, events_tags 
+      #                   WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{tags_mush}) 
+      #                   GROUP BY event_id
+      #               )"
+      # end
 
       # price
       unless(params[:low_price].to_s.empty?)
@@ -296,7 +307,7 @@ class Occurrence < ActiveRecord::Base
                      LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
                      LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id"
 
-      where_clause = "#{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
+      where_clause = "#{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_and_match} AND #{low_price_match} AND #{high_price_match}"
 
     end
 
@@ -309,65 +320,6 @@ class Occurrence < ActiveRecord::Base
     
     return ActiveRecord::Base.connection.select_all(query)
   
-    # # old queries
-    # if(bookmarked)
-    #   user_id = params[:user_id]
-
-    #   if(params[:bookmark_type] == "event")
-    #     query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-    #           FROM occurrences 
-    #             INNER JOIN events ON occurrences.event_id = events.id
-    #             INNER JOIN venues ON events.venue_id = venues.id
-    #             INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
-    #           WHERE bookmarks.user_id = #{user_id} AND bookmarks.bookmarked_type = 'Occurrence'
-    #           ORDER BY events.id, occurrences.start"
-    #   elsif(params[:bookmark_type] == "venue")
-    #     query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-    #           FROM occurrences 
-    #             INNER JOIN events ON occurrences.event_id = events.id
-    #             INNER JOIN venues ON events.venue_id = venues.id
-    #             INNER JOIN bookmarks ON venues.id = bookmarks.bookmarked_id
-    #           WHERE bookmarks.user_id = #{user_id} AND bookmarks.bookmarked_type = 'Venue'
-    #           ORDER BY events.id, occurrences.start"
-    #   elsif(params[:bookmark_type] == "act")
-    #     query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-    #           FROM occurrences 
-    #             INNER JOIN events ON occurrences.event_id = events.id
-    #             INNER JOIN venues ON events.venue_id = venues.id
-    #             LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
-    #             LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
-    #             INNER JOIN bookmarks ON acts.id = bookmarks.bookmarked_id
-    #           WHERE bookmarks.user_id = #{user_id} AND bookmarks.bookmarked_type = 'Act'
-    #           ORDER BY events.id, occurrences.start"
-    #   end
-    # elsif(isCollection)
-    #   if(params[:collection_type] == "venue")
-    #     query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-    #           FROM occurrences 
-    #             INNER JOIN events ON occurrences.event_id = events.id
-    #             INNER JOIN venues ON events.venue_id = venues.id
-    #           WHERE venues.id IN (#{params[:collection]})
-    #           ORDER BY events.id, occurrences.start"
-    #   elsif(params[:collection_type] == "act")
-    #     query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-    #           FROM occurrences 
-    #             INNER JOIN events ON occurrences.event_id = events.id
-    #             INNER JOIN venues ON events.venue_id = venues.id
-    #             LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
-    #             LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
-    #           WHERE acts.id IN (#{params[:collection]})
-    #           ORDER BY events.id, occurrences.start"
-    #   end
-    # else
-    #   query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-    #           FROM occurrences 
-    #             INNER JOIN events ON occurrences.event_id = events.id
-    #             INNER JOIN venues ON events.venue_id = venues.id
-    #             LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
-    #             LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-    #           WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
-    #           ORDER BY events.id, occurrences.start"
-    # end
   end
 
 end

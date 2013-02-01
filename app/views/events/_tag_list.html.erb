@@ -1,7 +1,7 @@
-<div class="tags-display">&nbsp;</div>
-<ul class="tags-menu parents">
+<div class="tags-display ortags">&nbsp;</div>
+<ul class="tags-menu ortags parents">
 	<% tagCounts.select{|tagCount| tagCount[:parent].nil? }.each do |parentTagCount| %>
-		<% unless parentTagCount[:name] == "Streams" %>
+		<% unless (parentTagCount[:name] == "Streams") || (parentTagCount[:name] == "Tags") %>
 			<li>
 				<div class="tag-header <%= parentTagCount[:count] == 0 ? "no-results" : "" %>" tag-id="<%= parentTagCount[:id] %>">
 					<!-- <span class="exclude icon-ban-circle" tag-id="<%= parentTagCount[:id] %>" title="don't show events with this tag"></span> -->
@@ -15,7 +15,7 @@
 		<% end %>
 	<% end %>
 </ul>
-<ul class="tags-menu children">
+<ul class="tags-menu ortags children">
 	<% tagCounts.select{|tagCount| tagCount[:parent].nil? }.each do |parentTagCount| %>
 		<% unless parentTagCount[:name] == "Streams" %>
 			<% parentTagCount[:children].each do |childTagCount| %>

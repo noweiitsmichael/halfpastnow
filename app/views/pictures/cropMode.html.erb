@@ -15,7 +15,7 @@
 		// }
 
 	    $('.cropbox').Jcrop({
-	      aspectRatio: 2.083,
+	      aspectRatio: 1.635,
 	      setSelect: [0, 0, 500, 500],
 	      onSelect: updateCrop, // @update,
 	      onChange: updateCrop  // @update
@@ -81,10 +81,10 @@
       $('.picture_crop_w').val(coords.w);
       $('.picture_crop_h').val(coords.h);
       $('.preview').css({
-        width: Math.round(250 / coords.w * $('.cropbox').width()) + 'px',
-        height: Math.round(120 / coords.h * $('.cropbox').height()) + 'px',
-        marginLeft: '-' + Math.round(250 / coords.w * coords.x) + 'px',
-        marginTop: '-' + Math.round(120 / coords.h * coords.y) + 'px'
+        width: Math.round(206 / coords.w * $('.cropbox').width()) + 'px',
+        height: Math.round(126 / coords.h * $('.cropbox').height()) + 'px',
+        marginLeft: '-' + Math.round(206 / coords.w * coords.x) + 'px',
+        marginTop: '-' + Math.round(126 / coords.h * coords.y) + 'px'
       });
     }
 
@@ -95,7 +95,7 @@
 <%= image_tag @picURL, :class => "cropbox" %>
 
 <h4>Preview</h4>
-<div style="width:250px; height:120px; overflow:hidden;">
+<div style="width:206px; height:126px; overflow:hidden;">
   <%= image_tag @picURL, :class => "preview" %>
 </div>
 

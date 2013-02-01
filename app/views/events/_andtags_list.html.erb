@@ -1,0 +1,13 @@
+<div class="tags-display andtags">&nbsp;</div>
+<ul class="tags-menu andtags parents">
+	<% andTags = tagCounts.select { |t| t[:name] == "Tags" }.first %>
+	<% andTags[:children].each do |childTagCount| %>
+		<li parent-id="<%= andTags[:id] %>">
+			<div class="tag-header <%= childTagCount[:count] == 0 ? "no-results" : "" %>" tag-id="<%= childTagCount[:id] %>">
+				<!-- <span class="exclude icon-ban-circle" tag-id="<%= childTagCount[:id] %>" title="don't show events with this tag"></span> -->
+				<span class="include icon-check" tag-id="<%= childTagCount[:id] %>" title="show events with this tag"><span></span></span>
+				<span class="name"><%= childTagCount[:name] %><!-- <em><%= childTagCount[:count] == 0 ? "" : "[#{childTagCount[:count]}]" %></em> --></span>
+			</div>
+		</li>
+	<% end %>
+</ul>
