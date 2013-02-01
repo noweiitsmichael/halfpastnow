@@ -2415,6 +2415,10 @@ input::-webkit-input-placeholder
     box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
 }
 
+#content .main .inner .events li > a{
+    color:#303030;
+}
+
 .events li .bookmark-comment {
     clear:left;
     padding: 7px;
@@ -2513,11 +2517,11 @@ input::-webkit-input-placeholder
 }
 #content .events li .tags .tag {
     float: left;
-    background-color: #2E2E2E;
+    background-color: #A8A8A8;
     color: white;
     padding: 0px 4px;
     margin-right: 3px;
-    border-radius: 2px;
+    border-radius: 1px;
     margin-bottom: 3px;
     text-transform: lowercase;
     height: 13px;
@@ -2550,7 +2554,6 @@ input::-webkit-input-placeholder
     clear: left;
 
     background: #Fafafa;
-    border-top: 1px solid rgba(0,0,0,.2);
 }
 
 #content .events li .price {
@@ -3312,7 +3315,7 @@ html, body {
 }
 
 .picklist-events li:hover {
-    background: #f4fcff;
+    background: #CDEAF5;
 }
 
 .picklist-events li.see-more {

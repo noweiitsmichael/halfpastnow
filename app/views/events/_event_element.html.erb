@@ -1,5 +1,5 @@
 
-<li linkto="event" link-id="<%= occurrence.id %>">
+<li linkto="event" link-id="<%= occurrence.id %>"><a href="/?event_id=<%= occurrence.id %>">
 	<div class="index <%= ((index + 1) >= 100) ? "over100" : ""%>"><%= index ? (index + 1) : "" %></div>
 	<div class="title">
 		<%= occurrence.event.title %>
@@ -86,5 +86,5 @@
 	<div class="marker-caching">
 		<img src="/assets/markers/marker_<%= (index + 1) % 100 %>.png" />
 		<img src="/assets/markers/marker_hover_<%= (index + 1) % 100 %>.png" />
-	</div>
+	</div></a>
 </li>
