@@ -1,7 +1,7 @@
 class PicksController < ApplicationController
 helper :content
 	def index
-		query = "SELECT bookmark_lists.id,  occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
+		query = "SELECT bookmark_lists.id, occurrences.recurrence_id AS recurrence_id,occurrences.deleted AS deleted, occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
 				INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
 				INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
 				INNER JOIN events ON occurrences.event_id = events.id
@@ -41,9 +41,11 @@ helper :content
 			rs.uniq.each{ |r|
 				id = r["occurrence_id"]
 				lID = r["id"]
-				occ = Occurrence.find(id)
-				if ( !occ.deleted )
-					if !occ.recurrence_id.nil?
+				recurrence_id = r["recurrence_id"]
+				deleted = r["deleted"]
+				# occ = Occurrence.find(id)
+				if ( !deleted )
+					if !recurrence_id.nil?
 						@list << lID
 					else
 						if occ.start > Date.today()
@@ -55,8 +57,8 @@ helper :content
 					end
 					
 				else 
-					if !occ.recurrence_id.nil?
-						rec = Recurrence.find(occ.recurrence_id)
+					if !recurrence_id.nil?
+						rec = Recurrence.find(recurrence_id)
 						if rec.range_end.nil? || rec.range_end > Date.today()
 							@list << lID
 						else
@@ -90,9 +92,11 @@ helper :content
 		result.uniq.each{ |r|
 			id = r["occurrence_id"]
 			lID = r["id"]
-			occ = Occurrence.find(id)
-			if ( !occ.deleted )
-				if !occ.recurrence_id.nil?
+			recurrence_id = r["recurrence_id"]
+			deleted = r["deleted"]
+			# occ = Occurrence.find(id)
+			if ( !deleted )
+				if !recurrence_id.nil?
 					@list << lID
 				else
 					if occ.start > Date.today()
@@ -104,8 +108,8 @@ helper :content
 				end
 				
 			else 
-				if !occ.recurrence_id.nil?
-					rec = Recurrence.find(occ.recurrence_id)
+				if !recurrence_id.nil?
+					rec = Recurrence.find(recurrence_id)
 					if rec.range_end.nil? || rec.range_end > Date.today()
 						@list << lID
 					else
