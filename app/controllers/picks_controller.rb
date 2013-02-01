@@ -18,6 +18,7 @@ helper :content
 			@featuredLists = BookmarkList.where(:featured=>true)
 		else
 			@list=[]
+			@exclude=[]
 			rs = result.select { |r| r["tag_id"] == tag_id.to_s }.uniq
 			rs.uniq.each{ |r|
 				id = r["occurrence_id"]
@@ -29,7 +30,10 @@ helper :content
 					else
 						if occ.start > Date.today()
 							@list << lID
+						else
+							@exclude << r 
 						end
+
 					end
 					
 				else 
@@ -37,13 +41,25 @@ helper :content
 						rec = Recurrence.find(occ.recurrence_id)
 						if rec.range_end.nil? || rec.range_end > Date.today()
 							@list << lID
+						else
+							@exclude << r 
 						end
+					else
+						@exclude << r 
 					end
 
 
 				end
 			}
-			@featuredLists = BookmarkList.find(@list)
+			@legit = rs - @exclude
+			ls = []
+			@list.each { |l|
+				n = @legit.select{ |r| r["id"] == l.to_s }.uniq
+				if n.count > 1
+					ls << l
+				end
+			}
+			@featuredLists = BookmarkList.find(ls)
 
 			# @featuredLists = BookmarkList.find(result.select { |r| r["tag_id"] == tag_id.to_s }.collect { |e| e["id"] }.uniq)
 		end
