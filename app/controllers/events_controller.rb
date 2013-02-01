@@ -156,7 +156,7 @@ def index
       bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
       @bookmarkId = bookmark.nil? ? nil : bookmark.id 
       # bookmarkFeaturedList=Bookmark.where(:bookmarked_type => "Occurrence",:bookmark_list_id => current_user.featured_list.id, :bookmarked_id =>@occurrence.id).first
-      bookmarkFeaturedList=@occurrence.all_event_bookmarks(current_user.featured_list.id).first
+      bookmarkFeaturedList=(!current_user.featured_list.nil?) ? @occurrence.all_event_bookmarks(current_user.featured_list.id).first : nil
       @bookmarkFeaturedListId = bookmarkFeaturedList.nil? ? nil : bookmarkFeaturedList.id 
     else
       @bookmarkId = nil

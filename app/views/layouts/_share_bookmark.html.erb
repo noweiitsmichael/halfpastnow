@@ -216,7 +216,10 @@
 				</div>
 				<div class="popup-box-1">
 					<label> Edit comment (Optional)</label>
-					<textarea class="comment-text-1" style="color:black;" placeholder="Comment"><%=(@occurrence.event_bookmarks_with_comments(current_user.featured_list.id).first.nil? ) ? '' : @occurrence.event_bookmarks_with_comments(current_user.featured_list.id).first.comment%></textarea>
+					<% featured_list = current_user.featured_list 
+					   comment = (featured_list.nil?) ? '' : (@occurrence.event_bookmarks_with_comments(featured_list.id).first.nil? ) ? '' : @occurrence.event_bookmarks_with_comments(featured_list.id).first.comment
+					%>
+					<textarea class="comment-text-1" style="color:black;" placeholder="Comment"><%= comment %></textarea>
 					<button class="edit-btn" onclick='return edit_comment()'>Edit comment</button>
 					<button class="delete-btn" onclick='return deleteTP()'>UnTP</button>
 				</div>

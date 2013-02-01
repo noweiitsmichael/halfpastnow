@@ -2336,6 +2336,16 @@ input::-webkit-input-placeholder
   border: 1px solid #ccc;
 }
 
+#list-cat-wrapper { padding:12px; background:white; box-shadow: 1px 1px 3px rgba(0,0,0,.6); margin-left:1px; margin-right:3px; font-size: 16px;}
+
+#list-cat-label {
+    font-weight: bold;
+    font-size: 17px;
+    font-style: italic;
+}
+
+#list-cat {}
+
 #info-content.top-picks {
     background:transparent;
     border:none;
@@ -3190,7 +3200,7 @@ html, body {
     overflow:hidden;
     background: white;
     border-radius: 1px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 
@@ -3268,6 +3278,7 @@ html, body {
     width: 150px;
     font-size: 13px;
     border-radius: 0 0 2px 2px;
+    margin-top: 3px;
 }
 
 .unfollow.button {
@@ -3275,6 +3286,7 @@ html, body {
     width: 150px;
     font-size: 13px;
     border-radius:  0 0 2px 2px;
+    margin-top: 3px;
 }
 
 .picklist-description {
@@ -3289,6 +3301,8 @@ html, body {
     cursor:pointer;
     position: relative;
     padding: 12px;
+    color: #303030;
+    min-height: 51px;
 }
 
 .picklist-events li .picture{
@@ -3298,10 +3312,12 @@ html, body {
 }
 
 .picklist-events li:hover {
-    background:#eee;
+    background: #f4fcff;
 }
 
-.picklist-events li.see-more {   
+.picklist-events li.see-more {
+    min-height: auto;
+   
 }
 
 .picklist-events li.see-more a {
@@ -3314,8 +3330,8 @@ html, body {
     display: block;
 }
 
-.picklist-events li.see-more a span {
-    border-bottom:1px dotted black;
+.picklist-events li.see-more:hover a {
+    color:#126681;
 }
 
 .picklist-events li .title {
@@ -3323,6 +3339,10 @@ html, body {
     overflow:hidden;
     max-height:32px;
     margin-left: 92px;
+}
+
+.picklist-events li:hover .title {
+    color: #126681;
 }
 
 .picklist-events li .venue {
@@ -3418,7 +3438,7 @@ html, body {
 }
 
 .list{ 
-  width: 487px;
+  width: 486px;
   float: left;
   margin-right: 12px;
   margin-left: 1px;
@@ -3431,10 +3451,18 @@ html, body {
 #list-cat{
     margin: 0;
  
+    font-size: 16px;
+    background: transparent;
+    cursor: pointer;
+    border-bottom: 1px dotted black;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    padding: 0;
+    font-style: italic;
 }
-.edit-add-tp{
-  display:inline-block;
-  position:relative;
+#list-cat:focus {
+    outline:none;
 }
 .edit-add-tp{
     background-color: #444;
