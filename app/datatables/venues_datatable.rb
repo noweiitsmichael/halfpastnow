@@ -77,7 +77,7 @@ private
               FROM events
               LEFT OUTER JOIN occurrences
               ON events.id = occurrences.event_id
-              WHERE occurrences.start > now()
+              WHERE occurrences.start > now() AND occurrences.deleted != true
               GROUP BY events.id) AS events
           ON venues.id = events.venue_id
           GROUP BY venues.id,venues.name ) v2
@@ -153,7 +153,7 @@ private
               FROM events
               LEFT OUTER JOIN occurrences
               ON events.id = occurrences.event_id
-              WHERE occurrences.start > now()
+              WHERE occurrences.start > now() AND occurrences.deleted != true
               GROUP BY events.id) AS events
           ON venues.id = events.venue_id
           GROUP BY venues.id,venues.name ) v2

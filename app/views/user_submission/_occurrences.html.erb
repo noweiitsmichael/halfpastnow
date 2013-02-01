@@ -29,20 +29,20 @@
 	    	<% end %>
 		<% else %>
 		    <div class="start-end"><div class="field">
-		    	<label>Start Time</label><input type="text" class="time-input" name="helper_start_<%= r.object_name %>" value="<%= display_time(recurrence.start) %>"/>
-		    	<%= r.hidden_field :start, :value => hidden_datetime(recurrence.start), :class => "time-hidden" %> 
+		    	<label>Start Time</label><input type="text" class="time-input" name="helper_start_<%= r.object_name %>" value="<%= display_time(recurrence.start) %>" style="margin-left: 5px"/>
+		    	<%= r.hidden_field :start, :value => hidden_datetime(recurrence.start), :class => "time-hidden required", :disabled => "disabled" %> 
 		    </div>
 		    <div class="field">
-		    	<label>End Time</label><input type="text" class="time-input" name="helper_end_<%= r.object_name %>" value="<%= display_time(recurrence.end) %>"/>
-		    	<%= r.hidden_field :end, :value => hidden_datetime(recurrence.end), :class => "time-hidden" %>
+		    	<label>End Time</label><input type="text" class="time-input" name="helper_end_<%= r.object_name %>" value="<%= display_time(recurrence.end) %>" style="margin-left: 5px"/>
+		    	<%= r.hidden_field :end, :value => hidden_datetime(recurrence.end), :class => "time-hidden", :disabled => "disabled"  %>
 		    </div></div><br>
 			<div class="start-end"><div class="field">
-		    	<label>Recurring From</label><input type="text" class="date-input" name="helper_from_<%= r.object_name %>" value="<%= display_date(occurrence.start) %>"/>
-		    	<%= r.hidden_field :range_start, :value => hidden_date(recurrence.start), :class => "date-hidden" %> 
+		    	<label>Recurring From</label><input type="text" class="date-input" name="helper_from_<%= r.object_name %>" value="<%= display_date(occurrence.start) %>" style="margin-left: 5px"/>
+		    	<%= r.hidden_field :range_start, :value => hidden_date(recurrence.start), :class => "date-hidden required", :disabled => "disabled"  %> 
 		    </div>
 		    <div class="field">
-		    	<label>Until</label><input type="text" class="date-input" name="helper_to_<%= r.object_name %>" value="<%= display_date(recurrence.start) %>"/>
-		    	<%= r.hidden_field :range_end, :value => hidden_date(recurrence.end), :class => "date-hidden" %>
+		    	<label>Until</label><input type="text" class="date-input" name="helper_to_<%= r.object_name %>" value="<%= display_date(recurrence.start) %>" style="margin-left: 5px"/>
+		    	<%= r.hidden_field :range_end, :value => hidden_date(recurrence.end), :class => "date-hidden", :disabled => "disabled"  %>
 		    </div></div><br>
 		    Recurring:<br>
 		    <%= r.select :interval, ["Daily","Weekly","Monthly (by day)", "Monthly (by week)"].zip((0..3).to_a) %>:&nbsp;&nbsp;
@@ -62,14 +62,14 @@
 		</div>
 	<% end %>
 	<%= e.fields_for :occurrences, occurrence do |o| %>
-		<div class="occurrence-toggle" <%= hidden unless recurrence.id.nil? %>>
+		<div class="occurrence-toggle" <%= hidden unless recurrence.id.nil? %> disabled="disabled">
 		    <div class="start-end"><div class="field">
-		    	<label>Start</label><input type="text" name="helper_start_<%= o.object_name %>" value="<%= display_datetime(occurrence.start) %>" class="datetime-input" />
-		    	<%= o.hidden_field :start, :value => hidden_datetime(occurrence.start), :class => "datetime-hidden" %> 
+		    	<label>Start</label><input type="text" name="helper_start_<%= o.object_name %>" value="<%= display_datetime(occurrence.start) %>" class="datetime-input" style="margin-left: 5px"/>
+		    	<%= o.hidden_field :start, :value => hidden_datetime(occurrence.start), :class => "datetime-hidden", :disabled => "disabled"  %> 
 		    </div>
 		    <div class="field">
-		    	<label>End</label><input type="text" name="helper_end_<%= o.object_name %>" value="<%= display_datetime(occurrence.end) %>" class="datetime-input" />
-		    	<%= o.hidden_field :end, :value => hidden_datetime(occurrence.end), :class => "datetime-hidden" %>
+		    	<label>End</label><input type="text" name="helper_end_<%= o.object_name %>" value="<%= display_datetime(occurrence.end) %>" class="datetime-input" style="margin-left: 5px"/>
+		    	<%= o.hidden_field :end, :value => hidden_datetime(occurrence.end), :class => "datetime-hidden", :disabled => "disabled"  %>
 		    </div></div>
 		    <div class="occurrence-destroy" style="display:none;">
 				<%= o.check_box :deleted %>

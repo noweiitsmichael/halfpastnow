@@ -8,63 +8,94 @@
 
 <% content_for :code do %>
 	<style type="text/css">
-		label { display:block; margin-top:5px; }
 		input[type=text] { width: 500px; }
-		.field.tags label { display:inline; margin:0; cursor:pointer; }
+		input#event_price { width: 100px; }
 	</style>
 	<%= javascript_include_tag "jquery.cleditor.min" %>
+	<%= javascript_include_tag "jquery.validate" %>
   	<%= stylesheet_link_tag    "jquery.cleditor" %>
 	<script type="text/javascript">
 	$(function() {
-		$('.cleditor').cleditor({
-	      controls:     "bold italic underline size | color highlight removeformat" +
-	                    " | bullets numbering | undo redo | " +
-	                    "rule image link unlink | source",   
-	      sizes:        "1,2,3,4,5,6,7",
-	      bodyStyle:    // style to assign to document body contained within the editor
-	                    "margin:4px; font:10pt Arial,Verdana; cursor:text"
-	    });
 
-	    if (window.opener) {
-			$("#act-form").ajaxForm({
-	            beforeSerialize: function(form, options) {
-	            	// do some embed manips
-	            	$('.site-select').each(function() {
-	            		var finalVal = "";
-	            		switch($(this).val()) {
-	            			case "youtube":
-	            				finalVal = '<iframe width="100%" height="280" src="http://www.youtube.com/embed/' + getEmbedValue($(this).siblings('.site-url-input').val())[3] + '" frameborder="0" allowfullscreen></iframe>';
-	            			break;
-	            			case "vimeo":
-	            				finalVal = '<iframe src="http://player.vimeo.com/video/' + getEmbedValue($(this).siblings('.site-url-input').val())[1] + '" width="100%" height="280" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
-	            			break;
-	            			case "reverbnation":
-	            				finalVal = '<iframe class="widget_iframe" src="http://www.reverbnation.com/widget_code/html_widget/' + getEmbedValue($(this).siblings('.site-url-input').val())[1] + '" width="100%" height="250" frameborder="0" scrolling="no"></iframe>';
-	            			break;
-	            			case "soundcloud":
-	            				finalVal = "<iframe width='100%' height='350' scrolling='no' frameborder='no' src='https://w.soundcloud.com/player/?url=" + $(this).siblings('.site-url-input').val() + "'></iframe>";
-	            			break;
-	            			case "custom":
-	            				var customEmbed = $($(this).siblings('.site-embed-input').val());
-	            				customEmbed.css({width:"100%"});
-	            				finalVal = $("<div></div>").append(customEmbed).html();
-	            			break;
-	            		}
-	            		$(this).siblings('.embed-final-form').val(finalVal);
-	            		console.log(finalVal);
-	            	});
-	            },
-	            beforeSubmit: function(arr, $form, options) { 
-	            	console.log("before submit");
+			$("#act-form").validate({
+    			ignore: ":disabled", 
+			    invalidHandler: function(form, validator) {
+			      var errors = validator.numberOfInvalids();
+			      console.log("errors:");
+			      console.log(errors);
+			      // //console.log(validator);
+					if (errors) {
+						var message = errors == 1
+							? 'You missed 1 field. It has been highlighted below'
+							: 'You missed ' + errors + ' fields.  See notes above';
+						$(".actions").append("<span class='error' style='float:left;margin-top:30px;margin-left:20px'>" + message + "</span>");
+						$("div.error").show();
+					} else {
+						$("div.error").hide();
+					}
+			    },
+			    rules: {
+					"act[name]": "required",
+					"act[tag_ids][]": "required"
 				},
-	            success:function(data) {
-					window.opener.addNewPerformer(data);
-					window.close();
-	            },
-	            type: "post",
-	            dataType: "json"
-	        });
-		}
+			    messages: {
+					"act[name]": {
+						required: "Please enter an performer name"
+					},
+					"act[tag_ids][]": {
+						required: "Please select at least one category/tag"
+					}
+				},
+				errorPlacement: function(error, element) {
+					console.log("what it is");
+					console.log(element); 
+		            if ( element.is("#act_tag_ids_") ) {
+		                error.appendTo(element.parent().parent().parent()); 
+		            } else {
+		            	error.appendTo(element.parent());
+		            };
+		        },
+		        submitHandler: function(form) {
+		        	if (window.opener && typeof window.opener.addNewPerformer !== "undefined") {
+			    		console.log("has opener");
+						$(form).ajaxSubmit({
+				            beforeSerialize: function(form, options) {
+				            	// do some embed manips
+				            	embedManipulate();
+				            },
+				            beforeSubmit: function(arr, $form, options) { 
+				            	console.log("before submit");
+							},
+				            success:function(data) {
+								window.opener.addNewPerformer(data);
+								window.close();
+				            },
+				            type: "post",
+				            dataType: "json"
+				        });
+					} else {
+							embedManipulate();
+							form.submit();
+					}
+		        }
+			    // rules: {
+			    // }
+			});
+
+
+
+			$('.cleditor').cleditor({
+		      controls:     "bold italic underline size | color highlight removeformat" +
+		                    " | bullets numbering | undo redo | " +
+		                    "rule image link unlink | source",   
+		      sizes:        "1,2,3,4,5,6,7",
+		      bodyStyle:    // style to assign to document body contained within the editor
+		                    "margin:4px; font:10pt Arial,Verdana; cursor:text"
+		    });
+
+			console.log("sanity check 1");
+
+			
 		});
 
 		function getEmbedValue(url) {
@@ -72,6 +103,36 @@
 			var baseUrl = arr[arr.length - 1];
 			console.log(baseUrl);
 			return baseUrl.split(/[/?=&]/);
+		}
+
+		function embedManipulate() {
+			console.log("embedManipulate");
+			$('.site-select').each(function() {
+        		var finalVal = "";
+        		switch($(this).val()) {
+        			case "youtube":
+        				finalVal = '<iframe width="100%" height="280" src="http://www.youtube.com/embed/' + getEmbedValue($(this).siblings('.site-url-input').val())[3] + '" frameborder="0" allowfullscreen></iframe>';
+        			break;
+        			case "vimeo":
+        				finalVal = '<iframe src="http://player.vimeo.com/video/' + getEmbedValue($(this).siblings('.site-url-input').val())[1] + '" width="100%" height="280" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+        			break;
+        			case "reverbnation":
+        				finalVal = '<iframe class="widget_iframe" src="http://www.reverbnation.com/widget_code/html_widget/' + getEmbedValue($(this).siblings('.site-url-input').val())[1] + '" width="100%" height="250" frameborder="0" scrolling="no"></iframe>';
+        			break;
+        			case "soundcloud":
+        				finalVal = "<iframe width='100%' height='350' scrolling='no' frameborder='no' src='https://w.soundcloud.com/player/?url=" + $(this).siblings('.site-url-input').val() + "'></iframe>";
+        			break;
+        			case "custom":
+        				var customEmbed = $($(this).siblings('.site-embed-input').val());
+        				customEmbed.css({width:"100%"});
+        				finalVal = $("<div></div>").append(customEmbed).html();
+        			break;
+        		}
+        		$(this).siblings('.embed-final-form').val(finalVal);
+
+        		console.log(finalVal);
+        	});
+
 		}
 	</script>
 <% end %>
@@ -82,7 +143,7 @@
 		<% if @act.id %><%= e.hidden_field :id %><% end %>
 			<div class="field">
 			  <h5><%= e.label :name %></h5>
-			  <%= e.text_field :name %>
+			  <%= e.text_field :name, :class => "required" %>
 			</div>
 			<div class="field">
 			  <h5><%= e.label :description %></h5>
@@ -131,37 +192,50 @@
 		    <script type="text/javascript">
 			    $(function () {
 					$('#new_pic').click( function (){
-						console.log("new pic click");
-						if ($("#act_remote_image_url").val() == ""){
-						  confirmURL("nourl");
+						  // First check image to see if it actually exists
+						  var img = new Image();
+						  img.onload = function() {
+						  		console.log("uploading........");
+						  		$(".pic-gallery-wrapper").show();
+							  $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('#actThumbs');
+							  var picData = 
+							    {"picture":
+							      { "pictureable_id": parseInt($("#pictureable_id").val()),
+							        "pictureable_type": $("#pictureable_type").val(), 
+							        "remote_image_url": $("#act_remote_image_url").val()
+							      }
+							    };
+								$.post("/pictures/create",picData,function(data) {
+			                	  var numThumbs = $(".gallery").length;
+						          var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
+						          newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][id]" value="' + data.id + '" />';
+						          newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][pictureable_id]" value="<%= @act.id %>" />';
+						          newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][pictureable_type]" value="Act" />';
+								  newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '">';
+								  newPicThumb += '<div href="" class="remove-pic">X</div></div>';
+								  $('.ajaxLoader').detach();
+								  $(newPicThumb).appendTo('#actThumbs');
+								},
+								"json");
+								return false;
+						  };
+
+						  img.onerror = function() {
+			          		if ($('#new_pic').siblings("a").first().next().hasClass("error")){
+						    	$('#new_pic').siblings("a").first().next().html("Please input a valid image URL");
+						    } else {
+					    		$('#new_pic').siblings("a").first().after("<div class='error' style='margin-left:540px'>Please input a valid image URL</div>");
+							}
+						    return false;
+						  };
+
+						  img.src = $("#act_remote_image_url").val();
 						  return false;
-						} 
-						else {
-						  $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('#actThumbs');
-						  var picData = 
-						    {"picture":
-						      { "pictureable_id": parseInt($("#pictureable_id").val()),
-						        "pictureable_type": $("#pictureable_type").val(), 
-						        "remote_image_url": $("#act_remote_image_url").val()
-						      }
-						    };
-						}
-						$.post("/pictures/create",picData,function(data) {
-						  var numThumbs = document.getElementsByClassName("gallery");
-						  var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
-						  newPicThumb += '<div class="pictures field gallery" index="' + numThumbs + '">';
-						  newPicThumb += '<input type="hidden" name="act[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
-						  newPicThumb += '<div href="" class="remove-pic">X</div>';
-						  newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '"></div>';
-						  $('.ajaxLoader').detach();
-						  $(newPicThumb).appendTo('#actThumbs');
-						},
-						"json");
-						return false;
 					});
 
 			        $("#fileclick").click(function() {
 						console.log("file pic click");
+						$(".pic-gallery-wrapper").show();
 			          if ($("#act_image").val() == ""){
 			            confirmURL("nofile");
 			          } else {
@@ -171,10 +245,11 @@
 			              },
 			              url: "/pictures/createForAct",
 			              success:function(data) {
-			                var numThumbs = document.getElementsByClassName("gallery");
+			                var numThumbs = $(".gallery").length;
 			                var newPicThumb = '<div class="pictures field gallery" index="' + numThumbs + ' ">';
-			                newPicThumb += '<div class="pictures field gallery" index="' + numThumbs + '">';
-			                newPicThumb += '<input type="hidden" name="act[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
+			                newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][id]" value="' + data.id + '" />';
+			                newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][pictureable_id]" value="' + data.pictureable_id + '" />';
+			                newPicThumb += '<input type="hidden" name="pictures[' + numThumbs + '][pictureable_type]" value="Act" />';
 			                newPicThumb += '<img style="margin-right:3px;" alt="image_thumb" src="' + data.image.thumb.url + '">';
 			                newPicThumb += '<div style="margin-right:3px;" href="" class="remove-pic">X</div></div>';
 			                $('.ajaxLoader').detach();
@@ -203,7 +278,7 @@
 		    </script>
 
 		    
-			    <Br>
+			    <br />
 			    <div class="pic-gallery-wrapper"<% if @act.pictures.empty? %> style="display:none"<% end %>>
 				    <% @act.pictures.each_with_index do |pic, index| %>
 				    <div class="pictures field gallery" index="<%= index %>">

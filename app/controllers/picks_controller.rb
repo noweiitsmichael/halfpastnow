@@ -1,7 +1,7 @@
 class PicksController < ApplicationController
 helper :content
 	def index
-		query = "SELECT bookmark_lists.id, tags.id AS tag_id FROM bookmark_lists
+		query = "SELECT bookmark_lists.id,  occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
 				INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
 				INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
 				INNER JOIN events ON occurrences.event_id = events.id
@@ -17,10 +17,62 @@ helper :content
 		if tag_id.to_s.empty?
 			@featuredLists = BookmarkList.where(:featured=>true)
 		else
-			@featuredLists = BookmarkList.find(result.select { |r| r["tag_id"] == tag_id.to_s }.collect { |e| e["id"] }.uniq)
+			@list=[]
+			@exclude=[]
+			rs = result.select { |r| r["tag_id"] == tag_id.to_s }.uniq
+			rs.uniq.each{ |r|
+				id = r["occurrence_id"]
+				lID = r["id"]
+				occ = Occurrence.find(id)
+				if ( !occ.deleted )
+					if !occ.recurrence_id.nil?
+						@list << lID
+					else
+						if occ.start > Date.today()
+							@list << lID
+						else
+							@exclude << r 
+						end
+
+					end
+					
+				else 
+					if !occ.recurrence_id.nil?
+						rec = Recurrence.find(occ.recurrence_id)
+						if rec.range_end.nil? || rec.range_end > Date.today()
+							@list << lID
+						else
+							@exclude << r 
+						end
+					else
+						@exclude << r 
+					end
+
+
+				end
+			}
+			@legit = rs - @exclude
+			ls = []
+			@list.each { |l|
+				n = @legit.select{ |r| r["id"] == l.to_s }.uniq
+				if n.count > 1
+					ls << l
+				end
+			}
+			@featuredLists = BookmarkList.find(ls)
+
+			# @featuredLists = BookmarkList.find(result.select { |r| r["tag_id"] == tag_id.to_s }.collect { |e| e["id"] }.uniq)
 		end
 	end
 
+	# @listIDs=[]
+	# 		result.uniq.each{ |r|
+	# 			id = r["id"]
+	# 			if BookmarkList.find(id).all_bookmarked_events.size > 0
+	# 				@listIDs << id
+	# 			end
+	# 		}
+	# 		@featuredLists = BookmarkList.find(@listIDs)
 	def followed
 		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil})
 		@isFollowedLists = true

@@ -7,7 +7,8 @@ var MAX_HOURS = 24;
 var MAX_SECONDS = 86400;
 var ANY_TIME_TEXT = "Any Time";
 var ANY_PRICE_TEXT = "Any Price";
-var ANY_TAG_TEXT = "Any Category";
+var ANY_CATEGORY_TEXT = "Any Category";
+var ANY_TAG_TEXT = "Any Tag";
 
 var O_ANYDAY = 0;
 var O_TODAY = 1;
@@ -20,20 +21,40 @@ var reloadTagsList = true;
 var typingTimer;               //timer identifier
 var doneTypingInterval = 1000;  //time in ms
 
-function pushFilterTag(tag_id) {
-  if(filter.included_tags.indexOf(tag_id) === -1) {
-    filter.included_tags.push(tag_id);
+function pushFilterTag(tag_id, tag_type) {
+  tag_type = defaultTo(tag_type, "included_tags");
+  if (tag_type === "included_tags"){
+    if(filter.included_tags.indexOf(tag_id) === -1) {
+      filter.included_tags.push(tag_id);
+    }
+  } else {
+    if(filter.and_tags.indexOf(tag_id) === -1) {
+      filter.and_tags.push(tag_id);
+    }
+  }
+
+}
+
+function popFilterTag(tag_id, tag_type) {
+  tag_type = defaultTo(tag_type, "included_tags");
+  if (tag_type === "included_tags"){
+    if(filter.included_tags.indexOf(tag_id) != -1) {
+      filter.included_tags.splice(filter.included_tags.indexOf(tag_id),1);
+    }
+  } else {
+    if(filter.and_tags.indexOf(tag_id) != -1) {
+      filter.and_tags.splice(filter.and_tags.indexOf(tag_id),1);
+    }
   }
 }
 
-function popFilterTag(tag_id) {
-  if(filter.included_tags.indexOf(tag_id) != -1) {
-    filter.included_tags.splice(filter.included_tags.indexOf(tag_id),1);
+function inFilterTag(tag_id, tag_type) {
+  tag_type = defaultTo(tag_type, "included_tags");
+  if (tag_type === "included_tags"){
+    return !(typeof filter.included_tags === 'undefined' || filter.included_tags.indexOf(tag_id) === -1);
+  } else {
+    return !(typeof filter.and_tags === 'undefined' || filter.and_tags.indexOf(tag_id) === -1);
   }
-}
-
-function inFilterTag(tag_id) {
-  return !(typeof filter.included_tags === 'undefined' || filter.included_tags.indexOf(tag_id) === -1);
 }
 
 $(window).load(function() {
@@ -43,39 +64,42 @@ $(window).load(function() {
 
 $(function() {
 
-  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.children .name', function() {
+  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.ortags.children .name', function() {
     $(this).siblings('.include').click();
   });
 
-  // onclick include or exclude tags
-  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.parents .include', function(event) {
+  // onclick include or exclude categories
+  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.ortags.parents .include', function(event) {
     stopPropagation(event);
 
     var tagID = $(this).attr('tag-id');
 
-    //remove all child tags from included_tags
+    // ******** OR tags stuff **********
+
+    //remove all child categories from included_tags
     for(var i in tags[tagID]["child_ids"]) {
       popFilterTag(tags[tagID]["child_ids"][i]);
     }
 
-    //toggle tag in included_tags
+    //toggle categories in included_tags
     if($(this).hasClass('selected')) {
       popFilterTag(tagID);
     } else {
       pushFilterTag(tagID);
     }
 
-    var tagString = "";
-    for(var i in filter.included_tags) {
-      tagString += tags[filter.included_tags[i]]["name"] + ",";
-    }
-    console.log(tagString);
+    // var tagString = "";
+    // for(var i in filter.included_tags) {
+    //   tagString += tags[filter.included_tags[i]]["name"] + ",";
+    // }
+    // console.log(tagString);
 
     reloadTagsList = false;
     updateViewFromFilter();
   });
 
-  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.children .include', function(event) {
+  // Do other stuff for children categories in the bar
+  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.ortags.children .include', function(event) {
     event.stopPropagation();
 
     var tagID = $(this).attr('tag-id');
@@ -86,21 +110,21 @@ $(function() {
       var parent_tag = tags[parent_id];
       // if the parent is in included_tags
       if(inFilterTag(parent_id)) {
-        // then remove the parent tag from included_tags
+        // then remove the parent category from included_tags
         popFilterTag(parent_id);
         
         // and add all the parent's child tags to included_tags
         for(var i in parent_tag["child_ids"]) {
           pushFilterTag(parent_tag["child_ids"][i]);
         }
-        // and remove the tag from included_tags
+        // and remove the category from included_tags
         popFilterTag(tagID);
       } else {  // otherwise just remove the tag from included_tags 
         popFilterTag(tagID);
       }
     // if this isn't selected
     } else {
-      // add the tag to included_tags
+      // add the category to included_tags
       pushFilterTag(tagID);
       
       var parent_id = tags[tagID]["parent_id"];
@@ -112,10 +136,10 @@ $(function() {
           break;
         }
       }
-      // if all of the tag's parent's child tags are in included_tags
+      // if all of the category's parent's child tags are in included_tags
       if(allChildrenInFilterTag) {
-        // then remove all the child tags from included_tags
-        // and add the parent tag to included_tags
+        // then remove all the child category from included_tags
+        // and add the parent category to included_tags
         for(var i in parent_tag["child_ids"]) {
           popFilterTag(parent_tag["child_ids"][i]);
         }
@@ -133,15 +157,15 @@ $(function() {
     updateViewFromFilter();
   });
 
-  // onclick for removing tags when they're clicked in the tag display box
-  $("#header .filter-inner, #header .advancedbar").on("click", ".tags-display .tag", function() {
+  // onclick for removing categories when they're clicked in the tag display box
+  $("#header .filter-inner, #header .advancedbar").on("click", ".tags-display.ortags .tag", function() {
 
     var tagID = $(this).attr('tag-id');
 
-    //remove this tag from included_tags
+    //remove this category from included_tags
     popFilterTag(tagID);
 
-    //remove this tag's child tags from included_tags
+    //remove this category's child categories from included_tags
     for(var i in tags[tagID]["child_ids"]) {
       popFilterTag(tags[tagID]["child_ids"][i]);
     }
@@ -152,19 +176,56 @@ $(function() {
 
   // accordion for tag menu
 
-  $("#header .filter-inner, #header .advancedbar").on("mouseover", '.tags-menu.parents .tag-header', function1);
-  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.parents .tag-header', function1);
+  $("#header .filter-inner, #header .advancedbar").on("mouseover", '.tags-menu.ortags.parents .tag-header', function1);
+  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.ortags.parents .tag-header', function1);
 
   function function1() {
-    $('.tags-menu .toggler').removeClass('icon-caret-right').addClass('icon-chevron-right');
+    $('.tags-menu.ortags .toggler').removeClass('icon-caret-right').addClass('icon-chevron-right');
     $(this).find('.toggler').addClass('icon-caret-right').removeClass('icon-chevron-right');
     $('.tags-menu.parents li').removeClass('selected');
     $(this).parent().addClass('selected');
     var parentTagID = $(this).attr("tag-id");
     
-    $('.tags-menu.children li').hide();
-    $(".tags-menu.children li[parent-id='" + parentTagID + "']").show();
+    $('.tags-menu.ortags.children li').hide();
+    $(".tags-menu.ortags.children li[parent-id='" + parentTagID + "']").show();
   }
+
+
+  // ********* AND tags stuff ***********
+
+  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.andtags.parents .name', function() {
+    $(this).siblings('.include').click();
+  });
+
+    // onclick include or exclude tags
+  $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.andtags.parents .include', function(event) {
+    stopPropagation(event);
+
+    var tagID = $(this).attr('tag-id');
+
+    //toggle tag in included_tags
+    if($(this).hasClass('selected')) {
+      popFilterTag(tagID, "andtags");
+    } else {
+      pushFilterTag(tagID, "andtags");
+    }
+
+    updateViewFromFilter();
+  });
+
+  // onclick for removing tags when they're clicked in the tag display box
+  $("#header .filter-inner, #header .advancedbar").on("click", ".tags-display.andtags .tag", function() {
+
+    var tagID = $(this).attr('tag-id');
+
+    //remove this tag from included_tags
+    popFilterTag(tagID, "andtags");
+
+    updateViewFromFilter();
+  });
+
+
+  // ******* end tags stuff **************
 
   $('#header').on('click', '.stream:not(.new, .selected, .bookmark)', function() {
     
@@ -188,6 +249,8 @@ $(function() {
       filter.high_price = "";
     } else if($(this).hasClass("tags")) {
       filter.included_tags = [];
+    } else if($(this).hasClass("andtags")) {
+      filter.and_tags = [];
     } else if($(this).hasClass("search")) {
       filter.search = "";
     }
@@ -394,7 +457,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
   $('.include').removeClass('selected').removeClass('icon-check').addClass('icon-check-empty');
 
   for(var i in filter.included_tags) {
-    $('.include[tag-id='+filter.included_tags[i]+']').addClass('selected').removeClass('semi-selected').addClass('icon-check').removeClass('icon-check-empty');
+    $('.include[tag-id='+filter.included_tags[i]+']').addClass('selected').addClass('icon-check').removeClass('icon-check-empty');
     $('[parent-id=' + filter.included_tags[i] + '] .include').addClass('selected').addClass('icon-check').removeClass('icon-check-empty');
     var parent_id = tags[filter.included_tags[i]]["parent_id"];
     if(parent_id) {
@@ -404,10 +467,27 @@ function updateViewFromFilter(pullEventsFlag, options) {
     }
   }
 
+  for(var i in filter.and_tags) {
+    $('.include[tag-id='+filter.and_tags[i]+']').addClass('selected').addClass('icon-check').removeClass('icon-check-empty');
+    $('[parent-id=' + filter.and_tags[i] + '] .include').addClass('selected').addClass('icon-check').removeClass('icon-check-empty');
+    var parent_id = tags[filter.and_tags[i]]["parent_id"];
+    if(parent_id) {
+      if(!inFilterTag(parent_id, "andtags")) {
+        $('.include[tag-id=' + parent_id + ']').addClass('selected').addClass('icon-check').removeClass('icon-check-empty');
+      }
+    }
+  }
+
+
   var filterTextArr = [];
   var tagDisplayArr = [];
+  
 
-  $('.tags-menu.parents .tag-header').each(function() {
+  var andtagsFilterText = "";
+  var andtagsFilterTextArr = [];
+  var andtagsDisplayArr = [];
+
+  $('.tags-menu.ortags.parents .tag-header').each(function() {
     //get list of parent tags in same order of appearance on page and iterate
     var parent_id = $(this).attr('tag-id');
     var parent_tag = tags[parent_id];
@@ -439,17 +519,45 @@ function updateViewFromFilter(pullEventsFlag, options) {
     }
   });
   
+  $('.tags-menu.andtags.parents .tag-header').each(function() {
+
+    //get list of parent tags in same order of appearance on page and iterate
+    var parent_id = $(this).attr('tag-id');
+    var parent_tag = tags[parent_id];
+
+
+    if(inFilterTag(parent_id, "andtags")) {
+    console.log("tag: " + parent_tag["name"]);
+      //if parent is in included_tags print out parent's name
+      andtagsFilterTextArr.push(parent_tag["name"]);
+      andtagsDisplayArr.push({id: parent_id, name: parent_tag["name"]});
+    } 
+  });
+
+  andtagsFilterText = andtagsFilterTextArr.join(" and ");
+
   filterText = filterTextArr.join("/");
 
   if (filterText === "")
-    filterText = ANY_TAG_TEXT;
+    filterText = ANY_CATEGORY_TEXT;
 
-  $('.filter-toggle.tags .text-inner').html(filterText);
+  if (andtagsFilterText === "")
+    andtagsFilterText = ANY_TAG_TEXT;
+
+  $('.filter-toggle.tags.ortags .text-inner').html(filterText);
   
-  //tags selection
-  $('.tags-display').empty();  
+  $('.filter-toggle.tags.andtags .text-inner').html(andtagsFilterText);
+  
+  //categories selection
+  $('.tags-display.ortags').empty();  
   for(var i in tagDisplayArr) {
-    $('.tags-display').append("<span class='tag included' tag-id='" + tagDisplayArr[i]["id"] + "'><span class='include icon-check'></span><span class='name'>" + tagDisplayArr[i]["name"] + "</span></span>");
+    $('.tags-display.ortags').append("<span class='tag included' tag-id='" + tagDisplayArr[i]["id"] + "'><span class='include icon-check'></span><span class='name'>" + tagDisplayArr[i]["name"] + "</span></span>");
+  }
+
+  //tags selection
+  $('.tags-display.andtags').empty();  
+  for(var i in andtagsDisplayArr) {
+    $('.tags-display.andtags').append("<span class='tag included' tag-id='" + andtagsDisplayArr[i]["id"] + "'><span class='include icon-check'></span><span class='name'>" + andtagsDisplayArr[i]["name"] + "</span></span>");
   }
 
   ////////////// DATETIME ////////////// 
@@ -619,12 +727,20 @@ function updateViewFromFilter(pullEventsFlag, options) {
     $('.filter-summary .price').show();
   }
 
-  if(filterText === ANY_TAG_TEXT) {
+  if(filterText === ANY_CATEGORY_TEXT) {
     $('.filter-summary .tags').hide();
     $('.filter-summary .tags').html("");
   } else {
     $('.filter-summary .tags').html(filterText);
     $('.filter-summary .tags').show();
+  }
+
+  if(andtagsFilterText === ANY_TAG_TEXT) {
+    $('.filter-summary .andtags').hide();
+    $('.filter-summary .andtags').html("");
+  } else {
+    $('.filter-summary .andtags').html(andtagsFilterText);
+    $('.filter-summary .andtags').show();
   }
 
   if(filter.search === "") {
@@ -644,7 +760,7 @@ function streamSelector() {
   $('#dk_container_stream-select').remove();
   $('.streambar .stream.selector').remove();
 
-  var parentWidth = $('.streambar .header').width() - $('.action-save').outerWidth(true); /* - $('.action-bookmarks').outerWidth(true) -  - $('.action-clear').outerWidth(true)*/; //- $('.stream.new').width();
+  var parentWidth = $('.streambar .header').width() - $('.action-save').outerWidth(true) - $('.filter-toggle.sort').outerWidth(true); /* - $('.action-bookmarks').outerWidth(true) -  - $('.action-clear').outerWidth(true)*/; //- $('.stream.new').width();
   var sumWidth = 0;
   var maxWidth = 0;
   var overflowIndex = 0;
@@ -733,6 +849,9 @@ function boundsChanged() {
 
 // this gets called on infinite scroll and on filter changes
 function pullEvents(updateOptions) {
+
+  console.log(filter);
+
   var async_reloadTagsList = reloadTagsList;
   var async_infiniteScrolling = infiniteScrolling;
 
@@ -745,7 +864,7 @@ function pullEvents(updateOptions) {
 
   loading('show');
 
-  var visibleTagListID = $('.tags-menu.children li:visible').attr('parent-id');
+  var visibleTagListID = $('.tags-menu.ortags.children li:visible').attr('parent-id');
   $.get("/events/index?ajax=true", filter, function (data) {
     var locations = [];
 
@@ -758,7 +877,8 @@ function pullEvents(updateOptions) {
       $('#content .main .inner .events').html(jData.find("#combo_event_list").html());
       $('.filter-summary .num-events').html(jData.find("#combo_total_occurrences").html());
       if(async_reloadTagsList) {
-        $('#header .filter-toggle.tags .filter-inner').html(jData.find("#combo_tag_list").html());
+        $('#header .filter-toggle.tags.ortags .filter-inner').html(jData.find("#combo_tag_list").html());
+        $('#header .filter-toggle.tags.andtags .filter-inner').html(jData.find("#combo_andtag_list").html());
         $('#header .advancedbar .tags-list').html(jData.find("#combo_advanced_tag_list").html());
       } else {
         reloadTagsList = true;

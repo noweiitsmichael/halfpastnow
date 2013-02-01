@@ -21,6 +21,8 @@ helper :content
 	def eventSubmit1
 		authorize! :eventSubmit1, @user, :message => 'Please log in to add events.'
 
+		pp params
+
 		if !params[:event][:id].to_s.empty?
 			@event = Event.find(params[:event][:id])
 		else
@@ -32,7 +34,7 @@ helper :content
 	    params[:event][:recurrences_attributes].select! { |k,v| !v["start"].blank? || ( !v["id"].blank? && v["_destroy"] == "1") }
 	    params[:event][:act_ids].select! { |a| a != "0" }
 
-	    pp params[:event][:occurrences_attributes]
+	    # pp params[:event][:occurrences_attributes]
 
 	    @event.update_attributes!(params[:event])
 	    @event.completion = @event.completedness
@@ -42,6 +44,7 @@ helper :content
 	end
 
 	def eventSubmit2
+		pp params
 		authorize! :eventSubmit1, @user, :message => 'Please log in to add events.'
 		@event = Event.find(params[:event][:id])
 
@@ -117,8 +120,15 @@ helper :content
 
 			search_match_arr = []
 			searches.each do |word|
-			search_match_arr.push("(venues.name ILIKE '%#{word}%' OR events.description ILIKE '%#{word}%' OR events.title ILIKE '%#{word}%' OR acts.name ILIKE '%#{word}%')")
-		
+			search_match_arr.push("(regexp_replace(venues.name, '[^0-9a-zA-Z ]', '') ILIKE '%#{word}%' 
+								    OR regexp_replace(events.description, '[^0-9a-zA-Z ]', '') ILIKE '%#{word}%' 
+								    OR regexp_replace(events.title, '[^0-9a-zA-Z ]', '') ILIKE '%#{word}%' 
+								    OR regexp_replace(acts.name, '[^0-9a-zA-Z ]', '') ILIKE '%#{word}%')")
+
+			#("(venues.name ILIKE '%#{word}%' OR events.description ILIKE '%#{word}%' OR events.title ILIKE '%#{word}%' OR acts.name ILIKE '%#{word}%')")
+
+
+									
 			end
 
 			search_match = search_match_arr * " AND "
@@ -128,7 +138,7 @@ helper :content
 		         	INNER JOIN venues ON events.venue_id = venues.id
                     LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
                     LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
-		         		WHERE #{search_match} AND occurrences.deleted != true
+		         		WHERE #{search_match} AND occurrences.deleted IS NOT true AND occurrences.start > NOW()
 		         		ORDER BY events.id, occurrences.start LIMIT 20"
 
 		    @occurrence_ids = ActiveRecord::Base.connection.select_all(query).collect { |e| e["occurrence_id"].to_i }
@@ -139,6 +149,6 @@ helper :content
 		    end
 	    end
 
-	    
+
 	end
 end

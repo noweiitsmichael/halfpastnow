@@ -69,7 +69,6 @@
             <a href="/"><img class="logo" src="/assets/halfpastnow_final_beta-dark-header.png" /></a>
             <a class="main menu-element <%= params[:controller] == "events" ? "selected" : "" %>" href="/">Search</a>
             <a class="main menu-element <%= params[:controller] == "picks" ? "selected" : "" %>" href="/picks">Top Picks</a>
-            <a class="main menu-element <%= params[:controller] == "user_submission" ? "selected" : "" %>" href="/userSubmission/eventSearch">Add Event</a>
             <% if false %><% end %>
             <% if user_signed_in? %>
               <div class="menu-element right pic">
@@ -81,7 +80,12 @@
                   <a href="#" linkto="shunt">Sign Up</a> <span>/</span> <a href="#" linkto="shunt">Login</a>
               </div>
             <% end %>
-            <div class="menu-element right"><a href="/info/about">About Us</a></div>
+
+            <% if user_signed_in? %>
+              <div class="menu-element right nice-button" id ="add-event-button"><a href="/userSubmission/eventSearch">Add an Event!</a></div>
+            <% else %>
+              <div class="menu-element right nice-button" id ="add-event-button"><a href="#" linkto="shunt">Add an Event!</a></div>
+            <% end %>
           </div>
         </div>
       </div>
@@ -99,7 +103,7 @@
       </div>
     </div>
   </div>
-  
+
   <div id="getsat-widget-2414"></div>
   <script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
   <script type="text/javascript">
