@@ -62,7 +62,7 @@
 		</div>
 	<% end %>
 	<%= e.fields_for :occurrences, occurrence do |o| %>
-		<div class="occurrence-toggle" <%= hidden unless recurrence.id.nil? %> disabled="disabled">
+		<div class="occurrence-toggle" <%= hidden unless recurrence.id.nil? %>>
 		    <div class="start-end"><div class="field">
 		    	<label>Start</label><input type="text" name="helper_start_<%= o.object_name %>" value="<%= display_datetime(occurrence.start) %>" class="datetime-input" style="margin-left: 5px"/>
 		    	<%= o.hidden_field :start, :value => hidden_datetime(occurrence.start), :class => "datetime-hidden", :disabled => "disabled"  %> 
