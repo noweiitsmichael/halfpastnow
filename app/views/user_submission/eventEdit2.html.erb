@@ -89,7 +89,7 @@
 						    return false;
 			          } else {
 			          	console.log("file good")
-			            $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('#eventThumbs');
+			            $('.ajaxLoader').show();
 			            $("#event<%= @event.id %>").ajaxSubmit({
 			              beforeSerialize: function(form, options) {
 			              },
@@ -101,8 +101,9 @@
 			                newPicThumb += '<input type="hidden" name="event[pictures_attributes][' + numThumbs + '][id]" value="' + data.id + '" />';
 			                newPicThumb += '<img style="margin-right:3px;" alt="image_thumb" src="' + data.image.thumb.url + '">';
 			                newPicThumb += '<div style="margin-right:3px;" href="" class="remove-pic">X</div>';
-			                newPicThumb += '<div class="crop-radio"><input type="radio" name="crop-radio-button" picurl="' + data.image.large.url + '" picid = ' + data.id + '" /></div></div>'
-			                $('.ajaxLoader').detach();
+			                newPicThumb += '<div class="crop-radio"><input type="radio" name="crop-radio-button" picurl="' + data.image.large.url + '" picid = ' + data.id + '" /></div></div>';
+							$('.ajaxLoader').hide();
+							$('.pic-gallery-wrapper').show();
 			                $(newPicThumb).appendTo('#eventThumbs');
 			              },
 			              type: "post",
@@ -186,7 +187,7 @@
 				    });
 
 					function pictureCheck(data) {
-					    var extension = data.substr( (data.lastIndexOf('.') +1) );
+					    var extension = data.substr( (data.lastIndexOf('.') +1) ).downcase;
 					    switch(extension) {
 					        case 'jpg':
 					        case 'png':
