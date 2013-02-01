@@ -48,7 +48,7 @@ helper :content
 					if !recurrence_id.nil?
 						@list << lID
 					else
-						if start.to_time > Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
+						if Date.strptime(start) > Date.today()
 							@list << lID
 						else
 							@exclude << r 
@@ -59,7 +59,7 @@ helper :content
 				else 
 					if !recurrence_id.nil?
 						rec = Recurrence.find(recurrence_id)
-						if rec.range_end.nil? || rec.range_end > Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
+						if rec.range_end.nil? || rec.range_end > Date.today()
 							@list << lID
 						else
 							@exclude << r 
@@ -100,7 +100,7 @@ helper :content
 				if !recurrence_id.nil?
 					@list << lID
 				else
-					if start.to_time > Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
+					if Date.strptime(start) > Date.today()
 						@list << lID
 					else
 						@exclude << r 
@@ -111,7 +111,7 @@ helper :content
 			else 
 				if !recurrence_id.nil?
 					rec = Recurrence.find(recurrence_id)
-					if rec.range_end.nil? || rec.range_end > Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
+					if rec.range_end.nil? || rec.range_end > Date.today()
 						@list << lID
 					else
 						@exclude << r 
@@ -144,7 +144,7 @@ helper :content
 		    @long = -97.742808
 		    @zoom = 11
 
-			@occurrences = current_user.followedLists.collect { |list| list.all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time } }.flatten.uniq{|x| x.id}
+			@occurrences = current_user.followedLists.collect { |list| list.all_bookmarked_events.select{ |o| o.start >= Date.today.to_datetime } }.flatten.uniq{|x| x.id}
 			render "find"
 		else
 			@featuredLists = current_user ? current_user.followedLists : []
