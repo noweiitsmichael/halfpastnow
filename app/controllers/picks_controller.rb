@@ -11,9 +11,20 @@ helper :content
         result = ActiveRecord::Base.connection.select_all(query)
 	    listIDs = result.collect { |e| e["id"] }.uniq
 	    tagIDs = result.collect { |e| e["tag_id"].to_i }.uniq
-	    @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| tagIDs.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
+	    # @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| tagIDs.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
 		
+		legitSet = filter_all_legit(result)
+		legittagIDs = []
+		tagIDs.each { |tagID|
+			set = legitSet.select{ |r| r["id"] == tagID.to_s }.uniq
+			if set.size > 1
+				legittagIDs << tagID
+			end
+		}
+		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| legittagIDs.uniq.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
 		
+
+
 		tag_id = params[:id]
 		if tag_id.to_s.empty?
 			@featuredLists = BookmarkList.where(:featured=>true)
@@ -66,43 +77,43 @@ helper :content
 		end
 	end
 
-	# def filter_all_legit(result)
-	# 	@list=[]
-	# 	@exclude=[]
+	def filter_all_legit(result)
+		@list=[]
+		@exclude=[]
 		
-	# 	result.uniq.each{ |r|
-	# 		id = r["occurrence_id"]
-	# 		lID = r["id"]
-	# 		occ = Occurrence.find(id)
-	# 		if ( !occ.deleted )
-	# 			if !occ.recurrence_id.nil?
-	# 				@list << lID
-	# 			else
-	# 				if occ.start > Date.today()
-	# 					@list << lID
-	# 				else
-	# 					@exclude << r 
-	# 				end
+		result.uniq.each{ |r|
+			id = r["occurrence_id"]
+			lID = r["id"]
+			occ = Occurrence.find(id)
+			if ( !occ.deleted )
+				if !occ.recurrence_id.nil?
+					@list << lID
+				else
+					if occ.start > Date.today()
+						@list << lID
+					else
+						@exclude << r 
+					end
 
-	# 			end
+				end
 				
-	# 		else 
-	# 			if !occ.recurrence_id.nil?
-	# 				rec = Recurrence.find(occ.recurrence_id)
-	# 				if rec.range_end.nil? || rec.range_end > Date.today()
-	# 					@list << lID
-	# 				else
-	# 					@exclude << r 
-	# 				end
-	# 			else
-	# 				@exclude << r 
-	# 			end
+			else 
+				if !occ.recurrence_id.nil?
+					rec = Recurrence.find(occ.recurrence_id)
+					if rec.range_end.nil? || rec.range_end > Date.today()
+						@list << lID
+					else
+						@exclude << r 
+					end
+				else
+					@exclude << r 
+				end
 
 
-	# 		end
-	# 	}
-	# 	@legit = result - @exclude	
-	# end
+			end
+		}
+		@legit = result - @exclude	
+	end
 
 	# @listIDs=[]
 	# 		result.uniq.each{ |r|
