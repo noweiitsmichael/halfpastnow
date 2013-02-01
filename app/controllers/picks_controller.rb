@@ -11,17 +11,17 @@ helper :content
         result = ActiveRecord::Base.connection.select_all(query)
 	    listIDs = result.collect { |e| e["id"] }.uniq
 	    tagIDs = result.collect { |e| e["tag_id"].to_i }.uniq
-	    # @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| tagIDs.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
+	    @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| tagIDs.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
 		
-		legitSet = filter_all_legit(result)
-		legittagIDs = []
-		tagIDs.each { |tagID|
-			set = legitSet.select{ |r| r["id"] == tagID.to_s }.uniq
-			if set.size > 1
-				legittagIDs << tagID
-			end
-		}
-		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| legittagIDs.uniq.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
+		# legitSet = filter_all_legit(result)
+		# legittagIDs = []
+		# tagIDs.each { |tagID|
+		# 	set = legitSet.select{ |r| r["id"] == tagID.to_s }.uniq
+		# 	if set.size > 1
+		# 		legittagIDs << tagID
+		# 	end
+		# }
+		# @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| legittagIDs.uniq.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
 		
 
 
