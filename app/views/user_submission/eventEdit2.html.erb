@@ -44,7 +44,7 @@
 						  // First check image to see if it actually exists
 						  var img = new Image();
 						  img.onload = function() {
-							  $('<div class="ajaxLoader"><img src="/assets/ajax-loader.gif"></div>').appendTo('#eventThumbs');
+							  $('.ajaxLoader').show();
 							  var picData = 
 							    {"picture":
 							      { "pictureable_id": parseInt($("#pictureable_id").val()),
@@ -59,7 +59,7 @@
 								  newPicThumb += '<img alt="image_thumb" src="' + data.image.thumb.url + '">';
 								  newPicThumb += '<div href="" class="remove-pic">X</div>';
 			                	  newPicThumb += '<div class="crop-radio"><input type="radio" name="crop-radio-button" picurl="' + data.image.large.url + '" picid = ' + data.id + '" /></div>'
-								  $('.ajaxLoader').detach();
+								  $('.ajaxLoader').hide();
 								  $(newPicThumb).appendTo('#eventThumbs');
 								},
 								"json");
@@ -242,6 +242,7 @@
 					  	  </div>
 					    </div>
 					    <% end %>
+					    <div class="ajaxLoader" style="display:none;"><img src="/assets/ajax-loader.gif"></div>
 					</div>
 
 					<strong> Pictures from event venue/performers</strong>
