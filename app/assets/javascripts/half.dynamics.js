@@ -822,7 +822,7 @@ function loading(command) {
 function checkInfinite() {
   //console.log("checkInfinite");
   //if we're near the bottom of the page and not currently pulling in events
-  if($('#body').scrollBottom() < 100 && !pulling) {
+  if($('#body').scrollBottom() < 1000 && !pulling) {
     //console.log("pull em");
     //check if there are any more possible events to pull
     // if so, pull em.
