@@ -95,11 +95,12 @@ helper :content
 			recurrence_id = r["recurrence_id"]
 			deleted = r["deleted"]
 			# occ = Occurrence.find(id)
+			start = r["start"]
 			if ( !deleted )
 				if !recurrence_id.nil?
 					@list << lID
 				else
-					if occ.start > Date.today()
+					if start > Date.today()
 						@list << lID
 					else
 						@exclude << r 
