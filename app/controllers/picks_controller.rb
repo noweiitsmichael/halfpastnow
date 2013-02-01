@@ -44,9 +44,9 @@ helper :content
 				recurrence_id = r["recurrence_id"]
 				deleted = r["deleted"]
 				start = r["start"]
-				occ = Occurrence.find(id)
+				# occ = Occurrence.find(id)
 				if ( deleted.eql?"f" ) # !deleted
-					if !occ.recurrence_id.nil?
+					if !recurrence_id.nil?
 						@list << lID
 					else
 						if start.to_time > Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
