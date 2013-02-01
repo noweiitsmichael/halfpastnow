@@ -58,7 +58,7 @@ helper :content
 					
 				else 
 					if !recurrence_id.nil?
-						rec = Recurrence.all.select{ |r| r.id = recurrence_id}.first
+						rec = Recurrence.select{ |r| r.id = recurrence_id}.first
 						if rec.range_end.nil? || rec.range_end > Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
 							@list << lID
 						else
@@ -110,7 +110,7 @@ helper :content
 				
 			else 
 				if !recurrence_id.nil?
-					rec = Recurrence.all.select{ |r| r.id = recurrence_id}.first
+					rec = Recurrence.select{ |r| r.id = recurrence_id}.first
 					if rec.range_end.nil? || rec.range_end > Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
 						@list << lID
 					else
