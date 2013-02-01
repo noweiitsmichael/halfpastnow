@@ -278,16 +278,23 @@ $(function() {
   $('.custom-start, .custom-end').datepicker("setDate",Date.today().toString("MM/dd/yyyy"));
 
   $(".price-range").slider({
-    range: true,
+    range: "min",
     min: 0,
+    step: 5,
+    grid: 5,
     max: MAX_PRICE,
-    values: [ 0, MAX_PRICE ],
+    value: MAX_PRICE,
     slide: function( event, ui ) {
-      filter.low_price = (ui.values[0] === 0) ? "" : ui.values[0];
-      filter.high_price = (ui.values[1] === MAX_PRICE) ? "" : ui.values[1];
+      filter.low_price = "";
+      filter.high_price = (ui.value === MAX_PRICE) ? "" : ui.value;
       updateViewFromFilter(false);
     },
     stop: updateViewFromFilter
+  });
+
+  $(".price-free-button").click(function() {
+    filter.high_price = 0;
+    updateViewFromFilter();
   });
 
   $(".time-range").slider({
@@ -664,11 +671,11 @@ function updateViewFromFilter(pullEventsFlag, options) {
   ////////////// PRICE //////////////
 
   var low_price = (filter.low_price === "") ? 0 : filter.low_price;
-  var high_price = (filter.high_price === "") ? MAX_PRICE : filter.high_price
+  var high_price = (filter.high_price === "") ? MAX_PRICE : filter.high_price;
 
   //price selection and header
-  $(".price-range").slider("values", 0, low_price);
-  $(".price-range").slider("values", 1, high_price);
+  $(".price-range").slider("value", high_price);
+  //$(".price-range").slider("values", 1, high_price);
 
   var priceStr;
   if(low_price === 0 && high_price >= MAX_PRICE) {
@@ -685,6 +692,12 @@ function updateViewFromFilter(pullEventsFlag, options) {
       var priceTwo = "$" + high_price;
       priceStr = priceOne + " - " + priceTwo;
     }
+  }
+
+  if(high_price === 0) {
+    $('.price-free-button').addClass('isFree');
+  } else {
+    $('.price-free-button').removeClass('isFree');
   }
 
   $('.price-display, .filter-toggle.price .text-inner').html(priceStr);

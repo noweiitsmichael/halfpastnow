@@ -731,6 +731,7 @@ input::-webkit-input-placeholder
 #header .time-range, #header .price-range, #header .date-range
 {
     margin: 13px 8px 8px 5px;
+    cursor: pointer;
 }
 #header .time-display, #header .price-display, #header .date-display
 {
@@ -1141,8 +1142,13 @@ input::-webkit-input-placeholder
 #header .date .filter-inner {
 }
 
+#header .filter-toggle.price .filter-inner {
+  width: 304px;
+  padding: 0px 7px 5px 7px;
+}
+
 #header .price .filter-inner {
-  width: 220px;
+  width: 304px;
   padding: 5px 7px;
 }
 
@@ -2605,6 +2611,46 @@ input::-webkit-input-placeholder
   margin-left: 5px;
   position: relative;
   top: -1px;
+}
+
+.price-range-hashes div{
+  font-size: 8px;
+  float: left;
+  width: 10.4%;
+}
+.price-range-hashes {
+  overflow: auto;
+  margin-left: 23px;
+  margin-bottom: 5px;
+}
+
+.time-range-hashes div{
+  font-size: 8px;
+  float: left;
+  width: 13.5%;
+}
+.time-range-hashes {
+  overflow: auto;
+  margin-left: 43px;
+  margin-bottom: 5px;
+  margin-top:3px;
+}
+
+.price.filter-toggle .col-2 {
+    float:left;
+    width: 225px;
+    margin-left: 20px;
+}
+
+.price-free-button.nice-button {
+    float: left;
+    padding: 4px 10px;
+    background-color: rgb(200, 200, 200);
+    margin-top: 7px;
+}
+
+.price-free-button.nice-button.isFree {
+    background-color: rgb(89, 214, 255);
 }
 
 .tags-menu li .tag-header {

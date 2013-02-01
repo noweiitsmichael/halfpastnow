@@ -1,10 +1,11 @@
 
-<li linkto="event" link-id="<%= occurrence.id %>"><a href="/?event_id=<%= occurrence.id %>">
+<li linkto="event" link-id="<%= occurrence.id %>">
 	<div class="index <%= ((index + 1) >= 100) ? "over100" : ""%>"><%= index ? (index + 1) : "" %></div>
+	<a href="/?event_id=<%= occurrence.id %>">
 	<div class="title">
-		<%= occurrence.event.title %>
+		<%= truncate(occurrence.event.title, :length => 115) %>
 	</div>
-	<div class="venue" link-id="<%= occurrence.event.venue.id %>" linkto="venue">@ <span class="venue-inner"><%= occurrence.event.venue.name %></span></div>
+	<a href="/?venue_id=<%= occurrence.event.venue.id %>"><div class="venue" link-id="<%= occurrence.event.venue.id %>" linkto="venue">@ <span class="venue-inner"><%= occurrence.event.venue.name %></span></div></a>
 	<div class="datetime"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></div>
 	<% if occurrence.event.price %>
 		<div class="price"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></div>
@@ -65,6 +66,7 @@
 		<img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
 		<div class="picture-overlay"></div>
 	</div>
+</a>
 	<div class="event-actions">
 		<div><span class="icon icon-envelope-alt email" event-id="<%= occurrence.id %>"></span><span class="text">email</span></div>
 		<div><span class="icon icon-facebook-sign facebook" event-id="<%= occurrence.id %>"></span><span class="text">facebook</span></div>
@@ -86,5 +88,5 @@
 	<div class="marker-caching">
 		<img src="/assets/markers/marker_<%= (index + 1) % 100 %>.png" />
 		<img src="/assets/markers/marker_hover_<%= (index + 1) % 100 %>.png" />
-	</div></a>
+	</div>
 </li>

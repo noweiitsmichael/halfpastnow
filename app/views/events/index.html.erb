@@ -175,7 +175,7 @@
 				disableDefaultUI: true,
 				zoomControl: true,
 				scrollwheel: false,
-				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 3 },
+				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 2 },
     			backgroundColor: '#FFFFFF'
 			};
 
@@ -371,8 +371,31 @@
 											<span class="any">any day</span><span class="today selected">today</span><span class="tomorrow">this week</span><span class="custom">custom</span>
 										</div>
 										<div>
-											<div class="custom-select"><div class="any time-range"></div><div class="any time-display">any time</div></div>
-											<div class="custom-select selected"><div class="today time-range"></div><div class="today time-display">any time</div></div>
+											<div class="custom-select">
+												<div class="any time-range"></div>									
+												<div class="time-range-hashes">
+													<div>3 AM</div>
+													<div>6 AM</div>
+													<div>9 AM</div>
+													<div>Noon</div>
+													<div>3 PM</div>
+													<div>6 PM</div>
+													<div>9 PM</div>
+												</div>
+												<div class="any time-display">any time</div></div>
+											<div class="custom-select selected">
+												<div class="today time-range"></div>										
+												<div class="time-range-hashes">
+													<div>3 AM</div>
+													<div>6 AM</div>
+													<div>9 AM</div>
+													<div>Noon</div>
+													<div>3 PM</div>
+													<div>6 PM</div>
+													<div>9 PM</div>
+												</div>
+												<div class="today time-display">any time</div>
+											</div>
 											<div class="custom-select">
 												<div class="day-of-week">
 													<% dayOfWeek = Date.today() %>
@@ -381,11 +404,31 @@
 														<% dayOfWeek = dayOfWeek + 1 %>
 													<% end %>
 												</div>
-												<div class="tomorrow time-range"></div><div class="tomorrow time-display">any time</div>
+												<div class="tomorrow time-range"></div>										
+												<div class="time-range-hashes">
+													<div>3 AM</div>
+													<div>6 AM</div>
+													<div>9 AM</div>
+													<div>Noon</div>
+													<div>3 PM</div>
+													<div>6 PM</div>
+													<div>9 PM</div>
+												</div>
+												<div class="tomorrow time-display">any time</div>
 											</div>
 											<div class="custom-select">
 												<span class="icon icon-calendar"></span><input type="text" class="custom-start"/> to <span class="icon icon-calendar"></span><input type="text" class="custom-end"/>
-												<div class="custom time-range"></div><div class="custom time-display">any time</div>
+												<div class="custom time-range"></div>									
+												<div class="time-range-hashes">
+													<div>3 AM</div>
+													<div>6 AM</div>
+													<div>9 AM</div>
+													<div>Noon</div>
+													<div>3 PM</div>
+													<div>6 PM</div>
+													<div>9 PM</div>
+												</div>
+												<div class="custom time-display">any time</div>
 												<!-- <div class="custom date-range"></div>
 												<div class="custom date-display">today</div> -->
 											</div>
@@ -404,7 +447,22 @@
 							</span>
 							<div class="filter-dropdown">
 								<div class="filter-inner">
-									<div class="price-range"></div><div class="price-display">any price</div>
+									<div class="price-free-button nice-button">Free</div>
+									<div class="col-2">
+										<div class="price-range"></div>
+										<div class="price-range-hashes">
+											<div>5</div>
+											<div>10</div>
+											<div>15</div>
+											<div>20</div>
+											<div>25</div>
+											<div>30</div>
+											<div>35</div>
+											<div>40</div>
+											<div>45</div>
+										</div>
+										<div class="price-display">any price</div>
+									</div>
 								</div>
 							</div>
 						</span>

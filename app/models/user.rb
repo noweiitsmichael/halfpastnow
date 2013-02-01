@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 
 
   validates_presence_of :email
-  validates_uniqueness_of :email, :username, :case_sensitive => false
+  validates_uniqueness_of :email, :case_sensitive => false
 
   has_many :events
   has_many :channels
