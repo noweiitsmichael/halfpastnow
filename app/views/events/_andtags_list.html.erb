@@ -1,6 +1,7 @@
 <div class="tags-display andtags">&nbsp;</div>
 <ul class="tags-menu andtags parents">
 	<% andTags = tagCounts.select { |t| t[:name] == "Tags" }.first %>
+	<% if(andTags) %>
 	<% andTags[:children].each do |childTagCount| %>
 		<li parent-id="<%= andTags[:id] %>">
 			<div class="tag-header <%= childTagCount[:count] == 0 ? "no-results" : "" %>" tag-id="<%= childTagCount[:id] %>">
@@ -9,5 +10,6 @@
 				<span class="name"><%= childTagCount[:name] %><!-- <em><%= childTagCount[:count] == 0 ? "" : "[#{childTagCount[:count]}]" %></em> --></span>
 			</div>
 		</li>
+	<% end %>
 	<% end %>
 </ul>
