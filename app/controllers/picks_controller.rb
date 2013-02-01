@@ -11,24 +11,24 @@ helper :content
         result = ActiveRecord::Base.connection.select_all(query)
 	    listIDs = result.collect { |e| e["id"] }.uniq
 	    tagIDs = result.collect { |e| e["tag_id"].to_i }.uniq
-	    # @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| tagIDs.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
+	    @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| tagIDs.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
 		
-		legitSet = filter_all_legit(result)
-		# puts "legit set"
-		# puts legitSet
-		legittagIDs = []
-		tagIDs.each { |tagID|
-			set = legitSet.select{ |r| r["tag_id"] == tagID.to_s }.uniq
-			# puts "Set herer"
-			set1 = set.collect { |e| {:id => e["id"], :tag_id => e["tag_id"]}  }
-			# puts set1
-			if set1.size > set1.uniq.size
-				# puts "TagID"
-				# puts tagID
-				legittagIDs << tagID
-			end
-		}
-		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| legittagIDs.uniq.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
+		# legitSet = filter_all_legit(result)
+		# # puts "legit set"
+		# # puts legitSet
+		# legittagIDs = []
+		# tagIDs.each { |tagID|
+		# 	set = legitSet.select{ |r| r["tag_id"] == tagID.to_s }.uniq
+		# 	# puts "Set herer"
+		# 	set1 = set.collect { |e| {:id => e["id"], :tag_id => e["tag_id"]}  }
+		# 	# puts set1
+		# 	if set1.size > set1.uniq.size
+		# 		# puts "TagID"
+		# 		# puts tagID
+		# 		legittagIDs << tagID
+		# 	end
+		# }
+		# @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| legittagIDs.uniq.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
 		
 		# puts @parentTags.collect{ |p| p.name}
 		tag_id = params[:id]
