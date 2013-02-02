@@ -7,7 +7,6 @@ helper :content
 				INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
 				INNER JOIN events ON occurrences.event_id = events.id
                 INNER JOIN events_tags ON events.id = events_tags.event_id
-                INNER JOIN recurrences ON events.id = recurrences.event_id
                 INNER JOIN tags ON events_tags.tag_id = tags.id
                 WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE"
         result = ActiveRecord::Base.connection.select_all(query)
