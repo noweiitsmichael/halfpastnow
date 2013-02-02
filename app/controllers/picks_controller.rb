@@ -24,11 +24,11 @@ helper :content
 	    listIDs = result.collect { |e| e["id"] }.uniq
 	    tagIDs = result.collect { |e| e["tag_id"].to_i }.uniq
 	    #@parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| tagIDs.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
-		puts result.uniq
-		puts result.uniq.size
+		# puts result.uniq
+		# puts result.uniq.size
 		legitSet = filter_all_legit(result)
-		puts "legit set"
-		puts legitSet.size
+		# puts "legit set"
+		# puts legitSet.size
 		legittagIDs = []
 		tagIDs.each { |tagID|
 			set = legitSet.select{ |r| r["tag_id"] == tagID.to_s }.uniq
