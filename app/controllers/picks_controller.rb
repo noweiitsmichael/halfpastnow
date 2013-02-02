@@ -7,7 +7,7 @@ helper :content
 				INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
 				INNER JOIN events ON occurrences.event_id = events.id
                 INNER JOIN events_tags ON events.id = events_tags.event_id
-                LEFT OUTTER JOIN recurrences ON events.id = recurrences.event_id
+                LEFT OUTER JOIN recurrences ON events.id = recurrences.event_id
                 INNER JOIN tags ON events_tags.tag_id = tags.id
                 WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL";
     #             UNION 
