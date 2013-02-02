@@ -24,27 +24,27 @@ helper :content
 	    listIDs = result.collect { |e| e["id"] }.uniq
 	    tagIDs = result.collect { |e| e["tag_id"].to_i }.uniq
 	    #@parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| tagIDs.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
-		puts result.uniq
-		puts result.uniq.size
+		# puts result.uniq
+		# puts result.uniq.size
 		legitSet = filter_all_legit(result)
 		#puts "legit set"
-		puts legitSet.size
+		# puts legitSet.size
 		legittagIDs = []
 		tagIDs.each { |tagID|
 			set = legitSet.select{ |r| r["tag_id"] == tagID.to_s }.uniq
-			puts "Set herer"
+			# puts "Set herer"
 			set1 = set.collect { |e| {:id => e["id"], :tag_id => e["tag_id"]}  }
-			puts set1
+			# puts set1
 			if set1.size > set1.uniq.size
-				puts "TagID"
-				puts tagID
+				# puts "TagID"
+				# puts tagID
 				legittagIDs << tagID
 			end
 		}
-		puts legittagIDs
+		# puts legittagIDs
 		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| legittagIDs.uniq.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
-		puts @parentTags
-		puts @parentTags.collect{ |p| p.name}
+		# puts @parentTags
+		# puts @parentTags.collect{ |p| p.name}
 		tag_id = params[:id]
 		if tag_id.to_s.empty?
 			@featuredLists = BookmarkList.where(:featured=>true)
@@ -63,10 +63,10 @@ helper :content
 				if ( deleted.eql?"f" ) # !deleted
 					if !recurrence_id.nil?
 						if range_end.nil? || range_end.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
-							puts " 5 "
+							# puts " 5 "
 							@list << lID
 						else
-							puts " 6 "
+							# puts " 6 "
 							@exclude << r 
 						end
 					else
@@ -94,17 +94,17 @@ helper :content
 				end
 			}
 			@legit = rs - @exclude
-			puts "Legit"
-			puts @legit
-			puts @list
+			# puts "Legit"
+			# puts @legit
+			# puts @list
 
 			ls = []
 			@list.uniq.each { |l|
-				puts "List ID"
-				puts l
+				# puts "List ID"
+				# puts l
 				n = @legit.select{ |r| r["id"] == l.to_s }.uniq
 				if n.count > 1
-					puts l
+					# puts l
 					ls << l
 				end
 			}
@@ -126,18 +126,18 @@ helper :content
 			# occ = Occurrence.find(id)
 			start = r["start"]
 			range_end = r["range_end"]
-			puts r
+			# puts r
 
 
 
 			if ( deleted.eql?"f" )
 				if !recurrence_id.nil?
-					puts " 1 "
+					# puts " 1 "
 					if range_end.nil? || range_end.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
-						puts " 5 "
+						# puts " 5 "
 						@list << lID
 					else
-						puts " 6 "
+						# puts " 6 "
 						@exclude << r 
 					end
 
@@ -145,10 +145,10 @@ helper :content
 
 				else
 					if start.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
-						puts " 2 "
+						# puts " 2 "
 						@list << lID
 					else
-						puts " 3 "
+						# puts " 3 "
 						@exclude << r 
 					end
 
@@ -156,17 +156,17 @@ helper :content
 				
 			else 
 				if !recurrence_id.nil?
-					puts " 4 "
+					# puts " 4 "
 					#rec = Recurrence.select{ |r| r.id = recurrence_id}.first
 					if range_end.nil? || range_end.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
-						puts " 5 "
+						# puts " 5 "
 						@list << lID
 					else
-						puts " 6 "
+						# puts " 6 "
 						@exclude << r 
 					end
 				else
-					puts " 7 "
+					# puts " 7 "
 					@exclude << r 
 				end
 
