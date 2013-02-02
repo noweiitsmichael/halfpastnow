@@ -99,7 +99,7 @@ helper :content
 			puts @list
 
 			ls = []
-			@list.each { |l|
+			@list.uniq.each { |l|
 				puts "List ID"
 				puts l
 				n = @legit.select{ |r| r["id"] == l.to_s }.uniq
