@@ -52,7 +52,13 @@ helper :content
 				# occ = Occurrence.find(id)
 				if ( deleted.eql?"f" ) # !deleted
 					if !recurrence_id.nil?
-						@list << lID
+						if range_end.nil? || range_end.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
+							puts " 5 "
+							@list << lID
+						else
+							puts " 6 "
+							@exclude << r 
+						end
 					else
 						if start.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
 							@list << lID
@@ -111,10 +117,22 @@ helper :content
 			start = r["start"]
 			range_end = r["range_end"]
 			puts r
+
+
+
 			if ( deleted.eql?"f" )
 				if !recurrence_id.nil?
 					puts " 1 "
-					@list << lID
+					if range_end.nil? || range_end.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
+						puts " 5 "
+						@list << lID
+					else
+						puts " 6 "
+						@exclude << r 
+					end
+
+
+
 				else
 					if start.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
 						puts " 2 "

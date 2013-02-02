@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  
   layout :layout_by_resource
   protect_from_forgery
 
@@ -34,8 +35,7 @@ class ApplicationController < ActionController::Base
    def admin_logged_in?
      true
    end  
-
-
+   
   protected
 
   def layout_by_resource
@@ -45,4 +45,6 @@ class ApplicationController < ActionController::Base
       "application"
     end
   end
+  
+
 end

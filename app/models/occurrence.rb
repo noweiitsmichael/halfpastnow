@@ -31,6 +31,7 @@ class Occurrence < ActiveRecord::Base
   end
 
   def event_bookmarks
+
     query = "SELECT bookmarks.id FROM occurrences
              INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
              WHERE occurrences.event_id = #{ self.event_id } AND bookmarks.bookmarked_type = 'Occurrence'"
@@ -57,6 +58,8 @@ class Occurrence < ActiveRecord::Base
     results = ActiveRecord::Base.connection.select_all(query)
     return Bookmark.find(results.collect { |e| e["id"] }.uniq)
   end
+
+  
 
   def self.find_with(params)
     user_id = params[:user_id]
