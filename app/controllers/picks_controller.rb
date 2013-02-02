@@ -1,14 +1,25 @@
 class PicksController < ApplicationController
 helper :content
 	def index
-		query = "SELECT bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, occurrences.start AS start,occurrences.deleted AS deleted, 
+		query = "SELECT bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, recurrences.range_end AS range_end, occurrences.start AS start,occurrences.deleted AS deleted, 
+				occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
+				INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
+				INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
+				INNER JOIN events ON occurrences.event_id = events.id
+                INNER JOIN events_tags ON events.id = events_tags.event_id
+                INNER JOIN recurrences ON events.id = recurrences.event_id
+                INNER JOIN tags ON events_tags.tag_id = tags.id
+                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL
+                UNION 
+                SELECT bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, occurrences.end AS range_end, occurrences.start AS start,occurrences.deleted AS deleted, 
 				occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
 				INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
 				INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
 				INNER JOIN events ON occurrences.event_id = events.id
                 INNER JOIN events_tags ON events.id = events_tags.event_id
                 INNER JOIN tags ON events_tags.tag_id = tags.id
-                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE"
+                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL
+                "
         result = ActiveRecord::Base.connection.select_all(query)
 	    listIDs = result.collect { |e| e["id"] }.uniq
 	    tagIDs = result.collect { |e| e["tag_id"].to_i }.uniq
