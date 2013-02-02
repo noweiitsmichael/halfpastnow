@@ -78,15 +78,22 @@ helper :content
 				end
 			}
 			@legit = rs - @exclude
+			puts "Legit"
+			puts @legit
+			puts @list
+
 			ls = []
 			@list.each { |l|
+				puts "List ID"
+				puts l
 				n = @legit.select{ |r| r["id"] == l.to_s }.uniq
 				if n.count > 1
+					puts l
 					ls << l
 				end
 			}
 			@featuredLists = BookmarkList.find(ls)
-
+			puts @featuredLists
 			# @featuredLists = BookmarkList.find(result.select { |r| r["tag_id"] == tag_id.to_s }.collect { |e| e["id"] }.uniq)
 		end
 	end
