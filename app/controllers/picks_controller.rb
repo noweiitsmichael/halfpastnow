@@ -1,7 +1,7 @@
 class PicksController < ApplicationController
 helper :content
 	def index
-		query = "SELECT bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, recurrences.range_end AS range_end, occurrences.start AS start,occurrences.deleted AS deleted, 
+		query = "SELECT bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, occurrences.start AS start,occurrences.deleted AS deleted, 
 				occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
 				INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
 				INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
