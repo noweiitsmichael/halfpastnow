@@ -5,7 +5,7 @@ class Occurrence < ActiveRecord::Base
 
   # Bi-directional bookmarks association (find a user's bookmarked events, and users who have bookmarked this event)
   belongs_to :bookmarked, :polymorphic => true
-  has_many :bookmarks, :as => :bookmarked
+  has_many :bookmarks, :as => :bookmarked, :dependent => :destroy
   # Allows you to search for users that bookmarked this event by calling "event.bookmarked_by"
   # has_many :bookmarked_by, :through => :bookmarks, :source => :user
 
