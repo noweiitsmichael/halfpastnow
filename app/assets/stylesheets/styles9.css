@@ -53,11 +53,11 @@ H5
 }
 H6
 
-label { display:block; margin-top:5px; }
-
-{
-  font-size: 14px;
+label { 
+  display:block; 
+  margin-top:5px; 
 }
+
 .hidden {
   display:none;
 }
@@ -3023,7 +3023,7 @@ html, body {
 
 #header .filter-toggle .text {
   display: inline-block;
-  *display: inline;
+  display: inline;
   zoom: 1;
   margin: 0;
   cursor: pointer;
