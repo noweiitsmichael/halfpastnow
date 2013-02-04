@@ -1274,6 +1274,7 @@ input::-webkit-input-placeholder
 .mode .events .description {
   font-size: 13px;
   overflow:hidden;
+  margin-top: 0px;
   margin-bottom: 9px;
   line-height: 1.2em;
 }

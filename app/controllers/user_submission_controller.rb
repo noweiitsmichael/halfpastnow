@@ -104,7 +104,7 @@ helper :content
 	      end
 	    end
 	    respond_to do |format|
-			format.json {render :json => { :tags => @act.tags.collect { |t| t.id}, :id => @act.id, :name => @act.name }}
+			format.json {render :json => { :tags => @act.tags.collect { |t| t.id}, :id => @act.id, :name => @act.name, :completedness => @act.completedness }}
 			format.html 
 		end
 	end

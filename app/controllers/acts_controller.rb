@@ -49,7 +49,7 @@ class ActsController < ApplicationController
 
   def index
     authorize! :index, @user, :message => 'Not authorized as an administrator.'
-    @acts = Act.includes(:events, :tags, :embeds).all.sort_by{ |act| act.name }
+    @acts = Act.all.sort_by{ |act| act.name }
 
     render :layout => "admin"
   end
