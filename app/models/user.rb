@@ -37,6 +37,7 @@ class User < ActiveRecord::Base
 
   # Cropping function
   def crop_profilepic
+    # puts "crop profilepic"
      # might need this line for S3?
     # profilepic.cache_stored_file!
     if crop_x.present?

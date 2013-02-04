@@ -34,10 +34,22 @@ namespace :m do
 	desc "clearing bad bookmarks"
 	task :bookmark_clear => :environment do
 		puts "Scrubbing..."
-		Bookmark.where(:bookmarked_type => "Occurrence").each do |b|
-			if Occurrence.where(:id => b.bookmarked_id).empty?
-				puts "Deleting #{b.bookmarked_type} #{b.bookmarked_id} from #{User.find(b.user_id).firstname}" rescue puts "nouser"
-				b.destroy
+		Bookmark.all.each do |b|
+			if b.bookmarked_type == "Occurrence"
+				if Occurrence.where(:id => b.bookmarked_id).empty?
+					puts "Deleting #{b.bookmarked_type} #{b.bookmarked_id}"
+					b.destroy
+				end
+			elsif b.bookmarked_type == "Act"
+				if Act.where(:id => b.bookmarked_id).empty?
+					puts "Deleting #{b.bookmarked_type} #{b.bookmarked_id}"
+					b.destroy
+				end
+			elsif b.bookmarked_type == "Venue"
+				if Act.where(:id => b.bookmarked_id).empty?
+					puts "Deleting #{b.bookmarked_type} #{b.bookmarked_id}"
+					b.destroy
+				end
 			end
 		end
 	end

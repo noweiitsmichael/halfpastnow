@@ -27,8 +27,8 @@
           $('.update-picture .form-indicator').hide();
           $('.update-picture .form-success').show();
           console.log(user.profilepic.url);
-          $('#cropbox').attr('src',user.profilepic.url);
-          $('#preview').attr('src',user.profilepic.url);
+          $('#cropbox').attr('src',user.profilepic.large.url);
+          $('#preview').attr('src',user.profilepic.large.url);
           $('.update-picture').hide();
           $('.crop-picture').show();
           $('#cropbox').Jcrop({
@@ -261,6 +261,7 @@
     
     <div class="picture">
       <h2>Picture</h2>
+      <label>Select an area in the picture below to crop your picture</label>
       <div class="update-picture">
         <%= image_tag resource.profilepic_url(:thumb) || "/assets/profile.png", :id => "existing-pic" %>
         <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put, :multipart => true }) do |f| %>

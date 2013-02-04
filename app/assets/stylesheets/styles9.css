@@ -165,6 +165,7 @@ label.error {
 
 #header .top-profile-pic {
     height: 25px;
+    width: 25px;
     margin-left: 3px;
     position: absolute;
     top: -4px;

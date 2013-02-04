@@ -5,7 +5,7 @@ class Picture < ActiveRecord::Base
   after_update :crop_image
 
   def crop_image
-    puts "crop_image"
+    # puts "crop_image"
 
     if crop_x.present?
       image.recreate_versions!
