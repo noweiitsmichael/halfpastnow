@@ -46,7 +46,7 @@ namespace :m do
 					b.destroy
 				end
 			elsif b.bookmarked_type == "Venue"
-				if Act.where(:id => b.bookmarked_id).empty?
+				if Venue.where(:id => b.bookmarked_id).empty?
 					puts "Deleting #{b.bookmarked_type} #{b.bookmarked_id}"
 					b.destroy
 				end
