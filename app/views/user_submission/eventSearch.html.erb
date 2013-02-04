@@ -69,6 +69,5 @@
 		<br><br><input type="text" id="event-title" style="width:400px;"/> <button id="create-event" class="nice-button">Create New Event</button>
 		<ul id="event-results">
 		</ul>
-		<%= hidden_field_tag "existing-bookmarks", BookmarkList.where(:user_id => current_user.id, :featured => true).collect { |b| b.bookmarks }.flatten.collect { |e| Occurrence.find(e.bookmarked_id).event.id } %>
 	</div>
 <% end %>
