@@ -715,7 +715,7 @@ class MobileController < ApplicationController
         |oid|
         @eventids = Occurrence.find(oid).event_id
         @events = Event.includes(:tags, :venue, :recurrences,:acts).find(@eventids) 
-        @rcs=Recurrence.find(@events.occurrences.select{|o| o.recurrence_id!=nil && o.deleted=="false"}.collect(&:recurrence_id).uniq)
+        @rcs=Recurrence.find(@events.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq)
         @ocs=@events.occurrences.select{|o| o.recurrence_id==nil}
         @item = {event: @events, tags: @events.tags, venue: @events.venue, recurrences: @rcs, occurrences: @ocs, act: @events.acts,ocid: oid}
         @eventinfo << @item
@@ -728,7 +728,7 @@ class MobileController < ApplicationController
     @esinfo =[]
     @es.each{
       |o| 
-      @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil && o.deleted=="false"}.collect(&:recurrence_id).uniq)
+      @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil }.collect(&:recurrence_id).uniq)
       @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
       @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts}
       @esinfo << @item
