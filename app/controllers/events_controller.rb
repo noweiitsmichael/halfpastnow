@@ -140,7 +140,9 @@ def index
   # GET /events/1
   # GET /events/1.json
   def show
-    @fullmode = !params[:fullmode].to_s.empty?
+
+    puts "Share content"
+    @fullmode = (!params[:fullmode].to_s.empty?) || (@mobileMode)
     @modeType = "event"
     
     @occurrence = Occurrence.find(params[:id])
