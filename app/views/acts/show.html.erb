@@ -20,6 +20,12 @@
 				<h2>Details</h2>
 				<div class="block-inner">
 					<%= raw(@act.description) %>
+					<% unless @act.bio.blank? %>
+						<br><br>
+						<h4>Bio</h4>
+						<%= raw(@act.description) %>
+						<% end %>
+
 				</div>
 			</div>
 		<% end %>

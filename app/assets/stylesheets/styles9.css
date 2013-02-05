@@ -53,11 +53,11 @@ H5
 }
 H6
 
-label { display:block; margin-top:5px; }
-
-{
-  font-size: 14px;
+label { 
+  display:block; 
+  margin-top:5px; 
 }
+
 .hidden {
   display:none;
 }
@@ -165,6 +165,7 @@ label.error {
 
 #header .top-profile-pic {
     height: 25px;
+    width: 25px;
     margin-left: 3px;
     position: absolute;
     top: -4px;
@@ -1273,6 +1274,7 @@ input::-webkit-input-placeholder
 .mode .events .description {
   font-size: 13px;
   overflow:hidden;
+  margin-top: 0px;
   margin-bottom: 9px;
   line-height: 1.2em;
 }
@@ -3023,7 +3025,7 @@ html, body {
 
 #header .filter-toggle .text {
   display: inline-block;
-  *display: inline;
+  display: inline;
   zoom: 1;
   margin: 0;
   cursor: pointer;

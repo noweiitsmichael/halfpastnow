@@ -8,9 +8,17 @@
 
 <% content_for :code do %>
 	<script type="text/javascript">
+
+		var existing = [<%= BookmarkList.where(:user_id => current_user.id, :featured => true).collect { |b| b.bookmarks.where(:bookmarked_type => "Occurrence") }.flatten.collect { |e| Occurrence.find(e.bookmarked_id).event.id } * "," %>];
+
 		$(function() {
 
-			var existing = [<%= BookmarkList.where(:user_id => current_user.id, :featured => true).collect { |b| b.bookmarks }.flatten.collect { |e| Occurrence.find(e.bookmarked_id).event.id } * "," %>];
+            var timer;
+            $("#event-title").bind('keyup input',function() {
+                timer && clearTimeout(timer);
+                timer = setTimeout(eventSearch, 150);
+            });
+
 			$('#create-event').click(function() {
 				window.location = "/userSubmission/eventCreate1?new_title=" + $("#event-title").val();
 			});
@@ -32,24 +40,25 @@
 				return false;
 			});
 
-			$("#event-title").keyup(function() {
-				var term = $(this).val();
-				$.getJSON("/userSubmission/eventSearchTerm?term=" + term, function (data) {
-		            $('#event-results').empty();
-		            $("<h4 style='margin-top:10px;'>Existing Events:</h4>").appendTo('#event-results');
-		            $.each(data, function() {
-		            	var topPicksButton;
-		            	if (existing.indexOf(this.event.id) === -1 ) {
-		            		topPicksButton = "<a class='nice-button picks add-to-picks' href='' bookmark-id='" + this.id + "'>Add to Picks</a>"
-		            	} else {
-		            		topPicksButton = "<a class='nice-button picks remove-from-picks' href='' bookmark-id='" + this.id + "'>Remove Pick</a>"
-		            	}
-		            	$("<li style='overflow:hidden'><div class='result-element-actions'><a href='/userSubmission/eventEdit1/" + this.event.id + "'>[edit]</a><% if user_signed_in? %><% if (current_user.role == 'admin') || (current_user.role == 'super_admin') %>" + topPicksButton + "<% end %><% end %></div><div class='result-element'><h5><a href='/?event_id=" + this.id + "' target='_blank' class='resultEventName'>"+ this.event.title + "</a></h5><span>" + this.event.venue.name + "</span></div></li>").appendTo('#event-results');
-		            });
-		        });
-			});
-
 		});
+
+		function eventSearch () {
+			var term = $("#event-title").val();
+			$.getJSON("/userSubmission/eventSearchTerm?term=" + term, function (data) {
+	            $('#event-results').empty();
+	            $("<h4 style='margin-top:10px;'>Existing Events:</h4>").appendTo('#event-results');
+	            $.each(data, function() {
+	            	var topPicksButton;
+	            	if (existing.indexOf(this.event.id) === -1 ) {
+	            		topPicksButton = "<a class='nice-button picks add-to-picks' href='' bookmark-id='" + this.id + "'>Add to Picks</a>"
+	            	} else {
+	            		topPicksButton = "<a class='nice-button picks remove-from-picks' href='' bookmark-id='" + this.id + "'>Remove Pick</a>"
+	            	}
+	            	$("<li style='overflow:hidden'><div class='result-element-actions'><a href='/userSubmission/eventEdit1/" + this.event.id + "'>[edit]</a><% if user_signed_in? %><% if (current_user.role == 'admin') || (current_user.role == 'super_admin') %>" + topPicksButton + "<% end %><% end %></div><div class='result-element'><h5><a href='/?event_id=" + this.id + "' target='_blank' class='resultEventName'>"+ this.event.title + "</a></h5><span>" + this.event.venue.name + "</span></div></li>").appendTo('#event-results');
+	            });
+	        });
+			
+		}
 	</script>
 <% end %>
 
@@ -60,6 +69,5 @@
 		<br><br><input type="text" id="event-title" style="width:400px;"/> <button id="create-event" class="nice-button">Create New Event</button>
 		<ul id="event-results">
 		</ul>
-		<%= hidden_field_tag "existing-bookmarks", BookmarkList.where(:user_id => current_user.id, :featured => true).collect { |b| b.bookmarks }.flatten.collect { |e| Occurrence.find(e.bookmarked_id).event.id } %>
 	</div>
 <% end %>

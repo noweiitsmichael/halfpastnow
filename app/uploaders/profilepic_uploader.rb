@@ -37,17 +37,17 @@ class ProfilepicUploader < CarrierWave::Uploader::Base
 
   version :mini do
     process :crop
-    process :resize_to_limit => [35, 35]
+    process :resize_and_pad => [35, 35, "white", Magick::CenterGravity]
   end
 
   version :tiny do
     process :crop
-    process :resize_to_limit => [60, 60]
+    process :resize_and_pad => [60, 60, "white", Magick::CenterGravity]
   end
 
   version :thumb do
     process :crop
-    process :resize_to_limit => [150, 150]
+    process :resize_and_pad => [150, 150, "white", Magick::CenterGravity]
   end
 
   version :large do
@@ -56,6 +56,7 @@ class ProfilepicUploader < CarrierWave::Uploader::Base
   end
 
   def crop
+    # puts "prof pic cropping...."
     if model.crop_x.present?
       resize_to_limit(500,500)
       manipulate! do |img|
