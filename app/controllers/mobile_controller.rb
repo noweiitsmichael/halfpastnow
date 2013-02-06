@@ -341,13 +341,15 @@ class MobileController < ApplicationController
       # puts id
       # puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }}.uniq 
+      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
-      rec = set.collect { |s| { :every_other => s["every_other"],:day_of_week => s["day_of_week"],:week_of_month => s["week_of_month"], :day_of_month => s["day_of_month"] }}.uniq 
+      rec = set.collect { |s| { :every_other => s["every_other"],:day_of_week => s["day_of_week"],:week_of_month => s["week_of_month"], :day_of_month => s["day_of_month"] }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
-      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}}
+      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+      # puts tags
+     
       s = set.first
       item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
       :title => s["title"], :venue_name => s["venue_name"],:long => s["longitude"], :lat => s["latitude"], :event_id => s["event_id"], :venue_id => s["venue_id"],
@@ -365,6 +367,7 @@ class MobileController < ApplicationController
 
     ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
     esinfo = ttttmp.drop(@offset).take(@amount)
+    esinfo = esinfo.collect{|es| es.values}
     @amount = 10
     unless(params[:amount].to_s.empty?)
       @amount = params[:amount].to_i
@@ -418,15 +421,15 @@ class MobileController < ApplicationController
               # puts id
               # puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-               act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }}.uniq 
+               act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
               # Find the uniq recurrence id
               rec_ids = set.collect { |e| e["rec_id"] }.uniq
-               rec = set.collect { |s| { :every_other => s["every_other"],:day_of_week => s["day_of_week"],:week_of_month => s["week_of_month"], :day_of_month => s["day_of_month"] }}.uniq 
+               rec = set.collect { |s| { :every_other => s["every_other"],:day_of_week => s["day_of_week"],:week_of_month => s["week_of_month"], :day_of_month => s["day_of_month"] }.values}.uniq 
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
-              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}}
+              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
               item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
               :title => s["title"], :venue_name => s["venue_name"],:long => s["longitude"], :lat => s["latitude"], :event_id => s["event_id"], :venue_id => s["venue_id"],
               :occurrence_id => s["occurrence_id"], :price => s["price"] , :address => s["address"] , :zip => s["zip"] , :city => s["city"], :state => s["state"] ,:clicks => s["clicks"],
@@ -436,7 +439,7 @@ class MobileController < ApplicationController
               #  s["occurrence_id"], s["price"] ,  s["address"] ,  s["zip"] ,  s["city"],  s["state"] , s["clicks"],
               # s["views"], :tags  => Event.find(id).tags.collect{ |t| {t.id, t.name}}  }
 
-              @bmEvents << item
+              @bmEvents << item.values
             }
             # puts esinfo.to_json
 
