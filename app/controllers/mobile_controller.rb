@@ -337,7 +337,7 @@ class MobileController < ApplicationController
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
     puts @eventIDs
     esinfo = []
-    eventIDs.each{ |id|
+    @eventIDs.each{ |id|
       puts id
       puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
