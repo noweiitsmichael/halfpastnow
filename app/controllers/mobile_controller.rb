@@ -336,8 +336,8 @@ class MobileController < ApplicationController
     puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
     puts @eventIDs
-    @esinfo = []
-    @eventIDs.each{ |id|
+    esinfo = []
+    eventIDs.each{ |id|
       puts id
       puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
@@ -352,7 +352,7 @@ class MobileController < ApplicationController
       :views => s["views"]  }
       esinfo << item
     }
-    puts @esinfo.to_json
+    puts esinfo.to_json
     #  Bookmarked events
     email = params[:email]
     @user=User.find_by_email(email)
@@ -421,7 +421,7 @@ class MobileController < ApplicationController
         # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
         format.json { render json: {:events=>@esinfo} }
       else
-         format.json { render json: {:bookmarkedEvents=>@bmEvents, :events => @esinfo} } 
+         format.json { render json: {:bookmarkedEvents=>@bmEvents, :events => esinfo} } 
         # format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo,:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten }} 
         # format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       
