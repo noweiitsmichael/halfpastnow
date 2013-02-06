@@ -27,7 +27,6 @@ Myapp::Application.routes.draw do
   get "info/terms"
 
   devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"}
-  match 'mobile/FacebookLogin' => 'mobile#FacebookLogin'
   get "tag/index"
 
   # namespace :admin do
