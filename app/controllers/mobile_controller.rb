@@ -349,9 +349,22 @@ class MobileController < ApplicationController
       item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
       :title => s["title"], :venue_name => s["venue_name"],:long => s["longitude"], :lat => s["latitude"], :event_id => s["event_id"], :venue_id => s["venue_id"],
       :occurrence_id => s["occurrence_id"], :price => s["price"] , :address => s["address"] , :zip => s["zip"] , :city => s["city"], :state => s["state"] ,:clicks => s["clicks"],
-      :views => s["views"]  }
+      :views => s["views"], :tags  => Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}}  }
       esinfo << item
     }
+
+    ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
+    esinfo = ttttmp.drop(@offset).take(@amount)
+    @amount = 10
+    unless(params[:amount].to_s.empty?)
+      @amount = params[:amount].to_i
+    end
+
+    @offset = 0
+    unless(params[:offset].to_s.empty?)
+      @offset = params[:offset].to_i
+    end
+
     puts esinfo.to_json
     #  Bookmarked events
     email = params[:email]
@@ -388,7 +401,8 @@ class MobileController < ApplicationController
            queryResult = ActiveRecord::Base.connection.select_all(query)
            puts "Bookmarked Events"
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-            puts @eventIDs
+
+           puts @eventIDs
             
             @eventIDs.each{ |id|
               puts id
@@ -402,7 +416,7 @@ class MobileController < ApplicationController
               item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
               :title => s["title"], :venue_name => s["venue_name"],:long => s["longitude"], :lat => s["latitude"], :event_id => s["event_id"], :venue_id => s["venue_id"],
               :occurrence_id => s["occurrence_id"], :price => s["price"] , :address => s["address"] , :zip => s["zip"] , :city => s["city"], :state => s["state"] ,:clicks => s["clicks"],
-              :views => s["views"]  }
+              :views => s["views"], :tags  => Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}}  }
               @bmEvents << item
             }
             puts esinfo.to_json
@@ -421,7 +435,7 @@ class MobileController < ApplicationController
         # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
         format.json { render json: {:events=>@esinfo} }
       else
-         format.json { render json: {:bookmarkedEvents=>@bmEvents, :events => esinfo} } 
+         format.json { render json: {user:@user, channels: @channels,:bookmarked=>@bmEvents, :events => esinfo},:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten  } 
         # format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo,:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten }} 
         # format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       
