@@ -162,7 +162,11 @@
 			  <%= e.text_field :website %>
 			</div>
 
-			<%= render :partial => "tags", :locals => { :element => @act, :type => "act" } %>
+			<% @iStrName = "act[tag_ids][]" %>
+			<% @iStrId = "act_tag_ids_" %>
+
+
+				<%= render :partial => "tags", :locals => { :element => @act, :type => "act" } %>
 
 
 

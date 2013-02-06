@@ -1,6 +1,3 @@
-<style type="text/css">
-.tag-thing { cursor: pointer; padding: 4px 0 4px 2px; }
-</style>
 <script type="text/javascript">
 	$(function() {
 		$('.field.tags .parent .tag-thing').click(tagSelect);
@@ -35,7 +32,7 @@
 <div class="field tags">
 	<h5 style="margin-top:10px;">Categories</h5>
 	<div class="parent">
-		<% @parentTags.each do |parentTag|  %>
+		<% @parentTags.sort { |a,b| a.name <=> b.name }.each do |parentTag|  %>
 			<% unless parentTag.name == "Tags" %>
 			<div class="tag-thing" this-id="<%= parentTag.id %>"><%= check_box_tag (type + "[tag_ids][]"), parentTag.id, element.tags.include?(parentTag) %>
 				<label><%= parentTag.name %></label></div>
@@ -46,7 +43,7 @@
 		<% unless parentTag.name == "Tags" %>
 			<% if parentTag.childTags.size > 0 %>
 				<div style="display:none;" parent-id="<%= parentTag.id %>" class="child">
-				<% parentTag.childTags.each do |childTag| %>
+				<% parentTag.childTags.sort { |a,b| a.name <=> b.name }.each do |childTag| %>
 					<div class="tag-thing" parent-id="<%= parentTag.id %>"><%= check_box_tag (type + "[tag_ids][]"), childTag.id, element.tags.include?(childTag) %><label for="<%= type %>_tag_<%= childTag.id %>"><%= childTag.name %></label></div>
 				<% end %>
 				</div>
@@ -59,7 +56,7 @@
 	<h5 style="margin-top:10px;">Tags</h5>
 	<div class="parent">
 		<% andTags = @parentTags.select { |t| t[:name] == "Tags" }.first %>
-		<% andTags.childTags.each do |childTagCount| %>
+		<% andTags.childTags.sort { |a,b| a.name <=> b.name }.each do |childTagCount| %>
 
 			<div class="andtags-thing" this-id="<%= childTagCount.id %>"><%= check_box_tag (type + "[tag_ids][]"), childTagCount.id, element.tags.include?(childTagCount) %>
 				<label><%= childTagCount.name %></label></div>

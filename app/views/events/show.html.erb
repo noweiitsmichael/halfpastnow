@@ -54,7 +54,15 @@
 		<div class="block">
 			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&sensor=false"/></a>
 			<div class="block-inner">
+				<div class="website">
+					<h5>More Info:</h5>
+					<div class="block-inner">
+						<a href='<%= @event.event_url %>'><%= @event.event_url %></a>
+					</div>
+				</div>
+				<br>
 				<div class="venue">
+					<h2>Venue</h2>
 					<% if @fullmode %>
 						<a href="/venues/<%= @event.venue.id %>?fullmode=true"><%= @event.venue.name %></a>
 					<% else %>

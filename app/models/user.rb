@@ -23,11 +23,13 @@ class User < ActiveRecord::Base
   # has_many :bookmarked_acts, :through => :bookmarks, :source => :bookmarked, :source_type => "Act"
   #has_many :followed_lists, :through => :bookmarks, :source => :bookmarked, :source_type => "Bookmark List"
 
-
-
   # History (attended events)
   has_many :histories, :dependent => :destroy
   has_many :occurrences, :through => :histories
+
+  # Friending
+  has_many :friendships
+  has_many :friends, :through => :friendships
 
   ROLES = %w[admin super_admin]
 
