@@ -338,8 +338,8 @@ class MobileController < ApplicationController
     # puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
-      puts id
-      puts "SET"
+      # puts id
+      # puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }}.uniq 
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
@@ -409,14 +409,14 @@ class MobileController < ApplicationController
             "
 
            queryResult = ActiveRecord::Base.connection.select_all(query)
-           puts "Bookmarked Events"
+           # puts "Bookmarked Events"
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
            # puts @eventIDs
             
             @eventIDs.each{ |id|
-              puts id
-              puts "SET"
+              # puts id
+              # puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
                act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }}.uniq 
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
