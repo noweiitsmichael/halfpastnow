@@ -330,26 +330,36 @@ class MobileController < ApplicationController
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
     puts "FacebooLogin"
-    puts query
+    # puts query
     queryResult = ActiveRecord::Base.connection.select_all(query)
     @ids = queryResult
-    puts queryResult.uniq
+    # puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-    puts @eventIDs
+    # puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
       puts id
       puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }}.uniq 
+      # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
       rec = set.collect { |s| { :every_other => s["every_other"],:day_of_week => s["day_of_week"],:week_of_month => s["week_of_month"], :day_of_month => s["day_of_month"] }}.uniq 
+      # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
+      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}}
       s = set.first
       item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
       :title => s["title"], :venue_name => s["venue_name"],:long => s["longitude"], :lat => s["latitude"], :event_id => s["event_id"], :venue_id => s["venue_id"],
       :occurrence_id => s["occurrence_id"], :price => s["price"] , :address => s["address"] , :zip => s["zip"] , :city => s["city"], :state => s["state"] ,:clicks => s["clicks"],
-      :views => s["views"], :tags  => Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}}  }
+      :views => s["views"], :tags  =>  tags }
+      # item = {:act => act, :rec => rec , s["occurrence_start"] ,  s["end"] ,s["cover"] , s["phone"], s["description"],
+      # ["title"],  s["venue_name"],s["longitude"], s["latitude"], s["event_id"],  s["venue_id"],
+      # s["occurrence_id"], s["price"] ,s["address"] ,  s["zip"] , s["city"], s["state"] , s["clicks"],
+      # s["views"], :tags  => Event.find(id).tags.collect{ |t| {t.id, t.name}}  }
+
+
+
       esinfo << item
     }
 
@@ -402,21 +412,30 @@ class MobileController < ApplicationController
            puts "Bookmarked Events"
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
-           puts @eventIDs
+           # puts @eventIDs
             
             @eventIDs.each{ |id|
               puts id
               puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-              act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }}.uniq 
+               act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }}.uniq 
+               # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
               # Find the uniq recurrence id
               rec_ids = set.collect { |e| e["rec_id"] }.uniq
-              rec = set.collect { |s| { :every_other => s["every_other"],:day_of_week => s["day_of_week"],:week_of_month => s["week_of_month"], :day_of_month => s["day_of_month"] }}.uniq 
+               rec = set.collect { |s| { :every_other => s["every_other"],:day_of_week => s["day_of_week"],:week_of_month => s["week_of_month"], :day_of_month => s["day_of_month"] }}.uniq 
+              # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
+              
               s = set.first
+              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}}
               item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
               :title => s["title"], :venue_name => s["venue_name"],:long => s["longitude"], :lat => s["latitude"], :event_id => s["event_id"], :venue_id => s["venue_id"],
               :occurrence_id => s["occurrence_id"], :price => s["price"] , :address => s["address"] , :zip => s["zip"] , :city => s["city"], :state => s["state"] ,:clicks => s["clicks"],
-              :views => s["views"], :tags  => Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}}  }
+              :views => s["views"], :tags  => tags  }
+              # item = {:act => act, :rec => rec , s["occurrence_start"] , s["end"] , s["cover"] , s["phone"],  s["description"],
+              # s["title"], s["venue_name"], s["longitude"],s["latitude"], s["event_id"],  s["venue_id"],
+              #  s["occurrence_id"], s["price"] ,  s["address"] ,  s["zip"] ,  s["city"],  s["state"] , s["clicks"],
+              # s["views"], :tags  => Event.find(id).tags.collect{ |t| {t.id, t.name}}  }
+
               @bmEvents << item
             }
             puts esinfo.to_json
