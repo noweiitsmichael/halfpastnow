@@ -41,4 +41,5 @@ class Act < ActiveRecord::Base
     return self.events.map(&:nextOccurrence.to_proc).reject {|x| x.nil?}.delete_if { |x| x.start > 1.month.from_now}.count
   end
 
+ 
 end

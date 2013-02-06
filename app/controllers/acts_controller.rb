@@ -121,6 +121,8 @@ class ActsController < ApplicationController
     render json: @acts
   end
 
+  
+
   def actsMode
     if(params[:id].to_s.empty?)
       @act = Act.new

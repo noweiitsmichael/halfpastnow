@@ -1,4 +1,5 @@
 <% offset = offset || 0 %>
+
 <% if occurrences.size > 0 %>
 	<% occurrences.each_with_index do |occurrence, index| %>
 		<%= render :partial => "events/event_element", :locals => { :occurrence => occurrence, :index => index + offset, :bookmarkList => (defined? bookmarkList) ? bookmarkList : nil } %>

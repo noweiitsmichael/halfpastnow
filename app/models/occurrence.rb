@@ -31,6 +31,7 @@ class Occurrence < ActiveRecord::Base
   end
 
   def event_bookmarks
+
     query = "SELECT bookmarks.id FROM occurrences
              INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
              WHERE occurrences.event_id = #{ self.event_id } AND bookmarks.bookmarked_type = 'Occurrence'"
@@ -57,6 +58,8 @@ class Occurrence < ActiveRecord::Base
     results = ActiveRecord::Base.connection.select_all(query)
     return Bookmark.find(results.collect { |e| e["id"] }.uniq)
   end
+
+  
 
   def self.find_with(params)
     user_id = params[:user_id]
@@ -312,13 +315,29 @@ class Occurrence < ActiveRecord::Base
     end
 
     # the big enchilada
-    query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+    query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id,  events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
               FROM occurrences 
                 #{join_clause}
               WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS NOT TRUE
               ORDER BY events.id, occurrences.start"
+    # query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, events.title AS event_title, events.description AS event_description, tags.name AS tag_name, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+    #           FROM occurrences 
+    #             #{join_clause}
+    #           WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS NOT TRUE
+    #           ORDER BY events.id, occurrences.start"
     
-    return ActiveRecord::Base.connection.select_all(query)
+    queryResult = ActiveRecord::Base.connection.select_all(query) 
+    # @event_ids = queryResult.collect { |e| e["event_id"] }.uniq
+    # @str_array = @event_ids.collect{|i| i.to_i}.join(',')
+    # puts queryResult
+    # queryTag = "SELECT tags.name, t0.event_id AS event_id FROM tags INNER JOIN events_tags t0 ON tags.id = t0.tag_id WHERE t0.event_id IN (#{@str_array})"
+
+    # queryResultTag = ActiveRecord::Base.connection.select_all(queryTag)
+    # puts queryResultTag
+    # puts queryResultTag.to_json
+    
+    
+    return queryResult
   
   end
 

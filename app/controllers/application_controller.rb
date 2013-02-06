@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  
   layout :layout_by_resource
   protect_from_forgery
 
@@ -7,7 +8,7 @@ class ApplicationController < ActionController::Base
    end
   
   # # Mobile stuff 
-  before_filter :prepare_for_mobile
+  before_filter :prepare_for_mobile , :common_content
   
   # private
   
@@ -24,9 +25,18 @@ class ApplicationController < ActionController::Base
   def prepare_for_mobile
     session[:mobile_param] = params[:mobile] if params[:mobile]
     request.format = :mobile if mobile_device?
+    @some_instance_variable = mobile_device?
+    if !@some_instance_variable.nil?
+      @mobileMode = true
+    else
+      @mobileMode = false
+    end
+
   end
  
-  
+  def common_content
+    
+  end 
    def logged_in?
      true
    end
@@ -34,8 +44,7 @@ class ApplicationController < ActionController::Base
    def admin_logged_in?
      true
    end  
-
-
+   
   protected
 
   def layout_by_resource
@@ -45,4 +54,6 @@ class ApplicationController < ActionController::Base
       "application"
     end
   end
+  
+
 end

@@ -163,7 +163,7 @@ class User < ActiveRecord::Base
   end
 
   def bookmarked_events
-    return BookmarkList.where(:user_id => self.id, :main_bookmarks_list => true).first.bookmarked_events
+    return BookmarkList.where(:user_id => self.id, :main_bookmarks_list => true).first.all_bookmarked_events
   end
 
   def main_bookmark_list

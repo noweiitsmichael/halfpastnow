@@ -533,6 +533,7 @@
 
 <% content_for :body do %>
 	<div id="content">
+		<% unless @mobileMode %>
 		<div id="map-wrapper">
 			<div id="map"></div>
 			<div class="map-move">
@@ -540,9 +541,11 @@
 				redo search based on map move + zoom<input type="checkbox" checked id="unnecessarily-long-id-for-toggling-search-on-map-move-and-zoom"/>
 			</div>
 		</div>
+		<% end %>
 
 		<%= render :partial => "/layouts/footer" %>
 		<div class="main">
+			<% if (@mobileMode) %> </center> <% end %>
 			<div class="inner">
 				<div class="filter-summary">
 					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sort-type" style="display:none;">[by popularity/<span class="sort date">date</span>]</span> 
@@ -552,6 +555,7 @@
 				</ul>
 				<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
 			</div>
+			<% if (@mobileMode) %> <center> <% end %>
 			<img id="loading" src="/assets/ajax-loader.gif" />
 		</div>
 		<%#= render :partial => "layouts/grid" %>

@@ -18,6 +18,7 @@ Myapp::Application.routes.draw do
   match 'bookmarks/add_to_featuredlist' => 'bookmarks#add_to_featuredlist'
   match 'bookmarks/update_comment' => 'bookmarks#update_comment'
   match 'bookmarks/destroyBookmarkedList' => 'bookmarks#destroyBookmarkedList'
+
   resources :bookmarks
 
   get "info/about"
@@ -26,7 +27,7 @@ Myapp::Application.routes.draw do
   get "info/terms"
 
   devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"}
-
+  match 'mobile/FacebookLogin' => 'mobile#FacebookLogin'
   get "tag/index"
 
   # namespace :admin do

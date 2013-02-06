@@ -9,32 +9,42 @@ helper :content
                 INNER JOIN events_tags ON events.id = events_tags.event_id
                 INNER JOIN recurrences ON events.id = recurrences.event_id
                 INNER JOIN tags ON events_tags.tag_id = tags.id
-                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE"
+                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL
+                UNION 
+                SELECT bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, occurrences.end AS range_end, occurrences.start AS start,occurrences.deleted AS deleted, 
+				occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
+				INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
+				INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
+				INNER JOIN events ON occurrences.event_id = events.id
+                INNER JOIN events_tags ON events.id = events_tags.event_id
+                INNER JOIN tags ON events_tags.tag_id = tags.id
+                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL
+                ";
         result = ActiveRecord::Base.connection.select_all(query)
 	    listIDs = result.collect { |e| e["id"] }.uniq
 	    tagIDs = result.collect { |e| e["tag_id"].to_i }.uniq
 	    #@parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| tagIDs.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
-		puts result.uniq
-		puts result.uniq.size
+		# puts result.uniq
+		# puts result.uniq.size
 		legitSet = filter_all_legit(result)
-		#puts "legit set"
-		puts legitSet.size
+		# puts "legit set"
+		# puts legitSet.size
 		legittagIDs = []
 		tagIDs.each { |tagID|
 			set = legitSet.select{ |r| r["tag_id"] == tagID.to_s }.uniq
-			puts "Set herer"
+			# puts "Set herer"
 			set1 = set.collect { |e| {:id => e["id"], :tag_id => e["tag_id"]}  }
-			puts set1
+			# puts set1
 			if set1.size > set1.uniq.size
-				puts "TagID"
-				puts tagID
+				# puts "TagID"
+				# puts tagID
 				legittagIDs << tagID
 			end
 		}
-		puts legittagIDs
+		# puts legittagIDs
 		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| legittagIDs.uniq.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
-		puts @parentTags
-		puts @parentTags.collect{ |p| p.name}
+		# puts @parentTags
+		# puts @parentTags.collect{ |p| p.name}
 		tag_id = params[:id]
 		if tag_id.to_s.empty?
 			@featuredLists = BookmarkList.where(:featured=>true)
@@ -52,7 +62,13 @@ helper :content
 				# occ = Occurrence.find(id)
 				if ( deleted.eql?"f" ) # !deleted
 					if !recurrence_id.nil?
-						@list << lID
+						if range_end.nil? || range_end.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
+							# puts " 5 "
+							@list << lID
+						else
+							# puts " 6 "
+							@exclude << r 
+						end
 					else
 						if start.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
 							@list << lID
@@ -78,15 +94,22 @@ helper :content
 				end
 			}
 			@legit = rs - @exclude
+			# puts "Legit"
+			# puts @legit
+			# puts @list
+
 			ls = []
-			@list.each { |l|
+			@list.uniq.each { |l|
+				# puts "List ID"
+				# puts l
 				n = @legit.select{ |r| r["id"] == l.to_s }.uniq
 				if n.count > 1
+					# puts l
 					ls << l
 				end
 			}
 			@featuredLists = BookmarkList.find(ls)
-
+			puts @featuredLists
 			# @featuredLists = BookmarkList.find(result.select { |r| r["tag_id"] == tag_id.to_s }.collect { |e| e["id"] }.uniq)
 		end
 	end
@@ -103,17 +126,29 @@ helper :content
 			# occ = Occurrence.find(id)
 			start = r["start"]
 			range_end = r["range_end"]
-			puts r
+			# puts r
+
+
+
 			if ( deleted.eql?"f" )
 				if !recurrence_id.nil?
-					puts " 1 "
-					@list << lID
-				else
-					if start.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
-						puts " 2 "
+					# puts " 1 "
+					if range_end.nil? || range_end.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
+						# puts " 5 "
 						@list << lID
 					else
-						puts " 3 "
+						# puts " 6 "
+						@exclude << r 
+					end
+
+
+
+				else
+					if start.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
+						# puts " 2 "
+						@list << lID
+					else
+						# puts " 3 "
 						@exclude << r 
 					end
 
@@ -121,17 +156,17 @@ helper :content
 				
 			else 
 				if !recurrence_id.nil?
-					puts " 4 "
+					# puts " 4 "
 					#rec = Recurrence.select{ |r| r.id = recurrence_id}.first
 					if range_end.nil? || range_end.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
-						puts " 5 "
+						# puts " 5 "
 						@list << lID
 					else
-						puts " 6 "
+						# puts " 6 "
 						@exclude << r 
 					end
 				else
-					puts " 7 "
+					# puts " 7 "
 					@exclude << r 
 				end
 
@@ -201,7 +236,7 @@ helper :content
 	    @zoom = 11
 
 		@bookmarkList = BookmarkList.where(:user_id => current_user.id, :featured => true).first
-		@occurrences = (!@bookmarkList.nil?) ? @bookmarkList.all_bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }.sort_by { |o| o.start } : []
+		@occurrences = (!@bookmarkList.nil?) ? @bookmarkList.all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S') }.sort_by { |o| o.start } : []
 
 		@isMyBookmarksList = true
 		@isMyTopPicksList = true
