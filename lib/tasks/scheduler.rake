@@ -33,7 +33,7 @@ namespace :m do
 
 
 	desc "clearing bad bookmarks"
-	task :bookmark_clear => :environment do
+	task :bookmark_scrub => :environment do
 		puts "Scrubbing..."
 		Bookmark.all.each do |b|
 			if b.bookmarked_type == "Occurrence"
@@ -51,6 +51,60 @@ namespace :m do
 					puts "Deleting #{b.bookmarked_type} #{b.bookmarked_id}"
 					b.destroy
 				end
+			end
+		end
+	end
+
+	desc "Eliminating Duplicate Venues"
+	task :duplicate_venues => :environment do
+		puts "Opening file..."
+		f = File.open(Rails.root + "app/_etc/duplicate_venues.csv")
+		lines = f.readlines
+		lines.each do |oneVenue|
+			otherVenues = oneVenue.split(/,/)
+			finalVenueName = otherVenues[0]
+			finalVenue = Venue.find_by_name(finalVenueName)
+			if finalVenue.nil?
+				puts "******************** No venue found for #{finalVenueName}"
+				next
+			end
+			puts "----------"
+			puts "Working on #{finalVenueName}"
+			otherVenues.slice!(0)
+			otherVenues.delete("")
+			otherVenues.delete("\n")
+			puts "Consolidating to #{finalVenue.name} from:"
+			pp otherVenues
+			puts "Final Venue Original Num Events = #{finalVenue.events.count}"
+			otherVenues.each do |ven|
+				v = Venue.find_by_name(ven)
+				if v.nil?
+					puts "****************** No venue found for duplicate #{ven}"
+					next
+				end
+				puts "...Working on duplicate #{v.name}"
+				r = RawVenue.find_by_name(v.name)
+				if r.nil?
+					puts "***************** No venue found for raw venue #{v.name} WTF"
+					next
+				end
+
+				puts "Dupe Num Events = #{v.events.count}"
+				v.events.each do |e|
+					e.venue_id = finalVenue.id
+					e.save!
+				end
+				puts "Successfully moved events from #{v.name} to #{finalVenue.name}"
+
+				r.venue_id = finalVenue.id
+				r.save!
+
+				# have to reload v to remove events or else events will STILL get deleted
+				toDelete = Venue.find_by_name(v.name)
+				toDelete.destroy
+				puts "Successfully destroyed"
+				finalVenue = Venue.find_by_name(finalVenueName)
+				puts "FINAL VENUE NEW Num Events = #{finalVenue.events.count}"
 			end
 		end
 	end

@@ -1773,7 +1773,7 @@ input::-webkit-input-placeholder
 .mode .window .sub-header {
   position: relative;
   overflow: hidden;
-  margin-top: 18px;
+  margin-top: 15px;
 }
 
 .mode .window .sub-header li{
@@ -1808,10 +1808,11 @@ input::-webkit-input-placeholder
     font-size: 14px;
     line-height: 1.5em;
     font-size: 15px;
-    margin-top: 18px;
+    margin-top: 15px;
 }
 
 .mode .window .description.block {
+  margin-top:0px;
 }
 
 .mode .window .block-inner {
@@ -2288,6 +2289,10 @@ input::-webkit-input-placeholder
 .tag-thing.selected {
   background:#eee;
 }
+.tag-thing { 
+  cursor: pointer; 
+  margin: 6px 25px 4px 2px; 
+}
 
 .pic-element-wrapper {
   float: left;
@@ -2743,7 +2748,7 @@ html, body {
   /*background: #f3f3f3;*/
   font-family: Lato,Tahoma,sans-serif; font-style: normal; 
   font-weight: 400;
-  background: url(http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/creampaper.png);
+  background: url("creampaper.png");
 }
 
 #header > .one .menu-element.right {
