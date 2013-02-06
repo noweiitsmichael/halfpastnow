@@ -1147,7 +1147,7 @@ class MobileController < ApplicationController
     @esinfo =[]
     @lists.each{
       |list|
-      @occurrences = list.bookmarked_events
+      @occurrences = list.all_bookmarked_events
       @es = @occurrences.collect { |occ| occ.event }
       @tmps =[]
       @es.each{
@@ -1326,7 +1326,7 @@ end
 
   def getList
     @bookmarkList = BookmarkList.find(params[:id])
-    @occurrences = @bookmarkList.bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
+    @occurrences = @bookmarkList.all_bookmarked_events.select{ |o| o.start >= Date.today.to_datetime }
     @es = @occurrences.collect { |occ| occ.event }
     @esinfo =[]
     @es.each{
