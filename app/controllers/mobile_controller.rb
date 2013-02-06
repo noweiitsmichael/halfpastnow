@@ -1239,7 +1239,7 @@ end
 
   def bookmark
     @event = Event.find(params[:event_id])
-    @occurrenceid =  @event.occurrences.select { |occ| occ.start >= Date.today.to_datetime }.sort_by { |occ| occ.start }.first.id
+    @occurrenceid =  @event.nextOccurrence.id #@event.occurrences.select { |occ| occ.start >= Date.today.to_datetime }.sort_by { |occ| occ.start }.first.id
     current_user =  User.find_by_email(params[:email])
     @bookmark = current_user.main_bookmark_list.bookmarks.build
     @bookmark.bookmarked_id = @occurrenceid
