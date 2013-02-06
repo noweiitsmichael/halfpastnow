@@ -58,17 +58,21 @@ namespace :m do
 	desc "Eliminating Duplicate Venues"
 	task :duplicate_venues => :environment do
 		puts "Opening file..."
-		f = File.open(Rails.root + "app/_etc/duplicate_venues.csv")
+		f = File.open(Rails.root + "app/_etc/duplicate_venues3.csv")
 		lines = f.readlines
 		lines.each do |oneVenue|
+			puts "Line:"
+			puts oneVenue
 			otherVenues = oneVenue.split(/,/)
-			finalVenueName = otherVenues[0]
-			finalVenue = Venue.find_by_name(finalVenueName)
+			pp otherVenues
+			finalVenueName = otherVenues[0].strip
+			puts "Final Venue: #{finalVenueName}"
+			finalVenue = Venue.find(:first, :conditions => [ 'lower(name) = ?', finalVenueName.downcase ])
 			if finalVenue.nil?
-				puts "******************** No venue found for #{finalVenueName}"
+				puts "------ No venue found for #{finalVenueName}"
 				next
 			end
-			puts "----------"
+			puts ""
 			puts "Working on #{finalVenueName}"
 			otherVenues.slice!(0)
 			otherVenues.delete("")
@@ -77,16 +81,20 @@ namespace :m do
 			pp otherVenues
 			puts "Final Venue Original Num Events = #{finalVenue.events.count}"
 			otherVenues.each do |ven|
-				v = Venue.find_by_name(ven)
+				v = Venue.find(:first, :conditions => [ 'lower(name) = ? and id != ?', ven.downcase.strip, finalVenue.id ])
 				if v.nil?
-					puts "****************** No venue found for duplicate #{ven}"
+					puts "No venue found for duplicate #{ven}"
 					next
+				else 
+					puts"****************** Corrected! Found for duplicate #{ven}"
 				end
 				puts "...Working on duplicate #{v.name}"
-				r = RawVenue.find_by_name(v.name)
+				r = RawVenue.find(:first, :conditions => [ 'lower(name) = ?', v.name.downcase ])
 				if r.nil?
-					puts "***************** No venue found for raw venue #{v.name} WTF"
+					puts "No venue found for raw venue #{v.name} WTF"
 					next
+				else
+					puts "***************** Corrected! Venue found for raw venue #{v.name} WTF"
 				end
 
 				puts "Dupe Num Events = #{v.events.count}"
@@ -100,10 +108,10 @@ namespace :m do
 				r.save!
 
 				# have to reload v to remove events or else events will STILL get deleted
-				toDelete = Venue.find_by_name(v.name)
+				toDelete = Venue.find(v.id)
 				toDelete.destroy
 				puts "Successfully destroyed"
-				finalVenue = Venue.find_by_name(finalVenueName)
+				finalVenue = Venue.find(finalVenue.id)
 				puts "FINAL VENUE NEW Num Events = #{finalVenue.events.count}"
 			end
 		end
