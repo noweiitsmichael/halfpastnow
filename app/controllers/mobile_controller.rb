@@ -336,7 +336,7 @@ class MobileController < ApplicationController
     puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
     puts @eventIDs
-    esinfo = []
+    @esinfo = []
     @eventIDs.each{ |id|
       puts id
       puts "SET"
@@ -352,7 +352,7 @@ class MobileController < ApplicationController
       :views => s["views"]  }
       esinfo << item
     }
-    puts esinfo.to_json
+    puts @esinfo.to_json
     #  Bookmarked events
     email = params[:email]
     @user=User.find_by_email(email)
