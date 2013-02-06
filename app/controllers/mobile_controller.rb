@@ -375,7 +375,7 @@ class MobileController < ApplicationController
       @offset = params[:offset].to_i
     end
 
-    puts esinfo.to_json
+    # puts esinfo.to_json
     #  Bookmarked events
     email = params[:email]
     @user=User.find_by_email(email)
@@ -438,7 +438,7 @@ class MobileController < ApplicationController
 
               @bmEvents << item
             }
-            puts esinfo.to_json
+            # puts esinfo.to_json
 
     end
 
