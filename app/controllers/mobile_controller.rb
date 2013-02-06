@@ -356,6 +356,7 @@ class MobileController < ApplicationController
     #  Bookmarked events
     email = params[:email]
     @user=User.find_by_email(email)
+    @bmEvents = []
     if not @user.nil?
       @channels= Channel.where("user_id=?",@user.id)
       query= "SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
@@ -388,7 +389,7 @@ class MobileController < ApplicationController
            puts "Bookmarked Events"
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
             puts @eventIDs
-            esinfo = []
+            
             @eventIDs.each{ |id|
               puts id
               puts "SET"
@@ -402,7 +403,7 @@ class MobileController < ApplicationController
               :title => s["title"], :venue_name => s["venue_name"],:long => s["longitude"], :lat => s["latitude"], :event_id => s["event_id"], :venue_id => s["venue_id"],
               :occurrence_id => s["occurrence_id"], :price => s["price"] , :address => s["address"] , :zip => s["zip"] , :city => s["city"], :state => s["state"] ,:clicks => s["clicks"],
               :views => s["views"]  }
-              esinfo << item
+              @bmEvents << item
             }
             puts esinfo.to_json
 
@@ -420,7 +421,7 @@ class MobileController < ApplicationController
         # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
         format.json { render json: {:events=>@esinfo} }
       else
-         format.json { render json: {:events=>@esinfo} } 
+         format.json { render json: {:bookmarkedEvents=>@bmEvents, :events => @esinfo} } 
         # format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo,:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten }} 
         # format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       
