@@ -444,27 +444,23 @@ class MobileController < ApplicationController
             # puts esinfo.to_json
 
             @channels =  @channels.collect{|s| 
-          {:and_tags => s.and_tags,
-          :created_at=> s.created_at,
-          :created_at=> s.created_at,
-          :default=> s.default,
+          {
+
           :end_date=> s.end_date,
+          :id=> s.id,
+          :start_date=> s.start_date,
           :end_days=> s.end_days,
           :end_seconds=> s.end_seconds,
           :excluded_tags=> s.excluded_tags,
           :high_price=> s.high_price,
-          :id=> s.id,
+          :user_id=> s.user_id,
           :included_tags=> s.included_tags,
           :low_price=> s.low_price,
           :name=> s.name,
           :option_day=> s.option_day,
-          :search=> s.search,
-          :sort=> s.sort,
-          :start_date=> s.start_date,
           :start_days=> s.start_days,
-          :start_seconds=> s.start_seconds,
-          :updated_at=> s.updated_at,
-          :user_id=> s.user_id}.values
+          :start_seconds=> s.start_seconds
+          }.values
 
          }
          @acts =  @user.bookmarked_acts.collect{|c|
