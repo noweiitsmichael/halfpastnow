@@ -462,13 +462,13 @@ class MobileController < ApplicationController
                 :event_id => s["event_id"], #19
                 :start => s["occurrence_start"] , #20
                 :end => s["end"] #21
-              }
+              }.values
               # item = {:act => act, :rec => rec , s["occurrence_start"] , s["end"] , s["cover"] , s["phone"],  s["description"],
               # s["title"], s["venue_name"], s["longitude"],s["latitude"], s["event_id"],  s["venue_id"],
               #  s["occurrence_id"], s["price"] ,  s["address"] ,  s["zip"] ,  s["city"],  s["state"] , s["clicks"],
               # s["views"], :tags  => Event.find(id).tags.collect{ |t| {t.id, t.name}}  }
 
-              @bmEvents << item.values
+              @bmEvents << item
             }
             # puts esinfo.to_json
 
