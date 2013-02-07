@@ -445,19 +445,7 @@ class MobileController < ApplicationController
 
     end
 
-    respond_to do |format|
-      format.html do
-        unless (params[:ajax].to_s.empty?)
-          render :partial => "combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags }
-        end
-      end
-
-      # format.json { render json: {code:"3",tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
-      if (params[:email].to_s.empty?)
-        # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
-        format.json { render json: {:events=>@esinfo} }
-      else
-         @channels =  @channels.collect{|s| 
+     @channels =  @channels.collect{|s| 
           {:and_tags => s.and_tags,
           :created_at=> s.created_at,
           :created_at=> s.created_at,
@@ -485,7 +473,7 @@ class MobileController < ApplicationController
 
           {:admin_owner=> c.admin_owner,
           :bio=>c.bio
-          :completion=> c.created_at,
+          :completion=> c.completion,
           :description=> c.description,
           :event_id=> c.event_id,
           :fb_picture=> c.fb_picture,
@@ -505,8 +493,8 @@ class MobileController < ApplicationController
          }
          @venues = @user.bookmarked_venues.collect{|c| 
           {
-          :address=>c.address,
-          :address2=> c.address2,
+          :address => c.address,
+          :address2 => c.address2,
           :assigned_admin=> c.assigned_admin,
           :city=> c.city ,
           :clicks=> c.clicks,
@@ -530,6 +518,19 @@ class MobileController < ApplicationController
 
 
          }
+    respond_to do |format|
+      format.html do
+        unless (params[:ajax].to_s.empty?)
+          render :partial => "combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags }
+        end
+      end
+
+      # format.json { render json: {code:"3",tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
+      if (params[:email].to_s.empty?)
+        # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+        format.json { render json: {:events=>@esinfo} }
+      else
+        
          format.json { render json: {user:@user, channels: @channels,:bookmarked=>@bmEvents, :events => esinfo,:acts=>@acts, :venues=>@venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten  } }
         # format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo,:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten }} 
         # format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
