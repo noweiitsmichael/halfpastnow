@@ -478,28 +478,14 @@ class MobileController < ApplicationController
          }
          @venues = @user.bookmarked_venues.collect{|c| 
           {
-          :address => c.address,
-          :address2 => c.address2,
-          :assigned_admin=> c.assigned_admin,
-          :city=> c.city ,
-          :clicks=> c.clicks,
-          :completion=> c.completion,
-          :created_at=> c.created_at,
-          :description=> c.description,
-          :events_url=> c.events_url,
-          :fb_picture=> c.fb_picture,
-          :id=> c.id,
-          :latitude=> c.latitude,
-          :longitude=> c.longitude,
           :name=> c.name,
-          :phonenumber=> c.phonenumber,
-          :state=> c.state,
-          :suggested=> c.suggested,
-          :updated_at=> c.updated_at,
-          :updated_by=> c.updated_by,
-          :url=> c.url,
-          :views=> c.views,
-          :zip=> c.zip}.values
+          :id=> c.id,
+          :address => c.address,
+          :city=> c.city ,
+          :zip=> c.zip,
+          :latitude=> c.latitude,
+          :longitude=> c.longitude
+          }.values
 
 
          }
