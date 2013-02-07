@@ -385,7 +385,7 @@ class MobileController < ApplicationController
     @bmEvents = []
     if not @user.nil?
       @channels= Channel.where("user_id=?",@user.id)
-      query= "SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+      query= "SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, recurrences.start AS rec_start, recurrences.end AS rec_end, recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM occurrences
               INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
               INNER JOIN events ON occurrences.event_id = events.id
@@ -398,7 +398,7 @@ class MobileController < ApplicationController
               INNER JOIN bookmark_lists ON  bookmarks.bookmark_list_id = bookmark_lists.id
            WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NOT NULL
             UNION
-            SELECT DISTINCT ON (events.id,acts.id) occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            SELECT DISTINCT ON (events.id,acts.id) occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,#{tmp} AS rec_start, #{tmp} AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM occurrences
               INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
               INNER JOIN events ON occurrences.event_id = events.id
@@ -425,15 +425,42 @@ class MobileController < ApplicationController
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
               # Find the uniq recurrence id
               rec_ids = set.collect { |e| e["rec_id"] }.uniq
-               rec = set.collect { |s| { :every_other => s["every_other"],:day_of_week => s["day_of_week"],:week_of_month => s["week_of_month"], :day_of_month => s["day_of_month"] }.values}.uniq 
+               rec = set.collect { |s| { 
+                :every_other => s["every_other"], # 0
+                :day_of_week => s["day_of_week"], # 1
+                :week_of_month => s["week_of_month"], # 2 
+                :day_of_month => s["day_of_month"]  # 3
+                :rec_start => s["rec_start"]  # 4
+                :rec_end => s["rec_end"]  # 5
+                }.values}.uniq 
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
               tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
-              item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
-              :title => s["title"], :venue_name => s["venue_name"],:long => s["longitude"], :lat => s["latitude"], :event_id => s["event_id"], :venue_id => s["venue_id"],
-              :occurrence_id => s["occurrence_id"], :price => s["price"] , :address => s["address"] , :zip => s["zip"] , :city => s["city"], :state => s["state"] ,:clicks => s["clicks"],
-              :views => s["views"], :tags  => tags  }
+              item = {
+                :act => act, # 0
+                :rec => rec , # 1
+                :description => s["description"], # 2
+                :title => s["title"], # 3
+                :occurrence_id => s["occurrence_id"], #4
+                :cover => s["cover"] , #5
+                :venue_name => s["venue_name"], #6
+                :address => s["address"] , #7
+                :zip => s["zip"] , #8
+                :city => s["city"], #9
+                :state => s["state"] , #10
+                :phone => s["phone"], # 11
+                :lat => s["latitude"], # 12
+                :long => s["longitude"], #13
+                :venue_id => s["venue_id"], # 14
+                :price => s["price"] , #15
+                :views => s["views"],  #16
+                :clicks => s["clicks"], #17
+                :tags  => tags , # 18
+                :event_id => s["event_id"], #19
+                :start => s["occurrence_start"] , #20
+                :end => s["end"] #21
+              }
               # item = {:act => act, :rec => rec , s["occurrence_start"] , s["end"] , s["cover"] , s["phone"],  s["description"],
               # s["title"], s["venue_name"], s["longitude"],s["latitude"], s["event_id"],  s["venue_id"],
               #  s["occurrence_id"], s["price"] ,  s["address"] ,  s["zip"] ,  s["city"],  s["state"] , s["clicks"],
