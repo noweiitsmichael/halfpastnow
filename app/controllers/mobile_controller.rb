@@ -457,9 +457,79 @@ class MobileController < ApplicationController
         # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
         format.json { render json: {:events=>@esinfo} }
       else
-         @channels =  @channels.collect{|c| c.values}
-         @acts =  @user.bookmarked_acts.collect{|c| c.values}
-         @venues = @user.bookmarked_venues.collect{|c| c.values}
+         @channels =  @channels.collect{|c| 
+          {:and_tags => s.and_tags,
+          :created_at=> s.created_at,
+          :created_at=> s.created_at,
+          :default=> s.default,
+          :end_date=> s.end_date,
+          :end_days=> s.end_days,
+          :end_seconds=> s.end_seconds,
+          :excluded_tags=> s.excluded_tags,
+          :high_price=> s.high_price,
+          :id=> s.id,
+          :included_tags=> s.included_tags,
+          :low_price=> s.low_price,
+          :name=> s.name,
+          :option_day=> s.option_day,
+          :search=> s.search,
+          :sort=> s.sort,
+          :start_date=> s.start_date,
+          :start_days=> s.start_days,
+          :start_seconds=> s.start_seconds,
+          :updated_at=> s.updated_at,
+          :user_id=> s.user_id}.values
+
+         }
+         @acts =  @user.bookmarked_acts.collect{|c|
+
+          {:admin_owner=> c.admin_owner,
+          :bio=>c.bio
+          :completion=> c.created_at,
+          :description=> c.description,
+          :event_id=> c.event_id,
+          :fb_picture=> c.fb_picture,
+          :genre=> c.genre,
+          :id=> c.id,
+          :name=> c.name,
+          :pop_id=> c.pop_id,
+          :pop_likes=> c.pop_likes,
+          :pop_link=> c.pop_link,
+          :pop_source=> c.pop_source,
+          :suggested=> c.suggested,
+          :updated_at=> c.updated_at,
+          :updated_by=> c.updated_by,
+          :website=> c.website}.values
+
+
+         }
+         @venues = @user.bookmarked_venues.collect{|c| 
+          {
+          :address=>c.address,
+          :address2=> c.address2,
+          :assigned_admin=> c.assigned_admin,
+          :city=> c.city ,
+          :clicks=> c.clicks,
+          :completion=> c.completion,
+          :created_at=> c.created_at
+          :description=> c.description,
+          :events_url=> c.events_url,
+          :fb_picture=> null,
+          :id=> c.id,
+          :latitude=> c.latitude,
+          :longitude=> c.longitude,
+          :name=> c.name,
+          :phonenumber=> c.phonenumber,
+          :state=> c.state,
+          :suggested=> c.suggested,
+          :updated_at=> c.updated_at,
+          :updated_by=> c.updated_by,
+          :url=> c.url,
+          :views=> c.views,
+          :zip=> c.zip}.values
+
+
+         }
          format.json { render json: {user:@user, channels: @channels,:bookmarked=>@bmEvents, :events => esinfo,:acts=>@acts, :venues=>@venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten  } }
         # format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo,:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten }} 
         # format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
