@@ -500,7 +500,7 @@ class MobileController < ApplicationController
           :created_at=> c.created_at,
           :description=> c.description,
           :events_url=> c.events_url,
-          :fb_picture=> null,
+          :fb_picture=> c.fb_picture,
           :id=> c.id,
           :latitude=> c.latitude,
           :longitude=> c.longitude,
