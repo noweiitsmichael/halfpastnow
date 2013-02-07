@@ -469,23 +469,10 @@ class MobileController < ApplicationController
          }
          @acts =  @user.bookmarked_acts.collect{|c|
 
-          {:admin_owner=> c.admin_owner,
-          :bio=>c.bio,
-          :completion=> c.completion,
-          :description=> c.description,
-          :event_id=> c.event_id,
-          :fb_picture=> c.fb_picture,
-          :genre=> c.genre,
+          {
           :id=> c.id,
           :name=> c.name,
-          :pop_id=> c.pop_id,
-          :pop_likes=> c.pop_likes,
-          :pop_link=> c.pop_link,
-          :pop_source=> c.pop_source,
-          :suggested=> c.suggested,
-          :updated_at=> c.updated_at,
-          :updated_by=> c.updated_by,
-          :website=> c.website}.values
+          }.values
 
 
          }
