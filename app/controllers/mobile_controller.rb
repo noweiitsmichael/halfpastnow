@@ -398,7 +398,7 @@ class MobileController < ApplicationController
               INNER JOIN bookmark_lists ON  bookmarks.bookmark_list_id = bookmark_lists.id
            WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NOT NULL
             UNION
-            SELECT DISTINCT ON (events.id,acts.id) occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,#{tmp} AS rec_start, #{tmp} AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            SELECT DISTINCT ON (events.id,acts.id) occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM occurrences
               INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
               INNER JOIN events ON occurrences.event_id = events.id
@@ -412,7 +412,7 @@ class MobileController < ApplicationController
             "
 
            queryResult = ActiveRecord::Base.connection.select_all(query)
-           # puts "Bookmarked Events"
+           puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
            # puts @eventIDs
@@ -429,10 +429,12 @@ class MobileController < ApplicationController
                 :every_other => s["every_other"], # 0
                 :day_of_week => s["day_of_week"], # 1
                 :week_of_month => s["week_of_month"], # 2 
-                :day_of_month => s["day_of_month"]  # 3
-                :rec_start => s["rec_start"]  # 4
+                :day_of_month => s["day_of_month"],  # 3
+                :rec_start => s["rec_start"],  # 4
                 :rec_end => s["rec_end"]  # 5
-                }.values}.uniq 
+                }.values
+                }.uniq 
+                puts rec
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
