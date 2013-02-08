@@ -713,6 +713,7 @@ class MobileController < ApplicationController
             "
     puts query
     queryResult = ActiveRecord::Base.connection.select_all(query).uniq 
+    puts queryResult
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
     esinfo = []
     @eventIDs.each{ |id|
