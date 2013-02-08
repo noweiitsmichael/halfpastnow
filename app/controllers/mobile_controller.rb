@@ -711,7 +711,7 @@ class MobileController < ApplicationController
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS NOT TRUE
            "
-    # puts query
+    puts query
     queryResult = ActiveRecord::Base.connection.select_all(query).uniq 
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
     esinfo = []
