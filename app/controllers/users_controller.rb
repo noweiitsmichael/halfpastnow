@@ -4,8 +4,6 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
 
-    authorize! :index, @user, :message => 'Not authorized as an administrator.'
-
     @users = User.all
 
     respond_to do |format|
@@ -250,4 +248,5 @@ class UsersController < ApplicationController
       render :json => { :success => false, :error => "Unable to follow list." }
     end
   end
+
 end

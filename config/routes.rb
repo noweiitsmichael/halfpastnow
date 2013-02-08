@@ -5,6 +5,7 @@ Myapp::Application.routes.draw do
   get "mobile/new"
 
   resources :histories
+  resources :friendships
 
   resources :venues do 
     collection do 
@@ -97,7 +98,7 @@ Myapp::Application.routes.draw do
 
   # TODO: overcome the stupidity that is rails 3 routing and clean this up.
   # match 'venues' => 'venues#index'
-  # match 'events' => 'events#index'
+  # match 'events' => 'events#index'd
   match 'tags' => 'tags#index'
   match 'info' => 'info#about'
   match 'admin' => 'admin#index'
@@ -107,6 +108,7 @@ Myapp::Application.routes.draw do
   match 'venues/new_event' => 'venues#new_event'
   match 'feedbacks' => 'feedbacks#index'
   match 'users' => 'users#index', :as => "user"
+  match 'users/friends' => 'users#friends'
   match '/search' => 'events#search'
 
   match '/auth/:provider/callback' => 'authentications#create'

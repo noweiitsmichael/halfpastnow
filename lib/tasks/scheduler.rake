@@ -56,6 +56,12 @@ namespace :m do
 	end
 
 	desc "Eliminating Duplicate Venues"
+
+	#####
+	# Next time, what might be faster is if you manually set all of the IDs and then run through it that way
+	# Yea, that would be better. Cuz this still has about 15% that are not found.
+	#
+	#####
 	task :duplicate_venues => :environment do
 		puts "Opening file..."
 		f = File.open(Rails.root + "app/_etc/duplicate_venues3.csv")
