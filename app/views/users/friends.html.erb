@@ -1,0 +1,21 @@
+<% content_for :body do %>
+
+<h2>My Friends</h2>
+
+<p>Username: <%= current_user.fullname %></p>
+
+<h2>Friends</h2>
+<ul>
+<% puts "loading" %>
+<% puts current_user.friends.count %>
+  <% current_user.friends.each do |friend| %>
+    <li>
+    <% puts "friend" %>
+    <% puts friend.fullname %>
+      <%= friend.fullname %>
+      (<%= link_to "remove", friend, :method => :delete %>)
+    </li>
+  <% end %>
+</ul>
+
+<% end %>

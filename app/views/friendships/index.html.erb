@@ -1,0 +1,17 @@
+<% content_for :body do %>
+
+<h2>Users</h2>
+
+<div id="users">
+<% User.all.each do |user| %>
+  <div class="user">
+    <p>
+      <strong><%= user.firstname %> <%= user.lastname %></strong>
+      <%= link_to "Add Friend", friendships_path(:friend_id => user), :method => :post %>
+      <div class="clear"></div>
+    </p>
+  </div>
+<% end %>
+</div>
+
+<% end %>
