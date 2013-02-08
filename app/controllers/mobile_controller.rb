@@ -685,12 +685,12 @@ class MobileController < ApplicationController
   end
   def tpevents
     tmp ="0"
-    where_clause = "bookmark_lists.id IN (#{params[:ids]})"
+    where_clause = "bookmarkLists.id IN (#{params[:ids]})"
     query = "SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM occurrences
               INNER JOIN events ON occurrences.event_id = events.id
               INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
-              INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
+              INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmarkLists.id
               INNER JOIN venues ON events.venue_id = venues.id
               LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
               LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
@@ -703,7 +703,7 @@ class MobileController < ApplicationController
             FROM occurrences 
               INNER JOIN events ON occurrences.event_id = events.id
               INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
-              INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
+              INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmarkLists.id
               LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
               LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
               INNER JOIN venues ON events.venue_id = venues.id
