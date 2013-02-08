@@ -685,11 +685,17 @@ class MobileController < ApplicationController
   end
   def tpevents
     tmp ="0"
-    where_clause = "bookmark_lists.id IN (#{params[:ids]})"
+
+    @ids = params[:ids].to_s.empty? ? nil : params[:ids].split(',')
+    @lists = BookmarkList.find(@ids)
+    esinfo = []
+    @lists.each{
+      |list|
+      @occurrencesid = list.all_bookmarked_events.collect{|o| o.id}
+
+      where_clause = "occurrences.id IN (#{@occurrencesid.join(',')})"
     query = "SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-            FROM bookmark_lists
-            INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
-            INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
+            FROM occurrences
             INNER JOIN events ON occurrences.event_id = events.id
             INNER JOIN venues ON events.venue_id = venues.id
             LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
@@ -697,25 +703,23 @@ class MobileController < ApplicationController
             LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
             LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
             INNER JOIN tags ON events_tags.tag_id = tags.id
-            WHERE #{where_clause} AND occurrences.deleted IS NOT TRUE AND bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL
+            WHERE #{where_clause} AND occurrences.recurrence_id IS NOT NULL
             UNION 
             SELECT DISTINCT ON (events.id,acts.id) occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-            FROM bookmark_lists
-            INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
-            INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
+            FROM occurrences
             INNER JOIN events ON occurrences.event_id = events.id
             INNER JOIN venues ON events.venue_id = venues.id
             LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
             LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
             LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
             INNER JOIN tags ON events_tags.tag_id = tags.id
-            WHERE #{where_clause} AND occurrences.deleted IS NOT TRUE AND bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL
+            WHERE #{where_clause} AND occurrences.recurrence_id IS NULL
             "
     puts query
     queryResult = ActiveRecord::Base.connection.select_all(query).uniq 
     puts queryResult
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-    esinfo = []
+    
     @eventIDs.each{ |id|
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
@@ -756,6 +760,11 @@ class MobileController < ApplicationController
                 :end => s["end"] #21
               }
       esinfo << item
+
+    }
+
+
+    
     }
 
     ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
