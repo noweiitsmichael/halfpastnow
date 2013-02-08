@@ -760,7 +760,7 @@ class MobileController < ApplicationController
                       :event_id => s["event_id"], #19
                       :start => s["occurrence_start"] , #20
                       :end => s["end"], #21
-                      :tp => list.name
+                      :tp => list.name #22
                     }
             esinfo << item
 
