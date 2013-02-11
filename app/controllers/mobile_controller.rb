@@ -780,7 +780,7 @@ class MobileController < ApplicationController
                 :start => s["occurrence_start"] , #20
                 :end => s["end"], #21
                 :name => s["firstname"]+' '+s["lastname"], # 22
-                :id => s['uid'] #23
+                :id => s["uid"] #23
               }
 
 
