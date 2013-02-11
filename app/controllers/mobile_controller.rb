@@ -749,7 +749,9 @@ class MobileController < ApplicationController
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
       tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
       # puts tags
-     
+      lastname = s["lastname"].to_s
+      firstname =s["firstname"].to_s
+      name =  firstname+' '+lastname
       s = set.first
       # item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
       # :title => s["title"], :venue_name => s["venue_name"],:long => s["longitude"], :lat => s["latitude"], :event_id => s["event_id"], :venue_id => s["venue_id"],
@@ -779,7 +781,7 @@ class MobileController < ApplicationController
                 :event_id => s["event_id"], #19
                 :start => s["occurrence_start"] , #20
                 :end => s["end"], #21
-                :name => s["firstname"]+' '+s["lastname"], # 22
+                :name => name, # 22
                 :id => s["uid"] #23
               }
 
