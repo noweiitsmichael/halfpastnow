@@ -689,7 +689,7 @@ class MobileController < ApplicationController
     @ids = params[:ids].to_s.empty? ? nil : params[:ids].split(',')
     tmps = "'#{@ids.join("','")}'"
     where_clause = "users.uid IN (#{tmps})"
-    query ="SELECT DISTINCT ON (events.id,acts.id) occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, 
+    query ="SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, 
             events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, 
             venues.state AS state,venues.zip AS zip, venues.city AS city, recurrences.start AS rec_start, recurrences.end AS rec_end, recurrences.every_other AS every_other,
             recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, 
@@ -707,7 +707,7 @@ class MobileController < ApplicationController
             INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id 
             INNER JOIN users ON bookmark_lists.user_id = users.id 
             WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND bookmarks.bookmarked_type='Occurrence' AND bookmark_lists.main_bookmarks_list IS TRUE AND occurrences.recurrence_id IS NOT NULL 
-            UNION SELECT DISTINCT ON (events.id,acts.id) occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, 
+            UNION SELECT DISTINCT ON (occurrences.id,acts.id) occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, 
             events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, 
             venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, 
             #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, 
