@@ -985,7 +985,7 @@ class MobileController < ApplicationController
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
-      tps = set.collect { |e| { :act_name => e["listid"]}.values }.uniq
+      tps = set.collect { |e|  e["listid"].to_s}.uniq
       
       
       puts tps
