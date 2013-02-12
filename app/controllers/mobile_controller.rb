@@ -228,7 +228,7 @@ class MobileController < ApplicationController
     end
   end
   
-  def FacebookLogin
+  def FacebookLogin1
     puts params[:email]
     unless(params[:channel_id].to_s.empty?)
       channel = Channel.find(params[:channel_id].to_i)
@@ -682,7 +682,7 @@ class MobileController < ApplicationController
 
     end
   end
-  def FacebookLogin1
+  def FacebookLogin
     puts params[:email]
     unless(params[:channel_id].to_s.empty?)
       channel = Channel.find(params[:channel_id].to_i)
@@ -1067,7 +1067,7 @@ class MobileController < ApplicationController
     email = params[:email]
     @user=User.find_by_email(email)
     @bmEvents = []
-    @featuredLists = BookmarkList.where(:featured => true).collect{|l| {:id => l.id, :url => l.picture_url}.values}
+    
     if not @user.nil?
       @channels= Channel.where("user_id=?",@user.id)
       query= "SELECT DISTINCT ON (recurrences.id,events.id) occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, recurrences.start AS rec_start, recurrences.end AS rec_end, recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
@@ -1147,6 +1147,8 @@ class MobileController < ApplicationController
                 :event_id => s["event_id"], #19
                 :start => s["occurrence_start"] , #20
                 :end => s["end"] #21,
+                :user => [], #22
+                :tps =>  [] #23
               }.values
               # item = {:act => act, :rec => rec , s["occurrence_start"] , s["end"] , s["cover"] , s["phone"],  s["description"],
               # s["title"], s["venue_name"], s["longitude"],s["latitude"], s["event_id"],  s["venue_id"],
@@ -1213,10 +1215,10 @@ class MobileController < ApplicationController
       # format.json { render json: {code:"3",tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       if (params[:email].to_s.empty?)
         # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
-        format.json { render json: {:events=>esinfo,:tps => @featuredLists} }
+        format.json { render json: {:events=>esinfo} }
       else
         
-         format.json { render json: {user:@user, channels: @channels,:bookmarked=>@bmEvents, :events => esinfo,:acts=>@acts, :venues=>@venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten,:tps => @featuredLists  } }
+         format.json { render json: {user:@user, channels: @channels,:bookmarked=>@bmEvents, :events => esinfo,:acts=>@acts, :venues=>@venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten  } }
          # format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo,:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten }} 
         # format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       
