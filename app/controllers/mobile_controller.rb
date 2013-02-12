@@ -975,7 +975,7 @@ class MobileController < ApplicationController
     puts queryResult1
     # puts query
     
-    queryResult = queryResult0 << queryResult1
+    queryResult = queryResult0 + queryResult1
     puts "queryResult"
     puts queryResult
     @ids = queryResult
