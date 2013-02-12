@@ -873,8 +873,8 @@ class MobileController < ApplicationController
     # the big enchilada
     query = "SELECT DISTINCT ON (recurrences.id,users.id) users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM users
-              FULL JOIN bookmark_lists ON users.id = bookmark_lists.user_id
-              FULL JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
+              INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
+              INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
               INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id 
               INNER JOIN events ON occurrences.event_id = events.id
               INNER JOIN venues ON events.venue_id = venues.id
@@ -883,12 +883,35 @@ class MobileController < ApplicationController
               LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
               INNER JOIN recurrences ON events.id = recurrences.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE users.id IS NULL AND #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL
+            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL
+            UNION
+            SELECT DISTINCT ON (recurrences.id,acts.id) #{tmp} AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            FROM occurrences
+              NNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id 
+              INNER JOIN events ON occurrences.event_id = events.id
+              INNER JOIN venues ON events.venue_id = venues.id
+              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
+              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
+              INNER JOIN recurrences ON events.id = recurrences.event_id
+              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
+            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL
             UNION
             SELECT DISTINCT ON (events.id,users.id) users.id AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM users
               FULL JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               FULL JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
+              INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id  
+              INNER JOIN events ON occurrences.event_id = events.id
+              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
+              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
+              INNER JOIN venues ON events.venue_id = venues.id
+              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
+            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
+            UNION
+            SELECT DISTINCT ON (events.id,users.id) #{tmp} AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            FROM occurrences
               INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id  
               INNER JOIN events ON occurrences.event_id = events.id
               LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
