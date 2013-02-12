@@ -985,7 +985,7 @@ class MobileController < ApplicationController
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       listIDs = set.select {|s| s["listID"].to_i != 0}.collect{|s| s["listID"].to_i}
-      tps = BookmarkList.find(listIDs).select {|l| l.featured = true}.collect{|l| l.id}
+      tps = BookmarkList.where(:id=>listIDs,:featured =>true).collect{|l| l.id}
       
       
       # puts users
