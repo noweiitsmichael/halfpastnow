@@ -981,7 +981,7 @@ class MobileController < ApplicationController
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
-      users = set.collect {|s| s["user_id"].to_i}.uniq
+      users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       puts users
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
