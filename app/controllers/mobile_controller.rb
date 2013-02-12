@@ -978,9 +978,9 @@ class MobileController < ApplicationController
     esinfo = []
     @eventIDs.each{ |id|
       # puts id
-      puts "SET"
+      # puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      puts set
+      # puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
@@ -988,7 +988,7 @@ class MobileController < ApplicationController
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
       tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture_url}.uniq
       
-      puts tps
+      # puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -1146,7 +1146,7 @@ class MobileController < ApplicationController
                 :tags  => tags , # 18
                 :event_id => s["event_id"], #19
                 :start => s["occurrence_start"] , #20
-                :end => s["end"] #21,
+                :end => s["end"], #21,
                 :user => [], #22
                 :tps =>  [] #23
               }.values
