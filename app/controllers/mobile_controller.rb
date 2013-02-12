@@ -887,7 +887,6 @@ class MobileController < ApplicationController
             UNION
             SELECT DISTINCT ON (recurrences.id,acts.id) #{tmp} AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM occurrences
-              INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id 
               INNER JOIN events ON occurrences.event_id = events.id
               INNER JOIN venues ON events.venue_id = venues.id
               LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
@@ -912,7 +911,6 @@ class MobileController < ApplicationController
             UNION
             SELECT DISTINCT ON (events.id,users.id) #{tmp} AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM occurrences
-              INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id  
               INNER JOIN events ON occurrences.event_id = events.id
               LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
               LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
