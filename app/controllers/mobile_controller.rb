@@ -966,12 +966,18 @@ class MobileController < ApplicationController
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
     
-            
-    puts "FacebooLogin"
-    # puts query
     queryResult0 = ActiveRecord::Base.connection.select_all(query)
     queryResult1 = ActiveRecord::Base.connection.select_all(query1)
+
+    puts "queryResult0"
+    puts queryResult0
+    puts "queryResult1"
+    puts queryResult1
+    # puts query
+    
     queryResult = queryResult0 << queryResult1
+    puts "queryResult"
+    puts queryResult
     @ids = queryResult
     # puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
