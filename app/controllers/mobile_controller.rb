@@ -978,16 +978,14 @@ class MobileController < ApplicationController
     esinfo = []
     @eventIDs.each{ |id|
       # puts id
-      # puts "SET"
+      puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      # puts set
+      puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
-      listIDs = set.select {|s| s["listID"].to_i != 0}.collect{|s| s["listID"].to_i}
-      puts "listids-----"
-      puts listIDs
-      tps = BookmarkList.where(:id=>listIDs,:featured =>true).collect{|l| l.id}
+      
+      tps = set.collect { |e| e["listID"] }.uniq
       
       
       # puts users
