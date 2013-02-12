@@ -968,8 +968,8 @@ class MobileController < ApplicationController
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
     
     queryResult = ActiveRecord::Base.connection.select_all(query)
-    puts "queryResult------------------------"
-    puts queryResult.to_json
+    # puts "queryResult------------------------"
+    # puts queryResult.to_json
     @ids = queryResult
     # puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
@@ -977,10 +977,12 @@ class MobileController < ApplicationController
     esinfo = []
     @eventIDs.each{ |id|
       # puts id
-      # puts "SET"
+      puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
+      puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       users = set.collect {|s| s["user_id"].to_s}.uniq
+      puts users
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
