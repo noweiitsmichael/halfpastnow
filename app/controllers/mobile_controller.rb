@@ -984,7 +984,10 @@ class MobileController < ApplicationController
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
-      tps = set.collect{|s| s["listID"].to_s}.uniq
+      listIDs = set.collect{|s| s["listID"].to_i}
+      tps = BookmarkList.find(listIDs).select {|l| l.featured == true}.collect{|l| l.id}
+      
+      
       # puts users
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
