@@ -968,8 +968,8 @@ class MobileController < ApplicationController
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
     
     queryResult = ActiveRecord::Base.connection.select_all(query)
-    # puts "queryResult------------------------"
-    # puts queryResult.to_json
+    puts "queryResult------------------------"
+    puts queryResult.to_json
     @ids = queryResult
     # puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
