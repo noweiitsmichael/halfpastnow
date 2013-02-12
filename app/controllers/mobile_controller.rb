@@ -969,15 +969,9 @@ class MobileController < ApplicationController
     queryResult0 = ActiveRecord::Base.connection.select_all(query)
     queryResult1 = ActiveRecord::Base.connection.select_all(query1)
 
-    puts "queryResult0"
-    puts queryResult0
-    puts "queryResult1"
-    puts queryResult1
-    # puts query
-    
+   
     queryResult = queryResult0 + queryResult1
-    puts "queryResult"
-    puts queryResult
+    
     @ids = queryResult
     # puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
