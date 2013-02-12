@@ -985,8 +985,8 @@ class MobileController < ApplicationController
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
-      tps = set.collect { |e|  e["listid"].to_s}.uniq
-      
+      tpids = set.collect { |e|  e["listid"].to_i}.uniq
+      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture_url}.uniq
       
       puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
