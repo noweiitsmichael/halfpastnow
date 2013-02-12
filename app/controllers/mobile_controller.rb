@@ -980,6 +980,7 @@ class MobileController < ApplicationController
       # puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      users = set.collect {|s| s["user_id"].to_s}.uniq
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -1025,7 +1026,7 @@ class MobileController < ApplicationController
                 :event_id => s["event_id"], #19
                 :start => s["occurrence_start"] , #20
                 :end => s["end"], #21
-                :user => s["user_id"] #22
+                :user => users #22
               }
 
 
