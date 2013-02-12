@@ -988,7 +988,7 @@ class MobileController < ApplicationController
       tps = set.collect { |e| e["listID"] }.uniq
       
       
-      # puts users
+      puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
