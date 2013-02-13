@@ -2,6 +2,7 @@ class UserSubmissionController < ApplicationController
 helper :content
 
 	def eventCreate1
+		authorize! :eventSubmit1, @user, :message => 'Please log in to add events.'
 		@event = Event.new
 		@event.title = params[:new_title]
     	@parentTags = Tag.includes(:parentTag, :childTags).all.select{ |tag| tag.parentTag.nil? }
@@ -20,8 +21,6 @@ helper :content
 
 	def eventSubmit1
 		authorize! :eventSubmit1, @user, :message => 'Please log in to add events.'
-
-		pp params
 
 		if !params[:event][:id].to_s.empty?
 			@event = Event.find(params[:event][:id])
@@ -44,7 +43,6 @@ helper :content
 	end
 
 	def eventSubmit2
-		pp params
 		authorize! :eventSubmit1, @user, :message => 'Please log in to add events.'
 		@event = Event.find(params[:event][:id])
 
@@ -79,7 +77,6 @@ helper :content
 	end
 
 	def actSubmit
-		authorize! :eventSubmit1, @user, :message => 'Not authorized as an administrator.'
 		pp params
 
 		if !params[:act][:id].to_s.empty?

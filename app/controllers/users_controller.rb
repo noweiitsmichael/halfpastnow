@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-
+    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     @users = User.all
 
     respond_to do |format|

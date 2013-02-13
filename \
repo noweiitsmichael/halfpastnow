@@ -1,0 +1,29 @@
+Attending bookmark list addition, more bump stuff
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	new file:   app/_etc/duplicate_venues4.csv
+#	new file:   app/_etc/venue_bump.csv
+#	modified:   app/assets/stylesheets/styles9.css
+#	modified:   app/controllers/friendships_controller.rb
+#	modified:   app/controllers/picks_controller.rb
+#	modified:   app/models/user.rb
+#	modified:   app/views/acts/index.html.erb
+#	modified:   app/views/bookmark_lists/_form.html.erb
+#	new file:   app/views/friendships/friends.html.erb
+#	modified:   app/views/friendships/index.html.erb
+#	renamed:    app/views/users/friends.html.erb -> app/views/friendships/show.html.erb
+#	modified:   app/views/picks/index.html.erb
+#	modified:   app/views/user_submission/eventEdit1.html.erb
+#	modified:   app/views/users/friends.html.erb
+#	modified:   app/views/venues/event.html.erb
+#	modified:   app/views/venues/new_event.html.erb
+#	modified:   app/views/venues/rawEvent.html.erb
+#	modified:   config/environments/development.rb
+#	new file:   db/migrate/20130212194556_add_ticket_url_to_event.rb
+#	modified:   db/schema.rb
+#	modified:   lib/tasks/scheduler.rake
+#
