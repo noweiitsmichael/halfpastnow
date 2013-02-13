@@ -136,13 +136,13 @@ helper :content
                     LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
                     LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
 		         		WHERE #{search_match} AND occurrences.deleted IS NOT true AND occurrences.start > NOW()
-		         		ORDER BY events.id, occurrences.start LIMIT 20"
+		         		ORDER BY events.id, occurrences.start LIMIT 10"
 
 		    @occurrence_ids = ActiveRecord::Base.connection.select_all(query).collect { |e| e["occurrence_id"].to_i }
 		    @occurrences = Occurrence.find(@occurrence_ids)
 
 		    respond_to do |format|
-		    	format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:venue, :acts] }})}
+		    	format.json { render json: @occurrences.to_json(:include => {:event => {:only => [:title, :id], :include => [:venue => {:only => [:name]}] }})}
 		    end
 	    end
 
