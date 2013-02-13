@@ -555,7 +555,7 @@ class MobileController < ApplicationController
             UNION"
 
            queryResult = ActiveRecord::Base.connection.select_all(query)
-           puts queryResult
+           # puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
            # puts @eventIDs
@@ -577,7 +577,7 @@ class MobileController < ApplicationController
                 :rec_end => s["rec_end"]  # 5
                 }.values
                 }.uniq 
-                puts rec
+                # puts rec
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
@@ -1097,7 +1097,7 @@ class MobileController < ApplicationController
             "
 
            queryResult = ActiveRecord::Base.connection.select_all(query)
-           puts queryResult
+           # puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
            # puts @eventIDs
@@ -1119,7 +1119,7 @@ class MobileController < ApplicationController
                 :rec_end => s["rec_end"]  # 5
                 }.values
                 }.uniq 
-                puts rec
+                # puts rec
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
@@ -1364,7 +1364,7 @@ class MobileController < ApplicationController
       |list|
       @occurrencesid = list.all_bookmarked_events.collect{|o| o.id}
       puts "Bookmark"
-      puts list.all_bookmarked_events
+      # puts list.all_bookmarked_events
       if @occurrencesid.size > 0
           where_clause = "occurrences.id IN (#{@occurrencesid.join(',')})"
           query = "SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
@@ -1388,9 +1388,9 @@ class MobileController < ApplicationController
                   INNER JOIN tags ON events_tags.tag_id = tags.id
                   WHERE #{where_clause} AND occurrences.recurrence_id IS NULL
                   "
-          puts query
+          # puts query
           queryResult = ActiveRecord::Base.connection.select_all(query).uniq 
-          puts queryResult
+          # puts queryResult
           @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
           
           @eventIDs.each{ |id|
@@ -1781,7 +1781,7 @@ class MobileController < ApplicationController
       @esinfo << @item
     }
     puts "esinfo"
-    puts @esinfo.to_json
+    # puts @esinfo.to_json
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
