@@ -174,6 +174,14 @@ class User < ActiveRecord::Base
     return BookmarkList.where(:user_id => self.id, :featured => true).first
   end
 
+  def attending_list
+    return BookmarkList.where(:user_id => self.id, :name => "Attending").first
+  end
+
+  def attending_events
+    return BookmarkList.where(:user_id => self.id, :name => "Attending").first.all_bookmarked_events
+  end
+
   def send_welcome_email
     puts "send_welcome_email"
     unless self.email.include?('@halfpastnow.com') && Rails.env != 'test'
@@ -185,6 +193,9 @@ class User < ActiveRecord::Base
     puts "creating default list"
     BookmarkList.create(:name => "Bookmarks", :description => "Bookmarks", :public => false, 
                         :featured => false, :main_bookmarks_list => true, :user_id => self.id)
+    puts "creating default attending list"
+    BookmarkList.create(:name => "Attending", :description => "Attending", :public => false, 
+                        :featured => false, :main_bookmarks_list => false, :user_id => self.id)
   end
 
 

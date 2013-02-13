@@ -64,22 +64,19 @@ namespace :m do
 	#####
 	task :duplicate_venues => :environment do
 		puts "Opening file..."
-		f = File.open(Rails.root + "app/_etc/duplicate_venues3.csv")
+		f = File.open(Rails.root + "app/_etc/duplicate_venues4.csv")
 		lines = f.readlines
 		lines.each do |oneVenue|
-			puts "Line:"
-			puts oneVenue
 			otherVenues = oneVenue.split(/,/)
-			pp otherVenues
 			finalVenueName = otherVenues[0].strip
+			puts ""
 			puts "Final Venue: #{finalVenueName}"
 			finalVenue = Venue.find(:first, :conditions => [ 'lower(name) = ?', finalVenueName.downcase ])
 			if finalVenue.nil?
 				puts "------ No venue found for #{finalVenueName}"
 				next
 			end
-			puts ""
-			puts "Working on #{finalVenueName}"
+			puts "Found it, working on #{finalVenueName}"
 			otherVenues.slice!(0)
 			otherVenues.delete("")
 			otherVenues.delete("\n")
@@ -89,18 +86,18 @@ namespace :m do
 			otherVenues.each do |ven|
 				v = Venue.find(:first, :conditions => [ 'lower(name) = ? and id != ?', ven.downcase.strip, finalVenue.id ])
 				if v.nil?
-					puts "No venue found for duplicate #{ven}"
+					puts "****************** No venue found for duplicate #{ven}"
 					next
 				else 
-					puts"****************** Corrected! Found for duplicate #{ven}"
+					puts"Found for duplicate #{ven}"
 				end
 				puts "...Working on duplicate #{v.name}"
 				r = RawVenue.find(:first, :conditions => [ 'lower(name) = ?', v.name.downcase ])
 				if r.nil?
-					puts "No venue found for raw venue #{v.name} WTF"
+					puts "*****************No venue found for raw venue #{v.name} WTF"
 					next
 				else
-					puts "***************** Corrected! Venue found for raw venue #{v.name} WTF"
+					puts "Venue found for raw venue #{v.name} WTF"
 				end
 
 				puts "Dupe Num Events = #{v.events.count}"
@@ -144,9 +141,38 @@ namespace :m do
 			if b.bookmarked_type == "Occurrence"
 				unless Occurrence.where(:id => b.bookmarked_id).empty?
 					e = Occurrence.find(b.bookmarked_id).event
-					e.clicks = e.clicks + 100
-					e.save!
+					if e.clicks < 200
+						e.clicks = e.clicks + 100
+						e.save!
+					end
 				end
+			end
+		end
+	end
+
+	desc "bumping up venues"
+	task :venue_bump => :environment do
+
+		# Venue.where(:id => [47138,41191,40284,47328,44340,39334,40488,43302,47267,42670,40459,39386,40238,40219,43604,43628,44687,39376,40345,40742,47242,39620,47239,47444,47141,47524,39438,46956,39337,41359,47269,40381,39424,47338,47325,40139,39528,43006,39346,39402,46974,43146,39593,41499,39391,41038,39562,42186,40823,47035,47717,46884,46885,44557,42217,44703,46951,41014,43860,39326,39382,39383,41150,41117,39338,39544,42388,42055,40239,39335,40201,47142,45251,41278,42219,39421,40226,42642,39359,44627,42040,41553,39353,41819,39712,40188,41412,40149,44453,39350,43277,42206,40564,47307,42989,39446,39362,39401,42871,40551,39399,42336,40041,39352,39735,39364,41615,40426,40820,41952,40464,44194,40556,40888,39435,44164,39473,41423,40977,47004,40523,41172,39645,45929,47487,47233,40462,41468,40358,41584,44101,47473,43596,43819,43005,41781,39430,41200,42892]).each do |v|
+		# 	puts "#{v.name},#{v.id}"
+		# 	v.events.each do |e|
+		# 		if e.clicks < 100
+		# 			e.clicks += 100
+		# 			e.save!
+		# 		end
+		# 	end
+		# end
+
+		puts "Opening file..."
+		f = File.open(Rails.root + "app/_etc/venue_bump.csv")
+		lines = f.readlines
+		lines.each do |oneVenue|
+			oneVenue = oneVenue.split(/,/);
+			v = Venue.find(oneVenue[1])
+			puts "#{oneVenue[0]}, #{oneVenue[1]}"
+			v.events.each do |e|
+				e.clicks = e.clicks + 100
+				e.save!
 			end
 		end
 	end

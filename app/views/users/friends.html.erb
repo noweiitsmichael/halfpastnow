@@ -1,21 +1,23 @@
-<% content_for :body do %>
+<% content_for :title do %>My Friends<% end %>
 
-<h2>My Friends</h2>
+<% content_for :content do %>
 
-<p>Username: <%= current_user.fullname %></p>
+	<h2>My Friends</h2>
 
-<h2>Friends</h2>
-<ul>
-<% puts "loading" %>
-<% puts current_user.friends.count %>
-  <% current_user.friends.each do |friend| %>
-    <li>
-    <% puts "friend" %>
-    <% puts friend.fullname %>
-      <%= friend.fullname %>
-      (<%= link_to "remove", friend, :method => :delete %>)
-    </li>
-  <% end %>
-</ul>
+	<p>Username: <%= current_user.fullname %></p>
+
+	<h2>Friends</h2>
+	<ul>
+	<% puts "loading" %>
+	<% puts current_user.friends.count %>
+	  <% current_user.friends.each do |friend| %>
+	    <li>
+	    <% puts "friend" %>
+	    <% puts friend.fullname %>
+	      <%= friend.fullname %>
+	      (<%= link_to "remove", friend, :method => :delete %>)
+	    </li>
+	  <% end %>
+	</ul>
 
 <% end %>

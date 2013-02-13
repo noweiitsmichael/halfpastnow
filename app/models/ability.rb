@@ -15,9 +15,9 @@ class Ability
        elsif user.role == "admin"                       # old #  if user.admin?
          can :manage, :all
        else
-         can :read, Event
-         can :read, Act
-         can :read, Venue
+         can :manage, :all
+         cannot :index, User
+         #can [:show, :create, :update, :destroy], #[Event, Act, Embed, Occurrence, Recurrence, Pi
        end
     #
     # The first argument to `can` is the action you are giving the user permission to do.

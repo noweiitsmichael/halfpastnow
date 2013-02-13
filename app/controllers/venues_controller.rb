@@ -122,7 +122,6 @@ class VenuesController < ApplicationController
 
   # GET /venues/edit/1
   def edit
-    authorize! :edit, @user, :message => 'Not authorized as an administrator.'
     @venue = Venue.find(params[:id])
 
     render :layout => "admin"
@@ -161,7 +160,6 @@ class VenuesController < ApplicationController
   end
 
   def new_event
-    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     puts "new_event:"
     # puts params
     @venue = Venue.find(params[:id])
@@ -367,7 +365,6 @@ class VenuesController < ApplicationController
   end
 
   def eventEdit
-    authorize! :index, @user, :message => 'Not authorized as an administrator.'
     #puts "eventEdit"
     #pp params
     @venue = Venue.find(params[:venue_id])

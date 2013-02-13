@@ -2,6 +2,7 @@ class UserSubmissionController < ApplicationController
 helper :content
 
 	def eventCreate1
+		authorize! :eventSubmit1, @user, :message => 'Please log in to add events.'
 		@event = Event.new
 		@event.title = params[:new_title]
     	@parentTags = Tag.includes(:parentTag, :childTags).all.select{ |tag| tag.parentTag.nil? }
@@ -20,8 +21,6 @@ helper :content
 
 	def eventSubmit1
 		authorize! :eventSubmit1, @user, :message => 'Please log in to add events.'
-
-		pp params
 
 		if !params[:event][:id].to_s.empty?
 			@event = Event.find(params[:event][:id])
@@ -44,7 +43,6 @@ helper :content
 	end
 
 	def eventSubmit2
-		pp params
 		authorize! :eventSubmit1, @user, :message => 'Please log in to add events.'
 		@event = Event.find(params[:event][:id])
 
@@ -79,7 +77,6 @@ helper :content
 	end
 
 	def actSubmit
-		authorize! :eventSubmit1, @user, :message => 'Not authorized as an administrator.'
 		pp params
 
 		if !params[:act][:id].to_s.empty?
@@ -139,13 +136,13 @@ helper :content
                     LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
                     LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
 		         		WHERE #{search_match} AND occurrences.deleted IS NOT true AND occurrences.start > NOW()
-		         		ORDER BY events.id, occurrences.start LIMIT 20"
+		         		ORDER BY events.id, occurrences.start LIMIT 10"
 
 		    @occurrence_ids = ActiveRecord::Base.connection.select_all(query).collect { |e| e["occurrence_id"].to_i }
 		    @occurrences = Occurrence.find(@occurrence_ids)
 
 		    respond_to do |format|
-		    	format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:venue, :acts] }})}
+		    	format.json { render json: @occurrences.to_json(:include => {:event => {:only => [:title, :id], :include => [:venue => {:only => [:name]}] }})}
 		    end
 	    end
 
