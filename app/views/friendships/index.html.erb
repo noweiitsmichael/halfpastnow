@@ -1,17 +1,42 @@
+<script type="text/javascript">
+	$(function() {
+
+	});
+
+</script>
+
 <% content_for :body do %>
+<div id="info-content">
+	<h2>Users</h2>
 
-<h2>Users</h2>
+	<div id="users" class="col-1">
+	<% User.all.each do |user| %>
+	  <div class="user">
+	    <p>
+	      <strong><%= user.firstname %> <%= user.lastname %></strong>
+	      <%= link_to "Add Friend", friendships_path(:friend_id => user), :method => :post %>
+	      <div class="clear"></div>
+	    </p>
+	  </div>
+	<% end %>
+	</div>
 
-<div id="users">
-<% User.all.each do |user| %>
-  <div class="user">
-    <p>
-      <strong><%= user.firstname %> <%= user.lastname %></strong>
-      <%= link_to "Add Friend", friendships_path(:friend_id => user), :method => :post %>
-      <div class="clear"></div>
-    </p>
-  </div>
-<% end %>
+	<div class="col-2">
+		<h2>Friends</h2>
+		<ul>
+		<% puts "loading" %>
+		<% pp current_user %>
+		<% puts current_user.friends.count %>
+		  <% current_user.friends.each do |friend| %>
+		    <li>
+		    <% puts "friend" %>
+		    <% puts friend.fullname %>
+		      <%= friend.fullname %>
+		      (<%= link_to "#{friend.fullname}", friend %>)
+		      (<%= link_to "remove", friend, method: :delete, remote: true %>)
+		    </li>
+		  <% end %>
+		</ul>
+	</div>
 </div>
-
 <% end %>

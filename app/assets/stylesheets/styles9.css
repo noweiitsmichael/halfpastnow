@@ -1804,6 +1804,10 @@ input::-webkit-input-placeholder
 .mode .window .col-1 { float:left; width: 578px;}
 .mode .window .col-2 { float:right; width: 358px;}
 
+
+.col-1 { float:left; width: 490px;}
+.col-2 { float:right; width: 490px;}
+
 .mode .window .block {
     font-size: 14px;
     line-height: 1.5em;

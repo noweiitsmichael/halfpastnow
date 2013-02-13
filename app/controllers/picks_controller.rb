@@ -48,6 +48,7 @@ helper :content
 		tag_id = params[:id]
 		if tag_id.to_s.empty?
 			@featuredLists = BookmarkList.where(:featured=>true)
+			# puts @featuredLists
 		else
 			@list=[]
 			@exclude=[]
@@ -109,7 +110,7 @@ helper :content
 				end
 			}
 			@featuredLists = BookmarkList.find(ls)
-			puts @featuredLists
+			# puts @featuredLists
 			# @featuredLists = BookmarkList.find(result.select { |r| r["tag_id"] == tag_id.to_s }.collect { |e| e["id"] }.uniq)
 		end
 	end

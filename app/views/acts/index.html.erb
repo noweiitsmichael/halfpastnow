@@ -3,7 +3,8 @@
 
 		function addNewPerformer(data) {
 			console.log("returned!");
-			console.log(data);
+			$("#confirm-submit").append("<p><span class='ui-icon ui-icon-alert' style='float: left; margin: 0 7px 20px 0;''></span> Thank you for submitting performer " + data.name + "!</p>")
+			closeMode();
 			callbackEdit(data);
 		}
 
@@ -49,6 +50,26 @@
 
 			newActTr.prependTo('#acts-table tbody');
 		}
+
+		function closeMode() {
+			console.log("running");
+			$( "#confirm-submit" ).dialog({
+	            resizable: false,
+	            height:240,
+	            modal: true,
+	            buttons: {
+	                "Continue": function() {
+	                    $('.mode').hide();
+	                    $( this ).dialog( "close" );
+	                },
+	                Cancel: function() {
+	                    $( this ).dialog( "close" );
+	                }
+	            }
+	        });
+		};
+
+
 	</script>
 	<style type="text/css">
 		#acts-table {
@@ -106,3 +127,8 @@
 		</div>
 	</div>
 </div>
+
+  <div id="confirm-submit" title="Successfully entered artist!" style="display:none; font-size:14px;">
+    
+  </div>
+

@@ -20,8 +20,12 @@
 		  <%= e.text_field :title, :class => "title required" %>
 		</div>
 		<div class="field">
-		  <%= e.label "Event Link / Registration Link" %>
+		  <%= e.label "Event Website" %>
 		  <%= e.text_field :event_url, :class => "event_url" %>
+		</div>
+		<div class="field">
+		  <%= e.label "RSVP / Ticketing Link" %>
+		  <%= e.text_field :ticket_url, :class => "ticket_url" %>
 		</div>
 		<div class="field">
 		  <%= e.label :description %>

@@ -434,10 +434,15 @@
 		    	<% if @event.acts.size > 0 %> <div style="margin-top:9px">Add another Performer: </div> <% end %>
 			</div>
 
-		    <div class="field">
-		      <h5><%= e.label "Event Link / Registration Link" %></h5>
-		      <%= e.text_field :event_url, :class => "url" %>
-		    </div>
+		    
+			<div class="field">
+			  <%= e.label "Event Website (for more info)" %>
+			  <%= e.text_field :event_url, :class => "event_url" %>
+			</div>
+			<div class="field">
+			  <%= e.label "RSVP / Ticketing Link" %>
+			  <%= e.text_field :ticket_url, :class => "ticket_url" %>
+			</div>
 			<div class="field">
 			  <h5><%= e.label :description %></h5>
 			  <%= e.text_area :description, :class => "cleditor" %>
