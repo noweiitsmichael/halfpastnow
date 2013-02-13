@@ -89,7 +89,7 @@ namespace :m do
 					puts "****************** No venue found for duplicate #{ven}"
 					next
 				else 
-					put s"Found for duplicate #{ven}"
+					puts"Found for duplicate #{ven}"
 				end
 				puts "...Working on duplicate #{v.name}"
 				r = RawVenue.find(:first, :conditions => [ 'lower(name) = ?', v.name.downcase ])
