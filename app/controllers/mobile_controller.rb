@@ -1396,6 +1396,7 @@ class MobileController < ApplicationController
                       :start => s["occurrence_start"] , #20
                       :end => s["end"], #21
                       :tp => list.name #22
+                      
                     }
             esinfo << item
 
