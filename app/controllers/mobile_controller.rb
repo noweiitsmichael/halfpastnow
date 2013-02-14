@@ -210,11 +210,23 @@ class MobileController < ApplicationController
                 :tags  => tags , # 18
                 :event_id => s["event_id"], #19
                 :start => s["occurrence_start"] , #20
-                :end => s["end"] #21
+                :end => s["end"], #21
+                :user => [], #22
+                :tps =>  [] #23
               }
+
+
+      # item = {:act => act, :rec => rec , s["occurrence_start"] ,  s["end"] ,s["cover"] , s["phone"], s["description"],
+      # ["title"],  s["venue_name"],s["longitude"], s["latitude"], s["event_id"],  s["venue_id"],
+      # s["occurrence_id"], s["price"] ,s["address"] ,  s["zip"] , s["city"], s["state"] , s["clicks"],
+      # s["views"], :tags  => Event.find(id).tags.collect{ |t| {t.id, t.name}}  }
+
+
+
       esinfo << item
     }
 
+   
     ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
     esinfo = ttttmp.collect{|es| es.values}
 
@@ -2360,7 +2372,7 @@ end
               INNER JOIN bookmarks ON occurrences.id =  bookmarks.bookmarked_id 
               INNER JOIN bookmark_lists  ON bookmarks.bookmark_list_id = bookmark_lists.id WHERE bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks 
               FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id 
-            WHERE  bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid}) AND occurrences.recurrence_id IS NOT NULL AND occurrences.start >= '#{Date.today()}'
+            WHERE  bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid}) AND occurrences.recurrence_id IS NOT NULL 
             UNION
             SELECT DISTINCT ON (events.id,bookmark_lists.id) bookmark_lists.picture_url AS list_pic,occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM venues 
@@ -2372,10 +2384,11 @@ end
               INNER JOIN occurrences ON events.id = occurrences.event_id 
               INNER JOIN bookmarks ON occurrences.id =  bookmarks.bookmarked_id 
               INNER JOIN bookmark_lists  ON bookmarks.bookmark_list_id = bookmark_lists.id 
-            WHERE bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid}) AND occurrences.start >= '#{Date.today()}'
-           "
+            WHERE bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid})"
+    
+    # queryResult = ActiveRecord::Base.connection.select_all(query)
     queryResult = ActiveRecord::Base.connection.select_all(query)
-   
+    queryResult =[]
     @ids = queryResult
     # puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
