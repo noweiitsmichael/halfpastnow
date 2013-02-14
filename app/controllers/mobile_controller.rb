@@ -2428,7 +2428,7 @@ end
                 :event_id => s["event_id"], #19
                 :start => s["occurrence_start"] , #20
                 :end => s["end"], #21
-                :user => []], #22
+                :user => [], #22
                 :tps =>  tps #23
               }
 
