@@ -2358,7 +2358,8 @@ end
               INNER JOIN recurrences ON events.id = recurrences.event_id 
               INNER JOIN occurrences ON events.id = occurrences.event_id 
               INNER JOIN bookmarks ON occurrences.id =  bookmarks.bookmarked_id 
-              INNER JOIN bookmark_lists  ON bookmarks.bookmark_list_id = bookmark_lists.id WHERE bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid})
+              INNER JOIN bookmark_lists  ON bookmarks.bookmark_list_id = bookmark_lists.id WHERE bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks 
+              FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id 
             WHERE  bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid}) AND occurrences.recurrence_id IS NOT NULL AND occurrences.start >= '#{Date.today()}'
             UNION
             SELECT DISTINCT ON (events.id,bookmark_lists.id) bookmark_lists.picture_url AS list_pic,occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
@@ -2370,7 +2371,7 @@ end
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id 
               INNER JOIN occurrences ON events.id = occurrences.event_id 
               INNER JOIN bookmarks ON occurrences.id =  bookmarks.bookmarked_id 
-              INNER JOIN bookmark_lists  ON bookmarks.bookmark_list_id = bookmark_lists.id WHERE bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid})
+              INNER JOIN bookmark_lists  ON bookmarks.bookmark_list_id = bookmark_lists.id 
             WHERE bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid}) AND occurrences.start >= '#{Date.today()}'
            "
     queryResult = ActiveRecord::Base.connection.select_all(query)
