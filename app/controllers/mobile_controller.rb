@@ -2344,53 +2344,46 @@ end
     tmp ="0"
     tmp1 ="o"
     @listid = params[:id]
-    query = "SELECT DISTINCT ON (recurrences.id,users.id,bookmark_lists.id) bookmark_lists.id AS listid, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-            FROM users
-              INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
-              INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
-              INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id 
-              INNER JOIN events ON occurrences.event_id = events.id
-              INNER JOIN venues ON events.venue_id = venues.id
-              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
-              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
-              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
-              INNER JOIN recurrences ON events.id = recurrences.event_id
-              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE  bookmark_lists.id = #{@listid} AND occurrences.recurrence_id IS NOT NULL AND occurrences.start >= '#{Date.today()}'
+
+    SELECT DISTINCT ON (recurrences.id,bookmark_lists.id) bookmark_lists.id AS listid, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start 
+            FROM venues 
+            INNER JOIN events ON venues.id = events.venue_id 
+            LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id 
+            LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id 
+            LEFT OUTER JOIN acts ON acts.id = acts_events.act_id 
+            LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id 
+            INNER JOIN recurrences ON events.id = recurrences.event_id 
+            INNER JOIN occurrences ON events.id = occurrences.event_id 
+            INNER JOIN bookmarks ON occurrences.id =  bookmarks.bookmarked_id 
+            INNER JOIN bookmark_lists  ON bookmarks.bookmark_list_id = bookmark_lists.id WHERE bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid})
+
+
+
+    query = "SELECT DISTINCT ON (recurrences.id,bookmark_lists.id,acts.id) bookmark_lists.picture_url AS list_pic, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            FROM venues 
+              INNER JOIN events ON venues.id = events.venue_id 
+              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id 
+              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id 
+              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id 
+              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id 
+              INNER JOIN recurrences ON events.id = recurrences.event_id 
+              INNER JOIN occurrences ON events.id = occurrences.event_id 
+              INNER JOIN bookmarks ON occurrences.id =  bookmarks.bookmarked_id 
+              INNER JOIN bookmark_lists  ON bookmarks.bookmark_list_id = bookmark_lists.id WHERE bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid})
+            WHERE  bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid}) AND occurrences.recurrence_id IS NOT NULL AND occurrences.start >= '#{Date.today()}'
             UNION
-            SELECT DISTINCT ON (events.id,users.id,bookmark_lists.id) bookmark_lists.id AS listid, users.id AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-            FROM users
-              INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
-              INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
-              INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id  
-              INNER JOIN events ON occurrences.event_id = events.id
-              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
-              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
-              INNER JOIN venues ON events.venue_id = venues.id
-              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
-              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE bookmark_lists.id = #{@listid} AND occurrences.start >= '#{Date.today()}'
-            UNION
-            SELECT DISTINCT ON (recurrences.id,acts.id) #{tmp} AS listid,#{tmp} AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-            FROM occurrences 
-              INNER JOIN events ON occurrences.event_id = events.id
-              INNER JOIN venues ON events.venue_id = venues.id
-              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
-              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
-              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
-              INNER JOIN recurrences ON events.id = recurrences.event_id
-              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE bookmark_lists.id = #{@listid} AND occurrences.recurrence_id IS NOT NULL AND occurrences.start >= '#{Date.today()}'
-            UNION
-            SELECT DISTINCT ON (events.id,acts.id) #{tmp} AS listid, #{tmp} AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-            FROM occurrences 
-              INNER JOIN events ON occurrences.event_id = events.id
-              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
-              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
-              INNER JOIN venues ON events.venue_id = venues.id
-              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
-              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE bookmark_lists.id = #{@listid} AND occurrences.start >= '#{Date.today()}'"
+            SELECT DISTINCT ON (events.id,bookmark_lists.id) bookmark_lists.picture_url AS list_pic,occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            FROM venues 
+              INNER JOIN events ON venues.id = events.venue_id 
+              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id 
+              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id 
+              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id 
+              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id 
+              INNER JOIN occurrences ON events.id = occurrences.event_id 
+              INNER JOIN bookmarks ON occurrences.id =  bookmarks.bookmarked_id 
+              INNER JOIN bookmark_lists  ON bookmarks.bookmark_list_id = bookmark_lists.id WHERE bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid})
+            WHERE bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid}) AND occurrences.start >= '#{Date.today()}'
+           "
     queryResult = ActiveRecord::Base.connection.select_all(query)
    
     @ids = queryResult
@@ -2404,13 +2397,9 @@ end
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       # puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
-      users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
-      users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
-      tpids = set.collect { |e|  e["listid"].to_i}.uniq
-      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture_url}.uniq
       
-     
+      tps = set.collect { |e|  e["list_pic"].to_i}.uniq
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
       rec = set.collect { |s| { 
         :every_other => s["every_other"],
@@ -2450,7 +2439,7 @@ end
                 :event_id => s["event_id"], #19
                 :start => s["occurrence_start"] , #20
                 :end => s["end"], #21
-                :user => users, #22
+                :user => []], #22
                 :tps =>  tps #23
               }
 
