@@ -89,7 +89,7 @@ namespace :m do
 					puts "****************** No venue found for duplicate #{ven}"
 					next
 				else 
-					puts"Found for duplicate #{ven}"
+					puts "Found for duplicate #{ven}"
 				end
 				puts "...Working on duplicate #{v.name}"
 				r = RawVenue.find(:first, :conditions => [ 'lower(name) = ?', v.name.downcase ])
@@ -332,6 +332,241 @@ end
 
 
 namespace :api do
+
+	desc "SXSW venues"
+	task :sxsw_venues => :environment do
+		puts "Opening venues file..."
+		f = File.open(Rails.root + "app/_etc/sxsw_venues.csv")
+		lines = f.readlines
+		lines.each_with_index do |l, index|
+			lines[index] = l.split(/","/)
+			lines[index][0] = (lines[index][0].split(/"/))[1] # because there's an extra "/" in there for some reason
+			new_hash = Hash.new
+			new_hash["id"] = lines[index][0]
+			new_hash["name"] = lines[index][1]
+			new_hash["street"] = lines[index][3]
+			new_hash["city"] = lines[index][4]
+			new_hash["state"] = lines[index][5]
+			new_hash["lat"] = lines[index][8]
+			new_hash["long"] = lines[index][9]
+			new_hash["picture"] = lines[index][11]
+			new_hash["parent_id"] = lines[index][23]
+			new_hash["super_parent_id"] = lines[index][24]
+			lines[index] = new_hash
+		end
+
+		# iterate through lines, whenever come across valid venue_main_ref, find that serial and save that venue
+		# gotta split these out so that parent venues are done first
+		lines.each do |line|
+			if !line["super_parent_id"].blank?
+				super_parent = lines.detect {|f| f["id"] == line["super_parent_id"] }
+				sxswVenueSave(line, super_parent)
+			end
+		end
+		#do it again for parent_refs
+		lines.each do |line|
+			if line["super_parent_id"].blank? && line["parent_id"] != "0"
+				parent = lines.detect {|f| f["id"] == line["parent_id"] }
+				sxswVenueSave(line, parent)
+			end
+		end
+		#do it again for the rest
+		lines.each do |line|
+			if line["parent_id"] == "0"
+				sxswVenueSave(line, line)
+			end
+		end
+		f.close
+	end
+
+	desc "SXSW artists"
+	task :sxsw_artists => :environment do
+		# first create list of artist id's from events
+		artist_list = Array.new
+		count = 0
+		puts "Creating artist list from events file..."
+		f = File.open(Rails.root + "app/_etc/sxsw_events2.csv")
+		lines = f.read
+		lines = lines.split(/0"\n/)
+		lines.each do |l|
+			l = l.split(/","/)
+			if (l[37] == "Music") && (!l[38].blank?) && (l[42] == "Showcase")
+				artist = Hash.new
+				artist["id"] = l[38]
+				artist["genre"] = l[43]
+				artist_list << artist
+			end
+		end
+		puts "length: #{artist_list.length}"
+
+		# create list of all artists
+		puts "Opening artists file..."
+		f = File.open(Rails.root + "app/_etc/sxsw_acts.csv")
+		lines = f.read
+		lines = lines.split(/"\n/)
+		lines.each_with_index do |l, index|
+			lines[index] = l.split(/","/)			
+			lines[index][0] = (lines[index][0].split(/"/))[1] # because there's an extra " in there
+			new_hash = Hash.new
+			new_hash["id"] = lines[index][14]
+			new_hash["name"] = lines[index][3]
+			new_hash["subtitle"] = lines[index][5]
+			new_hash["description"] = lines[index][6]
+			new_hash["website"] = lines[index][9]
+			new_hash["embed"] = lines[index][10]
+			new_hash["picture"] = lines[index][8]
+			lines[index] = new_hash
+		end
+
+		artist_list.each do |artist|
+			matched_artist = lines.detect {|f| f["id"] == artist["id"] }
+			artist["name"] = matched_artist["name"]
+			artist["subtitle"] = matched_artist["subtitle"]
+			desc_only = /.+Description<\/strong><br \/>(.+?)<br \/>.+/m.match(matched_artist["description"])
+			if !desc_only.nil?
+				artist["description"] = desc_only[1]
+			else
+				artist["description"] = artist["subtitle"]
+			end
+
+			website = /.+Website<\/strong><br \/><a href='(.+?)' target='_blank'>.+/.match(matched_artist["description"])
+			if !website.nil?
+				artist["website"] = website[1]
+			else
+				artist["website"] = nil
+			end
+			artist["embed"] = matched_artist["embed"]
+			artist["picture"] = matched_artist["picture"]
+
+			# now hit database and find or create a new artist
+			if Act.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '')) = ?", artist["name"].downcase ]) == nil
+				puts "...Creating new artist for #{artist["name"]}"
+				act_edit = Act.create!(
+							:name => artist["name"],
+							:description => artist["description"],
+							:website => artist["website"],
+							:pop_id => artist["id"],
+							:pop_source => "sxsw"
+						)
+				act_edit.save
+
+				# Create picture
+				puts "Saving picture...."
+				Picture.create(:pictureable_id => act_edit.id, :pictureable_type => "Act", 
+						   	   :image => open(artist["picture"])) rescue nil
+
+				# Creating Tags
+				puts "Saving tags..."
+				ActsTags.create(:act_id => act_edit.id, :tag_id => 1)
+				sxswTagCreate(act_edit.id, artist["genre"])
+
+				# Creating Embed
+				puts "Saving embed..."
+				if (artist["embed"] != nil) && (!artist["embed"].blank?)
+					artist["embed"] = /.+?v=(.+?)\Z/.match(artist["embed"])[1]
+					embed_code = '<iframe width="100%" height="280" src="http://www.youtube.com/embed/' + 
+								 artist["embed"] + '" frameborder="0" allowfullscreen></iframe>';
+					Embed.create!(:embedable_id => act_edit.id, :primary => true, :source => embed_code, :embedable_type => "Act")
+				end
+
+				count += 1
+			else
+				act_edit = Act.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '')) = ?", artist["name"].downcase ])
+				puts "...Found existing artist #{act_edit.name}"
+			end
+		end
+		puts "Created #{count} new artists out of #{artist_list.length} artists"
+	end
+
+	desc "SXSW events"
+	task :sxsw_events => :environment do
+		count = 0
+		puts "Creating events from file..."
+		f = File.open(Rails.root + "app/_etc/sxsw_events.csv")
+		lines = f.read
+		lines = lines.split(/0"\n/)
+		lines.each do |e|
+			e = e.split(/","/)
+			e[0] = (e[0].split(/"/))[1] # because there's an extra " in there
+			# y e
+			new_e = Hash.new
+			new_e["id"] = e[0]
+			new_e["name"] = e[1]
+			new_e["venue_id"] = e[3]
+			new_e["start_time"] = e[4]
+			puts new_e["start_time"] 
+			new_e["end_time"] = e[5]
+			puts new_e["end_time"] 
+			desc_only = /.+Description<\/strong><br \/>(.+?)<br \/>.+/m.match(e[12])
+			if !desc_only.nil?
+				new_e["description"] = e[23] + "\n\n" + desc_only[1]
+			else
+				new_e["description"] = new_e["subtitle"]
+			end
+			new_e["picture"] = e[11]
+			new_e["subtitle"] = e[23]
+			new_e["conference"] = e[37]
+			new_e["artist"] = e[38]
+			new_e["type"] = e[42]
+			# y new_e
+			new_e_venue = RawVenue.where(:from => "sxsw", :raw_id => new_e["venue_id"]).first.venue_id
+
+			if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].downcase ]) == nil
+				puts "....Creating event #{new_e["name"]}"
+				sxsw_event = Event.create!(
+								:title => new_e["name"],
+								:description => new_e["description"],
+								:venue_id => new_e_venue
+								)
+
+				Occurrence.create(
+					:start => new_e["start_time"],
+					:end => new_e["end_time"],
+					:event_id => sxsw_event.id
+					)
+
+				if new_e["type"] == "Showcase"
+					event_act = Act.where(:pop_source => "sxsw", :pop_id => new_e["artist"]).first
+					ActsEvents.create(:act_id => event_act.id, :event_id => sxsw_event.id)
+				end
+
+				puts "Saving picture...."
+				cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
+						   	   :image => open(new_e["picture"]))
+				sxsw_event.cover_image = cover_i.id
+				sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
+				sxsw_event.save!
+
+			else
+				puts "....Updating Event #{new_e["name"]}"
+				sxsw_event = Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].downcase ])
+				sxsw_event.title = new_e["name"]
+				sxsw_event.description = new_e["description"]
+				sxsw_event.venue_id = new_e_venue
+				sxsw_event.save!
+				occ = sxsw_event.occurrences.first
+				occ.start = new_e["start_time"]
+				occ.end = new_e["end_time"]
+				occ.event_id = sxsw_event.id
+				# y occ
+				occ.save!
+
+				# # Create pictures
+				if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 3
+					puts "Saving picture...."
+					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
+							   	   :image => open(new_e["picture"]))
+					sxsw_event.cover_image = cover_i.id
+					sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
+					sxsw_event.save!
+
+				end
+			end
+
+
+		end
+
+	end
 
 	desc "generate venues from raw_venues"
 	task :convert_venues => :environment do
@@ -1192,5 +1427,135 @@ namespace :api do
 			raw_venue.last_visited = DateTime.now
 			raw_venue.save
 		end
+	end
+end
+
+def sxswVenueSave(line, parent)
+	puts "Creating raw venue for #{line["name"]}"
+	raw_venue = RawVenue.create!(
+		:name => line["name"],
+		:address => line["street"],
+		:city => line["city"],
+		:state_code => line["state"],
+		:latitude => line["lat"],
+		:longitude => line["long"],
+		:raw_id => line["id"],
+		:from => "sxsw"
+	)
+
+	if line["name"] == "Venue TBA"
+		new_venue = Venue.create!(
+			:name => raw_venue.name,
+			:latitude => raw_venue.latitude,
+			:longitude => raw_venue.longitude
+		)
+		raw_venue.venue_id = new_venue.id
+		raw_venue.save
+	elsif Venue.find(:first, :conditions => [ "lower(name) = ?", parent["name"].downcase ]) == nil
+		if Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '')) = ?", parent["street"].downcase ]) == nil
+			puts "....Creating real venue for #{line["name"]}"
+			new_venue = Venue.create!(
+				:name => raw_venue.name,
+				:address => raw_venue.address,
+				:city => raw_venue.city,
+				:state => raw_venue.state_code,
+				:latitude => raw_venue.latitude,
+				:longitude => raw_venue.longitude
+			)
+			raw_venue.venue_id = new_venue.id
+			raw_venue.save
+
+			# # Create pictures
+			puts "Saving picture...."
+			Picture.create(:pictureable_id => new_venue.id, :pictureable_type => "Venue", 
+					   	   :image => open(line["picture"])) rescue nil
+		else
+			puts "Found venue for #{parent["name"]} by address via #{line["name"]}"
+			real_venue = Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '')) = ?", parent["street"].downcase ]).id
+			raw_venue.venue_id = real_venue
+			raw_venue.save
+			# # Create pictures
+			if Picture.where(:pictureable_type => "Venue", :pictureable_id => real_venue).count <= 3
+				puts "Saving picture...."
+				Picture.create(:pictureable_id => real_venue, :pictureable_type => "Venue", 
+						   	   :image => open(line["picture"])) rescue nil
+			end
+		end
+	else
+		puts "Found venue for #{parent["name"]} by name via #{line["name"]}"
+		real_venue = Venue.find(:first, :conditions => [ "lower(name) = ?", parent["name"].downcase ]).id
+		raw_venue.venue_id = real_venue
+		raw_venue.save
+		# # Create pictures
+		if Picture.where(:pictureable_type => "Venue", :pictureable_id => real_venue).count <= 3
+			puts "Saving picture...."
+			Picture.create(:pictureable_id => real_venue, :pictureable_type => "Venue", 
+					   	   :image => open(line["picture"])) rescue nil
+		end
+	end
+end
+
+def sxswTagCreate(act_id, tag_name)
+	ActsTags.create!(:act_id =>act_id, :tag_id =>161)
+	case tag_name
+	when "Alt Country"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>4)
+	when "Americana"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>100)
+	when "Avant/Experimental"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>98)
+	when "Bluegrass"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>39)
+	when "Blues"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>40)
+	when "Classical"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>74)
+	when "Comedy"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>32)
+	when "Country"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>4)
+	when "DJ"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>64)
+	when "Dance"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>37)
+	when "Electronic"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>37)
+	when "Folk"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>41)
+	when "Funk"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>73)
+	when "Gospel"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>102)
+	when "Hip-Hop/Rap"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>93)
+		ActsTags.create!(:act_id =>act_id, :tag_id =>8)
+	when "Jazz"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>7)
+	when "Latin Rock"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>36)
+	when "Metal"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>9)
+	when "Pop"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>35)
+	when "Punk"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>3)
+	when "R & B"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>34)
+	when "R&B"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>34)
+	when "Reggae"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>42)
+	when "Rock"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>2)
+	when "Singer-Songwriter"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>99)
+	when "Ska"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>101)
+	when "Spoken Word"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>99)
+	when "Tejano"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>36)
+	when "World"
+		ActsTags.create!(:act_id =>act_id, :tag_id =>33)
 	end
 end
