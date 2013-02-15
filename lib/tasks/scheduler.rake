@@ -439,7 +439,7 @@ namespace :api do
 			artist["picture"] = matched_artist["picture"]
 
 			# now hit database and find or create a new artist
-			if Act.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '')) = ?", artist["name"].downcase ]) == nil
+			if Act.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '')) = ?", artist["name"].gsub(/[^0-9A-Za-z]/, '').downcase ]) == nil
 				puts "...Creating new artist for #{artist["name"]}"
 				act_edit = Act.create!(
 							:name => artist["name"],
@@ -471,7 +471,7 @@ namespace :api do
 
 				count += 1
 			else
-				act_edit = Act.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '')) = ?", artist["name"].downcase ])
+				act_edit = Act.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '')) = ?", artist["name"].gsub(/[^0-9A-Za-z]/, '').downcase ])
 				puts "...Found existing artist #{act_edit.name}"
 				act_edit.pop_source = "sxsw"
 				act_edit.pop_id = artist["id"]
@@ -513,7 +513,7 @@ namespace :api do
 			# y new_e
 			new_e_venue = RawVenue.where(:from => "sxsw", :raw_id => new_e["venue_id"]).first.venue_id
 
-			if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].downcase ]) == nil
+			if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].gsub(/[^0-9A-Za-z]/, '').downcase ]) == nil
 				puts "....Creating event #{new_e["name"]}"
 				sxsw_event = Event.create!(
 								:title => new_e["name"],
@@ -561,7 +561,7 @@ namespace :api do
 
 			else
 				puts "....Updating Event #{new_e["name"]}"
-				sxsw_event = Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].downcase ])
+				sxsw_event = Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].gsub(/[^0-9A-Za-z]/, '').downcase ])
 				sxsw_event.title = new_e["name"]
 				sxsw_event.description = new_e["description"]
 				sxsw_event.venue_id = new_e_venue
@@ -1474,7 +1474,7 @@ def sxswVenueSave(line, parent)
 		raw_venue.venue_id = new_venue.id
 		raw_venue.save
 	elsif Venue.find(:first, :conditions => [ "lower(name) = ?", parent["name"].downcase ]) == nil
-		if Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '')) = ?", parent["street"].downcase ]) == nil
+		if Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '')) = ?", parent["street"].gsub(/[^0-9A-Za-z]/, '').downcase ]) == nil
 			puts "....Creating real venue for #{line["name"]}"
 			new_venue = Venue.create!(
 				:name => raw_venue.name,
@@ -1493,7 +1493,7 @@ def sxswVenueSave(line, parent)
 					   	   :image => open(line["picture"])) rescue nil
 		else
 			puts "Found venue for #{parent["name"]} by address via #{line["name"]}"
-			real_venue = Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '')) = ?", parent["street"].downcase ]).id
+			real_venue = Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '')) = ?", parent["street"].gsub(/[^0-9A-Za-z]/, '').downcase ]).id
 			raw_venue.venue_id = real_venue
 			raw_venue.save
 			# # Create pictures
