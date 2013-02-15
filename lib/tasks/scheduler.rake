@@ -473,6 +473,8 @@ namespace :api do
 			else
 				act_edit = Act.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '')) = ?", artist["name"].downcase ])
 				puts "...Found existing artist #{act_edit.name}"
+				act_edit.pop_source = "sxsw"
+				act_edit.pop_id = artist["id"]
 			end
 		end
 		puts "Created #{count} new artists out of #{artist_list.length} artists"
