@@ -385,7 +385,7 @@ namespace :api do
 		artist_list = Array.new
 		count = 0
 		puts "Creating artist list from events file..."
-		f = File.open(Rails.root + "app/_etc/sxsw_events2.csv")
+		f = File.open(Rails.root + "app/_etc/sxsw_events.csv")
 		lines = f.read
 		lines = lines.split(/0"\n/)
 		lines.each do |l|
@@ -475,6 +475,7 @@ namespace :api do
 				puts "...Found existing artist #{act_edit.name}"
 				act_edit.pop_source = "sxsw"
 				act_edit.pop_id = artist["id"]
+				act.save!
 			end
 		end
 		puts "Created #{count} new artists out of #{artist_list.length} artists"
