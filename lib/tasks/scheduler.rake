@@ -497,9 +497,7 @@ namespace :api do
 			new_e["name"] = e[1]
 			new_e["venue_id"] = e[3]
 			new_e["start_time"] = e[4]
-			puts new_e["start_time"] 
 			new_e["end_time"] = e[5]
-			puts new_e["end_time"] 
 			desc_only = /.+Description<\/strong><br \/>(.+?)<br \/>.+/m.match(e[12])
 			if !desc_only.nil?
 				new_e["description"] = e[23] + "\n\n" + desc_only[1]
@@ -529,8 +527,8 @@ namespace :api do
 					)
 
 				if new_e["type"] == "Showcase"
-					event_act = Act.where(:pop_source => "sxsw", :pop_id => new_e["artist"]).first
-					ActsEvents.create(:act_id => event_act.id, :event_id => sxsw_event.id)
+					event_act = Act.where(:pop_source => "sxsw", :pop_id => '2749172482').first
+					ActsEvents.create(:act_id => event_act.id, :event_id => sxsw_event.id) rescue puts "!!!!!! FAILED TO LINK ACT AND EVENT"
 					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 1)
 					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 168)
 					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 185)
@@ -574,7 +572,7 @@ namespace :api do
 				# y occ
 				occ.save!
 
-				# # Create pictures
+				# Create pictures
 				if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 3
 					puts "Saving picture...."
 					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
