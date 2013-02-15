@@ -528,7 +528,27 @@ namespace :api do
 				if new_e["type"] == "Showcase"
 					event_act = Act.where(:pop_source => "sxsw", :pop_id => new_e["artist"]).first
 					ActsEvents.create(:act_id => event_act.id, :event_id => sxsw_event.id)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 1)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 168)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 185)
+				elsif new_e["type"] == "Screening"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 186)
+				elsif new_e["type"] == "Sessions"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 187)
+				elsif new_e["type"] == "Party"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 184)
+				elsif new_e["type"] == "Special Event"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 188)
 				end
+
+				if new_e["conference"] == "Music"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 179)
+				elsif new_e["conference"] == "Interactive"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 176)
+				elsif new_e["conference"] == "Film"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 183)
+				end
+						
 
 				puts "Saving picture...."
 				cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
