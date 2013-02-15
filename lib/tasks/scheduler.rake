@@ -526,6 +526,7 @@ namespace :api do
 					:event_id => sxsw_event.id
 					)
 
+				EventsTags.create(:event_id => sxsw_event.id, :tag_id => 163)
 				if new_e["type"] == "Showcase"
 					event_act = Act.where(:pop_source => "sxsw", :pop_id => new_e["artist"]).first
 					ActsEvents.create(:act_id => event_act.id, :event_id => sxsw_event.id) rescue puts "!!!!!! FAILED TO LINK ACT AND EVENT"
