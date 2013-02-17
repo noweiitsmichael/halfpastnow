@@ -70,7 +70,9 @@
 					<% end %>
 				</div>
 				<div class="address one"><%= @event.venue.address %></div>
+				<% unless @event.venue.city.blank? %>
 				<div class="address two"><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></div>
+				<% end %>
 			</div>
 		</div>
 		<% unless (@event.venue.fb_picture.blank? && @event.fb_picture.blank? && @event.pictures.nil? && @event.acts.nil? )%>

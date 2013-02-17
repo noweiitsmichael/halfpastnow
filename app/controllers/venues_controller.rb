@@ -225,13 +225,12 @@ class VenuesController < ApplicationController
   def fromRaw
     @venue = Venue.find(params[:id])
     puts "creating from raw......."
-     # pp params
+    pp params
     @event = @venue.events.build()
     @event.user_id = current_user.id
     y params
     @event.update_attributes!(params[:event])
-
-    if params[:bookmark_lists_add]
+    unless params[:bookmark_lists_add].blank?
       Bookmark.create(:bookmarked_type => "Occurrence", :bookmarked_id => @event.nextOccurrence.id, :bookmark_list_id => params[:bookmark_lists_add] )
       @event.clicks += 100
     end
@@ -383,7 +382,7 @@ class VenuesController < ApplicationController
 
     @event.update_attributes!(params[:event])
 
-    if params[:bookmark_lists_add]
+    unless params[:bookmark_lists_add].blank?
       Bookmark.create(:bookmarked_type => "Occurrence", :bookmarked_id => @event.nextOccurrence.id, :bookmark_list_id => params[:bookmark_lists_add] )
       @event.clicks += 100
     end
