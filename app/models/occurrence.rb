@@ -329,7 +329,8 @@ class Occurrence < ActiveRecord::Base
     queryResult = ActiveRecord::Base.connection.select_all(query) 
     # @event_ids = queryResult.collect { |e| e["event_id"] }.uniq
     # @str_array = @event_ids.collect{|i| i.to_i}.join(',')
-    # puts queryResult
+    puts "Qyertttt"
+    puts query
     # queryTag = "SELECT tags.name, t0.event_id AS event_id FROM tags INNER JOIN events_tags t0 ON tags.id = t0.tag_id WHERE t0.event_id IN (#{@str_array})"
 
     # queryResultTag = ActiveRecord::Base.connection.select_all(queryTag)
