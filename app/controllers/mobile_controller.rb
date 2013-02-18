@@ -1035,7 +1035,7 @@ def FacebookLogin
             WHERE occurrences.id IN (#{ids})"
     
 
-
+    queryResult = ActiveRecord::Base.connection.select_all(query)
 
     # puts "queryResult------------------------"
     # puts queryResult.to_json
