@@ -1831,7 +1831,7 @@ def SX
 
   end
   
-  def tpevents
+  def tpevents1
     tmp ="0"
 
     @ids = params[:ids].to_s.empty? ? nil : params[:ids].split(',')
@@ -1943,7 +1943,7 @@ def SX
 
   end
   
-  def tpevents1
+  def tpevents
     tmp ="0"
 
     @ids = params[:ids].to_s.empty? ? nil : params[:ids].split(',')
