@@ -1417,7 +1417,7 @@ def SX
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       puts "queryResult 10 "
-      occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"] }.uniq
+      occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
       ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
       esinfo = ttttmp.drop(@offset).take(@amount)
       puts esinfo
