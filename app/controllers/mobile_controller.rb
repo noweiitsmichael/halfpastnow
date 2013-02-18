@@ -984,8 +984,8 @@ def FacebookLogin
     ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
     esinfo = ttttmp.drop(@offset).take(@amount)
     ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
-    puts "iDs"
-    puts ids
+    # puts "iDs"
+    # puts ids
     esinfo = []
     if (ids.size > 0) && !ids.empty?
       query = "SELECT DISTINCT ON (recurrences.id,users.id,bookmark_lists.id) bookmark_lists.id AS listid, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
@@ -1036,12 +1036,12 @@ def FacebookLogin
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE occurrences.id IN (#{ids})"
     
-    puts "Query"
-    puts query
+    # puts "Query"
+    # puts query
     queryResult = ActiveRecord::Base.connection.select_all(query)
 
-    puts "queryResult------------------------"
-    puts queryResult.to_json
+    # puts "queryResult------------------------"
+    # puts queryResult.to_json
     @ids = queryResult
     # puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
@@ -1119,8 +1119,8 @@ def FacebookLogin
 
       esinfo << item
     }
-    puts "Output: - before sorting "
-    puts esinfo.to_json
+    # puts "Output: - before sorting "
+    # puts esinfo.to_json
     ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
     
     esinfo = ttttmp.collect{|es| es.values}
@@ -1136,8 +1136,8 @@ def FacebookLogin
     unless(params[:offset].to_s.empty?)
       @offset = params[:offset].to_i
     end
-    puts "Output: "
-    puts esinfo.to_json
+    # puts "Output: "
+    # puts esinfo.to_json
     #  Bookmarked events
     email = params[:email]
     @user=User.find_by_email(email)
