@@ -1418,7 +1418,7 @@ def SX
       queryResult = ActiveRecord::Base.connection.select_all(query)
       puts "queryResult 10 "
       occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"] }.uniq
-      ttttmp = queryResult.sort_by{ |hsh| hsh[:start].to_datetime }
+      ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
       esinfo = ttttmp.drop(@offset).take(@amount)
       puts esinfo
 
