@@ -1414,8 +1414,8 @@ def SX
               ORDER BY events.id, occurrences.start"
     
     queryResult = ActiveRecord::Base.connection.select_all(query)
-    # puts "queryResult------------------------"
-    # puts queryResult.to_json
+    puts "queryResult------------------------"
+    puts queryResult.to_json
     @ids = queryResult
     # puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
