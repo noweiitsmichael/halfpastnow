@@ -1382,7 +1382,7 @@ def SX
     tmp ="0"
     tmp1 ="o"
     
-    query = "SELECT DISTINCT ON (events.id,users.id,bookmark_lists.id) occurrences.id AS occurrence_id
+    query = "SELECT DISTINCT ON (events.id,users.id,bookmark_lists.id) occurrences.id AS occurrence_id, occurrences.start AS start
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
@@ -1393,9 +1393,9 @@ def SX
               INNER JOIN venues ON events.venue_id = venues.id
               LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
+            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match }
             UNION
-            SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.id AS occurrence_id
+            SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.id AS occurrence_id, occurrences.start AS start
             FROM occurrences 
               INNER JOIN events ON occurrences.event_id = events.id
               INNER JOIN venues ON events.venue_id = venues.id
@@ -1406,7 +1406,7 @@ def SX
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL
             UNION
-            SELECT DISTINCT ON (events.id,acts.id) occurrences.id AS occurrence_id
+            SELECT DISTINCT ON (events.id,acts.id) occurrences.id AS occurrence_id, occurrences.start AS start
             FROM occurrences 
               INNER JOIN events ON occurrences.event_id = events.id
               LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
@@ -1416,8 +1416,12 @@ def SX
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
       queryResult = ActiveRecord::Base.connection.select_all(query)
-      puts "queryResult IDs"
+      puts "queryResult 10 "
       occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"] }.uniq
+      ttttmp = queryResult.sort_by{ |hsh| hsh[:start].to_datetime }
+      esinfo = ttttmp.drop(@offset).take(@amount)
+      puts esinfo
+
      query = "SELECT DISTINCT ON (events.id,users.id,bookmark_lists.id) bookmark_lists.id AS listid, users.id AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, #{tmp} AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
@@ -1534,7 +1538,7 @@ def SX
     }
 
     ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
-    esinfo = ttttmp.drop(@offset).take(@amount)
+   
     esinfo = esinfo.collect{|es| es.values}
     @amount = 10
     unless(params[:amount].to_s.empty?)
