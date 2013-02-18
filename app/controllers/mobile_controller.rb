@@ -1117,10 +1117,11 @@ def FacebookLogin
 
       esinfo << item
     }
-
+    puts "Output: - before sorting "
+    puts esinfo.to_json
     ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
-    esinfo = ttttmp.drop(@offset).take(@amount)
-    esinfo = esinfo.collect{|es| es.values}
+    
+    esinfo = ttttmp.collect{|es| es.values}
     @amount = 10
     unless(params[:amount].to_s.empty?)
       @amount = params[:amount].to_i
