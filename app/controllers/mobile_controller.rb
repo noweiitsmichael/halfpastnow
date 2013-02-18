@@ -1408,7 +1408,7 @@ def SX
     #         UNION
      
       # query = "SELECT DISTINCT ON (events.id,acts.id) #{tmp} AS listid, #{tmp} AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, #{tmp} AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-      query = "SELECT DISTINCT ON (events.id,acts.id) #{tmp} AS listid, #{tmp} AS user_id, occurrences.end AS end,events.cover_image_url AS cover
+      query = "SELECT DISTINCT ON (events.id,acts.id) #{tmp} AS listid, #{tmp} AS user_id, occurrences.end AS end,events.cover_image_url AS cover, events.id AS event_id, venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address
               FROM occurrences 
               INNER JOIN events ON occurrences.event_id = events.id
               LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
