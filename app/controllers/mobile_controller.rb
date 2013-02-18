@@ -1034,11 +1034,12 @@ def FacebookLogin
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE occurrences.id IN (#{ids})"
     
-
+    puts "Query"
+    puts query
     queryResult = ActiveRecord::Base.connection.select_all(query)
 
-    # puts "queryResult------------------------"
-    # puts queryResult.to_json
+    puts "queryResult------------------------"
+    puts queryResult.to_json
     @ids = queryResult
     # puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
@@ -1129,8 +1130,8 @@ def FacebookLogin
     unless(params[:offset].to_s.empty?)
       @offset = params[:offset].to_i
     end
-
-    # puts esinfo.to_json
+    puts "Output: "
+    puts esinfo.to_json
     #  Bookmarked events
     email = params[:email]
     @user=User.find_by_email(email)
