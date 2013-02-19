@@ -1727,7 +1727,7 @@ def SX
             INNER JOIN bookmarks ON occurrences.id= bookmarks.bookmarked_id 
             INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id 
             INNER JOIN users ON bookmark_lists.user_id = users.id 
-            WHERE #{where_clause} AND occurrences.deleted IS false AND bookmarks.bookmarked_type='Occurrence' AND bookmark_lists.main_bookmarks_list IS TRUE AND occurrences.recurrence_id IS NOT NULL 
+            WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND bookmarks.bookmarked_type='Occurrence' AND bookmark_lists.main_bookmarks_list IS TRUE AND occurrences.recurrence_id IS NOT NULL 
             UNION SELECT occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, 
             events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, 
             venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, 
@@ -1744,7 +1744,7 @@ def SX
             INNER JOIN bookmarks ON occurrences.id= bookmarks.bookmarked_id 
             INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id 
             INNER JOIN users ON bookmark_lists.user_id = users.id 
-            WHERE #{where_clause} AND occurrences.deleted IS false AND bookmarks.bookmarked_type='Occurrence' AND bookmark_lists.main_bookmarks_list IS TRUE AND occurrences.recurrence_id IS NULL"
+            WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND bookmarks.bookmarked_type='Occurrence' AND bookmark_lists.main_bookmarks_list IS TRUE AND occurrences.recurrence_id IS NULL"
     queryResult = ActiveRecord::Base.connection.select_all(query)
     
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
