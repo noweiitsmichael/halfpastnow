@@ -983,7 +983,7 @@ def FacebookLogin
     occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
     ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
     esinfo = ttttmp.drop(@offset).take(@amount)
-    tmp = esinfo
+    
     ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
     # puts "iDs"
     # puts ids
