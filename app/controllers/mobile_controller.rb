@@ -2897,7 +2897,7 @@ end
       if bm.bookmarked_id != 1 && bm.bookmarked_id != nil
         occu = Occurrence.find(bm.bookmarked_id)
         eventt = occu.event
-        if eventt.id == @event.id
+        if (eventt.id == @event.id) && (!eventt.empty?)
           @idd = bm.bookmarked_id
           
           break
