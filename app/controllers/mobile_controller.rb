@@ -1063,7 +1063,7 @@ def FacebookLogin
         e = Event.find(id)
         if !e.nil?
           ids=e.bookmarks.collect{|b| b.bookmark_list_id}
-          tps = BookmarkList.where(:featured=>true, :id =>ids).collect{|l| l.picture}
+          tps = BookmarkList.where(:featured=>true, :id =>ids).collect{|l| l.picture_url}
         end
         
       end
