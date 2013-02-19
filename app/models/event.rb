@@ -7,6 +7,7 @@ class Event < ActiveRecord::Base
 
   has_many :recurrences, :dependent => :destroy
   has_many :occurrences, :dependent => :destroy
+  has_many :bookmarks, :through => :occurrences
   has_many :pictures, :as => :pictureable, :dependent => :destroy
   has_many :embeds, :as => :embedable, :dependent => :destroy
 

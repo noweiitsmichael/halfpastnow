@@ -929,7 +929,7 @@ def FacebookLogin
     tmp ="0"
     tmp1 ="o"
     
-    query = "SELECT DISTINCT ON (recurrences.id,users.id,bookmark_lists.id) occurrences.id AS occurrence_id, occurrences.start AS start
+    query = "SELECT DISTINCT ON (recurrences.id,users.id,bookmark_lists.id) occurrences.id AS occurrence_id, occurrences.start AS start, recurrences.id AS recurrence_id, recurrences.end AS rec_end 
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
@@ -941,9 +941,9 @@ def FacebookLogin
               LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
               INNER JOIN recurrences ON events.id = recurrences.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL
+            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL AND recurrences.end >= '#{Date.today()}'
             UNION
-            SELECT DISTINCT ON (events.id,users.id,bookmark_lists.id) occurrences.id AS occurrence_id, occurrences.start AS start 
+            SELECT DISTINCT ON (events.id,users.id,bookmark_lists.id) occurrences.id AS occurrence_id, occurrences.start AS start , recurrences.id AS recurrence_id, recurrences.end AS rec_end
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
@@ -956,7 +956,7 @@ def FacebookLogin
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
             UNION
-            SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.id AS occurrence_id, occurrences.start AS start
+            SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.id AS occurrence_id, occurrences.start AS start, recurrences.id AS recurrence_id, recurrences.end AS rec_end
             FROM occurrences 
               INNER JOIN events ON occurrences.event_id = events.id
               INNER JOIN venues ON events.venue_id = venues.id
@@ -965,9 +965,9 @@ def FacebookLogin
               LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
               INNER JOIN recurrences ON events.id = recurrences.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL
+            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL AND recurrences.end >= '#{Date.today()}'
             UNION
-            SELECT DISTINCT ON (events.id,acts.id) occurrences.id AS occurrence_id, occurrences.start AS start
+            SELECT DISTINCT ON (events.id,acts.id) occurrences.id AS occurrence_id, occurrences.start AS start, recurrences.id AS recurrence_id, recurrences.end AS rec_end
             FROM occurrences 
               INNER JOIN events ON occurrences.event_id = events.id
               LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
@@ -983,6 +983,7 @@ def FacebookLogin
     occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
     ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
     esinfo = ttttmp.drop(@offset).take(@amount)
+    tmp = esinfo
     ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
     # puts "iDs"
     # puts ids
@@ -1058,6 +1059,15 @@ def FacebookLogin
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
       tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture_url}.uniq
+      if tps.count == 0
+        e = Event.find(id)
+        if !e.nil?
+          ids=e.bookmarks.collect{|b| b.bookmark_list_id}
+          tps = BookmarkList.where(:featured=>true, :id =>ids).collect{|l| l.picture}
+        end
+        
+      end
+      
       
       # puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
