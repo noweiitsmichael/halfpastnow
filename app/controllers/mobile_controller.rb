@@ -2920,6 +2920,9 @@ end
     }
     @bookmark=@list.bookmarks.find_by_bookmarked_id(@idd)
     @bookmark.destroy
+    respond_to do |format|
+      format.json { render json: { :ids =>@idd  } } 
+    end
   end
   def bookmarkvenue
     current_user =  User.find_by_email(params[:email])
