@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  
+  <% if @fullmode %>
+    <% if @event && @event.cover_image_url %>
+      <meta property="og:image" content="<%= @event.cover_image_url %>" />
+    <% end %>
+  <% else %>
+     <% if @pick %>
+        <meta property="og:image" content="<%= @bookmarkList.picture %>" />
+      <% else %>
+        <meta property="og:image" content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png" />
+      <% end %>
+  <% end %>
+
+  <meta property="fb:app_id" content="475386955806720" />
+  
+  <% if @pick %>
+    <meta property="og:type" content="halfpastnow:toppick" />
+  <% else %>
+    <meta property="og:type" content="halfpastnow:event" />
+  <% end %>
+  <title><%= @pageTitle || "half past now." %></title>
+  
+  <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic,'>
+  
+  <link rel="shortcut icon" href="/assets/favicon.ico" />
+  
+  <%= javascript_include_tag "application" %>
+
+
+  
+  <%= stylesheet_link_tag    "application" %>
+  <%= csrf_meta_tags %>
+
+
+</head>
+<body>
+	
+<script type="text/javascript">
+	$(function() {
+		var $container = $("#trendsetter-preview"),
+		    $tabs = $(".tabs", $container).hide();
+
+		$(".ts-icons img", $container).hover(function() {
+		    $tabs.removeClass("active").hide();
+		    $(".ts-icons img").css("border-color", "white");
+		    $(this).css("border-color", "purple");
+		    $tabs.eq( $(this).addClass("active").index() ).fadeIn(80);
+		});
+	});
+</script>
+  <div id="body">
+    <div id="header">
+      <div class="one">
+        <div>
+          <div class="stay-on-target">
+            <a href="/"><img class="logo" src="/assets/halfpastnow_final_beta-dark-header.png" /></a>
+<!--             <a class="main menu-element <%= params[:controller] == "events" ? "selected" : "" %>" href="/">Search</a>
+            <a class="main menu-element <%= params[:controller] == "picks" ? "selected" : "" %>" href="/picks">Top Picks</a> -->
+            <% if false %><% end %>
+            <% if user_signed_in? %>
+              <div class="menu-element right pic">
+                <%= link_to(current_user.firstname + " " + current_user.lastname, edit_user_registration_path) %>
+                <%= link_to image_tag(current_user.profilepic_url(:mini) || "/assets/profile.png", :class => "top-profile-pic"), edit_user_registration_path %>
+              </div>
+            <% else %>
+              <div class="menu-element right">
+                  <a href="#" linkto="shunt">Sign Up</a> <span>/</span> <a href="#" linkto="shunt">Login</a>
+              </div>
+            <% end %>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="splash-content">
+		<div id="hero">
+			<div class="hero-writing">
+				<div class="hero-label">
+					Welcome to <span class="hpn">half past now.</span>
+				</div>
+
+				<div class="hero-text">
+					Discover amazing events and activities, find communities for the things that you love.
+				</div>
+			</div>
+		</div>
+
+		<div id="splash-actions">
+			<div style="font-style:italic; font-size:30px">
+				Explore events in Austin via one of two ways:
+			</div>
+
+			<div class="left-column">
+					<a href="#" class="nice-button calendar-button">
+						<i class="icon-star"></i>
+						Get the best recommendations
+					</a>
+				<div class="action-description">
+					Made by your friends and local trendsetters
+				</div>
+
+
+
+			</div>
+			<div class="right-column">
+					<a href="#" class="nice-button search-button">
+						<i class="icon-search"></i>
+						Use our powerful event filter engine
+					</a>
+				<div class="action-description">
+					Drill down to find exactly what you’re looking for.
+				</div>
+
+			</div>
+		</div>
+
+    </div>
+
+	<div id="splash-content" style="height:630px">
+    		<div id="splash-actions">
+			<div class="left-column">
+				<div class="see-more">
+					<i class="icon-angle-down"></i>
+				</div>
+			<div class="pick-mini-list">
+				Our local trendsetters are the mavens of the community - people and organizations that are in-the-know about Austin and about their passions.<br><br>
+				
+				<div id="trendsetter-preview">
+					<div class="ts-icons">
+						<% BookmarkList.where(:featured => true).sort_by{|a| a.bookmarks}.first(10).each_with_index do |b, i| %>
+							<%= image_tag b.picture_url(:thumb) || "/assets/picklist-placeholder.png", :class => "picture", :style => "width:60px; border:3px; border-style:solid; border-color:white" %>
+						<% end %>
+					</div>
+
+					<% BookmarkList.where(:featured => true).sort_by{|a| a.bookmarks}.first(10).each_with_index do |b, i| %>
+					  <div style="text-align:left; font-size:16px" class="tabs box14">
+					    <p><%= truncate(b.description, :length => 250, :separator => '.') %></p>
+					    <div class="box14_ribbon"></div>
+					  </div>
+					<% end %>
+
+				</div>
+			</div>
+			</div>
+
+			<div class="right-column">
+				<div class="see-more">
+					<i class="icon-angle-down"></i>
+				</div>
+				<div class="pick-mini-list">
+					Our clean and intuitive event search capability allows you to filter by your preferences, and even save them for future use.
+					<br>
+					<img src="/assets/filter_ss.png" style="margin-top:40px"/>
+				</div>
+			</div>
+		</div>
+    </div>
+
+    <div class="splash-signup-bg">
+    	<div class="splash-signup">
+	    	<div class="left-column" style="color:#ddd">
+	    		<h1><span style="font-style:italic"> Start now.</span> Your couch will miss you.</h1>
+	    		Create an account to use everything halfpastnow has to offer:
+	    		<br><br>
+	    		<ul style="margin-left:20px">
+	    			<li>  <i class="icon-bookmark" style="font-size:16px"> </i>  Save your searches for future use</li>
+	    			<li>  <i class="icon-bookmark" style="font-size:16px"> </i>  Get weekly newsletters with personalized recommendations</li>
+	    			<li>  <i class="icon-bookmark" style="font-size:16px"> </i>  See what your friends are doing</li>
+	    		</ul>
+	    	</div>
+
+	    	<div class="right-column">
+				<div class="nice-button start-now">
+					<a href="#" linkto="shunt">Start now!</a>
+				</div>
+	    	</div>
+    	</div>
+    </div>
+    <div class="splash-footer-bg">
+	    <div class="splash-footer">
+			<a href="/info/about">About Us</a> | 
+			<a href="http://blog.halfpastnow.com">Blog</a> | 
+			<a href="/info/privacy">Privacy</a> | 
+			<a href="/info/terms">Terms</a> | 
+		 	&#169; halfpastnow. chimera labs 2013
+	    </div>
+	</div>
+
+  </div>
+  <div id="overlays">
+    <div class="mode">
+      <div class="overlay">
+        <div class="insert-point">
+          <div class="window">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
