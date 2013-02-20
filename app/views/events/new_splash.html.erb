@@ -45,10 +45,13 @@
 		    $tabs = $(".tabs", $container).hide();
 
 		$(".ts-icons img", $container).hover(function() {
+			// console.log("do");
 		    $tabs.removeClass("active").hide();
 		    $(".ts-icons img").css("border-color", "white");
 		    $(this).css("border-color", "purple");
 		    $tabs.eq( $(this).addClass("active").index() ).fadeIn(80);
+		}, function() {
+			// console.log("not do");
 		});
 	});
 </script>
@@ -92,11 +95,11 @@
 
 		<div id="splash-actions">
 			<div style="font-style:italic; font-size:30px">
-				Explore events in Austin via one of two ways:
+				Explore events in Austin in one of two ways:
 			</div>
 
 			<div class="left-column">
-					<a href="#" class="nice-button calendar-button">
+					<a href="/picks" class="nice-button calendar-button">
 						<i class="icon-star"></i>
 						Get the best recommendations
 					</a>
@@ -108,7 +111,7 @@
 
 			</div>
 			<div class="right-column">
-					<a href="#" class="nice-button search-button">
+					<a href="/search" class="nice-button search-button">
 						<i class="icon-search"></i>
 						Use our powerful event filter engine
 					</a>
@@ -121,7 +124,7 @@
 
     </div>
 
-	<div id="splash-content" style="height:630px">
+	<div id="splash-content" style="height:620px">
     		<div id="splash-actions">
 			<div class="left-column">
 				<div class="see-more">
@@ -188,6 +191,10 @@
 			<a href="/info/privacy">Privacy</a> | 
 			<a href="/info/terms">Terms</a> | 
 		 	&#169; halfpastnow. chimera labs 2013
+
+	    <div class="accredit">
+	    	<a href="http://www.sabrinabeanphotography.com/" target="_blank">Photo: Sabrina Bean</a>
+	    </div>
 	    </div>
 	</div>
 

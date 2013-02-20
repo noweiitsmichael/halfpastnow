@@ -393,6 +393,16 @@ background-size: cover;
   text-decoration: none;
 }
 
+.accredit {
+  float:left;
+}
+.accredit a{
+  font-size:14px;
+  float:left;
+  color: #444;
+  text-decoration: underline
+}
+
 #header {
   z-index: 500;
   width: 100%;

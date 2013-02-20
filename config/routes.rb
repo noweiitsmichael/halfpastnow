@@ -92,7 +92,7 @@ Myapp::Application.routes.draw do
     root :to => 'events#index'
   end
   
-  root :to => 'events#index'
+  root :to => 'events#new_splash'
 
   # See how all your routes lay out with "rake routes"
 
@@ -109,7 +109,7 @@ Myapp::Application.routes.draw do
   match 'feedbacks' => 'feedbacks#index'
   match 'users' => 'users#index', :as => "user"
   match 'users/friends' => 'users#friends'
-  match '/search' => 'events#search'
+  match '/search' => 'events#index'
 
   match '/auth/:provider/callback' => 'authentications#create'
 
