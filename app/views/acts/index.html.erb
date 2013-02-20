@@ -104,6 +104,7 @@
 			<tr>
 				<th class="type-float" style="cursor:pointer;">%</th>
 				<th class="type-string" style="cursor:pointer;text-align:left;">name</th>
+				<th class="type-string" style="cursor:pointer;text-align:left;">events</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -116,6 +117,7 @@
 					</div>
 				</td>
 				<td data-order-by="<%= act.name %>"><a href="/userSubmission/actEdit/<%= act.id %>" class="act-name" act-id="<%= act.id %>" target="_blank"><%= act.name %></a></td>
+				<td data-order-by="<%= act.events.count %>"><%= act.events.count %></td>
 				<td><a href="#" class="act-delete" act-id="<%= act.id %>">[delete]</a></td>
 			</tr>
 		<% end %>
