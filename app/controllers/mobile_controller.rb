@@ -3558,7 +3558,7 @@ end
     if @attendlist.nil?
       @attendlist = BookmarkList.create(:name => "Attending", :description => "Attending", :public => false, :featured => false, :main_bookmarks_list => false, :user_id => current_user.id)
     end
-    @bookmark = attendlist.bookmarks.build
+    @bookmark = @attendlist.bookmarks.build
     @bookmark.bookmarked_id = @occurrenceid
     @bookmark.bookmarked_type = "Occurrence"
     @bookmark.save!
