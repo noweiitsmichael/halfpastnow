@@ -2519,7 +2519,7 @@ def SX
             LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id 
             LEFT OUTER JOIN acts ON acts.id = acts_events.act_id 
             INNER JOIN occurrences ON events.id = occurrences.event_id 
-            WHERE occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND bookmarks.bookmarked_type='Occurrence' AND occurrences.ids IN (158623)"
+            WHERE occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND occurrences.ids IN (158623)"
     queryResult = ActiveRecord::Base.connection.select_all(query)
     
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
