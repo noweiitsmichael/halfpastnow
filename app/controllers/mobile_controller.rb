@@ -2511,7 +2511,7 @@ def SX
 
 
   def friendRSVPEvents
-    bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.name ='Attending'
+    
     tmp ="0"
     @ids = params[:ids].to_s.empty? ? nil : params[:ids].split(',')
     tmps = "'#{@ids.join("','")}'"
