@@ -1474,17 +1474,6 @@ namespace :api do
 end
 
 def sxswVenueSave(line, parent)
-	puts "Creating raw venue for #{line["name"]}"
-	raw_venue = RawVenue.create!(
-		:name => line["name"],
-		:address => line["street"],
-		:city => line["city"],
-		:state_code => line["state"],
-		:latitude => line["lat"],
-		:longitude => line["long"],
-		:raw_id => line["id"],
-		:from => "sxsw"
-	)
 
 	if line["name"] == "Venue TBA"
 		new_venue = Venue.create!(

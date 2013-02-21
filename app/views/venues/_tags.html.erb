@@ -25,7 +25,7 @@ $(document).ready(function() {
 			</div>
 
 			<div class="children">
-			<% bold_tags = ['Unofficial SXSW', 'Free Food', 'Free Drinks', 'No Cover', 'Party'] %>
+			<% bold_tags = [' Unofficial SXSW', ' Free Food', ' Free Drinks', ' No Cover', ' Party', ' RSVP Required'] %>
 			<% tag.childTags.sort { |a,b| a.name <=> b.name }.each do |childTag| %>
 				<div class="child tag<% if bold_tags.include?(childTag.name) %> tag-bold<% end %>">
 				<%= check_box_tag @iStrName, childTag.id, element.id.nil? ? false : element.tags.include?(childTag), :id => (@iStrId + childTag.id.to_s), :class => "child-tag", 'parent-id' => tag.id %>
