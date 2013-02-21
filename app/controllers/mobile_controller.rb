@@ -2394,7 +2394,7 @@ def SX
             recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, 
             recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, 
             venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, users.lastname AS lastname,
-            users.firstname AS firstname, users.uid AS uid
+            users.firstname AS firstname, users.uid AS uid, bookmarks.id AS bookmarked_id
             FROM recurrences 
             INNER JOIN events ON recurrences.event_id = events.id 
             INNER JOIN venues ON events.venue_id = venues.id 
@@ -2412,7 +2412,7 @@ def SX
             #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, 
             events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, 
             events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, users.lastname AS lastname,
-            users.firstname AS firstname, users.uid AS uid 
+            users.firstname AS firstname, users.uid AS uid, bookmarks.id AS bookmarked_id
             FROM events 
             INNER JOIN venues ON events.venue_id = venues.id 
             LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id 
@@ -2522,7 +2522,7 @@ def SX
             recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, 
             recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, 
             venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, users.lastname AS lastname,
-            users.firstname AS firstname, users.uid AS uid
+            users.firstname AS firstname, users.uid AS uid, bookmarks.id AS bookmarked_id
             FROM recurrences 
             INNER JOIN events ON recurrences.event_id = events.id 
             INNER JOIN venues ON events.venue_id = venues.id 
@@ -2540,7 +2540,7 @@ def SX
             #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, 
             events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, 
             events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, users.lastname AS lastname,
-            users.firstname AS firstname, users.uid AS uid 
+            users.firstname AS firstname, users.uid AS uid, bookmarks.id AS bookmarked_id
             FROM events 
             INNER JOIN venues ON events.venue_id = venues.id 
             LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id 
@@ -2553,18 +2553,18 @@ def SX
             WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND bookmarks.bookmarked_type='Occurrence' AND bookmark_lists.name ='Attending' AND occurrences.recurrence_id IS NULL"
     queryResult = ActiveRecord::Base.connection.select_all(query)
     
-    @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
+    @eventIDs =  queryResult.collect { |e| e["bookmarked_id"] }.uniq
     # puts @eventIDs
     esinfo = []
-    @queryResult.each{ |r|
+    @eventIDs.each{ |id|
       # puts id
       # puts "SET"
-      
-      act = r.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      set =  queryResult.select{ |r| r["bookmarked_id"] == id.to_s }
+      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
-      rec_ids = r.collect { |e| e["rec_id"] }.uniq
-      rec = r.collect { |s| { 
+      rec_ids = set.collect { |e| e["rec_id"] }.uniq
+      rec = set.collect { |s| { 
         :every_other => s["every_other"],
         :day_of_week => s["day_of_week"],
         :week_of_month => s["week_of_month"], 
@@ -2576,7 +2576,7 @@ def SX
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
       tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
       # puts tags
-      s = r
+      s = set.first
       lastname = s["lastname"].to_s
       firstname =s["firstname"].to_s
       name =  firstname+' '+lastname
@@ -2636,6 +2636,7 @@ def SX
     end
 
   end
+
 
   
   def tpevents1
