@@ -924,7 +924,6 @@ input::-webkit-input-placeholder
 .tags-menu li .include.selected, .tags-menu li .include:hover {   
 }
 
-
 .child-tags-menu {
   display:none;
   background: white;
@@ -2633,6 +2632,11 @@ input::-webkit-input-placeholder
   cursor: pointer; 
   margin: 6px 25px 4px 2px; 
 }
+.tag-thing.tag-bold { 
+  background: #ddf;
+  font-weight: bold;
+}
+
 
 .pic-element-wrapper {
   float: left;

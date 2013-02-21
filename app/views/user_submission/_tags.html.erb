@@ -44,7 +44,8 @@
 			<% if parentTag.childTags.size > 0 %>
 				<div style="display:none;" parent-id="<%= parentTag.id %>" class="child">
 				<% parentTag.childTags.sort { |a,b| a.name <=> b.name }.each do |childTag| %>
-					<div class="tag-thing" parent-id="<%= parentTag.id %>"><%= check_box_tag (type + "[tag_ids][]"), childTag.id, element.tags.include?(childTag) %><label for="<%= type %>_tag_<%= childTag.id %>"><%= childTag.name %></label></div>
+					<% bold_tags = ['Unofficial SXSW', 'Free Food', 'Free Drinks', 'No Cover', 'Party'] %>
+					<div class="tag-thing<% if bold_tags.include?(childTag.name) %> tag-bold<% end %>" parent-id="<%= parentTag.id %>"><%= check_box_tag (type + "[tag_ids][]"), childTag.id, element.tags.include?(childTag) %><label for="<%= type %>_tag_<%= childTag.id %>"><%= childTag.name %></label></div>
 				<% end %>
 				</div>
 			<% end %>

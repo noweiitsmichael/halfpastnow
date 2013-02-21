@@ -333,6 +333,27 @@ end
 
 namespace :api do
 
+	desc "Eventbrite SXSW"
+	task :sxsw_eventbrite => :environment do
+		# SXSW events in Austin from 3/07 to 3/18
+		rawdata = Net::HTTP.get(URI.parse('http://www.eventbrite.com/json/event_search?app_key=QRZVIYQZFUIDXQ6Z4P&keywords=sxsw&city=austin&date=2013-03-07+2013-03-18'))
+		eb = JSON.parse(rawdata)
+		puts "Total results: #{eb["events"][0]["summary"]["total_items"]}"
+		pages = (eb["events"][0]["summary"]["total_items"] / 10).ceil
+		puts "Pages: #{pages}"
+		for i in 1..1
+			puts i
+			rawdata = Net::HTTP.get(URI.parse('http://www.eventbrite.com/json/event_search?app_key=QRZVIYQZFUIDXQ6Z4P&keywords=sxsw&city=austin&date=2013-03-07+2013-03-18'))
+			eb = JSON.parse(rawdata)
+			for i in 1..10
+				
+			end
+
+		end
+
+	end
+
+
 	desc "SXSW venues"
 	task :sxsw_venues => :environment do
 		puts "Opening venues file..."
