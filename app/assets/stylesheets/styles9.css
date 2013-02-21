@@ -399,8 +399,21 @@ background-size: cover;
 .accredit a{
   font-size:14px;
   float:left;
-  color: #444;
-  text-decoration: underline
+  color: #888;
+  text-decoration: underline;
+}
+
+.accredit2 {
+  float:left;
+  position: absolute;
+  bottom: 0px;
+  background-color: rgba(255,255,255,0.7);
+}
+.accredit2 a{
+  font-size:14px;
+  float:left;
+  color: black;
+  text-decoration: none;
 }
 
 #header {
