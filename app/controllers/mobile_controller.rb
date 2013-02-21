@@ -2556,15 +2556,15 @@ def SX
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
     # puts @eventIDs
     esinfo = []
-    @eventIDs.each{ |id|
+    @queryResult.each{ |r|
       # puts id
       # puts "SET"
-      set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      
+      act = r.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
-      rec_ids = set.collect { |e| e["rec_id"] }.uniq
-      rec = set.collect { |s| { 
+      rec_ids = r.collect { |e| e["rec_id"] }.uniq
+      rec = r.collect { |s| { 
         :every_other => s["every_other"],
         :day_of_week => s["day_of_week"],
         :week_of_month => s["week_of_month"], 
@@ -2576,7 +2576,7 @@ def SX
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
       tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
       # puts tags
-      s = set.first
+      s = r
       lastname = s["lastname"].to_s
       firstname =s["firstname"].to_s
       name =  firstname+' '+lastname
