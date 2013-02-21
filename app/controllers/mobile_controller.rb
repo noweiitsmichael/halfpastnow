@@ -2386,115 +2386,122 @@ def SX
   def friendEvents
     tmp ="0"
     @ids = params[:ids].to_s.empty? ? nil : params[:ids].split(',')
-    tmps = "'#{@ids.join("','")}'"
-    where_clause = "users.uid IN (#{tmps})"
-    query ="SELECT occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, 
-            events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, 
-            venues.state AS state,venues.zip AS zip, venues.city AS city, recurrences.start AS rec_start, recurrences.end AS rec_end, recurrences.every_other AS every_other,
-            recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, 
-            recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, 
-            venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, users.lastname AS lastname,
-            users.firstname AS firstname, users.uid AS uid, bookmarks.id AS bookmarked_id
-            FROM recurrences 
-            INNER JOIN events ON recurrences.event_id = events.id 
-            INNER JOIN venues ON events.venue_id = venues.id 
-            LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id 
-            LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id 
-            LEFT OUTER JOIN acts ON acts.id = acts_events.act_id 
-            INNER JOIN occurrences ON events.id = occurrences.event_id 
-            INNER JOIN bookmarks ON occurrences.id= bookmarks.bookmarked_id 
-            INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id 
-            INNER JOIN users ON bookmark_lists.user_id = users.id 
-            WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND bookmarks.bookmarked_type='Occurrence' AND bookmark_lists.main_bookmarks_list IS TRUE AND occurrences.recurrence_id IS NOT NULL 
-            UNION SELECT occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, 
-            events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, 
-            venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, 
-            #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, 
-            events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, 
-            events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, users.lastname AS lastname,
-            users.firstname AS firstname, users.uid AS uid, bookmarks.id AS bookmarked_id
-            FROM events 
-            INNER JOIN venues ON events.venue_id = venues.id 
-            LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id 
-            LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id 
-            LEFT OUTER JOIN acts ON acts.id = acts_events.act_id 
-            INNER JOIN occurrences ON events.id = occurrences.event_id 
-            INNER JOIN bookmarks ON occurrences.id= bookmarks.bookmarked_id 
-            INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id 
-            INNER JOIN users ON bookmark_lists.user_id = users.id 
-            WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND bookmarks.bookmarked_type='Occurrence' AND bookmark_lists.main_bookmarks_list IS TRUE AND occurrences.recurrence_id IS NULL"
-    queryResult = ActiveRecord::Base.connection.select_all(query)
-    
-    @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-    # puts @eventIDs
     esinfo = []
-    @eventIDs.each{ |id|
-      # puts id
-      # puts "SET"
-      set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
-      # act = set.collect { |s|  {s["actor"], s["act_id"]} }
-      # Find the uniq recurrence id
-      rec_ids = set.collect { |e| e["rec_id"] }.uniq
-      rec = set.collect { |s| { 
-        :every_other => s["every_other"],
-        :day_of_week => s["day_of_week"],
-        :week_of_month => s["week_of_month"], 
-        :day_of_month => s["day_of_month"] ,
-        :rec_start => s["rec_start"],  # 4
-        :rec_end => s["rec_end"]  # 5
-
-        }.values}.uniq 
-      # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
-      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
-      # puts tags
-      s = set.first
-      lastname = s["lastname"].to_s
-      firstname =s["firstname"].to_s
-      name =  firstname+' '+lastname
+    unless @ids.nil?
+      tmps = "'#{@ids.join("','")}'"
+      where_clause = "users.uid IN (#{tmps})"
+      query ="SELECT occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, 
+              events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, 
+              venues.state AS state,venues.zip AS zip, venues.city AS city, recurrences.start AS rec_start, recurrences.end AS rec_end, recurrences.every_other AS every_other,
+              recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, 
+              recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, 
+              venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, users.lastname AS lastname,
+              users.firstname AS firstname, users.uid AS uid, bookmarks.id AS bookmarked_id
+              FROM recurrences 
+              INNER JOIN events ON recurrences.event_id = events.id 
+              INNER JOIN venues ON events.venue_id = venues.id 
+              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id 
+              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id 
+              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id 
+              INNER JOIN occurrences ON events.id = occurrences.event_id 
+              INNER JOIN bookmarks ON occurrences.id= bookmarks.bookmarked_id 
+              INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id 
+              INNER JOIN users ON bookmark_lists.user_id = users.id 
+              WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND bookmarks.bookmarked_type='Occurrence' AND bookmark_lists.main_bookmarks_list IS TRUE AND occurrences.recurrence_id IS NOT NULL 
+              UNION SELECT occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, 
+              events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, 
+              venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, 
+              #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, 
+              events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, 
+              events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, users.lastname AS lastname,
+              users.firstname AS firstname, users.uid AS uid, bookmarks.id AS bookmarked_id
+              FROM events 
+              INNER JOIN venues ON events.venue_id = venues.id 
+              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id 
+              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id 
+              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id 
+              INNER JOIN occurrences ON events.id = occurrences.event_id 
+              INNER JOIN bookmarks ON occurrences.id= bookmarks.bookmarked_id 
+              INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id 
+              INNER JOIN users ON bookmark_lists.user_id = users.id 
+              WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND bookmarks.bookmarked_type='Occurrence' AND bookmark_lists.main_bookmarks_list IS TRUE AND occurrences.recurrence_id IS NULL"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
       
-      # item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
-      # :title => s["title"], :venue_name => s["venue_name"],:long => s["longitude"], :lat => s["latitude"], :event_id => s["event_id"], :venue_id => s["venue_id"],
-      # :occurrence_id => s["occurrence_id"], :price => s["price"] , :address => s["address"] , :zip => s["zip"] , :city => s["city"], :state => s["state"] ,:clicks => s["clicks"],
-      # :views => s["views"], :tags  =>  tags }
+      @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
+      # puts @eventIDs
+      
+      @eventIDs.each{ |id|
+        # puts id
+        # puts "SET"
+        set =  queryResult.select{ |r| r["event_id"] == id.to_s }
+        act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+        # act = set.collect { |s|  {s["actor"], s["act_id"]} }
+        # Find the uniq recurrence id
+        rec_ids = set.collect { |e| e["rec_id"] }.uniq
+        rec = set.collect { |s| { 
+          :every_other => s["every_other"],
+          :day_of_week => s["day_of_week"],
+          :week_of_month => s["week_of_month"], 
+          :day_of_month => s["day_of_month"] ,
+          :rec_start => s["rec_start"],  # 4
+          :rec_end => s["rec_end"]  # 5
 
-      item = {
-                :act => act, # 0
-                :rec => rec , # 1
-                :description => s["description"], # 2
-                :title => s["title"], # 3
-                :occurrence_id => s["occurrence_id"], #4
-                :cover => s["cover"] , #5
-                :venue_name => s["venue_name"], #6
-                :address => s["address"] , #7
-                :zip => s["zip"] , #8
-                :city => s["city"], #9
-                :state => s["state"] , #10
-                :phone => s["phone"], # 11
-                :lat => s["latitude"], # 12
-                :long => s["longitude"], #13
-                :venue_id => s["venue_id"], # 14
-                :price => s["price"] , #15
-                :views => s["views"],  #16
-                :clicks => s["clicks"], #17
-                :tags  => tags , # 18
-                :event_id => s["event_id"], #19
-                :start => s["occurrence_start"] , #20
-                :end => s["end"], #21
-                :name => name, # 22
-                :id => s["uid"] #23
-              }
+          }.values}.uniq 
+        # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
+        tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+        # puts tags
+        s = set.first
+        lastname = s["lastname"].to_s
+        firstname =s["firstname"].to_s
+        name =  firstname+' '+lastname
+        
+        # item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
+        # :title => s["title"], :venue_name => s["venue_name"],:long => s["longitude"], :lat => s["latitude"], :event_id => s["event_id"], :venue_id => s["venue_id"],
+        # :occurrence_id => s["occurrence_id"], :price => s["price"] , :address => s["address"] , :zip => s["zip"] , :city => s["city"], :state => s["state"] ,:clicks => s["clicks"],
+        # :views => s["views"], :tags  =>  tags }
+
+        item = {
+                  :act => act, # 0
+                  :rec => rec , # 1
+                  :description => s["description"], # 2
+                  :title => s["title"], # 3
+                  :occurrence_id => s["occurrence_id"], #4
+                  :cover => s["cover"] , #5
+                  :venue_name => s["venue_name"], #6
+                  :address => s["address"] , #7
+                  :zip => s["zip"] , #8
+                  :city => s["city"], #9
+                  :state => s["state"] , #10
+                  :phone => s["phone"], # 11
+                  :lat => s["latitude"], # 12
+                  :long => s["longitude"], #13
+                  :venue_id => s["venue_id"], # 14
+                  :price => s["price"] , #15
+                  :views => s["views"],  #16
+                  :clicks => s["clicks"], #17
+                  :tags  => tags , # 18
+                  :event_id => s["event_id"], #19
+                  :start => s["occurrence_start"] , #20
+                  :end => s["end"], #21
+                  :name => name, # 22
+                  :id => s["uid"] #23
+                }
 
 
-      # item = {:act => act, :rec => rec , s["occurrence_start"] ,  s["end"] ,s["cover"] , s["phone"], s["description"],
-      # ["title"],  s["venue_name"],s["longitude"], s["latitude"], s["event_id"],  s["venue_id"],
-      # s["occurrence_id"], s["price"] ,s["address"] ,  s["zip"] , s["city"], s["state"] , s["clicks"],
-      # s["views"], :tags  => Event.find(id).tags.collect{ |t| {t.id, t.name}}  }
+        # item = {:act => act, :rec => rec , s["occurrence_start"] ,  s["end"] ,s["cover"] , s["phone"], s["description"],
+        # ["title"],  s["venue_name"],s["longitude"], s["latitude"], s["event_id"],  s["venue_id"],
+        # s["occurrence_id"], s["price"] ,s["address"] ,  s["zip"] , s["city"], s["state"] , s["clicks"],
+        # s["views"], :tags  => Event.find(id).tags.collect{ |t| {t.id, t.name}}  }
 
 
 
-      esinfo << item
-    }
+        esinfo << item
+      }
+    end
+
+
+
+    
     if esinfo.count == 0
        firstname = 'half past'
        lastname = 'now'
