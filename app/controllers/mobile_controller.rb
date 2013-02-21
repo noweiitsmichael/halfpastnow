@@ -2512,7 +2512,7 @@ def SX
             #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, 
             events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, 
             events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, '#{lastname}' AS lastname,
-            '#{firstname}' AS firstname, '#{uid}' AS uid, bookmarks.id AS bookmarked_id
+            '#{firstname}' AS firstname, '#{uid}' AS uid, #{tmp} AS bookmarked_id
             FROM events 
             INNER JOIN venues ON events.venue_id = venues.id 
             LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id 
