@@ -1564,7 +1564,7 @@ def gettpevents
        end
     }
     puts occurrences
-    ttttmp = queryResult.sort_by{ |hsh| hsh["occurrence_start"] }
+    ttttmp = queryResult.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
     esinfo = ttttmp.drop(@offset).take(@amount)
     puts "After sorting and drop XXXX"
     puts esinfo.to_json
