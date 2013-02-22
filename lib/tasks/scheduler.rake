@@ -341,6 +341,10 @@ namespace :api do
 		puts "Total results: #{eb["events"][0]["summary"]["total_items"]}"
 		pages = (eb["events"][0]["summary"]["total_items"] / 10).ceil
 		puts "Pages: #{pages}"
+		new_raw_venues = 0
+		new_real_venues = 0
+		new_events = 0
+		updated_events = 0
 		for i in 1..pages # each page, 10 results per page
 			puts i
 			sauce = "http://www.eventbrite.com/json/event_search?app_key=QRZVIYQZFUIDXQ6Z4P&keywords=sxsw&city=austin&date=2013-03-07+2013-03-18&page=#{i}"
@@ -349,10 +353,10 @@ namespace :api do
 			eb = JSON.parse(rawdata)
 			for i in 1..10 #each result, 10 results per page
 				# First resolve venue
-				# If no existing raw venue is found via address or name, create one.
+				# If no existing raw venue is found via name and from Eventbrite, create one.
 				raw_venue = nil
-				if RawVenue.find(:first, :conditions =>[ "lower(name) = ?", eb["events"][i]["event"]["venue"]["name"].downcase ]) == nil
-						puts "Creating raw venue for #{eb["events"][i]["event"]["venue"]["name"]}"
+				if RawVenue.find(:first, :conditions =>[ "lower(name) = ? AND from = 'eventbrite'", eb["events"][i]["event"]["venue"]["name"].downcase ]) == nil
+						puts "!! Creating raw venue for #{eb["events"][i]["event"]["venue"]["name"]}"
 						raw_venue = RawVenue.create!(
 							:name => eb["events"][i]["event"]["venue"]["name"],
 							:address => eb["events"][i]["event"]["venue"]["address"],
@@ -365,10 +369,11 @@ namespace :api do
 							:raw_id => eb["events"][i]["event"]["venue"]["id"],
 							:from => "eventbrite"
 						)
+						new_raw_venues += 1
 						# Now see if a real venue needs to be created
 						if Venue.find(:first, :conditions => [ "lower(name) = ?", eb["events"][i]["event"]["venue"]["name"].downcase ]) == nil
 							if Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '')) = ?", eb["events"][i]["event"]["venue"]["address"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
-								puts "....Creating real venue for #{eb["events"][i]["event"]["venue"]["name"]}"
+								puts "!! Creating real venue for #{eb["events"][i]["event"]["venue"]["name"]}"
 								new_venue = Venue.create!(
 									:name => raw_venue.name,
 									:address => raw_venue.address,
@@ -381,24 +386,25 @@ namespace :api do
 								)
 								raw_venue.venue_id = new_venue.id
 								raw_venue.save
+								new_real_venues += 1
 							else
-								puts "Found venue for #{eb["events"][i]["event"]["venue"]["name"]} by address"
+								puts "....Found venue for #{eb["events"][i]["event"]["venue"]["name"]} by address"
 								real_venue = Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '')) = ?", eb["events"][i]["event"]["venue"]["address"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]).id
 								raw_venue.venue_id = real_venue
 								raw_venue.save
 							end
 						else
-							puts "Found venue for #{eb["events"][i]["event"]["venue"]["name"]} by name"
+							puts "....Found venue for #{eb["events"][i]["event"]["venue"]["name"]} by name"
 							real_venue = Venue.find(:first, :conditions => [ "lower(name) = ?", eb["events"][i]["event"]["venue"]["name"].downcase ]).id
 							raw_venue.venue_id = real_venue
 							raw_venue.save
 						end
 				else
 					if eb["events"][i]["event"]["venue"]["name"] == ""
-						puts "********** Error, no venue name for Eventbrite event #{eb["events"][i]["event"]["id"]} #{eb["events"][i]["event"]["title"]}" 
+						puts "** Error, no venue name for Eventbrite event #{eb["events"][i]["event"]["id"]} #{eb["events"][i]["event"]["title"]}" 
 						next
 					end
-					puts "Found raw venue for #{eb["events"][i]["event"]["venue"]["name"]} by name"
+					puts "....Found raw venue for #{eb["events"][i]["event"]["venue"]["name"]} by name"
 				end
 				#### Done with venue stuff, on to events ####
 
@@ -412,7 +418,7 @@ namespace :api do
 				new_e["picture"] = eb["events"][i]["event"]["logo"]
 				new_e["ticketing"] = eb["events"][i]["event"]["url"]
 
-				raw_venue = RawVenue.find(:first, :conditions =>[ "lower(name) = ?", eb["events"][i]["event"]["venue"]["name"].downcase ])
+				raw_venue = RawVenue.find(:first, :conditions =>[ "lower(name) = ? AND from = 'eventbrite'", eb["events"][i]["event"]["venue"]["name"].downcase ])
 				puts "Associating event to #{raw_venue.name}"
 
 				if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
@@ -429,8 +435,8 @@ namespace :api do
 									:from => "eventbrite",
 									:raw_venue_id => raw_venue.id
 									)
+					new_events += 1
 
-					# puts "Saving picture...."
 					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "RawEvent", 
 							   	   :image => open(new_e["picture"])) rescue nil
 					if cover_i
@@ -452,10 +458,9 @@ namespace :api do
 					occ.event_id = sxsw_event.id
 					# y occ
 					occ.save!
-
+					updated_events += 1
 					# # Create pictures
 					if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
-						puts "Saving picture...."
 						cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
 								   	   :image => open(new_e["picture"]))
 						sxsw_event.cover_image = cover_i.id
@@ -467,6 +472,11 @@ namespace :api do
 			end
 
 		end
+		puts "Completed! Summary:"
+		puts "New Raw Venues Created: #{new_raw_venues}"
+		puts "New Actual Venues Created: #{new_real_venues}"
+		puts "New Events Created: #{new_events}"
+		puts "Existing events updated: #{updated_events}"
 
 	end
 

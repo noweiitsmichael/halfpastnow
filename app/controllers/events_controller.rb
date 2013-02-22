@@ -358,9 +358,9 @@ def index
       # @eventsList = Event.find(:all, :conditions => ["(start > ?) AND (start < ?)", Time.now, 1.week.from_now])
 
       eventsQuery = "
-        SELECT raw_events.id, raw_events.title,raw_events.start,raw_events.from,raw_events.raw_id, raw_events.raw_venue_id, venues.id AS venue_id, venues.name
-          FROM raw_events,venues
-          WHERE raw_events.raw_venue_id = venues.id AND raw_events.from = 'eventbrite'"
+        SELECT raw_events.id, raw_events.title,raw_events.start,raw_events.from,raw_events.raw_id, raw_events.raw_venue_id, venues.id AS venue_id, venues.name AS venue_name
+          FROM raw_events, raw_venues, venues
+          WHERE raw_events.raw_venue_id = raw_venues.id AND raw_venues.venue_id = venues.id AND raw_events.from = 'eventbrite'"
       @eventsList = ActiveRecord::Base.connection.select_all(eventsQuery)
     else params[:range] == "active_sxsw"
       # @eventsList = Event.find(:all).map(&:nextOccurrence.to_proc).reject {|x| x.nil?}.delete_if { |x| x.start > 2.week.from_now}
@@ -380,7 +380,7 @@ def index
     @eventsList.each do |e|
       unless e["id"].nil?
         # @outputList << {'id' => e.id, 'event_id' => e.event.id, 'event_title' => e.event.title,  'event_completedness' => e.event.completedness, 'venue_id' => e.event.venue.id, 'start' => e.start.strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e.event.user_id).exists? ? User.find(e.event.user_id).fullname : "", 'updated_at' => e.event.updated_at.strftime("%m/%d @ %I:%M %p")}
-        @outputList << {'id' => e["id"], 'raw_venue_id' => e["raw_venue_id"], 'name' => e["name"], 'venue_id' => e["venue_id"], 'title' => e["title"], 'from' => e["from"], 'start' => Time.parse(e["start"]).strftime("%m/%d @ %I:%M %p")}
+        @outputList << {'id' => e["id"], 'raw_venue_id' => e["raw_venue_id"], 'name' => e["venue_name"], 'venue_id' => e["venue_id"], 'title' => e["title"], 'from' => e["from"], 'start' => Time.parse(e["start"]).strftime("%m/%d @ %I:%M %p")}
       end
     end
     pp @outputList
