@@ -1552,9 +1552,15 @@ def gettpevents
     puts recurrenceids
     queryResult.each{|r|
       if r["recurrence_id"] != "0"
+        puts "Check stuffffffff"
+        puts Event.find(r["event_id"].to_i)
         occ = Event.find(r["event_id"].to_i).nextOccurrence
-        r["occurrence"] = occ[:id]
-        r["occurrence_start"]  = occ[:start]
+        puts occ
+        unless occ.nil?
+          r["occurrence"] = occ[:id]
+          r["occurrence_start"]  = occ[:start]
+        end
+        
        end
     }
     puts occurrences
