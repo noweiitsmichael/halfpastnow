@@ -394,7 +394,7 @@ namespace :api do
 							raw_venue.save
 						end
 				else
-					puts "Found venue for #{eb["events"][i]["event"]["venue"]["name"]} by name"
+					puts "Found raw venue for #{eb["events"][i]["event"]["venue"]["name"]} by name"
 				end
 				#### Done with venue stuff, on to events ####
 
@@ -408,7 +408,8 @@ namespace :api do
 				new_e["picture"] = eb["events"][i]["event"]["logo"]
 				new_e["ticketing"] = eb["events"][i]["event"]["url"]
 
-				new_e_venue = RawVenue.find(:first, :conditions =>[ "lower(name) = ?", eb["events"][i]["event"]["venue"]["name"].downcase ])
+				raw_venue = RawVenue.find(:first, :conditions =>[ "lower(name) = ?", eb["events"][i]["event"]["venue"]["name"].downcase ])
+
 
 				if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
 					puts "....Creating event #{new_e["name"]}"
@@ -422,24 +423,24 @@ namespace :api do
 									:end => new_e["end_time"],
 									:raw_id => new_e["id"],
 									:from => "eventbrite",
-									:raw_venue_id => new_e_venue.id
+									:raw_venue_id => raw_venue.id
 									)
 
 					# puts "Saving picture...."
-					# cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "RawEvent", 
-					# 		   	   :image => open(new_e["picture"])) rescue nil
-					# if cover_i
-					# 	sxsw_event.cover_image = cover_i.id
-					# 	sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
-					# 	sxsw_event.save!
-					# end
+					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "RawEvent", 
+							   	   :image => open(new_e["picture"])) rescue nil
+					if cover_i
+						sxsw_event.cover_image = cover_i.id
+						sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
+						sxsw_event.save!
+					end
 
 				else
 					puts "....Updating Event #{new_e["name"]}"
 					sxsw_event = Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
 					sxsw_event.title = new_e["name"]
 					sxsw_event.description = new_e["description"]
-					sxsw_event.venue_id = new_e_venue.venue_id
+					sxsw_event.venue_id = raw_venue.venue_id
 					sxsw_event.save!
 					occ = sxsw_event.occurrences.first
 					occ.start = new_e["start_time"]
@@ -449,14 +450,14 @@ namespace :api do
 					occ.save!
 
 					# # Create pictures
-					# if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
-					# 	puts "Saving picture...."
-					# 	cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
-					# 			   	   :image => open(new_e["picture"]))
-					# 	sxsw_event.cover_image = cover_i.id
-					# 	sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
-					# 	sxsw_event.save!
-					# end
+					if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
+						puts "Saving picture...."
+						cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
+								   	   :image => open(new_e["picture"]))
+						sxsw_event.cover_image = cover_i.id
+						sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
+						sxsw_event.save!
+					end
 				end
 
 			end
