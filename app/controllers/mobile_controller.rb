@@ -1541,15 +1541,15 @@ def gettpevents
 
 
 
-    puts "queryResult"
+    # puts "queryResult"
     queryResult = ActiveRecord::Base.connection.select_all(query)
-    puts queryResult
+    # puts queryResult
 
 
     occurrences =[]
     recurrenceids = queryResult.select{|r| r["recurrence_id"] != "0"}.collect { |e| e["recurrence_id"].to_i }.uniq
-    puts "recurrenceids "
-    puts recurrenceids
+    # puts "recurrenceids "
+    # puts recurrenceids
     queryResult.each{|r|
       if r["recurrence_id"] != "0"
         puts "Check stuffffffff"
@@ -1563,11 +1563,11 @@ def gettpevents
         
        end
     }
-    puts occurrences
+    # puts occurrences
     ttttmp = queryResult.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
     esinfo = ttttmp.drop(@offset).take(@amount)
-    puts "After sorting and drop XXXX"
-    puts esinfo.to_json
+    # puts "After sorting and drop XXXX"
+    # puts esinfo.to_json
     
 
 
