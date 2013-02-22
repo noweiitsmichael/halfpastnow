@@ -333,7 +333,7 @@ def index
               FROM events
               LEFT OUTER JOIN occurrences
               ON events.id = occurrences.event_id
-              WHERE occurrences.start > now() AND occurrences.deleted != true
+              WHERE occurrences.start > now() AND occurrences.deleted IS NOT true
               GROUP BY events.id) AS events
           ON venues.id = events.venue_id
           GROUP BY venues.id,venues.name ) v2
@@ -360,7 +360,7 @@ def index
       eventsQuery = "
         SELECT raw_events.id, raw_events.title,raw_events.start,raw_events.from,raw_events.raw_id, raw_events.raw_venue_id, venues.id AS venue_id, venues.name AS venue_name
           FROM raw_events, raw_venues, venues
-          WHERE raw_events.raw_venue_id = raw_venues.id AND raw_venues.venue_id = venues.id AND raw_events.from = 'eventbrite'"
+          WHERE raw_events.raw_venue_id = raw_venues.id AND raw_venues.venue_id = venues.id AND raw_events.from = 'eventbrite' AND raw_events.deleted IS NOT TRUE"
       @eventsList = ActiveRecord::Base.connection.select_all(eventsQuery)
     else params[:range] == "active_sxsw"
       # @eventsList = Event.find(:all).map(&:nextOccurrence.to_proc).reject {|x| x.nil?}.delete_if { |x| x.start > 2.week.from_now}
