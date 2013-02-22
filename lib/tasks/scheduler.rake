@@ -394,6 +394,9 @@ namespace :api do
 							raw_venue.save
 						end
 				else
+					if eb["events"][i]["event"]["venue"]["name"] == ""
+						break
+					end
 					puts "Found raw venue for #{eb["events"][i]["event"]["venue"]["name"]} by name"
 				end
 				#### Done with venue stuff, on to events ####
@@ -409,7 +412,7 @@ namespace :api do
 				new_e["ticketing"] = eb["events"][i]["event"]["url"]
 
 				raw_venue = RawVenue.find(:first, :conditions =>[ "lower(name) = ?", eb["events"][i]["event"]["venue"]["name"].downcase ])
-
+				puts "Associating event to #{raw_venue.name}"
 
 				if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
 					puts "....Creating event #{new_e["name"]}"
