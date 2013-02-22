@@ -333,7 +333,7 @@ def index
               FROM events
               LEFT OUTER JOIN occurrences
               ON events.id = occurrences.event_id
-              WHERE occurrences.start > now() AND occurrences.deleted != true
+              WHERE occurrences.start > now() AND occurrences.deleted IS NOT true
               GROUP BY events.id) AS events
           ON venues.id = events.venue_id
           GROUP BY venues.id,venues.name ) v2
@@ -346,6 +346,44 @@ def index
     @venuesList.each do |e|
       @outputList << {'id' => e["venue_id"], 'name' => e["name"], 'address' => e["address"],  'views' => e["views"], 'num_events' => e["events_count"], 'num_raw_events' => e["raw_events_count"]} #, 'owner' => User.where(:id => e["user_id"]).exists? ? User.find(e["user_id"]).fullname : ""}
     end
+    respond_to do |format|
+      format.json { render json: @outputList }
+    end
+  end
+
+  def sxsw_list
+    puts "sxsw....."
+    if params[:range] == "raw_sxsw"
+      # @eventsList = Event.find(:all).map(&:nextOccurrence.to_proc).reject {|x| x.nil?}.delete_if { |x| x.start > 1.week.from_now}
+      # @eventsList = Event.find(:all, :conditions => ["(start > ?) AND (start < ?)", Time.now, 1.week.from_now])
+
+      eventsQuery = "
+        SELECT raw_events.id, raw_events.title,raw_events.start,raw_events.from,raw_events.raw_id, raw_events.raw_venue_id, venues.id AS venue_id, venues.name AS venue_name
+          FROM raw_events, raw_venues, venues
+          WHERE raw_events.raw_venue_id = raw_venues.id AND raw_venues.venue_id = venues.id AND raw_events.from = 'eventbrite' AND raw_events.deleted IS NOT TRUE"
+      @eventsList = ActiveRecord::Base.connection.select_all(eventsQuery)
+    else params[:range] == "active_sxsw"
+      # @eventsList = Event.find(:all).map(&:nextOccurrence.to_proc).reject {|x| x.nil?}.delete_if { |x| x.start > 2.week.from_now}
+      eventsQuery = "
+        SELECT occurrences.recurrence_id, occurrences.id, events.id AS event_id, events.title, events.completion, events.venue_id, occurrences.start, events.updated_at, events.user_id
+        FROM occurrences, events WHERE occurrences.event_id = events.id AND occurrences.deleted = false AND occurrences.recurrence_id IS NULL 
+             AND occurrences.start < now() + interval '2 weeks' AND occurrences.start >= now() 
+        UNION 
+        SELECT DISTINCT ON (occurrences.recurrence_id) occurrences.recurrence_id, occurrences.id, events.id AS event_id, events.title, events.completion, events.venue_id, occurrences.start, events.updated_at, events.user_id
+        FROM occurrences, events WHERE occurrences.event_id = events.id AND occurrences.deleted = false AND occurrences.recurrence_id IS NOT NULL
+             AND occurrences.start < now() + interval '2 weeks' AND occurrences.start >= now()"
+      @eventsList = ActiveRecord::Base.connection.select_all(eventsQuery)
+    end
+
+    @outputList = []
+
+    @eventsList.each do |e|
+      unless e["id"].nil?
+        # @outputList << {'id' => e.id, 'event_id' => e.event.id, 'event_title' => e.event.title,  'event_completedness' => e.event.completedness, 'venue_id' => e.event.venue.id, 'start' => e.start.strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e.event.user_id).exists? ? User.find(e.event.user_id).fullname : "", 'updated_at' => e.event.updated_at.strftime("%m/%d @ %I:%M %p")}
+        @outputList << {'id' => e["id"], 'raw_venue_id' => e["raw_venue_id"], 'name' => e["venue_name"], 'venue_id' => e["venue_id"], 'title' => e["title"], 'from' => e["from"], 'start' => Time.parse(e["start"]).strftime("%m/%d @ %I:%M %p")}
+      end
+    end
+    pp @outputList
     respond_to do |format|
       format.json { render json: @outputList }
     end

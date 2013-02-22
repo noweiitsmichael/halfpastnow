@@ -1,0 +1,55 @@
+<script>
+
+  // $(document).ready(function() {
+  //   oTable = $('#itemsTable').dataTable();
+  // });
+
+  $(function() {
+    // $('#user-select').on("change", function (){
+       // $(this).append('<div class="ajaxLoader"><br><br><br><img src="/assets/ajax-loader.gif"></div>');
+    // $.get('/events/sxsw_list/?range=' + $("input[type='radio'][name='user-select']:checked").val(), function(data) {
+      $.get('/events/sxsw_list/?range=raw_sxsw', function(data) {
+      $('.ajaxLoader').detach();
+      var tableData = "<table id='itemsTable'><thead><tr><th></th><th>start</th><th>Event</th><th>Venue</th><th>From</th><th></th></tr></thead><tbody>"
+      for (var i=0;i<data.length;i++) {
+        tableData += "<tr><td></td><td>"+ data[i].start +"</td>";
+        tableData += "<td><a href='/venues/list_raw_events/" + data[i].venue_id + "#anchor" + data[i].id + "' target='_blank'>"+data[i].title+"</a></td>"; //<td>" + data[i].event_completedness+"</td>";
+        tableData += "<td>"+ data[i].name +"</td>";
+        tableData += "<td>"+data[i].from+"</td>";
+        tableData += "<td><a href='/venues/list_raw_events/" + data[i].venue_id + "#anchor" + data[i].id + "' target='_blank'>Edit</a></tr>";
+      }
+      tableData += "</tbody></table>"
+      $('#tableContainer').html(tableData);
+      var iTable =  $('#itemsTable').dataTable({ 
+                              "fnDrawCallback": function ( oSettings ) {
+                                /* Need to redo the counters if filtered or sorted */
+                                if ( oSettings.bSorted || oSettings.bFiltered )
+                                {
+                                  for ( var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++ )
+                                  {
+                                    $('td:eq(0)', oSettings.aoData[ oSettings.aiDisplay[i] ].nTr ).html( i+1 );
+                                  }
+                                }
+                              },
+                              "bJQueryUI": true,
+                              "bRetrieve" : true,
+                              "bPaginate" : false,
+                              "aoColumnDefs": [{ "sWidth": "45%", "aTargets": [ 2 ] },
+                                               { "bSortable": false, "aTargets": [ 0 ] }
+                                              ],
+                              "aaSorting" : [[1, 'asc']]
+                              });
+      iTable.fnDraw();
+    // });
+    });
+  });
+
+</script>
+
+<h2>SXSW Raw Events</h2>
+<!-- <b><form id="user-select">
+    <input type="radio" name="user-select" value="raw_sxsw"> SXSW Raw Events</option>  
+    <input type="radio" name="user-select" value="twoweeks"> All SXSW Events</option><br>
+</form></b> -->
+<br><br>
+<div id="tableContainer"></div>

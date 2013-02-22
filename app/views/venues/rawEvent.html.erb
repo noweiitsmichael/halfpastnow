@@ -7,7 +7,7 @@
 
 <% @ordinal = ["th","st","nd","rd","th","th","th","th","th","th"] %>
 <% @week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] %>
-<% event = @venue.events.build(:title => @rawEvent.title, :description => @rawEvent.description) 
+<% event = @venue.events.build(:title => @rawEvent.title, :description => @rawEvent.description, :event_url => @rawEvent.event_url, :ticket_url => @rawEvent.ticket_url) 
    event.occurrences.push(Occurrence.new(:start => @rawEvent.start, :end => @rawEvent.end))
    event.recurrences.push(Recurrence.new(:start => @rawEvent.start, :end => @rawEvent.end))
    occurrence = Occurrence.new(:start => @rawEvent.start, :end => @rawEvent.end) %>
@@ -16,12 +16,12 @@
 	<% @iStrId = "event_1#{@rawEvent.id.to_s}_tag_ids_" %>
 	<%= hidden_field_tag :raw_event_id, @rawEvent.id %>
 	<div class="main event">
-		<% if false %>
+
 		<div class="field">
 		  <%= label_tag :URL %>
 		  <a class="url" href="<%= @rawEvent.url %>"><%= @rawEvent.from %> link</a>
 		</div>
-		<% end %>
+
 		<div class="field">
 		  <%= e.label :title %>
 		  <%= e.text_field :title, :class => "required" %>
@@ -31,7 +31,7 @@
 		  <%= e.text_field :event_url, :class => "event_url" %>
 		</div>
 		<div class="field">
-		  <%= e.label "RSVP / Ticketing Link" %>
+		  <label>RSVP / Ticketing Link</label>
 		  <%= e.text_field :ticket_url, :class => "ticket_url" %>
 		</div>
 

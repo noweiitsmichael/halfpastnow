@@ -401,6 +401,11 @@ nav li:last-child a {
   display: inline;
 }
 
+.tag-bold { 
+  background: #ddf;
+  font-weight: bold;
+}
+
 
 /* white */
 .white {
