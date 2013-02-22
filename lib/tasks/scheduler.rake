@@ -395,7 +395,8 @@ namespace :api do
 						end
 				else
 					if eb["events"][i]["event"]["venue"]["name"] == ""
-						break
+						puts "********** Error, no venue name for Eventbrite event #{eb["events"][i]["event"]["id"]} #{eb["events"][i]["event"]["title"]}" 
+						next
 					end
 					puts "Found raw venue for #{eb["events"][i]["event"]["venue"]["name"]} by name"
 				end
