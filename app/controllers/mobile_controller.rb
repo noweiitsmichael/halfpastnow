@@ -1558,7 +1558,12 @@ def gettpevents
         puts occ
         unless occ.nil?
           r["occurrence"] = occ[:id]
-          r["occurrence_start"]  = occ[:start]
+          # puts "Before "
+          # puts r["occurrence_start"]
+          # puts "After"
+          # puts occ[:start].strftime("%F %T")
+          r["occurrence_start"]  = occ[:start].strftime("%F %T")
+          puts r["occurrence_start"]
         end
         
        end
