@@ -498,7 +498,7 @@ class MobileController < ApplicationController
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
-      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini}.uniq
+      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
       # puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
@@ -1061,12 +1061,12 @@ def FacebookLogin
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
-      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini}.uniq
+      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
       if tps.count == 0
         e = Event.find(id)
         if !e.nil?
           ids=e.bookmarks.collect{|b| b.bookmark_list_id}
-          tps = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| l.picture.mini}.uniq
+          tps = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
         end
         
       end
@@ -1577,12 +1577,12 @@ def gettpevents
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
-      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini}.uniq
+      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
       if tps.count == 0
         e = Event.find(id)
         if !e.nil?
           ids=e.bookmarks.collect{|b| b.bookmark_list_id}
-          tps = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| l.picture.mini}.uniq
+          tps = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
         end
         
       end
@@ -1979,12 +1979,12 @@ def FacebookLoginSX
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
-      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini}.uniq
+      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
       if tps.count == 0
         e = Event.find(id)
         if !e.nil?
           ids=e.bookmarks.collect{|b| b.bookmark_list_id}
-          tps = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| l.picture.mini}.uniq
+          tps = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
         end
         
       end
@@ -2625,7 +2625,7 @@ def SX
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
-      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini}.uniq
+      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
       
       # puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
