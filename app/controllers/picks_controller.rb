@@ -20,7 +20,7 @@ helper :content
                 INNER JOIN tags ON events_tags.tag_id = tags.id
                 WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL)";
         result = ActiveRecord::Base.connection.select_all(query)
-        y result
+        # y result
 	    listIDs = result.collect { |e| e["id"] }.uniq
 	    tagIDs = result.collect { |e| e["tag_id"].to_i }.uniq
 	    #@parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| tagIDs.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
@@ -212,10 +212,21 @@ helper :content
 	    @zoom = 11
 	    @url = 'http://halfpastnow.com/picks/find/'+params[:id]
 		@occurrences = @bookmarkList.all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
-		
-		
-		
-		
+	end
+
+	def sxsw
+		@events = EventsTags.where(:tag_id => 1).collect {|t| Event.find(t.event_id) }
+
+	    respond_to do |format|
+	      format.html
+	      format.json { render json: @occurrences }
+	    end
+    #   eventsQuery = "
+    #     SELECT events.name, venues.name, occurrences.start, occurrences.end
+ 			# FROM events, venues, occurrences
+ 			# WHERE events.venue_id = venues.id AND occurrences.venue_id = events.id
+ 			# LIMIT 10"
+    #   @eventsList = ActiveRecord::Base.connection.select_all(eventsQuery)
 	end
 
 	def myBookmarks

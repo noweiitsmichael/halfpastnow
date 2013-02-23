@@ -1,0 +1,529 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "half.dynamics" %>
+<% end %>
+
+<% content_for :code do %>
+<%# TODO: put this stuff in the controller eventually %>
+
+	<% 	@now = DateTime.now.change(:hour => 0)
+		@channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
+	
+	<script type="text/javascript">
+		//cookie redirect
+		(function ($, document, undefined) {
+
+			var pluses = /\+/g;
+
+			function raw(s) {
+				return s;
+			}
+
+			function decoded(s) {
+				return decodeURIComponent(s.replace(pluses, ' '));
+			}
+
+			var config = $.cookie = function (key, value, options) {
+
+				// write
+				if (value !== undefined) {
+					options = $.extend({}, config.defaults, options);
+
+					if (value === null) {
+						options.expires = -1;
+					}
+
+					if (typeof options.expires === 'number') {
+						var days = options.expires, t = options.expires = new Date();
+						t.setDate(t.getDate() + days);
+					}
+
+					value = config.json ? JSON.stringify(value) : String(value);
+
+					return (document.cookie = [
+						encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
+						options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+						options.path    ? '; path=' + options.path : '',
+						options.domain  ? '; domain=' + options.domain : '',
+						options.secure  ? '; secure' : ''
+					].join(''));
+				}
+
+				// read
+				var decode = config.raw ? raw : decoded;
+				var cookies = document.cookie.split('; ');
+				for (var i = 0, l = cookies.length; i < l; i++) {
+					var parts = cookies[i].split('=');
+					if (decode(parts.shift()) === key) {
+						var cookie = decode(parts.join('='));
+						return config.json ? JSON.parse(cookie) : cookie;
+					}
+				}
+
+				return null;
+			};
+
+			config.defaults = {};
+
+			$.removeCookie = function (key, options) {
+				if ($.cookie(key) !== null) {
+					$.cookie(key, null, options);
+					return true;
+				}
+				return false;
+			};
+
+		})(jQuery, document);
+
+		$(function() {
+		  var COOKIE_NAME = 'splash-page';
+		  var cookie = $.cookie(COOKIE_NAME);
+		  if (cookie == null) {
+		    $.cookie(COOKIE_NAME, true, { path: '/', expires: 9001 });
+		    window.location = "/events/new_splash";
+		  }
+		  else {
+		  }
+		});
+
+
+		var geocoder;
+		var map;
+		var markers = [];
+		var tags = {};
+		var channelFilters = {};
+
+		var filter = {
+		  start_days: <%= params[:start_days].coalesce_to 0 %>,
+		  end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
+		  start_seconds: <%= params[:start_seconds].coalesce_to "''" %>,
+		  end_seconds: <%= params[:end_seconds].coalesce_to "''" %>,
+		  day: [0,1,2,3,4,5,6],
+		  low_price: <%= params[:low_price].coalesce_to "''" %>,
+		  high_price: <%= params[:high_price].coalesce_to "''" %>,
+		  included_tags: <%= params[:included_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[]" %>,
+		  excluded_tags: <%= params[:excluded_tags] ? "[" + (params[:excluded_tags] * ",") + "]" : "[]" %>,
+		  and_tags: <%= params[:and_tags] ? "[" + (params[:and_tags] * ",") + "]" : "[]" %>,
+		  lat_min: "",
+		  lat_max: "",
+		  long_min: "",
+		  long_max: "",
+		  offset: 0,
+		  search: "",
+		  sort: <%= params[:sort].coalesce_to 0 %>,
+		  name: "<%= params[:name].coalesce_to "" %>",
+		  start_date: "",
+		  end_date: ""
+		};
+
+		function initialize() {
+			//console.log("initialize");
+			//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
+			geocoder = new google.maps.Geocoder();
+
+			var styles = [
+							  {
+							    "featureType": "road.highway",
+							    "elementType": "geometry.stroke",
+							    "stylers": [
+							      { "color": "#804580" }
+							    ]
+							  },{
+							    "featureType": "road.highway",
+							    "elementType": "labels.text.stroke",
+							    "stylers": [
+							      { "color": "#d5b5d5" }
+							    ]
+							  },{
+							    "featureType": "road.arterial",
+							    "elementType": "labels.text.stroke",
+							    "stylers": [
+							      { "color": "#f1e6f3" }
+							    ]
+							  },{
+							    "elementType": "geometry.fill",
+							    "stylers": [
+							      { "gamma": 1.54 },
+							      { "lightness": 12 }
+							    ]
+							  },{
+							    "featureType": "road.arterial",
+							    "elementType": "geometry.fill",
+							    "stylers": [
+							      { "color": "#e0dae0" }
+							    ]
+							  },{
+							    "featureType": "road.arterial",
+							    "elementType": "geometry.stroke",
+							    "stylers": [
+							      { "color": "#b8abb8" }
+							    ]
+							  },{
+							    "featureType": "road.highway",
+							    "elementType": "geometry.fill",
+							    "stylers": [
+							      { "color": "#af96af" }
+							    ]
+							  },{
+							  }
+							];
+
+			var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+			var myOptions = {
+				zoom: <%= @zoom %>,
+				center: latlng,
+				mapTypeId: 'map_style',
+				disableDefaultUI: true,
+				zoomControl: true,
+				scrollwheel: false,
+				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 2 },
+    			backgroundColor: '#FFFFFF'
+			};
+
+			var styledMap = new google.maps.StyledMapType(styles,
+    			{name: "Styled Map"});
+
+			map = new google.maps.Map($("#map")[0], myOptions);
+
+			map.mapTypes.set('map_style', styledMap);
+  			map.setMapTypeId('map_style');
+
+			var locations = [];
+			
+			$("#content .main .inner .events li").each(function(index) {
+				var latitude = parseFloat($(this).find(".latitude").html());
+				var longitude = parseFloat($(this).find(".longitude").html());
+				locations.push({lat: latitude, long: longitude});
+			});
+			
+			placeMarkers({points: locations});
+
+			google.maps.event.addListener(map, 'idle', boundsChanged);
+		}
+
+		function to_i(obj) {
+			return parseInt(obj);
+		}
+
+		$(function() {
+			<% @channels.each do |channel| %>
+				channelFilters[<%= channel.id %>] = {
+				  stream_id: <%= channel.id %>,
+				  start_days: <%= channel.start_days || 0 %>,
+				  end_days: <%= channel.end_days || 0 %>,
+				  start_seconds: <%= channel.start_seconds || "''" %>,
+				  end_seconds: <%= channel.end_seconds || "''" %>,
+				  day: <%= channel.day_of_week ? "'" + channel.day_of_week + "'.split(',').map(to_i)" : "[]" %>,
+				  low_price: <%= channel.low_price || "''" %>,
+				  high_price: <%= channel.high_price || "''" %>,
+				  included_tags: <%= channel.included_tags ? "'" + channel.included_tags + "'.split(',')" : "[]" %>,
+				  excluded_tags: <%= channel.excluded_tags ? "'" + channel.excluded_tags + "'.split(',')" : "[]" %>,
+				  and_tags: <%= channel.and_tags ? "'" + channel.and_tags + "'.split(',')" : "[]" %>,
+				  lat_min: "",
+				  lat_max: "",
+				  long_min: "",
+				  long_max: "",
+				  offset: 0,
+				  search: "<%= channel.search || "" %>",
+				  sort: <%= channel.sort || 0 %>,
+				  name: "<%= channel.name || "" %>",
+				  start_date: "<%= channel.start_date ? channel.start_date.to_s : "" %>",
+				  end_date: "<%= channel.end_date ? channel.end_date.to_s : "" %>"
+				};
+			<% end %>
+
+    		channelFilters[0] = { 
+    			  stream_id: "",
+				  start_days: 0,
+				  end_days: -1,
+				  start_seconds: '',
+				  end_seconds: '',
+				  day: [0,1,2,3,4,5,6],
+				  low_price: '',
+				  high_price: '',
+				  included_tags: [],
+				  and_tags: [],
+				  excluded_tags: [],
+				  lat_min: "",
+				  lat_max: "",
+				  long_min: "",
+				  long_max: "",
+				  offset: 0,
+				  search: "",
+				  name: "",
+				  start_date: "",
+				  end_date: "",
+				  sort: 0 };
+
+			<% @tagCounts.each do |tagCount| %>
+			tags['<%= tagCount[:id] %>'] = 
+				{ name: "<%= tagCount[:name] %>",
+				  parent_id: <%= tagCount[:parent] ? "'#{tagCount[:parent][:id]}'" : 'null' %>,
+				  <% children = tagCount[:children].collect { |child| "'#{child[:id]}'" } * ',' %>
+				  child_ids: [<%= children %>]
+				}
+			<% end %>
+
+			// var event_id = <%= params[:event_id] || "null" %>;
+			var venue_id = <%= params[:venue_id] || "null" %>;
+			var act_id = <%= params[:act_id] || "null" %>;
+			var modality;
+
+			// if(event_id) {
+			// 	modality = spawn(modalities["event"],{id: event_id});
+			// 	modal(modality);
+			// }
+			if(venue_id) {
+				modality = spawn(modalities["venue"],{id: venue_id});
+				modal(modality);
+			}
+			if(act_id) {
+				modality = spawn(modalities["act"],{id: act_id});
+				modal(modality);   
+			}
+		});
+
+		$(window).load(function() {
+			var stream_id = "<%= params['channel_id'] %>";
+			if(stream_id !== "") {
+				// $('#header').addClass('selected');
+				$(".streambar .stream[stream-id=" + stream_id + "]").addClass('selected');
+				filter.stream_id = parseInt(stream_id);
+				filter.included_tags = channelFilters[parseInt(stream_id)].included_tags;
+				updateViewFromFilter();
+			}
+		});
+	</script>
+<% end %>
+
+<% content_for :header do %>
+
+
+	<div class="bar-wrapper">
+
+		<div class="doublebar">
+		<div class="stay-on-target bullseye-womprats">
+			<div class="filterbar">
+				<div class="header">
+					<div class="toggle-wrapper">
+						<span class="filter-toggle search">
+							<span class="filter-text">
+								<span class="pre-text"><span class="icon icon-search"></span></span>
+								<span class="text">
+									<span class="text-inner"><input type="text" class="search-input" /></span>
+								</span>
+							</span>
+						</span>
+						<span class="filter-toggle tags ortags">
+							<span class="filter-text">
+								<span class="pre-text"><!-- <span class="icon icon-tags"></span> -->Categories</span>
+								<span class="text">
+									<span class="text-inner">Any Category</span>
+									<span class="icon icon-caret-down"></span>
+								</span>
+							</span>
+							<div class="filter-dropdown">
+								<div class="filter-inner">
+									<%= render :partial => "tag_list", :locals => { :tagCounts => @tagCounts, :parentTags => @parentTags } %>
+								</div>
+							</div>
+						</span>
+
+						<span class="filter-toggle tags andtags">
+							<span class="filter-text">
+								<span class="pre-text"><!-- <span class="icon icon-tags"></span> -->Tags</span>
+								<span class="text">
+									<span class="text-inner">Any Tag</span>
+									<span class="icon icon-caret-down"></span>
+								</span>
+							</span>
+							<div class="filter-dropdown">
+								<div class="filter-inner">
+									<%= render :partial => "andtags_list", :locals => { :tagCounts => @tagCounts}  %>
+								</div>
+							</div>
+						</span>
+
+						<span class="filter-toggle date">
+							<span class="filter-text">
+								<span class="pre-text"><!-- <span class="icon icon-time"></span> -->Time</span>
+								<span class="text">
+									<span class="text-inner">Today</span>
+									<span class="icon icon-caret-down"></span>
+								</span>
+							</span>
+							<div class="filter-dropdown">
+								<div class="filter-inner">
+									<div class="filter date">
+										<div class="filters">
+											<span class="any">any day</span><span class="today selected">today</span><span class="tomorrow">this week</span><span class="custom">custom</span>
+										</div>
+										<div>
+											<div class="custom-select">
+												<div class="any time-range"></div>									
+												<div class="time-range-hashes">
+													<div>3 AM</div>
+													<div>6 AM</div>
+													<div>9 AM</div>
+													<div>Noon</div>
+													<div>3 PM</div>
+													<div>6 PM</div>
+													<div>9 PM</div>
+												</div>
+												<div class="any time-display">any time</div></div>
+											<div class="custom-select selected">
+												<div class="today time-range"></div>										
+												<div class="time-range-hashes">
+													<div>3 AM</div>
+													<div>6 AM</div>
+													<div>9 AM</div>
+													<div>Noon</div>
+													<div>3 PM</div>
+													<div>6 PM</div>
+													<div>9 PM</div>
+												</div>
+												<div class="today time-display">any time</div>
+											</div>
+											<div class="custom-select">
+												<div class="day-of-week">
+													<% dayOfWeek = Date.today() %>
+													<% 7.times do %>
+														<div day-of-week="<%= dayOfWeek.to_time.strftime("%w") %>"><div class="day"><%= dayOfWeek.to_time.strftime("%a") %></div><div class="date"><%= dayOfWeek.to_time.strftime("%b %-d") %></div></div>
+														<% dayOfWeek = dayOfWeek + 1 %>
+													<% end %>
+												</div>
+												<div class="tomorrow time-range"></div>										
+												<div class="time-range-hashes">
+													<div>3 AM</div>
+													<div>6 AM</div>
+													<div>9 AM</div>
+													<div>Noon</div>
+													<div>3 PM</div>
+													<div>6 PM</div>
+													<div>9 PM</div>
+												</div>
+												<div class="tomorrow time-display">any time</div>
+											</div>
+											<div class="custom-select">
+												<span class="icon icon-calendar"></span><input type="text" class="custom-start"/> to <span class="icon icon-calendar"></span><input type="text" class="custom-end"/>
+												<div class="custom time-range"></div>									
+												<div class="time-range-hashes">
+													<div>3 AM</div>
+													<div>6 AM</div>
+													<div>9 AM</div>
+													<div>Noon</div>
+													<div>3 PM</div>
+													<div>6 PM</div>
+													<div>9 PM</div>
+												</div>
+												<div class="custom time-display">any time</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</span>
+						<span class="filter-toggle price">
+							<span class="filter-text">
+								<span class="pre-text"><!-- <span class="icon icon-credit-card"></span> -->Cost</span> 
+								<span class="text">
+									<span class="text-inner">Any Price</span>
+									<span class="icon icon-caret-down"></span>
+								</span>
+							</span>
+							<div class="filter-dropdown">
+								<div class="filter-inner">
+									<div class="price-free-button nice-button">Free</div>
+									<div class="col-2">
+										<div class="price-range"></div>
+										<div class="price-range-hashes">
+											<div>5</div>
+											<div>10</div>
+											<div>15</div>
+											<div>20</div>
+											<div>25</div>
+											<div>30</div>
+											<div>35</div>
+											<div>40</div>
+											<div>45</div>
+										</div>
+										<div class="price-display">any price</div>
+									</div>
+								</div>
+							</div>
+						</span>
+						<span class="filter-toggle filter-action action-clear">
+							<span class="filter-text">
+								<span class="pre-text"><span class="icon icon-remove-sign"></span>clear</span>
+							</span>
+						</span>
+					</span>
+					</div>
+				</div>
+			</div>
+			<div class="streambar">
+				<div class="header">
+					<span class="filter-toggle sort">
+						<span class="filter-text">
+							<span class="pre-text">Sort By</span> 
+							<span class="text">
+								<span class="text-inner">Popularity</span>
+								<span class="icon icon-caret-down"></span>
+							</span>
+						</span>
+						<div class="filter-dropdown">
+							<div class="filter-inner">
+								<div class="filter sort">
+									<div class="filters">
+										<span class="popularity selected">popularity</span><span class="date">date</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</span>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+<% end %>
+
+<% content_for :body do %>
+	<div id="content">
+		<% unless @mobileMode %>
+		<div id="map-wrapper">
+			<div id="map"></div>
+			<div class="map-move">
+				<strong>zoom and move around the map to see events</strong><br />
+				redo search based on map move + zoom<input type="checkbox" checked id="unnecessarily-long-id-for-toggling-search-on-map-move-and-zoom"/>
+			</div>
+		</div>
+		<% end %>
+
+		<%= render :partial => "/layouts/footer" %>
+		<div class="main">
+			<% if (@mobileMode) %> </center> <% end %>
+			<div class="inner">
+				<div class="filter-summary">
+					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sort-type" style="display:none;">[by popularity/<span class="sort date">date</span>]</span> 
+				</div>
+				<ul class="events">
+					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
+				</ul>
+				<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
+			</div>
+			<% if (@mobileMode) %> <center> <% end %>
+			<img id="loading" src="/assets/ajax-loader.gif" />
+		</div>
+	</div>
+<% end %>
+<% content_for :overlay do %>
+	<div class="mode">
+		<div class="overlay">
+			<div class="insert-point">
+				<div class="window">
+				</div>
+			</div>
+		</div>
+	</div>
+<% end %>
+

@@ -32,10 +32,10 @@ namespace :m do
 	# Event.find(:all).each {|d| d.completion = d.completedness; d.save!;}
 
 
-	desc "clearing bad bookmarks"
-	task :bookmark_scrub => :environment do
+	desc "clearing dangling bookmarks and tags"
+	task :scrub => :environment do
 		puts "Scrubbing..."
-		Bookmark.all.each do |b|
+		Bookmark.find_each do |b|
 			if b.bookmarked_type == "Occurrence"
 				if Occurrence.where(:id => b.bookmarked_id).empty?
 					puts "Deleting #{b.bookmarked_type} #{b.bookmarked_id}"
@@ -51,6 +51,28 @@ namespace :m do
 					puts "Deleting #{b.bookmarked_type} #{b.bookmarked_id}"
 					b.destroy
 				end
+			end
+		end
+
+
+		EventsTags.find_each do |t|
+			if Event.where(:id => t.event_id).empty?
+				puts "destroying event tag"
+				EventsTags.delete_all(:event_id => t.event_id)
+			end
+		end
+
+		ActsTags.find_each do |t|
+			if Act.where(:id => t.act_id).empty?
+				puts "destroying act tag"
+				ActsTags.delete_all(:event_id => t.act_id)
+			end
+		end
+
+		TagsVenues.find_each do |t|
+			if Venue.where(:id => t.venue_id).empty?
+				puts "destroying venue tag"
+				TagsVenues.delete_all(:event_id => t.venue_id)
 			end
 		end
 	end

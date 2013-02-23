@@ -75,5 +75,6 @@ gem 'delayed_job_active_record'
 
 gem 'therubyracer'
 gem 'will_paginate'
-gem 'eventfulapi'
-gem 'eventbrite-client'
+gem 'oink' #memory logging
+# gem 'eventfulapi'
+# gem 'eventbrite-client'

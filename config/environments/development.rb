@@ -28,8 +28,11 @@ Myapp::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
+  # Oink logging
+  config.middleware.use( Oink::Middleware, :logger => Rails.logger )
+
   #config.log_level = :warn
-   config.log_level = :debug
+   config.log_level = :warn
   
   # Mail options 
   ##TODO: Verify this is the correct host
