@@ -479,12 +479,14 @@ namespace :api do
 					occ.save!
 					updated_events += 1
 					# # Create pictures
-					if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
-						cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
-								   	   :image => open(new_e["picture"]))
-						sxsw_event.cover_image = cover_i.id
-						sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
-						sxsw_event.save!
+					unless new_e["picture"].nil?
+						if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
+							cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
+									   	   :image => open(new_e["picture"]))
+							sxsw_event.cover_image = cover_i.id
+							sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
+							sxsw_event.save!
+						end
 					end
 				end
 			end
