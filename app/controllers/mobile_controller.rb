@@ -1552,10 +1552,10 @@ def gettpevents
     # puts recurrenceids
     queryResult.each{|r|
       if r["recurrence_id"] != "0"
-        puts "Check stuffffffff"
-        puts Event.find(r["event_id"].to_i)
+        # puts "Check stuffffffff"
+        # puts Event.find(r["event_id"].to_i)
         occ = Event.find(r["event_id"].to_i).nextOccurrence
-        puts occ
+        # puts occ
         unless occ.nil?
           r["occurrence"] = occ[:id]
           # puts "Before "
@@ -1563,14 +1563,27 @@ def gettpevents
           # puts "After"
           # puts occ[:start].strftime("%F %T")
           r["occurrence_start"]  = occ[:start].strftime("%F %T")
-          puts r["occurrence_start"]
+          # puts r["occurrence_start"]
         end
         
        end
     }
     # puts occurrences
     ttttmp = queryResult.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
-    esinfo = ttttmp.drop(@offset).take(@amount)
+    es = queryResult.select{|r|
+      r["occurrence_start"].to_datetime >= event_start_date && r["occurrence_start"].to_datetime <= event_end_date
+    }
+    tes =[]
+    es.each{|r|
+      t = Time.parse(r["occurrence_start"])
+      s = t.hour * 60 * 60 + t.min * 60 + t.sec
+      if (s>=event_start_time) && (s<=event_end_time)
+        tes<<r
+      end
+    }
+    esinfo = tes.drop(@offset).take(@amount)
+    
+
     # puts "After sorting and drop XXXX"
     # puts esinfo.to_json
     
