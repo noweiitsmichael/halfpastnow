@@ -61,8 +61,6 @@
         <div>
           <div class="stay-on-target">
             <a href="/"><img class="logo" src="/assets/halfpastnow_final_beta-dark-header.png" /></a>
-<!--             <a class="main menu-element <%= params[:controller] == "events" ? "selected" : "" %>" href="/">Search</a>
-            <a class="main menu-element <%= params[:controller] == "picks" ? "selected" : "" %>" href="/picks">Top Picks</a> -->
             <% if false %><% end %>
             <% if user_signed_in? %>
               <div class="menu-element right pic">
@@ -138,12 +136,12 @@
 				
 				<div id="trendsetter-preview">
 					<div class="ts-icons">
-						<% BookmarkList.where(:featured => true).sort_by{|a| a.bookmarks}.first(10).each_with_index do |b, i| %>
+						<% BookmarkList.where(:featured => true).sort_by{|a| a.bookmarks.count}.first(10).each_with_index do |b, i| %>
 							<%= image_tag b.picture_url(:thumb) || "/assets/picklist-placeholder.png", :class => "picture", :style => "width:60px; border:3px; border-style:solid; border-color:white" %>
 						<% end %>
 					</div>
 
-					<% BookmarkList.where(:featured => true).sort_by{|a| a.bookmarks}.first(10).each_with_index do |b, i| %>
+					<% BookmarkList.where(:featured => true).sort_by{|a| a.bookmarks.count}.first(10).each_with_index do |b, i| %>
 					  <div style="text-align:left; font-size:16px" class="tabs box14">
 					    <p><%= truncate(b.description, :length => 250, :separator => '.') %></p>
 					    <div class="box14_ribbon"></div>

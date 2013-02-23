@@ -37,6 +37,9 @@ Myapp::Application.configure do
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
   
+  # Oink logging
+  config.middleware.use( Oink::Middleware, :logger => Rails.logger )
+  
   # ActionMailer Config
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 

@@ -57,6 +57,9 @@ Myapp::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  # Oink logging
+  config.middleware.use( Oink::Middleware, :logger => Hodel3000CompliantLogger.new(STDOUT))
   
   # Mail Options
   config.action_mailer.default_url_options = { :host => 'http://radiant-flower-7307.herokuapp.com/' }
