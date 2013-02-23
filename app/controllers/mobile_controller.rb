@@ -1523,7 +1523,7 @@ def gettpevents
               LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
               INNER JOIN recurrences ON events.id = recurrences.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE bookmark_lists.featured IS NOT FALSE AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL AND recurrences.range_end >= '#{Date.today()}'
+            WHERE bookmark_lists.featured IS NOT FALSE AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND #{days_check} AND occurrences.recurrence_id IS NOT NULL AND (recurrences.range_end >= '#{Date.today()}' OR recurrences.range_end IS NULL)
             UNION
             SELECT DISTINCT ON (events.id) bookmark_lists.id AS listid, users.id AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM users
@@ -1536,47 +1536,35 @@ def gettpevents
               INNER JOIN venues ON events.venue_id = venues.id
               LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE bookmark_lists.featured IS NOT FALSE AND occurrences.start >= '#{Date.today()}' AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
+            WHERE bookmark_lists.featured IS NOT FALSE AND occurrences.start >= '#{Date.today()}' AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{days_check} AND #{low_price_match} AND #{high_price_match}
             "
-
-
-
-    # puts "queryResult"
     queryResult = ActiveRecord::Base.connection.select_all(query)
-    # puts queryResult
-
-
     occurrences =[]
     recurrenceids = queryResult.select{|r| r["recurrence_id"] != "0"}.collect { |e| e["recurrence_id"].to_i }.uniq
-    # puts "recurrenceids "
-    # puts recurrenceids
     queryResult.each{|r|
       if r["recurrence_id"] != "0"
-        puts "Check stuffffffff"
-        puts Event.find(r["event_id"].to_i)
         occ = Event.find(r["event_id"].to_i).nextOccurrence
-        puts occ
         unless occ.nil?
           r["occurrence"] = occ[:id]
-          # puts "Before "
-          # puts r["occurrence_start"]
-          # puts "After"
-          # puts occ[:start].strftime("%F %T")
           r["occurrence_start"]  = occ[:start].strftime("%F %T")
-          puts r["occurrence_start"]
         end
         
        end
     }
     # puts occurrences
     ttttmp = queryResult.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
-    esinfo = ttttmp.drop(@offset).take(@amount)
-    # puts "After sorting and drop XXXX"
-    # puts esinfo.to_json
-    
-
-
-
+    es = queryResult.select{|r|
+      r["occurrence_start"].to_datetime >= event_start_date && r["occurrence_start"].to_datetime <= event_end_date
+    }
+    tes =[]
+    es.each{|r|
+      t = Time.parse(r["occurrence_start"])
+      s = t.hour * 60 * 60 + t.min * 60 + t.sec
+      if (s>=event_start_time) && (s<=event_end_time)
+        tes<<r
+      end
+    }
+    esinfo = tes.drop(@offset).take(@amount)
     @eventIDs =  esinfo.collect { |e| e["event_id"] }.uniq
     # puts @eventIDs
     esinfo = []
@@ -1619,11 +1607,7 @@ def gettpevents
       # puts tags
      
       s = set.first
-      # item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
-      # :title => s["title"], :venue_name => s["venue_name"],:long => s["longitude"], :lat => s["latitude"], :event_id => s["event_id"], :venue_id => s["venue_id"],
-      # :occurrence_id => s["occurrence_id"], :price => s["price"] , :address => s["address"] , :zip => s["zip"] , :city => s["city"], :state => s["state"] ,:clicks => s["clicks"],
-      # :views => s["views"], :tags  =>  tags }
-
+      
       item = {
                 :act => act, # 0
                 :rec => rec , # 1
@@ -1650,28 +1634,11 @@ def gettpevents
                 :user => users, #22
                 :tps =>  tps #23
               }
-
-
-      # item = {:act => act, :rec => rec , s["occurrence_start"] ,  s["end"] ,s["cover"] , s["phone"], s["description"],
-      # ["title"],  s["venue_name"],s["longitude"], s["latitude"], s["event_id"],  s["venue_id"],
-      # s["occurrence_id"], s["price"] ,s["address"] ,  s["zip"] , s["city"], s["state"] , s["clicks"],
-      # s["views"], :tags  => Event.find(id).tags.collect{ |t| {t.id, t.name}}  }
-
-
-
-      esinfo << item
+     esinfo << item
     }
-    # puts "Output: - before sorting "
-    # puts esinfo.to_json
     ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
     
     esinfo = ttttmp.collect{|es| es.values}
-
-
-    
-   
-
-     
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
