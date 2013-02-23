@@ -1576,7 +1576,8 @@ def gettpevents
     
 
 
-     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
+
+    @eventIDs =  esinfo.collect { |e| e["event_id"] }.uniq
     # puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
