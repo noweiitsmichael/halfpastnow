@@ -498,11 +498,7 @@ class MobileController < ApplicationController
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
-      tpss = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| {:id => l.id, :pic => l.picture}}.uniq
-      tps =[]
-      tpss.each{|tps|
-        tps << 'http://hpn-pictures.s3.amazonaws.com/uploads/bookmark_list/picture/'+tps[:id]+'/mini_'+tps[:pic]
-      }
+      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini}.uniq
       # puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
@@ -1065,20 +1061,12 @@ def FacebookLogin
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
-      tpss = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| {:id => l.id, :pic => l.picture}}.uniq
-      tps =[]
-      tpss.each{|tps|
-        tps << 'http://hpn-pictures.s3.amazonaws.com/uploads/bookmark_list/picture/'+tps[:id]+'/mini_'+tps[:pic]
-      }
+      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini}.uniq
       if tps.count == 0
         e = Event.find(id)
         if !e.nil?
           ids=e.bookmarks.collect{|b| b.bookmark_list_id}
-          tpss = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| {:id => l.id, :pic => l.picture}}.uniq
-          tps =[]
-          tpss.each{|tps|
-            tps << 'http://hpn-pictures.s3.amazonaws.com/uploads/bookmark_list/picture/'+tps[:id]+'/mini_'+tps[:pic]
-          }
+          tps = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| l.picture.mini}.uniq
         end
         
       end
@@ -1589,20 +1577,12 @@ def gettpevents
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
-      tpss = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| {:id => l.id, :pic => l.picture}}.uniq
-      tps =[]
-      tpss.each{|tps|
-        tps << 'http://hpn-pictures.s3.amazonaws.com/uploads/bookmark_list/picture/'+tps[:id]+'/mini_'+tps[:pic]
-      }
+      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini}.uniq
       if tps.count == 0
         e = Event.find(id)
         if !e.nil?
           ids=e.bookmarks.collect{|b| b.bookmark_list_id}
-          tpss = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| {:id => l.id, :pic => l.picture}}.uniq
-          tps =[]
-          tpss.each{|tps|
-            tps << 'http://hpn-pictures.s3.amazonaws.com/uploads/bookmark_list/picture/'+tps[:id]+'/mini_'+tps[:pic]
-          }
+          tps = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| l.picture.mini}.uniq
         end
         
       end
@@ -1999,20 +1979,12 @@ def FacebookLoginSX
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
-      tpss = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| {:id => l.id, :pic => l.picture}}.uniq
-          tps =[]
-          tpss.each{|tps|
-            tps << 'http://hpn-pictures.s3.amazonaws.com/uploads/bookmark_list/picture/'+tps[:id]+'/mini_'+tps[:pic]
-          }
+      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini}.uniq
       if tps.count == 0
         e = Event.find(id)
         if !e.nil?
           ids=e.bookmarks.collect{|b| b.bookmark_list_id}
-          tpss = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| {:id => l.id, :pic => l.picture}}.uniq
-          tps =[]
-          tpss.each{|tps|
-            tps << 'http://hpn-pictures.s3.amazonaws.com/uploads/bookmark_list/picture/'+tps[:id]+'/mini_'+tps[:pic]
-          }
+          tps = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| l.picture.mini}.uniq
         end
         
       end
@@ -2653,11 +2625,8 @@ def SX
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
-      tpss = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| {:id => l.id, :pic => l.picture}}.uniq
-      tps =[]
-      tpss.each{|tps|
-        tps << 'http://hpn-pictures.s3.amazonaws.com/uploads/bookmark_list/picture/'+tps[:id]+'/mini_'+tps[:pic]
-      }
+      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini}.uniq
+      
       # puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
