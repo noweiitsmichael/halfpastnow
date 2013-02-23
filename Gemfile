@@ -76,5 +76,6 @@ gem 'delayed_job_active_record'
 gem 'therubyracer'
 gem 'will_paginate'
 gem 'oink' #memory logging
+gem "librato-metrics" #logging/error reporting to Liberato add-on
 # gem 'eventfulapi'
 # gem 'eventbrite-client'
