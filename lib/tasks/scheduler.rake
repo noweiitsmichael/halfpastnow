@@ -376,7 +376,7 @@ namespace :api do
 				# First resolve venue
 				# If no existing raw venue is found via name and from Eventbrite, create one.
 				raw_venue = nil
-				if RawVenue.find(:first, :conditions =>[ "lower(name) = ? AND from = 'eventbrite'", eb["events"][i]["event"]["venue"]["name"].downcase ]) == nil
+				if RawVenue.find(:first, :conditions =>[ "lower(name) = ?", eb["events"][i]["event"]["venue"]["name"].downcase ]) == nil
 						puts "!! Creating raw venue for #{eb["events"][i]["event"]["venue"]["name"]}"
 						raw_venue = RawVenue.create!(
 							:name => eb["events"][i]["event"]["venue"]["name"],
@@ -439,7 +439,7 @@ namespace :api do
 				new_e["picture"] = eb["events"][i]["event"]["logo"]
 				new_e["ticketing"] = eb["events"][i]["event"]["url"]
 
-				raw_venue = RawVenue.find(:first, :conditions =>[ "lower(name) = ? AND from = 'eventbrite'", eb["events"][i]["event"]["venue"]["name"].downcase ])
+				raw_venue = RawVenue.find(:first, :conditions =>[ "lower(name) = ?", eb["events"][i]["event"]["venue"]["name"].downcase ])
 				puts "Associating event to #{raw_venue.name}"
 
 				if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
@@ -506,11 +506,40 @@ namespace :api do
 		old_artists = 0;
 		lines.each_with_index do |l, index|
 			lines[index] = l.split(/","/)
+			lines[index][0] = (lines[index][0].split(/"/))[1] # because there's an extra "/" in the beginning
 			if Act.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '')) = ?", lines[index][1].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
+				existing_artist = Act.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '')) = ?", lines[index][1].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
+				if existing_artist.description.nil?
+					existing_artist.description = lines[index][5]
+				end
+				if existing_artist.genre.nil?
+					existing_artist.genre = lines[index][3]
+				end
+				existing_artist.save
 				old_artists += 1
 			else
+				new_artist = Act.create!(
+							:name => lines[index][1],
+							:genre => lines[index][3],
+							:description => lines[index][5],
+							:pop_id => lines[index][0],
+							:pop_source => "do512"
+							)
+				# Create picture
+				puts "Saving picture...."
+				Picture.create(:pictureable_id => new_artist.id, :pictureable_type => "Act", 
+						   	   :image => open(lines[index][6])) rescue nil
+
+				pp lines[index]
+				# Creating Embed
+				if (lines[index][7] != nil) && (!lines[index][7].blank?)
+					lines[index][7] = /.+?e\/(.+?)\?/.match(lines[index][7])[1]
+					embed_code = '<iframe width="100%" height="280" src="http://www.youtube.com/embed/' + 
+								 lines[index][7] + '" frameborder="0" allowfullscreen></iframe>';
+					Embed.create!(:embedable_id => id, :primary => true, :source => embed_code, :embedable_type => "Act")
+					puts "Saved embed..."
+				end
 				new_artists += 1
-				puts lines[index][1]
 			end
 		end
 
@@ -520,13 +549,16 @@ namespace :api do
 	desc "do512 SXSW events"
 	task :do512_sxsw_events => :environment do
 		puts "Opening events file..."
-		f = File.open(Rails.root + "app/_etc/do512_oo.csv")
+		f = File.open(Rails.root + "app/_etc/event.csv")
 		lines = f.readlines
 		puts "Total events: #{lines.count}"
 		new_events = 0;
 		old_events = 0;
 		lines.each_with_index do |l, index|
 			lines[index] = l.split(/","/)
+			lines[index][0] = (lines[index][0].split(/"/))[1] # because there's an extra "/" in the beginning
+
+			### NEED TO CHECK TIME TOO
 			if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", lines[index][1].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
 				old_events += 1
 			else
