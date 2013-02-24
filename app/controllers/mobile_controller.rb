@@ -1510,7 +1510,7 @@ def gettpevents
     tmp1 ="o"
     
 
-    query = "SELECT DISTINCT ON (recurrences.id) bookmark_lists.id AS listid, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+    query = "SELECT DISTINCT ON (recurrences.id) bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
@@ -1524,7 +1524,7 @@ def gettpevents
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE bookmark_lists.featured IS NOT FALSE AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND #{days_check} AND occurrences.recurrence_id IS NOT NULL AND (recurrences.range_end >= '#{Date.today()}' OR recurrences.range_end IS NULL)
             UNION
-            SELECT DISTINCT ON (events.id) bookmark_lists.id AS listid, users.id AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            SELECT DISTINCT ON (events.id) bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
@@ -1576,17 +1576,21 @@ def gettpevents
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
-      tpids = set.collect { |e|  e["listid"].to_i}.uniq
-      tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
-      if tps.count == 0
-        e = Event.find(id)
-        if !e.nil?
-          ids=e.bookmarks.collect{|b| b.bookmark_list_id}
-          tps = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
-        end
+      # tpids = set.collect { |e|  e["listid"].to_i}.uniq
+      # tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
+      # if tps.count == 0
+      #   e = Event.find(id)
+      #   if !e.nil?
+      #     ids=e.bookmarks.collect{|b| b.bookmark_list_id}
+      #     tps = BookmarkList.where(:id=>ids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
+      #   end
         
-      end
-      
+      # end
+      tps=[]
+      tpids = set.collect { |e|  {:id => e["listid"].to_i, :pix => e["pix"]}}.uniq
+      tpids.each{|tpid|
+        tps << "http://hpn-pictures.s3.amazonaws.com/uploads/bookmark_list/picture/"+tpid[:id].to_s+"/mini_"+tpid[:pix]
+      }
       
       # puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
