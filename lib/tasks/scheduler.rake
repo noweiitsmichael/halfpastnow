@@ -4,7 +4,6 @@ require 'pp'
 require 'htmlentities'
 require 'rubygems'
 require 'sanitize'
-require 'eventful/api'
 require 'carrierwave'
 include REXML
 
@@ -458,7 +457,6 @@ namespace :api do
 									:raw_venue_id => raw_venue.id
 									)
 					new_events += 1
-
 					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "RawEvent", 
 							   	   :image => open(new_e["picture"])) rescue nil
 					if cover_i
@@ -466,7 +464,6 @@ namespace :api do
 						sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
 						sxsw_event.save!
 					end
-
 				else
 					puts "....Updating Event #{new_e["name"]}"
 					sxsw_event = Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
@@ -490,18 +487,56 @@ namespace :api do
 						sxsw_event.save!
 					end
 				end
-
 			end
-
 		end
 		puts "Completed! Summary:"
 		puts "New Raw Venues Created: #{new_raw_venues}"
 		puts "New Actual Venues Created: #{new_real_venues}"
 		puts "New Events Created: #{new_events}"
 		puts "Existing events updated: #{updated_events}"
-
 	end
 
+	desc "do512 SXSW artists"
+	task :do512_sxsw_artists => :environment do
+		puts "Opening artists file..."
+		f = File.open(Rails.root + "app/_etc/artist.csv")
+		lines = f.readlines
+		puts "Total artists: #{lines.count}"
+		new_artists = 0;
+		old_artists = 0;
+		lines.each_with_index do |l, index|
+			lines[index] = l.split(/","/)
+			if Act.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '')) = ?", lines[index][1].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
+				old_artists += 1
+			else
+				new_artists += 1
+				puts lines[index][1]
+			end
+		end
+
+		puts "#{new_artists} new artists, #{old_artists} old artists"
+	end
+
+	desc "do512 SXSW events"
+	task :do512_sxsw_events => :environment do
+		puts "Opening events file..."
+		f = File.open(Rails.root + "app/_etc/do512_oo.csv")
+		lines = f.readlines
+		puts "Total events: #{lines.count}"
+		new_events = 0;
+		old_events = 0;
+		lines.each_with_index do |l, index|
+			lines[index] = l.split(/","/)
+			if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", lines[index][1].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
+				old_events += 1
+			else
+				new_events += 1
+				puts lines[index][1]
+			end
+		end
+
+		puts "#{new_events} new events, #{old_events} old events"
+	end
 
 	desc "SXSW venues"
 	task :sxsw_venues => :environment do
