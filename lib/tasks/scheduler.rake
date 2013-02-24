@@ -683,7 +683,7 @@ namespace :api do
 					unless new_e["picture"].nil?
 						if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
 							cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
-									   	   :image => open(new_e["picture"])) rescue nil
+									   	   :image => open(new_e["picture"])) rescue next
 							sxsw_event.cover_image = cover_i.id
 							sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
 							sxsw_event.save!
