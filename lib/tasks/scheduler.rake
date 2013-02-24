@@ -848,6 +848,8 @@ namespace :api do
 	desc "SXSW events"
 	task :sxsw_events => :environment do
 		count = 0
+		new_event = 0
+		updated_event = 0
 		puts "Creating events from file..."
 		f = File.open(Rails.root + "app/_etc/sxsw_events2.csv")
 		lines = f.read
@@ -922,7 +924,7 @@ namespace :api do
 				# sxsw_event.cover_image = cover_i.id
 				# sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
 				# sxsw_event.save!
-
+				new_event += 1
 			else
 				puts "....Updating Event #{new_e["name"]}"
 				sxsw_event = Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
@@ -947,11 +949,13 @@ namespace :api do
 				# 	sxsw_event.save!
 
 				# end
+
+				updated_event += 1
 			end
 
 
 		end
-
+		puts "Created #{new_event} new events, updated #{updated_event} events"
 	end
 
 	desc "generate venues from raw_venues"
@@ -1831,9 +1835,11 @@ def sxswVenueSave(line, parent)
 				:from => "sxsw"
 			)
 		else
+			puts "......Found Raw Venue by address, skipping"
 			return
 		end
 	else
+		puts "......Found Raw Venue by name, skipping"
 		return
 	end
 
