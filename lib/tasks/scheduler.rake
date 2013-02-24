@@ -500,6 +500,9 @@ namespace :api do
 
 	desc "do512 SXSW artists"
 	task :do512_sxsw_artists => :environment do
+		#
+		# Doesn't match artist name when there's a non-alphanumeric symbol in it
+		#
 		puts "Opening artists file..."
 		f = File.open(Rails.root + "app/_etc/artist.csv")
 		lines = f.readlines
@@ -510,6 +513,7 @@ namespace :api do
 			lines[index] = l.split(/","/)
 			lines[index][0] = (lines[index][0].split(/"/))[1] # because there's an extra "/" in the beginning
 			if Act.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '')) = ?", lines[index][1].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
+				puts "....found existing"
 				existing_artist = Act.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '')) = ?", lines[index][1].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
 				if existing_artist.description.nil?
 					existing_artist.description = lines[index][5]
@@ -517,9 +521,12 @@ namespace :api do
 				if existing_artist.genre.nil?
 					existing_artist.genre = lines[index][3]
 				end
+				existing_artist.completion = existing_artist.completedness
 				existing_artist.save
 				old_artists += 1
 			else
+				puts "Creating New"
+				puts lines[index][1].gsub(/[^0-9a-zA-Z ]/, '').downcase
 				new_artist = Act.create!(
 							:name => lines[index][1],
 							:genre => lines[index][3],
@@ -528,23 +535,29 @@ namespace :api do
 							:pop_source => "do512"
 							)
 				# Create picture
-				puts "Saving picture...."
-				Picture.create(:pictureable_id => new_artist.id, :pictureable_type => "Act", 
-						   	   :image => open(lines[index][6])) rescue nil
+				# puts "Saving picture...."
+				# Picture.create(:pictureable_id => new_artist.id, :pictureable_type => "Act", 
+				# 		   	   :image => open(lines[index][6])) rescue nil
 
-				pp lines[index]
 				# Creating Embed
-				if (lines[index][7] != nil) && (!lines[index][7].blank?)
-					lines[index][7] = /.+?e\/(.+?)\?/.match(lines[index][7])[1]
+				if (lines[index][7] != nil) && (!lines[index][7].blank?) && (lines[index][7] != "\"\r\n")
+					yt_partial = /.+?e\/(.+?)\?/.match(lines[index][7])
+					if yt_partial.nil?
+						puts "checking for V!"
+						yt_partial = /.+?v\/(.+?)\&/.match(lines[index][7])
+					end
+					lines[index][7] = yt_partial[1]
 					embed_code = '<iframe width="100%" height="280" src="http://www.youtube.com/embed/' + 
 								 lines[index][7] + '" frameborder="0" allowfullscreen></iframe>';
-					Embed.create!(:embedable_id => id, :primary => true, :source => embed_code, :embedable_type => "Act")
+					Embed.create!(:embedable_id => new_artist.id, :primary => true, :source => embed_code, :embedable_type => "Act")
+
 					puts "Saved embed..."
 				end
+				new_artist.completion = new_artist.completedness
+				new_artist.save
 				new_artists += 1
 			end
 		end
-
 		puts "#{new_artists} new artists, #{old_artists} old artists"
 	end
 
@@ -556,20 +569,130 @@ namespace :api do
 		puts "Total events: #{lines.count}"
 		new_events = 0;
 		old_events = 0;
+		new_raw_venues = 0;
+		new_real_venues = 0;
+
 		lines.each_with_index do |l, index|
 			lines[index] = l.split(/","/)
 			lines[index][0] = (lines[index][0].split(/"/))[1] # because there's an extra "/" in the beginning
 
-			### NEED TO CHECK TIME TOO
-			if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", lines[index][1].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
-				old_events += 1
-			else
-				new_events += 1
-				puts lines[index][1]
-			end
+			raw_venue = nil
+				if RawVenue.find(:first, :conditions =>[ "lower(name) = ?", lines[index][4].downcase ]) == nil
+						puts "!! Creating raw venue for #{lines[index][4]}"
+						raw_venue = RawVenue.create!(
+							:name => lines[index][4],
+							:address => lines[index][6],
+							:city => lines[index][7],
+							:state_code => lines[index][8],
+							:zip => lines[index][9],
+							:raw_id => "do512",
+							:from => "do512"
+						)
+						new_raw_venues += 1
+						# Now see if a real venue needs to be created
+						if Venue.find(:first, :conditions => [ "lower(name) = ?", lines[index][4].downcase ]) == nil
+							if Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '')) = ?", lines[index][6].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
+								puts "!! Creating real venue for #{lines[index][4]}"
+								new_venue = Venue.create!(
+									:name => raw_venue.name,
+									:address => raw_venue.address,
+									:city => raw_venue.city,
+									:state => raw_venue.state_code,
+									:zip => raw_venue.zip
+								)
+								raw_venue.venue_id = new_venue.id
+								raw_venue.save
+								new_real_venues += 1
+							else
+								puts "....Found venue for #{lines[index][4]} by address"
+								real_venue = Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '')) = ?", lines[index][6].gsub(/[^0-9a-zA-Z ]/, '').downcase ]).id
+								raw_venue.venue_id = real_venue
+								raw_venue.save
+							end
+						else
+							puts "....Found venue for #{lines[index][4]} by name"
+							real_venue = Venue.find(:first, :conditions => [ "lower(name) = ?", lines[index][4].downcase ]).id
+							raw_venue.venue_id = real_venue
+							raw_venue.save
+						end
+				else
+	
+					puts "....Found raw venue for #{lines[index][4]} by name"
+				end
+				#### Done with venue stuff, on to events ####
+
+				raw_venue = RawVenue.find(:first, :conditions =>[ "lower(name) = ?", lines[index][4].downcase ])
+
+				new_e = Hash.new
+				new_e["id"] = lines[index][16]
+				new_e["name"] = lines[index][1]
+				new_e["start_time"] = lines[index][2]
+				new_e["end_time"] = lines[index][3]
+				new_e["description"] = lines[index][13]
+				new_e["picture"] = lines[index][14]
+				new_e["ticketing"] = lines[index][15]
+				new_e["url"] = lines[index][0]
+				new_e["artists"] = lines[index][11]
+
+				puts "Associating event to #{raw_venue.name}"
+
+				if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
+					puts "....Creating event #{new_e["name"]}"
+					sxsw_event = RawEvent.create!(
+									:title => new_e["name"],
+									:description => new_e["description"],
+									:event_url => new_e["url"],
+									:ticket_url => new_e["ticketing"],
+									:url => new_e["url"],
+									:start => new_e["start_time"],
+									:end => new_e["end_time"],
+									:from => "do512sxsw",
+									:raw_venue_id => raw_venue.id
+									)
+					new_events += 1
+					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "RawEvent", 
+							   	   :image => open(new_e["picture"])) rescue nil
+					if cover_i
+						sxsw_event.cover_image = cover_i.id
+						sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
+						sxsw_event.save!
+					end
+					# new_e["artists"].split(',').each do |a|
+					# 	if Act.find_by_name(a)
+					# 		aa = Act.find_by_name(a)
+					# 		ActsEvents.create(:act_id => aa.id, :event_id => sxsw_event.id)
+					# 	end
+					# end
+				else
+					puts "....Updating Event #{new_e["name"]}"
+					sxsw_event = Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
+					sxsw_event.title = new_e["name"]
+					sxsw_event.description = new_e["description"]
+					sxsw_event.venue_id = raw_venue.venue_id
+					sxsw_event.save!
+					occ = sxsw_event.occurrences.first
+					occ.start = new_e["start_time"]
+					occ.end = new_e["end_time"]
+					occ.event_id = sxsw_event.id
+					# y occ
+					occ.save!
+					old_events += 1
+					# # Create pictures
+					unless new_e["picture"].nil?
+						if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
+							cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
+									   	   :image => open(new_e["picture"]))
+							sxsw_event.cover_image = cover_i.id
+							sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
+							sxsw_event.save!
+						end
+					end
+				end
+
 		end
 
 		puts "#{new_events} new events, #{old_events} old events"
+		puts "#{new_raw_venues} new raw venues, #{new_real_venues} new real venues"
 	end
 
 	desc "SXSW venues"
