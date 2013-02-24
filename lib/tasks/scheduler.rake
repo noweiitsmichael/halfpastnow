@@ -578,7 +578,7 @@ namespace :api do
 
 			raw_venue = nil
 
-			if RawVenue.find(:first, :conditions =>[ "lower(name) = ?", lines[index][4].downcase ]) == nil
+			if RawEvent.find(:first, :conditions =>[ "lower(name) = ?", lines[index][1].downcase ]) == nil
 				if RawVenue.find(:first, :conditions =>[ "lower(name) = ?", lines[index][4].downcase ]) == nil
 						puts "!! Creating raw venue for #{lines[index][4]}"
 						raw_venue = RawVenue.create!(
