@@ -577,6 +577,8 @@ namespace :api do
 			lines[index][0] = (lines[index][0].split(/"/))[1] # because there's an extra "/" in the beginning
 
 			raw_venue = nil
+
+			if RawVenue.find(:first, :conditions =>[ "lower(name) = ?", lines[index][4].downcase ]) == nil
 				if RawVenue.find(:first, :conditions =>[ "lower(name) = ?", lines[index][4].downcase ]) == nil
 						puts "!! Creating raw venue for #{lines[index][4]}"
 						raw_venue = RawVenue.create!(
@@ -688,7 +690,7 @@ namespace :api do
 						end
 					end
 				end
-
+			end
 		end
 
 		puts "#{new_events} new events, #{old_events} old events"
