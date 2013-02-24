@@ -749,7 +749,7 @@ namespace :api do
 		artist_list = Array.new
 		count = 0
 		puts "Creating artist list from events file..."
-		f = File.open(Rails.root + "app/_etc/sxsw_events.csv")
+		f = File.open(Rails.root + "app/_etc/sxsw_events2.csv")
 		lines = f.read
 		lines = lines.split(/0"\n/)
 		lines.each do |l|
@@ -765,7 +765,7 @@ namespace :api do
 
 		# create list of all artists
 		puts "Opening artists file..."
-		f = File.open(Rails.root + "app/_etc/sxsw_acts.csv")
+		f = File.open(Rails.root + "app/_etc/sxsw_acts2.csv")
 		lines = f.read
 		lines = lines.split(/"\n/)
 		lines.each_with_index do |l, index|
@@ -815,23 +815,23 @@ namespace :api do
 				act_edit.save
 
 				# Create picture
-				puts "Saving picture...."
-				Picture.create(:pictureable_id => act_edit.id, :pictureable_type => "Act", 
-						   	   :image => open(artist["picture"])) rescue nil
+				# puts "Saving picture...."
+				# Picture.create(:pictureable_id => act_edit.id, :pictureable_type => "Act", 
+				# 		   	   :image => open(artist["picture"])) rescue nil
 
-				# Creating Tags
-				puts "Saving tags..."
-				ActsTags.create(:act_id => act_edit.id, :tag_id => 1)
-				sxswTagCreate(act_edit.id, artist["genre"])
+				# # Creating Tags
+				# puts "Saving tags..."
+				# ActsTags.create(:act_id => act_edit.id, :tag_id => 1)
+				# sxswTagCreate(act_edit.id, artist["genre"])
 
-				# Creating Embed
-				puts "Saving embed..."
-				if (artist["embed"] != nil) && (!artist["embed"].blank?)
-					artist["embed"] = /.+?v=(.+?)\Z/.match(artist["embed"])[1]
-					embed_code = '<iframe width="100%" height="280" src="http://www.youtube.com/embed/' + 
-								 artist["embed"] + '" frameborder="0" allowfullscreen></iframe>';
-					Embed.create!(:embedable_id => act_edit.id, :primary => true, :source => embed_code, :embedable_type => "Act")
-				end
+				# # Creating Embed
+				# puts "Saving embed..."
+				# if (artist["embed"] != nil) && (!artist["embed"].blank?)
+				# 	artist["embed"] = /.+?v=(.+?)\Z/.match(artist["embed"])[1]
+				# 	embed_code = '<iframe width="100%" height="280" src="http://www.youtube.com/embed/' + 
+				# 				 artist["embed"] + '" frameborder="0" allowfullscreen></iframe>';
+				# 	Embed.create!(:embedable_id => act_edit.id, :primary => true, :source => embed_code, :embedable_type => "Act")
+				# end
 
 				count += 1
 			else
@@ -849,7 +849,7 @@ namespace :api do
 	task :sxsw_events => :environment do
 		count = 0
 		puts "Creating events from file..."
-		f = File.open(Rails.root + "app/_etc/sxsw_events.csv")
+		f = File.open(Rails.root + "app/_etc/sxsw_events2.csv")
 		lines = f.read
 		lines = lines.split(/0"\n/)
 		lines.each do |e|
@@ -885,8 +885,8 @@ namespace :api do
 								)
 
 				Occurrence.create(
-					:start => new_e["start_time"],
-					:end => new_e["end_time"],
+					:start => new_e["start_time"].to_time,
+					:end => new_e["end_time"].to_time,
 					:event_id => sxsw_event.id
 					)
 
@@ -916,12 +916,12 @@ namespace :api do
 				end
 						
 
-				puts "Saving picture...."
-				cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
-						   	   :image => open(new_e["picture"]))
-				sxsw_event.cover_image = cover_i.id
-				sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
-				sxsw_event.save!
+				# puts "Saving picture...."
+				# cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
+				# 		   	   :image => open(new_e["picture"]))
+				# sxsw_event.cover_image = cover_i.id
+				# sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
+				# sxsw_event.save!
 
 			else
 				puts "....Updating Event #{new_e["name"]}"
@@ -931,22 +931,22 @@ namespace :api do
 				sxsw_event.venue_id = new_e_venue
 				sxsw_event.save!
 				occ = sxsw_event.occurrences.first
-				occ.start = new_e["start_time"]
-				occ.end = new_e["end_time"]
+				occ.start = new_e["start_time"].to_time
+				occ.end = new_e["end_time"].to_time
 				occ.event_id = sxsw_event.id
 				# y occ
 				occ.save!
 
-				# Create pictures
-				if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
-					puts "Saving picture...."
-					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
-							   	   :image => open(new_e["picture"]))
-					sxsw_event.cover_image = cover_i.id
-					sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
-					sxsw_event.save!
+				# # Create pictures
+				# if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
+				# 	puts "Saving picture...."
+				# 	cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
+				# 			   	   :image => open(new_e["picture"]))
+				# 	sxsw_event.cover_image = cover_i.id
+				# 	sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
+				# 	sxsw_event.save!
 
-				end
+				# end
 			end
 
 
