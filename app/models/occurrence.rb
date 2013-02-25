@@ -310,7 +310,7 @@ class Occurrence < ActiveRecord::Base
                      LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
                      LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id"
 
-      where_clause = "#{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_and_match} AND #{low_price_match} AND #{high_price_match}"
+      where_clause = "#{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_exclude_match} AND #{tag_include_match} AND #{tag_and_match} AND #{low_price_match} AND #{high_price_match}"
 
     end
 
