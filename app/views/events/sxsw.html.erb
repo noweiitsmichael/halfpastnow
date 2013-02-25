@@ -75,14 +75,17 @@
 		})(jQuery, document);
 
 		$(function() {
-		  var COOKIE_NAME = 'splash-page';
-		  var cookie = $.cookie(COOKIE_NAME);
-		  if (cookie == null) {
-		    $.cookie(COOKIE_NAME, true, { path: '/', expires: 9001 });
-		    window.location = "/events/new_splash";
-		  }
-		  else {
-		  }
+		  $(".showit").click(function (){
+		  	if ($(".bar-wrapper").is(':hidden')) {
+			  	$(".bar-wrapper").show("slow");
+			  	$("#content").animate( {"margin-top":"+=70"}, 600);
+			  	$("#map-wrapper").animate( {"margin-top":"+=70"}, 600);
+			} else {
+			  	$(".bar-wrapper").hide("slow");
+			  	$("#content").animate( {"margin-top":"-=70"}, 600 );
+			  	$("#map-wrapper").animate( {"margin-top":"-=70"}, 600 );
+			}
+		  });
 		});
 
 
@@ -293,12 +296,14 @@
 			}
 		});
 	</script>
+
+
 <% end %>
 
 <% content_for :header do %>
 
 
-	<div class="bar-wrapper">
+	<div class="bar-wrapper" style="display:none;">
 
 		<div class="doublebar">
 		<div class="stay-on-target bullseye-womprats">
@@ -489,9 +494,12 @@
 
 <% content_for :body do %>
 	<div id="content">
+		Select your SXSW Access:
+		
 		<% unless @mobileMode %>
 		<div id="map-wrapper">
 			<div id="map"></div>
+			<div class="showit">Advanced Search...</div>
 			<div class="map-move">
 				<strong>zoom and move around the map to see events</strong><br />
 				redo search based on map move + zoom<input type="checkbox" checked id="unnecessarily-long-id-for-toggling-search-on-map-move-and-zoom"/>

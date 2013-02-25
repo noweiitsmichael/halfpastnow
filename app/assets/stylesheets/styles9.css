@@ -1347,6 +1347,20 @@ input::-webkit-input-placeholder
     margin-right: 3px;
 }
 
+.showit { 
+  color: white;
+  margin-top: -86px;
+  cursor: pointer;
+  float: right;
+  background-color: purple;
+  padding: 5px 10px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.showit:hover { 
+  background:black; 
+}
 #header .header
 {
   /*height: 60px;
@@ -1451,6 +1465,10 @@ input::-webkit-input-placeholder
 
 #header .filter-toggle.tags.andtags .text-inner {
   max-width: 86px;
+}
+
+.field.andtags .andtags-thing label {
+  display:inline;
 }
 
 #header .filter-toggle.date .text-inner {
