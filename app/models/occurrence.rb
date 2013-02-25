@@ -275,15 +275,15 @@ class Occurrence < ActiveRecord::Base
                     )"
       end
 
-      # unless(params[:excluded_tags].to_s.empty?)
-      #   tags_mush = params[:excluded_tags] * ','
-      #   tag_exclude_match = "events.id NOT IN (
-      #                 SELECT event_id 
-      #                   FROM events, tags, events_tags 
-      #                   WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{tags_mush}) 
-      #                   GROUP BY event_id
-      #               )"
-      # end
+      unless(params[:excluded_tags].to_s.empty?)
+        tags_mush = params[:excluded_tags] * ','
+        tag_exclude_match = "events.id NOT IN (
+                      SELECT event_id 
+                        FROM events, tags, events_tags 
+                        WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{tags_mush}) 
+                        GROUP BY event_id
+                    )"
+      end
 
       # price
       unless(params[:low_price].to_s.empty?)
