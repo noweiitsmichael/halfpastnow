@@ -275,15 +275,15 @@ class Occurrence < ActiveRecord::Base
                     )"
       end
 
-      unless(params[:excluded_tags].to_s.empty?)
-        tags_mush = params[:excluded_tags] * ','
-        tag_exclude_match = "events.id NOT IN (
-                      SELECT event_id 
-                        FROM events, tags, events_tags 
-                        WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{tags_mush}) 
-                        GROUP BY event_id
-                    )"
-      end
+      # unless(params[:excluded_tags].to_s.empty?)
+      #   tags_mush = params[:excluded_tags] * ','
+      #   tag_exclude_match = "events.id NOT IN (
+      #                 SELECT event_id 
+      #                   FROM events, tags, events_tags 
+      #                   WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{tags_mush}) 
+      #                   GROUP BY event_id
+      #               )"
+      # end
 
       # price
       unless(params[:low_price].to_s.empty?)
@@ -310,7 +310,7 @@ class Occurrence < ActiveRecord::Base
                      LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
                      LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id"
 
-      where_clause = "#{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_exclude_match} AND #{tag_include_match} AND #{tag_and_match} AND #{low_price_match} AND #{high_price_match}"
+      where_clause = "#{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_and_match} AND #{low_price_match} AND #{high_price_match}"
 
     end
 
