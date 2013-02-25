@@ -32,7 +32,7 @@ Myapp::Application.configure do
   config.middleware.use( Oink::Middleware, :logger => Rails.logger )
 
   #config.log_level = :warn
-   config.log_level = :warn
+   config.log_level = :debug
   
   # Mail options 
   ##TODO: Verify this is the correct host

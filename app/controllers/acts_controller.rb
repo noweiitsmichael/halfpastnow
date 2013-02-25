@@ -49,7 +49,11 @@ class ActsController < ApplicationController
 
   def index
     authorize! :index, @user, :message => 'Not authorized as an administrator.'
-    @acts = Act.all.sort_by{ |act| act.name }
+    # First attempt at speed optimization
+    # @acts = Act.find(:all, :select => 'id, name, completion').sort_by{ |act| act.name }
+    ## TODO: it pulls all event associations, not upcoming events
+    @acts = Act.joins("LEFT OUTER JOIN acts_events ON acts.id = acts_events.act_id GROUP BY acts.id").select("acts.id, acts.name, acts.completion, COUNT(acts_events.act_id) as num_events")
+    # pp @acts
 
     render :layout => "admin"
   end

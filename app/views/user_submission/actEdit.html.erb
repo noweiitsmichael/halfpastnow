@@ -164,7 +164,12 @@
 
 			<% @iStrName = "act[tag_ids][]" %>
 			<% @iStrId = "act_tag_ids_" %>
-
+			<br>
+			<% if ActsTags.where(:act_id => @act.id).empty? %>
+				<span style="font-style:italic; color:#777">Possible tags:
+					<%= @act.genre %>
+				</span>
+			<% end %>
 
 				<%= render :partial => "tags", :locals => { :element => @act, :type => "act" } %>
 
