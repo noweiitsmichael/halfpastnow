@@ -53,6 +53,14 @@ H5
 }
 H6
 
+.ui-datepicker {
+  z-index: 1000;
+}
+
+.move-to-top {
+  z-index: 1000;
+}
+
 label { 
   display:block; 
   margin-top:5px; 
@@ -2524,6 +2532,8 @@ input::-webkit-input-placeholder
     width: 160px;
     display: inline-block;
     margin-right: 10px;
+    z-index: 10000;
+    position:relative;
 }
 
 .field.tags {

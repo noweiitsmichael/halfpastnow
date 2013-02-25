@@ -816,23 +816,23 @@ namespace :api do
 				act_edit.save
 
 				# Create picture
-				# puts "Saving picture...."
-				# Picture.create(:pictureable_id => act_edit.id, :pictureable_type => "Act", 
-				# 		   	   :image => open(artist["picture"])) rescue nil
+				puts "Saving picture...."
+				Picture.create(:pictureable_id => act_edit.id, :pictureable_type => "Act", 
+						   	   :image => open(artist["picture"])) rescue nil
 
-				# # Creating Tags
-				# puts "Saving tags..."
-				# ActsTags.create(:act_id => act_edit.id, :tag_id => 1)
-				# sxswTagCreate(act_edit.id, artist["genre"])
+				# Creating Tags
+				puts "Saving tags..."
+				ActsTags.create(:act_id => act_edit.id, :tag_id => 1)
+				sxswTagCreate(act_edit.id, artist["genre"])
 
-				# # Creating Embed
-				# puts "Saving embed..."
-				# if (artist["embed"] != nil) && (!artist["embed"].blank?)
-				# 	artist["embed"] = /.+?v=(.+?)\Z/.match(artist["embed"])[1]
-				# 	embed_code = '<iframe width="100%" height="280" src="http://www.youtube.com/embed/' + 
-				# 				 artist["embed"] + '" frameborder="0" allowfullscreen></iframe>';
-				# 	Embed.create!(:embedable_id => act_edit.id, :primary => true, :source => embed_code, :embedable_type => "Act")
-				# end
+				# Creating Embed
+				puts "Saving embed..."
+				if (artist["embed"] != nil) && (!artist["embed"].blank?)
+					artist["embed"] = /.+?v=(.+?)\Z/.match(artist["embed"])[1]
+					embed_code = '<iframe width="100%" height="280" src="http://www.youtube.com/embed/' + 
+								 artist["embed"] + '" frameborder="0" allowfullscreen></iframe>';
+					Embed.create!(:embedable_id => act_edit.id, :primary => true, :source => embed_code, :embedable_type => "Act")
+				end
 
 				count += 1
 			else
@@ -936,12 +936,12 @@ namespace :api do
 				end
 						
 
-				# puts "Saving picture...."
-				# cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
-				# 		   	   :image => open(new_e["picture"]))
-				# sxsw_event.cover_image = cover_i.id
-				# sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
-				# sxsw_event.save!
+				puts "Saving picture...."
+				cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
+						   	   :image => open(new_e["picture"]))
+				sxsw_event.cover_image = cover_i.id
+				sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
+				sxsw_event.save!
 				new_event += 1
 			else
 				puts "....Updating Event #{new_e["name"]}"
@@ -1884,33 +1884,33 @@ def sxswVenueSave(line, parent)
 			raw_venue.venue_id = new_venue.id
 			raw_venue.save
 
-			# # Create pictures
-			# puts "Saving picture...."
-			# Picture.create(:pictureable_id => new_venue.id, :pictureable_type => "Venue", 
-			# 		   	   :image => open(line["picture"])) rescue nil
+			# Create pictures
+			puts "Saving picture...."
+			Picture.create(:pictureable_id => new_venue.id, :pictureable_type => "Venue", 
+					   	   :image => open(line["picture"])) rescue nil
 		else
 			puts "Found venue for #{parent["name"]} by address via #{line["name"]}"
 			real_venue = Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '', 'g')) = ?", parent["street"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]).id
 			raw_venue.venue_id = real_venue
 			raw_venue.save
-			# # Create pictures
-			# if Picture.where(:pictureable_type => "Venue", :pictureable_id => real_venue).count <= 3
-			# 	puts "Saving picture...."
-			# 	Picture.create(:pictureable_id => real_venue, :pictureable_type => "Venue", 
-			# 			   	   :image => open(line["picture"])) rescue nil
-			# end
+			# Create pictures
+			if Picture.where(:pictureable_type => "Venue", :pictureable_id => real_venue).count <= 3
+				puts "Saving picture...."
+				Picture.create(:pictureable_id => real_venue, :pictureable_type => "Venue", 
+						   	   :image => open(line["picture"])) rescue nil
+			end
 		end
 	else
 		puts "Found venue for #{parent["name"]} by name via #{line["name"]}"
 		real_venue = Venue.find(:first, :conditions => [ "lower(name) = ?", parent["name"].downcase ]).id
 		raw_venue.venue_id = real_venue
 		raw_venue.save
-		# # Create pictures
-		# if Picture.where(:pictureable_type => "Venue", :pictureable_id => real_venue).count <= 3
-		# 	puts "Saving picture...."
-		# 	Picture.create(:pictureable_id => real_venue, :pictureable_type => "Venue", 
-		# 			   	   :image => open(line["picture"])) rescue nil
-		# end
+		# Create pictures
+		if Picture.where(:pictureable_type => "Venue", :pictureable_id => real_venue).count <= 3
+			puts "Saving picture...."
+			Picture.create(:pictureable_id => real_venue, :pictureable_type => "Venue", 
+					   	   :image => open(line["picture"])) rescue nil
+		end
 	end
 end
 
