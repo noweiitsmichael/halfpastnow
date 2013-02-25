@@ -11,13 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130222010046) do
+ActiveRecord::Schema.define(:version => 20130225011019) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.integer  "event_id"
     t.boolean  "suggested"
     t.text     "fb_picture"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(:version => 20130222010046) do
     t.integer  "updated_by"
     t.string   "pop_source"
     t.float    "completion"
+    t.text     "temp_storage"
   end
 
   add_index "acts", ["event_id"], :name => "index_acts_on_event_id"
@@ -264,6 +265,7 @@ ActiveRecord::Schema.define(:version => 20130222010046) do
     t.string   "events_url"
     t.datetime "last_visited"
     t.text     "fb_picture"
+    t.text     "temp_storage"
   end
 
   add_index "raw_venues", ["venue_id"], :name => "index_raw_venues_on_venue_id"
