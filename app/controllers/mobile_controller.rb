@@ -3668,6 +3668,7 @@ def SX
           :start_days=> s.start_days,
           :start_seconds=> s.start_seconds
           }.values
+        }
     # puts @esinfo.to_json
     respond_to do |format|
       format.html do
