@@ -3857,6 +3857,13 @@ def SX
               }.values}.uniq 
             tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
             s = set.first
+            if s["latitude"].nil?
+               s["latitude"] = "30.2003363"
+            end
+            if s["longitude"].nil?
+               s["longitude"] = "-97.7683374"
+            end
+
             item = {
                       :act => act, # 0
                       :rec => rec , # 1
