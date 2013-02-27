@@ -3880,9 +3880,11 @@ def SX
                       :event_id => s["event_id"], #19
                       :start => s["occurrence_start"] , #20
                       :end => s["end"], #21
-                      :tp => list.name, #22
-
-                     new
+                      :tp => list.name
+                      # , #22
+                      # :tix => s["tix"],
+                      # :url => s["url"]
+                     
                     }
             esinfo << item
 
