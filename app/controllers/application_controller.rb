@@ -14,11 +14,9 @@ class ApplicationController < ActionController::Base
   
   def mobile_device?
     if session[:mobile_param]
-      puts "THIS IS AN iPhonem1"
-      session[:mobile_param] == "1"
+       session[:mobile_param] == "1"
     else
-      redirect_to "http://www.rubyonrails.org"
-       puts "THIS IS AN iPhone20"
+      
       # request.user_agent =~ /Mobile|webOS/
        (request.user_agent =~ /Mobile|webOS/) && (request.user_agent !~ /Android/) &&  (request.user_agent !~ /iPad/)
       
@@ -32,10 +30,10 @@ class ApplicationController < ActionController::Base
     @some_instance_variable = mobile_device?
     if !@some_instance_variable.nil?
       @mobileMode = true
-       puts "THIS IS AN iPhone3"
+      
     else
-       puts "THIS IS AN iPhone4"
-      redirect_to "http://www.rubyonrails.org"
+      
+      
       @mobileMode = false
     end
 
