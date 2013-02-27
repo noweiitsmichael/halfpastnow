@@ -4,6 +4,7 @@
 	var root_url = "http%3A%2F%2Fhalfpastnow.com";
 	var link = root_url + "%3F" + type + "_id%3D" + id;
 	var bookmark_id = "<%= bookmarkId.to_s %>";
+	var attending_id = "<%= attendingId.to_s %>";
 	var bookmarkList_id = "<%= id %>";
 	var toggle = false;
 	console.log(id+' '+bookmark_id)
@@ -34,8 +35,9 @@
 	
 	$(function() {
 		console.log("Loaded share stuff");
-		$('.bookmark-share .bookmark').click(function() {
 
+		// The "bookmark" class won't be here if a user isn't logged in
+		$('.bookmark-share .bookmark').click(function() {
 			var that = $(this);
 			if(that.hasClass('add')) {
 				var bookmarked_type = "";
@@ -65,10 +67,9 @@
 					console.log("new bookmark");
 					console.log(data);
 					that.removeClass('add').addClass('remove');
+					that.text("In Bookmarks");
 					bookmark_id = data;
 				});
-				
-		          
 			} 
 			else if(that.hasClass('remove')) {
 				// $.getJSON('/bookmarks/destroy/', { id: bookmark_id }, function(data) {
@@ -76,8 +77,31 @@
 				// });
 				 $.getJSON('/bookmarks/destroy/' + bookmark_id, function(data) {
 		          that.addClass('add').removeClass('remove');
+					that.text("Bookmark it!");
 		        });
-
+			}
+		});
+		
+		// This "attending" class won't be here if the user isn't logged in
+		$('.bookmark-share .attending').click(function(e) {
+			var that = $(this);
+			if(that.hasClass('add')) {
+				var bookmarked_type = "Occurrence";
+				$.getJSON('/bookmarks/attending_create', { bookmark: { "type": bookmarked_type, "id": id } }, function(data) {
+					console.log("new attending bookmark");
+					that.removeClass('add').addClass('remove');
+					that.text("Planning on Attending");
+					$(".re-rsvp").text("Visit RSVP Site Again");
+					attending_id = data;
+				});
+			} 
+			else if(that.hasClass('remove')) {
+    			 e.preventDefault();
+				 $.getJSON('/bookmarks/destroy/' + attending_id, function(data) {
+		          	that.addClass('add').removeClass('remove');
+					that.text("No longer attending (click again to attend!)");
+					$(".re-rsvp").text("");
+		        });
 			}
 		});
 		
@@ -200,11 +224,26 @@
       }
 </script>
 <div class="bookmark-share">
-
+	<% if type == 'event' %>
+		<% if !event.ticket_url.blank? %>
+		<a href="<%= event.ticket_url %>" target="_blank" class="nice-button attending-button <%= current_user ? "attending" : "" %> <%= attendingId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
+			<%= attendingId.nil? ? "RSVP" : "Already RSVP'd" %>
+		</a>
+		<div class="rsvp-center" style="text-align:center; vertical-align:text-top;"><a href='<%= event.ticket_url %>' target='_blank' class='re-rsvp' style="font-size:16px;"><%= attendingId.nil? ? "" : "Visit RSVP Site Again" %></a></div>
+		<% else %>
+		<span class="nice-button attending-button <%= current_user ? "attending" : "" %> <%= attendingId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
+			<%= attendingId.nil? ? "I'm attending!" : "Planning on Attending" %>
+		</span>
+		<% end %>
+	<% end %>
+	<span class="nice-button bookmark-button <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
+		<i class="icon-bookmark"></i>
+		<%= bookmarkId.nil? ? "Bookmark it" : "In Bookmarks" %>
+	</span>
+<!-- 	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span> -->
 	<span class="icon icon-envelope-alt email"></span>
 	<span class="icon icon-facebook-sign facebook"></span>
 	<span class="icon icon-twitter-sign twitter"></span>
-	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span>
 	<% if type == 'event' %>
 		<% if (!current_user.nil?) && current_user.role_at_least?("top_picker")  %>
 			<div class="comment-tp">

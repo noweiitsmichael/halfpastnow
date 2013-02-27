@@ -17,6 +17,15 @@ class ChannelsController < ApplicationController
 		end
 	end
 
+   def index
+    @channel = Channel.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @channels }
+    end
+  end
+
 	def new
 		@channels = current_user.channels
 	    respond_to do |format|

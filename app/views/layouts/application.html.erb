@@ -24,8 +24,7 @@
   <% end %>
   <title><%= @pageTitle || "half past now." %></title>
   
-  <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic,'>
-  
+  <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic,'><link href='http://fonts.googleapis.com/css?family=Titillium+Web:700,600italic,600,700italic' rel='stylesheet' type='text/css'>
   <link rel="shortcut icon" href="/assets/favicon.ico" />
   
   <%= javascript_include_tag "application" %>
@@ -67,8 +66,11 @@
         <div>
           <div class="stay-on-target">
             <a href="/"><img class="logo" src="/assets/halfpastnow_final_beta-dark-header.png" /></a>
-            <a class="main menu-element <%= params[:controller] == "events" ? "selected" : "" %>" href="/search">Search</a>
+            <a class="main menu-element <%= params[:controller] == "events" && params[:action] != "sxsw" ? "selected" : "" %>" href="/search">Search</a>
             <a class="main menu-element <%= params[:controller] == "picks" ? "selected" : "" %>" href="/picks">Top Picks</a>
+            <a class="main menu-element <%= params[:action] == "sxsw" ? "selected" : "" %>" href="/sxsw" style="font-style:italic">
+              <span style="color:#ba613b">S</span><span style="color:#26749b">X</span><span style="color:#438758">S</span><span style="color:#888">W</span>2013
+            </a>
             <% if false %><% end %>
             <% if user_signed_in? %>
               <div class="menu-element right pic">

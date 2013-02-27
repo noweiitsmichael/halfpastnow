@@ -67,10 +67,10 @@
 		<div class="picture-overlay"></div>
 	</div>
 </a>
-	<div class="event-actions">
-		<div><span class="icon icon-envelope-alt email" event-id="<%= occurrence.id %>"></span><span class="text">email</span></div>
-		<div><span class="icon icon-facebook-sign facebook" event-id="<%= occurrence.id %>"></span><span class="text">facebook</span></div>
-		<div><span class="icon icon-twitter-sign twitter" event-id="<%= occurrence.id %>"></span><span class="text">twitter</span></div>
+	<div class="event-actions">  
+		<div title="Send Email"><span class="icon icon-envelope-alt email" event-id="<%= occurrence.id %>"></span><span class="text">email</span></div>
+		<div title="Post to Facebook"><span class="icon icon-facebook-sign facebook" event-id="<%= occurrence.id %>"></span><span class="text">facebook</span></div>
+		<div title="Post on Twitter"><span class="icon icon-twitter-sign twitter" event-id="<%= occurrence.id %>"></span><span class="text">twitter</span></div>
 		<% 
 			if(current_user)
 		      bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
@@ -79,7 +79,7 @@
 		      bookmarkId = nil
 		    end 
 	    %>
-		<div><span class="icon icon-bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" <%= current_user ? "" : "linkto='shunt'" %> event-id="<%= occurrence.id %>"></span><span class="text">bookmark</span></div>
+		<div title="Bookmark This"><span class="icon icon-bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" <%= current_user ? "" : "linkto='shunt'" %> event-id="<%= occurrence.id %>"></span><span class="text">bookmark</span></div>
 	</div>
 	<div style="display:none;">
 		<div class="latitude"><%= occurrence.event.venue.latitude %></div>

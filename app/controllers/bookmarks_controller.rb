@@ -57,7 +57,7 @@ class BookmarksController < ApplicationController
   end
   
   def custom_create
-  	puts params
+  	# puts params
 
   	id = params[:bookmark][:id]
   	type = params[:bookmark][:type]
@@ -75,7 +75,7 @@ class BookmarksController < ApplicationController
   	@bookmark.bookmarked_id = id
   	@bookmark.bookmarked_type = type
 
-  	pp @bookmark
+  	# pp @bookmark
 
   	respond_to do |format|
   		format.json {
@@ -86,6 +86,40 @@ class BookmarksController < ApplicationController
 				render json: @bookmark.errors, status: :unprocessable_entity
 			end
 		}
+    end
+  end
+
+  
+  def attending_create
+    # puts params
+
+    id = params[:bookmark][:id]
+    type = params[:bookmark][:type]
+
+    unless(Bookmark.where(:bookmarked_type => type, :bookmarked_id => id, :bookmark_list_id => current_user.bookmark_lists.where(:name => "Attending").first.nil?))
+      puts "fail1"
+      respond_to do |format|
+        format.json {
+          render json: nil, status: :unprocessable_entity
+        }
+      end
+    end
+
+    @bookmark = current_user.bookmark_lists.where(:name => "Attending").first.bookmarks.build
+    @bookmark.bookmarked_id = id
+    @bookmark.bookmarked_type = type
+
+    # pp @bookmark
+
+    respond_to do |format|
+      format.json {
+      if @bookmark.save!
+            render json: @bookmark.id
+      else 
+        puts "fail2"
+        render json: @bookmark.errors, status: :unprocessable_entity
+      end
+    }
     end
   end
  

@@ -62,7 +62,14 @@ class Occurrence < ActiveRecord::Base
   
 
   def self.find_with(params)
+    puts "occurrence.rb"
+    pp params
     user_id = params[:user_id]
+
+    # Different default for SXSW
+    if (params[:action] == "sxsw") && (params[:channel_id].to_s.empty?)
+      params[:channel_id] = 416
+    end
 
     unless(params[:channel_id].to_s.empty?)
       channel = Channel.find(params[:channel_id].to_i)
@@ -187,8 +194,10 @@ class Occurrence < ActiveRecord::Base
         event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
       end
       if(!params[:end_date].to_s.empty?)
+        puts "not empty"
         event_end_date = Date.parse(params[:end_date]).advance(:days => 1)
       else
+        puts "empty"
         event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_i == -1) ? 365000 : params[:end_days].to_i + 1))
       end
 
@@ -275,15 +284,15 @@ class Occurrence < ActiveRecord::Base
                     )"
       end
 
-      # unless(params[:excluded_tags].to_s.empty?)
-      #   tags_mush = params[:excluded_tags] * ','
-      #   tag_exclude_match = "events.id NOT IN (
-      #                 SELECT event_id 
-      #                   FROM events, tags, events_tags 
-      #                   WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{tags_mush}) 
-      #                   GROUP BY event_id
-      #               )"
-      # end
+      unless(params[:excluded_tags].to_s.empty?)
+        tags_mush = params[:excluded_tags] * ','
+        tag_exclude_match = "events.id NOT IN (
+                      SELECT event_id 
+                        FROM events, tags, events_tags 
+                        WHERE events_tags.event_id = events.id AND events_tags.tag_id = tags.id AND tags.id IN (#{tags_mush}) 
+                        GROUP BY event_id
+                    )"
+      end
 
       # price
       unless(params[:low_price].to_s.empty?)
@@ -310,7 +319,7 @@ class Occurrence < ActiveRecord::Base
                      LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
                      LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id"
 
-      where_clause = "#{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_and_match} AND #{low_price_match} AND #{high_price_match}"
+      where_clause = "#{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{tag_and_match} AND #{low_price_match} AND #{high_price_match}"
 
     end
 

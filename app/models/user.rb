@@ -196,6 +196,11 @@ class User < ActiveRecord::Base
     puts "creating default attending list"
     BookmarkList.create(:name => "Attending", :description => "Attending", :public => false, 
                         :featured => false, :main_bookmarks_list => false, :user_id => self.id)
+
+    # Follow all top picks lists
+    BookmarkList.where(:featured => true).find_each do |top_list|
+      BookmarkListsUsers.create(:bookmark_list_id => top_list.id, :user_id => self.id)
+    end
   end
 
 

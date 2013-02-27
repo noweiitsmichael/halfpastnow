@@ -29,6 +29,7 @@ end
 
 def index
 
+    # Set default if action is sxsw
     unless(params[:event_id].to_s.empty?)
       redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
     end
@@ -162,12 +163,15 @@ def index
 
     if(current_user)
       bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
+      attending = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.bookmark_lists.where(:name => "Attending").first.id).first
       @bookmarkId = bookmark.nil? ? nil : bookmark.id 
+      @attendingId = attending.nil? ? nil : attending.id
       # bookmarkFeaturedList=Bookmark.where(:bookmarked_type => "Occurrence",:bookmark_list_id => current_user.featured_list.id, :bookmarked_id =>@occurrence.id).first
       bookmarkFeaturedList=(!current_user.featured_list.nil?) ? @occurrence.all_event_bookmarks(current_user.featured_list.id).first : nil
       @bookmarkFeaturedListId = bookmarkFeaturedList.nil? ? nil : bookmarkFeaturedList.id 
     else
       @bookmarkId = nil
+      @attendingId = nil
       @bookmarkFeaturedListId = nil
     end
 

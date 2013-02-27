@@ -27,9 +27,14 @@ function pushFilterTag(tag_id, tag_type) {
     if(filter.included_tags.indexOf(tag_id) === -1) {
       filter.included_tags.push(tag_id);
     }
-  } else {
+  } else if (tag_type === "and_tags"){
     if(filter.and_tags.indexOf(tag_id) === -1) {
       filter.and_tags.push(tag_id);
+    }
+  } else {
+    console.log("excluded tag added")
+    if(filter.excluded_tags.indexOf(tag_id) === -1) {
+      filter.excluded_tags.push(tag_id);
     }
   }
 
@@ -41,9 +46,13 @@ function popFilterTag(tag_id, tag_type) {
     if(filter.included_tags.indexOf(tag_id) != -1) {
       filter.included_tags.splice(filter.included_tags.indexOf(tag_id),1);
     }
-  } else {
+  } else if (tag_type === "and_tags"){
     if(filter.and_tags.indexOf(tag_id) != -1) {
       filter.and_tags.splice(filter.and_tags.indexOf(tag_id),1);
+    }
+  } else {
+    if(filter.excluded_tags.indexOf(tag_id) != -1) {
+      filter.excluded_tags.splice(filter.excluded_tags.indexOf(tag_id),1);
     }
   }
 }
@@ -52,8 +61,10 @@ function inFilterTag(tag_id, tag_type) {
   tag_type = defaultTo(tag_type, "included_tags");
   if (tag_type === "included_tags"){
     return !(typeof filter.included_tags === 'undefined' || filter.included_tags.indexOf(tag_id) === -1);
-  } else {
+  } else if (tag_type === "and_tags"){
     return !(typeof filter.and_tags === 'undefined' || filter.and_tags.indexOf(tag_id) === -1);
+  } else {
+    return !(typeof filter.excluded_tags === 'undefined' || filter.excluded_tags.indexOf(tag_id) === -1);
   }
 }
 
@@ -66,6 +77,67 @@ $(function() {
 
   $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.ortags.children .name', function() {
     $(this).siblings('.include').click();
+  });
+
+  $("#sxsw-tags").on("click", '.individual-tag .name', function(event) {
+    stopPropagation(event);
+    $('.tags-menu.ortags.children .include[tag-id=' + $(this).siblings('.include').attr("tag-id")+ ']').click();
+  });
+
+  $("#sxsw-tags").on("click", '.individual-tag .include', function(event) {
+    stopPropagation(event);
+    $('.tags-menu.ortags.children .include[tag-id=' + $(this).attr("tag-id")+ ']').click();
+  });
+
+
+  $("#sxsw-options").on("click", '.rsvp-button', function(event) {
+    stopPropagation(event);
+    filter = $.extend(true, {}, channelFilters[417]);
+    updateViewFromFilter(true, {hideSaveSearchButton: true});
+  });
+
+    $('.access').dropkick({ 
+    width: 165, 
+    display: "inline-block",
+        change: function (value, label) {
+        console.log("stream selected");
+        $("#dk_container_stream-select").addClass('selected');
+        var channelID = parseInt(value);
+        console.log(channelID);
+        filter = $.extend(true, {}, channelFilters[channelID]);
+        console.log(filter);
+        updateViewFromFilter(true, {hideSaveSearchButton: true});
+      }
+    });
+
+
+$('.sxsw-dates').dropkick({
+    width: 145,
+    display: "inline-block",
+    change: function (value, label) {
+      switch(parseInt(value)) {
+        case 0:
+          filter.start_date = "";
+          filter.end_date = "";
+        break;
+        case 1:
+          // Interactive
+          filter.start_date = '2013-03-08';
+          filter.end_date = '2013-03-12';
+        break;
+        case 2:
+          //Film
+          filter.start_date = '2013-03-08';
+          filter.end_date = '2013-03-16';
+        break;
+        case 3:
+          //Music
+          filter.start_date = '2013-03-12';
+          filter.end_date = '2013-03-17';
+        break;
+      }
+        updateViewFromFilter();
+      }
   });
 
   // onclick include or exclude categories
@@ -100,6 +172,7 @@ $(function() {
 
   // Do other stuff for children categories in the bar
   $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.ortags.children .include', function(event) {
+
     event.stopPropagation();
 
     var tagID = $(this).attr('tag-id');
@@ -113,12 +186,27 @@ $(function() {
         // then remove the parent category from included_tags
         popFilterTag(parent_id);
         
-        // and add all the parent's child tags to included_tags
-        for(var i in parent_tag["child_ids"]) {
-          pushFilterTag(parent_tag["child_ids"][i]);
+        // ***** SXSW if else tags handing. Remove and pull out else contents for regular
+        if ((tagID == 191) || (tagID == 189) || (tagID == 184) || (tagID == 167) || (tagID == 166) || (tagID == 165)) {
+          pushFilterTag("191");
+          pushFilterTag("189");
+          pushFilterTag("184");
+          pushFilterTag("167");
+          pushFilterTag("166");
+          pushFilterTag("165");
+        } else {
+          // and add all the parent's child tags to included_tags
+          for(var i in parent_tag["child_ids"]) {
+            pushFilterTag(parent_tag["child_ids"][i]);
+          }
         }
+
         // and remove the category from included_tags
+        // console.log("About to pop:");
+        // console.log(tagID);
+        // console.log(filter.included_tags);
         popFilterTag(tagID);
+        // console.log(filter.included_tags);
       } else {  // otherwise just remove the tag from included_tags 
         popFilterTag(tagID);
       }
@@ -150,6 +238,14 @@ $(function() {
     var tagString = "";
     for(var i in filter.included_tags) {
       tagString += tags[filter.included_tags[i]]["name"] + ",";
+    }
+    console.log("Filter tags!");
+    console.log(filter.exclude_tags);
+    if (filter.excluded_tags != "") {
+      tagString += " excluding ";
+      for(var i in filter.excluded_tags) {
+        tagString += tags[filter.excluded_tags[i]]["name"] + ",";
+      }
     }
     console.log(tagString);
 
@@ -534,7 +630,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
 
 
     if(inFilterTag(parent_id, "andtags")) {
-    console.log("tag: " + parent_tag["name"]);
+    // console.log("tag: " + parent_tag["name"]);
       //if parent is in included_tags print out parent's name
       andtagsFilterTextArr.push(parent_tag["name"]);
       andtagsDisplayArr.push({id: parent_id, name: parent_tag["name"]});
@@ -824,13 +920,15 @@ function streamSelector() {
       theme: "alegreya",
       width: maxWidth,
       change: function (value, label) {
+        console.log("stream selected");
         $("#dk_container_stream-select").addClass('selected');
         // $(".streambar .stream").removeClass('selected');
         // $('#header').addClass('selected');
 
         var channelID = parseInt(value);
+        // console.log("channelID");
         filter = $.extend(true, {}, channelFilters[channelID]);
-
+        // console.log(filter);
         updateViewFromFilter(true, {hideSaveSearchButton: true});
       }
     });
@@ -863,7 +961,7 @@ function boundsChanged() {
 // this gets called on infinite scroll and on filter changes
 function pullEvents(updateOptions) {
 
-  console.log(filter);
+  // console.log(filter);
 
   var async_reloadTagsList = reloadTagsList;
   var async_infiniteScrolling = infiniteScrolling;

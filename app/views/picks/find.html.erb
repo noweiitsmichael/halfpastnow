@@ -60,7 +60,9 @@
 			return parseInt(obj);
 		}
 		$(function() {
-			      
+			
+		    $( document ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+		          
 			window.fbAsyncInit = function() {
 			        console.log("Loaded FB 222");
 			          FB.init({

@@ -16,6 +16,7 @@ Myapp::Application.routes.draw do
   resources :bookmark_lists
 
   match 'bookmarks/custom_create' => 'bookmarks#custom_create'
+  match 'bookmarks/attending_create' => 'bookmarks#attending_create'
   match 'bookmarks/add_to_featuredlist' => 'bookmarks#add_to_featuredlist'
   match 'bookmarks/update_comment' => 'bookmarks#update_comment'
   match 'bookmarks/destroyBookmarkedList' => 'bookmarks#destroyBookmarkedList'
@@ -98,7 +99,7 @@ Myapp::Application.routes.draw do
 
   # TODO: overcome the stupidity that is rails 3 routing and clean this up.
   # match 'venues' => 'venues#index'
-  # match 'events' => 'events#index'd
+  # match 'events' => 'events#index'
   match 'tags' => 'tags#index'
   match 'info' => 'info#about'
   match 'admin' => 'admin#index'
@@ -110,6 +111,7 @@ Myapp::Application.routes.draw do
   match 'users' => 'users#index', :as => "user"
   match 'users/friends' => 'users#friends'
   match '/search' => 'events#index'
+  match '/sxsw' => 'events#sxsw'
 
   match '/auth/:provider/callback' => 'authentications#create'
 

@@ -1,12 +1,13 @@
 <% content_for :head do %>
   <%= javascript_include_tag "half.dynamics" %>
+  <%= stylesheet_link_tag "sxsw.css" %>
 <% end %>
 
 <% content_for :code do %>
 <%# TODO: put this stuff in the controller eventually %>
 
 	<% 	@now = DateTime.now.change(:hour => 0)
-		@channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
+		@channels = Channel.default_channels %>
 	
 	<script type="text/javascript">
 		//cookie redirect
@@ -78,14 +79,19 @@
 		  $(".showit").click(function (){
 		  	if ($(".bar-wrapper").is(':hidden')) {
 			  	$(".bar-wrapper").show("slow");
+			  	$("#sxsw-wrap").animate( {"margin-top":"+=70"}, 600);
 			  	$("#content").animate( {"margin-top":"+=70"}, 600);
 			  	$("#map-wrapper").animate( {"margin-top":"+=70"}, 600);
 			} else {
 			  	$(".bar-wrapper").hide("slow");
+			  	$("#sxsw-wrap").animate( {"margin-top":"-=70"}, 600 );
 			  	$("#content").animate( {"margin-top":"-=70"}, 600 );
 			  	$("#map-wrapper").animate( {"margin-top":"-=70"}, 600 );
 			}
 		  });
+
+
+		  $( document ).tooltip({ position: { my: "left+15 center", at: "right center" } });
 		});
 
 
@@ -97,13 +103,13 @@
 
 		var filter = {
 		  start_days: <%= params[:start_days].coalesce_to 0 %>,
-		  end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
+		  end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to -1 %>,
 		  start_seconds: <%= params[:start_seconds].coalesce_to "''" %>,
 		  end_seconds: <%= params[:end_seconds].coalesce_to "''" %>,
 		  day: [0,1,2,3,4,5,6],
 		  low_price: <%= params[:low_price].coalesce_to "''" %>,
 		  high_price: <%= params[:high_price].coalesce_to "''" %>,
-		  included_tags: <%= params[:included_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[]" %>,
+		  included_tags: <%= params[:included_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[163]" %>,
 		  excluded_tags: <%= params[:excluded_tags] ? "[" + (params[:excluded_tags] * ",") + "]" : "[]" %>,
 		  and_tags: <%= params[:and_tags] ? "[" + (params[:and_tags] * ",") + "]" : "[]" %>,
 		  lat_min: "",
@@ -287,6 +293,7 @@
 
 		$(window).load(function() {
 			var stream_id = "<%= params['channel_id'] %>";
+			console.log("initialize to <%= params['channel_id'] %>");
 			if(stream_id !== "") {
 				// $('#header').addClass('selected');
 				$(".streambar .stream[stream-id=" + stream_id + "]").addClass('selected');
@@ -493,13 +500,76 @@
 <% end %>
 
 <% content_for :body do %>
+		<div id="sxsw-wrap">
+			<div id="sxsw-options">
+				<div id="sxsw-cred">
+					<label style="margin-top:2px; margin-bottom:6px; color: purple; font-size: 19px">I'm walkin' around with:</label>
+					<div id="steambar">
+						<select name="access" tabindex="1" class="access" >
+								  <option value="414" stream-id="414">A badge</option>
+								  <option value="415" stream-id="415">A wristband</option>
+								  <option value="416" stream-id="416" selected="selected">Neither</option>
+						</select>
+					</div>
+					<div class="orange-bar">
+					</div>
+				</div>
+				<div id="sxsw-tags">
+					<label style="margin-top:-1px; margin-bottom:6px; color: purple; font-size: 18px">Show me:</label>
+
+						<div class="individual-tag" parent-id="163">
+							<span class="include icon-check" tag-id="166" title="show events with this tag"><span></span></span>
+							<span class="name">Free Drinks</span>
+						</div>
+						<div class="individual-tag" parent-id="163">
+							<span class="include icon-check" tag-id="165" title="show events with this tag"><span></span></span>
+							<span class="name">Free Food</span>
+						</div>
+						<div class="individual-tag" parent-id="163">
+							<span class="include icon-check" tag-id="184" title="show events with this tag"><span></span></span>
+							<span class="name">Party</span>
+						</div>
+						<div class="individual-tag" parent-id="163">
+							<br>
+							<span class="include icon-check" tag-id="167" title="show events with this tag"><span></span></span>
+							<span class="name">No Cover</span>
+						</div>
+						<div class="individual-tag" parent-id="163">
+							<span class="include icon-check" tag-id="189" title="show events with this tag"><span></span></span>
+							<span class="name">Unofficial Event</span>
+						</div>
+						<div class="individual-tag" parent-id="163">
+							<span class="include icon-check" tag-id="191" title="show events with this tag"><span></span></span>
+							<span class="name">RSVP</span>
+						</div>
+					<!-- </div> -->
+					<div class="blue-bar">
+					</div>
+				</div>
+				<div id="sxsw-time">
+					<label style="margin-top:-1px; margin-bottom:6px; color: purple; font-size: 18px">During: </label>
+					<div id="steambar">
+						<select name="sxsw-dates" tabindex="1" class="sxsw-dates" >
+								  <option value="0">All </option>
+								  <option value="1">Interactive (3/8 - 3/12) </option>
+								  <option value="2">Film (3/6 - 3/16)</option>
+								  <option value="3">Music (3/12 - 3/17)</option><!-- 
+								  <option value="rsvp">Today</option>
+								  <option value="none" selected="selected">Tomorrow</option> -->
+						</select>
+					</div>
+					<div class="green-bar">
+					</div>
+				</div>
+				<div class="showit">More Options...</div>
+				<div class="nice-button rsvp-button">Events with RSVPs!</div>
+			</div>
+		</div>
+
 	<div id="content">
-		Select your SXSW Access:
-		
 		<% unless @mobileMode %>
 		<div id="map-wrapper">
 			<div id="map"></div>
-			<div class="showit">Advanced Search...</div>
 			<div class="map-move">
 				<strong>zoom and move around the map to see events</strong><br />
 				redo search based on map move + zoom<input type="checkbox" checked id="unnecessarily-long-id-for-toggling-search-on-map-move-and-zoom"/>
