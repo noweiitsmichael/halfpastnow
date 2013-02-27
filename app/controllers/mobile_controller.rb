@@ -3650,6 +3650,24 @@ def SX
       @esinfo << @item
     }
     puts "esinfo"
+    @channels =  @channels.collect{|s| 
+          {
+
+          :end_date=> s.end_date,
+          :id=> s.id,
+          :start_date=> s.start_date,
+          :end_days=> s.end_days,
+          :end_seconds=> s.end_seconds,
+          :excluded_tags=> s.excluded_tags,
+          :high_price=> s.high_price,
+          :user_id=> s.user_id,
+          :included_tags=> s.included_tags,
+          :low_price=> s.low_price,
+          :name=> s.name,
+          :option_day=> s.option_day,
+          :start_days=> s.start_days,
+          :start_seconds=> s.start_seconds
+          }.values
     # puts @esinfo.to_json
     respond_to do |format|
       format.html do
@@ -3847,7 +3865,7 @@ def SX
                   )"
     end
 
-    # price
+    # pricet
     unless(params[:low_price].to_s.empty?)
       low_price = params[:low_price].to_i
       low_price_match = "events.price >= #{low_price}"
