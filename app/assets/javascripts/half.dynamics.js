@@ -112,7 +112,7 @@ $(function() {
 
 
 $('.sxsw-dates').dropkick({
-    width: 145,
+    width: 155,
     display: "inline-block",
     change: function (value, label) {
       switch(parseInt(value)) {

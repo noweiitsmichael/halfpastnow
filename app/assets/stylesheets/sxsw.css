@@ -1204,7 +1204,7 @@ input::-webkit-input-placeholder
   padding: 5px;
   margin: 5px;
   padding-left: 20px;
-  width: 330px;
+  width: 322px;
   height: 70px;
   background-color: white;
   /*border: 1px dotted grey;*/
@@ -1220,7 +1220,7 @@ input::-webkit-input-placeholder
   padding: 5px;
   margin: 5px;
   padding-left: 20px;
-  width: 215px;
+  width: 222px;
   height: 70px;
   background-color: white;
   /*border: 1px dotted grey;*/
@@ -2065,11 +2065,6 @@ text-decoration: underline dotted;
     margin-right:10px;
     float:right;
 }
-.mode .window .bookmark-share span.bookmark {
-    font-size:36px;
-    position:relative;
-    top:7px;
-}
 
 .mode .window .bookmark-share .comment-tp .popup-box-1 label {
    font-size: 16px;
@@ -2094,7 +2089,7 @@ text-decoration: underline dotted;
     float:left;
 }
 .mode .window .bookmark-share span.bookmark {
-    font-size:36px;
+    font-size:22px;
     position:relative;
     top:7px;
 }
