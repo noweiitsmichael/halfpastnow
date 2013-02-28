@@ -3889,10 +3889,121 @@ def SX
                       :event_id => s["event_id"], #19
                       :start => s["occurrence_start"] , #20
                       :end => s["end"], #21
+                      :tp => list.name #22
+                     
+                    }
+            esinfo << item
+
+          }
+      end
+      
+
+
+    
+    }
+
+    ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
+    esinfo = ttttmp.collect{|es| es.values}
+
+    respond_to do |format|
+      format.html do
+        unless (params[:ajax].to_s.empty?)
+          render :partial => "combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags }
+        end
+      end
+      format.json { render json: {:events=>esinfo} }
+    end
+
+
+  end
+
+  def tpeventsSX
+    tmp ="0"
+
+    @ids = params[:ids].to_s.empty? ? nil : params[:ids].split(',')
+    @lists = BookmarkList.find(@ids)
+    esinfo = []
+    @lists.each{
+      |list|
+      @occurrencesid = list.all_bookmarked_events.collect{|o| o.id}
+      puts "Bookmark"
+      # puts list.all_bookmarked_events
+      if @occurrencesid.size > 0
+          where_clause = "occurrences.id IN (#{@occurrencesid.join(',')})"
+          query = "SELECT DISTINCT ON (recurrences.id,acts.id) events.event_url AS url,events.ticket_url AS tix, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+                  FROM occurrences
+                  INNER JOIN events ON occurrences.event_id = events.id
+                  INNER JOIN venues ON events.venue_id = venues.id
+                  LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+                  INNER JOIN recurrences ON events.id = recurrences.event_id
+                  LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
+                  LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
+                  INNER JOIN tags ON events_tags.tag_id = tags.id
+                  WHERE #{where_clause} AND occurrences.recurrence_id IS NOT NULL
+                  UNION 
+                  SELECT DISTINCT ON (events.id,acts.id) events.event_url AS url,events.ticket_url AS tix, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+                  FROM occurrences
+                  INNER JOIN events ON occurrences.event_id = events.id
+                  INNER JOIN venues ON events.venue_id = venues.id
+                  LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+                  LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
+                  LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
+                  INNER JOIN tags ON events_tags.tag_id = tags.id
+                  WHERE #{where_clause} AND occurrences.recurrence_id IS NULL
+                  "
+          # puts query
+          queryResult = ActiveRecord::Base.connection.select_all(query).uniq 
+          # puts queryResult
+          @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
+          
+          @eventIDs.each{ |id|
+            set =  queryResult.select{ |r| r["event_id"] == id.to_s }
+            act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+            rec_ids = set.collect { |e| e["rec_id"] }.uniq
+            rec = set.collect { |s| { 
+              :every_other => s["every_other"],
+              :day_of_week => s["day_of_week"],
+              :week_of_month => s["week_of_month"], 
+              :day_of_month => s["day_of_month"] ,
+              :rec_start => s["rec_start"],  # 4
+              :rec_end => s["rec_end"]  # 5
+
+              }.values}.uniq 
+            tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+            s = set.first
+            if s["latitude"].nil?
+               s["latitude"] = "30.2003363"
+            end
+            if s["longitude"].nil?
+               s["longitude"] = "-97.7683374"
+            end
+
+            item = {
+                      :act => act, # 0
+                      :rec => rec , # 1
+                      :description => s["description"], # 2
+                      :title => s["title"], # 3
+                      :occurrence_id => s["occurrence_id"], #4
+                      :cover => s["cover"] , #5
+                      :venue_name => s["venue_name"], #6
+                      :address => s["address"] , #7
+                      :zip => s["zip"] , #8
+                      :city => s["city"], #9
+                      :state => s["state"] , #10
+                      :phone => s["phone"], # 11
+                      :lat => s["latitude"], # 12
+                      :long => s["longitude"], #13
+                      :venue_id => s["venue_id"], # 14
+                      :price => s["price"] , #15
+                      :views => s["views"],  #16
+                      :clicks => s["clicks"], #17
+                      :tags  => tags , # 18
+                      :event_id => s["event_id"], #19
+                      :start => s["occurrence_start"] , #20
+                      :end => s["end"], #21
                       :tp => list.name, #22
                       :tix => s["tix"],
                       :url => s["url"]
-                     
                     }
             esinfo << item
 
