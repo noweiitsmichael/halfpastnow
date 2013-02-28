@@ -22,21 +22,19 @@
   <% else %>
     <meta property="og:type" content="halfpastnow:event" />
   <% end %>
-  <title><%= @pageTitle || "half past now." %></title>
+  <title class="head-title"><%= @pageTitle || "half past now." %></title>
   
-  <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic,'><link href='http://fonts.googleapis.com/css?family=Titillium+Web:700,600italic,600,700italic' rel='stylesheet' type='text/css'>
+  <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic,'>
+  <link href='http://fonts.googleapis.com/css?family=Alegreya:900italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Neuton:400,800' rel='stylesheet' type='text/css'>
   <link rel="shortcut icon" href="/assets/favicon.ico" />
   
   <%= javascript_include_tag "application" %>
-
-  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
-  
   <%= stylesheet_link_tag    "application" %>
-  
   <%= csrf_meta_tags %>
 
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
   <script type="text/javascript">
-
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-36312888-1']);
     _gaq.push(['_setDomainName', 'herokuapp.com']);
@@ -47,10 +45,7 @@
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
-
-
-    
-  </script>
+</script>
 
   
   <!-- for cropper -->
@@ -66,11 +61,21 @@
         <div>
           <div class="stay-on-target">
             <a href="/"><img class="logo" src="/assets/halfpastnow_final_beta-dark-header.png" /></a>
-            <a class="main menu-element <%= params[:controller] == "events" && params[:action] != "sxsw" ? "selected" : "" %>" href="/search">Search</a>
-            <a class="main menu-element <%= params[:controller] == "picks" ? "selected" : "" %>" href="/picks">Top Picks</a>
-            <a class="main menu-element <%= params[:action] == "sxsw" ? "selected" : "" %>" href="/sxsw" style="font-style:italic">
-              <span style="color:#ba613b">S</span><span style="color:#26749b">X</span><span style="color:#438758">S</span><span style="color:#888">W</span>2013
-            </a>
+            <ul id="nav">
+              <li class="nav-item">
+                  <a class="main menu-element <%= params[:controller] == "events" && params[:action] != "sxsw" ? "selected" : "" %>" href="/search">Search</a>
+              </li>
+              <li class="nav-item">
+                  <a class="main menu-element <%= params[:controller] == "picks" ? "selected" : "" %>" href="/picks">Top Picks</a>
+              </li>
+              <% if params[:action] != "sxsw" %>
+                <li class='nav-item'><a class='main menu-element' href='/sxsw' style='font-style:normal;font-family: "Neuton",PT Sans,sans-serif;font-weight:800;font-size:25px;letter-spacing:1px'><span style="color:#ba613b">S</span><span style="color:#26749b">X</span><span style="color:#438758">S</span><span style="color:#888">W</span><span style="color:white">2013</span></a></li>
+              <% end %>
+            </ul>
+            <span class="divider"></span>
+            
+              
+            
             <% if false %><% end %>
             <% if user_signed_in? %>
               <div class="menu-element right pic">

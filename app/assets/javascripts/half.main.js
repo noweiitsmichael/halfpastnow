@@ -326,9 +326,12 @@ function checkScroll() {
   if($('#body').hasScrollBar()) {
     //$('#map-wrapper').width(mapWrapperWidth);
     $('#header').width($('#body').width() - scrollbarWidth);
+    $('#sxsw-wrap').width($('#body').width() - scrollbarWidth);
+
   } else {
     //$('#map-wrapper').width(mapWrapperWidth + scrollbarWidth);
     $('#header').width($('#body').width());
+    $('#sxsw-wrap').width($('#body').width() - scrollbarWidth);
   }
 }
 
