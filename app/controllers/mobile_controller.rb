@@ -4234,6 +4234,7 @@ def SX
     # Create events from occurrence
     @es = @occurrences.collect { |occ| occ.event }
     @esinfo =[]
+    @eventinfo =[]
     @es.each{
       |o| 
       @rcs=Recurrence.find(o.occurrences.select{|o| o.recurrence_id!=nil }.collect(&:recurrence_id).uniq)
@@ -4262,6 +4263,8 @@ def SX
           }.values
         }
     @channels=[]
+    @esinfo=[]
+    @es
     # puts @esinfo.to_json
     respond_to do |format|
       format.html do
