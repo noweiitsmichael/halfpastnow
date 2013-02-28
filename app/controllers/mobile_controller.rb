@@ -107,7 +107,8 @@ class MobileController < ApplicationController
         @user.firstname = params[:firstname]
         @user.uid = params[:uid]
         @user.fb_picture = params[:fb_picture]
-        @user.username = params[:username]
+        @user.profilepic = params[:fb_picture]
+        # @user.username = params[:username]
         @user.password =  Devise.friendly_token[0,20]
         @user.provider = "facebook"
         @user.save!
