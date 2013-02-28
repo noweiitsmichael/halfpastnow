@@ -175,7 +175,7 @@ $(function() {
         }(document));// delete below
         console.log('Bookmark outside');
                   
-        var lnk = 'http://www.halfpastnow.com/show/'+id+'?fullmode=true'; 
+        var lnk = 'http://www.halfpastnow.com/events/show/'+id+'?fullmode=true'; 
         console.log(lnk);
         FB.api(
             '/me/halfpastnow:bookmark',
