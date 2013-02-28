@@ -101,10 +101,12 @@ class User < ActiveRecord::Base
     user = super
     if user
       Channel.default_channels.each do |channel| 
-        new_channel = channel.dup
-        new_channel.id = nil
-        new_channel.default = nil
-        user.channels << new_channel
+        if (channel.name == "Happy Hours") || (channel.name == "Live Music")
+          new_channel = channel.dup
+          new_channel.id = nil
+          new_channel.default = nil
+          user.channels << new_channel
+        end
       end
     end
     return user

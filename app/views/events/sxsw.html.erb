@@ -1,6 +1,7 @@
 <% content_for :head do %>
   <%= javascript_include_tag "half.dynamics" %>
   <%= stylesheet_link_tag "sxsw.css" %>
+  <link href='http://fonts.googleapis.com/css?family=Droid+Serif:400,700' rel='stylesheet' type='text/css'>
 <% end %>
 
 <% content_for :code do %>
@@ -79,14 +80,16 @@
 		  $(".showit").click(function (){
 		  	if ($(".bar-wrapper").is(':hidden')) {
 			  	$(".bar-wrapper").show("slow");
-			  	$("#sxsw-wrap").animate( {"margin-top":"+=70"}, 600);
-			  	$("#content").animate( {"margin-top":"+=70"}, 600);
-			  	$("#map-wrapper").animate( {"margin-top":"+=70"}, 600);
+			  	$("#sxsw-wrap").animate( {"margin-top":"+=38"}, 600);
+			  	$("#content").animate( {"margin-top":"+=38"}, 600);
+			  	$("#map-wrapper").animate( {"margin-top":"+=38"}, 600);
+			  	$('#search-expand-icon').attr('class', 'icon-angle-up');
 			} else {
 			  	$(".bar-wrapper").hide("slow");
-			  	$("#sxsw-wrap").animate( {"margin-top":"-=70"}, 600 );
-			  	$("#content").animate( {"margin-top":"-=70"}, 600 );
-			  	$("#map-wrapper").animate( {"margin-top":"-=70"}, 600 );
+			  	$("#sxsw-wrap").animate( {"margin-top":"-=38"}, 600 );
+			  	$("#content").animate( {"margin-top":"-=38"}, 600 );
+			  	$("#map-wrapper").animate( {"margin-top":"-=38"}, 600 );
+			  	$('#search-expand-icon').attr('class', 'icon-angle-down');
 			}
 		  });
 
@@ -292,6 +295,8 @@
 		});
 
 		$(window).load(function() {
+			  $('.head-title').tooltip('disable');
+			  $('.individual-tag').tooltip('disable');
 			var stream_id = "<%= params['channel_id'] %>";
 			console.log("initialize to <%= params['channel_id'] %>");
 			if(stream_id !== "") {
@@ -472,28 +477,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="streambar">
-				<div class="header">
-					<span class="filter-toggle sort">
-						<span class="filter-text">
-							<span class="pre-text">Sort By</span> 
-							<span class="text">
-								<span class="text-inner">Popularity</span>
-								<span class="icon icon-caret-down"></span>
-							</span>
-						</span>
-						<div class="filter-dropdown">
-							<div class="filter-inner">
-								<div class="filter sort">
-									<div class="filters">
-										<span class="popularity selected">popularity</span><span class="date">date</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</span>
-				</div>
-			</div>
 		</div>
 		</div>
 	</div>
@@ -502,13 +485,17 @@
 <% content_for :body do %>
 		<div id="sxsw-wrap">
 			<div id="sxsw-options">
+				<div id="sxsw-heading"><span style="color:#d76f41">S</span><span style="color:#2d88b6">X</span><span style="color:#50a36b">S</span><span style="color:#999">W</span>  <span style="color:white">2013</span></div>
+				<!-- <span style="color:#ba613b">S</span><span style="color:#26749b">X</span><span style="color:#438758">S</span><span style="color:#888">W</span><span style="color:white">2013</span> -->
+				<div class="nice-button rsvp-button">Show Events With RSVPs</div>
 				<div id="sxsw-cred">
 					<label style="margin-top:2px; margin-bottom:6px; color: purple; font-size: 19px">I'm walkin' around with:</label>
 					<div id="steambar">
 						<select name="access" tabindex="1" class="access" >
 								  <option value="414" stream-id="414">A badge</option>
 								  <option value="415" stream-id="415">A wristband</option>
-								  <option value="416" stream-id="416" selected="selected">Neither</option>
+								  <option value="416" stream-id="416">No SXSW Credentials</option>
+								  <option value="424" stream-id="424" selected="selected">Nothin' but my cowboy boots</option>
 						</select>
 					</div>
 					<div class="orange-bar">
@@ -552,7 +539,7 @@
 						<select name="sxsw-dates" tabindex="1" class="sxsw-dates" >
 								  <option value="0">All </option>
 								  <option value="1">Interactive (3/8 - 3/12) </option>
-								  <option value="2">Film (3/6 - 3/16)</option>
+								  <option value="2">Film (3/8 - 3/16)</option>
 								  <option value="3">Music (3/12 - 3/17)</option><!-- 
 								  <option value="rsvp">Today</option>
 								  <option value="none" selected="selected">Tomorrow</option> -->
@@ -561,14 +548,45 @@
 					<div class="green-bar">
 					</div>
 				</div>
-				<div class="showit">More Options...</div>
-				<div class="nice-button rsvp-button">Events with RSVPs!</div>
+				<div id="sxsw-sort">
+					<label style="margin-top:-1px; margin-bottom:6px; color: purple; font-size: 18px">Sort: </label>
+					<div class="streambar">
+						<div class="header">
+							<span class="filter-toggle sort">
+								<span class="filter-text">
+									<span class="pre-text"></span> 
+									<span class="text">
+										<span class="text-inner">Most Views</span>
+										<span class="icon icon-sort"></span>
+									</span>
+								</span>
+								<div class="filter-dropdown">
+									<div class="filter-inner">
+										<div class="filter sort">
+											<div class="filters">
+												<span class="popularity selected" style="font-size:12px">most views</span><span class="date">date</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</span>
+						</div>
+					</div>
+					<div class="grey-bar">
+					</div>
+				</div>
+				<div class="showit">
+				<span></span>More Search Options <i id="search-expand-icon"class="icon-angle-down"></i></div>
 			</div>
 		</div>
 
 	<div id="content">
 		<% unless @mobileMode %>
 		<div id="map-wrapper">
+			<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.halfpastnow.com%2Fsxsw&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=475386955806720" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px; margin-bottom:3px; float:left;" allowTransparency="true"></iframe>
+			<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.halfpastnow.com/sxsw" data-text="A great way to search for SXSW events and RSVPs!" data-via="halfpastnow" data-hashtags="halfpastnow" style="width:85px">Tweet</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+			<a data-pin-config="none" href="//pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.halfpastnow.com.com%2Fsxsw&media=http%3A%2F%2Fwww.halfpastnow.com%2Fassets%2Fhalfpastnow_final-squat.png&description=The%20best%20SXSW%20Resource!" data-pin-do="buttonPin" ><img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" /></a>
 			<div id="map"></div>
 			<div class="map-move">
 				<strong>zoom and move around the map to see events</strong><br />
@@ -582,7 +600,7 @@
 			<% if (@mobileMode) %> </center> <% end %>
 			<div class="inner">
 				<div class="filter-summary">
-					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sort-type" style="display:none;">[by popularity/<span class="sort date">date</span>]</span> 
+					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sort-type" style="display:none;">[by view count/<span class="sort date">date</span>]</span> 
 				</div>
 				<ul class="events">
 					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
@@ -593,6 +611,7 @@
 			<img id="loading" src="/assets/ajax-loader.gif" />
 		</div>
 	</div>
+	<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
 <% end %>
 <% content_for :overlay do %>
 	<div class="mode">

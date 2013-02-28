@@ -286,6 +286,7 @@
 		});
 
 		$(window).load(function() {
+			  $('.head-title').tooltip('disable');
 			var stream_id = "<%= params['channel_id'] %>";
 			if(stream_id !== "") {
 				// $('#header').addClass('selected');

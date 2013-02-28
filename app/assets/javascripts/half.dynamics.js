@@ -97,7 +97,7 @@ $(function() {
   });
 
     $('.access').dropkick({ 
-    width: 165, 
+    width: 185, 
     display: "inline-block",
         change: function (value, label) {
         console.log("stream selected");
@@ -805,7 +805,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
   $('.filter.sort .filters span').removeClass('selected');
   if(filter.sort === 0) {
     $('.filter.sort .filters span.popularity').addClass('selected');
-    sortStr = "Popularity";
+    sortStr = "Most Views";
   } else if(filter.sort === 1) {
     $('.filter.sort .filters span.date').addClass('selected');
     sortStr = "Date";
