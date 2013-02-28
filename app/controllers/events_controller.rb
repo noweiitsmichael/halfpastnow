@@ -394,7 +394,7 @@ def index
   end
 
   def sxsw
-
+    @ur = 'http://www.halfpastnow.com/mobile/og/'+params[:event_id]
     unless(params[:event_id].to_s.empty?)
       redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
     end
