@@ -55,6 +55,22 @@ def index
       @offset = params[:offset].to_i
     end
 
+    unless current_user.nil?
+      @graph = current_user.facebook
+
+      profile = @graph.get_object("me")
+      puts "current_user info"
+      my_fql_query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
+      fql = @graph.fql_query(my_fql_query)
+
+      puts fql
+    end
+    
+
+
+
+
+
     # 30.268093,-97.742808
     @lat = 30.268093
     @long = -97.742808
