@@ -92,9 +92,9 @@
 			  	$('#search-expand-icon').attr('class', 'icon-angle-down');
 			}
 		  });
-
-
-		  $( document ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+	      $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+	      $('.head-title').tooltip('disable');
+	      $('.individual-tag').tooltip('disable');
 		});
 
 
@@ -295,8 +295,6 @@
 		});
 
 		$(window).load(function() {
-			  $('.head-title').tooltip('disable');
-			  $('.individual-tag').tooltip('disable');
 			var stream_id = "<%= params['channel_id'] %>";
 			console.log("initialize to <%= params['channel_id'] %>");
 			if(stream_id !== "") {
@@ -494,7 +492,7 @@
 						<select name="access" tabindex="1" class="access" >
 								  <option value="414" stream-id="414">A badge</option>
 								  <option value="415" stream-id="415">A wristband</option>
-								  <option value="416" stream-id="416">No SXSW Credentials</option>
+								  <option value="416" stream-id="416">No SXSW Credentials (RSVP ok)</option>
 								  <option value="424" stream-id="424" selected="selected">Nothin' but my cowboy boots</option>
 						</select>
 					</div>
