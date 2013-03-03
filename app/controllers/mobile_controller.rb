@@ -5027,7 +5027,8 @@ end
     @esinfo =[]
     @es.each{
       |o| 
-      @i = o.occurrences.select{|o| o.recurrence_id!=nil}.join(',')
+      @id=o.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq
+      @i = @id.join(',')
       @rcs=Recurrence.where("ID IN (#{@i})")
       @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
       @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts}
