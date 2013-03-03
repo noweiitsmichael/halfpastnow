@@ -95,6 +95,20 @@
 			var that = $(this);
 			if(that.hasClass('add')) {
 				var bookmarked_type = "Occurrence";
+				var lnk = 'http://www.halfpastnow.com/events/show/'+id+'?fullmode=true'; 
+        		console.log("Attend: "+lnk);
+        		FB.api(
+				            '/me/halfpastnow:attend',
+				            'post',
+				            { event: lnk },
+				            function(response) {
+				               // if (!response || response.error) {
+				               //    alert('Error occured'+response);
+				               // } else {
+				               //    alert('Post event was successful! Action ID: ' + response.id);
+				               // }
+				        });
+
 				$.getJSON('/bookmarks/attending_create', { bookmark: { "type": bookmarked_type, "id": id } }, function(data) {
 					console.log("new attending bookmark");
 					that.removeClass('add').addClass('remove');
