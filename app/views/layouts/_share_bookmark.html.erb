@@ -4,7 +4,7 @@
 	var root_url = "http%3A%2F%2Fhalfpastnow.com";
 	var link = root_url + "%3F" + type + "_id%3D" + id;
 	var title = "<%= event.title  %>";
-    var summary = "<%= truncate(strip_tags(event.description), :length => 40, :separator => ' ')  %>";
+    var summary = "<%= truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"')  %>";
     var pic = "<%= event.cover_image_url  %>";
     var app_id = "475386955806720";
     var redirect = "http://www.halfpastnow.com";
