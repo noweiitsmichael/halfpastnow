@@ -54,8 +54,8 @@
 
 </head>
 <body>
-	<%= yield :code %>
-	
+  <%= yield :code %>
+
   <div id="body">
     <div id="header">
       <div class="one">
@@ -116,14 +116,17 @@
 <script type="text/javascript">
 if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-widget-2414"}); }
   window.fbAsyncInit = function() {
-              console.log("Loaded FB 2");
+              console.log("Loaded FB 2 outside");
                 FB.init({
                   appId      : '475386955806720', // App ID
                   status     : true, // check login status
                   cookie     : true, // enable cookies to allow the server to access the session
                   xfbml      : true  // parse XFBML
                 });
+                
+              
               };
+
 
               // Load the SDK Asynchronously
               (function(d){
@@ -132,6 +135,9 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
                 js.src = "//connect.facebook.net/en_US/all.js";
                 d.getElementsByTagName('head')[0].appendChild(js);
               }(document));// delete below
+
+
+
 </script>
 </body>
 </html>

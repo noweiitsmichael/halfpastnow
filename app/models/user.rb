@@ -83,6 +83,7 @@ class User < ActiveRecord::Base
       @new_user_token = Koala::Facebook::API.new(new_user.fb_access_token)
       new_user.fb_picture = @new_user_token.get_picture(data.id, :type => "large", :height => "125", :width => "125")
       new_user.save
+      
       return new_user
     end
   end
