@@ -41,13 +41,15 @@
 			var that = $(this);
 			if(that.hasClass('add')) {
 				var bookmarked_type = "";
+				var lnk = 'http://www.halfpastnow.com/events/show/'+id+'?fullmode=true'; 
+        		console.log(lnk);
 				switch(type) {
 					case "event":
 						(bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
 						FB.api(
 				            '/me/halfpastnow:bookmark',
 				            'post',
-				            { event: "<%= @url %>" },
+				            { event: lnk },
 				            function(response) {
 				               // if (!response || response.error) {
 				               //    alert('Error occured'+response);
