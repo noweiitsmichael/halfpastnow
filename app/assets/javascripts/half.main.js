@@ -132,12 +132,20 @@ $(function() {
   $('#content .events').on('click','.event-actions .icon',function(event) {
     var that = $(this);
     var id = $(this).attr('event-id');
+    var title = $(this).attr('event-title');
+    var summary = $(this).attr('event-summary');
+    var pic = $(this).attr('event-pic');
+    var app_id = "475386955806720";
+    var redirect = "http://www.halfpastnow.com";
+    var venue = $(this).attr('event-venue');
     var type = "event";
     var root_url = encodeURIComponent(window.location.origin);
     var link = root_url + "%3F" + type + "_id%3D" + id;
     
     if($(this).hasClass('facebook')) {
-      var url = 'http://www.facebook.com/sharer/sharer.php?u=' + link;
+      var url = "https://www.facebook.com/dialog/feed?%20app_id=" + app_id + "&%20link=" + link + "&%20picture=" + pic + "&%20name=" + title + "&%20caption=" + venue + "&%20description=" + summary + "&%20redirect_uri=" + redirect;
+      // var url = "http://www.facebook.com/sharer.php?s=100&p[title]=" + title + "&p[summary]=" + summary + "&p[url]=" + link + "&p[images][0]=" + pic;
+      // var url = 'http://www.facebook.com/sharer/sharer.php?u=' + link;
       window.open(url, '_blank');
       window.focus();
       stopPropagation(event);

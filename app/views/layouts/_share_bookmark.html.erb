@@ -3,6 +3,12 @@
 	var type = "<%= type %>";
 	var root_url = "http%3A%2F%2Fhalfpastnow.com";
 	var link = root_url + "%3F" + type + "_id%3D" + id;
+	var title = "<%= event.title  %>";
+    var summary = "<%= truncate(strip_tags(event.description), :length => 40, :separator => ' ')  %>";
+    var pic = "<%= event.cover_image_url  %>";
+    var app_id = "475386955806720";
+    var redirect = "http://www.halfpastnow.com";
+    var venue = "<%= event.venue.name  %>";
 	var bookmark_id = "<%= bookmarkId.to_s %>";
 	var attending_id = "<%= attendingId.to_s %>";
 	var bookmarkList_id = "<%= id %>";
@@ -113,8 +119,8 @@
 
 		});
 		
-		$('.bookmark-share .facebook').click(function() {
-			var url = 'http://www.facebook.com/sharer/sharer.php?u=' + link;
+		$('.bookmark-share .facebook').click(function() {      
+			var url = "https://www.facebook.com/dialog/feed?%20app_id=" + app_id + "&%20link=" + link + "&%20picture=" + pic + "&%20name=" + title + "&%20caption=" + venue + "&%20description=" + summary + "&%20redirect_uri=" + redirect;
 			window.open(url, '_blank');
 			window.focus();
 		});
