@@ -10,7 +10,6 @@
 		var markers = [];
 
 		function initialize() {
-			//console.log("initialize");
 			//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
 			geocoder = new google.maps.Geocoder();
 
@@ -60,8 +59,6 @@
 			return parseInt(obj);
 		}
 		$(function() {
-			
-		    $( document ).tooltip({ position: { my: "left+15 center", at: "right center" } });
 		          
 			window.fbAsyncInit = function() {
 			        console.log("Loaded FB 222");
@@ -80,21 +77,16 @@
 			          js.src = "//connect.facebook.net/en_US/all.js";
 			          d.getElementsByTagName('head')[0].appendChild(js);
 			        }(document));// delete below        
-
 			  	});
+
 		$(function() {
 			$('.follow.button').click(function() {
-
 			        
 				var $that = $(this);
 				var listID = $that.attr('picklist-id');
-
 				
 				var url = 'http://halfpastnow.com/picks/find/'+listID
 				console.log('test fowlling'+url);
-
-			    
-  
 
 				FB.api(
 				            '/me/halfpastnow:subscribe',
@@ -125,11 +117,12 @@
 					}
 				});
 			});
-		});		
 
-		$(window).load(function() {
-			$('.head-title').tooltip('disable');
-		});
+	      $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+	      $('.head-title').tooltip('disable');
+	      $('.icon-check').tooltip('disable');
+	      $('.icon-check-empty').tooltip('disable');
+		});		
 	</script>
 <% end %>
 

@@ -92,9 +92,11 @@
 			  	$('#search-expand-icon').attr('class', 'icon-angle-down');
 			}
 		  });
-
-
-		  $( document ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+	      $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+	      $('.head-title').tooltip('disable');
+	      $('.individual-tag').tooltip('disable');
+	      $('.icon-check').tooltip('disable');
+	      $('.icon-check-empty').tooltip('disable');
 		});
 
 
@@ -295,8 +297,6 @@
 		});
 
 		$(window).load(function() {
-			  $('.head-title').tooltip('disable');
-			  $('.individual-tag').tooltip('disable');
 			var stream_id = "<%= params['channel_id'] %>";
 			console.log("initialize to <%= params['channel_id'] %>");
 			if(stream_id !== "") {
@@ -494,7 +494,7 @@
 						<select name="access" tabindex="1" class="access" >
 								  <option value="414" stream-id="414">A badge</option>
 								  <option value="415" stream-id="415">A wristband</option>
-								  <option value="416" stream-id="416">No SXSW Credentials</option>
+								  <option value="416" stream-id="416">No SXSW Credentials (RSVP ok)</option>
 								  <option value="424" stream-id="424" selected="selected">Nothin' but my cowboy boots</option>
 						</select>
 					</div>
@@ -525,7 +525,7 @@
 							<span class="include icon-check" tag-id="189" title="show events with this tag"><span></span></span>
 							<span class="name">Unofficial Event</span>
 						</div>
-						<div class="individual-tag" parent-id="163">
+						<div class="individual-tag" parent-id="175">
 							<span class="include icon-check" tag-id="191" title="show events with this tag"><span></span></span>
 							<span class="name">RSVP</span>
 						</div>
@@ -583,7 +583,7 @@
 	<div id="content">
 		<% unless @mobileMode %>
 		<div id="map-wrapper">
-			<iframe src="//www.facebook.com/plugins/like.php?href=<%=@ur%>&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=475386955806720" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px; margin-bottom:3px; float:left;" allowTransparency="true"></iframe>
+			<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.halfpastnow.com%2Fsxsw&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=475386955806720" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px; margin-bottom:3px; float:left;" allowTransparency="true"></iframe>
 			<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.halfpastnow.com/sxsw" data-text="A great way to search for SXSW events and RSVPs!" data-via="halfpastnow" data-hashtags="halfpastnow" style="width:85px">Tweet</a>
 			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 			<a data-pin-config="none" href="//pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.halfpastnow.com.com%2Fsxsw&media=http%3A%2F%2Fwww.halfpastnow.com%2Fassets%2Fhalfpastnow_final-squat.png&description=The%20best%20SXSW%20Resource!" data-pin-do="buttonPin" ><img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" /></a>

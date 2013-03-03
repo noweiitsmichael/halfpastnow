@@ -89,9 +89,6 @@
 		  }
 		  else {
 		  }
-
-
-		  $( document ).tooltip({ position: { my: "left+15 center", at: "right center" } });
 		});
 
 
@@ -289,10 +286,15 @@
 				modality = spawn(modalities["act"],{id: act_id});
 				modal(modality);   
 			}
+
+	      $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+	      $('.head-title').tooltip('disable');
+	      $('.icon-check').tooltip('disable');
+	      $('.icon-check-empty').tooltip('disable');
+
 		});
 
 		$(window).load(function() {
-			  $('.head-title').tooltip('disable');
 			var stream_id = "<%= params['channel_id'] %>";
 			if(stream_id !== "") {
 				// $('#header').addClass('selected');
