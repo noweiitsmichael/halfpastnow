@@ -3573,7 +3573,7 @@ def SX
             recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, 
             recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, 
             venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, users.lastname AS lastname,
-            users.firstname AS firstname, users.uid AS uid, bookmarks.id AS bookmarked_id
+            users.firstname AS firstname, users.uid AS uid, bookmarks.bookmarked_id AS bookmarked_id
             FROM recurrences 
             INNER JOIN events ON recurrences.event_id = events.id 
             INNER JOIN venues ON events.venue_id = venues.id 
@@ -3591,7 +3591,7 @@ def SX
             #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, 
             events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, 
             events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, users.lastname AS lastname,
-            users.firstname AS firstname, users.uid AS uid, bookmarks.id AS bookmarked_id
+            users.firstname AS firstname, users.uid AS uid, bookmarks.bookmarked_id AS bookmarked_id
             FROM events 
             INNER JOIN venues ON events.venue_id = venues.id 
             LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id 
@@ -3625,7 +3625,8 @@ def SX
 
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
-      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+      # tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+      tags  = Occurrence.find(id).event.tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
       # puts tags
       s = set.first
       lastname = s["lastname"].to_s
