@@ -1,0 +1,9 @@
+<div>
+	<% puts "# events "%>
+	<% puts @occurrences.size %>
+	<div id="combo_event_list">	
+		<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
+	</div>
+
+	
+</div>

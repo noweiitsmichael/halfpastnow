@@ -26,6 +26,106 @@ def new_splash
   end
 end
 
+def android
+  puts "Inside android controller !!!!!"
+
+  @lat = 30.268093
+    @long = -97.742808
+    @zoom = 11
+
+    params[:lat_center] = @lat
+    params[:long_center] = @long
+    params[:zoom] = @zoom
+
+    params[:user_id] = current_user ? current_user.id : nil
+
+    @ids = Occurrence.find_with(params)
+
+    @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
+    @event_ids = @ids.collect { |e| e["event_id"] }.uniq
+    @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
+
+    order_by = "occurrences.start"
+    if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
+      # order by event score when sorting by popularity
+      order_by = "CASE events.views 
+                    WHEN 0 THEN 0
+                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+                  END DESC"
+    end
+    @tags = Tag.includes(:parentTag, :childTags).all
+    @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
+
+    @amount = 20
+    unless(params[:amount].to_s.empty?)
+      @amount = params[:amount].to_i
+    end
+
+    @offset = 0
+    unless(params[:offset].to_s.empty?)
+      @offset = params[:offset].to_i
+    end
+    @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+    @occurrences = @allOccurrences.drop(@offset).take(@amount)
+
+    # generating tag list for occurrences
+
+    @occurringTags = {}
+
+    @tagCounts = []
+
+    @parentTags.each do |parentTag|
+      @tagCounts[parentTag.id] = {
+        :count => 0,
+        :children => [],
+        :id => parentTag.id,
+        :name => parentTag.name,
+        :parent => nil
+      }
+      parentTag.childTags.each do |childTag|
+        @tagCounts[childTag.id] = {
+          :count => 0,
+          :children => [],
+          :id => childTag.id,
+          :name => childTag.name,
+          :parent => @tagCounts[parentTag.id]
+        }
+        @tagCounts[parentTag.id][:children].push(@tagCounts[childTag.id])
+      end
+    end
+
+    @allOccurrences.each do |occurrence|
+      occurrence.event.tags.each do |tag|
+         @tagCounts[tag.id][:count] += 1
+      end
+    end
+
+    @parentTags.each do |parentTag|
+      @tagCounts[parentTag.id][:children] = @tagCounts[parentTag.id][:children].sort_by { |tagCount| tagCount[:count] }.reverse
+    end
+
+    @tagCounts = @tagCounts.sort_by { |tagCount| tagCount ? tagCount[:count] : 0 }.compact.reverse
+
+    if @event_ids.size > 0
+      ActiveRecord::Base.connection.update("UPDATE events
+        SET views = views + 1
+        WHERE id IN (#{@event_ids * ','})")
+
+      ActiveRecord::Base.connection.update("UPDATE venues
+        SET views = views + 1
+        WHERE id IN (#{@venue_ids * ','})")
+    end
+    respond_to do |format|
+      format.html do
+        unless (params[:ajax].to_s.empty?)
+          render :partial => "android_combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset }
+          
+        end
+      end
+      format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
+    end
+
+end
 
 def index
 
@@ -33,6 +133,8 @@ def index
     unless(params[:event_id].to_s.empty?)
       redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
     end
+
+    
 
     unless(params[:venue_id].to_s.empty?)
       redirect_to :action => "show", :controller => "venues", :id => params[:venue_id].to_i, :fullmode => true
@@ -55,16 +157,16 @@ def index
       @offset = params[:offset].to_i
     end
 
-    unless current_user.uid.nil?
-      @graph = current_user.facebook
+    # unless current_user.uid.nil?
+    #   @graph = current_user.facebook
 
-      profile = @graph.get_object("me")
-      puts "current_user info"
-      my_fql_query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
-      fql = @graph.fql_query(my_fql_query)
+    #   profile = @graph.get_object("me")
+    #   puts "current_user info"
+    #   my_fql_query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
+    #   fql = @graph.fql_query(my_fql_query)
 
-      puts fql
-    end
+    #   puts fql
+    # end
     
 
 
@@ -147,12 +249,16 @@ def index
         SET views = views + 1
         WHERE id IN (#{@venue_ids * ','})")
     end
-
+    if(@mobileMode)
+      redirect_to :action => "android"
+    end
+    puts "android or not"
+    puts @mobileMode
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
-          # render :partial => "combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset }
-          render :partial => "combo", :locals => { :occurrences => @occurrences, :tagCounts => @tagCounts, :parentTags => @parentTags, :offset => @offset }
+          render :partial => "combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset }
+          
         end
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
