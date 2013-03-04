@@ -55,7 +55,7 @@ def index
       @offset = params[:offset].to_i
     end
 
-    unless current_user.nil?
+    unless current_user.uid.nil?
       @graph = current_user.facebook
 
       profile = @graph.get_object("me")
