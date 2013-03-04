@@ -55,18 +55,18 @@ def index
       @offset = params[:offset].to_i
     end
 
-    unless current_user.nil?
-      unless current_user.uid.nil?
-        @graph = current_user.facebook
+    # unless current_user.nil?
+    #   unless current_user.uid.nil?
+    #     @graph = current_user.facebook
 
-        profile = @graph.get_object("me")
-        puts "current_user info"
-        my_fql_query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
-        fql = @graph.fql_query(my_fql_query)
+    #     profile = @graph.get_object("me")
+    #     puts "current_user info"
+    #     my_fql_query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
+    #     fql = @graph.fql_query(my_fql_query)
 
-        puts fql
-      end
-    end
+    #     puts fql
+    #   end
+    # end
     
 
 
