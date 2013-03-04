@@ -4115,7 +4115,8 @@ background: white;
 border: none;
 overflow: hidden;
 box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
-left: -333px;
+left: 0px;
+position: relative;
 }
 #content .main .inner-android {
 padding: 0;
@@ -4130,7 +4131,7 @@ padding: 0;
 line-height: 34px;
 text-align: center;
 background: #3D033D;
-position: absolute;
+position: relative;
 margin-left: -329px;
 margin-top: 31px;
 top: -1px;
@@ -4142,13 +4143,26 @@ border-radius: 0 0 3px 0;
 box-shadow: 3px 3px 10px rgba(0,0,0,.3);
 }
 #content .main .inner-android .events li .picture {
-position: absolute;
+position: relative;
 top: 0;
 left: 0;
 width: 206px;
 height: 126px;
 overflow: hidden;
 border-right: 1px solid #DDD;
-margin-left: -330px;
-margin-top: 26px;
+margin-left: -335px;
+margin-top: -110px;
+float: left;
+}
+#content .main .inner-android .events li:last-child .picture {
+position: relative;
+top: 0;
+left: 0;
+width: 206px;
+height: 126px;
+overflow: hidden;
+border-right: 1px solid #DDD;
+margin-left: -386px;
+margin-top: -108px;
+float: left;
 }
