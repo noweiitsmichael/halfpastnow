@@ -1,8 +1,10 @@
-<% puts "In _event_element.html.erb " %>
+<% puts "In _android_event_element.html.erb " %>
 <% puts @mobileMode %>
-<li linkto="event" link-id="<%= occurrence.id %>">
+<li linkto="event" link-id="<%= occurrence.id %>" event-id="<%= occurrence.id %>">
 		<div class="index <%= ((index + 1) >= 100) ? "over100" : ""%>"><%= index ? (index + 1) : "" %></div>
-		<a href="/?event_id=<%= occurrence.id %>">
+		<!-- http://www.halfpastnow.com/events/show/167474?fullmode=true -->
+		<!-- <a href="localhost:3000/events/show/<%= occurrence.id %>?fullmode=true"> -->
+		<a href="show/<%= occurrence.id %>?fullmode=true">
 		<div class="title">
 			<%= truncate(occurrence.event.title, :length => 115) %>
 		</div>

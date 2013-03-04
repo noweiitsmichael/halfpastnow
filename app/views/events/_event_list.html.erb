@@ -1,9 +1,17 @@
 <% offset = offset || 0 %>
 
 <% if occurrences.size > 0 %>
-	<% occurrences.each_with_index do |occurrence, index| %>
+<% puts "Add events here" %>
+	<% if @mobileMode %>
+		<% occurrences.each_with_index do |occurrence, index| %>
+		<%= render :partial => "events/android_event_element", :locals => { :occurrence => occurrence, :index => index + offset, :bookmarkList => (defined? bookmarkList) ? bookmarkList : nil } %>
+		<% end %>
+	<% else %>
+		<% occurrences.each_with_index do |occurrence, index| %>
 		<%= render :partial => "events/event_element", :locals => { :occurrence => occurrence, :index => index + offset, :bookmarkList => (defined? bookmarkList) ? bookmarkList : nil } %>
+		<% end %>
 	<% end %>
+	
 <% else %>
 	<li class="no-results">
 		<h3>There aren't any events going on in this area matching your filters.</h3>
