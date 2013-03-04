@@ -157,6 +157,7 @@ def index
       @offset = params[:offset].to_i
     end
 
+
     # unless current_user.uid.nil?
     #   @graph = current_user.facebook
 
@@ -166,6 +167,7 @@ def index
     #   fql = @graph.fql_query(my_fql_query)
 
     #   puts fql
+
     # end
     
 

@@ -55,13 +55,20 @@
 						
 						</div>
 					</div>
+
 					</div>
 				
 				<% end %>
 				
+
+				</div>
+				</div>
+			<% end %>
+
 			
 			<% end
 		end %>
+
 
 		<div class="picture">
 			<img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
@@ -91,3 +98,33 @@
 			<img src="/assets/markers/marker_hover_<%= (index + 1) % 100 %>.png" />
 		</div>
 	</li>
+
+	<div class="picture">
+		<img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
+		<div class="picture-overlay"></div>
+	</div>
+</a>
+	<div class="event-actions">  
+		<div title="Share by Email"><span class="icon icon-envelope-alt email" event-id="<%= occurrence.id %>" event-title="<%= occurrence.event.title %>" event-summary="<%=occurrence.event.description%>" event-pic="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>"></span><span class="text">email</span></div>
+		<div title="Post to Facebook"><span class="icon icon-facebook-sign facebook" event-id="<%= occurrence.id %>" event-title="<%= occurrence.event.title %>" event-summary="<%= truncate(strip_tags(occurrence.event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"')  %>" event-venue="<%= occurrence.event.venue.name %>" event-pic="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>"></span><span class="text">facebook</span></div>
+		<div title="Post on Twitter"><span class="icon icon-twitter-sign twitter" event-id="<%= occurrence.id %>"></span><span class="text">twitter</span></div>
+		<% 
+			if(current_user)
+		      bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
+		      bookmarkId = bookmark.nil? ? nil : bookmark.id 
+		    else
+		      bookmarkId = nil
+		    end 
+	    %>
+		<div title="Bookmark This"><span class="icon icon-bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" <%= current_user ? "" : "linkto='shunt'" %> event-id="<%= occurrence.id %>"></span><span class="text">bookmark</span></div>
+	</div>
+	<div style="display:none;">
+		<div class="latitude"><%= occurrence.event.venue.latitude %></div>
+		<div class="longitude"><%= occurrence.event.venue.longitude %></div>
+	</div>
+	<div class="marker-caching">
+		<img src="/assets/markers/marker_<%= (index + 1) % 100 %>.png" />
+		<img src="/assets/markers/marker_hover_<%= (index + 1) % 100 %>.png" />
+	</div>
+</li>
+
