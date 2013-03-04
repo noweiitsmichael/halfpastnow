@@ -4902,7 +4902,7 @@ end
     @list = current_user.attending_list
     @event= Occurrence.find(params[:event_id]).event
     @bms= @list.bookmarks.select{ |o| o.bookmarked_type == 'Occurrence' }
-    @idd = params[:event_id]
+    @idd = @event.id
     @bms.each{|bm|
       if bm.bookmarked_id != 1 && bm.bookmarked_id != nil
         occu = Occurrence.find(bm.bookmarked_id)
@@ -5029,7 +5029,11 @@ end
       |o| 
       @id=o.occurrences.select{|o| o.recurrence_id!=nil}.collect(&:recurrence_id).uniq
       @i = @id.join(',')
-      @rcs=Recurrence.where("ID IN (#{@i})")
+      @rcs = []
+      if @id.count > 0
+        @rcs=Recurrence.where("ID IN (#{@i})")
+      end
+      
       @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
       @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts}
       @esinfo << @item
