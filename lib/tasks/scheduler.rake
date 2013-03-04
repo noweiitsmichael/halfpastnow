@@ -1022,7 +1022,7 @@ namespace :api do
 				#### Recheck complete
 
 				# # Create pictures
-				if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
+				if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count < 1
 					puts "Saving picture...."
 					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
 							   	   :image => open(new_e["picture"]))

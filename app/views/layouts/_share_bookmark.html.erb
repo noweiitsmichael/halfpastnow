@@ -3,14 +3,12 @@
 	var type = "<%= type %>";
 	var root_url = "http%3A%2F%2Fhalfpastnow.com";
 	var link = root_url + "%3F" + type + "_id%3D" + id;
-	var title = "<%= event.title  %>";
-    var summary = "<%= truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"')  %>";
-    var pic = "<%= event.cover_image_url  %>";
     var app_id = "475386955806720";
     var redirect = "http://www.halfpastnow.com";
-    var venue = "<%= event.venue.name  %>";
 	var bookmark_id = "<%= bookmarkId.to_s %>";
+	<% if type == "event" %>
 	var attending_id = "<%= attendingId.to_s %>";
+	<% end %>
 	var bookmarkList_id = "<%= id %>";
 	var toggle = false;
 	console.log(id+' '+bookmark_id)
@@ -136,7 +134,14 @@
 		});
 		
 		$('.bookmark-share .facebook').click(function() {      
+			<% if type == "event" %>
+
+			var title = "<%= event.title  %>";
+		    var summary = "<%= truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"')  %>";
+		    var pic = "<%= event.cover_image_url  %>";
+    		var venue = "<%= event.venue.name  %>";
 			var url = "https://www.facebook.com/dialog/feed?%20app_id=" + app_id + "&%20link=" + link + "&%20picture=" + pic + "&%20name=" + title + "&%20caption=" + venue + "&%20description=" + summary + "&%20redirect_uri=" + redirect;
+			<% end %>
 			window.open(url, '_blank');
 			window.focus();
 		});
