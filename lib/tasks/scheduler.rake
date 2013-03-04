@@ -227,25 +227,32 @@ namespace :m do
 		# 						:element_type => "RawEvent", :element_id => new_event.id , :data => inst + time_shifter) rescue nil
 		# end 
 		# puts "yay"
+ 
+		# for i in 0..2	
 
-		for i in 0..2	
+		# 	puts "Page #{i+1}"
+		# 	puts ""	
+		#    eventful = Eventful::API.new '24BqTx7vtBvRCxVP'
 
-			puts "Page #{i+1}"
-			puts ""	
-		   eventful = Eventful::API.new '24BqTx7vtBvRCxVP'
-
-		   # This is the cool part!
-		   resultCount = eventful.call 'events/search',
-				             :keywords => '',
-				             :location => 'Austin',
-				             :sort_order => 'relevance',
-				             :page_size => 10,
-				             :page_number => i+1
+		#    # This is the cool part!
+		#    resultCount = eventful.call 'events/search',
+		# 		             :keywords => '',
+		# 		             :location => 'Austin',
+		# 		             :sort_order => 'relevance',
+		# 		             :page_size => 10,
+		# 		             :page_number => i+1
 		   
-		   puts "Results: #{resultCount['total_items']}"
-		   resultCount['events']['event'].each do |r|
-		      puts r['title']
-		   end
+		#    puts "Results: #{resultCount['total_items']}"
+		#    resultCount['events']['event'].each do |r|
+		#       puts r['title']
+		#    end
+		# end
+
+		a = 100;
+		if a == (1 || 2 || 3 || 4 || 5 || 6 || 100 || 34)
+			puts "hi"
+		else
+			puts "nope"
 		end
 	end
 
@@ -504,7 +511,7 @@ namespace :api do
 		# Doesn't match artist name when there's a non-alphanumeric symbol in it
 		#
 		puts "Opening artists file..."
-		f = File.open(Rails.root + "app/_etc/artist.csv")
+		f = File.open(Rails.root + "app/_etc/do512_artists.csv")
 		lines = f.readlines
 		puts "Total artists: #{lines.count}"
 		new_artists = 0;
@@ -536,14 +543,15 @@ namespace :api do
 							)
 				# Create picture
 				# puts "Saving picture...."
-				# Picture.create(:pictureable_id => new_artist.id, :pictureable_type => "Act", 
-				# 		   	   :image => open(lines[index][6])) rescue nil
+				Picture.create(:pictureable_id => new_artist.id, :pictureable_type => "Act", 
+						   	   :image => open(lines[index][6])) rescue nil
 
 				# Creating Embed
 				if (lines[index][7] != nil) && (!lines[index][7].blank?) && (lines[index][7] != "\"\r\n")
 					yt_partial = /.+?e\/(.+?)\?/.match(lines[index][7])
 					if yt_partial.nil?
 						puts "checking for V!"
+						puts lines[index][7]
 						yt_partial = /.+?v\/(.+?)\&/.match(lines[index][7])
 					end
 					lines[index][7] = yt_partial[1]
@@ -564,7 +572,7 @@ namespace :api do
 	desc "do512 SXSW events"
 	task :do512_sxsw_events => :environment do
 		puts "Opening events file..."
-		f = File.open(Rails.root + "app/_etc/event.csv")
+		f = File.open(Rails.root + "app/_etc/do512_events.csv")
 		lines = f.readlines
 		puts "Total events: #{lines.count}"
 		new_events = 0;
@@ -659,12 +667,12 @@ namespace :api do
 						sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
 						sxsw_event.save!
 					end
-					# new_e["artists"].split(',').each do |a|
-					# 	if Act.find_by_name(a)
-					# 		aa = Act.find_by_name(a)
-					# 		ActsEvents.create(:act_id => aa.id, :event_id => sxsw_event.id)
-					# 	end
-					# end
+					new_e["artists"].split(',').each do |a|
+						if Act.find_by_name(a)
+							aa = Act.find_by_name(a)
+							ActsEvents.create(:act_id => aa.id, :event_id => sxsw_event.id)
+						end
+					end
 				else
 					puts "....Updating Event #{new_e["name"]}"
 					sxsw_event = Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '', 'g')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
@@ -700,7 +708,7 @@ namespace :api do
 	desc "SXSW venues"
 	task :sxsw_venues => :environment do
 		puts "Opening venues file..."
-		f = File.open(Rails.root + "app/_etc/sxsw_venues2.csv")
+		f = File.open(Rails.root + "app/_etc/sxsw_venues3.csv")
 		lines = f.readlines
 		lines.each_with_index do |l, index|
 			lines[index] = l.split(/","/)
@@ -749,7 +757,7 @@ namespace :api do
 		artist_list = Array.new
 		count = 0
 		puts "Creating artist list from events file..."
-		f = File.open(Rails.root + "app/_etc/sxsw_events2.csv")
+		f = File.open(Rails.root + "app/_etc/sxsw_events3.csv")
 		lines = f.read
 		lines = lines.split(/"\n/)
 		lines.each do |l|
@@ -765,7 +773,7 @@ namespace :api do
 
 		# create list of all artists
 		puts "Opening artists file..."
-		f = File.open(Rails.root + "app/_etc/sxsw_acts2.csv")
+		f = File.open(Rails.root + "app/_etc/sxsw_acts3.csv")
 		lines = f.read
 		lines = lines.split(/"\n/)
 		lines.each_with_index do |l, index|
@@ -815,7 +823,7 @@ namespace :api do
 						)
 				act_edit.save
 
-				# Create picture
+				# # Create picture
 				puts "Saving picture...."
 				Picture.create(:pictureable_id => act_edit.id, :pictureable_type => "Act", 
 						   	   :image => open(artist["picture"])) rescue nil
@@ -853,9 +861,9 @@ namespace :api do
 		new_event = 0
 		updated_event = 0
 		puts "Creating events from file..."
-		f = File.open(Rails.root + "app/_etc/sxsw_events2.csv")
+		f = File.open(Rails.root + "app/_etc/sxsw_events3.csv")
 		lines = f.read
-		lines = lines.split(/[0-9][0-9]"\n/)
+		lines = lines.split(/[0-9]"\n/)
 		puts "Investigating #{lines.count} events"
 		lines.each do |e|
 			e = e.split(/","/)
@@ -917,6 +925,7 @@ namespace :api do
 					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 1)
 					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 168)
 					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 185)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 164)
 				elsif new_e["type"] == "Screening"
 					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 186)
 				elsif new_e["type"] == "Sessions"
@@ -929,14 +938,23 @@ namespace :api do
 
 				if new_e["conference"] == "Music"
 					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 179)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 171)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
 				elsif new_e["conference"] == "Interactive"
 					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 176)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 173)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
 				elsif new_e["conference"] == "Film"
 					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 183)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 172)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
 				end
 						
 
-				puts "Saving picture...."
+				# puts "Saving picture...."
 				cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
 						   	   :image => open(new_e["picture"]))
 				sxsw_event.cover_image = cover_i.id
@@ -959,16 +977,60 @@ namespace :api do
 				# y occ
 				occ.save!
 
-				# # Create pictures
-				# if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
-				# 	puts "Saving picture...."
-				# 	cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
-				# 			   	   :image => open(new_e["picture"]))
-				# 	sxsw_event.cover_image = cover_i.id
-				# 	sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
-				# 	sxsw_event.save!
+				## One- time tags re-check
+				sxsw_official_tags = [161, 163, 164, 168, 170, 171, 172, 173, 175, 176, 177, 178, 179, 183, 184, 185, 186, 187, 188, 189]
+				# puts "Destroying existing sxsw tags"
+				EventsTags.where(:event_id => sxsw_event.id).each do |et|
+					if sxsw_official_tags.include?(et.tag_id)
+						EventsTags.delete_all(:event_id => sxsw_event.id, :tag_id => et.tag_id)
+					end
+				end
 
-				# end
+				EventsTags.create(:event_id => sxsw_event.id, :tag_id => 163)
+				if new_e["type"] == "Showcase"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 1)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 168)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 185)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 164)
+				elsif new_e["type"] == "Screening"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 186)
+				elsif new_e["type"] == "Sessions"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 187)
+				elsif new_e["type"] == "Party"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 184)
+				elsif new_e["type"] == "Special Event"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 188)
+				end
+
+				if new_e["conference"] == "Music"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 179)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 171)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
+				elsif new_e["conference"] == "Interactive"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 176)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 173)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
+				elsif new_e["conference"] == "Film"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 183)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 172)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
+				end
+
+				#### Recheck complete
+
+				# # Create pictures
+				if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
+					puts "Saving picture...."
+					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
+							   	   :image => open(new_e["picture"]))
+					sxsw_event.cover_image = cover_i.id
+					sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
+					sxsw_event.save!
+
+				end
 
 				updated_event += 1
 			end
