@@ -146,9 +146,9 @@ def index
     unless(params[:act_id].to_s.empty?)
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
-    if(@mobileMode)
+    if(@mobileMode && params[:mobile].to_s.nil?)
           redirect_to :action => "android"
-          return
+          
     end
 
     @tags = Tag.includes(:parentTag, :childTags).all
