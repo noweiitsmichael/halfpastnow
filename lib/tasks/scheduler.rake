@@ -629,6 +629,7 @@ namespace :api do
 	
 					puts "....Found raw venue for #{lines[index][4]} by name"
 				end
+			end
 				#### Done with venue stuff, on to events ####
 
 				raw_venue = RawVenue.find(:first, :conditions =>[ "lower(name) = ?", lines[index][4].downcase ])
@@ -698,7 +699,6 @@ namespace :api do
 						end
 					end
 				end
-			end
 		end
 
 		puts "#{new_events} new events, #{old_events} old events"
