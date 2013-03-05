@@ -499,7 +499,7 @@ def index
       eventsQuery = "
         SELECT raw_events.id, raw_events.title,raw_events.start,raw_events.from,raw_events.raw_id, raw_events.raw_venue_id, venues.id AS venue_id, venues.name AS venue_name
           FROM raw_events, raw_venues, venues
-          WHERE raw_events.raw_venue_id = raw_venues.id AND raw_venues.venue_id = venues.id AND (raw_events.from = 'eventbrite' OR raw_events.from = 'do512sxsw') AND raw_events.deleted IS NOT TRUE AND raw_events.submitted IS NOT TRUE"
+          WHERE raw_events.raw_venue_id = raw_venues.id AND raw_venues.venue_id = venues.id AND (raw_events.from = 'eventbrite' OR raw_events.from = 'do512sxsw' OR raw_events.from = 'sched') AND raw_events.deleted IS NOT TRUE AND raw_events.submitted IS NOT TRUE"
       @eventsList = ActiveRecord::Base.connection.select_all(eventsQuery)
     else params[:range] == "active_sxsw"
       # @eventsList = Event.find(:all).map(&:nextOccurrence.to_proc).reject {|x| x.nil?}.delete_if { |x| x.start > 2.week.from_now}

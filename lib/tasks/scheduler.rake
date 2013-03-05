@@ -442,7 +442,7 @@ namespace :api do
 					new_e["ticketing"] = lines[index][11]
 				end
 				new_e["url"] = lines[index][9]
-				pp raw_venue
+				# pp raw_venue
 				puts "Associating event to #{raw_venue.name}"
 
 				if RawEvent.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '', 'g')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) != nil
