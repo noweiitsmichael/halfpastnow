@@ -147,9 +147,9 @@ def index
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
     if(@mobileMode)
-      unless (params[:format].to_s.eql? "mobile")
+     
         redirect_to :action => "android"
-      end
+      
 
     end
 
@@ -272,7 +272,7 @@ def index
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
       format.mobile
-      return
+      # return
     end
     
   end
