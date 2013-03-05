@@ -131,7 +131,7 @@ def android
 end
 
 def index
-
+    
     # Set default if action is sxsw
     unless(params[:event_id].to_s.empty?)
       redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
@@ -145,6 +145,9 @@ def index
 
     unless(params[:act_id].to_s.empty?)
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
+    end
+    if(@mobileMode)
+          redirect_to :action => "android"
     end
 
     @tags = Tag.includes(:parentTag, :childTags).all
@@ -255,12 +258,10 @@ def index
         WHERE id IN (#{@venue_ids * ','})")
     end
     
-   
+    puts "Iphone get here"
     respond_to do |format|
       format.html do
-        if(@mobileMode)
-          redirect_to :action => "android"
-        end
+        
         unless (params[:ajax].to_s.empty?)
           render :partial => "combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset }
           
@@ -332,8 +333,8 @@ def index
       end
 
       format.json { render json: @event.to_json(:include => [:occurrences, :venue]) }
-      format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }
-      
+      # format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }
+      format.mobile 
     end
   end
 
