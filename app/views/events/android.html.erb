@@ -304,6 +304,22 @@
 				updateViewFromFilter();
 			}
 		});
+		$('.button-filter').click(function() {
+			console.log("Clickeddd");
+			// if (toggle) {
+			// 	$('.popup-filter').hide();
+				
+			// }
+			// else {
+			// 	$('.popup-filter').show();
+				
+			// }
+			// toggle = !toggle;
+			
+			
+
+			// $('.bookmark-share .comment-tp .popup-box').hidden;
+		});
 	</script>
 <% end %>
 
@@ -312,7 +328,7 @@
 
 
 	
-	<!-- <div class="expandobar">
+	<div class="expandobar">
 		<div class="subbar">
 			<div class="sort-by">Sorted by <span class="sort selected" sort-type="popularity">popularity</span> / <span class="sort" sort-type="date">date</span></div>
 			<div class="num-occurrences">showing <span class="num-occurrences-count"><%= @allOccurrences.size %></span> events</div>
@@ -320,14 +336,22 @@
 		<div class="expandobar-inner">
 			<span>&#9660;</span>show advanced options<span>&#9660;</span>
 		</div>
-	</div> -->
+	</div>
 <% end %>
 
 <% content_for :body do %>
 	<div id="content">
-		
-
-		
+		<div>
+			<div class="button-filter"><span>Filter</span>
+				<div class="popup-filter">
+					<!-- <label> Add comment (Optional)</label>
+					<textarea class="comment-text" style="color:black;" placeholder="Comment"></textarea>
+					<button onclick='return submit_comment()'>Add comment</button> -->
+				</div>
+			</div>
+			<a class="button sort" href="#"><span>Sort</span></a>
+			<a class="button search" href="#"><span>Search</span></a>
+		</div>
 		<div class="main">
 			<% if (@mobileMode) %> </center> <% end %>
 			<div class="inner android">

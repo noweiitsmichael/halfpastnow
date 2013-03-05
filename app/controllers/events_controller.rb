@@ -19,7 +19,9 @@ def splash
     format.html { render :layout => false }
   end
 end
-
+def filter
+  
+end
 def new_splash
   respond_to do |format|
     format.html { render :layout => false }
@@ -254,8 +256,7 @@ def index
     if(@mobileMode)
       redirect_to :action => "android"
     end
-    puts "android or not"
-    puts @mobileMode
+   
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
