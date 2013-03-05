@@ -3,6 +3,9 @@
 // checks if element has a scrollbar
 
 var toggle = false;
+var toggleTag = false;
+var toggleTime = false;
+var toggleSort = false;
 
 $.fn.hasScrollBar = function() {
     return this.get(0).scrollHeight > this.innerHeight();
@@ -75,22 +78,42 @@ $(function() {
     
     window.open(lnk);
   });
-  $('.popup-filter').hide();
-  $('#content ').on('click','.button-filter',function(event) {
+  // Android : Control Popups
+  
+
+  $('#content ').on('click','.button-search',function(event) {
     stopPropagation(event);
-    console.log("clicked filter");
-    if (toggle) {
-        $('.popup-filter').hide();
-        
-    }
-    else {
-      
-        $('.popup-filter').show();
-     
-      
-    }
-    toggle = !toggle;
+    var e = document.getElementById("access");
+    var access = e.options[e.selectedIndex].value;
+    console.log(access);
+    e = document.getElementById("time");
+    var time = e.options[e.selectedIndex].value;
+    e = document.getElementById("sort");
+    var sort = e.options[e.selectedIndex].value;
+
+    var InvForm = document.getElementById("tag");
+    var SelBranchVal = "";
+    var x = 0;
+     for (x=0;x<InvForm.length;x++)
+         {
+            if(InvForm[x].selected)
+            {
+             //alert(InvForm.kb[x].value);
+             SelBranchVal = InvForm[x].value + "," + SelBranchVal ;
+            }
+         }
+    alert(SelBranchVal);
+
+    console.log("Click Search-Access: "+access +" tag: "+SelBranchVal+" time: "+time+" sort "+sort);
+    alert("Click Search-Access: "+access +" tag: "+SelBranchVal+" time: "+time+" sort "+sort);
+   
+
+
   });
+ 
+
+ 
+
   $('#content .events').on('click','.picklists .picklist-link',function(event) {
     stopPropagation(event);
   });

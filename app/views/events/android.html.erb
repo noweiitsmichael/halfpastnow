@@ -342,15 +342,46 @@
 <% content_for :body do %>
 	<div id="content">
 		<div>
-			<div class="button-filter"><span>Filter</span>
-				<div class="popup-filter">
-					<!-- <label> Add comment (Optional)</label>
-					<textarea class="comment-text" style="color:black;" placeholder="Comment"></textarea>
-					<button onclick='return submit_comment()'>Add comment</button> -->
-				</div>
+			<div class="button-access">
+				<select name="mydropdown" id="access" >
+					<option value="0">A Badge</option>
+					<option value="1">A Wristband</option>
+					<option value="2">No SXSW Credentials (RSVP OK)</option>
+					<option value="3">Nothin' but my cowboy boots</option>
+				</select>
 			</div>
-			<a class="button sort" href="#"><span>Sort</span></a>
-			<a class="button search" href="#"><span>Search</span></a>
+			<div class="button-time" >
+				<select name="timedropdown" id="time">
+					<option value="0">All</option>
+					<option value="1">Interactive (3/8-3/12)</option>
+					<option value="2">Film (3/8-3/16)</option>
+					<option value="3">Music (3/12-3/17)</option>
+				</select>
+			</div>
+
+			
+			<div class="button-tag" >
+				<select name="tagdropdown" multiple="multiple" id="tag">
+					<option value="0">Free Drinks</option>
+					<option value="1">Free Food</option>
+					<option value="2">Party</option>
+					<option value="3">No Cover</option>
+					<option value="4">Unofficial</option>
+					<option value="5">RSVP</option>
+				</select>
+			</div>
+			<div class="button-sort" >
+				<select name="sortdropdown" id="sort">
+					<option value="0">Most views</option>
+					<option value="1">Date</option>
+				</select>
+			</div>
+			
+			<div class="button-search"><span>Search</span>
+				
+			</div>
+			<!-- <a class="button sort" href="#"><span>Sort</span></a>
+			<a class="button search" href="#"><span>Search</span></a> -->
 		</div>
 		<div class="main">
 			<% if (@mobileMode) %> </center> <% end %>
@@ -366,6 +397,10 @@
 			<% if (@mobileMode) %> <center> <% end %>
 			<img id="loading" src="/assets/ajax-loader.gif" />
 		</div>
+		
+		
+		
+		
 		<%#= render :partial => "layouts/grid" %>
 	</div>
 <% end %>
