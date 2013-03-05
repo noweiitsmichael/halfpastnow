@@ -967,15 +967,14 @@ namespace :api do
 						
 
 				# puts "Saving picture...."
-				# cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
-				# 		   	   :image => open(new_e["picture"]))
-				# sxsw_event.cover_image = cover_i.id
-				# sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
-				# sxsw_event.save!
+				cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
+						   	   :image => open(new_e["picture"]))
+				sxsw_event.cover_image = cover_i.id
+				sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
+				sxsw_event.save!
 				new_event += 1
 			else
 				puts "....Updating Event #{new_e["name"]}"
-				pp new_e
 				sxsw_event = Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '', 'g')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
 				sxsw_event.title = new_e["name"]
 				sxsw_event.description = new_e["description"]
@@ -991,59 +990,59 @@ namespace :api do
 				occ.save!
 
 				## One- time tags re-check
-				# sxsw_official_tags = [161, 163, 164, 168, 170, 171, 172, 173, 175, 176, 177, 178, 179, 183, 184, 185, 186, 187, 188, 189]
-				# # puts "Destroying existing sxsw tags"
-				# EventsTags.where(:event_id => sxsw_event.id).each do |et|
-				# 	if sxsw_official_tags.include?(et.tag_id)
-				# 		EventsTags.delete_all(:event_id => sxsw_event.id, :tag_id => et.tag_id)
-				# 	end
-				# end
+				sxsw_official_tags = [161, 163, 164, 168, 170, 171, 172, 173, 175, 176, 177, 178, 179, 183, 184, 185, 186, 187, 188, 189]
+				# puts "Destroying existing sxsw tags"
+				EventsTags.where(:event_id => sxsw_event.id).each do |et|
+					if sxsw_official_tags.include?(et.tag_id)
+						EventsTags.delete_all(:event_id => sxsw_event.id, :tag_id => et.tag_id)
+					end
+				end
 
-				# EventsTags.create(:event_id => sxsw_event.id, :tag_id => 163)
-				# if new_e["type"] == "Showcase"
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 1)
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 168)
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 185)
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 164)
-				# elsif new_e["type"] == "Screening"
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 186)
-				# elsif new_e["type"] == "Sessions"
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 187)
-				# elsif new_e["type"] == "Party"
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 184)
-				# elsif new_e["type"] == "Special Event"
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 188)
-				# end
+				EventsTags.create(:event_id => sxsw_event.id, :tag_id => 163)
+				if new_e["type"] == "Showcase"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 1)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 168)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 185)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 164)
+				elsif new_e["type"] == "Screening"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 186)
+				elsif new_e["type"] == "Sessions"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 187)
+				elsif new_e["type"] == "Party"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 184)
+				elsif new_e["type"] == "Special Event"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 188)
+				end
 
-				# if new_e["conference"] == "Music"
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 179)
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 171)
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
-				# elsif new_e["conference"] == "Interactive"
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 176)
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 173)
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
-				# elsif new_e["conference"] == "Film"
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 183)
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 172)
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
-				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
-				# end
+				if new_e["conference"] == "Music"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 179)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 171)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
+				elsif new_e["conference"] == "Interactive"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 176)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 173)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
+				elsif new_e["conference"] == "Film"
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 183)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 172)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
+					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
+				end
 
 				#### Recheck complete
 
 				# # Create pictures
-				# if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count < 1
-				# 	puts "Saving picture...."
-				# 	cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
-				# 			   	   :image => open(new_e["picture"]))
-				# 	sxsw_event.cover_image = cover_i.id
-				# 	sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
-				# 	sxsw_event.save!
+				if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count < 1
+					puts "Saving picture...."
+					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
+							   	   :image => open(new_e["picture"]))
+					sxsw_event.cover_image = cover_i.id
+					sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
+					sxsw_event.save!
 
-				# end
+				end
 
 				updated_event += 1
 			end
