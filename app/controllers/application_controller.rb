@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     else
       
       # request.user_agent =~ /Mobile|webOS/
-       (request.user_agent =~ /Mobile|webOS/) && (request.user_agent !~ /Android/) &&  (request.user_agent !~ /iPad/) &&  (request.user_agent !~ /iPhone/)
+       (request.user_agent =~ /Mobile|webOS/) && (request.user_agent !~ /Android/) &&  (request.user_agent !~ /iPad/) 
       
     end
   end
