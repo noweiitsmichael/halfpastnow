@@ -100,8 +100,7 @@ class VenuesController < ApplicationController
         format.html { render :layout => "mode" }
       end
       format.json { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), :venue => @venue.to_json } } 
-      format.mobile { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), :venue => @venue.to_json } } 
-
+      format.mobile 
     end
   end
 
