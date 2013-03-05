@@ -975,7 +975,7 @@ namespace :api do
 				new_event += 1
 			else
 				puts "....Updating Event #{new_e["name"]}"
-				puts new_e
+				
 				sxsw_event = Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '', 'g')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
 				sxsw_event.title = new_e["name"]
 				sxsw_event.description = new_e["description"]
@@ -983,7 +983,12 @@ namespace :api do
 				sxsw_event.url = new_e["website"]
 				sxsw_event.venue_id = new_e_venue
 				sxsw_event.save!
-				occ = sxsw_event.occurrences.first
+				if sxsw_event.occurrences.first.nil?
+					pp sxsw_event.occurrences
+					occ = sxsw_event.occurrences.build
+				else
+					occ = sxsw_event.occurrences.first
+				end
 				occ.start = new_e["start_time"].to_time
 				occ.end = new_e["end_time"].to_time
 				occ.event_id = sxsw_event.id
