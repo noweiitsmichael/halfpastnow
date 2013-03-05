@@ -975,6 +975,7 @@ namespace :api do
 				new_event += 1
 			else
 				puts "....Updating Event #{new_e["name"]}"
+				puts new_e
 				sxsw_event = Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '', 'g')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
 				sxsw_event.title = new_e["name"]
 				sxsw_event.description = new_e["description"]
