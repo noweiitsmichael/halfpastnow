@@ -4026,7 +4026,12 @@ html, body {
   color: #6F376F;
 
 }
-
+.footer-bg .footer-app {
+  position: absolute;
+  top: 0px;
+  left: 214px;
+  margin: 5px 20px;
+}
 .cp {
   text-decoration: none;
   width: 308px;
