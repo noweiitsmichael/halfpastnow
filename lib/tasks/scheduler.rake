@@ -361,6 +361,136 @@ end
 
 namespace :api do
 
+	desc "Sched.org SXSW Parties"
+	task :sched_sxsw_parties => :environment do
+
+
+		puts "Opening sched.org file..."
+		f = File.open(Rails.root + "app/_etc/sched_parties.csv")
+		lines = f.read
+		lines = lines.split(/"\n/)
+		puts "Total parties: #{lines.count}"
+		new_events = 0;
+		old_events = 0;
+		new_raw_venues = 0;
+		new_real_venues = 0;
+
+		lines.each_with_index do |l, index|
+			lines[index] = l.split(/","/)
+			lines[index][0] = (lines[index][0].split(/"/))[1] # because there's an extra "/" in the beginning
+			# y lines[index]
+			# break
+			raw_venue = nil
+
+
+			if RawEvent.find(:first, :conditions =>[ "lower(title) = ?", lines[index][0].downcase ]) == nil
+			# if raw event is found already, don't need to do anything.
+				if RawVenue.find(:first, :conditions =>[ "lower(name) = ?", lines[index][1].downcase ]) == nil
+						puts "!! Creating raw venue for #{lines[index][1]}"
+						raw_venue = RawVenue.create!(
+							:name => lines[index][1],
+							:address => lines[index][5],
+							:city => lines[index][6],
+							:state_code => lines[index][7],
+							:zip => lines[index][8],
+							:raw_id => "sched",
+							:from => "sched"
+						)
+						new_raw_venues += 1
+						# Now see if a real venue needs to be created
+						if Venue.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '', 'g')) = ?", lines[index][1].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
+							if Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '', 'g')) = ?", lines[index][5].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
+								puts "!! Creating real venue for #{lines[index][1]}"
+								new_venue = Venue.create!(
+									:name => raw_venue.name,
+									:address => raw_venue.address,
+									:city => raw_venue.city,
+									:state => raw_venue.state_code,
+									:zip => raw_venue.zip
+								)
+								raw_venue.venue_id = new_venue.id
+								raw_venue.save
+								new_real_venues += 1
+							else
+								puts "....Found venue for #{lines[index][1]} by address"
+								real_venue = Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '', 'g')) = ?", lines[index][5].gsub(/[^0-9a-zA-Z ]/, '').downcase ]).id
+								raw_venue.venue_id = real_venue
+								raw_venue.save
+							end
+						else
+							puts "....Found venue for #{lines[index][1]} by name"
+							real_venue = Venue.find(:first, :conditions => [ "lower(regexp_replace(name, '[^0-9a-zA-Z ]', '', 'g')) = ?", lines[index][1].gsub(/[^0-9a-zA-Z ]/, '').downcase ]).id
+							raw_venue.venue_id = real_venue
+							raw_venue.save
+						end
+				else
+					puts "....Found raw venue for #{lines[index][1]} by name"
+				end
+
+				#### Done with venue stuff, on to events ####
+
+				raw_venue = RawVenue.find(:first, :conditions =>[ "lower(name) = ?", lines[index][1].downcase ])
+
+				new_e = Hash.new
+				new_e["name"] = lines[index][0]
+				new_e["start_time"] = lines[index][3]
+				new_e["end_time"] = lines[index][4]
+				new_e["description"] = lines[index][2]
+				if lines[index][11] == "na"
+					new_e["ticketing"] = nil
+				else
+					new_e["ticketing"] = lines[index][11]
+				end
+				new_e["url"] = lines[index][9]
+				# pp raw_venue
+				puts "Associating event to #{raw_venue.name}"
+
+				if RawEvent.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '', 'g')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) != nil
+					puts "...Skipping cuz already in rawevents queue"
+					old_events += 1
+					next
+				end
+
+				if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '', 'g')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
+					puts "....Creating event #{new_e["name"]}"
+					sxsw_event = RawEvent.create!(
+									:title => new_e["name"],
+									:description => new_e["description"],
+									:event_url => new_e["url"],
+									:ticket_url => new_e["ticketing"],
+									:url => new_e["url"],
+									:start => new_e["start_time"],
+									:end => new_e["end_time"],
+									:from => "sched",
+									:raw_venue_id => raw_venue.id
+									)
+					new_events += 1
+				else
+					puts "....Updating Event #{new_e["name"]}"
+					sxsw_event = Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '', 'g')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ])
+					if sxsw_event.description.length < 200
+						sxsw_event.description = new_e["description"]
+					end
+					sxsw_event.save!
+
+					if EventsTags.where(:event_id => sxsw_event.id, :tag_id => 189) == nil
+						EventsTags.create(:event_id => sxsw_event.id, :tag_id => 189)
+					end
+					if EventsTags.where(:event_id => sxsw_event.id, :tag_id => 184) == nil
+						EventsTags.create(:event_id => sxsw_event.id, :tag_id => 164)
+					end
+					old_events += 1
+				end
+			else
+				puts "Found raw event for #{lines[index][0]}"
+				old_events += 1
+			end
+		end
+
+		puts "#{new_events} new events, #{old_events} old events"
+		puts "#{new_raw_venues} new raw venues, #{new_real_venues} new real venues"
+
+	end
 	desc "Eventbrite SXSW"
 	task :sxsw_eventbrite => :environment do
 		# SXSW events in Austin from 3/07 to 3/18
@@ -635,7 +765,6 @@ namespace :api do
 	
 					puts "....Found raw venue for #{lines[index][4]} by name"
 				end
-			end
 				#### Done with venue stuff, on to events ####
 
 				raw_venue = RawVenue.find(:first, :conditions =>[ "lower(name) = ?", lines[index][4].downcase ])
@@ -711,6 +840,7 @@ namespace :api do
 						end
 					end
 				end
+			end
 		end
 
 		puts "#{new_events} new events, #{old_events} old events"
@@ -996,46 +1126,46 @@ namespace :api do
 				occ.save!
 
 				## One- time tags re-check
-				sxsw_official_tags = [161, 163, 164, 168, 170, 171, 172, 173, 175, 176, 177, 178, 179, 183, 184, 185, 186, 187, 188, 189]
-				# puts "Destroying existing sxsw tags"
-				EventsTags.where(:event_id => sxsw_event.id).each do |et|
-					if sxsw_official_tags.include?(et.tag_id)
-						EventsTags.delete_all(:event_id => sxsw_event.id, :tag_id => et.tag_id)
-					end
-				end
+				# sxsw_official_tags = [161, 163, 164, 168, 170, 171, 172, 173, 175, 176, 177, 178, 179, 183, 184, 185, 186, 187, 188, 189]
+				# # puts "Destroying existing sxsw tags"
+				# EventsTags.where(:event_id => sxsw_event.id).each do |et|
+				# 	if sxsw_official_tags.include?(et.tag_id)
+				# 		EventsTags.delete_all(:event_id => sxsw_event.id, :tag_id => et.tag_id)
+				# 	end
+				# end
 
-				EventsTags.create(:event_id => sxsw_event.id, :tag_id => 163)
-				if new_e["type"] == "Showcase"
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 1)
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 168)
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 185)
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 164)
-				elsif new_e["type"] == "Screening"
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 186)
-				elsif new_e["type"] == "Sessions"
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 187)
-				elsif new_e["type"] == "Party"
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 184)
-				elsif new_e["type"] == "Special Event"
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 188)
-				end
+				# EventsTags.create(:event_id => sxsw_event.id, :tag_id => 163)
+				# if new_e["type"] == "Showcase"
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 1)
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 168)
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 185)
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 164)
+				# elsif new_e["type"] == "Screening"
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 186)
+				# elsif new_e["type"] == "Sessions"
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 187)
+				# elsif new_e["type"] == "Party"
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 184)
+				# elsif new_e["type"] == "Special Event"
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 188)
+				# end
 
-				if new_e["conference"] == "Music"
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 179)
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 171)
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
-				elsif new_e["conference"] == "Interactive"
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 176)
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 173)
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
-				elsif new_e["conference"] == "Film"
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 183)
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 172)
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
-					EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
-				end
+				# if new_e["conference"] == "Music"
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 179)
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 171)
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
+				# elsif new_e["conference"] == "Interactive"
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 176)
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 173)
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
+				# elsif new_e["conference"] == "Film"
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 183)
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 172)
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 175)
+				# 	EventsTags.create(:event_id => sxsw_event.id, :tag_id => 170)
+				# end
 
 				#### Recheck complete
 
