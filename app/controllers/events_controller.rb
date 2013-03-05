@@ -637,7 +637,7 @@ def index
         end
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
-      format.mobile
+      # format.mobile
     end
     
   end
