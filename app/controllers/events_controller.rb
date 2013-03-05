@@ -148,6 +148,7 @@ def index
     end
     if(@mobileMode)
           redirect_to :action => "android"
+          return
     end
 
     @tags = Tag.includes(:parentTag, :childTags).all
