@@ -125,6 +125,7 @@ def android
         end
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
+      format.mobile  
     end
 
 end
@@ -253,18 +254,20 @@ def index
         SET views = views + 1
         WHERE id IN (#{@venue_ids * ','})")
     end
-    if(@mobileMode)
-      redirect_to :action => "android"
-    end
+    
    
     respond_to do |format|
       format.html do
+        if(@mobileMode)
+          redirect_to :action => "android"
+        end
         unless (params[:ajax].to_s.empty?)
           render :partial => "combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset }
           
         end
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
+      format.mobile
     end
     
   end
