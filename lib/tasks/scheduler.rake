@@ -647,6 +647,11 @@ namespace :api do
 
 				puts "Associating event to #{raw_venue.name}"
 
+				if RawEvent.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '', 'g')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) != nil
+					puts "...Skipping cuz already in rawevents queue"
+					next
+				end
+
 				if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '', 'g')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
 					puts "....Creating event #{new_e["name"]}"
 					sxsw_event = RawEvent.create!(
