@@ -65,12 +65,12 @@ $(function() {
     }
   });
 
-  $('#content .main .inner-android .events').on('click','li',function(event) {
+  $('#content .main .inner.android .events').on('click','li',function(event) {
     stopPropagation(event);
     console.log("Open mobile");
     var id = $(this).attr('event-id');
     // http://www.halfpastnow.com/events/show/167474?fullmode=true
-    var lnk = "http://hpnstaging.herokuapp.com/events/show/"+167474+"?fullmode=true";
+    var lnk = "http://hpnstaging.herokuapp.com/events/show/"+id+"?fullmode=true";
     console.log(lnk);
     
     window.open(lnk);
