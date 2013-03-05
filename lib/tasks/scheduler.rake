@@ -629,6 +629,7 @@ namespace :api do
 	
 					puts "....Found raw venue for #{lines[index][4]} by name"
 				end
+			end
 				#### Done with venue stuff, on to events ####
 
 				raw_venue = RawVenue.find(:first, :conditions =>[ "lower(name) = ?", lines[index][4].downcase ])
@@ -645,6 +646,11 @@ namespace :api do
 				new_e["artists"] = lines[index][11]
 
 				puts "Associating event to #{raw_venue.name}"
+
+				if RawEvent.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '', 'g')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) != nil
+					puts "...Skipping cuz already in rawevents queue"
+					next
+				end
 
 				if Event.find(:first, :conditions => [ "lower(regexp_replace(title, '[^0-9a-zA-Z ]', '', 'g')) = ?", new_e["name"].gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
 					puts "....Creating event #{new_e["name"]}"
@@ -698,7 +704,6 @@ namespace :api do
 						end
 					end
 				end
-			end
 		end
 
 		puts "#{new_events} new events, #{old_events} old events"
@@ -1022,7 +1027,7 @@ namespace :api do
 				#### Recheck complete
 
 				# # Create pictures
-				if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
+				if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count < 1
 					puts "Saving picture...."
 					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
 							   	   :image => open(new_e["picture"]))
