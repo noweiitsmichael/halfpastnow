@@ -1,7 +1,7 @@
 <% offset = offset || 0 %>
 
 <% if occurrences.size > 0 %>
-<% puts "Add events here" %>
+
 	<% if @mobileMode %>
 		<% occurrences.each_with_index do |occurrence, index| %>
 		<%= render :partial => "events/android_event_element", :locals => { :occurrence => occurrence, :index => index + offset, :bookmarkList => (defined? bookmarkList) ? bookmarkList : nil } %>

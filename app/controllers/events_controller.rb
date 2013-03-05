@@ -19,7 +19,9 @@ def splash
     format.html { render :layout => false }
   end
 end
-
+def filter
+  
+end
 def new_splash
   respond_to do |format|
     format.html { render :layout => false }
@@ -123,12 +125,13 @@ def android
         end
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
+      format.mobile  
     end
 
 end
 
 def index
-
+    
     # Set default if action is sxsw
     unless(params[:event_id].to_s.empty?)
       redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
@@ -142,6 +145,14 @@ def index
 
     unless(params[:act_id].to_s.empty?)
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
+    end
+    if(@mobileMode)
+        unless params[:format].to_s.eql? "mobile"
+          redirect_to :action => "android"  
+        else
+          return
+        end
+        
     end
 
     @tags = Tag.includes(:parentTag, :childTags).all
@@ -251,19 +262,19 @@ def index
         SET views = views + 1
         WHERE id IN (#{@venue_ids * ','})")
     end
-    if(@mobileMode)
-      redirect_to :action => "android"
-    end
-    puts "android or not"
-    puts @mobileMode
+    
+    puts "Iphone get here"
     respond_to do |format|
       format.html do
+        
         unless (params[:ajax].to_s.empty?)
           render :partial => "combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset }
           
         end
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
+      format.mobile
+      
     end
     
   end
@@ -320,16 +331,16 @@ def index
     # @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
 
     respond_to do |format|
-      if @fullmode
+      if @fullmode 
         format.html { render :layout => "fullmode" }
-
+        format.mobile
       else
         format.html { render :layout => "mode" }
       end
 
       format.json { render json: @event.to_json(:include => [:occurrences, :venue]) }
-      format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }
-      
+      # format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }
+      format.mobile 
     end
   end
 
@@ -533,7 +544,14 @@ def index
     unless(params[:act_id].to_s.empty?)
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
-
+    if(@mobileMode)
+        unless params[:format].to_s.eql? "mobile"
+          redirect_to :action => "android"  
+        else
+          return
+        end
+        
+    end
     @tags = Tag.includes(:parentTag, :childTags).all
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
 
@@ -632,6 +650,7 @@ def index
         end
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
+      format.mobile 
     end
     
   end

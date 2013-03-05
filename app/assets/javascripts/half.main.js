@@ -2,7 +2,7 @@
 
 // checks if element has a scrollbar
 
-
+var toggle = false;
 
 $.fn.hasScrollBar = function() {
     return this.get(0).scrollHeight > this.innerHeight();
@@ -65,18 +65,32 @@ $(function() {
     }
   });
 
-  $('#content .main .inner-android .events').on('click','li',function(event) {
+  $('#content .main .inner.android .events').on('click','li',function(event) {
     stopPropagation(event);
     console.log("Open mobile");
     var id = $(this).attr('event-id');
     // http://www.halfpastnow.com/events/show/167474?fullmode=true
-    var lnk = "http://hpnstaging.herokuapp.com/events/show/"+167474+"?fullmode=true";
+    var lnk = "http://halfpastnow.herokuapp.com/events/show/"+id+"?fullmode=true";
     console.log(lnk);
     
     window.open(lnk);
   });
-
-
+  $('.popup-filter').hide();
+  $('#content ').on('click','.button-filter',function(event) {
+    stopPropagation(event);
+    console.log("clicked filter");
+    if (toggle) {
+        $('.popup-filter').hide();
+        
+    }
+    else {
+      
+        $('.popup-filter').show();
+     
+      
+    }
+    toggle = !toggle;
+  });
   $('#content .events').on('click','.picklists .picklist-link',function(event) {
     stopPropagation(event);
   });

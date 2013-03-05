@@ -6,6 +6,14 @@ class ActsController < ApplicationController
 
   def show
     @fullmode = !params[:fullmode].to_s.empty?
+    if(@mobileMode)
+        unless params[:format].to_s.eql? "mobile"
+          redirect_to :action => "android"  
+        else
+          return
+        end
+        
+    end
     @modeType = "act"
 
     @act = Act.find(params[:id])
@@ -44,6 +52,7 @@ class ActsController < ApplicationController
       end
       format.json { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), 
                                    :act => @act.to_json, :pictures => @pictures.to_json } } 
+      format.mobile
     end
   end
 

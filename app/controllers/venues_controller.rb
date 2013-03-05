@@ -57,6 +57,14 @@ class VenuesController < ApplicationController
   # GET /venues/1.json
   def show
     @fullmode = !params[:fullmode].to_s.empty?
+    if(@mobileMode)
+        unless params[:format].to_s.eql? "mobile"
+          redirect_to :action => "android"  
+        else
+          return
+        end
+        
+    end
     @modeType = "venue"
 
     @venue = Venue.find(params[:id])
@@ -92,8 +100,7 @@ class VenuesController < ApplicationController
         format.html { render :layout => "mode" }
       end
       format.json { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), :venue => @venue.to_json } } 
-      format.mobile { render json: { :occurrences => @occurrences.to_json(:include => :event), :recurrences => @recurrences.to_json(:include => :event), :venue => @venue.to_json } } 
-
+      format.mobile 
     end
   end
 
