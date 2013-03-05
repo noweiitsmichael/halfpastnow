@@ -1,3 +1,10 @@
+<% content_for :meta do %>
+  <meta property="og:type"                 content="website"/> 
+  <meta property="og:url"                  content="http://www.halfpastnow.com/sxsw"/> 
+  <meta property="og:image"                content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png"/>
+  <meta property="og:title"                content="half past now | SXSW event and RSVP finder"/>
+  <meta property="og:description"          content="Quickly find the best SXSW events and RSVPs"/> 
+<% end %>
 <% content_for :head do %>
   <%= javascript_include_tag "half.dynamics" %>
   <%= stylesheet_link_tag "sxsw.css" %>
