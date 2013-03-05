@@ -146,9 +146,11 @@ def index
     unless(params[:act_id].to_s.empty?)
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
-    if(@mobileMode && params[:mobile].to_s.nil?)
-          redirect_to :action => "android"
-          
+    if(@mobileMode)
+      unless (params[:format].to_s.eql? "mobile")
+        redirect_to :action => "android"
+      end
+
     end
 
     @tags = Tag.includes(:parentTag, :childTags).all
@@ -270,6 +272,7 @@ def index
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
       format.mobile
+      return
     end
     
   end
