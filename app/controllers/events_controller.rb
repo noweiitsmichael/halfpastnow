@@ -321,6 +321,7 @@ def index
     # @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
 
     respond_to do |format|
+      format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }
       if @fullmode
         format.html { render :layout => "fullmode" }
 
@@ -329,7 +330,7 @@ def index
       end
 
       format.json { render json: @event.to_json(:include => [:occurrences, :venue]) }
-      format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }
+      
       
     end
   end
