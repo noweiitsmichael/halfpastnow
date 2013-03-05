@@ -329,7 +329,7 @@ def index
       end
 
       format.json { render json: @event.to_json(:include => [:occurrences, :venue]) }
-      format.mobile { redirect_to :action => "new_splash" }
+      format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }
       
     end
   end
