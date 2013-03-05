@@ -499,10 +499,10 @@
 					<label style="margin-top:2px; margin-bottom:6px; color: purple; font-size: 19px">I'm walkin' around with:</label>
 					<div id="steambar">
 						<select name="access" tabindex="1" class="access" >
-								  <option value="414" stream-id="414">A badge</option>
-								  <option value="415" stream-id="415">A wristband</option>
-								  <option value="416" stream-id="416">No SXSW Credentials (RSVP ok)</option>
-								  <option value="424" stream-id="424" selected="selected">Nothin' but my cowboy boots</option>
+								  <option value="414" stream-id="414" filter-text="for badges">A badge</option>
+								  <option value="415" stream-id="415" filter-text="for wristbands">A wristband</option>
+								  <option value="416" stream-id="416" filter-text="for everyone/RSVP" selected="selected">No SX Credentials, RSVP ok</option>
+								  <option value="424" stream-id="424" filter-text="for everyone" >Nothin' but my cowboy boots</option>
 						</select>
 					</div>
 					<div class="orange-bar">
@@ -607,7 +607,7 @@
 			<% if (@mobileMode) %> </center> <% end %>
 			<div class="inner">
 				<div class="filter-summary">
-					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sort-type" style="display:none;">[by view count/<span class="sort date">date</span>]</span> 
+					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sxsw-channel-text">for everyone/RSVP</span> <span class="sort-type" style="display:none;">[by view count/<span class="sort date">date</span>]</span> 
 				</div>
 				<ul class="events">
 					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
