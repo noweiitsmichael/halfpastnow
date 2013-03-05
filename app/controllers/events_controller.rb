@@ -325,9 +325,9 @@ def index
     # @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
 
     respond_to do |format|
-      if @fullmode
+      if @fullmode 
         format.html { render :layout => "fullmode" }
-
+        format.mobile
       else
         format.html { render :layout => "mode" }
       end
