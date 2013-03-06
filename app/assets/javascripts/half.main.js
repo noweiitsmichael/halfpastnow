@@ -95,6 +95,8 @@ $(function() {
     var SelBranchVal = "";
     var x = 0;
     var tag ="";
+    console.log("Get Android status");
+    console.log(document.getElementById("androidStatus").value);
      for (x=0;x<InvForm.length;x++)
          {
             if(InvForm[x].selected)
@@ -152,7 +154,7 @@ $(function() {
 
     var searchString = "/events/android?"+accessString+"&"+tagString+"&"+sortString+"&"+dateString;
     console.log(searchString);
-    window.open(searchString,'_self');
+    // window.open(searchString,'_self');
     
    
 

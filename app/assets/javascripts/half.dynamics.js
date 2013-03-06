@@ -1040,7 +1040,14 @@ function loading(command) {
         $('#loading').show();
       }
     } else {
-      $('#infinite-loader').show();
+      
+      var status = document.getElementById("androidStatus").value;
+      if (status=='ANDROID') {
+        $('#infinite-loader').hide()
+      }
+      else { 
+        $('#infinite-loader').show();
+      }
     }
   } else if (command === 'hide') {
     $('.main .inner .header, .main .inner .events').css('opacity','1');
@@ -1060,7 +1067,11 @@ function checkInfinite() {
     if($('#content .main .inner .events li:not(.no-results)').length < parseInt($('.filter-summary .num-events').html())) {
       infiniteScrolling = true;
       filter.offset = $('#content .main .inner .events li').length;
-      pullEvents();
+      var status = document.getElementById("androidStatus").value;
+      if (status!='ANDROID') {
+         pullEvents();
+      }
+     
     }
   }
 }
