@@ -101,17 +101,17 @@ $(function() {
             {
               var tmp = InvForm[x].value; 
               if (tmp=0) {
-                tag = (x==0) ? "166" : tag +",166";
+                tag = (tag=="") ? "166" : tag +",166";
               }else if (tmp=1) {
-                tag = (x==0) ? "165" : tag +",165";
+                tag = (tag=="") ? "165" : tag +",165";
               }else if (tmp=2) {
-                tag = (x==0) ? "184" : tag +",184";
+                tag = (tag=="") ? "184" : tag +",184";
               }else if (tmp=3) {
-                tag = (x==0) ? "167" : tag +",167";
+                tag = (tag=="") ? "167" : tag +",167";
               }else if (tmp=4) {
-                tag = (x==0) ? "189" : tag +",189";
+                tag = (tag=="") ? "189" : tag +",189";
               }else if (tmp=5) {
-                tag = (x==0) ? "191" : tag +",191";
+                tag = (tag=="") ? "191" : tag +",191";
               };
               
 
@@ -120,7 +120,7 @@ $(function() {
    
 
     var accessString = "channel_id=414";
-    var sort =""
+   
     if (access==0) {
       accessString="channel_id=414";
     }else if(access==1) {
@@ -130,10 +130,15 @@ $(function() {
     }else if(access==3) {
       accessString="channel_id=424";
     };
-    var tagString = "included_tags="+tag;
+    var tagString = (tag=="") ? "" :"included_tags="+tag;
     var sortString="sort=0";
-    if (sort == 1) {sortString="sort=1";}
-    else if (sort == 0) {sortString="sort=0";} ;
+    if (sort == 1) {
+      sortString="sort=1";
+    }
+    else if (sort == 0) {
+      sortString="sort=0";
+    };
+
     var dateString = "start_date=&end_date=";
     if (time==0) { 
       dateString = "start_date=2013-03-08&end_date=2013-03-17";
@@ -145,10 +150,11 @@ $(function() {
       dateString = "start_date=2013-03-08&end_date=2013-03-17";
     };
 
-    var searchString = "/events/android?"+accessString+"&"+tagString+"&"+sortString+"&"+dateString+"&format=html";
-    window.open(searchString,'_self');
+    var searchString = "/events/android?"+accessString+"&"+tagString+"&"+sortString+"&"+dateString;
+    console.log(searchString);
+    // window.open(searchString,'_self');
     
-   
+    var tag ="";
 
 
   });
