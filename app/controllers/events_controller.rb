@@ -43,7 +43,7 @@ def android
 
     @ids = Occurrence.find_with(params)
     @message =""
-    channel_ms = (params[:channel_id] == 414): "Your " 
+    # channel_ms = (params[:channel_id] == 414): "Your " 
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
