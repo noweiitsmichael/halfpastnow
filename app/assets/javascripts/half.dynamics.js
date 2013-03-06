@@ -1042,7 +1042,7 @@ function loading(command) {
     } else {
       
       var status = document.getElementById("androidStatus").value;
-      if (status.toString()=='ANDROID') {
+      if (status.toString()=="ANDROID") {
         $('#infinite-loader').hide()
       }
       else { 
@@ -1068,9 +1068,10 @@ function checkInfinite() {
       infiniteScrolling = true;
       filter.offset = $('#content .main .inner .events li').length;
       var status = document.getElementById("androidStatus").value;
-      if (status.toString()!='ANDROID') {
-         pullEvents();
+      if (status.toString()=="ANDROID") {
       }
+      else pullEvents();
+      
      
     }
   }
