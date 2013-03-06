@@ -42,6 +42,8 @@ def android
     params[:user_id] = current_user ? current_user.id : nil
 
     @ids = Occurrence.find_with(params)
+    @message =""
+    channel_ms = (params[:channel_id] == 414): "Your " 
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
@@ -68,8 +70,8 @@ def android
       @offset = params[:offset].to_i
     end
     @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
-    # @occurrences = @allOccurrences.drop(@offset).take(@amount)
-    @occurrences =  Occurrence.paginate(:page => params[:page]).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+    @occurrences = @allOccurrences.drop(@offset).take(@amount)
+    # @occurrences =  Occurrence.paginate(:page => params[:page]).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
     # generating tag list for occurrences
 
     @occurringTags = {}
