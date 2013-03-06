@@ -1852,6 +1852,26 @@ input::-webkit-input-placeholder
     color: rgba(0, 0, 0, .8);
 }
 
+#content .events li .rsvp-button.nice-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border:1px solid rgb(156, 143, 173);
+  font-size:16px;
+  font-weight:900;
+  background-color: #A700A7;
+  color: white;
+  padding: 4px 8px 4px 8px;
+  margin-top:3px;
+  text-transform: none;
+  display:block;
+  text-align:center;
+}
+
+#content .events li .rsvp-button.nice-button a{
+  text-decoration: none;
+}
+
 #content .events li .event-actions div {
     overflow: hidden;
     margin-bottom: -5px;
@@ -3031,7 +3051,9 @@ input::-webkit-input-placeholder
     font-size: 16px;  
     text-align: left;
     line-height: 21px;  
-    max-height: 42px; overflow: hidden;
+    max-height: 42px; 
+    max-width: 370px;
+    overflow: hidden;
     position: relative;
     margin-top: 8px;
     padding-right: 1px;
@@ -4171,4 +4193,27 @@ position: relative;
 margin-left: -333px;
 position: relative;
 padding-top: 0px;
+}
+
+#getsat-widget-4765 {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+#getsat-widget-4765 a.gs-replacement-link {
+    color: #9C5;
+    font-family: 'Lato', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 20px;
+    text-decoration: underline;
+}
+#getsat-widget-4765 a.widget-link {
+    position: absolute;    
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    filter: alpha(opacity = 0);
 }

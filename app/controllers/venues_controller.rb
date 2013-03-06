@@ -182,6 +182,7 @@ class VenuesController < ApplicationController
   # POST /venues
   # POST /venues.json
   def create
+    puts "....creating venue..."
     @venue = Venue.new(params[:venue])
     @venue.updated_by = current_user.id
     @venue.completion = @venue.completedness
