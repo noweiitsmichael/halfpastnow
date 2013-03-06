@@ -4237,6 +4237,12 @@ color: white;
 
 
 }
+.androidMessage {
+top: 52px;
+position: absolute;
+left: 248px;
+font-size: 25px;
+}
 .button-search {
 text-decoration: none;
 border: 1px solid rgba(0,0,0,0.2);

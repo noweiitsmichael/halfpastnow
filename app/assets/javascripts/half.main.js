@@ -154,7 +154,7 @@ $(function() {
 
     var searchString = "/events/android?"+accessString+"&"+tagString+"&"+sortString+"&"+dateString;
     console.log(searchString);
-    // window.open(searchString,'_self');
+    window.open(searchString,'_self');
     
    
 
