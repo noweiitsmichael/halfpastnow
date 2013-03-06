@@ -146,10 +146,8 @@ $(function() {
     };
 
     var searchString = "/events/android?"+accessString+"&"+tagString+"&"+sortString+"&"+dateString+"&format=html";
-
-    $.getJSON(searchString, function(data) {
-      console.log(data);
-    });
+    window.open(searchString,'_self');
+    
    
 
 
