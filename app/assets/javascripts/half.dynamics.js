@@ -1042,12 +1042,8 @@ function loading(command) {
     } else {
       
       var status = document.getElementById("androidStatus").value;
-      if (status.toString()=="ANDROID") {
-        $('#infinite-loader').hide()
-      }
-      else { 
-        $('#infinite-loader').show();
-      }
+      $('#infinite-loader').show();
+      
     }
   } else if (command === 'hide') {
     $('.main .inner .header, .main .inner .events').css('opacity','1');
@@ -1068,9 +1064,8 @@ function checkInfinite() {
       infiniteScrolling = true;
       filter.offset = $('#content .main .inner .events li').length;
       var status = document.getElementById("androidStatus").value;
-      if (status.toString()=="ANDROID") {
-      }
-      else pullEvents();
+      pullEvents();
+      
       
      
     }
