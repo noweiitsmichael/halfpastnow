@@ -71,9 +71,17 @@ def android
     end
     @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
     # @occurrences = @allOccurrences.drop(@offset).take(@amount)
-    @occurrences =  Occurrence.paginate(:page => params[:page]).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
-    # generating tag list for occurrences
+    @occurrences = Occurrence.paginate(:page => params[:page]).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+    puts "Occurrence ids: "
+    idss = @occurrence_ids.join(",") 
+    puts idss
+    # @occurrences= Occurrence.where("occurrences.id IN (#{idss}) ORDER BY #{order_by}")
+    # @occurrences= @allOccurrences
 
+    puts @occurrences  
+    # @occurrences =  Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+    # generating tag list for occurrences
+    puts @occurrences
     @occurringTags = {}
 
     @tagCounts = []

@@ -391,7 +391,7 @@
 					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sort-type" style="display:none;">[by popularity/<span class="sort date">date</span>]</span> 
 				</div>
 				<ul class="events">
-					
+					<%= will_paginate(@occurrences) %>
 					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
 				</ul>
 				<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
