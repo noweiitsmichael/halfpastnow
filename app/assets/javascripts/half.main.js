@@ -145,7 +145,7 @@ $(function() {
       dateString = "start_date=2013-03-08&end_date=2013-03-17";
     };
 
-    var searchString = "/events/index?"+accessString+"&"+tagString+"&"+sortString+"&"+dateString+"&format=html";
+    var searchString = "/events/android?"+accessString+"&"+tagString+"&"+sortString+"&"+dateString+"&format=html";
 
     $.getJSON(searchString, function(data) {
       console.log(data);
