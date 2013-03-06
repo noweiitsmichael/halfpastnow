@@ -54,9 +54,14 @@ def android
          channel_ms = "I have nothin' but my cowboy boots on "
     end
     puts channel_ms
-    tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(',')
+    tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",")
+    puts "tags - 0"
+    puts params
+    puts params[:included_tags]
     tag_ms =""
     tag.each{ |t|
+      puts "tags"
+      puts t
       if t.to_i ==166
         tag_ms = (tag_ms.eql?"") ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
       elsif t.to_i ==165

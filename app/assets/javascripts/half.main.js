@@ -235,7 +235,7 @@ $(function() {
     var title = $(this).attr('event-title');
     var summary = $(this).attr('event-summary');
     var pic = $(this).attr('event-pic');
-    var app_id = "475386955806720";
+    var app_id = "560627683952100";
     var redirect = "http://www.halfpastnow.com";
     var venue = $(this).attr('event-venue');
     var type = "event";
@@ -267,7 +267,7 @@ $(function() {
       window.fbAsyncInit = function() {
         console.log("Loaded FB 2");
           FB.init({
-            appId      : '475386955806720', // App ID
+            appId      : '560627683952100', // App ID
             status     : true, // check login status
             cookie     : true, // enable cookies to allow the server to access the session
             xfbml      : true  // parse XFBML
