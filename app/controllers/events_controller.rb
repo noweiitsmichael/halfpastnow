@@ -68,8 +68,8 @@ def android
       @offset = params[:offset].to_i
     end
     @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
-    @occurrences = @allOccurrences.drop(@offset).take(@amount)
-
+    # @occurrences = @allOccurrences.drop(@offset).take(@amount)
+    @occurrences =  Occurrence.paginate(:page => params[:page]).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
     # generating tag list for occurrences
 
     @occurringTags = {}
