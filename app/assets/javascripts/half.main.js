@@ -94,18 +94,62 @@ $(function() {
     var InvForm = document.getElementById("tag");
     var SelBranchVal = "";
     var x = 0;
+    var tag ="";
      for (x=0;x<InvForm.length;x++)
          {
             if(InvForm[x].selected)
             {
-             //alert(InvForm.kb[x].value);
-             SelBranchVal = InvForm[x].value + "," + SelBranchVal ;
+              var tmp = InvForm[x].value; 
+              if (tmp=0) {
+                tag = (x==0) ? "166" : tag +",166";
+              }else if (tmp=1) {
+                tag = (x==0) ? "165" : tag +",165";
+              }else if (tmp=2) {
+                tag = (x==0) ? "184" : tag +",184";
+              }else if (tmp=3) {
+                tag = (x==0) ? "167" : tag +",167";
+              }else if (tmp=4) {
+                tag = (x==0) ? "189" : tag +",189";
+              }else if (tmp=5) {
+                tag = (x==0) ? "191" : tag +",191";
+              };
+              
+
             }
          }
-    alert(SelBranchVal);
+   
 
-    console.log("Click Search-Access: "+access +" tag: "+SelBranchVal+" time: "+time+" sort "+sort);
-    alert("Click Search-Access: "+access +" tag: "+SelBranchVal+" time: "+time+" sort "+sort);
+    var accessString = "channel_id=414";
+    var sort =""
+    if (access==0) {
+      accessString="channel_id=414";
+    }else if(access==1) {
+      accessString="channel_id=415";
+    }else if(access==2) {
+      accessString="channel_id=416";
+    }else if(access==3) {
+      accessString="channel_id=424";
+    };
+    var tagString = "included_tags="+tag;
+    var sortString="sort=0";
+    if (sort == 1) {sortString="sort=1";}
+    else if (sort == 0) {sortString="sort=0";} ;
+    var dateString = "start_date=&end_date=";
+    if (time==0) { 
+      dateString = "start_date=2013-03-08&end_date=2013-03-17";
+    }else if (time==1) { 
+      dateString = "start_date=2013-03-08&end_date=2013-03-12";
+    }if (time==2) { 
+      dateString = "start_date=2013-03-08&end_date=2013-03-16";
+    }if (time==3) { 
+      dateString = "start_date=2013-03-08&end_date=2013-03-17";
+    };
+
+    var searchString = "/events/index?"+accessString+"&"+tagString+"&"+sortString+"&"+dateString+"&format=html";
+
+    $.getJSON(searchString, function(data) {
+      console.log(data);
+    });
    
 
 
