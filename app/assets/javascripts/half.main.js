@@ -90,13 +90,13 @@ $(function() {
             if(InvForm[x].selected)
             {
               var tmp = InvForm[x].value; 
-              catIDs = (catIDs=="") ? tmp : catIDs+','+tmp ;
+              catIDs = (catIDs=="") ? "included_tags="+tmp : catIDs+','+tmp ;
               
               
 
             }
          }
-    catIDs = "included_tags="+catIDs;
+    
     InvForm = document.getElementById("tags");
     console.log("catIDsXXX: ");
     var andTags="";
