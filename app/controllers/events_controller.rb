@@ -62,17 +62,17 @@ def android
     tag.each{ |t|
       puts "tags"
       puts t
-      if t.to_i ==166
+      if t.first.to_i ==166
         tag_ms = (tag_ms.eql?"") ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
-      elsif t.to_i ==165
+      elsif t.first.to_i ==165
         tag_ms = (tag_ms.eql?"") ? "With Free Food" : tag_ms.concat(", Free Food")
-      elsif t.to_i ==184
+      elsif t.first.to_i ==184
         tag_ms = (tag_ms.eql?"") ? "With Party" : tag_ms.concat(", Party")
-      elsif t.to_i ==167
+      elsif t.first.to_i ==167
         tag_ms = (tag_ms.eql?"") ? "With No Cover" : tag_ms.concat(", No Cover")
-      elsif t.to_i ==191
+      elsif t.first.to_i ==191
         tag_ms = (tag_ms.eql?"") ? "With RSVP" : tag_ms.concat(", RSVP")
-      elsif t.to_i ==189
+      elsif t.first.to_i ==189
         tag_ms = (tag_ms.eql?"") ? "With Unofficial Events" : tag_ms.concat(", Unofficial Events")
       end
     }
