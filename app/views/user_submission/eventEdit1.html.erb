@@ -151,7 +151,7 @@
 						$.getJSON("/acts/eventActFind?contains=" + request.term, function (data) {
 						  var newPerformer = {'id': 0, 'label': '... Add a New Performer'} //, 'value': '<a href="/userSubmission/actEdit" target="_blank">Add New Performer</a>'}
 						  data.push(newPerformer);
-						  console.log(data);
+						  // console.log(data);
 						  response(data);
 						});
 					},
