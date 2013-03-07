@@ -1,8 +1,8 @@
 <% content_for :meta do %>
-     <meta property="og:type"                 content="article"/> 
-     <meta property="og:url"                  content="http://www.halfpastnow.com/picks/find/<%=@bookmarkList.id%>"/>
+     <meta property="og:type"                 content="halfpastnow:toppick"/> 
+     <meta property="og:url"                  content="http://halfpastnow.com/picks/find/<%=@bookmarkList.id%>"/>
      <meta property="og:site_name"            content="halfpastnow"/>
-     <meta property="og:image"                content="<%=@bookmarkList.picture_url(:thumb)%>"/>
+     <meta property="og:image"                content="<%=@bookmarkList.picture_url%>"/>
      <meta property="og:title"                content="<%=@bookmarkList.name%>">
      <meta property="og:description"          content="<%=@bookmarkList.description%>"/> 
 <% end %>

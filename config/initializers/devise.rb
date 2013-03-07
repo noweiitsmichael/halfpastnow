@@ -219,7 +219,7 @@ Devise.setup do |config|
   
            #ENV["FACEBOOK_KEY"], ENV["FACEBOOK_SECRET"],
   # For hpnstaging
-  # config.omniauth :facebook, '614562241903717', 'fbcbc9c1241fc21a2df7e52993791ddd',
+  # config.omniauth :facebook, '560627683952100', '91397956b658daf02d01f8b9a76318e0',
   #          :scope => 'email,user_birthday,read_stream,publish_actions,
   #                     user_activities,user_checkins, user_likes,user_interests,
   #                     friends_activities,friends_checkins,friends_likes,friends_interests', :display => 'popup'

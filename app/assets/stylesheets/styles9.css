@@ -4133,44 +4133,139 @@ html, body {
 }
 /*Android*/
 
-.button-filter {
-text-decoration: none;
-border: 1px solid rgba(0,0,0,0.2);
-text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
-font-size: 20px;
-background-color: #A700A7;
-padding: 8px 16px 8px 16px;
-border-radius: 3px;
-display: block;
-width: 260px;
-height: 40px;
-margin: 0 auto;
-margin-bottom: 10px;
-color: white;
-float: left;
+.button-access {
+
+overflow:hidden;
 z-index: 10;
 position: relative;
+width:270px;
+margin-left:0px;
+text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
+float: left;
+text-align: center;
+height: :40px;
+margin-left:20px;
 }
-.button.sort {
-text-decoration: none;
-border: 1px solid rgba(0,0,0,0.2);
-text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
-font-size: 20px;
-background-color: #A700A7;
-padding: 8px 16px 8px 16px;
-border-radius: 3px;
-display: block;
-width: 260px;
-height: 40px;
-margin: 0 auto;
-margin-bottom: 10px;
+
+.button-access select {
+border:0;
+background:#A700A7;
+height:40px;
+border:1px solid #d8d8d8;
+width:270px;
+word-wrap: break-word;
+font-size: 18px;
 color: white;
-float: left;
-margin-left: 50px;
-z-index: 10;
-position: relative;
+text-align: center;
+-webkit-appearance: none;
 }
-.button.search {
+
+.button-time {
+
+z-index: 10;
+position: relative;
+overflow:hidden;
+width:190px;
+margin-left:20px;
+text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
+float: left;
+height: :40px;
+text-align: center;
+
+}
+
+.button-time select {
+border:0;
+background:#A700A7;
+height:40px;
+border:1px solid #d8d8d8;
+width:190px;
+text-align: center;
+word-wrap: break-word;
+font-size: 18px;
+color: white;
+-webkit-appearance: none;
+
+
+}
+
+
+
+
+
+
+/*.popup-time li{
+  font-size:200%;
+  margin-top: 80px;
+  margin-left: 125px;
+}
+*/
+
+.largerCheckbox + label
+{
+  width: 100px;
+  height: 100px;
+  margin-top: 80px;
+}
+.button-tag {
+z-index: 10;
+position: relative;
+overflow:hidden;
+width:120px;
+margin-left:20px;
+text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
+float: left;
+height: :40px;
+text-align: center;
+}
+.button-tag select {
+border:0;
+background:#A700A7;
+height:40px;
+border:1px solid #d8d8d8;
+width:120px;
+text-align: center;
+word-wrap: break-word;
+font-size: 18px;
+color: white;
+-webkit-appearance: none;
+
+
+}
+
+
+.button-sort {
+z-index: 10;
+position: relative;
+overflow:hidden;
+width:120px;
+margin-left:20px;
+text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
+float: left;
+height: 40px;
+text-align: center;
+}
+.button-sort select {
+border:0;
+background:#A700A7;
+height:40px;
+border:1px solid #d8d8d8;
+width:120px;
+text-align: center;
+word-wrap: break-word;
+font-size: 18px;
+color: white;
+-webkit-appearance: none;
+
+
+}
+.androidMessage {
+top: 52px;
+position: absolute;
+left: 248px;
+font-size: 25px;
+}
+.button-search {
 text-decoration: none;
 border: 1px solid rgba(0,0,0,0.2);
 text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
@@ -4179,15 +4274,16 @@ background-color: #A700A7;
 padding: 8px 16px 8px 16px;
 border-radius: 3px;
 display: block;
-width: 260px;
-height: 40px;
+width: 122px;
+height: 20px;
 margin: 0 auto;
 margin-bottom: 10px;
 color: white;
 float: left;
-margin-left: 50px;
+margin-left: 20px;
 z-index: 10;
 position: relative;
+text-align: center;
 }
 #content .main .inner.android {
 margin-left: -333px;

@@ -30,7 +30,7 @@ end
 
 def android
   puts "Inside android controller !!!!!"
-
+  
   @lat = 30.268093
     @long = -97.742808
     @zoom = 11
@@ -41,9 +41,66 @@ def android
 
     params[:user_id] = current_user ? current_user.id : nil
 
+    
+    @message =""
+    channel_ms="I have a badge "
+    if params[:channel_id] == 414
+       channel_ms = "I have a badge"
+    elsif params[:channel_id] == 415
+         channel_ms = "I have a wristband"
+    elsif params[:channel_id] == 416
+         channel_ms = "I have NO SXSW Credentials"
+    elsif params[:channel_id] == 424
+         channel_ms = "I have nothin' but my cowboy boots on "
+    end
+    puts channel_ms
+    tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",")
+    puts "tags - 0"
+    puts params
+    puts params[:included_tags]
+    tag_ms =""
+    tag.each{ |t|
+      puts "tags"
+      puts t
+      if t.to_i ==166
+        tag_ms = (tag_ms.eql?"") ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
+      elsif t.to_i ==165
+        tag_ms = (tag_ms.eql?"") ? "With Free Food" : tag_ms.concat(", Free Food")
+      elsif t.to_i ==184
+        tag_ms = (tag_ms.eql?"") ? "With Party" : tag_ms.concat(", Party")
+      elsif t.to_i ==167
+        tag_ms = (tag_ms.eql?"") ? "With No Cover" : tag_ms.concat(", No Cover")
+      elsif t.to_i ==191
+        tag_ms = (tag_ms.eql?"") ? "With RSVP" : tag_ms.concat(", RSVP")
+      elsif t.to_i ==189
+        tag_ms = (tag_ms.eql?"") ? "With Unofficial Events" : tag_ms.concat(", Unofficial Events")
+      end
+    }
+    time_ms =""
+    
+    time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))
+
+    
+    
+    sort_ms =""
+    unless params[:sort].to_s.empty?
+      if params[:sort].to_i == 0
+          sort_ms = " and sort by most views"
+      elsif params[:sort].to_i == 1
+          sort_ms = " and sort by date"
+      end    
+    end 
+   
+    @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
+    puts @message
+
     @ids = Occurrence.find_with(params)
+    
+
+    
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
+    
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
 
@@ -67,11 +124,13 @@ def android
     unless(params[:offset].to_s.empty?)
       @offset = params[:offset].to_i
     end
-    @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
-    @occurrences = @allOccurrences.drop(@offset).take(@amount)
-
-    # generating tag list for occurrences
-
+    @allOccurrences = Occurrence.find(@occurrence_ids)
+    @occurrences = Occurrence.paginate(:page => params[:page]).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+    
+   
+    puts @occurrences  
+    
+    puts @occurrences
     @occurringTags = {}
 
     @tagCounts = []

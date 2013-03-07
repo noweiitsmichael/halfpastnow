@@ -3,6 +3,9 @@
 // checks if element has a scrollbar
 
 var toggle = false;
+var toggleTag = false;
+var toggleTime = false;
+var toggleSort = false;
 
 $.fn.hasScrollBar = function() {
     return this.get(0).scrollHeight > this.innerHeight();
@@ -75,22 +78,92 @@ $(function() {
     
     window.open(lnk);
   });
-  $('.popup-filter').hide();
-  $('#content ').on('click','.button-filter',function(event) {
+  // Android : Control Popups
+  
+
+  $('#content ').on('click','.button-search',function(event) {
     stopPropagation(event);
-    console.log("clicked filter");
-    if (toggle) {
-        $('.popup-filter').hide();
-        
+    var e = document.getElementById("access");
+    var access = e.options[e.selectedIndex].value;
+    console.log(access);
+    e = document.getElementById("time");
+    var time = e.options[e.selectedIndex].value;
+    e = document.getElementById("sort");
+    var sort = e.options[e.selectedIndex].value;
+
+    var InvForm = document.getElementById("tag");
+    var SelBranchVal = "";
+    var x = 0;
+    var tag ="";
+    console.log("Get Android status");
+    console.log(document.getElementById("androidStatus").value);
+     for (x=0;x<InvForm.length;x++)
+         {
+            if(InvForm[x].selected)
+            {
+              var tmp = InvForm[x].value; 
+              if (tmp=0) {
+                tag = (tag=="") ? "166" : tag +",166";
+              }else if (tmp=1) {
+                tag = (tag=="") ? "165" : tag +",165";
+              }else if (tmp=2) {
+                tag = (tag=="") ? "184" : tag +",184";
+              }else if (tmp=3) {
+                tag = (tag=="") ? "167" : tag +",167";
+              }else if (tmp=4) {
+                tag = (tag=="") ? "189" : tag +",189";
+              }else if (tmp=5) {
+                tag = (tag=="") ? "191" : tag +",191";
+              };
+              
+
+            }
+         }
+   
+
+    var accessString = "channel_id=414";
+   
+    if (access==0) {
+      accessString="channel_id=414";
+    }else if(access==1) {
+      accessString="channel_id=415";
+    }else if(access==2) {
+      accessString="channel_id=416";
+    }else if(access==3) {
+      accessString="channel_id=424";
+    };
+    var tagString = (tag=="") ? "" :"included_tags="+tag;
+    var sortString="sort=0";
+    if (sort == 1) {
+      sortString="sort=1";
     }
-    else {
-      
-        $('.popup-filter').show();
-     
-      
-    }
-    toggle = !toggle;
+    else if (sort == 0) {
+      sortString="sort=0";
+    };
+
+    var dateString = "start_date=&end_date=";
+    if (time==0) { 
+      dateString = "start_date=2013-03-08&end_date=2013-03-17";
+    }else if (time==1) { 
+      dateString = "start_date=2013-03-08&end_date=2013-03-12";
+    }if (time==2) { 
+      dateString = "start_date=2013-03-08&end_date=2013-03-16";
+    }if (time==3) { 
+      dateString = "start_date=2013-03-08&end_date=2013-03-17";
+    };
+
+    var searchString = "/events/android?"+accessString+"&"+tagString+"&"+sortString+"&"+dateString;
+    console.log(searchString);
+    window.open(searchString,'_self');
+    
+   
+
+
   });
+ 
+
+ 
+
   $('#content .events').on('click','.picklists .picklist-link',function(event) {
     stopPropagation(event);
   });
