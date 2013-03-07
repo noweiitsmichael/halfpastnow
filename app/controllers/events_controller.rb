@@ -102,6 +102,15 @@ def android
         end
         @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
     else
+      tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",").uniq
+      tag = tag.join(",")
+      if tag.size >0
+        names = Tag.where("ID in (#{tag})")
+        puts "Names of tags: "
+        puts names  
+      end
+      
+
 
     end
    
