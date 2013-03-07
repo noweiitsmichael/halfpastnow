@@ -166,7 +166,7 @@ def android
       @offset = params[:offset].to_i
     end
     @allOccurrences = Occurrence.find(@occurrence_ids)
-    @occurrences = Occurrence.paginate(:page => params[:page], :per_page => 10, :style => 'width : 300px' ).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+    @occurrences = Occurrence.paginate(:page => params[:page], :per_page => 10 ).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
     
    
     puts @occurrences  
