@@ -62,18 +62,19 @@ def android
     i=0
     tag.each{ |t|
       puts "tags"
-      puts t.first.to_i
-      if t.first.to_i ==166
+      puts t.to_i
+      s = t.to_s
+      if s.eql? "166"
         tag_ms = (i==0) ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
-      elsif t.first.to_i ==165
+      elsif s.eql? "165"
         tag_ms = (i==0) ? "With Free Food" : tag_ms.concat(", Free Food")
-      elsif t.first.to_i ==184
+      elsif s.eql? "184"
         tag_ms = (i==0) ? "With Party" : tag_ms.concat(", Party")
-      elsif t.first.to_i ==167
+      elsif s.eql? "167"
         tag_ms = (i==0) ? "With No Cover" : tag_ms.concat(", No Cover")
-      elsif t.first.to_i ==191
+      elsif s.eql? "191"
         tag_ms = (i==0) ? "With RSVP" : tag_ms.concat(", RSVP")
-      elsif t.first.to_i ==189
+      elsif s.eql? "189"
         tag_ms = (i==0) ? "With Unofficial Events" : tag_ms.concat(", Unofficial Events")
       end
       i=i+1
