@@ -102,17 +102,17 @@ $(function() {
             if(InvForm[x].selected)
             {
               var tmp = InvForm[x].value; 
-              if (tmp=0) {
+              if (tmp==0) {
                 tag = (tag=="") ? "166" : tag +",166";
-              }else if (tmp=1) {
+              }else if (tmp==1) {
                 tag = (tag=="") ? "165" : tag +",165";
-              }else if (tmp=2) {
+              }else if (tmp==2) {
                 tag = (tag=="") ? "184" : tag +",184";
-              }else if (tmp=3) {
+              }else if (tmp==3) {
                 tag = (tag=="") ? "167" : tag +",167";
-              }else if (tmp=4) {
+              }else if (tmp==4) {
                 tag = (tag=="") ? "189" : tag +",189";
-              }else if (tmp=5) {
+              }else if (tmp==5) {
                 tag = (tag=="") ? "191" : tag +",191";
               };
               
