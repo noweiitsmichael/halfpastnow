@@ -59,24 +59,26 @@ def android
     puts params
     puts params[:included_tags]
     tag_ms =""
+    i=0
     tag.each{ |t|
       puts "tags"
       puts t
       if t.first.to_i ==166
-        tag_ms = (tag_ms.eql?"") ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
+        tag_ms = (i==0) ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
       elsif t.first.to_i ==165
-        tag_ms = (tag_ms.eql?"") ? "With Free Food" : tag_ms.concat(", Free Food")
+        tag_ms = (i==0) ? "With Free Food" : tag_ms.concat(", Free Food")
       elsif t.first.to_i ==184
-        tag_ms = (tag_ms.eql?"") ? "With Party" : tag_ms.concat(", Party")
+        tag_ms = (i==0) ? "With Party" : tag_ms.concat(", Party")
       elsif t.first.to_i ==167
-        tag_ms = (tag_ms.eql?"") ? "With No Cover" : tag_ms.concat(", No Cover")
+        tag_ms = (i==0) ? "With No Cover" : tag_ms.concat(", No Cover")
       elsif t.first.to_i ==191
-        tag_ms = (tag_ms.eql?"") ? "With RSVP" : tag_ms.concat(", RSVP")
+        tag_ms = (i==0) ? "With RSVP" : tag_ms.concat(", RSVP")
       elsif t.first.to_i ==189
-        tag_ms = (tag_ms.eql?"") ? "With Unofficial Events" : tag_ms.concat(", Unofficial Events")
+        tag_ms = (i==0) ? "With Unofficial Events" : tag_ms.concat(", Unofficial Events")
       end
+      i=i+1
     }
-    puts "Tags"
+    puts "Tags - combine: "
     puts tag_ms
     time_ms =""
     
