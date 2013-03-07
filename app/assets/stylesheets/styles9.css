@@ -4415,6 +4415,9 @@ z-index: 10;
 position: relative;
 text-align: center;
 }
+.pagination{
+  
+}
 #content .main .inner.android {
 margin-left: -333px;
 position: relative;

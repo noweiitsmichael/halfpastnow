@@ -465,9 +465,8 @@
 				<ul class="events">
 					
 					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
-					<div class="pagination">
-						<%= will_paginate(@occurrences) %>
-					</div>
+					<%= will_paginate(@occurrences) %>
+					
 				</ul>
 				<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
 			</div>
