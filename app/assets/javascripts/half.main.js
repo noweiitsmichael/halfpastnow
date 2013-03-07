@@ -73,7 +73,7 @@ $(function() {
     console.log("Open mobile");
     var id = $(this).attr('event-id');
     // http://www.halfpastnow.com/events/show/167474?fullmode=true
-    var lnk = "http://hpnstaging.herokuapp.com/events/show/"+id+"?fullmode=true";
+    var lnk = "http://www.halfpastnow.com/events/show/"+id+"?fullmode=true";
     console.log(lnk);
     
     window.open(lnk);
@@ -235,7 +235,7 @@ $(function() {
     var title = $(this).attr('event-title');
     var summary = $(this).attr('event-summary');
     var pic = $(this).attr('event-pic');
-    var app_id = "560627683952100";
+    var app_id = "475386955806720";
     var redirect = "http://www.halfpastnow.com";
     var venue = $(this).attr('event-venue');
     var type = "event";
@@ -267,7 +267,7 @@ $(function() {
       window.fbAsyncInit = function() {
         console.log("Loaded FB 2");
           FB.init({
-            appId      : '560627683952100', // App ID
+            appId      : '475386955806720', // App ID
             status     : true, // check login status
             cookie     : true, // enable cookies to allow the server to access the session
             xfbml      : true  // parse XFBML
@@ -283,10 +283,10 @@ $(function() {
         }(document));// delete below
         console.log('Bookmark outside');
                   
-        var lnk = 'http://hpnstaging.herokuapp.com/events/show/'+id+'?fullmode=true'; 
+        var lnk = 'http://www.halfpastnow.com/events/show/'+id+'?fullmode=true'; 
         console.log(lnk);
         FB.api(
-            '/me/hpnstaging:bookmark',
+            '/me/halfpastnow:bookmark',
             'post',
             { event: lnk },
             function(response) {

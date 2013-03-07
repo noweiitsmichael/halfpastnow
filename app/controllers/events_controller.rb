@@ -213,9 +213,9 @@ def index
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
     if(@mobileMode)
-        @switch ="advance"
+        @switch ="sxsw"
         unless params[:format].to_s.eql? "mobile"
-          redirect_to :action => "android",  :type => "advance"
+          redirect_to :action => "android",  :type => "sxsw"
         else
           return
         end
@@ -390,8 +390,8 @@ def index
       end
     end
     # http://secret-citadel-5147.herokuapp.com/events/show/11?fullmode=true
-    @url ='http://halfpastnow.com/?event_id='+params[:id]
-    @url1='http://halfpastnow.com/events/show/'+params[:id]+'?fullmode=true'
+    @url ='http://www.halfpastnow.com/?event_id='+params[:id]
+    @url1='http://www.halfpastnow.com/events/show/'+params[:id]+'?fullmode=true'
     @ur = 'https://www.facebook.com/plugins/like.php?href=http://www.halfpastnow.com/mobile/og/'+params[:id]
     
     # http://www.halfpastnow.com/?event_id=15599

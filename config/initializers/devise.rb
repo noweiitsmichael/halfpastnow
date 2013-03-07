@@ -212,17 +212,17 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
   # For halfpastnow
-  # config.omniauth :facebook, '475386955806720', '80d74b0e6d0c97b4d857ce97fe46138a',
-  #          :scope => 'email,user_birthday,read_stream,publish_actions,
-  #                     user_activities,user_checkins, user_likes,user_interests,
-  #                     friends_activities,friends_checkins,friends_likes,friends_interests', :display => 'popup'
-  
-           #ENV["FACEBOOK_KEY"], ENV["FACEBOOK_SECRET"],
-  #For hpnstaging
-  config.omniauth :facebook, '560627683952100', '91397956b658daf02d01f8b9a76318e0',
+  config.omniauth :facebook, '475386955806720', '80d74b0e6d0c97b4d857ce97fe46138a',
            :scope => 'email,user_birthday,read_stream,publish_actions,
                       user_activities,user_checkins, user_likes,user_interests,
                       friends_activities,friends_checkins,friends_likes,friends_interests', :display => 'popup'
+  
+           #ENV["FACEBOOK_KEY"], ENV["FACEBOOK_SECRET"],
+  #For hpnstaging
+  # config.omniauth :facebook, '560627683952100', '91397956b658daf02d01f8b9a76318e0',
+  #          :scope => 'email,user_birthday,read_stream,publish_actions,
+  #                     user_activities,user_checkins, user_likes,user_interests,
+  #                     friends_activities,friends_checkins,friends_likes,friends_interests', :display => 'popup'
 # '475386955806720', '80d74b0e6d0c97b4d857ce97fe46138a', 'omniauth_callbacks'
 # '273167206143082', '330f1528fc40c5ccd0c467f554ff1719',
 # mobile 560627683952100

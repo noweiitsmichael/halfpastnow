@@ -9,7 +9,7 @@ class MobileController < ApplicationController
     @event = Event.find(@eventid);
 
     @urlimage =@event.cover_image_url
-    @url= 'http://hpnstaging.herokuapp.com/events/show/'+params[:id]+'?fullmode=true'
+    @url= 'http://www.halfpastnow.com/events/show/'+params[:id]+'?fullmode=true'
     render :layout => "og"
   end
   # def tp
