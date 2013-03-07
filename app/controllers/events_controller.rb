@@ -97,7 +97,9 @@ def android
           sort_ms = " and sort by date"
       end    
     end 
-   
+    unless params[:days].to_s.empty?
+      params[:day] = ["0","6"]
+    end
     @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
     puts @message
 
@@ -213,9 +215,9 @@ def index
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
     if(@mobileMode)
-        @switch ="sxsw"
+        @switch ="advance"
         unless params[:format].to_s.eql? "mobile"
-          redirect_to :action => "android",  :type => "sxsw"
+          redirect_to :action => "android",  :type => "advance"
         else
           return
         end

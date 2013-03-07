@@ -386,21 +386,21 @@
 				
 				<div class="button-search"><span>Search</span>
 				
-			</div>
+				</div>
 			<% else %>
 
 				<div class="button-categories">
-					<select name="categoriesmenu" id="categories" multiple="multiple">
+					<select name="categoriesmenu" id="categories" multiple="multiple" >
 						<option> All Categories </option>
 						<% @parentTags.each do |parentTag|  %>
 							<% unless parentTag.name == "Tags" %>
 								<% puts "Parent Tag name: "%>
 								<% puts parentTag.name %>
 								<% if parentTag.childTags.size > 0 %>
-									<option value="<%= parentTag.id %>"> 
+									<option value="<%= parentTag.id %>" >
 										<%= parentTag.name %>
 									</option>
-									<optgroup label="<%= parentTag.name %>">
+									<optgroup label="<%= parentTag.name %>" >
 										<% parentTag.childTags.each do |childTag |%>
 											<option value="<%= childTag.id %>"> 
 												<%= childTag.name %>
@@ -430,7 +430,7 @@
 					</select>
 				</div>
 				<div class="button-day">
-					<select name="daysmenu" id="day">
+					<select name="daysmenu" id="dayAd">
 						<option value="0">No time limit</option>
 						<option value="1">Today</option>
 						<option value="2">Tomorrow</option>
@@ -445,29 +445,9 @@
 						<option value="3">< $20</option>
 					</select>
 				</div>
-				<!-- <div class="button-access">
-					<select name="select_projects" id="select_projects">
-					    <option value="">project.xml</option>
-					    <option label="client1" value="">
-					        <option value="">project2.xml</option>
-					    </option>
-					    <optgroup label="client2">
-					        <option value="">project5.xml</option>
-					        <option value="">project6.xml</option>
-					        <optgroup label="client2_a">
-					            <option value="" style="margin-left:23px;">project7.xml</option>
-					            <option value="" style="margin-left:23px;">project8.xml</option>
-					        </optgroup>
-					        <option value="">project3.xml</option>
-					        <option value="">project4.xml</option>
-					   </optgroup>
-					   <option value="">project0.xml</option>
-					   <option value="">project1.xml</option>
-					</select>
-				</div> -->
-
-
-			
+				<div class="button-search-ad"><span>Search</span>
+				
+				</div>
 			<% end %>
 			<!-- <a class="button sort" href="#"><span>Sort</span></a>
 			<a class="button search" href="#"><span>Search</span></a> -->

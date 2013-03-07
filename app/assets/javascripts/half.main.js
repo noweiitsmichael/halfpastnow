@@ -80,6 +80,87 @@ $(function() {
   });
   // Android : Control Popups
   
+  $('#content ').on('click','.button-search-ad',function(event) {
+    stopPropagation(event);
+    // Get category tag ids & name
+    var InvForm = document.getElementById("categories");
+    var catIDs= "";
+    for (x=0;x<InvForm.length;x++)
+         {
+            if(InvForm[x].selected)
+            {
+              var tmp = InvForm[x].value; 
+              catIDs = (catIDs=="") ? tmp : catIDs+','+tmp ;
+              
+              
+
+            }
+         }
+    catIDs = "included_tags="+catIDs;
+    InvForm = document.getElementById("tags");
+    console.log("catIDsXXX: ");
+    var andTags="";
+    for (x=0;x<InvForm.length;x++)
+         {
+            if(InvForm[x].selected)
+            {
+              var tmp = InvForm[x].value; 
+              if (x !==0) {
+                andTags = (andTags=="") ? "and_tags="+tmp : andTags+','+tmp ;
+              };
+              
+              
+              
+
+            }
+         }
+   
+    console.log("catIDsA: ");
+    var e = document.getElementById("dayAd");
+    var day = e.options[e.selectedIndex].value;
+   
+    console.log("catIDsA: "+day);
+    var dayString = "";
+    if (day == 0) {
+      dayString="start_days=0&end_days=-1";
+    }else if(day == 1){
+      dayString="start_days=0&end_days=0";
+    }else if(day == 2){
+      dayString="start_days=1&end_days=1";
+    }else if(day == 3){
+      // var d = new Date();
+      x=5;//d.getDay();
+      if (x < 6 && x>0) { 
+        dayString="start_days=0&end_days=7&days=0,6";
+      }else if (x ==0 ) { 
+        dayString="start_days=0&end_days=0";
+      }else if (x ==6 ) { 
+        dayString="start_days=0&end_days=1";
+      };
+    };
+    
+    e = document.getElementById("cost");
+    var cost = e.options[e.selectedIndex].value;
+    console.log("catIDs: cost"+cost);
+    var costString = "";
+    if (cost == 0) {
+      costString = "low_price=0&high_price=777777777";
+    }else if (cost == 1) {
+      costString = "low_price=0&high_price=0";
+    }else if (cost == 2) {
+      costString = "low_price=0&high_price=10";
+    }else if (cost == 3) {
+      costString = "low_price=0&high_price=20";
+    };
+    
+
+    console.log("In search-ad "+ costString);
+    
+    // console.log(catIDs + );
+    var searchString = "/events/android?"+catIDs+"&"+andTags+"&"+dayString+"&"+costString;
+    // alert(searchString);
+     window.open(searchString,'_self');
+  });
 
   $('#content ').on('click','.button-search',function(event) {
     stopPropagation(event);
