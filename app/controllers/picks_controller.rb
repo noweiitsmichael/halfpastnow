@@ -76,9 +76,7 @@ helper :content
 						else
 							@exclude << r 
 						end
-
 					end
-					
 				else 
 					if !recurrence_id.nil?
 						#rec =   Recurrence.select{ |r| r.id = recurrence_id}.first
@@ -90,8 +88,6 @@ helper :content
 					else
 						@exclude << r 
 					end
-
-
 				end
 			}
 			@legit = rs - @exclude

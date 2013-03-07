@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130225011019) do
+ActiveRecord::Schema.define(:version => 20130307074711) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -67,6 +67,9 @@ ActiveRecord::Schema.define(:version => 20130225011019) do
     t.boolean  "main_bookmarks_list"
   end
 
+  add_index "bookmark_lists", ["featured"], :name => "index_bookmark_lists_on_featured"
+  add_index "bookmark_lists", ["user_id", "main_bookmarks_list"], :name => "index_bookmark_lists_on_user_id_and_main_bookmarks_list"
+
   create_table "bookmark_lists_users", :id => false, :force => true do |t|
     t.integer "bookmark_list_id"
     t.integer "user_id"
@@ -84,6 +87,10 @@ ActiveRecord::Schema.define(:version => 20130225011019) do
     t.integer  "bookmark_list_id"
     t.text     "comment"
   end
+
+  add_index "bookmarks", ["bookmark_list_id"], :name => "index_bookmarks_on_bookmark_list_id"
+  add_index "bookmarks", ["bookmarked_id"], :name => "index_bookmarks_on_bookmarked_id"
+  add_index "bookmarks", ["bookmarked_type"], :name => "index_bookmarks_on_bookmarked_type"
 
   create_table "channels", :force => true do |t|
     t.string   "day_of_week"
@@ -155,8 +162,11 @@ ActiveRecord::Schema.define(:version => 20130225011019) do
     t.text     "ticket_url"
   end
 
+  add_index "events", ["clicks"], :name => "index_events_on_clicks"
+  add_index "events", ["title"], :name => "index_events_on_title"
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
   add_index "events", ["venue_id"], :name => "index_events_on_venue_id"
+  add_index "events", ["views"], :name => "index_events_on_views"
 
   create_table "events_tags", :id => false, :force => true do |t|
     t.integer "event_id"
@@ -203,6 +213,8 @@ ActiveRecord::Schema.define(:version => 20130225011019) do
 
   add_index "occurrences", ["event_id"], :name => "index_occurrences_on_event_id"
   add_index "occurrences", ["recurrence_id"], :name => "index_occurrences_on_recurrence_id"
+  add_index "occurrences", ["start"], :name => "index_occurrences_on_start"
+  add_index "occurrences", ["start"], :name => "occurrences_not_deleted_start_index"
 
   create_table "pictures", :force => true do |t|
     t.string   "image"

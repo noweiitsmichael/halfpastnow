@@ -58,14 +58,33 @@ class BookmarkList < ActiveRecord::Base
 		end
 		return occurrences
 		
+		# query = "((SELECT occurrences.id AS id, occurrences.start AS start, occurrences.end AS end, events.cover_image_url, events.title, venues.name FROM occurrences
+		# 		INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
+		# 		INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
+		# 		INNER JOIN events ON occurrences.event_id = events.id
+		# 		INNER JOIN venues ON events.venue_id = venues.id
+  #               WHERE bookmark_lists.id = #{self.id} AND bookmarks.bookmarked_type = 'Occurrence'
+  #               	AND occurrences.recurrence_id IS NULL AND occurrences.deleted = false AND occurrences.start > now() - interval '3 hours')
+		# 		UNION ALL
+		# 		(SELECT DISTINCT ON (occurrences.recurrence_id) occurrences.id AS id, occurrences.start AS start, occurrences.end AS end , events.cover_image_url, events.title, venues.name FROM occurrences
+		# 		INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
+		# 		INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
+		# 		INNER JOIN events ON occurrences.event_id = events.id
+		# 		INNER JOIN venues ON events.venue_id = venues.id
+  #               WHERE bookmark_lists.id = #{self.id} AND bookmarks.bookmarked_type = 'Occurrence' 
+  #               	AND occurrences.recurrence_id IS NOT NULL AND occurrences.deleted = false AND occurrences.start > now() - interval '3 hours'))
+		# 		ORDER BY start LIMIT #{num}";
 
+  #       occurrences = ActiveRecord::Base.connection.select_all(query)
+     #    occurrences = []
+     #    results.each do |e|
+	    #   unless e["id"].nil?
+	    #   	occurrences << Occurrence.find(e["id"])
+	    #   end
+	    # end
+        # puts occurrences
+        return occurrences
 
-		# @bookmarked_events = Bookmark.where(:bookmark_list_id => self.id, :bookmarked_type => "Occurrence")
-		# @bookmarked_events.collect! do |b|
-		# 	b.bookmarked_event
-		# end
-
-		# return @bookmarked_events.compact
 	end
 
 	def all_bookmarked_events

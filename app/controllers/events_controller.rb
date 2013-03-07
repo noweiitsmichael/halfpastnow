@@ -248,12 +248,6 @@ def index
 
     # end
     
-
-
-
-
-
-    # 30.268093,-97.742808
     @lat = 30.268093
     @long = -97.742808
     @zoom = 11
@@ -277,9 +271,16 @@ def index
                     WHEN 0 THEN 0
                     ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
                   END DESC"
+
+     ## Testing .. only by views
+      # order_by = "CASE events.views 
+      #               WHEN 0 THEN 0
+      #               ELSE events.clicks
+      #             END DESC"
     end
 
     @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+    # puts @allOccurrences
     @occurrences = @allOccurrences.drop(@offset).take(@amount)
 
     # generating tag list for occurrences
@@ -330,7 +331,6 @@ def index
         WHERE id IN (#{@venue_ids * ','})")
     end
     
-    puts "Iphone get here"
     respond_to do |format|
       format.html do
         
@@ -619,7 +619,11 @@ def index
        
           redirect_to :action => "android", :type => "sxsw"
           return
+<<<<<<< HEAD
         
+=======
+        end
+>>>>>>> 0b54d0584c29eee1059b5895ee9907ff433aad9f
     end
     @tags = Tag.includes(:parentTag, :childTags).all
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }

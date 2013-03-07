@@ -1003,7 +1003,13 @@ function pullEvents(updateOptions) {
       infiniteScrolling = false;
     } else {
       $('#content .main .inner .events').html(jData.find("#combo_event_list").html());
-      $('.filter-summary .num-events').html(jData.find("#combo_total_occurrences").html());
+      console.log("----NUM EVENTS-----");
+      console.log(jData.find("#combo_total_occurrences").html());
+      if (jData.find("#combo_total_occurrences").html().indexOf("1000") > 0) { 
+        $('.filter-summary .num-events').html(jData.find("#combo_total_occurrences").html() + "+");
+      } else {
+        $('.filter-summary .num-events').html(jData.find("#combo_total_occurrences").html());
+      }
       if(async_reloadTagsList) {
         $('#header .filter-toggle.tags.ortags .filter-inner').html(jData.find("#combo_tag_list").html());
         $('#header .filter-toggle.tags.andtags .filter-inner').html(jData.find("#combo_andtag_list").html());
