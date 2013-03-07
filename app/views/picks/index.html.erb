@@ -165,18 +165,18 @@
 		<% hidden = "style=\"display:none;\"" %>
 		<div class='outter-list'>
 			<div class="list">
-			<% @featuredLists.each_with_index do |featuredList, index|
+			<% @featuredLists.sort_by{ |e| e.all_bookmarked_events.size }.reverse!.each_with_index do |featuredList, index|
 				currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
-				if (index % 2 == 0)
+				if (index % 2 == 0) && (featuredList.all_bookmarked_events.size > 0)
 					
 					insert_picklist(featuredList,currentUserIsFollowing,hidden)
 				end
 			end %>
 		</div>
 		<div  class="list">
-			<% @featuredLists.each_with_index do |featuredList, index|
+			<% @featuredLists.sort_by{ |e| e.all_bookmarked_events.size }.reverse!.each_with_index do |featuredList, index|
 				currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
-				if (index % 2 == 1)
+				if (index % 2 == 1) && (featuredList.all_bookmarked_events.size > 0)
 					insert_picklist(featuredList,currentUserIsFollowing,hidden)
 				end
 			end %>

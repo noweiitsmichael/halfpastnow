@@ -82,17 +82,20 @@ $(function() {
   $("#sxsw-tags").on("click", '.individual-tag .name', function(event) {
     stopPropagation(event);
     $('.tags-menu.ortags.children .include[tag-id=' + $(this).siblings('.include').attr("tag-id")+ ']').click();
+    $(".sxsw-channel-text").html("");
   });
 
   $("#sxsw-tags").on("click", '.individual-tag .include', function(event) {
     stopPropagation(event);
     $('.tags-menu.ortags.children .include[tag-id=' + $(this).attr("tag-id")+ ']').click();
+    $(".sxsw-channel-text").html("");
   });
 
 
   $("#sxsw-options").on("click", '.rsvp-button', function(event) {
     stopPropagation(event);
     filter = $.extend(true, {}, channelFilters[417]);
+    $(".sxsw-channel-text").html("");
     updateViewFromFilter(true, {hideSaveSearchButton: true});
   });
 
@@ -103,9 +106,10 @@ $(function() {
         console.log("stream selected");
         $("#dk_container_stream-select").addClass('selected');
         var channelID = parseInt(value);
-        console.log(channelID);
+        // console.log(channelID);
         filter = $.extend(true, {}, channelFilters[channelID]);
-        console.log(filter);
+        console.log($(".access [stream-id='" + channelID + "']").attr("filter-text"));
+        $(".sxsw-channel-text").html($(".access [stream-id='" + channelID + "']").attr("filter-text"));
         updateViewFromFilter(true, {hideSaveSearchButton: true});
       }
     });
