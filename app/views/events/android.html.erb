@@ -416,15 +416,14 @@
 				<div class="button-tags">
 					<select name="tagsmenu" id="tags" multiple="multiple">
 						<% andTags = @parentTags.select { |t| t[:name] == "Tags" }.first %>
-						
+
 						<option> And Tags </option>
 						<% andTags.childTags.sort { |a,b| a.name <=> b.name }.each do |childTagCount| %>
 
 							<option value="<%= childTagCount.id %>"> 
 										<%= childTagCount.name %>
 							</option>
-							<div class="andtags-thing" this-id="<%= childTagCount.id %>"><%= check_box_tag (type + "[tag_ids][]"), childTagCount.id, element.tags.include?(childTagCount) %>
-								<label><%= childTagCount.name %></label></div>
+							
 						
 						<% end %>
 					</select>
