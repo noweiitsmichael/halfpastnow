@@ -157,7 +157,7 @@ $(function() {
     console.log("In search-ad "+ costString);
     
     // console.log(catIDs + );
-    var searchString = "/events/android?"+catIDs+"&"+andTags+"&"+dayString+"&"+costString;
+    var searchString = "/events/android?"+catIDs+"&"+andTags+"&"+dayString+"&"+costString+"&type=advance";
     // alert(searchString);
      window.open(searchString,'_self');
   });
@@ -233,7 +233,7 @@ $(function() {
       dateString = "start_date=2013-03-08&end_date=2013-03-17";
     };
 
-    var searchString = "/events/android?"+accessString+"&"+tagString+"&"+sortString+"&"+dateString;
+    var searchString = "/events/android?"+accessString+"&"+tagString+"&"+sortString+"&"+dateString+"&type=sxsw";
     console.log(searchString);
     window.open(searchString,'_self');
     

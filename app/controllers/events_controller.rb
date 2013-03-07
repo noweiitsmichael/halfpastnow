@@ -41,66 +41,71 @@ def android
 
     params[:user_id] = current_user ? current_user.id : nil
 
-    
-    @message =""
-    channel_ms="I have a badge "
-    if params[:channel_id] == 414
-       channel_ms = "I have a badge"
-    elsif params[:channel_id] == 415
-         channel_ms = "I have a wristband"
-    elsif params[:channel_id] == 416
-         channel_ms = "I have NO SXSW Credentials"
-    elsif params[:channel_id] == 424
-         channel_ms = "I have nothin' but my cowboy boots on "
-    end
-    puts channel_ms
-    tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",")
-    puts "tags - 0"
-    puts params
-    puts tag
-    puts params[:included_tags]
-    tag_ms =""
-    i=0
-    tag.each{ |t|
-      puts "tags"
-      s = t.to_s
-      puts s    
-     
-      if s.eql? "166"
-        tag_ms = (i==0) ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
-      elsif s.eql? "165"
-        tag_ms = (i==0) ? "With Free Food" : tag_ms.concat(", Free Food")
-      elsif s.eql? "184"
-        tag_ms = (i==0) ? "With Party" : tag_ms.concat(", Party")
-      elsif s.eql? "167"
-        tag_ms = (i==0) ? "With No Cover" : tag_ms.concat(", No Cover")
-      elsif s.eql? "191"
-        tag_ms = (i==0) ? "With RSVP" : tag_ms.concat(", RSVP")
-      elsif s.eql? "189"
-        tag_ms = (i==0) ? "With Unofficial Events" : tag_ms.concat(", Unofficial Events")
-      end
-      i=i+1
-    }
-    puts "Tags - combine: "
-    puts tag_ms
-    time_ms =""
-    
-    time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))
+     @message =""
+    if params[:type].to_s.eql? "sxsw"
+        channel_ms="I have a badge "
+        if params[:channel_id] == 414
+           channel_ms = "I have a badge"
+        elsif params[:channel_id] == 415
+             channel_ms = "I have a wristband"
+        elsif params[:channel_id] == 416
+             channel_ms = "I have NO SXSW Credentials"
+        elsif params[:channel_id] == 424
+             channel_ms = "I have nothin' but my cowboy boots on "
+        end
+        puts channel_ms
+        tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",")
+        puts "tags - 0"
+        puts params
+        puts tag
+        puts params[:included_tags]
+        tag_ms =""
+        i=0
+        tag.each{ |t|
+          puts "tags"
+          s = t.to_s
+          puts s    
+         
+          if s.eql? "166"
+            tag_ms = (i==0) ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
+          elsif s.eql? "165"
+            tag_ms = (i==0) ? "With Free Food" : tag_ms.concat(", Free Food")
+          elsif s.eql? "184"
+            tag_ms = (i==0) ? "With Party" : tag_ms.concat(", Party")
+          elsif s.eql? "167"
+            tag_ms = (i==0) ? "With No Cover" : tag_ms.concat(", No Cover")
+          elsif s.eql? "191"
+            tag_ms = (i==0) ? "With RSVP" : tag_ms.concat(", RSVP")
+          elsif s.eql? "189"
+            tag_ms = (i==0) ? "With Unofficial Events" : tag_ms.concat(", Unofficial Events")
+          end
+          i=i+1
+        }
+        puts "Tags - combine: "
+        puts tag_ms
+        time_ms =""
+        
+        time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))
 
-    
-    
-    sort_ms =""
-    unless params[:sort].to_s.empty?
-      if params[:sort].to_i == 0
-          sort_ms = " and sort by most views"
-      elsif params[:sort].to_i == 1
-          sort_ms = " and sort by date"
-      end    
-    end 
-    unless params[:days].to_s.empty?
-      params[:day] = ["0","6"]
+        
+        
+        sort_ms =""
+        unless params[:sort].to_s.empty?
+          if params[:sort].to_i == 0
+              sort_ms = " and sort by most views"
+          elsif params[:sort].to_i == 1
+              sort_ms = " and sort by date"
+          end    
+        end 
+        unless params[:days].to_s.empty?
+          params[:day] = ["0","6"]
+        end
+        @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
+    else
+
     end
-    @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
+   
+    
     puts @message
 
     @ids = Occurrence.find_with(params)
