@@ -4160,6 +4160,33 @@ text-align: center;
 -webkit-appearance: none;
 }
 
+.button-categories {
+
+overflow:hidden;
+z-index: 10;
+position: relative;
+width:170px;
+margin-left:0px;
+text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
+float: left;
+text-align: center;
+height: :40px;
+margin-left:20px;
+}
+
+.button-categories select {
+border:0;
+background:#A700A7;
+height:40px;
+border:1px solid #d8d8d8;
+width:170px;
+word-wrap: break-word;
+font-size: 18px;
+color: white;
+text-align: center;
+-webkit-appearance: none;
+}
+
 .button-time {
 
 z-index: 10;

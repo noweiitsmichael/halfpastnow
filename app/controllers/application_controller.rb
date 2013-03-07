@@ -28,6 +28,7 @@ class ApplicationController < ActionController::Base
     session[:mobile_param] = params[:mobile] if params[:mobile]
     request.format = :mobile if mobile_device?
     @some_instance_variable = mobile_device?
+    @switch="test"
     if !@some_instance_variable.nil?
       @mobileMode = true
       

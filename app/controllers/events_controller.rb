@@ -197,7 +197,7 @@ def android
 end
 
 def index
-    
+     
     # Set default if action is sxsw
     unless(params[:event_id].to_s.empty?)
       redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
@@ -213,8 +213,9 @@ def index
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
     if(@mobileMode)
+        @switch ="advance"
         unless params[:format].to_s.eql? "mobile"
-          redirect_to :action => "android"  
+          redirect_to :action => "android",  :type => "advance"
         else
           return
         end
@@ -595,6 +596,7 @@ def index
   end
 
   def sxsw
+
     unless params[:event_id].nil?
       @ur = 'http://www.halfpastnow.com/mobile/og/'+params[:event_id].to_s
     end
@@ -611,11 +613,12 @@ def index
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
     if(@mobileMode)
-        unless params[:format].to_s.eql? "mobile"
-          redirect_to :action => "android"  
-        else
+        puts "in SXSW controller & @mobileMode"
+        puts params[:format].to_s
+          @switch ="sxsw"
+       
+          redirect_to :action => "android", :type => "sxsw"
           return
-        end
         
     end
     @tags = Tag.includes(:parentTag, :childTags).all

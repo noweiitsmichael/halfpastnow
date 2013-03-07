@@ -3,7 +3,7 @@
 	var type = "<%= type %>";
 	var root_url = "http%3A%2F%2Fhalfpastnow.com";
 	var link = root_url + "%3F" + type + "_id%3D" + id;
-    var app_id = "475386955806720";
+    var app_id = "560627683952100";
     var redirect = "http://www.halfpastnow.com";
 	var bookmark_id = "<%= bookmarkId.to_s %>";
 	<% if type == "event" %>
@@ -19,7 +19,7 @@
 		    window.fbAsyncInit = function() {
 			        console.log("Loaded FB 2");
 			          FB.init({
-			            appId      : '475386955806720', // App ID
+			            appId      : '560627683952100', // App ID
 			            status     : true, // check login status
 			            cookie     : true, // enable cookies to allow the server to access the session
 			            xfbml      : true  // parse XFBML
@@ -45,13 +45,13 @@
 			var that = $(this);
 			if(that.hasClass('add')) {
 				var bookmarked_type = "";
-				var lnk = 'http://www.halfpastnow.com/events/show/'+id+'?fullmode=true'; 
+				var lnk = 'http://hpnstaging.herokuapp.com/events/show/'+id+'?fullmode=true'; 
         		console.log("Bookmarks: "+lnk);
 				switch(type) {
 					case "event":
 						(bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
 						FB.api(
-				            '/me/halfpastnow:bookmark',
+				            '/me/hpnstaging:bookmark',
 				            'post',
 				            { event: lnk },
 				            function(response) {
@@ -93,10 +93,10 @@
 			var that = $(this);
 			if(that.hasClass('add')) {
 				var bookmarked_type = "Occurrence";
-				var lnk = 'http://www.halfpastnow.com/events/show/'+id+'?fullmode=true'; 
+				var lnk = 'http://hpnstaging.herokuapp.com/events/show/'+id+'?fullmode=true'; 
         		console.log("Attend: "+lnk);
         		FB.api(
-				            '/me/halfpastnow:attend',
+				            '/me/hpnstaging:attend',
 				            'post',
 				            { event: lnk },
 				            function(response) {
