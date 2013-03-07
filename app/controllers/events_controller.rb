@@ -64,7 +64,7 @@ def android
     tag.each{ |t|
       puts "tags"
       s = t.to_s
-      put s    
+      puts s    
      
       if s.eql? "166"
         tag_ms = (i==0) ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
