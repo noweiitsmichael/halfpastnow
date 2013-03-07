@@ -102,14 +102,14 @@ def android
         end
         @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
     else
-      @message =""
+      @message ="Your filter is "
       tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",").uniq
       tag = tag.join(",")
       if tag.size >0
         names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
         puts "Names of tags: "
         puts names  
-        @message = "Events in categories ".concat(names)
+        @message = "in categories ".concat(names)
       end
 
       tag = (params[:and_tags].to_s.empty?) ? [] :  params[:and_tags].split(",").uniq
@@ -127,7 +127,7 @@ def android
       end
       cost = (params[:cost].to_s.empty?) ? "" :  params[:cost].to_s
       unless time.eql? ""
-          @message = @message.concat(" , and  ".concat(cost))
+          @message = @message.concat(" - ".concat(cost))
       end
 
     end
@@ -166,7 +166,7 @@ def android
       @offset = params[:offset].to_i
     end
     @allOccurrences = Occurrence.find(@occurrence_ids)
-    @occurrences = Occurrence.paginate(:page => params[:page]).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+    @occurrences = Occurrence.paginate(:page => params[:page], :per_page => 10 ).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
     
    
     puts @occurrences  

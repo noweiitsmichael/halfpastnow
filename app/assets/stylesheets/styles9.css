@@ -4416,7 +4416,8 @@ position: relative;
 text-align: center;
 }
 .pagination{
-  
+  width: 900px;
+  font-size: 65px;
 }
 #content .main .inner.android {
 margin-left: -333px;
