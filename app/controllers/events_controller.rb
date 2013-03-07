@@ -57,13 +57,15 @@ def android
     tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",")
     puts "tags - 0"
     puts params
+    puts tag
     puts params[:included_tags]
     tag_ms =""
     i=0
     tag.each{ |t|
       puts "tags"
-      put t.to_s     
       s = t.to_s
+      put s    
+     
       if s.eql? "166"
         tag_ms = (i==0) ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
       elsif s.eql? "165"
