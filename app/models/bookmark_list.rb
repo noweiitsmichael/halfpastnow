@@ -44,38 +44,38 @@ class BookmarkList < ActiveRecord::Base
 	# end
 	
 	def bookmarked_events(num)
-		# occurrences = []
+		occurrences = []
 		
-		# self.bookmarks.each do |bookmark|
-		# 	if(num && occurrences.size == num)
-		# 		break
-		# 	end
+		self.bookmarks.each do |bookmark|
+			if(num && occurrences.size == num)
+				break
+			end
 			
-		# 	occurrence = bookmark.bookmarked_event
-		# 	unless(occurrence.nil?)
-		# 		occurrences.push(occurrence)
-		# 	end
-		# end
-		# return occurrences
+			occurrence = bookmark.bookmarked_event
+			unless(occurrence.nil?)
+				occurrences.push(occurrence)
+			end
+		end
+		return occurrences
 		
-		query = "((SELECT occurrences.id AS id, occurrences.start AS start, occurrences.end AS end, events.cover_image_url, events.title, venues.name FROM occurrences
-				INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
-				INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
-				INNER JOIN events ON occurrences.event_id = events.id
-				INNER JOIN venues ON events.venue_id = venues.id
-                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE 
-                	AND occurrences.recurrence_id IS NULL AND occurrences.deleted IS NOT TRUE AND occurrences.start > now() - interval '3 hours')
-				UNION ALL
-				(SELECT DISTINCT ON (occurrences.recurrence_id) occurrences.id AS id, occurrences.start AS start, occurrences.end AS end , events.cover_image_url, events.title, venues.name FROM occurrences
-				INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
-				INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
-				INNER JOIN events ON occurrences.event_id = events.id
-				INNER JOIN venues ON events.venue_id = venues.id
-                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE 
-                	AND occurrences.recurrence_id IS NULL AND occurrences.deleted IS NOT TRUE AND occurrences.start > now() - interval '3 hours'))
-				ORDER BY start LIMIT #{num}";
+		# query = "((SELECT occurrences.id AS id, occurrences.start AS start, occurrences.end AS end, events.cover_image_url, events.title, venues.name FROM occurrences
+		# 		INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
+		# 		INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
+		# 		INNER JOIN events ON occurrences.event_id = events.id
+		# 		INNER JOIN venues ON events.venue_id = venues.id
+  #               WHERE bookmark_lists.id = #{self.id} AND bookmarks.bookmarked_type = 'Occurrence'
+  #               	AND occurrences.recurrence_id IS NULL AND occurrences.deleted = false AND occurrences.start > now() - interval '3 hours')
+		# 		UNION ALL
+		# 		(SELECT DISTINCT ON (occurrences.recurrence_id) occurrences.id AS id, occurrences.start AS start, occurrences.end AS end , events.cover_image_url, events.title, venues.name FROM occurrences
+		# 		INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
+		# 		INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
+		# 		INNER JOIN events ON occurrences.event_id = events.id
+		# 		INNER JOIN venues ON events.venue_id = venues.id
+  #               WHERE bookmark_lists.id = #{self.id} AND bookmarks.bookmarked_type = 'Occurrence' 
+  #               	AND occurrences.recurrence_id IS NOT NULL AND occurrences.deleted = false AND occurrences.start > now() - interval '3 hours'))
+		# 		ORDER BY start LIMIT #{num}";
 
-        occurrences = ActiveRecord::Base.connection.select_all(query)
+  #       occurrences = ActiveRecord::Base.connection.select_all(query)
      #    occurrences = []
      #    results.each do |e|
 	    #   unless e["id"].nil?

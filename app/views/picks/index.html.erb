@@ -130,13 +130,11 @@
 					   unless (occurrences.empty?) %>
 						<ul class="picklist-events">
 							<% occurrences.each do |occurrence| %>
-							<% puts ".....spitting out individual occurrence:" %>
-							<% puts occurrence %>
-							<li linkto="event" link-id="<%= occurrence["id"] %>">
-								<img class="picture" src="<%= occurrence["cover_image_url"] ? occurrence["cover_image_url"] : "/assets/placeholder.png" %>" />
-								<div class="title"><%= occurrence["title"]%></div>
-								<div class="venue"><%= occurrence["name"] %></div>
-								<div class="datetime"><%= occurrence["start"].to_time.strftime("%A, %B %-d at %-l:%M%P") %></div>
+							<li linkto="event" link-id="<%= occurrence.id %>">
+								<img class="picture" src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
+								<div class="title"><%= occurrence.event.title %></div>
+								<div class="venue"><%= occurrence.event.venue.name %></div>
+								<div class="datetime"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></div>
 							</li>
 							<% end %>
 							<li class="see-more">
@@ -167,7 +165,7 @@
 		<% hidden = "style=\"display:none;\"" %>
 		<div class='outter-list'>
 			<div class="list">
-			<% @featuredLists.sort_by{ |e| e.all_bookmarked_events.size }.reverse!.each_with_index do |featuredList, index|
+			<% @featuredLists.each_with_index do |featuredList, index|
 				currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
 				if (index % 2 == 0) && (featuredList.all_bookmarked_events.size > 0)
 					insert_picklist(featuredList,currentUserIsFollowing,hidden)
@@ -175,7 +173,7 @@
 			end %>
 		</div>
 		<div  class="list">
-			<% @featuredLists.sort_by{ |e| e.all_bookmarked_events.size }.reverse!.each_with_index do |featuredList, index|
+			<% @featuredLists.each_with_index do |featuredList, index|
 				currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
 				if (index % 2 == 1) && (featuredList.all_bookmarked_events.size > 0)
 					insert_picklist(featuredList,currentUserIsFollowing,hidden)
