@@ -124,18 +124,18 @@ $(function() {
     if (day == 0) {
       dayString="start_days=0&end_days=-1";
     }else if(day == 1){
-      dayString="start_days=0&end_days=0";
+      dayString="start_days=0&end_days=0&time=Today";
     }else if(day == 2){
-      dayString="start_days=1&end_days=1";
+      dayString="start_days=1&end_days=1&time=Tomorrow";
     }else if(day == 3){
       // var d = new Date();
       x=5;//d.getDay();
       if (x < 6 && x>0) { 
-        dayString="start_days=0&end_days=7&days=0,6";
+        dayString="start_days=0&end_days=7&days=0,6&time=Weekend";
       }else if (x ==0 ) { 
-        dayString="start_days=0&end_days=0";
+        dayString="start_days=0&end_days=0&time=Weekend";
       }else if (x ==6 ) { 
-        dayString="start_days=0&end_days=1";
+        dayString="start_days=0&end_days=1&time=Weekend";
       };
     };
     
@@ -146,18 +146,18 @@ $(function() {
     if (cost == 0) {
       costString = "low_price=0&high_price=777777777";
     }else if (cost == 1) {
-      costString = "low_price=0&high_price=0";
+      costString = "low_price=0&high_price=0&cost=Free";
     }else if (cost == 2) {
-      costString = "low_price=0&high_price=10";
+      costString = "low_price=0&high_price=10&cost=<$10";
     }else if (cost == 3) {
-      costString = "low_price=0&high_price=20";
+      costString = "low_price=0&high_price=20&cost=<$20";
     };
     
 
     console.log("In search-ad "+ costString);
     
     // console.log(catIDs + );
-    var searchString = "/events/android?"+catIDs+"&"+andTags+"&"+dayString+"&"+costString+"&type=advance";
+    var searchString = "/events/android?"+catIDs+"&"+andTags+"&"+dayString+"&"+costString+"&type=advance"sar;
     // alert(searchString);
      window.open(searchString,'_self');
   });

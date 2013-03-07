@@ -102,15 +102,33 @@ def android
         end
         @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
     else
+      @message =""
       tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",").uniq
       tag = tag.join(",")
       if tag.size >0
-        names = Tag.where("ID in (#{tag})")
+        names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
         puts "Names of tags: "
         puts names  
+        @message = "Events in categories ".concat(names)
       end
-      
 
+      tag = (params[:and_tags].to_s.empty?) ? [] :  params[:and_tags].split(",").uniq
+      tag = tag.join(",")
+      if tag.size >0
+        names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
+        puts "Names of tags: "
+        puts names  
+        @message = @message.concat(" with ".concat(names))
+      end
+
+      time = (params[:time].to_s.empty?) ? "" :  params[:time].to_s
+      unless time.eql? ""
+          @message = @message.concat(" during ".concat(time))
+      end
+      cost = (params[:cost].to_s.empty?) ? "" :  params[:cost].to_s
+      unless time.eql? ""
+          @message = @message.concat(" , and  ".concat(cost))
+      end
 
     end
    
