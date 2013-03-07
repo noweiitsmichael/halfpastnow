@@ -2402,11 +2402,67 @@ input::-webkit-input-placeholder
 .mode .window .bookmark-share span {
     cursor:pointer;
     margin-right:7px;
-    display:inline-block;
+    /*display:inline-block;*/
     color:#444;
     top: 40%;
 }
 
+.addthisevent_dropdown {
+width: 200px;
+position: absolute;
+z-index: 99999;
+padding: 0px 0px 0px 0px;
+background: #fff;
+text-align: left;
+display: none;
+margin-top: -2px;
+margin-left: -1px;
+border-top: 1px solid #c8c8c8;
+border-right: 1px solid #bebebe;
+border-bottom: 1px solid #a8a8a8;
+border-left: 1px solid #bebebe;
+-moz-border-radius: 2px;
+-webkit-border-radius: 2px;
+-webkit-box-shadow: 1px 3px 6px rgba(0,0,0,0.15);
+-moz-box-shadow: 1px 3px 6px rgba(0,0,0,0.15);
+box-shadow: 1px 3px 6px rgba(0,0,0,0.15);
+}
+
+.addthisevent_dropdown span{
+  width: 175px;
+  font-size: 12px;
+  padding: 8px 0px 9px 5px;
+  display:block;
+  background: #fff;
+}
+
+.addthisevent_dropdown span:hover {
+background: #f4f4f4;
+color: #1F9FC9;
+text-decoration: none;
+font-size: 12px;
+}
+
+.addthisevent-drop {
+display: inline-block;
+position: relative;
+text-decoration: none!important;
+font-weight: bold;
+padding: 8px 0px;
+color: #333!important;
+/*background: #f4f4f4 url(http://addthisevent.com/gfx/icon-calendar-t1.png) no-repeat 9px 50%;
+border: 1px solid #d9d9d9;
+color: #555;
+font-size: 14px;
+text-decoration: none;
+-moz-border-radius: 2px;
+-webkit-border-radius: 2px;*/
+}
+
+
+.addthisevent-drop:hover {
+    color: #1F9FC9;
+}
 .mode .window .bookmark-share span.add-tp {
     background-color: #444;
     
@@ -2436,14 +2492,14 @@ input::-webkit-input-placeholder
 }
 .mode .window .bookmark-share .comment-tp .popup-box, 
 .mode .window .bookmark-share .comment-tp .popup-box-1 {
-    
-   display:none;
+    display:none;
     position:absolute;
     width:300px;
-    
-   background-color: #1F9FC9;
+    background-color: #1F9FC9;
     top:36px;
-   overflow: hidden;
+    right:0px;
+    overflow: hidden;
+    z-index:1000;
 }
 .mode .window .bookmark-share .comment-tp .popup-box label {
    font-size: 16px;
@@ -4313,3 +4369,4 @@ padding-top: 0px;
     opacity: 0;
     filter: alpha(opacity = 0);
 }
+
