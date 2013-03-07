@@ -4371,7 +4371,8 @@ color: white;
 .androidMessage {
 top: 52px;
 position: absolute;
-left: 248px;
+margin-left: 250px;
+width: 500px;
 font-size: 25px;
 }
 .button-search {

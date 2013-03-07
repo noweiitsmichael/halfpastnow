@@ -127,7 +127,7 @@ def android
       end
       cost = (params[:cost].to_s.empty?) ? "" :  params[:cost].to_s
       unless time.eql? ""
-          @message = @message.concat(" - ".concat(cost))
+          @message = @message.concat(" ".concat(cost))
       end
 
     end
