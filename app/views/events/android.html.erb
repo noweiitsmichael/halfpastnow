@@ -418,13 +418,14 @@
 						<% andTags = @parentTags.select { |t| t[:name] == "Tags" }.first %>
 
 						<option> And Tags </option>
-						<% andTags.childTags.sort { |a,b| a.name <=> b.name }.each do |childTagCount| %>
+							<% unless andTags.nil? %>
+								<% andTags.childTags.sort { |a,b| a.name <=> b.name }.each do |childTagCount| %>
 
-							<option value="<%= childTagCount.id %>"> 
-										<%= childTagCount.name %>
-							</option>
-							
-						
+									<option value="<%= childTagCount.id %>"> 
+												<%= childTagCount.name %>
+									</option>
+								
+							<% end %>
 						<% end %>
 					</select>
 				</div>
