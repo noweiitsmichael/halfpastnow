@@ -62,7 +62,7 @@ def android
     i=0
     tag.each{ |t|
       puts "tags"
-      puts t
+      puts t.first.to_i
       if t.first.to_i ==166
         tag_ms = (i==0) ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
       elsif t.first.to_i ==165
