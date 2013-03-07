@@ -329,7 +329,7 @@ class Occurrence < ActiveRecord::Base
               FROM occurrences 
                 #{join_clause}
               WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS NOT TRUE
-              ORDER BY events.id, occurrences.start"
+              ORDER BY events.id, occurrences.start LIMIT 1000"
     # query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, events.title AS event_title, events.description AS event_description, tags.name AS tag_name, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
     #           FROM occurrences 
     #             #{join_clause}

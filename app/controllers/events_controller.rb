@@ -272,6 +272,7 @@ def index
     end
 
     @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+    # puts @allOccurrences
     @occurrences = @allOccurrences.drop(@offset).take(@amount)
 
     # generating tag list for occurrences
