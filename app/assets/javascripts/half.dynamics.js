@@ -72,8 +72,21 @@ $(window).load(function() {
   streamSelector();
   updateViewFromFilter(false, {showSaveSearchButton: false});
 });
-
+var device = '';
 $(function() {
+
+  var uagent = navigator.userAgent.toLowerCase(); 
+    
+    if (uagent.search("iphone") > -1)
+           device = 'mobile';
+    
+    else if (uagent.search("tablet") > -1)
+           device = 'mobile';
+    else if (uagent.search("ipad") > -1)
+           device = 'mobile';
+    else if (uagent.search("android") > -1)
+           device = 'mobile';
+
 
   $("#header .filter-inner, #header .advancedbar").on("click", '.tags-menu.ortags.children .name', function() {
     $(this).siblings('.include').click();
@@ -1052,7 +1065,10 @@ function loading(command) {
     } else {
       
       // var status = document.getElementById("androidStatus").value;
-      $('#infinite-loader').show();
+      if (device !== "mobile") {
+        $('#infinite-loader').show();
+      };
+      
       
     }
   } else if (command === 'hide') {
@@ -1070,11 +1086,29 @@ function checkInfinite() {
     //console.log("pull em");
     //check if there are any more possible events to pull
     // if so, pull em.
+    // var uagent = navigator.userAgent.toLowerCase(); 
+    // var device = '';
+    // if (uagent.search("iphone") > -1)
+    //        device = 'iphone';
+    // else if (uagent.search("ipod") > -1)
+    //        device = 'ipod';
+    // else if (uagent.search("tablet") > -1)
+    //        device = 'tablet';
+    // else if (uagent.search("ipad") > -1)
+    //        device = 'ipad';
+    // else if (uagent.search("android") > -1)
+    //        device = 'android';
+
+    console.log("Check browser");
+    // alert(device);
+
     if($('#content .main .inner .events li:not(.no-results)').length < parseInt($('.filter-summary .num-events').html())) {
       infiniteScrolling = true;
       filter.offset = $('#content .main .inner .events li').length;
       // var status = document.getElementById("androidStatus").value;
-      pullEvents();
+       if (device !== "mobile") {
+        pullEvents();
+    }
       
       
      

@@ -57,25 +57,32 @@ def android
     tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",")
     puts "tags - 0"
     puts params
+    puts tag
     puts params[:included_tags]
     tag_ms =""
+    i=0
     tag.each{ |t|
       puts "tags"
-      puts t
-      if t.to_i ==166
-        tag_ms = (tag_ms.eql?"") ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
-      elsif t.to_i ==165
-        tag_ms = (tag_ms.eql?"") ? "With Free Food" : tag_ms.concat(", Free Food")
-      elsif t.to_i ==184
-        tag_ms = (tag_ms.eql?"") ? "With Party" : tag_ms.concat(", Party")
-      elsif t.to_i ==167
-        tag_ms = (tag_ms.eql?"") ? "With No Cover" : tag_ms.concat(", No Cover")
-      elsif t.to_i ==191
-        tag_ms = (tag_ms.eql?"") ? "With RSVP" : tag_ms.concat(", RSVP")
-      elsif t.to_i ==189
-        tag_ms = (tag_ms.eql?"") ? "With Unofficial Events" : tag_ms.concat(", Unofficial Events")
+      s = t.to_s
+      puts s    
+     
+      if s.eql? "166"
+        tag_ms = (i==0) ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
+      elsif s.eql? "165"
+        tag_ms = (i==0) ? "With Free Food" : tag_ms.concat(", Free Food")
+      elsif s.eql? "184"
+        tag_ms = (i==0) ? "With Party" : tag_ms.concat(", Party")
+      elsif s.eql? "167"
+        tag_ms = (i==0) ? "With No Cover" : tag_ms.concat(", No Cover")
+      elsif s.eql? "191"
+        tag_ms = (i==0) ? "With RSVP" : tag_ms.concat(", RSVP")
+      elsif s.eql? "189"
+        tag_ms = (i==0) ? "With Unofficial Events" : tag_ms.concat(", Unofficial Events")
       end
+      i=i+1
     }
+    puts "Tags - combine: "
+    puts tag_ms
     time_ms =""
     
     time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))
@@ -190,7 +197,7 @@ def android
 end
 
 def index
-    
+     
     # Set default if action is sxsw
     unless(params[:event_id].to_s.empty?)
       redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
@@ -206,8 +213,9 @@ def index
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
     if(@mobileMode)
+        @switch ="sxsw"
         unless params[:format].to_s.eql? "mobile"
-          redirect_to :action => "android"  
+          redirect_to :action => "android",  :type => "sxsw"
         else
           return
         end
@@ -382,8 +390,8 @@ def index
       end
     end
     # http://secret-citadel-5147.herokuapp.com/events/show/11?fullmode=true
-    @url ='http://halfpastnow.com/?event_id='+params[:id]
-    @url1='http://halfpastnow.com/events/show/'+params[:id]+'?fullmode=true'
+    @url ='http://www.halfpastnow.com/?event_id='+params[:id]
+    @url1='http://www.halfpastnow.com/events/show/'+params[:id]+'?fullmode=true'
     @ur = 'https://www.facebook.com/plugins/like.php?href=http://www.halfpastnow.com/mobile/og/'+params[:id]
     
     # http://www.halfpastnow.com/?event_id=15599
@@ -588,6 +596,7 @@ def index
   end
 
   def sxsw
+
     unless params[:event_id].nil?
       @ur = 'http://www.halfpastnow.com/mobile/og/'+params[:event_id].to_s
     end
@@ -604,11 +613,13 @@ def index
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
     if(@mobileMode)
-        unless params[:format].to_s.eql? "mobile"
-          redirect_to :action => "android"  
-        else
+        puts "in SXSW controller & @mobileMode"
+        puts params[:format].to_s
+          @switch ="sxsw"
+       
+          redirect_to :action => "android", :type => "sxsw"
           return
-        end
+
     end
     @tags = Tag.includes(:parentTag, :childTags).all
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }

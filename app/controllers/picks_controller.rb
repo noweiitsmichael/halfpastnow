@@ -206,7 +206,7 @@ helper :content
 		@lat = 30.268093
 	    @long = -97.742808
 	    @zoom = 11
-	    @url = 'http://halfpastnow.com/picks/find/'+params[:id]
+	    @url = 'http://www.halfpastnow.com/picks/find/'+params[:id]
 		@occurrences = @bookmarkList.all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
 	end
 

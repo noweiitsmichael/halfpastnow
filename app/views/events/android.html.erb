@@ -340,50 +340,135 @@
 <% end %>
 
 <% content_for :body do %>
+
 		<% if (@mobileMode) || true %> 
 			<div class="androidMessage"><%= @message %></div>
 		<% end%>
 		<div id="content">
 		<div>
+			<% puts "Switch$$$$$$$$$$$$$$$$$"%>
+			<% puts params[:type] %>
+			<% if params[:type].to_s.eql? "sxsw" %>
+				<div class="button-access">
+					<select name="mydropdown" id="access" >
+						<option value="0">A Badge</option>
+						<option value="1">A Wristband</option>
+						<option value="2">No SXSW Credentials (RSVP OK)</option>
+						<option value="3">Nothin' but my cowboy boots</option>
+					</select>
+				</div>
+				<div class="button-time" >
+					<select name="timedropdown" id="time">
+						<option value="0">All</option>
+						<option value="1">Interactive (3/8-3/12)</option>
+						<option value="2">Film (3/8-3/16)</option>
+						<option value="3">Music (3/12-3/17)</option>
+					</select>
+				</div>
 
-			<div class="button-access">
-				<select name="mydropdown" id="access" >
-					<option value="0">A Badge</option>
-					<option value="1">A Wristband</option>
-					<option value="2">No SXSW Credentials (RSVP OK)</option>
-					<option value="3">Nothin' but my cowboy boots</option>
-				</select>
-			</div>
-			<div class="button-time" >
-				<select name="timedropdown" id="time">
-					<option value="0">All</option>
-					<option value="1">Interactive (3/8-3/12)</option>
-					<option value="2">Film (3/8-3/16)</option>
-					<option value="3">Music (3/12-3/17)</option>
-				</select>
-			</div>
-
-			
-			<div class="button-tag" >
-				<select name="tagdropdown" id="tag" multiple="multiple" >
-					<option value="0">Free Drinks</option>
-					<option value="1">Free Food</option>
-					<option value="2">Party</option>
-					<option value="3">No Cover</option>
-					<option value="4">Unofficial</option>
-					<option value="5">RSVP</option>
-				</select>
-			</div>
-			<div class="button-sort" >
-				<select name="sortdropdown" id="sort">
-					<option value="0">Most views</option>
-					<option value="1">Date</option>
-				</select>
-			</div>
-			
-			<div class="button-search"><span>Search</span>
+				
+				<div class="button-tag" >
+					<select name="tagdropdown" id="tag" multiple="multiple" >
+						<option value="0">Free Drinks</option>
+						<option value="1">Free Food</option>
+						<option value="2">Party</option>
+						<option value="3">No Cover</option>
+						<option value="4">Unofficial</option>
+						<option value="5">RSVP</option>
+					</select>
+				</div>
+				<div class="button-sort" >
+					<select name="sortdropdown" id="sort">
+						<option value="0">Most views</option>
+						<option value="1">Date</option>
+					</select>
+				</div>
+				
+				<div class="button-search"><span>Search</span>
 				
 			</div>
+			<% else %>
+
+				<div class="button-categories">
+					<select name="categoriesmenu" id="categories" multiple="multiple">
+						<option> All Categories </option>
+						<% @parentTags.each do |parentTag|  %>
+							<% unless parentTag.name == "Tags" %>
+								<% puts "Parent Tag name: "%>
+								<% puts parentTag.name %>
+								<% if parentTag.childTags.size > 0 %>
+									<option value="<%= parentTag.id %>"> 
+										<%= parentTag.name %>
+									</option>
+									<optgroup label="<%= parentTag.name %>">
+										<% parentTag.childTags.each do |childTag |%>
+											<option value="<%= childTag.id %>"> 
+												<%= childTag.name %>
+											</option>
+										<% end %>
+									</optgroup>
+								
+								<% end %>
+							<% end %>
+						<% end %>
+					</select>
+				</div>
+				<div class="button-tags">
+					<select name="tagsmenu" id="tags" multiple="multiple">
+						<% andTags = @parentTags.select { |t| t[:name] == "Tags" }.first %>
+
+						<option> And Tags </option>
+							<% unless andTags.nil? %>
+								<% andTags.childTags.sort { |a,b| a.name <=> b.name }.each do |childTagCount| %>
+
+									<option value="<%= childTagCount.id %>"> 
+												<%= childTagCount.name %>
+									</option>
+								
+							<% end %>
+						<% end %>
+					</select>
+				</div>
+				<div class="button-day">
+					<select name="daysmenu" id="day">
+						<option value="0">No time limit</option>
+						<option value="1">Today</option>
+						<option value="2">Tomorrow</option>
+						<option value="3">Weekend</option>
+					</select>
+				</div>
+				<div class="button-cost">
+					<select name="costsmenu" id="cost">
+						<option value="0">No price limit</option>
+						<option value="1">Free</option>
+						<option value="2">< $10</option>
+						<option value="3">< $20</option>
+					</select>
+				</div>
+				<!-- <div class="button-access">
+					<select name="select_projects" id="select_projects">
+					    <option value="">project.xml</option>
+					    <option label="client1" value="">
+					        <option value="">project2.xml</option>
+					    </option>
+					    <optgroup label="client2">
+					        <option value="">project5.xml</option>
+					        <option value="">project6.xml</option>
+					        <optgroup label="client2_a">
+					            <option value="" style="margin-left:23px;">project7.xml</option>
+					            <option value="" style="margin-left:23px;">project8.xml</option>
+					        </optgroup>
+					        <option value="">project3.xml</option>
+					        <option value="">project4.xml</option>
+					   </optgroup>
+					   <option value="">project0.xml</option>
+					   <option value="">project1.xml</option>
+					</select>
+				</div> -->
+
+
+			
+			<% end %>
 			<!-- <a class="button sort" href="#"><span>Sort</span></a>
 			<a class="button search" href="#"><span>Search</span></a> -->
 		</div>

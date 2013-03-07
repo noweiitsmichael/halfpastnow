@@ -4216,6 +4216,33 @@ text-align: center;
 -webkit-appearance: none;
 }
 
+.button-categories {
+
+overflow:hidden;
+z-index: 10;
+position: relative;
+width:170px;
+margin-left:0px;
+text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
+float: left;
+text-align: center;
+height: :40px;
+margin-left:20px;
+}
+
+.button-categories select {
+border:0;
+background:#A700A7;
+height:40px;
+border:1px solid #d8d8d8;
+width:170px;
+word-wrap: break-word;
+font-size: 18px;
+color: white;
+text-align: center;
+-webkit-appearance: none;
+}
+
 .button-time {
 
 z-index: 10;
@@ -4245,7 +4272,63 @@ color: white;
 
 }
 
+.button-day {
 
+z-index: 10;
+position: relative;
+overflow:hidden;
+width:190px;
+margin-left:20px;
+text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
+float: left;
+height: :40px;
+text-align: center;
+
+}
+
+.button-day select {
+border:0;
+background:#A700A7;
+height:40px;
+border:1px solid #d8d8d8;
+width:190px;
+text-align: center;
+word-wrap: break-word;
+font-size: 18px;
+color: white;
+-webkit-appearance: none;
+
+
+}
+
+.button-cost {
+
+z-index: 10;
+position: relative;
+overflow:hidden;
+width:190px;
+margin-left:20px;
+text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
+float: left;
+height: :40px;
+text-align: center;
+
+}
+
+.button-cost select {
+border:0;
+background:#A700A7;
+height:40px;
+border:1px solid #d8d8d8;
+width:190px;
+text-align: center;
+word-wrap: break-word;
+font-size: 18px;
+color: white;
+-webkit-appearance: none;
+
+
+}
 
 
 
@@ -4275,6 +4358,32 @@ height: 40px;
 text-align: center;
 }
 .button-tag select {
+border:0;
+background:#A700A7;
+height:40px;
+border:1px solid #d8d8d8;
+width:120px;
+text-align: center;
+word-wrap: break-word;
+font-size: 18px;
+color: white;
+-webkit-appearance: none;
+
+
+}
+
+.button-tagss {
+z-index: 10;
+position: relative;
+overflow:hidden;
+width:120px;
+margin-left:20px;
+text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
+float: left;
+height: :40px;
+text-align: center;
+}
+.button-tags select {
 border:0;
 background:#A700A7;
 height:40px;

@@ -25,6 +25,12 @@
   <% end %>
 
 
+  
+  <% if @pick %>
+    <meta property="og:type" content="halfpastnow:toppick" />
+  <% else %>
+    <!-- <meta property="og:type" content="hpnstaging:event" /> -->
+  <% end %>
 
 
   <title class="head-title"><%= @pageTitle || "half past now." %></title>

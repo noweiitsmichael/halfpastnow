@@ -73,7 +73,7 @@ $(function() {
     console.log("Open mobile");
     var id = $(this).attr('event-id');
     // http://www.halfpastnow.com/events/show/167474?fullmode=true
-    var lnk = "http://halfpastnow.herokuapp.com/events/show/"+id+"?fullmode=true";
+    var lnk = "http://www.halfpastnow.com/events/show/"+id+"?fullmode=true";
     console.log(lnk);
     
     window.open(lnk);
@@ -102,17 +102,17 @@ $(function() {
             if(InvForm[x].selected)
             {
               var tmp = InvForm[x].value; 
-              if (tmp=0) {
+              if (tmp==0) {
                 tag = (tag=="") ? "166" : tag +",166";
-              }else if (tmp=1) {
+              }else if (tmp==1) {
                 tag = (tag=="") ? "165" : tag +",165";
-              }else if (tmp=2) {
+              }else if (tmp==2) {
                 tag = (tag=="") ? "184" : tag +",184";
-              }else if (tmp=3) {
+              }else if (tmp==3) {
                 tag = (tag=="") ? "167" : tag +",167";
-              }else if (tmp=4) {
+              }else if (tmp==4) {
                 tag = (tag=="") ? "189" : tag +",189";
-              }else if (tmp=5) {
+              }else if (tmp==5) {
                 tag = (tag=="") ? "191" : tag +",191";
               };
               
@@ -283,7 +283,8 @@ $(function() {
         }(document));// delete below
         console.log('Bookmark outside');
                   
-        var lnk = 'http://www.halfpastnow.com/events/show/'+id+'?fullmode=true'; 
+        // var lnk = 'http://www.halfpastnow.com/events/show/'+id+'?fullmode=true'; 
+        var lnk = 'http://www.halfpastnow.com/mobile/og/'+id; 
         console.log(lnk);
         FB.api(
             '/me/halfpastnow:bookmark',

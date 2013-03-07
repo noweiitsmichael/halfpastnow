@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     else
       
       # request.user_agent =~ /Mobile|webOS/
-       (request.user_agent =~ /Mobile|webOS/) && (request.user_agent !~ /Android/) &&  (request.user_agent !~ /iPad/) 
+       (request.user_agent =~ /Mobile|webOS/) && (request.user_agent !~ /Android/) &&  (request.user_agent !~ /iPad/)
       
     end
   end
@@ -28,6 +28,7 @@ class ApplicationController < ActionController::Base
     session[:mobile_param] = params[:mobile] if params[:mobile]
     request.format = :mobile if mobile_device?
     @some_instance_variable = mobile_device?
+    @switch="test"
     if !@some_instance_variable.nil?
       @mobileMode = true
       
