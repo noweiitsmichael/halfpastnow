@@ -76,6 +76,8 @@ def android
         tag_ms = (tag_ms.eql?"") ? "With Unofficial Events" : tag_ms.concat(", Unofficial Events")
       end
     }
+    puts "Tags"
+    puts tag_ms
     time_ms =""
     
     time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))
