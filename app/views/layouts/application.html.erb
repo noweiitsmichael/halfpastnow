@@ -3,7 +3,13 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta property="fb:app_id" content="475386955806720" /> 
-
+  
+  <% if @pick %>
+    <meta property="og:type" content="halfpastnow:toppick" />
+  <% else %>
+    <meta property="og:type" content="halfpastnow:event" />
+  <% end %>
+  
   <%= yield :meta %>
   
   <% if @fullmode %>
@@ -18,12 +24,7 @@
       <% end %>
   <% end %>
 
-  
-  <% if @pick %>
-    <meta property="og:type" content="halfpastnow:toppick" />
-  <% else %>
-    <meta property="og:type" content="halfpastnow:event" />
-  <% end %>
+
 
 
   <title class="head-title"><%= @pageTitle || "half past now." %></title>
