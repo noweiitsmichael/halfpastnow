@@ -619,11 +619,7 @@ def index
        
           redirect_to :action => "android", :type => "sxsw"
           return
-<<<<<<< HEAD
-        
-=======
-        end
->>>>>>> 0b54d0584c29eee1059b5895ee9907ff433aad9f
+
     end
     @tags = Tag.includes(:parentTag, :childTags).all
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
