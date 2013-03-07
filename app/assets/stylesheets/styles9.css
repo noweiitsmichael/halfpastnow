@@ -4245,6 +4245,35 @@ color: white;
 
 }
 
+.button-cost {
+
+z-index: 10;
+position: relative;
+overflow:hidden;
+width:190px;
+margin-left:20px;
+text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
+float: left;
+height: :40px;
+text-align: center;
+
+}
+
+.button-cost select {
+border:0;
+background:#A700A7;
+height:40px;
+border:1px solid #d8d8d8;
+width:190px;
+text-align: center;
+word-wrap: break-word;
+font-size: 18px;
+color: white;
+-webkit-appearance: none;
+
+
+}
+
 
 
 
