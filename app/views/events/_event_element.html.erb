@@ -1,7 +1,7 @@
 
 
 <li linkto="event" link-id="<%= occurrence.id %>">
-		<% if @mobileMode %>
+		<% if (@mobileMode) %>
 		<% else %>
 			<div class="index <%= ((index + 1) >= 100) ? "over100" : ""%>"><%= index ? (index + 1) : "" %></div>
 		<% end %>
