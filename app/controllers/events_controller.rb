@@ -249,6 +249,7 @@ def index
     unless(params[:act_id].to_s.empty?)
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
+    
     if(@mobileMode)
         @switch ="advance"
         unless params[:format].to_s.eql? "mobile"
