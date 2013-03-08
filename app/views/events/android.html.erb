@@ -343,12 +343,13 @@
 
 		<% if (@mobileMode) || true %> 
 			<div class="androidMessage"><%= @message %></div>
+			<div class="filterTitle"> Choose your filter :</div>
 		<% end%>
 		<div id="content">
 		<div>
 			<% puts "Switch$$$$$$$$$$$$$$$$$"%>
 			<% puts params[:type] %>
-			<div class="filterTitle"> Choose your filter :</div>
+			
 			<% if params[:type].to_s.eql? "sxsw" %>
 				<div class="button-access">
 					<select name="mydropdown" id="access" >
