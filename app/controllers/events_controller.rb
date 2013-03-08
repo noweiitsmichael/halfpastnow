@@ -102,21 +102,31 @@ def android
     else
       @message ="Your filter - All categories - No time limit - No cost limit "
       tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",").uniq
-      tag = tag.join(",")
+      tag = tag.split(",")
       if tag.size >0
-        names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
+        a = tag.collect{|t| t.to_s.eql? "ALLCAT"}
+        puts "ASSSSSS"
+        puts a
+        if a.size >0 
+          names = "All Categories"
+          params[:included_tags] = Tag.all.collect{|t| t.id}.join(",")
+        else
+          names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
+        end
+
+        
         puts "Names of tags: "
         puts names  
         @message = "Your filter - ".concat(names)
       end
 
       tag = (params[:and_tags].to_s.empty?) ? [] :  params[:and_tags].split(",").uniq
-      tag = tag.join(",")
+      tag = tag.split(",")
       if tag.size >0
-        a = tag.collect{|t| t.to_s.eql? "ALLCAT"}
+         a = tag.collect{|t| t.to_s.eql? "ANDTAGS"}
         if a.size >0 
-          names = "All Categories"
-          params[:included_tags] = Tag.all.collect{|t| t.id}.join(",")
+          names = ""
+          params[:and_tags] = ""
         else
           names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
         end

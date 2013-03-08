@@ -348,6 +348,7 @@
 		<div>
 			<% puts "Switch$$$$$$$$$$$$$$$$$"%>
 			<% puts params[:type] %>
+			<div class="filterTitle"> Choose your filter :</div>
 			<% if params[:type].to_s.eql? "sxsw" %>
 				<div class="button-access">
 					<select name="mydropdown" id="access" >
@@ -388,10 +389,10 @@
 				
 				</div>
 			<% else %>
-
+				<div class="filterTitle"> Choose your filter :</div>
 				<div class="button-categories">
 					<select name="categoriesmenu" id="categories" multiple="multiple" >
-						<option selected> All Categories </option>
+						
 						<% @parentTags.each do |parentTag|  %>
 							<% unless parentTag.name == "Tags" %>
 								<% puts "Parent Tag name: "%>
@@ -417,7 +418,7 @@
 					<select name="tagsmenu" id="tags" multiple="multiple">
 						<% andTags = @parentTags.select { |t| t[:name] == "Tags" }.first %>
 
-						<option selected> And Tags </option>
+						
 							<% unless andTags.nil? %>
 								<% andTags.childTags.sort { |a,b| a.name <=> b.name }.each do |childTagCount| %>
 

@@ -4342,7 +4342,10 @@ color: white;
 
 }
 
-
+.filterTitle{
+  float: left;
+  font-size: 20px;
+}
 .button-sort {
 z-index: 10;
 position: relative;
