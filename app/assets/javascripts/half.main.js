@@ -152,12 +152,20 @@ $(function() {
     }else if (cost == 3) {
       costString = "low_price=0&high_price=20&cost=<$20";
     };
-    
+    e = document.getElementById("sortAd");
+    var sort = e.options[e.selectedIndex].value;
+    var sortString="sort=0";
+    if (sort == 1) {
+      sortString="sort=1";
+    }
+    else if (sort == 0) {
+      sortString="sort=0";
+    };
 
     console.log("In search-ad "+ costString);
     
     // console.log(catIDs + );
-    var searchString = "/events/android?"+catIDs+"&"+andTags+"&"+dayString+"&"+costString+"&type=advance";
+    var searchString = "/events/android?"+catIDs+"&"+andTags+"&"+dayString+"&"+costString+"&type=advance"+"&"+sortString;
     // alert(searchString);
      window.open(searchString,'_self');
   });

@@ -125,6 +125,11 @@ def android
       unless time.eql? ""
           @message = @message.concat(" ".concat(cost))
       end
+      if params[:sort].to_s.eql? "0"
+        @message = @message.concat(" and short by most views")
+      else
+        @message = @message.concat(" and short by date")
+      end
 
     end
     unless params[:days].to_s.empty?
