@@ -1,7 +1,9 @@
 
 
 <li linkto="event" link-id="<%= occurrence.id %>">
+		
 		<div class="index <%= ((index + 1) >= 100) ? "over100" : ""%>"><%= index ? (index + 1) : "" %></div>
+		
 		<a href="/?event_id=<%= occurrence.id %>">
 		<div class="title">
 			<%= truncate(occurrence.event.title, :length => 115) %>

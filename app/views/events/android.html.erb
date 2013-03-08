@@ -343,15 +343,17 @@
 
 		<% if (@mobileMode) || true %> 
 			<div class="androidMessage"><%= @message %></div>
+			<div class="filterTitle"> Choose your filter :</div>
 		<% end%>
 		<div id="content">
 		<div>
 			<% puts "Switch$$$$$$$$$$$$$$$$$"%>
 			<% puts params[:type] %>
+			
 			<% if params[:type].to_s.eql? "sxsw" %>
 				<div class="button-access">
 					<select name="mydropdown" id="access" >
-						<option value="0">A Badge</option>
+						<option value="0" selected>A Badge</option>
 						<option value="1">A Wristband</option>
 						<option value="2">No SXSW Credentials (RSVP OK)</option>
 						<option value="3">Nothin' but my cowboy boots</option>
@@ -359,7 +361,7 @@
 				</div>
 				<div class="button-time" >
 					<select name="timedropdown" id="time">
-						<option value="0">All</option>
+						<option value="0" selected>All</option>
 						<option value="1">Interactive (3/8-3/12)</option>
 						<option value="2">Film (3/8-3/16)</option>
 						<option value="3">Music (3/12-3/17)</option>
@@ -369,38 +371,38 @@
 				
 				<div class="button-tag" >
 					<select name="tagdropdown" id="tag" multiple="multiple" >
-						<option value="0">Free Drinks</option>
-						<option value="1">Free Food</option>
-						<option value="2">Party</option>
-						<option value="3">No Cover</option>
-						<option value="4">Unofficial</option>
+						<option value="0" selected>Free Drinks</option>
+						<option value="1" selected>Free Food</option>
+						<option value="2" selected>Party</option>
+						<option value="3" selected >No Cover</option>
+						<option value="4" selected>Unofficial</option>
 						<option value="5">RSVP</option>
 					</select>
 				</div>
 				<div class="button-sort" >
 					<select name="sortdropdown" id="sort">
-						<option value="0">Most views</option>
+						<option value="0" selected>Most views</option>
 						<option value="1">Date</option>
 					</select>
 				</div>
 				
 				<div class="button-search"><span>Search</span>
 				
-			</div>
+				</div>
 			<% else %>
-
+				
 				<div class="button-categories">
-					<select name="categoriesmenu" id="categories" multiple="multiple">
-						<option> All Categories </option>
+					<select name="categoriesmenu" id="categories" multiple="multiple" >
+						
 						<% @parentTags.each do |parentTag|  %>
 							<% unless parentTag.name == "Tags" %>
 								<% puts "Parent Tag name: "%>
 								<% puts parentTag.name %>
 								<% if parentTag.childTags.size > 0 %>
-									<option value="<%= parentTag.id %>"> 
+									<option value="<%= parentTag.id %>" >
 										<%= parentTag.name %>
 									</option>
-									<optgroup label="<%= parentTag.name %>">
+									<optgroup label="<%= parentTag.name %>" >
 										<% parentTag.childTags.each do |childTag |%>
 											<option value="<%= childTag.id %>"> 
 												<%= childTag.name %>
@@ -417,7 +419,7 @@
 					<select name="tagsmenu" id="tags" multiple="multiple">
 						<% andTags = @parentTags.select { |t| t[:name] == "Tags" }.first %>
 
-						<option> And Tags </option>
+						
 							<% unless andTags.nil? %>
 								<% andTags.childTags.sort { |a,b| a.name <=> b.name }.each do |childTagCount| %>
 
@@ -430,7 +432,7 @@
 					</select>
 				</div>
 				<div class="button-day">
-					<select name="daysmenu" id="day">
+					<select name="daysmenu" id="dayAd">
 						<option value="0">No time limit</option>
 						<option value="1">Today</option>
 						<option value="2">Tomorrow</option>
@@ -445,29 +447,15 @@
 						<option value="3">< $20</option>
 					</select>
 				</div>
-				<!-- <div class="button-access">
-					<select name="select_projects" id="select_projects">
-					    <option value="">project.xml</option>
-					    <option label="client1" value="">
-					        <option value="">project2.xml</option>
-					    </option>
-					    <optgroup label="client2">
-					        <option value="">project5.xml</option>
-					        <option value="">project6.xml</option>
-					        <optgroup label="client2_a">
-					            <option value="" style="margin-left:23px;">project7.xml</option>
-					            <option value="" style="margin-left:23px;">project8.xml</option>
-					        </optgroup>
-					        <option value="">project3.xml</option>
-					        <option value="">project4.xml</option>
-					   </optgroup>
-					   <option value="">project0.xml</option>
-					   <option value="">project1.xml</option>
+				<div class="button-sort-ad" >
+					<select name="sortdropdown" id="sortAd">
+						<option value="0" selected>Most views</option>
+						<option value="1">Date</option>
 					</select>
-				</div> -->
-
-
-			
+				</div>
+				<div class="button-search-ad"><span>Search</span>
+				
+				</div>
 			<% end %>
 			<!-- <a class="button sort" href="#"><span>Sort</span></a>
 			<a class="button search" href="#"><span>Search</span></a> -->
@@ -480,11 +468,16 @@
 			
 			<div class="inner android">
 				<div class="filter-summary">
-					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sort-type" style="display:none;">[by popularity/<span class="sort date">date</span>]</span> 
+					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="sort-type" style="display:none;">[by popularity/<span class="sort date">date</span>]</span> 
 				</div>
 				<ul class="events">
-					<%= will_paginate(@occurrences) %>
+					
 					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
+					<% if @occurrences.size > 0 %>
+						<%= will_paginate @occurrences, :style => 'width : 950px' %>
+					
+					<% end %>
+					
 				</ul>
 				<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
 			</div>

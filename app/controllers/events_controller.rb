@@ -41,64 +41,101 @@ def android
 
     params[:user_id] = current_user ? current_user.id : nil
 
-    
-    @message =""
-    channel_ms="I have a badge "
-    if params[:channel_id] == 414
-       channel_ms = "I have a badge"
-    elsif params[:channel_id] == 415
-         channel_ms = "I have a wristband"
-    elsif params[:channel_id] == 416
-         channel_ms = "I have NO SXSW Credentials"
-    elsif params[:channel_id] == 424
-         channel_ms = "I have nothin' but my cowboy boots on "
-    end
-    puts channel_ms
-    tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",")
-    puts "tags - 0"
-    puts params
-    puts tag
-    puts params[:included_tags]
-    tag_ms =""
-    i=0
-    tag.each{ |t|
-      puts "tags"
-      s = t.to_s
-      puts s    
-     
-      if s.eql? "166"
-        tag_ms = (i==0) ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
-      elsif s.eql? "165"
-        tag_ms = (i==0) ? "With Free Food" : tag_ms.concat(", Free Food")
-      elsif s.eql? "184"
-        tag_ms = (i==0) ? "With Party" : tag_ms.concat(", Party")
-      elsif s.eql? "167"
-        tag_ms = (i==0) ? "With No Cover" : tag_ms.concat(", No Cover")
-      elsif s.eql? "191"
-        tag_ms = (i==0) ? "With RSVP" : tag_ms.concat(", RSVP")
-      elsif s.eql? "189"
-        tag_ms = (i==0) ? "With Unofficial Events" : tag_ms.concat(", Unofficial Events")
-      end
-      i=i+1
-    }
-    puts "Tags - combine: "
-    puts tag_ms
-    time_ms =""
-    
-    time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))
+     @message =""
+    if params[:type].to_s.eql? "sxsw"
+        channel_ms="I have a badge with Free Food, Free Drinks, Party, Unofficial events during SXSW. "
+        if params[:channel_id] == 414
+           channel_ms = "I have a badge"
+        elsif params[:channel_id] == 415
+             channel_ms = "I have a wristband"
+        elsif params[:channel_id] == 416
+             channel_ms = "I have NO SXSW Credentials"
+        elsif params[:channel_id] == 424
+             channel_ms = "I have nothin' but my cowboy boots on "
+        end
+        puts channel_ms
+        tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",")
+        puts "tags - 0"
+        puts params
+        puts tag
+        puts params[:included_tags]
+        tag_ms =""
+        i=0
+        tag.each{ |t|
+          puts "tags"
+          s = t.to_s
+          puts s    
+         
+          if s.eql? "166"
+            tag_ms = (i==0) ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
+          elsif s.eql? "165"
+            tag_ms = (i==0) ? "With Free Food" : tag_ms.concat(", Free Food")
+          elsif s.eql? "184"
+            tag_ms = (i==0) ? "With Party" : tag_ms.concat(", Party")
+          elsif s.eql? "167"
+            tag_ms = (i==0) ? "With No Cover" : tag_ms.concat(", No Cover")
+          elsif s.eql? "191"
+            tag_ms = (i==0) ? "With RSVP" : tag_ms.concat(", RSVP")
+          elsif s.eql? "189"
+            tag_ms = (i==0) ? "With Unofficial Events" : tag_ms.concat(", Unofficial Events")
+          end
+          i=i+1
+        }
+        puts "Tags - combine: "
+        puts tag_ms
+        time_ms =""
+        
+        time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))
 
+        
+        
+        sort_ms =""
+        unless params[:sort].to_s.empty?
+          if params[:sort].to_i == 0
+              sort_ms = " and sort by most views"
+          elsif params[:sort].to_i == 1
+              sort_ms = " and sort by date"
+          end    
+        end 
+       
+        @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
+    else
+      @message ="Your filter - All categories - No time limit - No cost limit "
+      tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",").uniq
+      tag=tag.join(",")
+      if tag.size >0
+        names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
+       
+        @message = "Your filter - ".concat(names)
+      end
+
+      tag = (params[:and_tags].to_s.empty?) ? [] :  params[:and_tags].split(",").uniq
+      tag=tag.join(",")
+      if tag.size >0
+        names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
+        
+        @message = @message.concat(" with ".concat(names))
+      end
+
+      time = (params[:time].to_s.empty?) ? "" :  params[:time].to_s
+      unless time.eql? ""
+          @message = @message.concat(" during ".concat(time))
+      end
+      cost = (params[:cost].to_s.empty?) ? "" :  params[:cost].to_s
+      unless time.eql? ""
+          @message = @message.concat(" ".concat(cost))
+      end
+      if params[:sort].to_s.eql? "0"
+        @message = @message.concat(" Sort by Most Views")
+      else
+        @message = @message.concat(" Sort by Date")
+      end
+
+    end
+    unless params[:days].to_s.empty?
+          params[:day] = ["0","6"]
+    end
     
-    
-    sort_ms =""
-    unless params[:sort].to_s.empty?
-      if params[:sort].to_i == 0
-          sort_ms = " and sort by most views"
-      elsif params[:sort].to_i == 1
-          sort_ms = " and sort by date"
-      end    
-    end 
-   
-    @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
     puts @message
 
     @ids = Occurrence.find_with(params)
@@ -132,7 +169,7 @@ def android
       @offset = params[:offset].to_i
     end
     @allOccurrences = Occurrence.find(@occurrence_ids)
-    @occurrences = Occurrence.paginate(:page => params[:page]).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+    @occurrences = Occurrence.paginate(:page => params[:page], :per_page => 10 ).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
     
    
     puts @occurrences  
@@ -212,10 +249,11 @@ def index
     unless(params[:act_id].to_s.empty?)
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
+    
     if(@mobileMode)
-        @switch ="sxsw"
+        @switch ="advance"
         unless params[:format].to_s.eql? "mobile"
-          redirect_to :action => "android",  :type => "sxsw"
+          redirect_to :action => "android",  :type => "advance"
         else
           return
         end

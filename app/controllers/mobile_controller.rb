@@ -3,7 +3,7 @@ class MobileController < ApplicationController
     @occurrence = Occurrence.find(params[:id])
     @event = @occurrence.event
     @pageTitle = @event.title + " | half past now."
-
+    @description = strip_tags(@event.description)
 
     @eventid = Occurrence.find(params[:id]).event_id
     @event = Event.find(@eventid);
