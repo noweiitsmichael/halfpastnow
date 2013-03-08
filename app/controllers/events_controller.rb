@@ -102,7 +102,7 @@ def android
     else
       @message ="Your filter - All categories - No time limit - No cost limit "
       tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",").uniq
-      tag = tag.split(",")
+      
       if tag.size >0
         names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
        
@@ -110,7 +110,7 @@ def android
       end
 
       tag = (params[:and_tags].to_s.empty?) ? [] :  params[:and_tags].split(",").uniq
-      tag = tag.split(",")
+     
       if tag.size >0
         names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
         
