@@ -89,7 +89,7 @@ $(function() {
          {
             if(InvForm[x].selected)
             {
-              var tmp = InvForm[x].value; 
+              var tmp = (InvForm[x].value.to_s === "All Categories") ? "ALLCAT" : InvForm[x].value ; 
               catIDs = (catIDs=="") ? "included_tags="+tmp : catIDs+','+tmp ;
               
               

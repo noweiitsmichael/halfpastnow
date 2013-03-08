@@ -113,7 +113,7 @@ def android
       tag = (params[:and_tags].to_s.empty?) ? [] :  params[:and_tags].split(",").uniq
       tag = tag.join(",")
       if tag.size >0
-        a = tag.collect{|t| t.to_s.eql? "All Categories"}
+        a = tag.collect{|t| t.to_s.eql? "ALLCAT"}
         if a.size >0 
           names = "All Categories"
           params[:included_tags] = Tag.all.collect{|t| t.id}.join(",")
