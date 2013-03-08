@@ -126,9 +126,9 @@ def android
           @message = @message.concat(" ".concat(cost))
       end
       if params[:sort].to_s.eql? "0"
-        @message = @message.concat(" and short by most views")
+        @message = @message.concat(" Sort by Most Views")
       else
-        @message = @message.concat(" and short by date")
+        @message = @message.concat(" Short by Date")
       end
 
     end
