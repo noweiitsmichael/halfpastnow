@@ -107,13 +107,20 @@ def android
         names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
         puts "Names of tags: "
         puts names  
-        @message = "in categories ".concat(names)
+        @message = "Your filter - ".concat(names)
       end
 
       tag = (params[:and_tags].to_s.empty?) ? [] :  params[:and_tags].split(",").uniq
       tag = tag.join(",")
       if tag.size >0
-        names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
+        a = tag.collect{|t| t.to_s.eql? "All Categories"}
+        if a.size >0 
+          names = "All Categories"
+          params[:included_tags] = Tag.all.collect{|t| t.id}.join(",")
+        else
+          names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
+        end
+        
         puts "Names of tags: "
         puts names  
         @message = @message.concat(" with ".concat(names))
