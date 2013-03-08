@@ -9,7 +9,7 @@ class MobileController < ApplicationController
     @event = Event.find(@eventid);
 
     @urlimage =@event.cover_image_url
-    @url= 'http://www.halfpastnow.com/events/show/'+params[:id]+'?fullmode=true'
+    @url= 'http://hpnstaging.herokuapp.com/events/show/'+params[:id]+'?fullmode=true'
     render :layout => "og"
   end
   # def tp
@@ -3471,7 +3471,7 @@ def SX
             LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id 
             LEFT OUTER JOIN acts ON acts.id = acts_events.act_id 
             INNER JOIN occurrences ON events.id = occurrences.event_id 
-            WHERE occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND occurrences.id IN (158623)"
+            WHERE occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND occurrences.id IN (166014)"
     queryResult = ActiveRecord::Base.connection.select_all(query)
     
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
