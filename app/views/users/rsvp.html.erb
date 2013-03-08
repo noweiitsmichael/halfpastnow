@@ -1,0 +1,30 @@
+<% content_for :meta do %>
+  <meta property="og:type"                 content="article"/> 
+  <meta property="og:url"                  content="http://www.halfpastnow.com/sxsw"/> 
+  <meta property="og:image"                content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png"/>
+  <meta property="og:title"                content="My SXSW RSVP list on half past now "/>
+  <meta property="og:description"          content="Quickly find the best SXSW events and RSVPs"/> 
+  <meta property="article:author"          content="<%= current_user.fullname %>"/> 
+<% end %>
+<% content_for :title do %><%= current_user.fullname %>'s RSVPs<% end %>
+<% content_for :head do %>
+
+<%= stylesheet_link_tag "rsvp.css" %>
+<% end %>
+
+<% content_for :body do %>
+<div id="content" class="padded" style="margin-top:60px">
+<h2 style="color:#3D033D; font-style:italic;"><%=@user.fullname%>'s SXSW RSVP List</h2>
+	<div class="main" style="margin-left:0px;">
+		<div class="inner">
+			<ul class="events" class="padded">
+			<% @rsvps.sort_by { |d| d.start}.each_with_index do |occurrence, index| %>
+				<%= render :partial => "events/event_element_sxsw", :locals => { :occurrence => occurrence, :index => index, :bookmarkList => (defined? @attending_list) ? @attending_list : nil } %>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+<% end %>

@@ -580,10 +580,34 @@ background-size: cover;
   opacity: 0.8;
 }
 
+#header .profile-menu {
+    display:none;
+    float:right;
+    width:140px;
+    border: 1px solid #1c1c1c;
+}
+
+#header .profile-menu li {
+    background-color: #302f2f;
+}
+
+#header .profile-menu li a {
+    color:#FFFFFF; 
+    text-decoration:none; 
+    padding:10px; 
+    display:block;
+}
+
+#header .profile-menu li a:hover {
+    padding:10px;
+    font-weight:bold;
+    color: #A700A7;
+}
+
 #header > .one
 {
   height: 35px;
-  overflow: hidden;
+  /*overflow: hidden;*/
   position: relative;
   z-index: 900;
   background: #333;
@@ -1852,26 +1876,6 @@ input::-webkit-input-placeholder
     color: rgba(0, 0, 0, .8);
 }
 
-#content .events li .rsvp-button.nice-button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  border:1px solid rgb(156, 143, 173);
-  font-size:16px;
-  font-weight:900;
-  background-color: #A700A7;
-  color: white;
-  padding: 4px 8px 4px 8px;
-  margin-top:3px;
-  text-transform: none;
-  display:block;
-  text-align:center;
-}
-
-#content .events li .rsvp-button.nice-button a{
-  text-decoration: none;
-}
-
 #content .events li .event-actions div {
     overflow: hidden;
     margin-bottom: -5px;
@@ -2429,6 +2433,7 @@ box-shadow: 1px 3px 6px rgba(0,0,0,0.15);
 }
 
 .addthisevent_dropdown span{
+  display:;
   width: 175px;
   font-size: 12px;
   padding: 8px 0px 9px 5px;
@@ -2448,7 +2453,7 @@ display: inline-block;
 position: relative;
 text-decoration: none!important;
 font-weight: bold;
-padding: 8px 0px;
+padding: 1px 0px;
 color: #333!important;
 /*background: #f4f4f4 url(http://addthisevent.com/gfx/icon-calendar-t1.png) no-repeat 9px 50%;
 border: 1px solid #d9d9d9;

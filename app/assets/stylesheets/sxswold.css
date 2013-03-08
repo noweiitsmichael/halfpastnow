@@ -12,16 +12,6 @@ img
 {  border-style: none;
 }
 
-.clearfix:before,
-.clearfix:after {
-  content: ".";    
-  display: block;    
-  height: 0;    
-  overflow: hidden; 
-}
-.clearfix:after {clear: both;}
-.clearfix {zoom: 1;} /* IE < 8 */
-
 #body {
   width:100%;
   height:100%;
@@ -1686,17 +1676,15 @@ text-decoration: underline dotted;
 
 #content .events li .event-actions {
     position:absolute;
-    bottom: -5px;
-    right: 75px;
+    bottom: 8px;
+    right: 5px;
     text-align: right;
     color: rgba(0, 0, 0, .8);
-    width: 150px;
 }
 
 #content .events li .event-actions div {
     overflow: hidden;
     margin-bottom: -5px;
-    display:inline;
 }
 
 #content .events li .event-actions .text {
@@ -2759,13 +2747,13 @@ text-decoration: underline dotted;
     left: 77px;
 }
 #content .main .inner .events li {
-    padding: 0 10px 0 120px; 
-    min-height: 60px;
-    font-size: 12px;
+    padding: 0 10px 0 219px; 
+    min-height: 120px;
+    font-size: 13px;
     color: #303030;
     background: #F7F7F8;
     border: none;
-    /*overflow:hidden;*/
+    overflow:hidden;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, .2);
 }
 
@@ -2773,32 +2761,6 @@ text-decoration: underline dotted;
     color:#303030;
 }
 
-
-#content .main .inner .events li .rsvp-button.nice-button, #content .main .inner .events li .fake-button.nice-button   {
-  position: absolute;
-  color:white;
-  bottom: 5px;
-  right: 5px;
-  border:1px solid rgb(156, 143, 173);
-  font-size:16px;
-  font-weight:900;
-  background-color: #A700A7;
-  color: white;
-  padding: 1px 8px 2px 8px;
-  margin-top:3px;
-  text-transform: none;
-  display:block;
-  text-align:center;
-  text-decoration: none;
-}
-
-#content .main .inner .events li .rsvp-button.nice-button a{
-}
-
-#content .main .inner .events li .rsvp-button.nice-button.remove {
-  background-color: #EEE;
-  color:#777;
-}
 .events li .bookmark-comment {
     clear:left;
     padding: 7px;
@@ -2822,6 +2784,7 @@ text-decoration: underline dotted;
 }
 
 
+
 #content .main .inner .events li:first-child {
 }
 
@@ -2833,29 +2796,29 @@ text-decoration: underline dotted;
 
 #content .events li .index {
     border-radius: 0 0 0 0;
-    width: 30px;
-    height:27px;
+    width: 41px;
+    height: 35px;
     padding: 0;
-    line-height: 28px;
+    line-height: 34px;
     text-align: center;
     background: #3D033D;
     position: absolute;
     top: -1px;
     left: -1px;
     z-index: 100;
-    font-size: 14px;
+    font-size: 23px;
     font-weight: 900;
     border-radius: 0 0 3px 0;
     box-shadow: 3px 3px 10px rgba(0,0,0,.3);
 }
 #content .events li .title {
     float: left; 
-    font-size: 14px;  
+    font-size: 16px;  
     text-align: left;
     line-height: 21px;  
     max-height: 42px; overflow: hidden;
     position: relative;
-    margin-top: 5px;
+    margin-top: 8px;
     padding-right: 1px;
     font-weight: 900;
     font-style: italic;
@@ -2874,7 +2837,7 @@ text-decoration: underline dotted;
     text-transform: lowercase;
 }
 #content .events li .venue-inner { 
-    font-size: 14px;  
+    font-size: 16px;  
     position:relative;
     top: 0px;
     display:inline-block;  
@@ -2888,11 +2851,11 @@ text-decoration: underline dotted;
     font-weight: 600;
     font-style: normal;
     clear: both;
-    padding-bottom:5px;
 }
 
 #content .events li .tags {
-  display:none;
+    clear: both;
+    padding-top: 6px;
 }
 #content .events li .tags .tag {
     float: left;
@@ -2911,15 +2874,12 @@ text-decoration: underline dotted;
 }
 
 #content .events li .picklists {
-  float: right;
-  padding-top: 9px;
-  padding-bottom: 9px;
-  padding-right: 10px;
-  font-weight: 700;
-  display: inline;
-  position: absolute;
-  top: 0px;
-  right: 0px;
+    clear:left;
+    float:left;
+    padding-top:9px;
+    padding-bottom:9px;
+    font-weight:700;
+    position: relative;
 }
 
 #content .events li .picklists .popup-comment {
@@ -2929,7 +2889,6 @@ text-decoration: underline dotted;
 
 #content .events li .picklists .picklist-picture {
     height:20px;
-    width:20px;
 }
 
 
@@ -2959,8 +2918,8 @@ text-decoration: underline dotted;
     position: absolute;
     top: 0;
     left: 0;
-    width: 103px;
-    height: 63px;
+    width: 206px;
+    height: 126px;
     overflow: hidden;
     border-right: 1px solid #DDD;
 }

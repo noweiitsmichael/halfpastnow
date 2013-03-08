@@ -89,6 +89,22 @@ class UsersController < ApplicationController
     end
   end
 
+  def rsvp
+    if params[:id] == nil
+      params[:id] = current_user.id
+    end
+    @user = User.find(params[:id])
+
+    @attending_list = @user.attending_list
+
+    @rsvps = @user.attending_events #Occurrence.find(@user.attending_events, :include => [:events => :venues]) #, :select("occurrences.id, occurrences.start, event.title AS title, event.price AS price, venue.name AS venue, venue.address AS address, venue.state AS state, venue.zip AS zip")
+    puts @rsvps
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @user }
+    end
+  end
+
   def itemslist
     @user = User.find(params[:user_id])
     @itemsList = []
