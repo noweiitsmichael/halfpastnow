@@ -126,10 +126,11 @@ def android
       unless cost.eql? ""
           @message = (@message.eql? mod) ? "Your filter - with cost ".concat(cost) : @message.concat(" ".concat(cost))
       end
+      
       if params[:sort].to_s.eql? "0"
-        @message = (@message.eql? mod) ? "Your filter - all events sorted by ".concat(cost) : @message.concat(" Sort by Most Views")
+        @message = (@message.eql? mod) ? "Your filter - all events sorted by Most Views" : @message.concat(" Sort by Most Views")
       else
-        @message = (@message.eql? mod) ? "Your filter - all events sorted by ".concat(cost) : @message.concat(" Sort by Date")
+        @message = (@message.eql? mod) ? "Your filter - all events sorted by Date" : @message.concat(" Sort by Date")
       end
 
     end
