@@ -101,6 +101,7 @@ def android
         @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
     else
       @message ="Your filter - All categories - No time limit - No cost limit "
+      mod = "Your filter - All categories - No time limit - No cost limit "
       tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",").uniq
       tag=tag.join(",")
       if tag.size >0
@@ -114,21 +115,21 @@ def android
       if tag.size >0
         names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
         
-        @message = @message.concat(" with ".concat(names))
+        @message = (@message.eql? mod) ? "Your filter - ".concat(names) :  @message.concat(" with ".concat(names))
       end
 
       time = (params[:time].to_s.empty?) ? "" :  params[:time].to_s
       unless time.eql? ""
-          @message = @message.concat(" during ".concat(time))
+          @message = (@message.eql? mod) ? "Your filter - during ".concat(time) : @message.concat(" during ".concat(time))
       end
       cost = (params[:cost].to_s.empty?) ? "" :  params[:cost].to_s
       unless cost.eql? ""
-          @message = @message.concat(" ".concat(cost))
+          @message = (@message.eql? mod) ? "Your filter - with cost ".concat(cost) : @message.concat(" ".concat(cost))
       end
       if params[:sort].to_s.eql? "0"
-        @message = @message.concat(" Sort by Most Views")
+        @message = (@message.eql? mod) ? "Your filter - all events sorted by ".concat(cost) : @message.concat(" Sort by Most Views")
       else
-        @message = @message.concat(" Sort by Date")
+        @message = (@message.eql? mod) ? "Your filter - all events sorted by ".concat(cost) : @message.concat(" Sort by Date")
       end
 
     end
