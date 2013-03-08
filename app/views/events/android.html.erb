@@ -476,7 +476,7 @@
 					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
 					<div class="flickr_pagination">
 						<% if @occurrences.size > 0 %>
-							<%= will_paginate @occurrences, :style => 'width : 950px' %>
+							<%= will_paginate @occurrences %>
 						</div>
 					<% end %>
 					
