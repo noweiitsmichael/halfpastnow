@@ -4172,6 +4172,7 @@ float: left;
 text-align: center;
 height: :40px;
 margin-left:20px;
+border-radius: 6px;
 }
 
 .button-categories select {
@@ -4256,7 +4257,7 @@ text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
 float: left;
 height: :40px;
 text-align: center;
-
+border-radius: 3px;
 }
 
 .button-cost select {
@@ -4298,6 +4299,7 @@ width:120px;
 margin-left:20px;
 text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
 float: left;
+border-radius: 6px;
 height: 40px;
 text-align: center;
 }
@@ -4320,6 +4322,7 @@ color: white;
 z-index: 10;
 position: relative;
 overflow:hidden;
+border-radius: 6px;
 width:140px;
 margin-left:20px;
 text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
