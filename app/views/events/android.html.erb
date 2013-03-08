@@ -351,7 +351,7 @@
 			<% if params[:type].to_s.eql? "sxsw" %>
 				<div class="button-access">
 					<select name="mydropdown" id="access" >
-						<option value="0">A Badge</option>
+						<option value="0" selected>A Badge</option>
 						<option value="1">A Wristband</option>
 						<option value="2">No SXSW Credentials (RSVP OK)</option>
 						<option value="3">Nothin' but my cowboy boots</option>
@@ -359,7 +359,7 @@
 				</div>
 				<div class="button-time" >
 					<select name="timedropdown" id="time">
-						<option value="0">All</option>
+						<option value="0" selected>All</option>
 						<option value="1">Interactive (3/8-3/12)</option>
 						<option value="2">Film (3/8-3/16)</option>
 						<option value="3">Music (3/12-3/17)</option>
@@ -369,17 +369,17 @@
 				
 				<div class="button-tag" >
 					<select name="tagdropdown" id="tag" multiple="multiple" >
-						<option value="0">Free Drinks</option>
-						<option value="1">Free Food</option>
-						<option value="2">Party</option>
-						<option value="3">No Cover</option>
-						<option value="4">Unofficial</option>
+						<option value="0" selected>Free Drinks</option>
+						<option value="1" selected>Free Food</option>
+						<option value="2" selected>Party</option>
+						<option value="3" selected >No Cover</option>
+						<option value="4" selected>Unofficial</option>
 						<option value="5">RSVP</option>
 					</select>
 				</div>
 				<div class="button-sort" >
 					<select name="sortdropdown" id="sort">
-						<option value="0">Most views</option>
+						<option value="0" selected>Most views</option>
 						<option value="1">Date</option>
 					</select>
 				</div>
@@ -391,7 +391,7 @@
 
 				<div class="button-categories">
 					<select name="categoriesmenu" id="categories" multiple="multiple" >
-						<option> All Categories </option>
+						<option selected> All Categories </option>
 						<% @parentTags.each do |parentTag|  %>
 							<% unless parentTag.name == "Tags" %>
 								<% puts "Parent Tag name: "%>
@@ -417,7 +417,7 @@
 					<select name="tagsmenu" id="tags" multiple="multiple">
 						<% andTags = @parentTags.select { |t| t[:name] == "Tags" }.first %>
 
-						<option> And Tags </option>
+						<option selected> And Tags </option>
 							<% unless andTags.nil? %>
 								<% andTags.childTags.sort { |a,b| a.name <=> b.name }.each do |childTagCount| %>
 

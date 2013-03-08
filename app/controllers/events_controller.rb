@@ -43,7 +43,7 @@ def android
 
      @message =""
     if params[:type].to_s.eql? "sxsw"
-        channel_ms="I have a badge "
+        channel_ms="I have a badge with Free Food, Free Drinks, Party, Unofficial events during SXSW. "
         if params[:channel_id] == 414
            channel_ms = "I have a badge"
         elsif params[:channel_id] == 415
@@ -100,7 +100,7 @@ def android
        
         @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
     else
-      @message ="Your filter is "
+      @message ="Your filter - All categories - No time limit - No cost limit "
       tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",").uniq
       tag = tag.join(",")
       if tag.size >0
