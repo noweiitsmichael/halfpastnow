@@ -55,23 +55,13 @@
 	<div class="col-2">
 		<div class="block">
 			<div class="block-inner">
-				<%= render :partial => "layouts/share_bookmark", :locals => { :type => 'event', :id => @occurrence.id, :event => @event, :bookmarkId => @bookmarkId, :attendingId => @attendingId } %>
+				<%= render :partial => "layouts/share_bookmark", :locals => { :type => 'event', :id => @occurrence.id, :occurrence => @occurrence, :event => @event, :bookmarkId => @bookmarkId, :attendingId => @attendingId , :fullmode => @fullmode} %>
 			</div>
 		</div>
 		<div id="getsat-widget-4765"><a href="#" class="gs-replacement-link">Wrong info? RSVP sold out? Tell us!</a></div>
 		<script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
 		<script type="text/javascript">
 			if (typeof GSFN !== "undefined") { GSFN.loadWidget(4765,{"containerId":"getsat-widget-4765"}); }
-
-            // $(function() {
-  //           	$(".widget-link").ready(function() {
-  //           		console.log("run...");
-  // // Handler for .ready() called.
-
-  //           		console.log($("#getsat-widget-4765").html());
-            	// $("#getsat-widget-4765").html("<a href='#' class='widget-link'>Wrong info? RSVP sold out? Tell us!</a>");
-            	// });
-            // });
 		</script>
 		<div class="block">
 			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&sensor=false"/></a>
@@ -145,8 +135,6 @@
 		
 		<div style="text-align:right;padding-top:10px;"><a href="/userSubmission/eventEdit1/<%=@event.id%>" target="_blank">edit</a></div>
 	</div>
-
 	
 	<div class="clear"></div>
-
 <% end %>

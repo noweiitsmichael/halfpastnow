@@ -449,6 +449,7 @@ window.addEventListener("popstate", function(e) {
   if(state && state.type) {
     var modality = spawn(modalities[state.type],{id: state.id});
     modal(modality);
+    calLoad();
   } else {
     demodal();
   }
@@ -592,6 +593,19 @@ function modal(modality) {
       $('.mode').hide().removeClass().addClass('mode ' + modality.type);
       $('.mode').show();
       $('.mode .insert-point').html(data);
+      // console.log("Attempting to attach calendar....")
+      // addthisevent.settings({
+      //     license   : "ac3hy61svzxtsqddkmut",
+      //     mouse     : false,
+      //     css       : false,
+      //     outlook   : {show:true, text:"Outlook Calendar"},
+      //     google    : {show:true, text:"Google Calendar"},
+      //     yahoo     : {show:false, text:"Yahoo Calendar"},
+      //     hotmail   : {show:true, text:"Hotmail Calendar"},
+      //     ical      : {show:true, text:"iCal Calendar"},
+      //     facebook  : {show:false, text:"Facebook Event"},
+      //     callback  : ""
+      // });
     });
   }
 }

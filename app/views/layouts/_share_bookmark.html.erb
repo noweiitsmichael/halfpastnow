@@ -201,17 +201,17 @@
 		          that.removeClass('remove').addClass('add');
 		        });
       }
-	  function edit_comment()
-	  {	
-	  	$('.popup-box-1').hide();
-      	toggle = !toggle;
-      	var text = $('.comment-text-1').val();
-      	console.log("Edit comment"+text);
-	    $.getJSON('/bookmarks/update_comment', { bookmark: { "type": "Occurrence", "id": bookmarkList_id, "comment": text } }, function(data) {
-	          bookmark_id = data;
-	          
-        });
-	  }
+	function edit_comment()
+	{	
+		$('.popup-box-1').hide();
+		toggle = !toggle;
+		var text = $('.comment-text-1').val();
+		console.log("Edit comment"+text);
+	$.getJSON('/bookmarks/update_comment', { bookmark: { "type": "Occurrence", "id": bookmarkList_id, "comment": text } }, function(data) {
+	      bookmark_id = data;
+	      
+	});
+	}
 </script>
 
  <script>
@@ -268,6 +268,19 @@
 		<%= bookmarkId.nil? ? "Bookmark it" : "In Bookmarks" %>
 	</span>
 <!-- 	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span> -->
+	<% if fullmode %>
+	<a href="http://www.halfpastnow.com/?event_id=<%=id%>" title="Add to Calendar" class="addthisevent">
+	    <span class="icon icon-calendar cal"></span>
+	    <span class="_url">http://www.halfpastnow.com/?event_id=<%=id%></span>
+	    <span class="_start"><%= occurrence.start.strftime('%m-%d-%Y %H:%M:%S') %></span>
+	    <span class="_end"><%= occurrence.end.strftime('%m-%d-%Y %H:%M:%S') %></span>
+	    <span class="_zonecode">11</span>
+	    <span class="_summary"><%= event.title %></span>
+	    <span class="_description"><%= strip_tags(event.description)%></span>
+	    <span class="_location"><%= event.venue.name %>, <%= event.venue.address %>, <%= event.venue.city %>, <%= event.venue.state %></span>
+	    <span class="_date_format">DD/MM/YYYY</span>
+	</a>
+	<% end %>
 	<span class="icon icon-envelope-alt email"></span>
 	<span class="icon icon-facebook-sign facebook"></span>
 	<span class="icon icon-twitter-sign twitter"></span>
@@ -293,8 +306,3 @@
 		<% end %>
 	<% end %>
 </div>
-
-<iframe src="<%= @ur %>"
-        scrolling="no" frameborder="0"
-        style="border:none; width:450px; height:80px" class="no-spin-zone"></iframe>
-
