@@ -308,7 +308,17 @@
 			console.log("Clickeddd");
 			
 		});
-		console.log("message from controller"+<%= @message %>);
+		// var included_tags = "<%= array_or_string_for_javascript(params[:included_tags]) %>";
+		
+		// var included_tags = [<%= params[:included_tags].map(&:to_s).join(", ") %>];
+		// for (var i = included_tags.length - 1; i >= 0; i--) {
+		// 	console.log(included_tags[i]);
+
+		// 	$("#dayAd option[value='2']").attr("selected", "selected");
+		// };
+
+
+
 	</script>
 <% end %>
 
@@ -379,7 +389,14 @@
 				
 				</div>
 			<% else %>
-				
+				</div class="titleAd">
+					<div class="title1">Choose your categories</div>
+					<div class="title2">Choose your tags</div>
+					<div class="title3">Choose your time</div>
+					<div class="title4">Choose your price</div>
+					<div class="title5">Sort by time or most views</div>
+				<div>
+				</br>
 				<div class="button-categories">
 					<select name="categoriesmenu" id="categories" multiple="multiple" >
 						<!-- <option disabled="disabled" selected="selected">Choose Categories</option> -->
@@ -404,6 +421,7 @@
 						<% end %>
 					</select>
 				</div>
+				
 				<div class="button-tags">
 					<select name="tagsmenu" id="tags" multiple="multiple">
 						<% andTags = @parentTags.select { |t| t[:name] == "Tags" }.first %>
@@ -419,6 +437,7 @@
 						<% end %>
 					</select>
 				</div>
+				
 				<div class="button-day">
 					<select name="daysmenu" id="dayAd">
 						<option value="0">No time limit</option>
@@ -427,6 +446,7 @@
 						<option value="3">Weekend</option>
 					</select>
 				</div>
+				
 				<div class="button-cost">
 					<select name="costsmenu" id="cost">
 						<option value="0">No price limit</option>
@@ -435,6 +455,7 @@
 						<option value="3">< $20</option>
 					</select>
 				</div>
+				
 				<div class="button-sort-ad" >
 					<select name="sortdropdown" id="sortAd">
 						<option value="0" selected>Most views</option>

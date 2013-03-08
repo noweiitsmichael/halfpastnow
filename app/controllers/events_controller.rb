@@ -102,18 +102,18 @@ def android
     else
       @message ="Your filter - All categories - No time limit - No cost limit "
       mod = "Your filter - All categories - No time limit - No cost limit "
-      tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",").uniq
-      tag=tag.join(",")
-      if tag.size >0
-        names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
+      @tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",").uniq
+      @tag=@tag.join(",")
+      if @tag.size >0
+        names = Tag.where("ID in (#{@tag})").collect{|t| t.name}.join(",")
        
         @message = "Your filter - ".concat(names)
       end
 
-      tag = (params[:and_tags].to_s.empty?) ? [] :  params[:and_tags].split(",").uniq
-      tag=tag.join(",")
-      if tag.size >0
-        names = Tag.where("ID in (#{tag})").collect{|t| t.name}.join(",")
+      @tag = (params[:and_tags].to_s.empty?) ? [] :  params[:and_tags].split(",").uniq
+      @tag=@tag.join(",")
+      if @tag.size >0
+        names = Tag.where("ID in (#{@tag})").collect{|t| t.name}.join(",")
         
         @message = (@message.eql? mod) ? "Your filter - ".concat(names) :  @message.concat(" with ".concat(names))
       end
@@ -222,6 +222,7 @@ def android
         SET views = views + 1
         WHERE id IN (#{@venue_ids * ','})")
     end
+    @last= 'Last message'
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
