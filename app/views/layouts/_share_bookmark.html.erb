@@ -56,11 +56,11 @@
 				            'post',
 				            { event: lnk },
 				            function(response) {
-				               // if (!response || response.error) {
-				               //    alert('Error occured'+response);
-				               // } else {
-				               //    alert('Post event was successful! Action ID: ' + response.id);
-				               // }
+				               if (!response || response.error) {
+				                  alert('Error occured'+response);
+				               } else {
+				                  alert('Post event was successful! Action ID: ' + response.id);
+				               }
 				        });
 						break;
 					case "venue":

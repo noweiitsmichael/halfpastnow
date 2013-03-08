@@ -372,7 +372,7 @@ $(function() {
         }(document));// delete below
         console.log('Bookmark outside');
                   
-        var lnk = 'http://www.halfpastnow.com/events/show/'+id+'?fullmode=true'; 
+        var lnk = 'http://hpnstaging.herokuapp.com/events/show/'+id+'?fullmode=true'; 
         // var lnk = 'http://www.halfpastnow.com/mobile/og/'+id; 
         console.log(lnk);
         FB.api(
@@ -380,11 +380,11 @@ $(function() {
             'post',
             { event: lnk },
             function(response) {
-               // if (!response || response.error) {
-               //    alert('Error occured'+response);
-               // } else {
-               //    alert('Post list was successful! Action ID: ' + response.id);
-               // }
+               if (!response || response.error) {
+                  alert('Error occured'+response);
+               } else {
+                  alert('Post list was successful! Action ID: ' + response.id);
+               }
             });
         $.getJSON('/bookmarks/custom_create', { bookmark: { "type": "Occurrence", "id": id } }, function(data) {
           bookmark_id = data;
