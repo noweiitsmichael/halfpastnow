@@ -165,7 +165,7 @@ $(function() {
     console.log("In search-ad "+ costString);
     
     // console.log(catIDs + );
-    var searchString = "/events/android?"+catIDs+"&"+andTags+"&"+dayString+"&"+costString+"&type=advance"+"&"+sortString;
+    var searchString = "/events/android?"+catIDs+"&"+andTags+"&"+dayString+"&"+costString+"&type=advance"+"&"+sortString+"&"+"ajax=true";
     // alert(searchString);
      window.open(searchString,'_self');
   });
