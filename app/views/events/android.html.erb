@@ -473,7 +473,11 @@
 				<ul class="events">
 					
 					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
-					<%= will_paginate @occurrences, :style => 'width : 950px' %>
+					<% if @occurrences.size > 0 %>
+						<%= will_paginate @occurrences, :style => 'width : 950px' %>
+					<% else %>
+						<div class="noresult"> Sorry, there is no event for your filter. Please choose again. </div>
+					<% end %>
 					
 				</ul>
 				<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
