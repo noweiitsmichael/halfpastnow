@@ -122,7 +122,7 @@ def android
           @message = @message.concat(" during ".concat(time))
       end
       cost = (params[:cost].to_s.empty?) ? "" :  params[:cost].to_s
-      unless time.eql? ""
+      unless cost.eql? ""
           @message = @message.concat(" ".concat(cost))
       end
       if params[:sort].to_s.eql? "0"
