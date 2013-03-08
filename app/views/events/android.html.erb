@@ -393,7 +393,7 @@
 				
 				<div class="button-categories">
 					<select name="categoriesmenu" id="categories" multiple="multiple" >
-						<option disabled="disabled" selected="selected">Choose Categories</option>
+						<!-- <option disabled="disabled" selected="selected">Choose Categories</option> -->
 						<% @parentTags.each do |parentTag|  %>
 							<% unless parentTag.name == "Tags" %>
 								<% puts "Parent Tag name: "%>
@@ -419,7 +419,7 @@
 					<select name="tagsmenu" id="tags" multiple="multiple">
 						<% andTags = @parentTags.select { |t| t[:name] == "Tags" }.first %>
 							<% unless andTags.nil? %>
-								<option disabled="disabled" selected="selected">Choose Tags</option>
+								<!-- <option disabled="disabled" selected="selected">Choose Tags</option> -->
 								<% andTags.childTags.sort { |a,b| a.name <=> b.name }.each do |childTagCount| %>
 
 									<option value="<%= childTagCount.id %>"> 

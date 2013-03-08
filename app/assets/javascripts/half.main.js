@@ -79,7 +79,7 @@ $(function() {
     window.open(lnk);
   });
   // Android : Control Popups
-  $("#categories")[0].selectedIndex = 0;
+  
   $('#content ').on('click','.button-search-ad',function(event) {
     stopPropagation(event);
     // Get category tag ids & name
