@@ -97,9 +97,7 @@ def android
               sort_ms = " and sort by date"
           end    
         end 
-        unless params[:days].to_s.empty?
-          params[:day] = ["0","6"]
-        end
+       
         @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
     else
       @message ="Your filter is "
@@ -131,7 +129,9 @@ def android
       end
 
     end
-   
+    unless params[:days].to_s.empty?
+          params[:day] = ["0","6"]
+    end
     
     puts @message
 
