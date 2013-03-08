@@ -269,7 +269,7 @@
 		<%= bookmarkId.nil? ? "Bookmark it" : "In Bookmarks" %>
 	</span>
 <!-- 	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span> -->
-	<% if fullmode %>
+	<% if type == 'event' %>
 	<a href="http://www.halfpastnow.com/?event_id=<%=id%>" title="Add to Calendar" class="addthisevent">
 	    <span class="icon icon-calendar cal"></span>
 	    <span class="_url">http://www.halfpastnow.com/?event_id=<%=id%></span>
@@ -282,7 +282,6 @@
 	    <span class="_date_format">DD/MM/YYYY</span>
 	</a>
 	<% end %>
-	<span class="icon icon-envelope-alt email"></span>
 	<span class="icon icon-facebook-sign facebook"></span>
 	<span class="icon icon-twitter-sign twitter"></span>
 	<% if type == 'event' %>

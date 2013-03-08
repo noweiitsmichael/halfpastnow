@@ -99,7 +99,7 @@
 			  	$('#search-expand-icon').attr('class', 'icon-angle-down');
 			}
 		  });
-	      $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+	      $( '*' ).tooltip({ position: { my: "center bottom-10", at: "center+45 top" } });
 	      $('.head-title').tooltip('disable');
 	      $('.individual-tag').tooltip('disable');
 	      $('.icon-check').tooltip('disable');
@@ -610,7 +610,7 @@
 					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sxsw-channel-text">for everyone/RSVP</span> <span class="sort-type" style="display:none;">[by view count/<span class="sort date">date</span>]</span> 
 				</div>
 				<ul class="events">
-					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
+					<%= render :partial => "event_list_sxsw", :locals => { :occurrences => @occurrences, :offset => @offset } %>
 				</ul>
 				<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
 			</div>

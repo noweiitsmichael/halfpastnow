@@ -249,11 +249,14 @@ $(function() {
 
 
   });
- 
 
- 
-
+  $('#content .events').on('click','.addthisevent-drop',function(event) {
+    stopPropagation(event);
+  });
   $('#content .events').on('click','.picklists .picklist-link',function(event) {
+    stopPropagation(event);
+  });
+  $('#content .events').on('click','.rsvp-button',function(event) {
     stopPropagation(event);
   });
   $('#content .events').on('click','.edit-popup-box',function(event) {
@@ -401,6 +404,36 @@ $(function() {
     }
   });
 
+  // This "attending" class won't be here if the user isn't logged in
+  $('#content .events').on('click','.attending',function(e) {
+    var occurrenceId = $(this).attr('occ-id');
+    var that = $(this);
+    if(that.hasClass('add')) {
+      var bookmarked_type = "Occurrence";
+      var lnk = 'http://www.halfpastnow.com/events/show/'+occurrenceId+'?fullmode=true'; 
+          console.log("Attend: "+lnk);
+          FB.api(
+                  '/me/halfpastnow:attend',
+                  'post',
+                  { event: lnk },
+                  function(response) {});
+      $.getJSON('/bookmarks/attending_create', { bookmark: { "type": bookmarked_type, "id": occurrenceId } }, function(data) {
+        console.log("new attending bookmark");
+        that.removeClass('add').addClass('remove');
+        that.text("RSVP'd");
+        attending_id = data;
+      });
+    } 
+    else if(that.hasClass('remove')) {
+         e.preventDefault();
+       $.getJSON('/bookmarks/destroy/' + attending_id, function(data) {
+              that.addClass('add').removeClass('remove');
+        that.text("RSVP");
+        $(".re-rsvp").text("");
+          });
+    }
+  });
+
   
 });
 
@@ -410,20 +443,23 @@ function defaultTo(parameter, parameterDefault) {
 
 $(function() {
 
-  $('#content').on("mouseenter", ".events > li:not(.no-results)", function() {
-    google.maps.event.trigger(markers[$(this).index()], 'mouseover');
-  });
+  if(window.location.href.indexOf("users") === -1) {
+    $('#content').on("mouseenter", ".events > li:not(.no-results)", function() {
+      google.maps.event.trigger(markers[$(this).index()], 'mouseover');
+    });
 
-  $('#content').on("mouseleave", ".events > li:not(.no-results)", function() {
-    google.maps.event.trigger(markers[$(this).index()], 'mouseout');
-  });
+    $('#content').on("mouseleave", ".events > li:not(.no-results)", function() {
+      google.maps.event.trigger(markers[$(this).index()], 'mouseout');
+    });
 
-  $('#body').scroll(showPageMarkers);
-  $('#body').scroll(scrollHeader);
+    $('#body').scroll(showPageMarkers);
+    $('#body').scroll(scrollHeader);
+  }
   
   $(window).resize(showPageMarkers);
   $(window).resize(checkScroll);
   $(window).resize(scrollHeader);
+
 
   $("html").on("click", "[linkto]", loadModal);
   //$("#header").on("click", "[linkto]", loadModal);
@@ -450,7 +486,6 @@ window.addEventListener("popstate", function(e) {
   if(state && state.type) {
     var modality = spawn(modalities[state.type],{id: state.id});
     modal(modality);
-    calLoad();
   } else {
     demodal();
   }
@@ -552,6 +587,7 @@ function loadModal(event) {
      stopPropagation(event);
   }
   modal(modality);
+
   return false;
 }
 
@@ -594,19 +630,8 @@ function modal(modality) {
       $('.mode').hide().removeClass().addClass('mode ' + modality.type);
       $('.mode').show();
       $('.mode .insert-point').html(data);
-      // console.log("Attempting to attach calendar....")
-      // addthisevent.settings({
-      //     license   : "ac3hy61svzxtsqddkmut",
-      //     mouse     : false,
-      //     css       : false,
-      //     outlook   : {show:true, text:"Outlook Calendar"},
-      //     google    : {show:true, text:"Google Calendar"},
-      //     yahoo     : {show:false, text:"Yahoo Calendar"},
-      //     hotmail   : {show:true, text:"Hotmail Calendar"},
-      //     ical      : {show:true, text:"iCal Calendar"},
-      //     facebook  : {show:false, text:"Facebook Event"},
-      //     callback  : ""
-      // });
+      addthisevent.refresh();
+      $('.addthisevent_dropdown').hide();
     });
   }
 }

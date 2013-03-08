@@ -25,12 +25,14 @@
   <% end %>
 
 
+
   
   <% if @pick %>
     <meta property="og:type" content="hpnstaging:toppick" />
   <% else %>
     <!-- <meta property="og:type" content="hpnstaging:event" /> -->
   <% end %>
+
 
 
   <title class="head-title"><%= @pageTitle || "half past now." %></title>
@@ -59,13 +61,25 @@
     })();
 </script>
 
+<script type="text/javascript">
+  $(document).ready(function () {
+    console.log(".....ready");
+      $(".profile-hover").mouseenter(function() {
+          $('ul.profile-menu').slideDown('fast');
+      }), 
+      $(".profile-menu").mouseleave(function () {
+          $('ul.profile-menu').slideUp('fast');
+        }
+      );
+  });
+</script>
+
   
   <!-- for cropper -->
   <%= yield :head %>
 
 </head>
 <body>
-
   <%= yield :code %>
 
   <div id="body">
@@ -91,10 +105,14 @@
             
             <% if false %><% end %>
             <% if user_signed_in? %>
-              <div class="menu-element right pic">
-                <%= link_to(current_user.firstname + " " + current_user.lastname, edit_user_registration_path) %>
-                <%= link_to image_tag(current_user.profilepic_url(:mini) || "/assets/profile.png", :class => "top-profile-pic"), edit_user_registration_path %>
-              </div>
+
+                <div class="menu-element right pic profile-hover">
+                  <%= link_to(current_user.firstname + " " + current_user.lastname, edit_user_registration_path) %>
+                  <%= link_to image_tag(current_user.profilepic_url(:mini) || "/assets/profile.png", :class => "top-profile-pic"), edit_user_registration_path %>
+                </div>
+
+
+
             <% else %>
               <div class="menu-element right">
                   <a href="#" linkto="shunt">Sign Up</a> <span>/</span> <a href="#" linkto="shunt">Login</a>
@@ -105,6 +123,13 @@
               <div class="menu-element right nice-button" id ="add-event-button"><a href="/userSubmission/eventSearch">Add an Event!</a></div>
             <% else %>
               <div class="menu-element right nice-button" id ="add-event-button"><a href="#" linkto="shunt">Add an Event!</a></div>
+            <% end %>
+
+            <% if user_signed_in? %>
+                <ul class="profile-menu">
+                  <li><a href="/users/rsvp/<%=current_user.id%>">My RSVPs</a></li>
+                  <li><%= link_to("My Settings", edit_user_registration_path) %></li>
+                </ul>
             <% end %>
           </div>
         </div>
@@ -144,37 +169,20 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
                 d.getElementsByTagName('head')[0].appendChild(js);
               }(document));// delete below
 </script>
-
 <script type="text/javascript" src="http://js.addthisevent.com/atemay.js"></script>
-  <script type="text/javascript">
+<script type="text/javascript">
   addthisevent.settings({
-        license   : "ac3hy61svzxtsqddkmut",
-        mouse     : false,
-        css       : false,
-        outlook   : {show:true, text:"Outlook Calendar"},
-        google    : {show:true, text:"Google Calendar"},
-        yahoo     : {show:false, text:"Yahoo Calendar"},
-        hotmail   : {show:true, text:"Hotmail Calendar"},
-        ical      : {show:true, text:"iCal Calendar"},
-        facebook  : {show:false, text:"Facebook Event"},
-        callback  : ""
-    });
-
-  // function calLoad() {
-  //     console.log ("running....")
-  //     addthisevent.settings({
-  //       license   : "ac3hy61svzxtsqddkmut",
-  //       mouse     : false,
-  //       css       : false,
-  //       outlook   : {show:true, text:"Outlook Calendar"},
-  //       google    : {show:true, text:"Google Calendar"},
-  //       yahoo     : {show:false, text:"Yahoo Calendar"},
-  //       hotmail   : {show:true, text:"Hotmail Calendar"},
-  //       ical      : {show:true, text:"iCal Calendar"},
-  //       facebook  : {show:false, text:"Facebook Event"},
-  //       callback  : ""
-  //     });
-  //   }
+      license   : "ac3hy61svzxtsqddkmut",
+      mouse     : false,
+      css       : false,
+      outlook   : {show:true, text:"Outlook Calendar"},
+      google    : {show:true, text:"Google Calendar"},
+      yahoo     : {show:false, text:"Yahoo Calendar"},
+      hotmail   : {show:true, text:"Hotmail Calendar"},
+      ical      : {show:true, text:"iCal Calendar"},
+      facebook  : {show:false, text:"Facebook Event"},
+      callback  : ""
+  });
 </script>
 </body>
 </html>

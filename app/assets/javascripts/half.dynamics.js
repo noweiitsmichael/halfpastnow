@@ -993,7 +993,11 @@ function pullEvents(updateOptions) {
   loading('show');
 
   var visibleTagListID = $('.tags-menu.ortags.children li:visible').attr('parent-id');
-  $.get("/events/index?ajax=true", filter, function (data) {
+  var controllerLink = "/events/index?ajax=true"
+  if(window.location.href.indexOf("sxsw") > -1) {
+    controllerLink = "/events/sxsw?ajax=true"
+  }
+  $.get(controllerLink, filter, function (data) {
     var locations = [];
 
     var jData = $(data);
@@ -1044,6 +1048,7 @@ function pullEvents(updateOptions) {
       $('#body').scrollTop(Math.min($('#body').scrollTop(),$('#header .one').outerHeight()));
     }
     checkScroll();
+    addthisevent.refresh();
   });
 }
 
