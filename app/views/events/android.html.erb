@@ -475,8 +475,7 @@
 					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
 					<% if @occurrences.size > 0 %>
 						<%= will_paginate @occurrences, :style => 'width : 950px' %>
-					<% else %>
-						<div class="noresult"> Sorry, there is no event for your filter. Please choose again. </div>
+					
 					<% end %>
 					
 				</ul>
