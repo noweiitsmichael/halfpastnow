@@ -4816,7 +4816,10 @@ def SX
     @venue.save
     @occurrences  = []
     @recurrences = []
-    @occs = @venue.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now }  }.flatten.sort_by { |occ| occ.start }
+    startTime = DateTime.now
+    endTime = startTime.advance(:days =>1)
+   
+    @occs = @venue.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now &&  occ.start <= endTime}  }.flatten.sort_by { |occ| occ.start }
     @occs.each do |occ|
       # check if occurrence is instance of a recurrence
       if occ.recurrence_id.nil?
