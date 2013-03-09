@@ -146,11 +146,11 @@ $(function() {
     if (cost == 0) {
       costString = "low_price=0&high_price=777777777";
     }else if (cost == 1) {
-      costString = "low_price=0&high_price=0&cost=Free";
+      costString = "low_price=0&high_price=0";
     }else if (cost == 2) {
-      costString = "low_price=0&high_price=10&cost=<$10";
+      costString = "low_price=0&high_price=10";
     }else if (cost == 3) {
-      costString = "low_price=0&high_price=20&cost=<$20";
+      costString = "low_price=0&high_price=20";
     };
     e = document.getElementById("sortAd");
     var sort = e.options[e.selectedIndex].value;

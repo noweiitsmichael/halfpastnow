@@ -53,18 +53,18 @@ def android
         elsif params[:channel_id] == 424
              channel_ms = "I have nothin' but my cowboy boots on "
         end
-        puts channel_ms
+        # puts channel_ms
         tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",")
-        puts "tags - 0"
-        puts params
-        puts tag
-        puts params[:included_tags]
+        # puts "tags - 0"
+        # puts params
+        # puts tag
+        # puts params[:included_tags]
         tag_ms =""
         i=0
         tag.each{ |t|
-          puts "tags"
+          # puts "tags"
           s = t.to_s
-          puts s    
+          # puts s    
          
           if s.eql? "166"
             tag_ms = (i==0) ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
@@ -81,8 +81,8 @@ def android
           end
           i=i+1
         }
-        puts "Tags - combine: "
-        puts tag_ms
+        # puts "Tags - combine: "
+        # puts tag_ms
         time_ms =""
         
         time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))
@@ -122,12 +122,16 @@ def android
       unless time.eql? ""
           @message = (@message.eql? mod) ? "Your filter - during ".concat(time) : @message.concat(" during ".concat(time))
       end
-      cost = (params[:cost].to_s.empty?) ? "" :  params[:cost].to_s
-      unless cost.eql? ""
-          @message = (@message.eql? mod) ? "Your filter - with cost ".concat(cost) : @message.concat(" ".concat(cost))
+      cost = (params[:price].to_s.empty?) ? "" :  params[:price].to_s
+      if cost.eql? "0"
+          @message = (@message.eql? mod) ? "Your filter - with cost Free" : @message.concat(" Free")
+      elsif cost.eql? "10"
+          @message = (@message.eql? mod) ? "Your filter - with cost <$10" : @message.concat(" <$10")
+      elsif cost.eql? "777777777"
+          @message = (@message.eql? mod) ? "Your filter - with No Price limit" : @message.concat(" No Price Limit")
       end
       
-      if params[:sort].to_s.eql? "0"
+      if params[:high].to_s.eql? "0"
         @message = (@message.eql? mod) ? "Your filter - all events sorted by Most Views" : @message.concat(" Sort by Most Views")
       else
         @message = (@message.eql? mod) ? "Your filter - all events sorted by Date" : @message.concat(" Sort by Date")
@@ -174,9 +178,9 @@ def android
     @occurrences = Occurrence.paginate(:page => params[:page], :per_page => 10 ).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
     
    
-    puts @occurrences  
+    # puts @occurrences  
     
-    puts @occurrences
+    # puts @occurrences
     @occurringTags = {}
 
     @tagCounts = []
