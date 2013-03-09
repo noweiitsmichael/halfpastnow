@@ -122,16 +122,21 @@ def android
       unless time.eql? ""
           @message = (@message.eql? mod) ? "Your filter - during ".concat(time) : @message.concat(" during ".concat(time))
       end
-      cost = (params[:price].to_s.empty?) ? "" :  params[:price].to_s
+      cost = (params[:high_price].to_s.empty?) ? "" :  params[:high_price].to_s
       if cost.eql? "0"
           @message = (@message.eql? mod) ? "Your filter - with cost Free" : @message.concat(" Free")
+         
       elsif cost.eql? "10"
           @message = (@message.eql? mod) ? "Your filter - with cost <$10" : @message.concat(" <$10")
+      elsif cost.eql? "20"
+          @message = (@message.eql? mod) ? "Your filter - with cost <$20" : @message.concat(" <$20")
+         
       elsif cost.eql? "777777777"
           @message = (@message.eql? mod) ? "Your filter - with No Price limit" : @message.concat(" No Price Limit")
+         
       end
       
-      if params[:high].to_s.eql? "0"
+      if params[:sort].to_s.eql? "0"
         @message = (@message.eql? mod) ? "Your filter - all events sorted by Most Views" : @message.concat(" Sort by Most Views")
       else
         @message = (@message.eql? mod) ? "Your filter - all events sorted by Date" : @message.concat(" Sort by Date")
