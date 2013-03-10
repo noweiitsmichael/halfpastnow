@@ -4042,7 +4042,7 @@ def SX
 
 
 
-    query = "SELECT DISTINCT ON (recurrences.id) events.event_url AS url,events.ticket_url AS tix, bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+    query = "SELECT DISTINCT ON bookmark_lists.name AS lname, (recurrences.id) events.event_url AS url,events.ticket_url AS tix, bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
@@ -4056,7 +4056,7 @@ def SX
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE bookmark_lists.id IN (#{@ids}) AND bookmark_lists.featured IS NOT FALSE AND occurrences.recurrence_id IS NOT NULL AND (recurrences.range_end >= '#{Date.today()}' OR recurrences.range_end IS NULL)
             UNION
-            SELECT DISTINCT ON (events.id) events.event_url AS url,events.ticket_url AS tix,bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            SELECT DISTINCT ON bookmark_lists.name AS lname, (events.id) events.event_url AS url,events.ticket_url AS tix,bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
@@ -4119,7 +4119,7 @@ def SX
                       :event_id => s["event_id"], #19
                       :start => s["occurrence_start"] , #20
                       :end => s["end"], #21
-                      :tp => list.name, #22
+                      :tp => s["lname"], #22
                       :tix => s["tix"],
                       :url => s["url"]
                     }
