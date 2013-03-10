@@ -4037,7 +4037,7 @@ def SX
     tmp ="0"
 
     @ids = params[:ids].to_s.empty? ? nil : params[:ids].split(',')
-    @lists = BookmarkList.find(@ids)
+    @ids = @ids.join(',')
     esinfo = []
 
 
