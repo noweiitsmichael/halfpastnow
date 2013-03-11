@@ -19,15 +19,7 @@
 		<div class="picklists">
 			<% picklists.take(3).each_with_index do |pList,index| %>
 				<a ><%= image_tag pList.picture_url(:mini) || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
-				<% first_commented_occurrence = occurrence.event_bookmarks_with_comments(pList.id).first %>
-				<% if first_commented_occurrence %>
-				<% @comment_string = first_commented_occurrence.comment %>
-				<% unless @comment_string.eql?'' %>
-					<div class="event-tp-comment-<%= pList.id %>-<%=occurrence.id %> popup-comment">
-						<%=  @comment_string %>
-					</div>
-				<% end %>
-				<% end %> 
+				
 			<% end %>
 			<em style="position: relative;top: -5px;margin-left: 2px;">on <%= picklists.size %> top picks <%= picklists.size == 1 ? "list" : "lists" %></em>
 		</div>
@@ -44,8 +36,5 @@
 			<div class="latitude"><%= occurrence.event.venue.latitude %></div>
 			<div class="longitude"><%= occurrence.event.venue.longitude %></div>
 		</div>
-		<div class="marker-caching">
-			<img src="/assets/markers/marker_<%= (index + 1) % 100 %>.png" />
-			<img src="/assets/markers/marker_hover_<%= (index + 1) % 100 %>.png" />
-		</div>
+		
 	</li>
