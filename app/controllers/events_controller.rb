@@ -42,6 +42,8 @@ def android
     params[:user_id] = current_user ? current_user.id : nil
 
      @message =""
+     puts "Params SSSSSSSXSW : "
+     puts params
     if params[:type].to_s.eql? "sxsw"
         channel_ms="I have a badge with Free Food, Free Drinks, Party, Unofficial events during SXSW. "
         if params[:channel_id].to_i == 414
@@ -84,8 +86,12 @@ def android
         # puts "Tags - combine: "
         # puts tag_ms
         time_ms =""
+        unless params[:start_days].to_s.eql?""
+          time_ms = " Today "
+        else
+          time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))  
+        end
         
-        time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))
 
         
         
