@@ -86,7 +86,9 @@ def android
         # puts "Tags - combine: "
         # puts tag_ms
         time_ms =""
-        unless params[:start_days].to_s.eql?""
+        unless params[:t].to_s.eql?"0"
+          time_ms = " SXSW "
+        elsif params[:t].to_s.eql?"1"
           time_ms = " Today "
         else
           time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))  

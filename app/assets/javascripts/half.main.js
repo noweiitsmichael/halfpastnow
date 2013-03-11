@@ -230,17 +230,22 @@ $(function() {
       sortString="sort=0";
     };
 
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //January is 0!
+    var yyyy = today.getFullYear();
+    dd = yyyy+"-"+mm+"-"+dd
     var dateString = "start_days=&end_days=";
     if (time==0) { 
-      dateString = "start_days=0&end_days=0&t=0";
+      dateString = "start_date="+dd+"&end_date=2013-03-17&t=0";
     }else if (time==1) { 
-      dateString = "start_date=2013-03-08&end_date=2013-03-17&t=1";
+      dateString = "start_days=0&end_days=0&t=1";
     }else if (time==2) { 
-      dateString = "start_date=2013-03-08&end_date=2013-03-12&t=2";
+      dateString = "start_date="+dd+"&end_date=2013-03-12&t=2";
     }else if (time==3) { 
-      dateString = "start_date=2013-03-08&end_date=2013-03-16&t=3";
+      dateString = "start_date="+dd+"&end_date=2013-03-16&t=3";
     }else if (time==4) { 
-      dateString = "start_date=2013-03-08&end_date=2013-03-17&t=4";
+      dateString = "start_date="+dd+"&end_date=2013-03-17&t=4";
     };
 
     var searchString = "/events/android?"+accessString+"&"+tagString+"&"+sortString+"&"+dateString+"&type=sxsw";

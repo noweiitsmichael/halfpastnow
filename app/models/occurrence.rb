@@ -68,8 +68,8 @@ class Occurrence < ActiveRecord::Base
 
     # Different default for SXSW
     if (params[:action] == "sxsw") && (params[:channel_id].to_s.empty?)
-      params[:channel_id] = 416
-      # params[:channel_id] = 4
+       params[:channel_id] = 416
+       # params[:channel_id] = 4
     end
 
     unless(params[:channel_id].to_s.empty?)
