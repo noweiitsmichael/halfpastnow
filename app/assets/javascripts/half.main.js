@@ -122,20 +122,20 @@ $(function() {
     console.log("catIDsA: "+day);
     var dayString = "";
     if (day == 0) {
-      dayString="start_days=0&end_days=-1";
+      dayString="start_days=0&end_days=-1&aday=0";
     }else if(day == 1){
-      dayString="start_days=0&end_days=0&time=Today";
+      dayString="start_days=0&end_days=0&time=Today&aday=1";
     }else if(day == 2){
-      dayString="start_days=1&end_days=1&time=Tomorrow";
+      dayString="start_days=1&end_days=1&time=Tomorrow&aday=2";
     }else if(day == 3){
       // var d = new Date();
       x=5;//d.getDay();
       if (x < 6 && x>0) { 
-        dayString="start_days=0&end_days=7&days=0,6&time=Weekend";
+        dayString="start_days=0&end_days=7&days=0,6&time=Weekend&aday=3";
       }else if (x ==0 ) { 
-        dayString="start_days=0&end_days=0&time=Weekend";
+        dayString="start_days=0&end_days=0&time=Weekend&aday=3";
       }else if (x ==6 ) { 
-        dayString="start_days=0&end_days=1&time=Weekend";
+        dayString="start_days=0&end_days=1&time=Weekend&aday=3";
       };
     };
     
@@ -144,13 +144,13 @@ $(function() {
     console.log("catIDs: cost"+cost);
     var costString = "";
     if (cost == 0) {
-      costString = "low_price=0&high_price=777777777";
+      costString = "low_price=0&high_price=777777777&c=0";
     }else if (cost == 1) {
-      costString = "low_price=0&high_price=0";
+      costString = "low_price=0&high_price=0&c=1";
     }else if (cost == 2) {
-      costString = "low_price=0&high_price=10";
+      costString = "low_price=0&high_price=10&c=2";
     }else if (cost == 3) {
-      costString = "low_price=0&high_price=20";
+      costString = "low_price=0&high_price=20&c=3";
     };
     e = document.getElementById("sortAd");
     var sort = e.options[e.selectedIndex].value;
@@ -213,16 +213,16 @@ $(function() {
     var accessString = "channel_id=414";
    
     if (access==0) {
-      accessString="channel_id=414";
+      accessString="channel_id=414&access=0";
     }else if(access==1) {
-      accessString="channel_id=415";
+      accessString="channel_id=415&access=1";
     }else if(access==2) {
-      accessString="channel_id=416";
+      accessString="channel_id=416&access=2";
     }else if(access==3) {
-      accessString="channel_id=424";
+      accessString="channel_id=424&access=4";
     };
     var tagString = (tag=="") ? "" :"included_tags="+tag;
-    var sortString="sort=0";
+    var sortString="sort=1";
     if (sort == 1) {
       sortString="sort=1";
     }
@@ -230,22 +230,24 @@ $(function() {
       sortString="sort=0";
     };
 
-    var dateString = "start_date=&end_date=";
+    var dateString = "start_days=&end_days=";
     if (time==0) { 
-      dateString = "start_date=2013-03-08&end_date=2013-03-17";
+      dateString = "start_days=0&end_days=0&t=0";
     }else if (time==1) { 
-      dateString = "start_date=2013-03-08&end_date=2013-03-12";
-    }if (time==2) { 
-      dateString = "start_date=2013-03-08&end_date=2013-03-16";
+      dateString = "start_date=2013-03-08&end_date=2013-03-17&t=1";
+    }else if (time==2) { 
+      dateString = "start_date=2013-03-08&end_date=2013-03-12&t=2";
     }if (time==3) { 
-      dateString = "start_date=2013-03-08&end_date=2013-03-17";
+      dateString = "start_date=2013-03-08&end_date=2013-03-16&t=3";
+    }if (time==4) { 
+      dateString = "start_date=2013-03-08&end_date=2013-03-17&t=4";
     };
 
     var searchString = "/events/android?"+accessString+"&"+tagString+"&"+sortString+"&"+dateString+"&type=sxsw";
     console.log(searchString);
     window.open(searchString,'_self');
     
-   
+    
 
 
   });
