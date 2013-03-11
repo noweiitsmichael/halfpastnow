@@ -237,9 +237,9 @@ $(function() {
       dateString = "start_date=2013-03-08&end_date=2013-03-17&t=1";
     }else if (time==2) { 
       dateString = "start_date=2013-03-08&end_date=2013-03-12&t=2";
-    }if (time==3) { 
+    }else if (time==3) { 
       dateString = "start_date=2013-03-08&end_date=2013-03-16&t=3";
-    }if (time==4) { 
+    }else if (time==4) { 
       dateString = "start_date=2013-03-08&end_date=2013-03-17&t=4";
     };
 
