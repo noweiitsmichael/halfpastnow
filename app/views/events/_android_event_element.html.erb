@@ -4,11 +4,11 @@
 		
 		<!-- http://www.halfpastnow.com/events/show/167474?fullmode=true -->
 		<!-- <a href="localhost:3000/events/show/<%= occurrence.id %>?fullmode=true"> -->
-		<a href="show/<%= occurrence.id %>?fullmode=true">
+		<!-- <a href="show/<%= occurrence.id %>?fullmode=true"> -->
 		<div class="title">
 			<%= truncate(occurrence.event.title, :length => 115) %>
 		</div>
-		<a href="/?venue_id=<%= occurrence.event.venue.id %>"><div class="venue" link-id="<%= occurrence.event.venue.id %>" linkto="venue">@ <span class="venue-inner"><%= occurrence.event.venue.name %></span></div></a>
+		<div class="venue" >@ <span class="venue-inner"><%= occurrence.event.venue.name %></span></div>
 		<div class="datetime"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></div>
 		<% if occurrence.event.price %>
 			<div class="price"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></div>
@@ -18,7 +18,7 @@
 		<% if picklists.size > 0 %>
 		<div class="picklists">
 			<% picklists.take(3).each_with_index do |pList,index| %>
-				<a href="/picks/find/<%= pList.id %>" onMouseOver="show('.event-tp-comment-<%= pList.id %>-<%=occurrence.id %>')" onMouseOut="hide('.event-tp-comment-<%= pList.id %>-<%=occurrence.id %>')" class="picklist-link"><%= image_tag pList.picture_url(:mini) || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
+				<a ><%= image_tag pList.picture_url(:mini) || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
 				<% first_commented_occurrence = occurrence.event_bookmarks_with_comments(pList.id).first %>
 				<% if first_commented_occurrence %>
 				<% @comment_string = first_commented_occurrence.comment %>
@@ -32,52 +32,14 @@
 			<em style="position: relative;top: -5px;margin-left: 2px;">on <%= picklists.size %> top picks <%= picklists.size == 1 ? "list" : "lists" %></em>
 		</div>
 		<% end %>
-		<% if ((defined? bookmarkList) && !(bookmarkList.nil?) && (bookmarkList.featured))
-			list_bookmark = occurrence.event_bookmarks_with_comments(bookmarkList.id).first
-				if (list_bookmark ) %>
-				<div id="<%= occurrence.id %>" class="bookmark-comment"><%= list_bookmark.comment %></div>
-				
-				<% if (@isMyTopPicksList) && (current_user.role_at_least?("top_picker")) %>
-					<div class="edit-comment-tp <%= (occurrence.all_event_bookmarks(current_user.featured_list.id).size > 0) ? "add" : "remove" %> ">
-					<div class="edit-add-tp" event-id="<%= occurrence.id %>">Edit</div>
-					<div class="delete-tp" event-id="<%= occurrence.id %>">Remove</div>
-					<div class="<%= occurrence.id %>">
-						<div class="edit-popup-box add" >
-							
-							<label class="edit-label" style="font-size: 16px; color:white; margin-left:10px; "> Edit comment (Optional)</label>
-							<textarea class="edit-comment-text" style="color:black; font-size: 16px; margin-left:10px; width:270px; " placeholder="Comment"><%=list_bookmark.comment %></textarea>
-							<button class="edit-button" onclick='return submit_edit_comment(<%= occurrence.id %>)' style="margin-right:10px; float:right;">Edit Comment</button>
-							<button class="delete-btn" onclick='return deleteTP(<%= occurrence.id %>)'>UnTP</button>
-						
-						</div>
-					</div>
-					</div>
-				
-				<% end %>
-				
-			
-			<% end
-		end %>
+		
 
 		<div class="picture">
 			<img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
 			<div class="picture-overlay"></div>
 		</div>
-	</a>
-		<div class="event-actions">  
-			<div title="Share by Email"><span class="icon icon-envelope-alt email" event-id="<%= occurrence.id %>" event-title="<%= occurrence.event.title %>" event-summary="<%=occurrence.event.description%>" event-pic="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>"></span><span class="text">email</span></div>
-			<div title="Post to Facebook"><span class="icon icon-facebook-sign facebook" event-id="<%= occurrence.id %>" event-title="<%= occurrence.event.title %>" event-summary="<%=strip_tags(occurrence.event.description)%>" event-venue="<%= occurrence.event.venue.name %>" event-pic="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>"></span><span class="text">facebook</span></div>
-			<div title="Post on Twitter"><span class="icon icon-twitter-sign twitter" event-id="<%= occurrence.id %>"></span><span class="text">twitter</span></div>
-			<% 
-				if(current_user)
-			      bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
-			      bookmarkId = bookmark.nil? ? nil : bookmark.id 
-			    else
-			      bookmarkId = nil
-			    end 
-		    %>
-			<div title="Bookmark This"><span class="icon icon-bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" <%= current_user ? "" : "linkto='shunt'" %> event-id="<%= occurrence.id %>"></span><span class="text">bookmark</span></div>
-		</div>
+	
+		
 		<div style="display:none;">
 			<div class="latitude"><%= occurrence.event.venue.latitude %></div>
 			<div class="longitude"><%= occurrence.event.venue.longitude %></div>
