@@ -186,7 +186,11 @@ class Occurrence < ActiveRecord::Base
 
 
       # date/time
-      start_date_check = "occurrences.start >= '#{Date.today()}'"
+      if Time.now.hour < 17
+        start_date_check = "occurrences.start >= now() - interval '2 hours'"
+      else
+        start_date_check = "occurrences.start >= now() - interval '4 hours'"
+      end
       end_date_check = start_time_check = end_time_check = day_check = "TRUE"
       occurrence_start_time = "((EXTRACT(HOUR FROM occurrences.start) * 3600) + (EXTRACT(MINUTE FROM occurrences.start) * 60))"
 

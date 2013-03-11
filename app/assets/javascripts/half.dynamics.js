@@ -152,6 +152,12 @@ $('.sxsw-dates').dropkick({
           filter.start_date = '2013-03-12';
           filter.end_date = '2013-03-17';
         break;
+        case 4:
+          //Music
+          filter.start_date = Date.today().toString("yyyy-MM-dd");
+          console.log(Date.today().toString("yyyy-MM-dd"));
+          filter.end_date = Date.today().toString("yyyy-MM-dd");
+        break;
       }
         updateViewFromFilter();
       }

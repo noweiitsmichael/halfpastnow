@@ -500,6 +500,7 @@ namespace :api do
 		pages = (eb["events"][0]["summary"]["total_items"] / 10).ceil
 		puts "Pages: #{pages}"
 		new_raw_venues = 0
+		old_events = 0
 		new_real_venues = 0
 		new_events = 0
 		updated_events = 0
