@@ -59,7 +59,9 @@
 			</div>
 		</div>
 		<div id="getsat-widget-4765"><a href="#" class="gs-replacement-link">Wrong info? RSVP sold out? Tell us!</a></div>
-		<script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
+		<% unless @mobileMode %>
+			<script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
+		<% end %>
 		<script type="text/javascript">
 			if (typeof GSFN !== "undefined") { GSFN.loadWidget(4765,{"containerId":"getsat-widget-4765"}); }
 		</script>
