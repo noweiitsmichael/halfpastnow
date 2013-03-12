@@ -151,7 +151,10 @@
     </div>
   </div>
 <div id="getsat-widget-2414"></div>
-<script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
+<% unless @mobileMode %>
+  <script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>  
+<% end %>
+
 <script type="text/javascript">
 if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-widget-2414"}); }
   window.fbAsyncInit = function() {
