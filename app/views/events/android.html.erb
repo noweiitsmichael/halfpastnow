@@ -467,6 +467,7 @@
 			<!-- <a class="button sort" href="#"><span>Sort</span></a>
 			<a class="button search" href="#"><span>Search</span></a> -->
 		</div>
+
 		<div class="main">
 
 			<% if (@mobileMode) %> </center> <input type="hidden" id="androidStatus" name="msg" value="1" style="display:none"/> 
@@ -474,9 +475,11 @@
 			<% end %>
 			
 			<div class="inner android">
-				<div class="filter-summary">
+				<br>
+				<ul class="filter-summary">
 					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="sort-type" style="display:none;">[by popularity/<span class="sort date">date</span>]</span> 
-				</div>
+				</ul>
+				<br>
 				<ul class="events">
 					
 					
