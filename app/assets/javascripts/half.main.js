@@ -399,9 +399,9 @@ $(function() {
             { event: lnk },
             function(response) {
                if (!response || response.error) {
-                  alert('Error occured'+response);
+                  // alert('Error occured'+response);
                } else {
-                  alert('Post list was successful! Action ID: ' + response.id);
+                  // alert('Post list was successful! Action ID: ' + response.id);
                }
             });
         $.getJSON('/bookmarks/custom_create', { bookmark: { "type": "Occurrence", "id": id } }, function(data) {

@@ -57,9 +57,9 @@
 				            { event: lnk },
 				            function(response) {
 				               if (!response || response.error) {
-				                  alert('Error occured'+response);
+				                  // alert('Error occured'+response);
 				               } else {
-				                  alert('Post event was successful! Action ID: ' + response.id);
+				                  // alert('Post event was successful! Action ID: ' + response.id);
 				               }
 				        });
 						break;
@@ -224,9 +224,9 @@
             { toppick: "<%= @url %>" },
             function(response) {
                if (!response || response.error) {
-                  alert('Error occured'+response);
+                  // alert('Error occured'+response);
                } else {
-                  alert('Post list was successful! Action ID: ' + response.id);
+                  // alert('Post list was successful! Action ID: ' + response.id);
                }
             });
       }
@@ -242,9 +242,9 @@
             { object: "<%= @url1 %>" },
             function(response) {
                if (!response || response.error) {
-                   alert('Error occured'+response);
+                   // alert('Error occured'+response);
                } else {
-                   alert('Successfully post on your timeline');
+                   // alert('Successfully post on your timeline');
                }
             });
           window.open(url, '_blank');
