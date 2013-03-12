@@ -231,7 +231,7 @@ def android
         SET views = views + 1
         WHERE id IN (#{@venue_ids * ','})")
     end
-    @last= 'Last message'
+    @last = 'Last message'
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
