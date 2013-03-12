@@ -138,7 +138,7 @@
 			<% if type == "event" %>
 
 			var title = "<%= event.title  %>";
-		    var summary = "<%= truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"')  %>";
+		    var summary = "<%= (event.description.nil?) ? "" : truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"')  %>";
 		    var pic = "<%= event.cover_image_url  %>";
     		var venue = "<%= event.venue.name  %>";
 			var url = "https://www.facebook.com/dialog/feed?%20app_id=" + app_id + "&%20link=" + link + "&%20picture=" + pic + "&%20name=" + title + "&%20caption=" + venue + "&%20description=" + summary + "&%20redirect_uri=" + redirect;
