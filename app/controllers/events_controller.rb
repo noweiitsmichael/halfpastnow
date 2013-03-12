@@ -239,6 +239,7 @@ def android
         SET views = views + 1
         WHERE id IN (#{@venue_ids * ','})")
     end
+
     @last= 'Last message'
     @filter =params
 

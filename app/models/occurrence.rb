@@ -186,11 +186,7 @@ class Occurrence < ActiveRecord::Base
 
 
       # date/time
-      if Time.now.hour < 17
-        start_date_check = "occurrences.start >= now() - interval '2 hours'"
-      else
-        start_date_check = "occurrences.start >= now() - interval '4 hours'"
-      end
+      start_date_check = "occurrences.start >= '#{Date.today()}'"
       end_date_check = start_time_check = end_time_check = day_check = "TRUE"
       occurrence_start_time = "((EXTRACT(HOUR FROM occurrences.start) * 3600) + (EXTRACT(MINUTE FROM occurrences.start) * 60))"
 
@@ -217,6 +213,12 @@ class Occurrence < ActiveRecord::Base
 
         start_time_check = "#{occurrence_start_time} >= #{event_start_time}"
         end_time_check = "#{occurrence_start_time} <= #{event_end_time}"
+      end
+
+      if Time.now.hour < 17
+        start_date_where = "now() - interval '2 hours'"
+      else
+        start_date_where = "now() - interval '4 hours'"
       end
 
 
@@ -334,7 +336,7 @@ class Occurrence < ActiveRecord::Base
     query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id,  events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
               FROM occurrences 
                 #{join_clause}
-              WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS NOT TRUE
+              WHERE #{where_clause} AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
               ORDER BY events.id, occurrences.start LIMIT 1000"
     # query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, events.title AS event_title, events.description AS event_description, tags.name AS tag_name, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
     #           FROM occurrences 
