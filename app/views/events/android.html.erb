@@ -204,6 +204,7 @@
 			placeMarkers({points: locations});
 
 			google.maps.event.addListener(map, 'idle', boundsChanged);
+
 		}
 
 		function to_i(obj) {
@@ -291,6 +292,7 @@
 	      $('.head-title').tooltip('disable');
 	      $('.icon-check').tooltip('disable');
 	      $('.icon-check-empty').tooltip('disable');
+	      // console.log("XXXXXX Update filter XXXXXXXX");
 
 		});
 
@@ -303,12 +305,15 @@
 				filter.included_tags = channelFilters[parseInt(stream_id)].included_tags;
 				updateViewFromFilter();
 			}
+
 		});
 		$('.button-filter').click(function() {
 			console.log("Clickeddd");
 			
 		});
-		
+		 var hidderValue = document.getElementById('testfilter').value;
+		   console.log("Filter values: ");
+		   console.log(hidderValue);
 
 
 
@@ -334,46 +339,47 @@
 <% content_for :body do %>
 
 		<% if (@mobileMode) || true %> 
-			<div class="androidMessage"><%= @message %></div>
+			<div class="androidMessage" ><%= @message %></div>
 			<div class="filterTitle"> Choose your filter :</div>
 		<% end%>
 		<div id="content">
-		<div>
+		<div class="SXButtons" >
 			
-			
+			<input type="hidden" id="testfilter" name="n_test" value="<%= @filter %>" />
 			<% if params[:type].to_s.eql? "sxsw" %>
 				<div class="button-access">
 					<select name="mydropdown" id="access" >
-						<option value="0" selected>A Badge</option>
-						<option value="1">A Wristband</option>
-						<option value="2">No SXSW Credentials (RSVP OK)</option>
-						<option value="3">Nothin' but my cowboy boots</option>
+						<option value="0" <%=(@badge.eql?"0") ? "selected" : "" %> >A Badge</option>
+						<option value="1" <%=(@badge.eql?"1") ? "selected" : "" %> >A Wristband</option>
+						<option value="2" <%=(@badge.eql?"2") ? "selected" : "" %> >No SXSW Credentials (RSVP OK)</option>
+						<option value="3" <%=(@badge.eql?"3") ? "selected" : "" %> >Nothin' but my cowboy boots</option>
 					</select>
 				</div>
 				<div class="button-time" >
 					<select name="timedropdown" id="time">
-						<option value="0" selected>All</option>
-						<option value="1">Interactive (3/8-3/12)</option>
-						<option value="2">Film (3/8-3/16)</option>
-						<option value="3">Music (3/12-3/17)</option>
+						<option value="0" <%=(@t.eql?"0") ? "selected" : "" %> >All</option>
+						<option value="1" <%=(@t.eql?"1") ? "selected" : "" %> >Today</option>
+						<option value="2" <%=(@t.eql?"2") ? "selected" : "" %> >Interactive (3/8-3/12)</option>
+						<option value="3" <%=(@t.eql?"3") ? "selected" : "" %> >Film (3/8-3/16)</option>
+						<option value="4" <%=(@t.eql?"4") ? "selected" : "" %> >Music (3/12-3/17)</option>
 					</select>
 				</div>
 
 				
 				<div class="button-tag" >
 					<select name="tagdropdown" id="tag" multiple="multiple" >
-						<option value="0" selected>Free Drinks</option>
-						<option value="1" selected>Free Food</option>
-						<option value="2" selected>Party</option>
-						<option value="3" selected >No Cover</option>
-						<option value="4" selected>Unofficial</option>
-						<option value="5">RSVP</option>
+						<option value="0" <%= (@arrayincluded_tags.include? "166") ? "selected" : "" %>    >Free Drinks</option>
+						<option value="1" <%= (@arrayincluded_tags.include? "165") ? "selected" : "" %>>Free Food</option>
+						<option value="2" <%= (@arrayincluded_tags.include? "184") ? "selected" : "" %>>Party</option>
+						<option value="3" <%= (@arrayincluded_tags.include? "167") ? "selected" : "" %> >No Cover</option>
+						<option value="4" <%= (@arrayincluded_tags.include? "189") ? "selected" : "" %>>Unofficial</option>
+						<option value="5" <%= (@arrayincluded_tags.include? "191") ? "selected" : "" %> >RSVP</option>
 					</select>
 				</div>
 				<div class="button-sort" >
 					<select name="sortdropdown" id="sort">
-						<option value="0" selected>Most views</option>
-						<option value="1">Date</option>
+						<option value="0" <%=(@s.eql?"0") ? "selected" : "" %>>Most views</option>
+						<option value="1" <%=(@s.eql?"1") ? "selected" : "" %> >Date</option>
 					</select>
 				</div>
 				
@@ -397,12 +403,12 @@
 								<% puts "Parent Tag name: "%>
 								<% puts parentTag.name %>
 								<% if parentTag.childTags.size > 0 %>
-									<option value="<%= parentTag.id %>" >
+									<option value="<%= parentTag.id %>" <%= (@arrayincluded_tags.include? parentTag.id.to_s ) ? "selected" : "" %> >
 										<%= parentTag.name %>
 									</option>
 									<optgroup label="<%= parentTag.name %>" >
 										<% parentTag.childTags.each do |childTag |%>
-											<option value="<%= childTag.id %>"> 
+											<option value="<%= childTag.id %>" <%= (@arrayincluded_tags.include? childTag.id.to_s ) ? "selected" : "" %>> 
 												<%= childTag.name %>
 											</option>
 										<% end %>
@@ -421,7 +427,7 @@
 								<!-- <option disabled="disabled" selected="selected">Choose Tags</option> -->
 								<% andTags.childTags.sort { |a,b| a.name <=> b.name }.each do |childTagCount| %>
 
-									<option value="<%= childTagCount.id %>"> 
+									<option value="<%= childTagCount.id %>" <%= (@arrayand_tags.include? childTagCount.id.to_s ) ? "selected" : "" %>> 
 												<%= childTagCount.name %>
 									</option>
 								
@@ -432,26 +438,26 @@
 				
 				<div class="button-day">
 					<select name="daysmenu" id="dayAd">
-						<option value="0">No time limit</option>
-						<option value="1">Today</option>
-						<option value="2">Tomorrow</option>
-						<option value="3">Weekend</option>
+						<option value="0" <%= (@aday.eql? "0") ? "selected" : "" %>>No time limit</option>
+						<option value="1" <%= (@aday.eql? "1") ? "selected" : "" %>>Today</option>
+						<option value="2" <%= (@aday.eql? "2") ? "selected" : "" %>>Tomorrow</option>
+						<option value="3" <%= (@aday.eql? "3") ? "selected" : "" %>>Weekend</option>
 					</select>
 				</div>
 				
 				<div class="button-cost">
 					<select name="costsmenu" id="cost">
-						<option value="0">No price limit</option>
-						<option value="1">Free</option>
-						<option value="2">< $10</option>
-						<option value="3">< $20</option>
+						<option value="0" <%= (@acost.eql? "0") ? "selected" : "" %>>No price limit</option>
+						<option value="1" <%= (@acost.eql? "1") ? "selected" : "" %>>Free</option>
+						<option value="2"<%= (@acost.eql? "2") ? "selected" : "" %>> <$10</option>
+						<option value="3"<%= (@acost.eql? "3") ? "selected" : "" %>> <$20</option>
 					</select>
 				</div>
 				
 				<div class="button-sort-ad" >
 					<select name="sortdropdown" id="sortAd">
-						<option value="0" selected>Most views</option>
-						<option value="1">Date</option>
+						<option value="0" <%=(@s.eql?"0") ? "selected" : "" %> >Most views</option>
+						<option value="1" <%=(@s.eql?"1") ? "selected" : "" %> >Date</option>
 					</select>
 				</div>
 				<div class="button-search-ad"><span>Search</span>
@@ -461,6 +467,7 @@
 			<!-- <a class="button sort" href="#"><span>Sort</span></a>
 			<a class="button search" href="#"><span>Search</span></a> -->
 		</div>
+
 		<div class="main">
 
 			<% if (@mobileMode) %> </center> <input type="hidden" id="androidStatus" name="msg" value="1" style="display:none"/> 
@@ -468,9 +475,11 @@
 			<% end %>
 			
 			<div class="inner android">
-				<div class="filter-summary">
+				<br>
+				<ul class="filter-summary">
 					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="sort-type" style="display:none;">[by popularity/<span class="sort date">date</span>]</span> 
-				</div>
+				</ul>
+				<br>
 				<ul class="events">
 					
 					

@@ -42,15 +42,17 @@ def android
     params[:user_id] = current_user ? current_user.id : nil
 
      @message =""
+     puts "Params SSSSSSSXSW : "
+     puts params
     if params[:type].to_s.eql? "sxsw"
         channel_ms="I have a badge with Free Food, Free Drinks, Party, Unofficial events during SXSW. "
-        if params[:channel_id] == 414
-           channel_ms = "I have a badge"
-        elsif params[:channel_id] == 415
-             channel_ms = "I have a wristband"
-        elsif params[:channel_id] == 416
-             channel_ms = "I have NO SXSW Credentials"
-        elsif params[:channel_id] == 424
+        if params[:channel_id].to_i == 414
+           channel_ms = "I have a badge "
+        elsif params[:channel_id].to_i.to_i == 415
+             channel_ms = "I have a wristband "
+        elsif params[:channel_id].to_i == 416
+             channel_ms = "I have NO SXSW Credentials "
+        elsif params[:channel_id].to_i == 424
              channel_ms = "I have nothin' but my cowboy boots on "
         end
         # puts channel_ms
@@ -67,25 +69,31 @@ def android
           # puts s    
          
           if s.eql? "166"
-            tag_ms = (i==0) ? "With Free Drinks" : tag_ms.concat(", Free Drinks")
+            tag_ms = (i==0) ? "with Free Drinks" : tag_ms.concat(", Free Drinks")
           elsif s.eql? "165"
-            tag_ms = (i==0) ? "With Free Food" : tag_ms.concat(", Free Food")
+            tag_ms = (i==0) ? "with Free Food" : tag_ms.concat(", Free Food")
           elsif s.eql? "184"
-            tag_ms = (i==0) ? "With Party" : tag_ms.concat(", Party")
+            tag_ms = (i==0) ? "with Party" : tag_ms.concat(", Party")
           elsif s.eql? "167"
-            tag_ms = (i==0) ? "With No Cover" : tag_ms.concat(", No Cover")
+            tag_ms = (i==0) ? "with No Cover" : tag_ms.concat(", No Cover")
           elsif s.eql? "191"
-            tag_ms = (i==0) ? "With RSVP" : tag_ms.concat(", RSVP")
+            tag_ms = (i==0) ? "with RSVP" : tag_ms.concat(", RSVP")
           elsif s.eql? "189"
-            tag_ms = (i==0) ? "With Unofficial Events" : tag_ms.concat(", Unofficial Events")
+            tag_ms = (i==0) ? "with Unofficial Events" : tag_ms.concat(", Unofficial Events")
           end
           i=i+1
         }
         # puts "Tags - combine: "
         # puts tag_ms
         time_ms =""
+        if params[:t].to_s.eql? "0"
+          time_ms = " SXSW "
+        elsif params[:t].to_s.eql? "1"
+          time_ms = " Today "
+        else
+          time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))  
+        end
         
-        time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))
 
         
         
@@ -231,11 +239,26 @@ def android
         SET views = views + 1
         WHERE id IN (#{@venue_ids * ','})")
     end
-    @last = 'Last message'
+
+    @last= 'Last message'
+    @filter =params
+
+    # Badge
+    @badge = params[:access].to_s
+    @t = params[:t].to_s
+    @arrayincluded_tags = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].to_s.split(",")
+    @arrayincluded_tags=(params[:included_tags].to_s.empty?) ? [] : params[:included_tags].map(&:to_s)
+    @s = params[:sort].to_s
+
+    # Advance
+    @arrayand_tags = (params[:and_tags].to_s.empty?) ? [] :  params[:and_tags].to_s.split(",")
+    @arrayand_tags=(params[:and_tags].to_s.empty?) ? [] : params[:and_tags].map(&:to_s)
+    @aday=params[:aday].to_s
+    @acost = params[:c].to_s
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
-          render :partial => "android_combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset }
+          render :partial => "android_combo", :locals => { :filter => params,:occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset }
           
         end
       end

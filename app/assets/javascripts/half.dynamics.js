@@ -550,6 +550,10 @@ $('.sxsw-dates').dropkick({
 
 function updateViewFromFilter(pullEventsFlag, options) {
 
+
+
+  
+
   options = defaultTo(options, {});
   pullEventsFlag = defaultTo(pullEventsFlag, true);
   filter.offset = 0;
@@ -886,6 +890,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
   if(pullEventsFlag) {
     pullEvents();
   }
+  // console.log("XXXXXX Update filter XXXXXXXX");
 }
 
 function streamSelector() {

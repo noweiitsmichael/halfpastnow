@@ -4193,14 +4193,16 @@ html, body {
     position:relative;
 }
 /*Android*/
-
+.SXButtons{
+  position: relative;
+  margin-top: -100px;
+}
 .button-access {
 
 overflow:hidden;
 z-index: 10;
 position: relative;
 width:270px;
-margin-left:0px;
 text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
 float: left;
 text-align: center;
@@ -4414,11 +4416,12 @@ color: white;
 }
 
 .filterTitle{
-  top: 120px;
-position: absolute;
+margin-top: 15px;
+position: relative;
 margin-left: 250px;
 width: 500px;
 font-size: 25px;
+float: left;
 }
 .button-sort {
 z-index: 10;
@@ -4471,11 +4474,13 @@ color: white;
 
 }
 .androidMessage {
-top: 52px;
-position: absolute;
-margin-left: 250px;
-width: 500px;
+position: relative;
+margin-left: 20px;
+height: 60px;
+/*width: 1400px;*/
 font-size: 25px;
+margin-right: 20px;
+margin-top: 50px;
 }
 .button-search {
 text-decoration: none;
