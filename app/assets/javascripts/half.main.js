@@ -393,6 +393,7 @@ $(function() {
         // var lnk = 'http://wwww.halfpastnow.com/events/show/'+id+'?fullmode=true'; 
         // var lnk = 'http://www.halfpastnow.com/mobile/og/'+id; 
         console.log(lnk);
+        
         FB.api(
             '/me/halfpastnow:bookmark',
             'post',

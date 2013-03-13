@@ -42,6 +42,7 @@
 
 		// The "bookmark" class won't be here if a user isn't logged in
 		$('.bookmark-share .bookmark').click(function() {
+
 			var that = $(this);
 			if(that.hasClass('add')) {
 				var bookmarked_type = "";
@@ -71,7 +72,7 @@
 						break;
 				};
 				$.getJSON('/bookmarks/custom_create', { bookmark: { "type": bookmarked_type, "id": id } }, function(data) {
-					console.log("new bookmark");
+					console.log("new bookmark full mode");
 					console.log(data);
 					that.removeClass('add').addClass('remove');
 					that.text("In Bookmarks");
@@ -273,8 +274,8 @@
 	<a href="http://www.halfpastnow.com/?event_id=<%=id%>" title="Add to Calendar" class="addthisevent">
 	    <span class="icon icon-calendar cal"></span>
 	    <span class="_url">http://www.halfpastnow.com/?event_id=<%=id%></span>
-	    <span class="_start"><%= occurrence.start.strftime('%m-%d-%Y %H:%M:%S') %></span>
-	    <span class="_end"><%= occurrence.end.strftime('%m-%d-%Y %H:%M:%S') %></span>
+	    <span class="_start"><%= (occurrence.start.nil?) ? "" : occurrence.start.strftime('%m-%d-%Y %H:%M:%S') %></span>
+	    <span class="_end"><%= (occurrence.end.nil?) ? "" : occurrence.end.strftime('%m-%d-%Y %H:%M:%S') %></span>
 	    <span class="_zonecode">11</span>
 	    <span class="_summary"><%= event.title %></span>
 	    <span class="_description"><%= strip_tags(event.description)%></span>
