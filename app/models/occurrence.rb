@@ -108,6 +108,7 @@ class Occurrence < ActiveRecord::Base
       params[:and_tags] = params[:and_tags].split(",")
     end
 
+    puts "....in find"
     puts params
     # @tags = Tag.includes(:parentTag, :childTags).all
     # @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
