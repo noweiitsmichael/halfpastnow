@@ -57,9 +57,9 @@
 				            { event: lnk },
 				            function(response) {
 				               if (!response || response.error) {
-				                  alert('Error occured'+response);
+				                  // alert('Error occured'+response);
 				               } else {
-				                  alert('Post event was successful! Action ID: ' + response.id);
+				                  // alert('Post event was successful! Action ID: ' + response.id);
 				               }
 				        });
 						break;
@@ -138,7 +138,7 @@
 			<% if type == "event" %>
 
 			var title = "<%= event.title  %>";
-		    var summary = "<%= truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"')  %>";
+		    var summary = "<%= (event.description.nil?) ? "" : truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"')  %>";
 		    var pic = "<%= event.cover_image_url  %>";
     		var venue = "<%= event.venue.name  %>";
 			var url = "https://www.facebook.com/dialog/feed?%20app_id=" + app_id + "&%20link=" + link + "&%20picture=" + pic + "&%20name=" + title + "&%20caption=" + venue + "&%20description=" + summary + "&%20redirect_uri=" + redirect;
@@ -224,9 +224,9 @@
             { toppick: "<%= @url %>" },
             function(response) {
                if (!response || response.error) {
-                  alert('Error occured'+response);
+                  // alert('Error occured'+response);
                } else {
-                  alert('Post list was successful! Action ID: ' + response.id);
+                  // alert('Post list was successful! Action ID: ' + response.id);
                }
             });
       }
@@ -242,9 +242,9 @@
             { object: "<%= @url1 %>" },
             function(response) {
                if (!response || response.error) {
-                   alert('Error occured'+response);
+                   // alert('Error occured'+response);
                } else {
-                   alert('Successfully post on your timeline');
+                   // alert('Successfully post on your timeline');
                }
             });
           window.open(url, '_blank');
