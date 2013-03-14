@@ -102,6 +102,8 @@ class Occurrence < ActiveRecord::Base
     
     if(params[:excluded_tags] && params[:excluded_tags].is_a?(String))
       params[:excluded_tags] = params[:excluded_tags].split(",")
+    else
+      params[:excluded_tags] = nil
     end
 
     if(params[:and_tags] && params[:and_tags].is_a?(String))
@@ -280,9 +282,12 @@ class Occurrence < ActiveRecord::Base
       location_match = "venues.id = events.venue_id AND venues.latitude >= #{@lat_min} AND venues.latitude <= #{@lat_max} AND venues.longitude >= #{@long_min} AND venues.longitude <= #{@long_max}"
 
       # categories
+      tags_cache_included = ""
+      tags_cache_excluded = ""
+
       unless(params[:included_tags].to_s.empty?)
         tags_mush = params[:included_tags] * ','
-
+        tags_cache_included = params[:included_tags] * ','
 
         tag_include_match = "tags.id IN (#{tags_mush})"
       end
@@ -290,6 +295,7 @@ class Occurrence < ActiveRecord::Base
       # tags
       unless(params[:and_tags].to_s.empty?)
         tags_mush = params[:and_tags] * ','
+        tags_cache_included = params[:and_tags] * ','
 
         tag_and_match = "events.id IN (
                       SELECT event_id 
@@ -299,9 +305,11 @@ class Occurrence < ActiveRecord::Base
                         HAVING COUNT(tag_id) >= #{ params[:and_tags].count }
                     )"
       end
-
+      puts "---------Excluded Tags: ------------"
+      puts params[:excluded_tags]
       unless(params[:excluded_tags].to_s.empty?)
         tags_mush = params[:excluded_tags] * ','
+        tags_cache_excluded = params[:excluded_tags] * ','
         tag_exclude_match = "events.id NOT IN (
                       SELECT event_id 
                         FROM events, tags, events_tags 
@@ -352,17 +360,17 @@ class Occurrence < ActiveRecord::Base
     #           WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS NOT TRUE
     #           ORDER BY events.id, occurrences.start"
     
-    queryResult = Rails.cache.read("search_for_#{join_cache_indicator}_#{search_match}_#{occurrence_match}_#{location_match}_#{tags_mush}_#{low_price_match}_#{high_price_match}_#{start_date_where}")
+    queryResult = Rails.cache.read("search_for_#{join_cache_indicator}_#{search_match}_#{occurrence_match}_#{location_match}_#{tags_cache_included}_#{tags_cache_excluded}_#{low_price_match}_#{high_price_match}_#{start_date_where}")
     if (queryResult == nil)
       puts "**************** No cache found for query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
-      Rails.cache.write("search_for_#{join_cache_indicator}_#{search_match}_#{occurrence_match}_#{location_match}_#{tags_mush}_#{low_price_match}_#{high_price_match}_#{start_date_where}", queryResult, :ttl => 30.seconds)
+      Rails.cache.write("search_for_#{join_cache_indicator}_#{search_match}_#{occurrence_match}_#{location_match}_#{tags_cache_included}_#{tags_cache_excluded}_#{low_price_match}_#{high_price_match}_#{start_date_where}", queryResult, :ttl => 30.seconds)
       puts "**************** Cache Set for Query ****************"
     else
       puts "**************** Cache FOUND!!! ****************"
     end
     # queryResult = ActiveRecord::Base.connection.select_all(query) 
-    
+
     # @event_ids = queryResult.collect { |e| e["event_id"] }.uniq
     # @str_array = @event_ids.collect{|i| i.to_i}.join(',')
     # puts "Qyertttt"
