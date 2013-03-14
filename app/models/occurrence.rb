@@ -64,14 +64,17 @@ class Occurrence < ActiveRecord::Base
   def self.find_with(params)
     puts "occurrence.rb"
     pp params
+
     user_id = params[:user_id]
 
+    unless(params[:stream_id].to_s.empty?)
+      params[:channel_id] = params[:stream_id]
+    end
     # Different default for SXSW
     if (params[:action] == "sxsw") && (params[:channel_id].to_s.empty?)
         params[:channel_id] = 416
         # params[:channel_id] = 4
     end
-
     unless(params[:channel_id].to_s.empty?)
        channel = Channel.find(params[:channel_id].to_i)
        # channel = Channel.find(4)
@@ -104,10 +107,12 @@ class Occurrence < ActiveRecord::Base
       params[:excluded_tags] = params[:excluded_tags].split(",")
     end
 
+
     if(params[:and_tags] && params[:and_tags].is_a?(String))
       params[:and_tags] = params[:and_tags].split(",")
     end
 
+    puts "....in find"
     puts params
     # @tags = Tag.includes(:parentTag, :childTags).all
     # @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
@@ -121,6 +126,7 @@ class Occurrence < ActiveRecord::Base
 
     join_clause = ""
     where_clause = "TRUE"
+    join_cache_indicator = 0
 
     if(bookmarked)
 
@@ -129,6 +135,7 @@ class Occurrence < ActiveRecord::Base
         join_clause = "INNER JOIN events ON occurrences.event_id = events.id
                        INNER JOIN venues ON events.venue_id = venues.id
                        INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id"
+        join_cache_indicator = 0
 
         where_clause = "bookmarks.user_id = #{user_id} AND bookmarks.bookmarked_type = 'Occurrence'"
 
@@ -137,6 +144,7 @@ class Occurrence < ActiveRecord::Base
         join_clause = "INNER JOIN events ON occurrences.event_id = events.id
                        INNER JOIN venues ON events.venue_id = venues.id
                        INNER JOIN bookmarks ON venues.id = bookmarks.bookmarked_id"
+        join_cache_indicator = 1
 
         where_clause = "bookmarks.user_id = #{user_id} AND bookmarks.bookmarked_type = 'Venue'"
 
@@ -147,6 +155,7 @@ class Occurrence < ActiveRecord::Base
                        LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
                        LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
                        INNER JOIN bookmarks ON acts.id = bookmarks.bookmarked_id"
+        join_cache_indicator = 2
 
         where_clause = "bookmarks.user_id = #{user_id} AND bookmarks.bookmarked_type = 'Act'"
 
@@ -157,6 +166,7 @@ class Occurrence < ActiveRecord::Base
 
         join_clause = "INNER JOIN events ON occurrences.event_id = events.id
                        INNER JOIN venues ON events.venue_id = venues.id"
+        join_cache_indicator = 3
 
         where_clause = "venues.id IN (#{params[:collection]})"
 
@@ -166,6 +176,7 @@ class Occurrence < ActiveRecord::Base
                        INNER JOIN venues ON events.venue_id = venues.id
                        LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
                        LEFT OUTER JOIN acts ON acts.id = acts_events.act_id"
+        join_cache_indicator = 4
 
         where_clause = "acts.id IN (#{params[:collection]})"
 
@@ -273,9 +284,12 @@ class Occurrence < ActiveRecord::Base
       location_match = "venues.id = events.venue_id AND venues.latitude >= #{@lat_min} AND venues.latitude <= #{@lat_max} AND venues.longitude >= #{@long_min} AND venues.longitude <= #{@long_max}"
 
       # categories
+      tags_cache_included = ""
+      tags_cache_excluded = ""
+
       unless(params[:included_tags].to_s.empty?)
         tags_mush = params[:included_tags] * ','
-
+        tags_cache_included = params[:included_tags] * ','
 
         tag_include_match = "tags.id IN (#{tags_mush})"
       end
@@ -283,6 +297,7 @@ class Occurrence < ActiveRecord::Base
       # tags
       unless(params[:and_tags].to_s.empty?)
         tags_mush = params[:and_tags] * ','
+        tags_cache_included = params[:and_tags] * ','
 
         tag_and_match = "events.id IN (
                       SELECT event_id 
@@ -292,9 +307,11 @@ class Occurrence < ActiveRecord::Base
                         HAVING COUNT(tag_id) >= #{ params[:and_tags].count }
                     )"
       end
-
+      puts "---------Excluded Tags: ------------"
+      puts params[:excluded_tags]
       unless(params[:excluded_tags].to_s.empty?)
         tags_mush = params[:excluded_tags] * ','
+        tags_cache_excluded = params[:excluded_tags] * ','
         tag_exclude_match = "events.id NOT IN (
                       SELECT event_id 
                         FROM events, tags, events_tags 
@@ -327,6 +344,7 @@ class Occurrence < ActiveRecord::Base
                      INNER JOIN venues ON events.venue_id = venues.id
                      LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
                      LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id"
+        join_cache_indicator = 5
 
       where_clause = "#{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{tag_and_match} AND #{low_price_match} AND #{high_price_match}"
 
@@ -344,7 +362,17 @@ class Occurrence < ActiveRecord::Base
     #           WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS NOT TRUE
     #           ORDER BY events.id, occurrences.start"
     
-    queryResult = ActiveRecord::Base.connection.select_all(query) 
+    queryResult = Rails.cache.read("search_for_#{join_cache_indicator}_#{search_match}_#{occurrence_match}_#{location_match}_#{tags_cache_included}_#{tags_cache_excluded}_#{low_price_match}_#{high_price_match}_#{start_date_where}")
+    if (queryResult == nil)
+      puts "**************** No cache found for query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write("search_for_#{join_cache_indicator}_#{search_match}_#{occurrence_match}_#{location_match}_#{tags_cache_included}_#{tags_cache_excluded}_#{low_price_match}_#{high_price_match}_#{start_date_where}", queryResult, :ttl => 30.seconds)
+      puts "**************** Cache Set for Query ****************"
+    else
+      puts "**************** Cache FOUND!!! ****************"
+    end
+    # queryResult = ActiveRecord::Base.connection.select_all(query) 
+
     # @event_ids = queryResult.collect { |e| e["event_id"] }.uniq
     # @str_array = @event_ids.collect{|i| i.to_i}.join(',')
     # puts "Qyertttt"

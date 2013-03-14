@@ -71,8 +71,6 @@
           $('ul.profile-menu').slideUp('fast');
         }
       );
-     console.log("XXXXXX updateViewFromFilter XXXXXXXX");
-    console.log(filter);
   });
 </script>
 
@@ -121,9 +119,16 @@
               </div>
             <% end %>
 
-            <% if user_signed_in? %>
+
+            <% if user_signed_in? %>             
+              <% if params[:action] == "sxsw" %>
+                <div class="menu-element right nice-button" id="add-event-button"><a href="/users/rsvp/<%=current_user.id%>">My RSVPs</a></div>
+              <% end %>
               <div class="menu-element right nice-button" id ="add-event-button"><a href="/userSubmission/eventSearch">Add an Event!</a></div>
-            <% else %>
+            <% else %>           
+              <% if params[:action] == "sxsw" %>
+                <div class="menu-element right nice-button" id="add-event-button"><a href="#" linkto="shunt">My RSVPs</a></div>
+              <% end %>
               <div class="menu-element right nice-button" id ="add-event-button"><a href="#" linkto="shunt">Add an Event!</a></div>
             <% end %>
 

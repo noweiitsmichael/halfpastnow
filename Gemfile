@@ -79,8 +79,8 @@ gem 'oink' #memory logging
 gem "librato-metrics" #logging/error reporting to Liberato add-on
 
 # Data caching
-# gem 'memcachier'
-# gem 'dalli'
+gem 'memcachier'
+gem 'dalli'
 
 
 # gem 'eventfulapi'

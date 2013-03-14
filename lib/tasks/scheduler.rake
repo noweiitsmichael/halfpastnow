@@ -691,6 +691,10 @@ namespace :api do
 						puts lines[index][7]
 						yt_partial = /.+?v\/(.+?)\&/.match(lines[index][7])
 					end
+					#If still nil...
+					if yt_partial.nil?
+						next
+					end
 					lines[index][7] = yt_partial[1]
 					embed_code = '<iframe width="100%" height="280" src="http://www.youtube.com/embed/' + 
 								 lines[index][7] + '" frameborder="0" allowfullscreen></iframe>';
@@ -801,7 +805,7 @@ namespace :api do
 									:end => new_e["end_time"],
 									:from => "do512sxsw",
 									:raw_venue_id => raw_venue.id
-									)
+									) rescue next
 					new_events += 1
 					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "RawEvent", 
 							   	   :image => open(new_e["picture"])) rescue nil
@@ -824,11 +828,13 @@ namespace :api do
 					sxsw_event.venue_id = raw_venue.venue_id
 					sxsw_event.save!
 					occ = sxsw_event.occurrences.first
-					occ.start = new_e["start_time"]
-					occ.end = new_e["end_time"]
+					unless new_e["start_time"].nil? || new_e["start_time"].nil?
+						occ.start = new_e["start_time"]
+						occ.end = new_e["end_time"]
+					end
 					occ.event_id = sxsw_event.id
 					# y occ
-					occ.save!
+					occ.save! rescue next
 					old_events += 1
 					# # Create pictures
 					unless new_e["picture"].nil?

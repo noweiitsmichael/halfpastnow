@@ -145,7 +145,7 @@
 			<% if type == "event" %>
 
 			var title = "<%= event.title  %>";
-		    var summary = "<%= (event.description.nil?) ? "" : truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"')  %>";
+		    var summary = "<%= (event.description.nil?) ? "" : truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"').gsub(/\n+/, '. ')  %>";
 		    var pic = "<%= event.cover_image_url  %>";
     		var venue = "<%= event.venue.name  %>";
 			var url = "https://www.facebook.com/dialog/feed?%20app_id=" + app_id + "&%20link=" + link + "&%20picture=" + pic + "&%20name=" + title + "&%20caption=" + venue + "&%20description=" + summary + "&%20redirect_uri=" + redirect;
@@ -291,7 +291,7 @@
 	    <span class="_end"><%= (occurrence.end.nil?) ? "" : occurrence.end.strftime('%m-%d-%Y %H:%M:%S') %></span>
 	    <span class="_zonecode">11</span>
 	    <span class="_summary"><%= event.title %></span>
-	    <span class="_description"><%= strip_tags(event.description)%></span>
+	    <span class="_description"><%= (event.description.nil?) ? '' : truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"') %></span>
 	    <span class="_location"><%= event.venue.name %>, <%= event.venue.address %>, <%= event.venue.city %>, <%= event.venue.state %></span>
 	    <span class="_date_format">DD/MM/YYYY</span>
 	</a>

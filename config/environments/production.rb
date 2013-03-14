@@ -58,6 +58,9 @@ Myapp::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
+  # Caching
+  config.cache_store = :dalli_store
+
   # Oink logging
   config.middleware.use( Oink::Middleware, :logger => Hodel3000CompliantLogger.new(STDOUT))
   
