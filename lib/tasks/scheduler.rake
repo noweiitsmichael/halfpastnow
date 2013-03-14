@@ -828,8 +828,10 @@ namespace :api do
 					sxsw_event.venue_id = raw_venue.venue_id
 					sxsw_event.save!
 					occ = sxsw_event.occurrences.first
-					occ.start = new_e["start_time"]
-					occ.end = new_e["end_time"]
+					unless new_e["start_time"].nil? || new_e["start_time"].nil?
+						occ.start = new_e["start_time"]
+						occ.end = new_e["end_time"]
+					end
 					occ.event_id = sxsw_event.id
 					# y occ
 					occ.save!
