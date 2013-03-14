@@ -102,8 +102,6 @@ class Occurrence < ActiveRecord::Base
     
     if(params[:excluded_tags] && params[:excluded_tags].is_a?(String))
       params[:excluded_tags] = params[:excluded_tags].split(",")
-    else
-      params[:excluded_tags] = nil
     end
 
     if(params[:and_tags] && params[:and_tags].is_a?(String))
