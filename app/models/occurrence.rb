@@ -64,14 +64,17 @@ class Occurrence < ActiveRecord::Base
   def self.find_with(params)
     puts "occurrence.rb"
     pp params
+
     user_id = params[:user_id]
 
+    unless(params[:stream_id].to_s.empty?)
+      params[:channel_id] = params[:stream_id]
+    end
     # Different default for SXSW
     if (params[:action] == "sxsw") && (params[:channel_id].to_s.empty?)
         params[:channel_id] = 416
         # params[:channel_id] = 4
     end
-
     unless(params[:channel_id].to_s.empty?)
        channel = Channel.find(params[:channel_id].to_i)
        # channel = Channel.find(4)
@@ -103,6 +106,7 @@ class Occurrence < ActiveRecord::Base
     if(params[:excluded_tags] && params[:excluded_tags].is_a?(String))
       params[:excluded_tags] = params[:excluded_tags].split(",")
     end
+
 
     if(params[:and_tags] && params[:and_tags].is_a?(String))
       params[:and_tags] = params[:and_tags].split(",")
