@@ -40,9 +40,10 @@
 	$(function() {
 		console.log("Loaded share stuff");
 
+	
 		// The "bookmark" class won't be here if a user isn't logged in
 		$('.bookmark-share .bookmark').click(function() {
-
+			console.log("Fullmode bookmark");
 			var that = $(this);
 			if(that.hasClass('add')) {
 				var bookmarked_type = "";
@@ -127,6 +128,11 @@
 			}
 		});
 		
+		$('.bookmark-share').click(function() {
+			console.log("Anything?????");
+
+		});
+
 		$('.bookmark-share .email').click(function() {
 			var url = 'mailto:?body=' + link;
 
@@ -252,6 +258,13 @@
 			window.focus();
       }
 </script>
+<input type="hidden" id="event" value="<%= event %>" />
+<input type="hidden" id="id" value ="<%= occurrence.id %>"/>
+
+
+
+
+
 <div class="bookmark-share">
 	<% if type == 'event' %>
 		<% if !event.ticket_url.blank? %>
