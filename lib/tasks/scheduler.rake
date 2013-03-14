@@ -834,7 +834,7 @@ namespace :api do
 					end
 					occ.event_id = sxsw_event.id
 					# y occ
-					occ.save!
+					occ.save! rescue next
 					old_events += 1
 					# # Create pictures
 					unless new_e["picture"].nil?
