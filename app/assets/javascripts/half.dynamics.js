@@ -237,7 +237,7 @@ $('.sxsw-dates').dropkick({
     } else {
       // add the category to included_tags
       pushFilterTag(tagID);
-      
+      var tmpd;
       var parent_id = tags[tagID]["parent_id"];
       var parent_tag = tags[parent_id];
       var allChildrenInFilterTag = true;
