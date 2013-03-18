@@ -149,19 +149,7 @@ helper :content
 		puts legitSet
 		legitlistIDs = []
 		legittagIDs = []
-		tagIDs.each { |tagID|
-			set = legitSet.select{ |r| r["tag_id"] == tagID.to_s }.uniq
-			# Return Lists with same tag
-			# puts "Set herer"
-			set1 = set.collect { |e| {:id => e["id"], :tag_id => e["tag_id"]}  }
-			# puts set1
-			if set1.size > set1.uniq.size
-				# puts "TagID"
-				#puts tagID
-
-				legittagIDs << tagID
-			end
-		}
+		
 
 		listIDs.each { |listID|
 			set = legitSet.select{ |r| r["id"] == listID.to_s }.uniq
