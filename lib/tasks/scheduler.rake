@@ -2021,7 +2021,7 @@ namespace :api do
 
 	desc "pull events from api for a venue"
 	task :get_venue_event, [:num_venues]  => [:environment] do |t, args|
-
+		puts "Execute..."
 		num_venues = args[:num_venues].to_s.empty? ? 1 : args[:num_venues].to_i
 
 		@raw_venues = RawVenue.includes(:venue).where("events_url IS NOT NULL AND (last_visited IS NULL OR last_visited < '#{ (Date.today - 7).to_datetime }')").take(num_venues)
@@ -2031,7 +2031,7 @@ namespace :api do
 		html_ent = HTMLEntities.new
 
 		@raw_venues.each do |raw_venue|
-			puts raw_venue.venue.name
+			puts "Getting events for #{raw_venue.venue.name}"
 			apiURL = URI(raw_venue.events_url)
 			apiXML = Net::HTTP.get(apiURL)
 			doc = Document.new(apiXML)	
