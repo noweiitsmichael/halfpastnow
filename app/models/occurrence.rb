@@ -59,8 +59,6 @@ class Occurrence < ActiveRecord::Base
     return Bookmark.find(results.collect { |e| e["id"] }.uniq)
   end
 
-  
-
   def self.find_with(params)
     puts "occurrence.rb"
     pp params

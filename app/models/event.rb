@@ -22,6 +22,8 @@ class Event < ActiveRecord::Base
   validates_presence_of :venue_id
   validates_presence_of :title, :message => "Please input event title"
 
+  after_create :clear_cache
+
   def matches? (search)
     if (search.nil? || search == "")
       return true
@@ -95,5 +97,12 @@ class Event < ActiveRecord::Base
     # end
     
     return occurrence
+  end
+
+  def clear_cache
+    puts "-----Resetting cache....."
+    Rails.cache.clear
+    c = Dalli::Client.new
+    c.flush_all
   end
 end
