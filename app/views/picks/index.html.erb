@@ -126,7 +126,7 @@
 						<div class="picklist-description"><%= raw picklist.description %></div>
 						
 					</div>
-					<% occurrences = picklist.bookmarked_events(1)
+					<% occurrences = picklist.first_legit_bookmarked_event
 					   unless (occurrences.empty?) %>
 						<ul class="picklist-events">
 							<% occurrences.each do |occurrence| %>
