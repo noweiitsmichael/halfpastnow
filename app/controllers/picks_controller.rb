@@ -253,7 +253,9 @@ helper :content
 		# @parentTags = Tag.all(:conditions => {:parent_tag_id => nil})
 		# @featuredLists = BookmarkList.where(:featured=>true)
 	end
-
+	#  Occurrence event .deleted is always false
+	#  Recurrence event .deleted is false/true
+	#  Recurrence event check range_end
 	def filter_all_legit(result)
 		@list=[]
 		@exclude=[]
@@ -269,8 +271,9 @@ helper :content
 			# puts r
 
 
-
+			# 
 			if ( deleted.eql?"f" )
+				# Event is recurrence
 				if !recurrence_id.nil?
 					# puts " 1 "
 					if range_end.nil? || range_end.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
@@ -282,7 +285,7 @@ helper :content
 					end
 
 
-
+				# Event is occurrence
 				else
 					if start.to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time
 						# puts " 2 "
