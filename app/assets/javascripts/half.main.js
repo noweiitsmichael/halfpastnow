@@ -335,6 +335,8 @@ $(function() {
     // document.getElementById(id).parentNode.remove();
     $(this).parents("#content .events li").html("<div><br><br><br>Top Pick Removed</div>");
   });
+  
+  
   $('#content .events').on('click','.event-actions .icon',function(event) {
     var that = $(this);
     var id = $(this).attr('event-id');
@@ -393,6 +395,7 @@ $(function() {
         // var lnk = 'http://wwww.halfpastnow.com/events/show/'+id+'?fullmode=true'; 
         // var lnk = 'http://www.halfpastnow.com/mobile/og/'+id; 
         console.log(lnk);
+
         FB.api(
             '/me/halfpastnow:bookmark',
             'post',
