@@ -246,8 +246,8 @@ helper :content
 			# @featuredLists = BookmarkList.find(result.select { |r| r["tag_id"] == tag_id.to_s }.collect { |e| e["id"] }.uniq)
 		end
 		# @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| legittagIDs.uniq.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
-		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil})
-		@featuredLists = BookmarkList.where(:featured=>true)
+		# @parentTags = Tag.all(:conditions => {:parent_tag_id => nil})
+		# @featuredLists = BookmarkList.where(:featured=>true)
 	end
 
 	def filter_all_legit(result)
