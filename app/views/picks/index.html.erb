@@ -126,17 +126,17 @@
 						<div class="picklist-description"><%= raw picklist.description %></div>
 						
 					</div>
-					<% occurrences = picklist.first_legit_bookmarked_event
-					   unless (occurrences.empty?) %>
+					<% occurrence = picklist.first_legit_bookmarked_event
+					   unless (occurrence.nil?) %>
 						<ul class="picklist-events">
-							<% occurrences.each do |occurrence| %>
+							
 							<li linkto="event" link-id="<%= occurrence.id %>">
 								<img class="picture" src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
 								<div class="title"><%= occurrence.event.title %></div>
 								<div class="venue"><%= occurrence.event.venue.name %></div>
 								<div class="datetime"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></div>
 							</li>
-							<% end %>
+							
 							<li class="see-more">
 								<a href="/picks/find/<%= picklist.id %>"><span>see all events</span></a>
 							</li>
