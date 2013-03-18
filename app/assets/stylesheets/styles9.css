@@ -582,6 +582,8 @@ background-size: cover;
 
 #header .profile-menu {
     display:none;
+    clear:both;
+    margin-top: -7px !important;
     float:right;
     width:140px;
     border: 1px solid #1c1c1c;
@@ -782,7 +784,7 @@ input::-webkit-input-placeholder
 }
 #content
 {
-  margin-top: 161px;
+  margin-top: 125px;
   position: relative;
 }
 #mode-content

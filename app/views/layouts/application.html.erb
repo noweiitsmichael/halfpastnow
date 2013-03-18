@@ -95,9 +95,6 @@
               <li class="nav-item">
                   <a class="main menu-element <%= params[:controller] == "picks" ? "selected" : "" %>" href="/picks">Top Picks</a>
               </li>
-              <% if params[:action] != "sxsw" %>
-                <li class='nav-item'><a class='main menu-element' href='/sxsw' style='font-style:normal;font-family: "Neuton",PT Sans,sans-serif;font-weight:800;font-size:25px;letter-spacing:1px'><span style="color:#ba613b">S</span><span style="color:#26749b">X</span><span style="color:#438758">S</span><span style="color:#888">W</span><span style="color:white">2013</span></a></li>
-              <% end %>
             </ul>
             <span class="divider"></span>
             
@@ -121,20 +118,14 @@
 
 
             <% if user_signed_in? %>             
-              <% if params[:action] == "sxsw" %>
-                <div class="menu-element right nice-button" id="add-event-button"><a href="/users/rsvp/<%=current_user.id%>">My RSVPs</a></div>
-              <% end %>
               <div class="menu-element right nice-button" id ="add-event-button"><a href="/userSubmission/eventSearch">Add an Event!</a></div>
             <% else %>           
-              <% if params[:action] == "sxsw" %>
-                <div class="menu-element right nice-button" id="add-event-button"><a href="#" linkto="shunt">My RSVPs</a></div>
-              <% end %>
               <div class="menu-element right nice-button" id ="add-event-button"><a href="#" linkto="shunt">Add an Event!</a></div>
             <% end %>
 
             <% if user_signed_in? %>
                 <ul class="profile-menu">
-                  <li><a href="/users/rsvp/<%=current_user.id%>">My RSVPs</a></li>
+                  <li><a href="/users/rsvp/<%=current_user.id%>">My Events</a></li>
                   <li><%= link_to("My Settings", edit_user_registration_path) %></li>
                 </ul>
             <% end %>

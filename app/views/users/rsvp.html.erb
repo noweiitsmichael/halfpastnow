@@ -1,9 +1,9 @@
 <% content_for :meta do %>
   <meta property="og:type"                 content="article"/> 
-  <meta property="og:url"                  content="http://www.halfpastnow.com/sxsw"/> 
+  <meta property="og:url"                  content="http://www.halfpastnow.com/users/rsvp/<%= current_user.id%>"/> 
   <meta property="og:image"                content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png"/>
-  <meta property="og:title"                content="My SXSW RSVP list on half past now "/>
-  <meta property="og:description"          content="Quickly find the best SXSW events and RSVPs"/> 
+  <meta property="og:title"                content="<%=@user.fullname%>'s Upcoming Events on half past now "/>
+  <meta property="og:description"          content="Events I plan on attending"/> 
   <meta property="article:author"          content="<%= current_user.fullname %>"/> 
 <% end %>
 <% content_for :title do %><%= current_user.fullname %>'s RSVPs<% end %>
@@ -14,7 +14,7 @@
 
 <% content_for :body do %>
 <div id="content" class="padded" style="margin-top:60px">
-<h2 style="color:#3D033D; font-style:italic;"><%=@user.fullname%>'s SXSW RSVP List</h2>
+<h2 style="color:#3D033D; font-style:italic;"><%=@user.fullname%>'s Upcoming Events</h2>
 	<div class="main" style="margin-left:0px;">
 		<div class="inner">
 			<ul class="events" class="padded">
