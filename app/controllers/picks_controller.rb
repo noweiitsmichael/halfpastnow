@@ -1,6 +1,7 @@
 class PicksController < ApplicationController
 helper :content
-	def index
+	def index1
+		# Return lists with events
 		query = "(SELECT DISTINCT ON (bookmark_lists.id) bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, recurrences.range_end AS range_end, occurrences.start AS start,occurrences.deleted AS deleted, 
 				occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
 				INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
@@ -18,7 +19,7 @@ helper :content
 				INNER JOIN events ON occurrences.event_id = events.id
                 INNER JOIN events_tags ON events.id = events_tags.event_id
                 INNER JOIN tags ON events_tags.tag_id = tags.id
-                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL)";
+                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL)"
         result = ActiveRecord::Base.connection.select_all(query)
         # y result
 	    listIDs = result.collect { |e| e["id"] }.uniq
@@ -27,17 +28,21 @@ helper :content
 		# puts result.uniq
 		# puts result.uniq.size
 		legitSet = filter_all_legit(result)
-		# puts "legit set"
-		# puts legitSet.size
+		# legitSet = []
+		puts "legit set"
+		puts legitSet
+		ls = []
 		legittagIDs = []
 		tagIDs.each { |tagID|
 			set = legitSet.select{ |r| r["tag_id"] == tagID.to_s }.uniq
+			# Return Lists with same tag
 			# puts "Set herer"
 			set1 = set.collect { |e| {:id => e["id"], :tag_id => e["tag_id"]}  }
 			# puts set1
 			if set1.size > set1.uniq.size
 				# puts "TagID"
-				# puts tagID
+				#puts tagID
+
 				legittagIDs << tagID
 			end
 		}
@@ -109,6 +114,13 @@ helper :content
 			# puts @featuredLists
 			# @featuredLists = BookmarkList.find(result.select { |r| r["tag_id"] == tag_id.to_s }.collect { |e| e["id"] }.uniq)
 		end
+	end
+
+	def index
+		# Return lists with events
+		
+
+		@featuredLists = BookmarkList.where(:featured=>true)
 	end
 
 	def filter_all_legit(result)
