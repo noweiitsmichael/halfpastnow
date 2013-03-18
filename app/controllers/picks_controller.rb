@@ -126,7 +126,7 @@ helper :content
                 INNER JOIN events_tags ON events.id = events_tags.event_id
                 INNER JOIN recurrences ON events.id = recurrences.event_id
                 INNER JOIN tags ON events_tags.tag_id = tags.id
-                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL)
+                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL AND (recurrences.range_end >= '#{Date.today()}' OR recurrences.range_end IS NULL))
                 UNION 
                 (SELECT DISTINCT ON (bookmark_lists.id,tags.id) bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, occurrences.end AS range_end, occurrences.start AS start,occurrences.deleted AS deleted, 
 				occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
@@ -135,7 +135,7 @@ helper :content
 				INNER JOIN events ON occurrences.event_id = events.id
                 INNER JOIN events_tags ON events.id = events_tags.event_id
                 INNER JOIN tags ON events_tags.tag_id = tags.id
-                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL)"
+                WHERE bookmarks.bookmarked_type = 'Occurrence' AND occurrences.start >= '#{Date.today()}' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL)"
         result = ActiveRecord::Base.connection.select_all(query)
         # y result
 	    listIDs = result.collect { |e| e["id"] }.uniq
@@ -182,6 +182,7 @@ helper :content
 		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| legittagIDs.uniq.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
 		# puts @parentTags
 		# puts @parentTags.collect{ |p| p.name}
+
 		tag_id = params[:id]
 		if tag_id.to_s.empty?
 			@featuredLists = BookmarkList.find(legitlistIDs)
