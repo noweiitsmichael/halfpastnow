@@ -118,7 +118,7 @@ helper :content
 
 	def index
 		# Return lists with events
-		query = "(SELECT DISTINCT ON (bookmark_lists.id) bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, recurrences.range_end AS range_end, occurrences.start AS start,occurrences.deleted AS deleted, 
+		query = "(SELECT DISTINCT ON (bookmark_lists.id,tags.id) bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, recurrences.range_end AS range_end, occurrences.start AS start,occurrences.deleted AS deleted, 
 				occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
 				INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
 				INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
@@ -128,7 +128,7 @@ helper :content
                 INNER JOIN tags ON events_tags.tag_id = tags.id
                 WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL)
                 UNION 
-                (SELECT DISTINCT ON (bookmark_lists.id) bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, occurrences.end AS range_end, occurrences.start AS start,occurrences.deleted AS deleted, 
+                (SELECT DISTINCT ON (bookmark_lists.id,tags.id) bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, occurrences.end AS range_end, occurrences.start AS start,occurrences.deleted AS deleted, 
 				occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
 				INNER JOIN bookmarks ON bookmark_lists.id = bookmarks.bookmark_list_id
 				INNER JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
@@ -152,24 +152,25 @@ helper :content
 		tagIDs.each { |tagID|
 			set = legitSet.select{ |r| r["tag_id"] == tagID.to_s }.uniq
 			# Return Lists with same tag
-			# puts "Set herer"
+			puts "Set TAGs herer"
 			set1 = set.collect { |e| {:id => e["id"], :tag_id => e["tag_id"]}  }
-			# puts set1
-			if set1.size > set1.uniq.size
+			puts set1
+			if set1.size > 0
 				# puts "TagID"
 				#puts tagID
 
 				legittagIDs << tagID
 			end
 		}
-
+		puts "final tags :"
+		puts legittagIDs
 		listIDs.each { |listID|
 			set = legitSet.select{ |r| r["id"] == listID.to_s }.uniq
 			# Return Lists with same tag
 			# puts "Set herer"
 			set1 = set.collect { |e| {:id => e["id"], :tag_id => e["tag_id"]}  }
 			# puts set1
-			if set1.size > set1.uniq.size
+			if set1.size > 0
 				# puts "TagID"
 				#puts tagID
 
@@ -184,7 +185,9 @@ helper :content
 		tag_id = params[:id]
 		if tag_id.to_s.empty?
 			@featuredLists = BookmarkList.find(legitlistIDs)
-			# puts @featuredLists
+			puts "featured List:   xxxx : "
+			puts legitlistIDs
+			puts @featuredLists
 		else
 			@list=[]
 			@exclude=[]
@@ -236,7 +239,7 @@ helper :content
 				# puts "List ID"
 				# puts l
 				n = @legit.select{ |r| r["id"] == l.to_s }.uniq
-				if n.count > 1
+				if n.count > 0
 					# puts l
 					ls << l
 				end
