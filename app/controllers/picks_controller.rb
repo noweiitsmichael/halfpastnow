@@ -119,7 +119,8 @@ helper :content
 	def index
 		# Return lists with events
 		
-
+		# @parentTags = Tag.all(:conditions => {:parent_tag_id => nil}).select{ |tag| legittagIDs.uniq.include?(tag.id) && tag.name != "Streams" && tag.name != "Tags" }
+		@parentTags = Tag.all(:conditions => {:parent_tag_id => nil})
 		@featuredLists = BookmarkList.where(:featured=>true)
 	end
 
