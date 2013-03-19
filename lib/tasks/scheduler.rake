@@ -1968,12 +1968,11 @@ namespace :api do
 		puts "getting events before " + d_until.to_s
 
 		html_ent = HTMLEntities.new
-		offset = 0
+		offset = 100
 		begin
 			@breakout = false
-			apiURL = URI("http://events.austin360.com/search?rss=1&sort=1&srss=100&city=Austin&ssi=" + offset.to_s)
+			apiURL = URI("http://events.austin360.com/search?city=Austin&new=n&rss=1&sort=1&srad=40.0&srss=100&st=event&swhat=&swhen=&swhere=Austin%2C+TX&ssi=" + offset.to_s)
 			apiXML = Net::HTTP.get(apiURL)
-			pp apiXML
 			doc = Document.new(apiXML)
 			stream_count = XPath.first( doc, "//stream_count").text
 			
@@ -1981,7 +1980,6 @@ namespace :api do
 			if stream_count == "0"
 				break
 			end
-
 			XPath.each( doc, "//item") do |item|
 				from = item.elements["title"].text.index("Event:") + 7
 				to = item.elements["title"].text.rindex(" at ") - 1
@@ -1993,14 +1991,16 @@ namespace :api do
 				if(d_until && d_start && d_start > d_until)
 					@breakout = true
 					break
-				elsif RawEvent.where(:raw_id => item.elements["id"].text).size > 0
+				elsif RawEvent.where(:raw_id => item.elements["id"].text, :from => "austin360").size > 0
+					puts "Found event #{RawEvent.where(:raw_id => item.elements["id"].text, :from => "austin360").first.title}"
 					next
 				end
 
 				raw_venue = RawVenue.where(:raw_id => item.elements["xCal:x-calconnect-venue"].elements["xCal:x-calconnect-venue-id"].text, :from => "austin360").first
 
+				puts "Creating event #{html_ent.decode(item.elements["title"].text[from..to])}"
 				raw_event = RawEvent.create({
-					:title => html_ent.decode(item.elements["title"].text[from..to]),
+					:title => html_ent.decode(item.elements["title"].text.match(/(?<=Event: )(.*)(?=, (Mon|Tue|Wed|Thu|Fri|Sat|Sun))/).to_s),
 				    :description => html_ent.decode(item.elements["description"].text),
 				    :start => d_start,
 				    :end => d_end,
@@ -2016,6 +2016,7 @@ namespace :api do
 				    :from => "austin360",
 				    :raw_venue_id => (raw_venue ? raw_venue.id : nil)
 				})
+				y raw_event
 			end
 		end until @breakout
 	end
