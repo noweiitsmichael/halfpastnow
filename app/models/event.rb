@@ -102,7 +102,5 @@ class Event < ActiveRecord::Base
   def clear_cache
     puts "-----Resetting cache....."
     Rails.cache.clear
-    c = Dalli::Client.new
-    c.flush_all
   end
 end
