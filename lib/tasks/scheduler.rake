@@ -491,10 +491,10 @@ namespace :api do
 		puts "#{new_raw_venues} new raw venues, #{new_real_venues} new real venues"
 
 	end
-	desc "Eventbrite SXSW"
-	task :sxsw_eventbrite => :environment do
+	desc "Eventbrite"
+	task :get_eventbrite_events => :environment do
 		# SXSW events in Austin from 3/07 to 3/18
-		rawdata = Net::HTTP.get(URI.parse('http://www.eventbrite.com/json/event_search?app_key=QRZVIYQZFUIDXQ6Z4P&keywords=sxsw&city=austin&date=2013-03-07+2013-03-18'))
+		rawdata = Net::HTTP.get(URI.parse('http://www.eventbrite.com/json/event_search?app_key=QRZVIYQZFUIDXQ6Z4P&city=austin'))
 		eb = JSON.parse(rawdata)
 		puts "Total results: #{eb["events"][0]["summary"]["total_items"]}"
 		pages = (eb["events"][0]["summary"]["total_items"] / 10).ceil
@@ -506,8 +506,8 @@ namespace :api do
 		updated_events = 0
 		for i in 1..pages # each page, 10 results per page
 			puts i
-			sauce = "http://www.eventbrite.com/json/event_search?app_key=QRZVIYQZFUIDXQ6Z4P&keywords=sxsw&city=austin&date=2013-03-07+2013-03-18&page=#{i}"
-			puts sauce
+			sauce = "http://www.eventbrite.com/json/event_search?app_key=QRZVIYQZFUIDXQ6Z4P&city=austin&page=#{i}"
+			# puts sauce
 			rawdata = Net::HTTP.get(URI.parse(sauce))
 			eb = JSON.parse(rawdata)
 			for i in 1..10 #each result, 10 results per page
@@ -1964,7 +1964,8 @@ namespace :api do
 	desc "pull events from apis"
 	task :get_events, [:until_time]  => [:trim_events, :environment] do |t, args|
 		d_until = args[:until_time] ? DateTime.parse(args[:until_time]) : DateTime.now.advance(:weeks => 1)
-
+		new_events = 0;
+		existing_events = 0;
 		puts "getting events before " + d_until.to_s
 
 		html_ent = HTMLEntities.new
@@ -1993,6 +1994,7 @@ namespace :api do
 					break
 				elsif RawEvent.where(:raw_id => item.elements["id"].text, :from => "austin360").size > 0
 					puts "Found event #{RawEvent.where(:raw_id => item.elements["id"].text, :from => "austin360").first.title}"
+					existing_events += 1
 					next
 				end
 
@@ -2016,9 +2018,11 @@ namespace :api do
 				    :from => "austin360",
 				    :raw_venue_id => (raw_venue ? raw_venue.id : nil)
 				})
-				y raw_event
+				new_events += 1
 			end
 		end until @breakout
+		puts "TOTAL RAW EVENTS ADDED: #{new_events}"
+		puts "Existing events found: #{existing_events}"
 	end
 
 	desc "pull events from api for a venue"
