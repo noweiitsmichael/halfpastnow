@@ -480,7 +480,7 @@ def index
 
       format.json { render json: @event.to_json(:include => [:occurrences, :venue]) }
       # format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }
-      format.mobile { render :layout => "fullmode" }
+      format.mobile 
     end
   end
 
