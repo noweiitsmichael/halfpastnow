@@ -1963,7 +1963,7 @@ namespace :api do
 	 
 	desc "pull events from apis"
 	task :get_events, [:until_time]  => [:trim_events, :environment] do |t, args|
-		d_until = args[:until_time] ? DateTime.parse(args[:until_time]) : DateTime.now.advance(:weeks => 1)
+		d_until = args[:until_time] ? DateTime.parse(args[:until_time]) : DateTime.now.advance(:weeks => 4)
 		new_events = 0;
 		existing_events = 0;
 		puts "getting events before " + d_until.to_s

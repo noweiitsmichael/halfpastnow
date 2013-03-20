@@ -1,5 +1,7 @@
 class PicksController < ApplicationController
 helper :content
+
+
 	def index
 		query = "(SELECT DISTINCT ON (bookmark_lists.id) bookmark_lists.id, occurrences.recurrence_id AS recurrence_id, recurrences.range_end AS range_end, occurrences.start AS start,occurrences.deleted AS deleted, 
 				occurrences.id AS occurrence_id, tags.id AS tag_id FROM bookmark_lists
