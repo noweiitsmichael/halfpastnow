@@ -782,11 +782,13 @@ input::-webkit-input-placeholder
   width: 990px;
   margin:0 auto;
 }
+
 #content
 {
   margin-top: 125px;
   position: relative;
 }
+
 #mode-content
 {
   margin: 121px auto 0;

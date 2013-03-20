@@ -491,10 +491,10 @@ namespace :api do
 		puts "#{new_raw_venues} new raw venues, #{new_real_venues} new real venues"
 
 	end
-	desc "Eventbrite SXSW"
-	task :sxsw_eventbrite => :environment do
+	desc "Eventbrite"
+	task :get_eventbrite_events => :environment do
 		# SXSW events in Austin from 3/07 to 3/18
-		rawdata = Net::HTTP.get(URI.parse('http://www.eventbrite.com/json/event_search?app_key=QRZVIYQZFUIDXQ6Z4P&keywords=sxsw&city=austin&date=2013-03-07+2013-03-18'))
+		rawdata = Net::HTTP.get(URI.parse('http://www.eventbrite.com/json/event_search?app_key=QRZVIYQZFUIDXQ6Z4P&city=austin'))
 		eb = JSON.parse(rawdata)
 		puts "Total results: #{eb["events"][0]["summary"]["total_items"]}"
 		pages = (eb["events"][0]["summary"]["total_items"] / 10).ceil
@@ -506,8 +506,8 @@ namespace :api do
 		updated_events = 0
 		for i in 1..pages # each page, 10 results per page
 			puts i
-			sauce = "http://www.eventbrite.com/json/event_search?app_key=QRZVIYQZFUIDXQ6Z4P&keywords=sxsw&city=austin&date=2013-03-07+2013-03-18&page=#{i}"
-			puts sauce
+			sauce = "http://www.eventbrite.com/json/event_search?app_key=QRZVIYQZFUIDXQ6Z4P&city=austin&page=#{i}"
+			# puts sauce
 			rawdata = Net::HTTP.get(URI.parse(sauce))
 			eb = JSON.parse(rawdata)
 			for i in 1..10 #each result, 10 results per page
@@ -1964,14 +1964,15 @@ namespace :api do
 	desc "pull events from apis"
 	task :get_events, [:until_time]  => [:trim_events, :environment] do |t, args|
 		d_until = args[:until_time] ? DateTime.parse(args[:until_time]) : DateTime.now.advance(:weeks => 1)
-
+		new_events = 0;
+		existing_events = 0;
 		puts "getting events before " + d_until.to_s
 
 		html_ent = HTMLEntities.new
-		offset = 0
+		offset = 100
 		begin
 			@breakout = false
-			apiURL = URI("http://events.austin360.com/search?rss=1&sort=1&srss=100&city=Austin&ssi=" + offset.to_s)
+			apiURL = URI("http://events.austin360.com/search?city=Austin&new=n&rss=1&sort=1&srad=40.0&srss=100&st=event&swhat=&swhen=&swhere=Austin%2C+TX&ssi=" + offset.to_s)
 			apiXML = Net::HTTP.get(apiURL)
 			doc = Document.new(apiXML)
 			stream_count = XPath.first( doc, "//stream_count").text
@@ -1980,7 +1981,6 @@ namespace :api do
 			if stream_count == "0"
 				break
 			end
-
 			XPath.each( doc, "//item") do |item|
 				from = item.elements["title"].text.index("Event:") + 7
 				to = item.elements["title"].text.rindex(" at ") - 1
@@ -1992,14 +1992,17 @@ namespace :api do
 				if(d_until && d_start && d_start > d_until)
 					@breakout = true
 					break
-				elsif RawEvent.where(:raw_id => item.elements["id"].text).size > 0
+				elsif RawEvent.where(:raw_id => item.elements["id"].text, :from => "austin360").size > 0
+					puts "Found event #{RawEvent.where(:raw_id => item.elements["id"].text, :from => "austin360").first.title}"
+					existing_events += 1
 					next
 				end
 
 				raw_venue = RawVenue.where(:raw_id => item.elements["xCal:x-calconnect-venue"].elements["xCal:x-calconnect-venue-id"].text, :from => "austin360").first
 
+				puts "Creating event #{html_ent.decode(item.elements["title"].text[from..to])}"
 				raw_event = RawEvent.create({
-					:title => html_ent.decode(item.elements["title"].text[from..to]),
+					:title => html_ent.decode(item.elements["title"].text.match(/(?<=Event: )(.*)(?=, (Mon|Tue|Wed|Thu|Fri|Sat|Sun))/).to_s),
 				    :description => html_ent.decode(item.elements["description"].text),
 				    :start => d_start,
 				    :end => d_end,
@@ -2015,13 +2018,16 @@ namespace :api do
 				    :from => "austin360",
 				    :raw_venue_id => (raw_venue ? raw_venue.id : nil)
 				})
+				new_events += 1
 			end
 		end until @breakout
+		puts "TOTAL RAW EVENTS ADDED: #{new_events}"
+		puts "Existing events found: #{existing_events}"
 	end
 
 	desc "pull events from api for a venue"
 	task :get_venue_event, [:num_venues]  => [:environment] do |t, args|
-
+		puts "Execute..."
 		num_venues = args[:num_venues].to_s.empty? ? 1 : args[:num_venues].to_i
 
 		@raw_venues = RawVenue.includes(:venue).where("events_url IS NOT NULL AND (last_visited IS NULL OR last_visited < '#{ (Date.today - 7).to_datetime }')").take(num_venues)
@@ -2031,25 +2037,43 @@ namespace :api do
 		html_ent = HTMLEntities.new
 
 		@raw_venues.each do |raw_venue|
-			puts raw_venue.venue.name
-			apiURL = URI(raw_venue.events_url)
-			apiXML = Net::HTTP.get(apiURL)
-			doc = Document.new(apiXML)	
-			XPath.each( doc, "//event") do |item|
-
-				if RawEvent.where(:raw_id => item.elements["event_id"].text, :from => "do512").size > 0
+			puts "Getting events for #{raw_venue.name}"
+			if raw_venue.events_url.match(/^http/)
+				apiURL = URI(raw_venue.events_url)
+			else
+				apiURL = URI("http://www.do512.com/venue/" + raw_venue.events_url + "?format=xml")
+			end
+			# apiURL = "http://www.do512.com/venue/#{apiURL}?format=xml"
+			puts apiURL
+			# apiXML = Net::HTTP.get(apiURL)
+			# doc = Document.new(apiXML)	
+			doc = Nokogiri::XML(open(apiURL))
+			doc.xpath('//event').each do |item|
+				if RawEvent.where(:raw_id => item.xpath("event_id").inner_text, :from => "do512").size > 0
+					puts "Found event #{RawEvent.where(:raw_id => item.xpath("event_id").inner_text, :from => "do512").first.title}"
 					next
 				end
 
+				puts "Creating event #{item.xpath("title").inner_text}"
 				raw_event = RawEvent.create({
-					:title => Sanitize.clean(html_ent.decode(item.elements["title"].text)),
-				    :description => Sanitize.clean(html_ent.decode(item.elements["description"].text)),
-				    :start => DateTime.parse(item.elements["begin_time"].text),
-				    :url => item.elements["link"].text,
-				    :raw_id => item.elements["event_id"].text,
+					:title => Sanitize.clean(html_ent.decode(item.xpath("title").inner_text)),
+				    :description => Sanitize.clean(html_ent.decode(item.xpath("description").inner_text)),
+				    :start => DateTime.parse(item.xpath("begin_time").inner_text),
+				    :url => item.xpath("link").inner_text,
+				    :raw_id => item.xpath("event_id").inner_text,
 				    :from => "do512",
 				    :raw_venue_id => raw_venue.id
 				})
+
+				if item.xpath("image").inner_text
+					cover_i = Picture.create(:pictureable_id => raw_event.id, :pictureable_type => "RawEvent", 
+							   	   :image => open(item.xpath("image").inner_text)) rescue nil
+					if cover_i
+						raw_event.cover_image = cover_i.id
+						raw_event.cover_image_url = cover_i.image_url(:cover).to_s
+						raw_event.save!
+					end
+				end
 			end
 			raw_venue.last_visited = DateTime.now
 			raw_venue.save
