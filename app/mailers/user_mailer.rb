@@ -7,4 +7,10 @@ class UserMailer < ActionMailer::Base
     @url  = "http://halfpastnow.com/login"
     mail(:to => user.email, :subject => "Welcome to halfpastnow!")
   end
+  def weekly(user)
+  	puts "sending email..."
+    @user = user
+    @url  = "http://halfpastnow.com/login"
+    mail(:to => user.email, :subject => "The halfpastnow. Weekly!!! ")
+  end
 end
