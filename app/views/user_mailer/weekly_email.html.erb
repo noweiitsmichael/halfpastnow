@@ -1,536 +1,929 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><style type="text/css">
-/* Mobile-specific Styles */
-@media only screen and (max-device-width: 480px) { 
-table[class=w0], td[class=w0] { width: 0 !important; }
-table[class=w10], td[class=w10], img[class=w10] { width:5px !important; }
-table[class=w15], td[class=w15], img[class=w15] { width:5px !important; }
-table[class=w30], td[class=w30], img[class=w30] { width:10px !important; }
-table[class=w60], td[class=w60], img[class=w60] { width:10px !important; }
-table[class=w125], td[class=w125], img[class=w125] { width:80px !important; }
-table[class=w130], td[class=w130], img[class=w130] { width:55px !important; }
-table[class=w140], td[class=w140], img[class=w140] { width:90px !important; }
-table[class=w160], td[class=w160], img[class=w160] { width:180px !important; }
-table[class=w170], td[class=w170], img[class=w170] { width:100px !important; }
-table[class=w180], td[class=w180], img[class=w180] { width:80px !important; }
-table[class=w195], td[class=w195], img[class=w195] { width:80px !important; }
-table[class=w220], td[class=w220], img[class=w220] { width:80px !important; }
-table[class=w240], td[class=w240], img[class=w240] { width:180px !important; }
-table[class=w255], td[class=w255], img[class=w255] { width:185px !important; }
-table[class=w275], td[class=w275], img[class=w275] { width:135px !important; }
-table[class=w280], td[class=w280], img[class=w280] { width:135px !important; }
-table[class=w300], td[class=w300], img[class=w300] { width:140px !important; }
-table[class=w325], td[class=w325], img[class=w325] { width:95px !important; }
-table[class=w360], td[class=w360], img[class=w360] { width:140px !important; }
-table[class=w410], td[class=w410], img[class=w410] { width:180px !important; }
-table[class=w470], td[class=w470], img[class=w470] { width:200px !important; }
-table[class=w580], td[class=w580], img[class=w580] { width:280px !important; }
-table[class=w640], td[class=w640], img[class=w640] { width:300px !important; }
-table[class*=hide], td[class*=hide], img[class*=hide], p[class*=hide], span[class*=hide] { display:none !important; }
-table[class=h0], td[class=h0] { height: 0 !important; }
-p[class=footer-content-left] { text-align: center !important; }
-#headline p { font-size: 30px !important; }
-.article-content, #left-sidebar{ -webkit-text-size-adjust: 90% !important; -ms-text-size-adjust: 90% !important; }
-.header-content, .footer-content-left {-webkit-text-size-adjust: 80% !important; -ms-text-size-adjust: 80% !important;}
-img { height: auto; line-height: 100%;}
- } 
-/* Client-specific Styles */
-#outlook a { padding: 0; }	/* Force Outlook to provide a "view in browser" button. */
-body { width: 100% !important; }
-.ReadMsgBody { width: 100%; }
-.ExternalClass { width: 100%; display:block !important; } /* Force Hotmail to display emails at full width */
-/* Reset Styles */
-/* Add 100px so mobile switch bar doesn't cover street address. */
-body { background-color: #ececec; margin: 0; padding: 0; }
-img { outline: none; text-decoration: none; display: block;}
-br, strong br, b br, em br, i br { line-height:100%; }
-h1, h2, h3, h4, h5, h6 { line-height: 100% !important; -webkit-font-smoothing: antialiased; }
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: blue !important; }
-h1 a:active, h2 a:active,  h3 a:active, h4 a:active, h5 a:active, h6 a:active {	color: red !important; }
-/* Preferably not the same color as the normal header link color.  There is limited support for psuedo classes in email clients, this was added just for good measure. */
-h1 a:visited, h2 a:visited,  h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited { color: purple !important; }
-/* Preferably not the same color as the normal header link color. There is limited support for psuedo classes in email clients, this was added just for good measure. */  
-table td, table tr { border-collapse: collapse; }
-.yshortcuts, .yshortcuts a, .yshortcuts a:link,.yshortcuts a:visited, .yshortcuts a:hover, .yshortcuts a span {
-color: black; text-decoration: none !important; border-bottom: none !important; background: none !important;
-}	/* Body text color for the New Yahoo.  This example sets the font of Yahoo's Shortcuts to black. */
-/* This most probably won't work in all email clients. Don't include <code _tmplitem="35" > blocks in email. */
-code {
-  white-space: normal;
-  word-break: break-all;
-}
-#background-table { background-color: #ececec; }
-/* Webkit Elements */
-#top-bar { border-radius:6px 6px 0px 0px; -moz-border-radius: 6px 6px 0px 0px; -webkit-border-radius:6px 6px 0px 0px; -webkit-font-smoothing: antialiased; background-color: #043948; color: #e7cba3; }
-#top-bar a { font-weight: bold; color: #e7cba3; text-decoration: none;}
-#footer { border-radius:0px 0px 6px 6px; -moz-border-radius: 0px 0px 6px 6px; -webkit-border-radius:0px 0px 6px 6px; -webkit-font-smoothing: antialiased; }
-/* Fonts and Content */
-body, td { font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif; }
-.header-content, .footer-content-left, .footer-content-right { -webkit-text-size-adjust: none; -ms-text-size-adjust: none; }
-/* Prevent Webkit and Windows Mobile platforms from changing default font sizes on header and footer. */
-.header-content { font-size: 12px; color: #e7cba3; }
-.header-content a { font-weight: bold; color: #e7cba3; text-decoration: none; }
-#headline p { color: #e7cba3; font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; font-size: 36px; text-align: center; margin-top:0px; margin-bottom:30px; }
-#headline p a { color: #e7cba3; text-decoration: none; }
-.article-title { font-size: 18px; line-height:24px; color: #9a9661; font-weight:bold; margin-top:0px; margin-bottom:3px; font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif; }
-.article-title a { color: #9a9661; text-decoration: none; }
-.article-title.with-meta {margin-bottom: 0;}
-.article-meta { font-size: 13px; line-height: 20px; color: #ccc; font-weight: bold; margin-top: 0;}
-.article-content { font-size: 13px; line-height: 18px; color: #444444; margin-top: 0px; margin-bottom: 18px; font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif; }
-.article-content-venue { font-size: 16px; line-height: 18px; color: #454782; margin-top: 0px; margin-bottom: 18px; font-family: 'Helvetica Bold', Arial, Helvetica, sans-serif; }
-.article-content-price { font-size: 14px; line-height: 18px; color: #454782; margin-top: 0px; margin-bottom: 18px; font-family: 'Helvetica Bold', Arial, Helvetica, sans-serif;  }
-.article-content-time { font-size: 13px; line-height: 18px; color: #454782; margin-top: 0px; margin-bottom: 18px; font-family: 'Helvetica Oblique', Arial, Helvetica, sans-serif;  font-style: italic;}
-.article-content a { color: #00707b; font-weight:bold; text-decoration:none; }
-.article-content img { max-width: 100% }
-.article-content ol, .article-content ul { margin-top:0px; margin-bottom:18px; margin-left:19px; padding:0; }
-.article-content li { font-size: 13px; line-height: 18px; color: #444444; }
-.article-content li a { color: #00707b; text-decoration:underline; }
-.article-content p {margin-bottom: 15px;}
-.footer-content-left { font-size: 12px; line-height: 15px; color: #e2e2e2; margin-top: 0px; margin-bottom: 15px; }
-.footer-content-left a { color: #e7cba3; font-weight: bold; text-decoration: none; }
-.footer-content-right { font-size: 11px; line-height: 16px; color: #e2e2e2; margin-top: 0px; margin-bottom: 15px; }
-.footer-content-right a { color: #e7cba3; font-weight: bold; text-decoration: none; }
-#footer { background-color: #043948; color: #e2e2e2; }
-#footer a { color: #e7cba3; text-decoration: none; font-weight: bold; }
-#permission-reminder { white-space: normal; }
-#street-address { color: #e7cba3; white-space: normal; }
-</style>
-<!--[if gte mso 9]>
-<style _tmplitem="35" >
-.article-content ol, .article-content ul {
-   margin: 0 0 0 24px;
-   padding: 0;
-   list-style-position: inside;
-}
-</style>
-<![endif]--></head><body><table width="100%" cellpadding="0" cellspacing="0" border="0" id="background-table">
-	<tbody><tr>
-		<td align="center" bgcolor="#ececec">
-        	<table class="w640" style="margin:0 10px;" width="640" cellpadding="0" cellspacing="0" border="0">
-            	<tbody><tr><td class="w640" width="640" height="20"></td></tr>
-                
-            	<tr>
-                	<td class="w640" width="640">
-                        <table id="top-bar" class="w640" width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#00707b">
-    <tbody><tr>
-        <td class="w15" width="15"></td>
-        <td class="w325" width="350" valign="middle" align="left">
-            <table class="w325" width="350" cellpadding="0" cellspacing="0" border="0">
-                <tbody><tr><td class="w325" width="350" height="8"></td></tr>
-            </tbody></table>
-            <div class="header-content"><webversion>Web Version</webversion><span class="hide">&nbsp;&nbsp;|&nbsp; <preferences lang="en">Update preferences</preferences>&nbsp;&nbsp;|&nbsp; <unsubscribe>Unsubscribe</unsubscribe></span></div>
-            <table class="w325" width="350" cellpadding="0" cellspacing="0" border="0">
-                <tbody><tr><td class="w325" width="350" height="8"></td></tr>
-            </tbody></table>
-        </td>
-        <td class="w30" width="30"></td>
-        <td class="w255" width="255" valign="middle" align="right">
-            <table class="w255" width="255" cellpadding="0" cellspacing="0" border="0">
-                <tbody><tr><td class="w255" width="255" height="8"></td></tr>
-            </tbody></table>
-            <table cellpadding="0" cellspacing="0" border="0">
-    <tbody><tr>
-        
-        <td valign="middle"><fblike><img src="https://img.createsend1.com/img/templatebuilder/like-glyph.png" border="0" width="8" height="14" alt="Facebook icon"=""></fblike></td>
-        <td width="3"></td>
-        <td valign="middle"><div class="header-content"><fblike>Like</fblike></div></td>
-        
-        
-        <td class="w10" width="10"></td>
-        <td valign="middle"><tweet><img src="https://img.createsend1.com/img/templatebuilder/tweet-glyph.png" border="0" width="17" height="13" alt="Twitter icon"=""></tweet></td>
-        <td width="3"></td>
-        <td valign="middle"><div class="header-content"><tweet>Tweet</tweet></div></td>
-        
-        
-        <td class="w10" width="10"></td>
-        <td valign="middle"><forwardtoafriend lang="en"><img src="https://img.createsend1.com/img/templatebuilder/forward-glyph.png" border="0" width="19" height="14" alt="Forward icon"=""></forwardtoafriend></td>
-        <td width="3"></td>
-        <td valign="middle"><div class="header-content"><forwardtoafriend lang="en">Forward</forwardtoafriend></div></td>
-        
-    </tr>
-</tbody></table>
-            <table class="w255" width="255" cellpadding="0" cellspacing="0" border="0">
-                <tbody><tr><td class="w255" width="255" height="8"></td></tr>
-            </tbody></table>
-        </td>
-        <td class="w15" width="15"></td>
-    </tr>
-</tbody></table>
-                        
-                    </td>
-                </tr>
-                <tr>
-                <td id="header" class="w640" width="640" align="center" bgcolor="#00707b">
-    
-    <table class="w640" width="640" cellpadding="0" cellspacing="0" border="0">
-        <tbody><tr><td class="w30" width="30"></td><td class="w580" width="580" height="30"></td><td class="w30" width="30"></td></tr>
-        <tr>
-            <td class="w30" width="30"></td>
-            <td class="w580" width="580">
-                <div align="center" id="headline">
-                    <p>
-                        <strong><singleline label="Title">half past now.</singleline></strong>
-                    </p>
-                </div>
-            </td>
-            <td class="w30" width="30"></td>
-        </tr>
-    </tbody></table>
-    
-    
-</td>
-                </tr>
-                
-                <tr><td class="w640" width="640" height="30" bgcolor="#ffffff"></td></tr>
-                <tr id="gallery-content-row"><td class="w640" width="640" bgcolor="#ffffff">
-    <table class="w640" width="640" cellpadding="0" cellspacing="0" border="0">
+<div marginwidth="0" marginheight="0" style="background-color:#cecfce"><div class="adM">
+
+    </div><table width="100%" cellspacing="0" bgcolor="#CECFCE" style="background-color:#cecfce">
+
         <tbody><tr>
-            <td class="w30" width="30"></td>
-            <td class="w580" width="580">
-                <repeater>
-                                    
-                    <div> Your sponsored/recommended events</div>
-                    <hr>
-                    <layout label="Text only">
-                        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                            <tbody><tr>
-                                <td class="w580" width="580">
-                                    <p align="left" class="article-title"><singleline label="Title">Door64 North STEM Happy Hour - Mar '13</singleline></p>
-                                    <div align="left" class="article-content">
-                                        <multiline label="Description">The Door64 Happy Hour began as a small monthly gathering of friends in 2007. The happy hours have grown to become our largest public networking event, with monthly happy hours in North, Downtown, and South Austin. All science, technology, engineering, and math (STEM) professionals are welcome and are invited to the next Door64 Happy Hour in north Austin.</multiline>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                        </tbody></table>
-                    </layout>
+
+            <td valign="top" align="center">
+
+                <table cellspacing="0" cellpadding="0" width="650" bgcolor="white" style="border:0px none #000000;margin-top:20px;margin-bottom:20px;background-color:#ffffff">
+
+                    <tbody><tr>
+
+                        <td>
+
+                            <table width="650" cellpadding="0" cellspacing="0">
+
+                                <tbody><tr>
+
+                                    <td style="padding:10px 25px 10px 25px">
+
+                                        <table>
+
+                                            <tbody><tr>
+
+                                                <td height="50">
+
+                                                    <a href="http://halfpastnow.com" target="_blank"><img style="float:left" width="250" height="44" alt="Your couch will miss you" src="http://www.halfpastnow.com/assets/halfpastnow_final_300.png"></a>
+
+                                                </td>
+
+                                                
+
+                                            </tr>
+
+                                        </tbody></table>
+
+                                        <hr style="clear:both">
+
                                         
-                    <layout label="Row of two images">
-                        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                            <tbody><tr>
-                                <td class="w280" width="280" valign="top">
-                                    <table class="w280" width="280" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w280" width="280"><img editable="true" label="Image" class="w280" width="280" border="0" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/5867/large_alf3240ex.89098_lg.jpg"></td>
-                                        </tr>
-                                        <tr><td class="w280" width="280" height="10"></td></tr>
-                                        
-                                        <tr><td class="w280" width="280" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="20"></td>
-                                 <td class="w280" width="280" valign="top">
-                                    <table class="w280" width="280" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody>
-                                        <tr><td class="w280" width="280" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w280" width="280">
-                                                <div align="left" class="article-content-venue"><multiline label="Description">W XYZ Bar (Aloft Austin at the Domain)</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="w280" width="280">
-                                                <div align="left" class="article-content-time"><multiline label="Description">wed march 20 at 05:30pm</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="w280" width="280">
-                                                <div align="center" class="article-content-price" style="width:100px;height:16px;border:1px solid #000;"><multiline label="Description">FREE</multiline></div>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </td>
 
 
 
+    
 
+    <div style="text-align:left">
 
-                            </tr>
-                        </tbody></table>
-                    </layout>
-                    <hr>
-                    <layout label="Text only">
-                        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                            <tbody><tr>
-                                <td class="w580" width="580">
-                                    <p align="left" class="article-title"><singleline label="Title">Door64 North STEM Happy Hour - Mar '13</singleline></p>
-                                    <div align="left" class="article-content">
-                                        <multiline label="Description">The Door64 Happy Hour began as a small monthly gathering of friends in 2007. The happy hours have grown to become our largest public networking event, with monthly happy hours in North, Downtown, and South Austin. All science, technology, engineering, and math (STEM) professionals are welcome and are invited to the next Door64 Happy Hour in north Austin.</multiline>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                        </tbody></table>
-                    </layout>
-                                        
-                    <layout label="Row of two images">
-                        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                            <tbody><tr>
-                                <td class="w280" width="280" valign="top">
-                                    <table class="w280" width="280" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w280" width="280"><img editable="true" label="Image" class="w280" width="280" border="0" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/5867/large_alf3240ex.89098_lg.jpg"></td>
-                                        </tr>
-                                        <tr><td class="w280" width="280" height="10"></td></tr>
-                                        
-                                        <tr><td class="w280" width="280" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="20"></td>
-                                 <td class="w280" width="280" valign="top">
-                                    <table class="w280" width="280" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody>
-                                        <tr><td class="w280" width="280" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w280" width="280">
-                                                <div align="left" class="article-content-venue"><multiline label="Description">W XYZ Bar (Aloft Austin at the Domain)</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="w280" width="280">
-                                                <div align="left" class="article-content-time"><multiline label="Description">wed march 20 at 05:30pm</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="w280" width="280">
-                                                <div align="center" class="article-content-price" style="width:100px;height:16px;border:1px solid #000;"><multiline label="Description">FREE</multiline></div>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </td>
+    
+
+    
+        
+    
 
 
 
+    </div>
 
-
-                            </tr>
-                        </tbody></table>
-                    </layout>
-                    <hr>
-                    <layout label="Text only">
-                        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                            <tbody><tr>
-                                <td class="w580" width="580">
-                                    <p align="left" class="article-title"><singleline label="Title">Door64 North STEM Happy Hour - Mar '13</singleline></p>
-                                    <div align="left" class="article-content">
-                                        <multiline label="Description">The Door64 Happy Hour began as a small monthly gathering of friends in 2007. The happy hours have grown to become our largest public networking event, with monthly happy hours in North, Downtown, and South Austin. All science, technology, engineering, and math (STEM) professionals are welcome and are invited to the next Door64 Happy Hour in north Austin.</multiline>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                        </tbody></table>
-                    </layout>
-                                        
-                    <layout label="Row of two images">
-                        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                            <tbody><tr>
-                                <td class="w280" width="280" valign="top">
-                                    <table class="w280" width="280" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w280" width="280"><img editable="true" label="Image" class="w280" width="280" border="0" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/5867/large_alf3240ex.89098_lg.jpg"></td>
-                                        </tr>
-                                        <tr><td class="w280" width="280" height="10"></td></tr>
-                                        
-                                        <tr><td class="w280" width="280" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="20"></td>
-                                 <td class="w280" width="280" valign="top">
-                                    <table class="w280" width="280" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody>
-                                        <tr><td class="w280" width="280" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w280" width="280">
-                                                <div align="left" class="article-content-venue" color="red"><multiline label="Description">W XYZ Bar (Aloft Austin at the Domain)</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="w280" width="280">
-                                                <div align="left" class="article-content-time"><multiline label="Description">wed march 20 at 05:30pm</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="w280" width="280">
-                                                <div align="center" class="article-content-price" style="width:100px;height:16px;border:1px solid #000;"><multiline label="Description">FREE</multiline></div>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-                                </td>
+    
 
 
 
+    
 
+        
 
-                            </tr>
-                        </tbody></table>
-                    </layout>
-                    <div> Your upcomming bookmarked events</div>
-                    <hr>
-                    <!-- Upcomming events  -->
-                    <layout label="Row of four images">
-                        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                            <tbody><tr>
-                                <td class="w130" width="130" valign="top">
-                                    <table class="w130" width="130" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w130" width="130"><img editable="true" label="Image" class="w130" width="130" border="0" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/5867/large_alf3240ex.89098_lg.jpg"></td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w130" width="130">
-                                                <div align="center" class="article-content"><multiline label="Description">Enter your description</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="20"></td>
-                                <td class="w130" width="130" valign="top">
-                                    <table class="w130" width="130" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w130" width="130"><img editable="true" label="Image" class="w130" width="130" border="0" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/5867/large_alf3240ex.89098_lg.jpg"></td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w130" width="130">
-                                                <div align="center" class="article-content"><multiline label="Description">Enter your description</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="20"></td>
-                                <td class="w130" width="130" valign="top">
-                                    <table class="w130" width="130" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w130" width="130"><img editable="true" label="Image" class="w130" width="130" border="0" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/5867/large_alf3240ex.89098_lg.jpg"></td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w130" width="130">
-                                                <div align="center" class="article-content"><multiline label="Description">Enter your description</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="20"></td>
-                                <td class="w130" width="130" valign="top">
-                                    <table class="w130" width="130" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w130" width="130"><img editable="true" label="Image" class="w130" width="130" border="0" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/5867/large_alf3240ex.89098_lg.jpg"></td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w130" width="130">
-                                                <div align="center" class="article-content"><multiline label="Description">Enter your description</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                            </tr>
-                        </tbody></table>
-                    </layout>          
-                    
-                    <div> Your upcomming Top Picks events</div>
-                    <hr>
-                    <!-- Upcomming events  -->
-                    <layout label="Row of four images">
-                        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                            <tbody><tr>
-                                <td class="w130" width="130" valign="top">
-                                    <table class="w130" width="130" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w130" width="130"><img editable="true" label="Image" class="w130" width="130" border="0" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/5867/large_alf3240ex.89098_lg.jpg"></td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w130" width="130">
-                                                <div align="center" class="article-content"><multiline label="Description">Enter your description</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="20"></td>
-                                <td class="w130" width="130" valign="top">
-                                    <table class="w130" width="130" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w130" width="130"><img editable="true" label="Image" class="w130" width="130" border="0" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/5867/large_alf3240ex.89098_lg.jpg"></td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w130" width="130">
-                                                <div align="center" class="article-content"><multiline label="Description">Enter your description</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="20"></td>
-                                <td class="w130" width="130" valign="top">
-                                    <table class="w130" width="130" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w130" width="130"><img editable="true" label="Image" class="w130" width="130" border="0" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/5867/large_alf3240ex.89098_lg.jpg"></td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w130" width="130">
-                                                <div align="center" class="article-content"><multiline label="Description">Enter your description</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="20"></td>
-                                <td class="w130" width="130" valign="top">
-                                    <table class="w130" width="130" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w130" width="130"><img editable="true" label="Image" class="w130" width="130" border="0" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/5867/large_alf3240ex.89098_lg.jpg"></td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w130" width="130">
-                                                <div align="center" class="article-content"><multiline label="Description">Enter your description</multiline></div>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="w130" width="130" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                            </tr>
-                        </tbody></table>
-                    </layout>  
+            
 
-                </repeater>
-            </td>
-            <td class="w30" width="30"></td>
-        </tr>
-    </tbody></table>
-</td></tr>
-                <tr><td class="w640" width="640" height="15" bgcolor="#ffffff"></td></tr>
-                
-                <tr>
-                <td class="w640" width="640">
-    <table id="footer" class="w640" width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#043948">
-        <tbody><tr><td class="w30" width="30"></td><td class="w580 h0" width="360" height="30"></td><td class="w0" width="60"></td><td class="w0" width="160"></td><td class="w30" width="30"></td></tr>
+<table width="600" cellspacing="0" style="margin-top:15px">
+
+    <tbody><tr>
+
+        <td colspan="2" height="30">&nbsp;</td>
+
+    </tr>
+
+    
+
+    
+
         <tr>
-            <td class="w30" width="30"></td>
-            <td class="w580" width="360" valign="top">
-            <span class="hide"><p id="permission-reminder" align="left" class="footer-content-left"></p></span>
-            <p align="left" class="footer-content-left"><preferences lang="en">Edit your subscription</preferences> | <unsubscribe>Unsubscribe</unsubscribe></p>
+
+            <td width="450" valign="top" style="text-align:left">
+
+                <div style="font-size:18px;color:#595959">
+
+
+
+                    <a href="http://hpnstaging.herokuapp.com/search?event_id=158790" style="text-decoration:none;color:#0a5a6f" target="_blank">
+
+                        
+
+                            ACL LIVE PRESENTS: YES
+
+                        
+
+                    </a>
+
+                </div>
+
+                
+
+                    <div style="font-size:14px;color:#8c8c8c">Austin City Limits Live (ACL) @ Moody Theater</div>
+
+                
+
             </td>
-            <td class="hide w0" width="60"></td>
-            <td class="hide w0" width="160" valign="top">
-            <p id="street-address" align="right" class="footer-content-right"></p>
+
+            <td width="150" valign="top">
+
+                <table>
+
+                    <tbody><tr>
+
+                        <td width="150" height="30" align="center" valign="center" style="border:1px solid #8c8c8c;text-transform:uppercase;text-align:center;color:#8c8c8c;font-size:15px;font-weight:normal">
+
+                            
+
+                                wed march 20 at 08:00pm
+
+                            
+
+                        </td>
+
+                    </tr>
+
+                </tbody></table>
+
             </td>
-            <td class="w30" width="30"></td>
+
         </tr>
-        <tr><td class="w30" width="30"></td><td class="w580 h0" width="360" height="15"></td><td class="w0" width="60"></td><td class="w0" width="160"></td><td class="w30" width="30"></td></tr>
-    </tbody></table>
-</td>
-                </tr>
-                <tr><td class="w640" width="640" height="60"></td></tr>
-            </tbody></table>
+
+        <tr>
+
+            <td colspan="2" height="5" style="font-size:1px">&nbsp;</td>
+
+        </tr>
+
+    
+
+</tbody></table>
+
+
+
+
+
+<table width="600" cellpadding="0" border="0" style="background-color:#f2f2f2;color:#595959;font-size:12px;text-align:left;border:0" cellspacing="0">
+
+    <tbody><tr style="font-size:0">
+
+        <td  width="300" height="150" style="border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;">
+
+            <a href="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4945/large_open-uri20121212-2-hmc5mp" target="_blank"><img title="Now Open: Alchemist Bar &amp; Lounge" width="300" height="150" style="background-color:#f2f2f2;border-bottom:1px solid #c0c0c0;border-right:1px solid #c0c0c0;" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/9124/cover_image.php">
+
+
+            </a>
+
         </td>
-	</tr>
-</tbody></table></body></html>
+        <td width="300" height="75" valign="top" style="padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;">In a career first, iconic and Grammy-winning rock band YES will perform three of their classic albums in their entirety, all in one concert, on a special tour in 2013: 1971’s THE YES ALBUM, 1972’s CLOSE TO THE EDGE and 1977’s GOING FOR THE ONE. Music audiences will experience the albums, ... <a style="color:#0a5a6f;text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=158790" target="_blank"><b>Read More&nbsp;»</b></a>
+
+            
+
+
+
+            
+
+        </td>
+
+    </tr>
+
+    
+
+</tbody></table>
+
+
+
+
+
+
+
+
+
+        
+
+    
+
+        
+
+            
+
+<table width="600" cellspacing="0" style="margin-top:15px">
+
+    <tbody><tr>
+
+        <td colspan="2" height="30">&nbsp;</td>
+
+    </tr>
+
+    
+
+    
+
+        <tr>
+
+            <td width="450" valign="top" style="text-align:left">
+
+                <div style="font-size:18px;color:#595959">
+
+
+
+                    <a href="http://hpnstaging.herokuapp.com/search?event_id=14248" style="text-decoration:none;color:#0a5a6f" target="_blank">
+
+                        
+
+                             Reverse Happy Hour
+
+                        
+
+                    </a>
+
+                </div>
+
+                
+
+                    <div style="font-size:14px;color:#8c8c8c">Imperia</div>
+
+                
+
+            </td>
+
+            <td width="150" valign="top">
+
+                <table>
+
+                    <tbody><tr>
+
+                        <td width="150" height="30" align="center" valign="center" style="border:1px solid #8c8c8c;text-transform:uppercase;text-align:center;color:#8c8c8c;font-size:15px;font-weight:normal">
+
+                            
+
+                                wed march 20 at 09:00pm
+
+                            
+
+                        </td>
+
+                    </tr>
+
+                </tbody></table>
+
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td colspan="2" height="5" style="font-size:1px">&nbsp;</td>
+
+        </tr>
+
+    
+
+</tbody></table>
+
+
+
+
+
+<table width="600" cellpadding="0" border="0" style="background-color:#f2f2f2;color:#595959;font-size:12px;text-align:left;border:0" cellspacing="0">
+
+    <tbody><tr style="font-size:0">
+
+        <td  width="300" height="150" style="border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;">
+
+            <a href="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4945/large_open-uri20121212-2-hmc5mp" target="_blank"><img title="Now Open: Alchemist Bar &amp; Lounge" width="300" height="150" style="background-color:#f2f2f2;border-bottom:1px solid #c0c0c0;border-right:1px solid #c0c0c0;" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/7379/cover_picture-23.png">
+
+
+            </a>
+
+        </td>
+        <td width="300" height="75" valign="top" style="padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;">$5 house martinis, $5 large hot sake, $3 sake bombs and discounted lounge menu items in the lounge and at the bar 9pm until close, EVERY NIGHT ... <a style="color:#0a5a6f;text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=14248" target="_blank"><b>Read More&nbsp;»</b></a>
+
+            
+
+
+
+            
+
+        </td>
+
+    </tr>
+
+    
+
+</tbody></table>
+
+
+<table width="600" cellspacing="0" style="margin-top:15px">
+
+    <tbody><tr>
+
+        <td colspan="2" height="30">&nbsp;</td>
+
+    </tr>
+
+    
+
+    
+
+        <tr>
+
+            <td width="450" valign="top" style="text-align:left">
+
+                <div style="font-size:18px;color:#595959">
+
+
+
+                    <a href="http://hpnstaging.herokuapp.com/search?event_id=153751" style="text-decoration:none;color:#0a5a6f" target="_blank">
+
+                        
+
+                           Gateway to Recovery
+
+                        
+
+                    </a>
+
+                </div>
+
+                
+
+                    <div style="font-size:14px;color:#8c8c8c">Austin Recovery</div>
+
+                
+
+            </td>
+
+            <td width="150" valign="top">
+
+                <table>
+
+                    <tbody><tr>
+
+                        <td width="150" height="30" align="center" valign="center" style="border:1px solid #8c8c8c;text-transform:uppercase;text-align:center;color:#8c8c8c;font-size:15px;font-weight:normal">
+
+                            
+
+                                wed march 20 at 07:00pm
+
+                            
+
+                        </td>
+
+                    </tr>
+
+                </tbody></table>
+
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td colspan="2" height="5" style="font-size:1px">&nbsp;</td>
+
+        </tr>
+
+    
+
+</tbody></table>
+
+
+
+
+
+<table width="600" cellpadding="0" border="0" style="background-color:#f2f2f2;color:#595959;font-size:12px;text-align:left;border:0" cellspacing="0">
+
+    <tbody><tr style="font-size:0">
+
+        <td  width="300" height="150" style="border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;">
+
+            <a href="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4945/large_open-uri20121212-2-hmc5mp" target="_blank"><img title="Now Open: Alchemist Bar &amp; Lounge" width="300" height="150" style="background-color:#f2f2f2;border-bottom:1px solid #c0c0c0;border-right:1px solid #c0c0c0;" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4934/cover_ARlogo.png">
+
+
+            </a>
+
+        </td>
+        <td width="300" height="75" valign="top" style="padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;">Gateway to Recovery is a free educational series on Addiction and Recovery. It is offered as the first step in helping people find and begin the healing process. If you, or someone you love, are looking for help with overcoming addiction ... <a style="color:#0a5a6f;text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=153751" target="_blank"><b>Read More&nbsp;»</b></a>
+
+            
+
+
+
+            
+
+        </td>
+
+    </tr>
+
+    
+
+</tbody></table>
+
+
+
+
+
+
+
+
+
+
+        
+
+    
+
+
+
+    
+
+
+
+    
+
+
+
+
+
+    <hr style="color:#ccc;background-color:#ccc;margin:15px 0;min-height:1px;border:0">
+
+
+
+    <div style="margin:10px 0 10px 0;border:solid 0px #10add5;font-size:16px">
+
+        <div style="padding:5px 0 0 4px;font-size:16px;color:#595959;font-weight:bold">
+
+        
+
+            Your upcomming bookmarked events
+
+        
+
+        </div>
+
+        <table style="padding:10px 0 10px 0">
+
+            <tbody><tr>
+
+            
+
+                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+
+                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
+
+                        <a href="http://hpnstaging.herokuapp.com/events/show/155624?fullmode=true" target="_blank">
+
+                            
+
+                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/7922/large_Led_Zeppelin.jpg">
+
+                            
+
+                        </a>
+
+                        <br>
+
+                        <div style="padding:2px">
+
+                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/events/show/155624?fullmode=true" target="_blank">
+
+                                <div style="font-size:13px;color:#0a5a6f">The Song Remains the Same: The Music of Led Zeppelin</div>
+
+                            </a>
+
+                            
+
+                                <div style="font-size:11px;color:#777777">at Long Center for the Performing Arts</div>
+
+                            
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+
+            
+
+                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+
+                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
+
+                        <a href="http://hpnstaging.herokuapp.com/events/show/135426?fullmode=true" target="_blank">
+
+                            
+
+                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4309/large_473888_10150625663813204_393885185_o.jpg">
+
+                            
+
+                        </a>
+
+                        <br>
+
+                        <div style="padding:2px">
+
+                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/events/show/135426?fullmode=true" target="_blank">
+
+                                <div style="font-size:13px;color:#0a5a6f">Trivia Night at Plucker's</div>
+
+                            </a>
+
+                            
+
+                                <div style="font-size:11px;color:#777777">at Md Pluckers Wing Factory & Grill</div>
+
+                            
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+
+            
+
+                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+
+                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
+
+                        <a href="http://hpnstaging.herokuapp.com/events/show/145900?fullmode=true" target="_blank">
+
+                            
+
+                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/817/large_images">
+
+                            
+
+                        </a>
+
+                        <br>
+
+                        <div style="padding:2px">
+
+                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/events/show/145900?fullmode=true" target="_blank">
+
+                                <div style="font-size:13px;color:#0a5a6f">Dreadneck Night with The Mau Mau Chaplains</div>
+
+                            </a>
+
+                            
+
+                                <div style="font-size:11px;color:#777777">at Flamingo Cantina</div>
+
+                            
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+
+            
+
+            </tr>
+
+        </tbody></table>
+
+    </div>
+
+
+
+
+
+
+
+    
+
+
+
+
+
+    <hr style="color:#ccc;background-color:#ccc;margin:15px 0;min-height:1px;border:0">
+
+
+
+    <div style="margin:10px 0 10px 0;border:solid 0px #10add5;font-size:16px">
+
+        <div style="padding:5px 0 0 4px;font-size:16px;color:#595959;font-weight:bold">
+
+        
+
+            upcoming Top Picks for this week
+
+        
+
+        </div>
+
+        <table style="padding:10px 0 10px 0">
+
+            <tbody><tr>
+
+            
+
+                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+
+                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
+
+                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=131000" target="_blank">
+
+                            
+
+                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/3691/large_Emily___Andy_s_Film_Club.jpg">
+
+                            
+
+                        </a>
+
+                        <br>
+
+                        <div style="padding:2px">
+
+                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=131000" target="_blank">
+
+                                <div style="font-size:13px;color:#0a5a6f">Emily + Andy's Film Club</div>
+
+                            </a>
+
+                            
+
+                                <div style="font-size:11px;color:#777777">at Austin Studios Screening Room</div>
+
+                            
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+
+            
+
+                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+
+                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
+
+                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=139053" target="_blank">
+
+                            
+
+                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4754/large_parks_header_a.jpg">
+
+                            
+
+                        </a>
+
+                        <br>
+
+                        <div style="padding:2px">
+
+                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=139053" target="_blank">
+
+                                <div style="font-size:13px;color:#0a5a6f">Naturalist Workshop & Trade Corner</div>
+
+                            </a>
+
+                            
+
+                                <div style="font-size:11px;color:#777777">at Austin Nature and Science Center</div>
+
+                            
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+
+            
+
+                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+
+                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
+
+                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=154667" target="_blank">
+
+                            
+
+                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/170/large_images">
+
+                            
+
+                        </a>
+
+                        <br>
+
+                        <div style="padding:2px">
+
+                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=154667" target="_blank">
+                                <div style="font-size:13px;color:#0a5a6f">Ephraim Owens</div>
+
+                            </a>
+
+                            
+
+                                <div style="font-size:11px;color:#777777">at Continental Club</div>
+
+                            
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+
+            
+
+            </tr>
+
+        </tbody></table>
+
+    </div>
+
+
+
+
+
+
+
+    
+
+
+
+
+
+    <hr style="color:#ccc;background-color:#ccc;margin:15px 0;min-height:1px;border:0">
+
+
+
+    <div style="margin:10px 0 10px 0;border:solid 0px #10add5;font-size:16px">
+
+        <div style="padding:5px 0 0 4px;font-size:16px;color:#595959;font-weight:bold">
+
+        
+
+            Visit our sponsored events
+
+        
+
+        </div>
+
+        <table style="padding:10px 0 10px 0">
+
+            <tbody><tr>
+
+            
+
+                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+
+                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
+
+                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=160589" target="_blank">
+
+                            
+
+                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/8657/large_2102_47562344207_6358_n.jpg">
+
+                            
+
+                        </a>
+
+                        <br>
+
+                        <div style="padding:2px">
+
+                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=160589" target="_blank">
+
+                                <div style="font-size:13px;color:#0a5a6f">Statesman Capitol 10,000</div>
+
+                            </a>
+
+                            
+
+                                <div style="font-size:11px;color:#777777">by Austin American-Statesman</div>
+
+                            
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+
+            
+
+                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+
+                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
+
+                        <a href="http://hpnstaging.herokuapp.com/picks/find/95?event_id=133000" target="_blank">
+
+                            
+
+                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4122/large_event-5568.jpg">
+
+                            
+
+                        </a>
+
+                        <br>
+
+                        <div style="padding:2px">
+
+                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks/find/95?event_id=133000" target="_blank">
+
+                                <div style="font-size:13px;color:#0a5a6f">Texas Parkour Academy Youth Classes</div>
+
+                            </a>
+
+                            
+
+                                <div style="font-size:11px;color:#777777">by Texas Parkour Academy</div>
+
+                            
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+
+            
+
+                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+
+                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
+
+                        <a href="http://hpnstaging.herokuapp.com/search?event_id=32467" target="_blank">
+
+                            
+
+                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/667/large_spiderhouse4conradb.800w_600h.jpg">
+
+                            
+
+                        </a>
+
+                        <br>
+
+                        <div style="padding:2px">
+
+                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=32467" target="_blank">
+
+                                <div style="font-size:13px;color:#0a5a6f">Happy Hour: $1 off drinks</div>
+
+                            </a>
+
+                            
+
+                                <div style="font-size:11px;color:#777777">by Spider House</div>
+
+                            
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+
+            
+
+            </tr>
+
+        </tbody></table>
+
+    </div>
+
+
+    <hr style="color:#ccc;background-color:#ccc;margin-top:30px;min-height:1px;border:0">
+
+
+
+    <p style="font-size:11px;color:#777777">
+
+        You're receiving this email because you are a member of <a style="color:#0a5a6f;text-decoration:none" href="http://e.sosh.com/wf/click?upn=FoLMDfTJVg-2FzTfHOeCtj1kSwIOzRIwhYrX6tdJysRl7DKY6ZNCJeipFezFqtU9DD4Hc51weZN776MOeYT9kle54utbl9mPaDb-2Fe-2BlokvklEcYH6DS0bxnXPQV4nM7PViU9MTcv3w8kBISevbaJEzFwuQd9JagkVhcjmoXQ7LLM-2BTSPb0EnT5VlsqbzP11BoyE-2BFv0Ro3Ych6GkaqzeU3cw-3D-3D_Yuzv0-2BcgxNCIOe-2BW56v-2FvQ7o5Z5w2mCDEgOJ17nj8T08y2jLehQavm7oJ9VYlHezpUYXDDWl6ZsEqJQLe36jry-2BIletnHKdjXVyxqWX6e-2FBpT7JHrDLU3ZGaf4mpfRaK9lv5Sm1em9MvsGD5RvpOdzN7MSZ4NdZj9oyb8Cp8vWqonbpFUyU97lCTsNqZBEwa" target="_blank">half past now.</a>Don't want to receive The half past now. Weekly <a style="color:#0a5a6f;text-decoration:none" href="http://e.sosh.com/wf/click?upn=FoLMDfTJVg-2FzTfHOeCtj1kSwIOzRIwhYrX6tdJysRl7DKY6ZNCJeipFezFqtU9DD4Hc51weZN776MOeYT9kle54utbl9mPaDb-2Fe-2BlokvklEcYH6DS0bxnXPQV4nM7PViU9MTcv3w8kBISevbaJEzFwuQd9JagkVhcjmoXQ7LLM9-2BUrQb4Xl3SG6dHjfKxtjKc8T42U1HBciAHsZl5sEOCi-2FUnkERN2bOU0zUe4ldlZs53gfY4JowuiU79uiH-2FtSNYaPoeLZOYJmqhfsk83vIlQ-3D-3D_Yuzv0-2BcgxNCIOe-2BW56v-2FvQ7o5Z5w2mCDEgOJ17nj8T08y2jLehQavm7oJ9VYlHezA-2FGWLJGtEHGXhIz-2BRKbmDr298qIwZ2n-2Bs05hLeLJpePmK50PBpLSux8R4sH-2BeJkB-2Bbcz9n83wzdIHhafr8NYqma4WYzifLYjypgF640b7e7EjmMiQwI0JvyXSzmlRemW" target="_blank">Unsubscribe</a>.  half past now. is a Chimera Labs production, and we love to receive <a style="color:#0a5a6f;text-decoration:none" href="http://e.sosh.com/wf/click?upn=FoLMDfTJVg-2FzTfHOeCtj1kSwIOzRIwhYrX6tdJysRl7DKY6ZNCJeipFezFqtU9DD4Hc51weZN776MOeYT9kle54utbl9mPaDb-2Fe-2BlokvklEcYH6DS0bxnXPQV4nM7PViU9MTcv3w8kBISevbaJEzFwuQd9JagkVhcjmoXQ7LLM-2BPhA70taUlRvYCWxO549LwQ1Tqt-2F7U0v-2FMTPtI4tMSFGCMYDRPgWQIYNf5L7rJTc4-3D_Yuzv0-2BcgxNCIOe-2BW56v-2FvQ7o5Z5w2mCDEgOJ17nj8T08y2jLehQavm7oJ9VYlHez9PTG3U4ZKmjg9Ivt-2FgyLNnmlkDv2ee6rJqhy5QTJeibyozJ76YsrVCzfZm9m4Jo6fIOixZ8t3AR5wEAEpVScLrxDtmtAP5WGfPhK8JV-2BnbCPfVgxVDFJpUn1d20jFjz-2F" target="_blank">your feedback</a>. <a style="color:#0a5a6f;text-decoration:none" href="http://e.sosh.com/wf/click?upn=41cn7YAvYngXdjbdoSsfB9G8VOL9DtWjYAomJeWaZ-2F8-3D_Yuzv0-2BcgxNCIOe-2BW56v-2FvQ7o5Z5w2mCDEgOJ17nj8T08y2jLehQavm7oJ9VYlHezX4zALkhOklx3U-2FuZfdPbiW37kuXupsFLX6CU0e5Ze4YLczEBDXvAduSrn-2BlnJDbnnUHk1wrwT5aUh9dl55Hg5k6JuX3EMkGuXUGkVWiNr9WLzBBYjhDJip8cX9YnIES6" target="_blank">Follow us on Twitter</a> for updates.
+
+    </p>
+
+    <div></div><img width="1" height="1" border="0">
+
+
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody></table>
+
+                        </td>
+
+                    </tr>
+
+                </tbody></table>
+
+            </td>
+
+        </tr>
+
+    </tbody></table>
+
+
+<img alt="" width="1" height="1" border="0" style="min-height:1px!important;width:1px!important;border-width:0!important;margin-top:0!important;margin-bottom:0!important;margin-right:0!important;margin-left:0!important;padding-top:0!important;padding-bottom:0!important;padding-right:0!important;padding-left:0!important"><div class="yj6qo"></div><div class="adL">
+</div></div>
