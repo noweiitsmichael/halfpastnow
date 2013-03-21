@@ -57,10 +57,13 @@
 	<h5 style="margin-top:10px;">Tags</h5>
 	<div class="parent">
 		<% andTags = @parentTags.select { |t| t[:name] == "Tags" }.first %>
-		<% andTags.childTags.sort { |a,b| a.name <=> b.name }.each do |childTagCount| %>
+		<% unless andTags.nil?%>
+			<% andTags.childTags.sort { |a,b| a.name <=> b.name }.each do |childTagCount| %>
 
 			<div class="andtags-thing" this-id="<%= childTagCount.id %>"><%= check_box_tag (type + "[tag_ids][]"), childTagCount.id, element.tags.include?(childTagCount) %>
 				<label><%= childTagCount.name %></label></div>
 		<% end %>
+		<% end %>
+		
 	</div>
 </div>
