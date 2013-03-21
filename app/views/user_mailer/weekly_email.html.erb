@@ -87,7 +87,7 @@
 
                         
 
-                            <% occurrence.event.title %>
+                            <%= truncate(occurrence.event.title, :length => 115) %>
 
                         
 
@@ -97,7 +97,7 @@
 
                 
 
-                <div style="font-size:14px;color:#8c8c8c"><% occurrence.event.venue.name %></div>
+                <div style="font-size:14px;color:#8c8c8c"><%= occurrence.event.venue.name %></div>
 
                 
 
@@ -113,7 +113,7 @@
 
                             
 
-                                <% occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %>
+                                <%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %>
 
                             
 
@@ -154,7 +154,7 @@
                 </a>
 
             </td>
-            <td width="300" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;"><%= truncate(occurrence.event.description, :length => 115) %>... <a style="color:#0a5a6f;text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=<%= occurrence.id %>" target="_blank"><b>Read More&nbsp;»</b></a>
+            <td width="300" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;"><%= truncate(strip_tags(occurrence.event.description), :length => 115) %>... <a style="color:#0a5a6f;text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=<%= occurrence.id %>" target="_blank"><b>Read More&nbsp;»</b></a>
                 <div height="0" style="font-size:1px">&nbsp;</div>
                 <div >
                     <i>
