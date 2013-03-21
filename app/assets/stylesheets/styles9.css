@@ -3195,6 +3195,7 @@ text-decoration: none;
 
 .picklist-events {
     clear: left;
+
     background: #Fafafa;
 }
 
@@ -4127,8 +4128,8 @@ html, body {
   font-weight:lighter;
 }
 
-.list { 
-  width: 320px;
+.list{ 
+  width: 486px;
   float: left;
   margin-right: 12px;
   margin-left: 1px;
