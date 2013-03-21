@@ -59,11 +59,10 @@
 <div class="header-content"><webversion><a href="http://www.halfpastnow.com" style="text-decoration:none;color:#0a5a6f" target="_blank">half past now.</a></webversion><span class="hide">&nbsp;&nbsp;|&nbsp; <preferences lang="en"><a href="http://www.halfpastnow.com" style="text-decoration:none;color:#0a5a6f" target="_blank">Update preferences</a></preferences>&nbsp;&nbsp;|&nbsp; <unsubscribe><a href="mailto:?subject=Check out halfpastnow.&body=Signup for half past now. newsletter">Tell a friend</a></unsubscribe></span></div>
 
     
-
+<!-- Start generating events -->
         
-
-            
-
+<% @ids.each do |id| %>
+<% occurrence = Occurrence.find(id) %>
 <table width="600" cellspacing="0" style="margin-top:15px">
 
     <tbody><tr>
@@ -88,7 +87,7 @@
 
                         
 
-                            ACL LIVE PRESENTS: YES
+                            <% occurrence.event.title %>
 
                         
 
@@ -98,7 +97,7 @@
 
                 
 
-                <div style="font-size:14px;color:#8c8c8c">Austin City Limits Live (ACL) @ Moody Theater</div>
+                <div style="font-size:14px;color:#8c8c8c"><% occurrence.event.venue.name %></div>
 
                 
 
@@ -114,7 +113,7 @@
 
                             
 
-                                wed march 20 at 08:00pm
+                                <% occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %>
 
                             
 
@@ -149,24 +148,30 @@
 
             <td  width="250" height="125" style="background-color:#f2f2f2;border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;">
 
-                <a href="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4945/large_open-uri20121212-2-hmc5mp" target="_blank"><img title="Now Open: Alchemist Bar &amp; Lounge" width="250" height="125" style="background-color:#f2f2f2;border-right:1px solid #c0c0c0;" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/9124/cover_image.php">
+                <a href="hpnstaging.herokuapp.com/?event_id=<%= occurrence.id %>" target="_blank"><img title="<% occurrence.event.title %>" width="250" height="125" style="background-color:#f2f2f2;border-right:1px solid #c0c0c0;" src="<% occurrence.event.cover_image_url %>">
 
 
                 </a>
 
             </td>
-            <td width="300" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;">In a career first, iconic and Grammy-winning rock band YES will perform three of their classic albums in their entirety, all in one concert,  ... <a style="color:#0a5a6f;text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=158790" target="_blank"><b>Read More&nbsp;»</b></a>
+            <td width="300" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;"><%= truncate(occurrence.event.description, :length => 115) %>... <a style="color:#0a5a6f;text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=<%= occurrence.id %>" target="_blank"><b>Read More&nbsp;»</b></a>
                 <div height="0" style="font-size:1px">&nbsp;</div>
                 <div >
                     <i>
-                        <span style="font-size:16px;line-height:7px;color: #0a5a6f;">Music</span>
-                        <span style="font-size:16px;line-height:7px;color: #0a5a6f;">Rock</span>
-                        <span style="font-size:16px;line-height:7px;color: #0a5a6f;">Reggae</span>
+                        <% if occurrence.event.tags.count > 0 %>
+                            <% occurrence.event.tags.each do |tag| %>
+                                <span style="font-size:16px;line-height:7px;color: #0a5a6f;"><%= tag.name %></span>
+                            <% end %>
+                        <% end %>
+                       
                     </i>
                 </div>
                 <div height="0" style="font-size:0px">&nbsp;</div>
                 <div>
-                        <span style="font-size:16px;line-height:5px;color: #0a5a6f;">FREE</span>
+                    <% if occurrence.event.price %>
+                        <span style="font-size:16px;line-height:5px;color: #0a5a6f;"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></span>
+                    <% end %>
+                    
                         
                 </div>
              </td>
@@ -189,633 +194,15 @@
 <hr>
 
 
-<table width="600" cellspacing="0" style="margin-top:15px">
 
-    <tbody><tr>
-
-        <td colspan="2" height="0">&nbsp;</td>
-
-    </tr>
-
-        <tr>
-
-            <td width="450" valign="top" style="text-align:left">
-
-                <div style="font-size:18px;color:#595959">
-
-
-
-                    <a href="http://hpnstaging.herokuapp.com/search?event_id=14248" style="text-decoration:none;color:#0a5a6f" target="_blank">
-
-                        
-
-                             Reverse Happy Hour
-
-                        
-
-                    </a>
-
-                </div>
-
-                
-
-                    <div style="font-size:14px;color:#8c8c8c">Imperia</div>
-
-                
-
-            </td>
-
-            <td width="150" valign="top">
-
-                <table>
-
-                    <tbody><tr>
-
-                        <td width="150" height="30" align="center" valign="center" style="border:1px solid #8c8c8c;text-transform:uppercase;text-align:center;color:#8c8c8c;font-size:15px;font-weight:normal">
-
-                            
-
-                                wed march 20 at 09:00pm
-
-                            
-
-                        </td>
-
-                    </tr>
-
-                </tbody></table>
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td colspan="2" height="5" style="font-size:1px">&nbsp;</td>
-
-        </tr>
-
-    
-
-</tbody></table>
-
-
-
-
-
-<table width="600" cellpadding="0" border="0" style="color:#595959;font-size:12px;text-align:left;border:0" cellspacing="0">
-
-    <tbody><tr style="font-size:0">
-
-        <td  width="250" height="125" style="border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;">
-
-            <a href="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4945/large_open-uri20121212-2-hmc5mp" target="_blank"><img title="Now Open: Alchemist Bar &amp; Lounge" width="250" height="125" style="background-color:#f2f2f2;border-bottom:1px solid #c0c0c0;border-right:1px solid #c0c0c0;" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/7379/cover_picture-23.png">
-
-
-            </a>
-
-        </td>
-        <td width="350" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;">$5 house martinis, $5 large hot sake, $3 sake bombs and discounted lounge menu items in the  ... <a style="color:#0a5a6f;text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=14248" target="_blank"><b>Read More&nbsp;»</b></a>
-            <div height="0" style="font-size:1px">&nbsp;</div>
-                <div >
-                    <i>
-                        <span style="font-size:16px;line-height:7px;color: #0a5a6f;">Drink Special</span>
-                       
-                    </i>
-                </div>
-                <div height="0" style="font-size:0px">&nbsp;</div>
-                <div>
-                        <span style="font-size:16px;line-height:5px;color: #0a5a6f;">$10</span>
-                        
-                </div>
-            
-
-
-
-            
-
-        </td>
-
-    </tr>
-
-    
-
-    <tr>
-
-            <td colspan="2" height="5" style="font-size:1px">&nbsp;</td>
-
-    </tr>
-    
-
-</tbody></table>
-
-<div style="font-size:14px;color:#8c8c8c">Reason you would like this event.....</div>
-
-<hr>
-<!-- Event -->
-
-<table width="600" cellspacing="0" style="margin-top:15px">
-
-    <tbody><tr>
-
-        <td colspan="2" height="0">&nbsp;</td>
-
-    </tr>
-
-        <tr>
-
-            <td width="450" valign="top" style="text-align:left">
-
-                <div style="font-size:18px;color:#595959">
-
-
-
-                    <a href="http://www.halfpastnow.com/search?event_id=155864" style="text-decoration:none;color:#0a5a6f" target="_blank">Teatrocinema</a>
-
-                </div>
-
-                
-
-                    <div style="font-size:14px;color:#8c8c8c">Bass Concert Hall</div>
-
-                
-
-            </td>
-
-            <td width="150" valign="top">
-
-                <table>
-
-                    <tbody><tr>
-
-                        <td width="150" height="30" align="center" valign="center" style="border:1px solid #8c8c8c;text-transform:uppercase;text-align:center;color:#8c8c8c;font-size:15px;font-weight:normal">
-
-                            
-
-                                thu march 21 at 08:00pm
-
-                            
-
-                        </td>
-
-                    </tr>
-
-                </tbody></table>
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td colspan="2" height="5" style="font-size:1px">&nbsp;</td>
-
-        </tr>
-
-    
-
-</tbody></table>
-
-
-
-
-
-<table width="600" cellpadding="0" border="0" style="color:#595959;font-size:12px;text-align:left;border:0" cellspacing="0">
-
-    <tbody><tr style="font-size:0">
-
-        <td  width="250" height="125" style="border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;">
-
-            <a href="http://www.halfpastnow.com/search?event_id=155864" target="_blank"><img title="Now Open: Alchemist Bar &amp; Lounge" width="250" height="125" style="background-color:#f2f2f2;border-bottom:1px solid #c0c0c0;border-right:1px solid #c0c0c0;" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/8091/cover_teatro_cinema_logo_by_ffondness.jpg">
-
-
-            </a>
-
-        </td>
-        <td width="350" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;">Chile’s TEATROCINEMA is an inventive and original theater company who create an ingenious fusion of cinema and theatre. Their highly stylized... <a style="color:#0a5a6f;text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=14248" target="_blank"><b>Read More&nbsp;»</b></a>
-            <div height="0" style="font-size:1px">&nbsp;</div>
-                <div >
-                    <i>
-                        <span style="font-size:16px;line-height:7px;color: #0a5a6f;">Music</span>
-                       
-                    </i>
-                </div>
-                <div height="0" style="font-size:0px">&nbsp;</div>
-                <div>
-                        <span style="font-size:16px;line-height:5px;color: #0a5a6f;">$70</span>
-                        
-                </div>
-            
-
-
-
-            
-
-        </td>
-
-    </tr>
-
-    
-
-    <tr>
-
-            <td colspan="2" height="5" style="font-size:1px">&nbsp;</td>
-
-    </tr>
-    
-
-</tbody></table>
-
-<div style="font-size:14px;color:#8c8c8c">Reason you would like this event.....</div>
-
-<hr>
-
-<!-- Event -->
-
-<!-- Event -->
-
-<table width="600" cellspacing="0" style="margin-top:15px">
-
-    <tbody><tr>
-
-        <td colspan="2" height="0">&nbsp;</td>
-
-    </tr>
-
-        <tr>
-
-            <td width="450" valign="top" style="text-align:left">
-
-                <div style="font-size:18px;color:#595959">
-
-
-
-                    <a href="http://www.halfpastnow.com/search?event_id=155864" style="text-decoration:none;color:#0a5a6f" target="_blank">2013 NCAA Division I Men's Basketball Second/Third Rounds</a>
-
-                </div>
-
-                
-
-                    <div style="font-size:14px;color:#8c8c8c">Frank Erwin Center</div>
-
-                
-
-            </td>
-
-            <td width="150" valign="top">
-
-                <table>
-
-                    <tbody><tr>
-
-                        <td width="150" height="30" align="center" valign="center" style="border:1px solid #8c8c8c;text-transform:uppercase;text-align:center;color:#8c8c8c;font-size:15px;font-weight:normal">
-
-                            
-
-                                fri march 22 at 12:00am
-
-                            
-
-                        </td>
-
-                    </tr>
-
-                </tbody></table>
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td colspan="2" height="5" style="font-size:1px">&nbsp;</td>
-
-        </tr>
-
-    
-
-</tbody></table>
-
-
-
-
-
-<table width="600" cellpadding="0" border="0" style="color:#595959;font-size:12px;text-align:left;border:0" cellspacing="0">
-
-    <tbody><tr style="font-size:0">
-
-        <td  width="250" height="125" style="border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;">
-
-            <a href="http://www.halfpastnow.com/search?event_id=155734" target="_blank"><img title="Now Open: Alchemist Bar &amp; Lounge" width="250" height="125" style="background-color:#f2f2f2;border-bottom:1px solid #c0c0c0;border-right:1px solid #c0c0c0;" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/284/cover_images">
-
-
-            </a>
-
-        </td>
-        <td width="350" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;">Tickets are on sale now for the NCAA Division I Men's Basketball Second/Third Rounds. Eight of college basketball's best teams play in Austin... <a style="color:#0a5a6f;text-decoration:none" href="http://www.halfpastnow.com/search?event_id=155734" target="_blank"><b>Read More&nbsp;»</b></a>
-            <div height="0" style="font-size:1px">&nbsp;</div>
-                <div >
-                    <i>
-                        <span style="font-size:16px;line-height:7px;color: #0a5a6f;">games and activities</span>
-                       
-                    </i>
-                </div>
-                <div height="0" style="font-size:0px">&nbsp;</div>
-                <div>
-                        <span style="font-size:16px;line-height:5px;color: #0a5a6f;">$180</span>
-                        
-                </div>
-            
-
-
-
-            
-
-        </td>
-
-    </tr>
-
-    
-
-    <tr>
-
-            <td colspan="2" height="5" style="font-size:1px">&nbsp;</td>
-
-    </tr>
-    
-
-</tbody></table>
-
-<div style="font-size:14px;color:#8c8c8c">Reason you would like this event.....</div>
-
-<hr>
-
-<!-- Event -->
-
-<table width="600" cellspacing="0" style="margin-top:15px">
-
-    <tbody><tr>
-
-        <td colspan="2" height="0">&nbsp;</td>
-
-    </tr>
-
-        <tr>
-
-            <td width="450" valign="top" style="text-align:left">
-
-                <div style="font-size:18px;color:#595959">
-
-
-
-                    <a href="http://www.halfpastnow.com/search?event_id=155864" style="text-decoration:none;color:#0a5a6f" target="_blank">The Robot Group Weekly Meetup</a>
-
-                </div>
-
-                
-
-                    <div style="font-size:14px;color:#8c8c8c">ATX Development Center (North Austin)</div>
-
-                
-
-            </td>
-
-            <td width="150" valign="top">
-
-                <table>
-
-                    <tbody><tr>
-
-                        <td width="150" height="30" align="center" valign="center" style="border:1px solid #8c8c8c;text-transform:uppercase;text-align:center;color:#8c8c8c;font-size:15px;font-weight:normal">
-
-                            
-
-                                thu march 21 at 07:30pm
-
-                            
-
-                        </td>
-
-                    </tr>
-
-                </tbody></table>
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td colspan="2" height="5" style="font-size:1px">&nbsp;</td>
-
-        </tr>
-
-    
-
-</tbody></table>
-
-
-
-
-
-<table width="600" cellpadding="0" border="0" style="color:#595959;font-size:12px;text-align:left;border:0" cellspacing="0">
-
-    <tbody><tr style="font-size:0">
-
-        <td  width="250" height="125" style="border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;">
-
-            <a href="http://www.halfpastnow.com/search?event_id=155734" target="_blank"><img title="Now Open: Alchemist Bar &amp; Lounge" width="250" height="125" style="background-color:#f2f2f2;border-bottom:1px solid #c0c0c0;border-right:1px solid #c0c0c0;" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/2118/cover_global_12115160.jpeg">
-
-
-            </a>
-
-        </td>
-        <td width="350" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;">We are a very active 501(c)(3) non-profit corporation called The_Robot_Group which holds weekly meetings to discuss projects, show off our work... <a style="color:#0a5a6f;text-decoration:none" href="http://www.halfpastnow.com/search?event_id=78539" target="_blank"><b>Read More&nbsp;»</b></a>
-            <div height="0" style="font-size:1px">&nbsp;</div>
-                <div >
-                    <i>
-                        <span style="font-size:16px;line-height:7px;color: #0a5a6f;">Network</span>
-                       
-                    </i>
-                </div>
-                <div height="0" style="font-size:0px">&nbsp;</div>
-                
-            
-
-
-
-            
-
-        </td>
-
-    </tr>
-
-    
-
-    <tr>
-
-            <td colspan="2" height="5" style="font-size:1px">&nbsp;</td>
-
-    </tr>
-    
-
-</tbody></table>
-
-<div style="font-size:14px;color:#8c8c8c">You would like this event because.....</div>
-
-<hr>
-
-<!-- Event -->
-<!-- Event -->
-
-<table width="600" cellspacing="0" style="margin-top:15px">
-
-    <tbody><tr>
-
-        <td colspan="2" height="30">&nbsp;</td>
-
-    </tr>
-
-    
-
-    
-
-        <tr>
-
-            <td width="450" valign="top" style="text-align:left">
-
-                <div style="font-size:18px;color:#595959">
-
-
-
-                    <a href="http://hpnstaging.herokuapp.com/search?event_id=153751" style="text-decoration:none;color:#0a5a6f" target="_blank">
-
-                        
-
-                           Gateway to Recovery
-
-                        
-
-                    </a>
-
-                </div>
-
-                
-
-                    <div style="font-size:14px;color:#8c8c8c">Austin Recovery</div>
-
-                
-
-            </td>
-
-            <td width="150" valign="top">
-
-                <table>
-
-                    <tbody><tr>
-
-                        <td width="150" height="30" align="center" valign="center" style="border:1px solid #8c8c8c;text-transform:uppercase;text-align:center;color:#8c8c8c;font-size:15px;font-weight:normal">
-
-                            
-
-                                wed march 20 at 07:00pm
-
-                            
-
-                        </td>
-
-                    </tr>
-
-                </tbody></table>
-
-            </td>
-
-        </tr>
-
-        <tr>
-
-            <td colspan="2" height="5" style="font-size:1px">&nbsp;</td>
-
-        </tr>
-
-    
-
-</tbody></table>
-
-
-
-
-
-<table width="600" cellpadding="0" border="0" style="color:#595959;font-size:12px;text-align:left;border:0" cellspacing="0">
-
-    <tbody><tr style="font-size:0">
-
-        <td  width="250" height="125" style="background-color:#f2f2f2;border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;">
-
-            <a href="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4945/large_open-uri20121212-2-hmc5mp" target="_blank"><img title="Now Open: Alchemist Bar &amp; Lounge" width="250" height="125" style="background-color:#f2f2f2;border-right:1px solid #c0c0c0;" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4934/cover_ARlogo.png">
-
-
-            </a>
-
-        </td>
-        <td width="300" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;">Gateway to Recovery is a free educational series on Addiction and Recovery. It is offered as the first step... <a style="color:#0a5a6f;text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=153751" target="_blank"><b>Read More&nbsp;»</b></a>
-
-            
-            <div height="0" style="font-size:1px">&nbsp;</div>
-                <div >
-                    <i>
-                        <span style="font-size:16px;line-height:7px;color: #0a5a6f;">Non Profit</span>
-                       
-                    </i>
-                </div>
-                <div height="0" style="font-size:0px">&nbsp;</div>
-                <div>
-                        <span style="font-size:16px;line-height:5px;color: #0a5a6f;">$20</span>
-                        
-                </div>
-
-
-            
-
-        </td>
-
-    </tr>
-
-    
-
-<tr>
-
-            <td colspan="2" height="5" style="font-size:1px">&nbsp;</td>
-
-    </tr>
-    
-
-</tbody></table>
-
-<div style="font-size:14px;color:#8c8c8c">Reason you would like this event.....</div>
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-    
 
 
 
     
 
 
-
-    
+<% end %>
+    <!-- end events generation -->
 
 
 
