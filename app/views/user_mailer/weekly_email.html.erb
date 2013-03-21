@@ -160,7 +160,10 @@
                     <i>
                         <% if occurrence.event.tags.count > 0 %>
                             <% occurrence.event.tags.each do |tag| %>
-                                <span style="font-size:16px;line-height:7px;color: #0a5a6f;"><%= tag.name %></span>
+                                <% if tag.parent_tag_id.nil? %>
+                                    <span style="font-size:16px;line-height:7px;color: #0a5a6f;"><%= tag.name %> </span>
+                                <% end %>
+                                
                             <% end %>
                         <% end %>
                        
