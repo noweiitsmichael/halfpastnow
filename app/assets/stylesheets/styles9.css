@@ -3213,6 +3213,7 @@ text-decoration: none;
 .picklist-events {
     clear: left;
     background: #Fafafa;
+    min-height:400px;
 }
 
 #content .events li .price {
