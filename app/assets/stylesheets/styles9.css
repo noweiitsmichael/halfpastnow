@@ -2987,14 +2987,14 @@ text-decoration: none;
 
 .list-cat-heading {
   font-weight: bold;
-  font-size: 36px;
+  font-size: 28px;
   font-style: italic;
 }
 
 .list-cat-label {
   padding:5px;
   padding-left:10px;
-  font-size: 24px;
+  font-size: 20px;
   font-weight:300;
 }
 
@@ -3214,6 +3214,10 @@ text-decoration: none;
     clear: left;
     background: #Fafafa;
     min-height:400px;
+}
+
+.picklist-events.trendsetters {
+    min-height:0px;
 }
 
 #content .events li .price {
@@ -4156,6 +4160,17 @@ html, body {
   width: 320px;
   float: left;
   margin-left: 1px;
+}
+
+.trendsetter{ 
+  width: 486px;
+  float: left;
+  margin-right: 12px;
+  margin-left: 1px;
+}
+
+.trendsetter:last-child {
+    margin-right:0px;
 }
 
 #list-cat{
