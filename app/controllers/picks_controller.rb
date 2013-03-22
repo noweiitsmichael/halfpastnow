@@ -10,9 +10,9 @@ helper :content
 					LEFT JOIN events ON occurrences.event_id = events.id
 					LEFT JOIN venues ON events.venue_id = venues.id
 	                LEFT JOIN recurrences ON events.id = recurrences.event_id
-	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL AND occurrences.start < now() + INTERVAL '8 days')
+	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL)
                 UNION 
-                (SELECT DISTINCT ON (events.title)events.title, events.clicks, events.views, venues.name, occurrences.recurrence_id AS recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url
+                (SELECT DISTINCT ON (events.title) events.title, events.clicks, events.views, venues.name, occurrences.recurrence_id AS recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url
 					FROM bookmarks 
 					LEFT JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
 					LEFT JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
@@ -25,10 +25,19 @@ helper :content
 
         @result = ActiveRecord::Base.connection.select_all(query)
 
+        pp "************ RESULTS FROM QUERY ***************"
+        y @result
+        # TODO: THIS CAN BE MADE MORE EFFICIENT
+        @result.each do |r|
+        	unless r["recurrence_id"].blank?
+        		puts r["title"]
+        		upcoming = Occurrence.find(r["id"]).event.nextOccurrence
+        		pp upcoming
+        		r["id"] = upcoming.id
+        		r["start"] = upcoming.start
+        	end
+        end
 
-
-        # pp "************ RESULTS FROM QUERY ***************"
-        # y @result
 	end
 
 	def index_old
