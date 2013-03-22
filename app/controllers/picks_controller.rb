@@ -25,16 +25,18 @@ helper :content
 
         @result = ActiveRecord::Base.connection.select_all(query)
 
-        pp "************ RESULTS FROM QUERY ***************"
-        y @result
+        # pp "************ RESULTS FROM QUERY ***************"
+        # y @result
         # TODO: THIS CAN BE MADE MORE EFFICIENT
         @result.each do |r|
         	unless r["recurrence_id"].blank?
         		puts r["title"]
         		upcoming = Occurrence.find(r["id"]).event.nextOccurrence
         		pp upcoming
-        		r["id"] = upcoming.id
-        		r["start"] = upcoming.start
+        		unless upcoming.nil?
+	        		r["id"] = upcoming.id
+	        		r["start"] = upcoming.start
+	        	end
         	end
         end
 
