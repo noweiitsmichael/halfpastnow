@@ -2977,23 +2977,34 @@ text-decoration: none;
   border: 1px solid #ccc;
 }
 
-#list-cat-wrapper { padding:12px; background:white; box-shadow: 1px 1px 3px rgba(0,0,0,.6); margin-left:1px; margin-right:3px; font-size: 16px;}
-
-#list-cat-label {
-    font-weight: bold;
-    font-size: 17px;
-    font-style: italic;
+#list-cat-wrapper { 
+  padding:12px; 
+  background:white; 
+  box-shadow: 1px 1px 3px rgba(0,0,0,.6); 
+  margin-left:1px; 
+  margin-right:3px; 
 }
 
-#list-cat {}
+.list-cat-heading {
+  font-weight: bold;
+  font-size: 36px;
+  font-style: italic;
+}
+
+.list-cat-label {
+  padding:5px;
+  padding-left:10px;
+  font-size: 24px;
+  font-weight:300;
+}
 
 #info-content.top-picks {
-    background:transparent;
-    border:none;
+  background:transparent;
+  border:none;
 }
 
 #info-content > .info {
-    font-size: 13px;
+  font-size: 13px;
 }
 
 #info-content h5 {
@@ -3195,7 +3206,6 @@ text-decoration: none;
 
 .picklist-events {
     clear: left;
-
     background: #Fafafa;
 }
 
@@ -4128,15 +4138,17 @@ html, body {
   font-weight:lighter;
 }
 
-.list{ 
-  width: 486px;
+.list { 
+  width: 320px;
   float: left;
   margin-right: 12px;
   margin-left: 1px;
 }
 
-.list:last-child {
-    margin-right:0px;
+.list-left {
+  width: 320px;
+  float: left;
+  margin-left: 1px;
 }
 
 #list-cat{
