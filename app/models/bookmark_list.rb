@@ -71,13 +71,13 @@ class BookmarkList < ActiveRecord::Base
 		# 		INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
 		# 		INNER JOIN events ON occurrences.event_id = events.id
 		# 		INNER JOIN venues ON events.venue_id = venues.id
-  #               WHERE bookmark_lists.id = #{self.id} AND bookmarks.bookmarked_type = 'Occurrence' 
-  #               	AND occurrences.recurrence_id IS NOT NULL AND occurrences.deleted = false AND occurrences.start > now() - interval '3 hours'))
+        #         WHERE bookmark_lists.id = #{self.id} AND bookmarks.bookmarked_type = 'Occurrence' 
+        #         	AND occurrences.recurrence_id IS NOT NULL AND occurrences.deleted = false AND occurrences.start > now() - interval '3 hours'))
 		# 		ORDER BY start LIMIT #{num}";
 
-  #       occurrences = ActiveRecord::Base.connection.select_all(query)
-     #    occurrences = []
-     #    results.each do |e|
+  		# occurrences = ActiveRecord::Base.connection.select_all(query)
+        # occurrences = []
+        # results.each do |e|
 	    #   unless e["id"].nil?
 	    #   	occurrences << Occurrence.find(e["id"])
 	    #   end
