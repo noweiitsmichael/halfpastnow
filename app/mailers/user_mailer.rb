@@ -62,6 +62,7 @@ class UserMailer < ActionMailer::Base
     @ids=@ids[0,5]
     puts "6 events: "
     puts @ids
+    @bookmarkedEvents=BookmarkList.where(:user_id => user.id, :main_bookmarks_list => true).first.bookmarked_events(3)
     mail(:to => user.email, :subject => "This week in halfpastnow!" , :from => "weekly@halfpastnow.com")
   end
   

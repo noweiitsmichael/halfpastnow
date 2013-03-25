@@ -209,9 +209,68 @@
 
 
 <% end %>
-    <!-- end events generation -->
+<!-- end events generation -->
+
+<!-- bookmarked Events -->
+    <div style="margin:10px 0 10px 0;border:solid 0px #10add5;font-size:16px">
+
+        <div style="padding:5px 0 0 4px;font-size:16px;color:#595959;font-weight:bold">
+
+        
+
+            Your Upcomming Bookmarked Events 
+
+        
+
+        </div>
+
+        <table style="padding:10px 0 10px 0">
+
+            <tbody><tr>
+
+                <% @bookmarkedEvents.each do |occurrence| %>
+                    <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+
+                        <div style="min-height:130px;padding:0;background-color:#f2f2f2">
+
+                            <a href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
+                                    <img title="<%= occurrence.event.title %>" width="170" height="65"  src="<%= occurrence.event.cover_image_url %>">
+                             </a>
+
+                            <br>
+
+                            <div style="padding:2px">
+
+                                <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
+
+                                    <div style="font-size:13px;color:#4f2740"><%= occurrence.event.title %></div>
+
+                                </a>
+
+                                
+
+                                    <div style="font-size:11px;color:#777777">at <%= occurrence.event.venue.name %></div>
+
+                                
+
+                            </div>
+
+                        </div>
+
+                    </td>
+                <% end %>
+                
 
 
+
+            
+
+                </tr>
+
+        </tbody></table>
+
+    </div>
+<!-- end bookmarked events -->
 
 
     <div style="margin:10px 0 10px 0;border:solid 0px #10add5;font-size:16px">
