@@ -326,7 +326,7 @@
           <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Fitness").id%>" checked onclick="check(document.form.cat)">Fitness<br>
           <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Tech").id%>" checked onclick="check(document.form.cat)">Tech<br>
           <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Charity / Non-Profit").id%>" checked onclick="check(document.form.cat)">Non-Profit<br>
-          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Arts").id%>" checked onclick="check(document.form.cat)">Arts<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Art").id%>" checked onclick="check(document.form.cat)">Arts<br>
           <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Kid Friendly").id%>" checked onclick="check(document.form.cat)">Kid Friendly<br>
           <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Romantic").id%>" checked onclick="check(document.form.cat)">Romantic<br>
           <input type="checkbox" name="cat" value="<%=Tag.find_by_name("LGBT").id%>" checked onclick="check(document.form.cat)">LGBT<br>
@@ -336,15 +336,15 @@
       <% else %>
         <% @refincluded_tags = Channel.find(current_user.ref.to_i).included_tags %>
         <form name="form" method="post">
-          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Music").id%>"  <%= (@refincluded_tags.include? Tag.find_by_name("Live Music").id.to_s) ? "checked" : "" %> onclick="check(document.form.cat)">Live Music<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Music").id%>"  <%= (@refincluded_tags.include? Tag.find_by_name("Music").id.to_s) ? "checked" : "" %> onclick="check(document.form.cat)">Live Music<br>
           <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Fitness").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Fitness").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Fitness<br>
           <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Tech").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Tech").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Tech<br>
-          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Non-Profit").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Non-Profit").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Non-Profit<br>
-          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Arts").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Arts").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Arts<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Charity / Non-Profit").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Charity / Non-Profit").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Non-Profit<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Art").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Art").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Arts<br>
           <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Kid Friendly").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Kid Friendly").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Kid Friendly<br>
           <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Romantic").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Romantic").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Romantic<br>
           <input type="checkbox" name="cat" value="<%=Tag.find_by_name("LGBT").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("LGBT").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">LGBT<br>
-          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Food/Drinks Special").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Food/Drinks Special").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Food/Drinks Special<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Food/Drink Specials").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Food/Drink Specials").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Food/Drinks Special<br>
         </form>
       <% end %>
       
