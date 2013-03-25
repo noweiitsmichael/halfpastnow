@@ -191,8 +191,11 @@
     </tbody>
 
 </table>
-
-    <div style="font-size:14px;color:#8c8c8c">Reason you would like this event.....</div>
+    <% tids=Channel.find(user.ref).included_tags.split(",") %>
+    <% tnames=Tag.find(tids).collect{|t| t.name} %>
+    <% names=occurrence.event.tags.collect{|t| t.name} %>
+    <% a= tnames&names %>
+    <div style="font-size:14px;color:#8c8c8c">Reason you would like this event because your preference has <b><%= a.split(",").join(",")%></b></div>
 
 <hr>
 
