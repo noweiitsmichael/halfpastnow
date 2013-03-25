@@ -89,6 +89,14 @@ class ChannelsController < ApplicationController
 	    end
 	end
 
+	def updateReg
+		puts "updateReg : "
+		puts params[:included_tags].split ","
+	  	channel = Channel.find(params[:id])
+	  	channel.included_tags = params[:included_tags].split(",").join(",")
+	  	channel.save
+	end
+
   def destroy
   	@channel = Channel.find(params[:id])
 
