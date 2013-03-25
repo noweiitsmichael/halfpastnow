@@ -207,7 +207,12 @@
     <% tnames=Tag.find(tids).collect{|t| t.name} %>
     <% names=occurrence.event.tags.collect{|t| t.name} %>
     <% a= tnames&names %>
-    <div style="font-size:14px;color:#8c8c8c">Reason you would like this event because your preference has <b><%= a.split(",").join(",")%></b></div>
+    <% a.each do |t|%>
+        <% if t.to_s.eql? "Music"%>
+            <img src="http://finkorswim.com/wp-content/uploads/2010/05/colorful-music-notes-cutout-50x50.jpg" alt="Music" height="50" border="0" width="50">   
+        <% end %>
+    <% end %>
+    <!-- <div style="font-size:14px;color:#8c8c8c">Reason you would like this event because your preference has <b><%= a.split(",").join(",")%></b></div> -->
 
 <hr>
 
@@ -256,7 +261,7 @@
 
                                 <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
 
-                                    <div style="font-size:13px;color:#4f2740"><%= truncate(occurrence.event.title, :length => 95) %></div>
+                                    <div style="font-size:13px;color:#4f2740"><%= truncate(occurrence.event.title, :length => 47) %></div>
 
                                 </a>
 
