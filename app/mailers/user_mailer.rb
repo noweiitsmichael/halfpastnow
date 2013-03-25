@@ -123,10 +123,11 @@ class UserMailer < ActionMailer::Base
     @tpoccurrences = Occurrence.includes(:event => :tags).find(@tpids, :order => order_by)
     @tpoccurrences = @tpoccurrences[0,3]
 
-    delivery_options = { :user_name =>"support@halfpastnow.com", :password => "chimeralabs", :address => "http://radiant-flower-7307.herokuapp.com/" }
     
 
-    mail(:to => user.email, :subject => "This week in halfpastnow!" , :delivery_method_options => delivery_options)
-  end
+  #   mail(:to => user.email, :subject => "This week in halfpastnow!" , user_name: "support@halfpastnow.com", password: "chimeralabs", address: "http://radiant-flower-7307.herokuapp.com/")
+    mail(:to => user.email, :subject => "This week in halfpastnow!" , user_name: "bryan.k.le@gmail.com", password: "8452395", address: "http://www.gmail.com/")
+  
+   end
   
 end
