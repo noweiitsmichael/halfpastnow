@@ -29,7 +29,8 @@ private
         h(venue["address"]),
         h(venue["views"]),
         h(venue["events_count"]),
-        h(venue["raw_events_count"])
+        h(venue["raw_events_count"]),
+        h(venue["assignee"])
       ]
     end
   end
@@ -64,13 +65,13 @@ private
 
     ## Old without limiting to venues with at least one event or raw event
     "
-      SELECT v2.venue_id, v2.name, v2.address, v2.views, v2.events_count, COALESCE(v1.raw_events_count, 0) AS raw_events_count FROM
+      SELECT v2.venue_id, v2.name, v2.address, v2.views, v2.events_count, COALESCE(v1.raw_events_count, 0) AS raw_events_count, v2.assigned_admin AS assignee FROM
         ( SELECT venue_id,venues.name,COUNT(*) AS raw_events_count
           FROM venues,raw_venues,raw_events 
           WHERE venues.id = raw_venues.venue_id AND raw_venues.id = raw_events.raw_venue_id AND raw_events.submitted IS NULL AND raw_events.deleted IS NULL AND raw_events.start > now()
           GROUP BY venue_id,venues.name ) v1
       FULL OUTER JOIN
-        ( SELECT venues.id AS venue_id, venues.name, venues.address, venues.views, COUNT(events.id) AS events_count
+        ( SELECT venues.id AS venue_id, venues.name, venues.address, venues.views, COUNT(events.id) AS events_count, venues.assigned_admin AS assignee
           FROM venues
           LEFT OUTER JOIN
             ( SELECT events.id, events.venue_id, min(occurrences.start)
@@ -118,6 +119,7 @@ private
 
     # venues = venues.paginate(:page => page, :per_page => per_page)
     #venues = venues.select {|v| v["events_count"].to_i > 0 && v["raw_events_count"].to_i > 0}
+    puts venues
     venues
   end
 
@@ -130,7 +132,7 @@ private
   end
 
   def sort_column
-    columns = %w[name address views events_count raw_events_count]
+    columns = %w[name address views events_count raw_events_count assignee]
     columns[params[:iSortCol_0].to_i]
   end
 
@@ -140,13 +142,13 @@ private
 
   def entries
     venues_query =     "
-      SELECT v2.venue_id, v2.name, v2.address, v2.views, v2.events_count, COALESCE(v1.raw_events_count, 0) AS raw_events_count FROM
+      SELECT v2.venue_id, v2.name, v2.address, v2.views, v2.events_count, COALESCE(v1.raw_events_count, 0) AS raw_events_count, v2.assigned_admin AS assignee FROM
         ( SELECT venue_id,venues.name,COUNT(*) AS raw_events_count
           FROM venues,raw_venues,raw_events 
           WHERE venues.id = raw_venues.venue_id AND raw_venues.id = raw_events.raw_venue_id AND raw_events.submitted IS NULL AND raw_events.deleted IS NULL AND raw_events.start > now()
           GROUP BY venue_id,venues.name ) v1
       FULL OUTER JOIN
-        ( SELECT venues.id AS venue_id, venues.name, venues.address, venues.views, COUNT(events.id) AS events_count
+        ( SELECT venues.id AS venue_id, venues.name, venues.address, venues.views, COUNT(events.id) AS events_count, venues.assigned_admin AS assignee 
           FROM venues
           LEFT OUTER JOIN
             ( SELECT events.id, events.venue_id, min(occurrences.start)

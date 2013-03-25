@@ -599,13 +599,13 @@ def index
   
   def venuesTable
     venuesQuery =   "
-      SELECT v2.venue_id, v2.name, v2.address, v2.views, v2.events_count, COALESCE(v1.raw_events_count, 0) AS raw_events_count FROM
+      SELECT v2.venue_id, v2.name, v2.address, v2.views, v2.events_count, COALESCE(v1.raw_events_count, 0) AS raw_events_count, v2.assigned_admin, v2.firstname, v2.lastname FROM
         ( SELECT venue_id,venues.name,COUNT(*) AS raw_events_count
           FROM venues,raw_venues,raw_events 
           WHERE venues.id = raw_venues.venue_id AND raw_venues.id = raw_events.raw_venue_id AND raw_events.submitted IS NULL AND raw_events.deleted IS NULL AND raw_events.start > now()
           GROUP BY venue_id,venues.name ) v1
       FULL OUTER JOIN
-        ( SELECT venues.id AS venue_id, venues.name, venues.address, venues.views, COUNT(events.id) AS events_count
+        ( SELECT venues.id AS venue_id, venues.name, venues.address, venues.views, COUNT(events.id) AS events_count, venues.assigned_admin, users.firstname, users.lastname
           FROM venues
           LEFT OUTER JOIN
             ( SELECT events.id, events.venue_id, min(occurrences.start)
@@ -615,7 +615,8 @@ def index
               WHERE occurrences.start > now() AND occurrences.deleted IS NOT true
               GROUP BY events.id) AS events
           ON venues.id = events.venue_id
-          GROUP BY venues.id,venues.name ) v2
+          LEFT JOIN users ON venues.assigned_admin = users.id
+          GROUP BY venues.id,venues.name, users.id ) v2
       ON v1.venue_id = v2.venue_id"
 
     @venuesList = ActiveRecord::Base.connection.select_all(venuesQuery)
@@ -623,8 +624,9 @@ def index
     @outputList = []
 
     @venuesList.each do |e|
-      @outputList << {'id' => e["venue_id"], 'name' => e["name"], 'address' => e["address"],  'views' => e["views"], 'num_events' => e["events_count"], 'num_raw_events' => e["raw_events_count"]} #, 'owner' => User.where(:id => e["user_id"]).exists? ? User.find(e["user_id"]).fullname : ""}
+      @outputList << {'id' => e["venue_id"], 'name' => e["name"], 'address' => e["address"],  'views' => e["views"], 'num_events' => e["events_count"], 'num_raw_events' => e["raw_events_count"], 'firstname' => (e["firstname"] == nil ? "" : e["firstname"]), 'lastname' => (e["lastname"] == nil ? "" : e["lastname"])} #, 'owner' => User.where(:id => e["user_id"]).exists? ? User.find(e["user_id"]).fullname : ""}
     end
+
     respond_to do |format|
       format.json { render json: @outputList }
     end

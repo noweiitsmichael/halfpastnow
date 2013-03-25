@@ -1,0 +1,186 @@
+<% content_for :meta do %>
+     <meta property="og:type"                 content="website"> 
+     <meta property="og:url"                  content="http://www.halfpastnow.com/picks">
+     <meta property="og:site_name"            content="halfpastnow">
+     <meta property="og:image"                content="">
+     <meta property="og:title"                content="half past now | Events from Trendsetters">
+     <meta property="og:description"          content="The best events in town, handpicked by local trendsetters"> 
+<% end %>
+<% content_for :code do %>
+	<script type="text/javascript">
+		// $(function() {
+		// 	      window.fbAsyncInit = function() {
+		// 	        console.log("Loaded FB 2");
+		// 	          FB.init({
+		// 	            appId      : '475386955806720', // App ID
+		// 	            status     : true, // check login status
+		// 	            cookie     : true, // enable cookies to allow the server to access the session
+		// 	            xfbml      : true  // parse XFBML
+		// 	          });
+		// 	        };
+
+		// 	        // Load the SDK Asynchronously
+		// 	        (function(d){
+		// 	          var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+		// 	          js = d.createElement('script'); js.id = id; js.async = true;
+		// 	          js.src = "//connect.facebook.net/en_US/all.js";
+		// 	          d.getElementsByTagName('head')[0].appendChild(js);
+		// 	        }(document));// delete below
+			        
+			        
+
+		// 	  });
+		$(function() {
+
+			$('#list-cat').change(function(){
+				window.location = "/picks/index/"+$(this).val()
+
+
+			});
+			$('.follow.button').click(function() {
+
+			   
+  				var $that = $(this);
+				var listID = $that.attr('picklist-id');
+				var url = 'http://halfpastnow.com/picks/find/' + listID
+				console.log('test folling' + url);
+
+				FB.api(
+				            '/me/halfpastnow:subscribe',
+				            'post',
+				            { toppick: url },
+				            function(response) {
+				               // if (!response || response.error) {
+				               //    alert('Error occured'+response);
+				               // } else {
+				               //    alert('Post event was successful! Action ID: ' + response.id);
+				               // }
+				        });
+				$.getJSON('/users/followBookmarkList/' + listID, function(data) {
+					if(data.success) {
+						$that.hide();
+						$that.siblings('.unfollow.button').show();
+					} else {
+						console.log(data.error);
+					}
+				});
+			});
+
+			$('.unfollow.button').click(function() {
+				var $that = $(this);
+				var listID = $that.attr('picklist-id');
+				$.getJSON('/users/unfollowBookmarkList/' + listID, function(data) {
+					if(data.success) {
+						$that.hide();
+						$that.siblings('.follow.button').show();
+					} else {
+						console.log(data.error);
+					}
+				});
+			});
+
+			var event_id = <%= params[:event_id] || "null" %>;
+			var venue_id = <%= params[:venue_id] || "null" %>;
+			var act_id = <%= params[:act_id] || "null" %>;
+			var modality;
+
+			if(event_id) {
+				modality = spawn(modalities["event"],{id: event_id});
+				modal(modality);
+			}
+			if(venue_id) {
+				modality = spawn(modalities["venue"],{id: venue_id});
+				modal(modality);
+			}
+			if(act_id) {
+				modality = spawn(modalities["act"],{id: act_id});
+				modal(modality);   
+			}
+		});
+	</script>
+<% end %>
+
+<% content_for :header do %>
+	<div class="titlebar">
+		<div class="stay-on-target">
+			<%= render :partial => "title", :locals => { :page_action => params[:action] } %>
+		</div>
+	</div>
+<% end %>
+
+<% content_for :body do %>
+
+	<% def insert_picklist(picklist,currentUserIsFollowing,hidden) %>
+
+		<div class="picklist">
+			<div class="picklist-sidebar">
+				<%= image_tag picklist.picture_url(:thumb) || "/assets/picklist-placeholder.png", :class => "picture" %>
+				<div class="follow button nice-button" picklist-id="<%= picklist.id %>" <%= raw hidden if currentUserIsFollowing %> >subscribe</div>
+				<div class="unfollow button nice-button" picklist-id="<%= picklist.id %>" <%= raw hidden unless currentUserIsFollowing %> >subscribing</div>
+			</div>
+			<div class="picklist-details">
+				<h3><a href="/picks/find/<%= picklist.id %>"><%= picklist.name %></a></h3>
+				<div class="picklist-description"><%= raw picklist.description %></div>
+			</div>
+			<% occurrences = picklist.bookmarked_events(1)
+			   unless (occurrences.empty?) %>
+				<ul class="picklist-events trendsetters">
+					<% occurrences.each do |occurrence| %>
+					<li linkto="event" link-id="<%= occurrence.id %>">
+						<img class="picture" src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
+						<div class="title"><%= occurrence.event.title %></div>
+						<div class="venue"><%= occurrence.event.venue.name %></div>
+						<div class="datetime"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></div>
+					</li>
+					<% end %>
+					<li class="see-more">
+						<a href="/picks/find/<%= picklist.id %>"><span>see all events</span></a>
+					</li>
+				</ul><% end %>
+		</div>
+	<% end %>
+	<div id="info-content" class="top-picks">
+		<% unless(@isFollowedLists) %>
+		<div id="list-cat-wrapper">
+			<span id="list-cat-label">Trendsetters</span>
+			<select id="list-cat">
+				<option value="">All Categories</option>
+				<% @parentTags.each do |prTg|%>
+					<% if(params[:id]==prTg.id.to_s)  %>
+						<option selected="selected" value="<%= prTg.id =%>" > <%= prTg.name =%> </option>
+					<% else %>
+					    <option value="<%= prTg.id =%>" > <%= prTg.name =%> </option>
+					<% end %>
+				<% end %>
+			</select>
+		</div>
+		<% end %>
+		<% if(@isFollowedLists) %>
+			<div style="font-weight: 700;margin: 9px 0 0 11px;font-size: 16px;">List View | <a href="/picks/followed?events=true">Event View</a></div>
+		<% end %>
+		<% hidden = "style=\"display:none;\"" %>
+		<div class='outter-list'>
+			<div class="trendsetter">
+			<% @featuredLists.each_with_index do |featuredList, index|
+				currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
+				if (index % 2 == 0) && (featuredList.all_bookmarked_events.size > 0)
+					insert_picklist(featuredList,currentUserIsFollowing,hidden)
+				end
+			end %>
+		</div>
+		<div  class="trendsetter">
+			<% @featuredLists.each_with_index do |featuredList, index|
+				currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
+				if (index % 2 == 1) && (featuredList.all_bookmarked_events.size > 0)
+					insert_picklist(featuredList,currentUserIsFollowing,hidden)
+				end
+			end %>
+		</div>
+		</div>
+		
+	</div>
+
+
+	
+<% end %>
+

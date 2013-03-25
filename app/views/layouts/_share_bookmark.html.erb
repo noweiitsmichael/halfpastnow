@@ -269,9 +269,9 @@
 	<% if type == 'event' %>
 		<% if !event.ticket_url.blank? %>
 		<a href="<%= event.ticket_url %>" target="_blank" class="nice-button attending-button <%= current_user ? "attending" : "" %> <%= attendingId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
-			<%= attendingId.nil? ? "RSVP" : "Already RSVP'd" %>
+			<%= attendingId.nil? ? "Tickets" : "Already Going" %>
 		</a>
-		<div class="rsvp-center" style="text-align:center; vertical-align:text-top;"><a href='<%= event.ticket_url %>' target='_blank' class='re-rsvp' style="font-size:16px;"><%= attendingId.nil? ? "" : "Visit RSVP Site Again" %></a></div>
+		<div class="rsvp-center" style="text-align:center; vertical-align:text-top;"><a href='<%= event.ticket_url %>' target='_blank' class='re-rsvp' style="font-size:16px;"><%= attendingId.nil? ? "" : "Visit Ticketing Site Again" %></a></div>
 		<% else %>
 		<span class="nice-button attending-button <%= current_user ? "attending" : "" %> <%= attendingId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
 			<%= attendingId.nil? ? "I'm attending!" : "Planning on Attending" %>
