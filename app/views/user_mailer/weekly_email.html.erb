@@ -56,10 +56,10 @@
 
     
 
-<div class="header-content"><webversion><a href="http://www.halfpastnow.com" style="text-decoration:none;color:#0a5a6f" target="_blank">half past now.</a></webversion><span class="hide">&nbsp;&nbsp;|&nbsp; <preferences lang="en"><a href="http://www.halfpastnow.com" style="text-decoration:none;color:#0a5a6f" target="_blank">Update preferences</a></preferences>&nbsp;&nbsp;|&nbsp; <unsubscribe><a href="mailto:?subject=Check out halfpastnow.&body=Signup for half past now. newsletter">Tell a friend</a></unsubscribe></span></div>
+<div class="header-content"><webversion><a href="http://www.halfpastnow.com" style="text-decoration:none;color:#4f2740" target="_blank">half past now.</a></webversion><span class="hide">&nbsp;&nbsp;|&nbsp; <preferences lang="en"><a href="http://www.halfpastnow.com" style="text-decoration:none;color:#4f2740" target="_blank">Update preferences</a></preferences>&nbsp;&nbsp;|&nbsp; <unsubscribe><a href="mailto:?subject=Check out halfpastnow.&body=Signup for half past now. newsletter">Tell a friend</a></unsubscribe></span></div>
 
-<div >Hi, <%=@user.firstname%></div>
-<div >Here are events for this week.</div>  
+<div style="font-size:16px;line-height:5px;">Hi, <%=@user.firstname%></div>
+<div style="font-size:16px;line-height:5px;">Here are events for this week.</div>  
 <!-- Start generating events -->
         
 <% @ids.each do |id| %>
@@ -84,7 +84,7 @@
 
 
 
-                    <a href="http://hpnstaging.herokuapp.com/search?event_id=158790" style="text-decoration:none;color:#0a5a6f" target="_blank">
+                    <a href="http://hpnstaging.herokuapp.com/search?event_id=158790" style="text-decoration:none;color:#4f2740" target="_blank">
 
                         
 
@@ -155,14 +155,14 @@
                 </a>
 
             </td>
-            <td width="300" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;"><%= truncate(strip_tags(occurrence.event.description), :length => 100) %>... <a style="color:#0a5a6f;text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=<%= occurrence.id %>" target="_blank"><b>Read More&nbsp;»</b></a>
+            <td width="300" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;"><%= truncate(strip_tags(occurrence.event.description), :length => 100) %>... <a style="color:#4f2740;text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=<%= occurrence.id %>" target="_blank"><b>Read More&nbsp;»</b></a>
                 <div height="0" style="font-size:1px">&nbsp;</div>
                 <div >
                     <i>
                         <% if occurrence.event.tags.count > 0 %>
                             <% occurrence.event.tags.each do |tag| %>
                                 <% if tag.parent_tag_id.nil? %>
-                                    <span style="font-size:16px;line-height:7px;color: #0a5a6f;"><%= tag.name %> </span>
+                                    <span style="font-size:16px;line-height:7px;color: #4f2740;"><%= tag.name %> </span>
                                 <% end %>
                                 
                             <% end %>
@@ -173,7 +173,7 @@
                 <div height="0" style="font-size:0px">&nbsp;</div>
                 <div>
                     <% if occurrence.event.price %>
-                        <span style="font-size:16px;line-height:5px;color: #0a5a6f;"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></span>
+                        <span style="font-size:16px;line-height:5px;color: #4f2740;"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></span>
                     <% end %>
                     
                         
@@ -252,7 +252,7 @@
 
                             <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=131000" target="_blank">
 
-                                <div style="font-size:13px;color:#0a5a6f">Emily + Andy's Film Club</div>
+                                <div style="font-size:13px;color:#4f2740">Emily + Andy's Film Club</div>
 
                             </a>
 
@@ -292,7 +292,7 @@
 
                             <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=139053" target="_blank">
 
-                                <div style="font-size:13px;color:#0a5a6f">Naturalist Workshop & Trade Corner</div>
+                                <div style="font-size:13px;color:#4f2740">Naturalist Workshop & Trade Corner</div>
 
                             </a>
 
@@ -331,7 +331,7 @@
                         <div style="padding:2px">
 
                             <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=154667" target="_blank">
-                                <div style="font-size:13px;color:#0a5a6f">Ephraim Owens</div>
+                                <div style="font-size:13px;color:#4f2740">Ephraim Owens</div>
 
                             </a>
 
@@ -411,7 +411,7 @@
 
                             <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=160589" target="_blank">
 
-                                <div style="font-size:13px;color:#0a5a6f">Statesman Capitol 10,000</div>
+                                <div style="font-size:13px;color:#4f2740">Statesman Capitol 10,000</div>
 
                             </a>
 
@@ -451,7 +451,7 @@
 
                             <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks/find/95?event_id=133000" target="_blank">
 
-                                <div style="font-size:13px;color:#0a5a6f">Texas Parkour Academy Youth Classes</div>
+                                <div style="font-size:13px;color:#4f2740">Texas Parkour Academy Youth Classes</div>
 
                             </a>
 
@@ -491,7 +491,7 @@
 
                             <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=32467" target="_blank">
 
-                                <div style="font-size:13px;color:#0a5a6f">Happy Hour: $1 off drinks</div>
+                                <div style="font-size:13px;color:#4f2740">Happy Hour: $1 off drinks</div>
 
                             </a>
 
@@ -531,7 +531,7 @@
 
     <p style="font-size:11px;color:#777777">
 
-        You're receiving this email because you are a member of <a style="color:#0a5a6f;text-decoration:none" href="http://e.sosh.com/wf/click?upn=FoLMDfTJVg-2FzTfHOeCtj1kSwIOzRIwhYrX6tdJysRl7DKY6ZNCJeipFezFqtU9DD4Hc51weZN776MOeYT9kle54utbl9mPaDb-2Fe-2BlokvklEcYH6DS0bxnXPQV4nM7PViU9MTcv3w8kBISevbaJEzFwuQd9JagkVhcjmoXQ7LLM-2BTSPb0EnT5VlsqbzP11BoyE-2BFv0Ro3Ych6GkaqzeU3cw-3D-3D_Yuzv0-2BcgxNCIOe-2BW56v-2FvQ7o5Z5w2mCDEgOJ17nj8T08y2jLehQavm7oJ9VYlHezpUYXDDWl6ZsEqJQLe36jry-2BIletnHKdjXVyxqWX6e-2FBpT7JHrDLU3ZGaf4mpfRaK9lv5Sm1em9MvsGD5RvpOdzN7MSZ4NdZj9oyb8Cp8vWqonbpFUyU97lCTsNqZBEwa" target="_blank">half past now.</a>Don't want to receive The half past now. Weekly <a style="color:#0a5a6f;text-decoration:none" href="http://e.sosh.com/wf/click?upn=FoLMDfTJVg-2FzTfHOeCtj1kSwIOzRIwhYrX6tdJysRl7DKY6ZNCJeipFezFqtU9DD4Hc51weZN776MOeYT9kle54utbl9mPaDb-2Fe-2BlokvklEcYH6DS0bxnXPQV4nM7PViU9MTcv3w8kBISevbaJEzFwuQd9JagkVhcjmoXQ7LLM9-2BUrQb4Xl3SG6dHjfKxtjKc8T42U1HBciAHsZl5sEOCi-2FUnkERN2bOU0zUe4ldlZs53gfY4JowuiU79uiH-2FtSNYaPoeLZOYJmqhfsk83vIlQ-3D-3D_Yuzv0-2BcgxNCIOe-2BW56v-2FvQ7o5Z5w2mCDEgOJ17nj8T08y2jLehQavm7oJ9VYlHezA-2FGWLJGtEHGXhIz-2BRKbmDr298qIwZ2n-2Bs05hLeLJpePmK50PBpLSux8R4sH-2BeJkB-2Bbcz9n83wzdIHhafr8NYqma4WYzifLYjypgF640b7e7EjmMiQwI0JvyXSzmlRemW" target="_blank">Unsubscribe</a>.  half past now. is a Chimera Labs production, and we love to receive <a style="color:#0a5a6f;text-decoration:none" href="http://e.sosh.com/wf/click?upn=FoLMDfTJVg-2FzTfHOeCtj1kSwIOzRIwhYrX6tdJysRl7DKY6ZNCJeipFezFqtU9DD4Hc51weZN776MOeYT9kle54utbl9mPaDb-2Fe-2BlokvklEcYH6DS0bxnXPQV4nM7PViU9MTcv3w8kBISevbaJEzFwuQd9JagkVhcjmoXQ7LLM-2BPhA70taUlRvYCWxO549LwQ1Tqt-2F7U0v-2FMTPtI4tMSFGCMYDRPgWQIYNf5L7rJTc4-3D_Yuzv0-2BcgxNCIOe-2BW56v-2FvQ7o5Z5w2mCDEgOJ17nj8T08y2jLehQavm7oJ9VYlHez9PTG3U4ZKmjg9Ivt-2FgyLNnmlkDv2ee6rJqhy5QTJeibyozJ76YsrVCzfZm9m4Jo6fIOixZ8t3AR5wEAEpVScLrxDtmtAP5WGfPhK8JV-2BnbCPfVgxVDFJpUn1d20jFjz-2F" target="_blank">your feedback</a>. <a style="color:#0a5a6f;text-decoration:none" href="http://e.sosh.com/wf/click?upn=41cn7YAvYngXdjbdoSsfB9G8VOL9DtWjYAomJeWaZ-2F8-3D_Yuzv0-2BcgxNCIOe-2BW56v-2FvQ7o5Z5w2mCDEgOJ17nj8T08y2jLehQavm7oJ9VYlHezX4zALkhOklx3U-2FuZfdPbiW37kuXupsFLX6CU0e5Ze4YLczEBDXvAduSrn-2BlnJDbnnUHk1wrwT5aUh9dl55Hg5k6JuX3EMkGuXUGkVWiNr9WLzBBYjhDJip8cX9YnIES6" target="_blank">Follow us on Twitter</a> for updates.
+        You're receiving this email because you are a member of <a style="color:#4f2740;text-decoration:none" href="http://e.sosh.com/wf/click?upn=FoLMDfTJVg-2FzTfHOeCtj1kSwIOzRIwhYrX6tdJysRl7DKY6ZNCJeipFezFqtU9DD4Hc51weZN776MOeYT9kle54utbl9mPaDb-2Fe-2BlokvklEcYH6DS0bxnXPQV4nM7PViU9MTcv3w8kBISevbaJEzFwuQd9JagkVhcjmoXQ7LLM-2BTSPb0EnT5VlsqbzP11BoyE-2BFv0Ro3Ych6GkaqzeU3cw-3D-3D_Yuzv0-2BcgxNCIOe-2BW56v-2FvQ7o5Z5w2mCDEgOJ17nj8T08y2jLehQavm7oJ9VYlHezpUYXDDWl6ZsEqJQLe36jry-2BIletnHKdjXVyxqWX6e-2FBpT7JHrDLU3ZGaf4mpfRaK9lv5Sm1em9MvsGD5RvpOdzN7MSZ4NdZj9oyb8Cp8vWqonbpFUyU97lCTsNqZBEwa" target="_blank">half past now.</a>Don't want to receive The half past now. Weekly <a style="color:#4f2740;text-decoration:none" href="http://e.sosh.com/wf/click?upn=FoLMDfTJVg-2FzTfHOeCtj1kSwIOzRIwhYrX6tdJysRl7DKY6ZNCJeipFezFqtU9DD4Hc51weZN776MOeYT9kle54utbl9mPaDb-2Fe-2BlokvklEcYH6DS0bxnXPQV4nM7PViU9MTcv3w8kBISevbaJEzFwuQd9JagkVhcjmoXQ7LLM9-2BUrQb4Xl3SG6dHjfKxtjKc8T42U1HBciAHsZl5sEOCi-2FUnkERN2bOU0zUe4ldlZs53gfY4JowuiU79uiH-2FtSNYaPoeLZOYJmqhfsk83vIlQ-3D-3D_Yuzv0-2BcgxNCIOe-2BW56v-2FvQ7o5Z5w2mCDEgOJ17nj8T08y2jLehQavm7oJ9VYlHezA-2FGWLJGtEHGXhIz-2BRKbmDr298qIwZ2n-2Bs05hLeLJpePmK50PBpLSux8R4sH-2BeJkB-2Bbcz9n83wzdIHhafr8NYqma4WYzifLYjypgF640b7e7EjmMiQwI0JvyXSzmlRemW" target="_blank">Unsubscribe</a>.  half past now. is a Chimera Labs production, and we love to receive <a style="color:#4f2740;text-decoration:none" href="http://e.sosh.com/wf/click?upn=FoLMDfTJVg-2FzTfHOeCtj1kSwIOzRIwhYrX6tdJysRl7DKY6ZNCJeipFezFqtU9DD4Hc51weZN776MOeYT9kle54utbl9mPaDb-2Fe-2BlokvklEcYH6DS0bxnXPQV4nM7PViU9MTcv3w8kBISevbaJEzFwuQd9JagkVhcjmoXQ7LLM-2BPhA70taUlRvYCWxO549LwQ1Tqt-2F7U0v-2FMTPtI4tMSFGCMYDRPgWQIYNf5L7rJTc4-3D_Yuzv0-2BcgxNCIOe-2BW56v-2FvQ7o5Z5w2mCDEgOJ17nj8T08y2jLehQavm7oJ9VYlHez9PTG3U4ZKmjg9Ivt-2FgyLNnmlkDv2ee6rJqhy5QTJeibyozJ76YsrVCzfZm9m4Jo6fIOixZ8t3AR5wEAEpVScLrxDtmtAP5WGfPhK8JV-2BnbCPfVgxVDFJpUn1d20jFjz-2F" target="_blank">your feedback</a>. <a style="color:#4f2740;text-decoration:none" href="http://e.sosh.com/wf/click?upn=41cn7YAvYngXdjbdoSsfB9G8VOL9DtWjYAomJeWaZ-2F8-3D_Yuzv0-2BcgxNCIOe-2BW56v-2FvQ7o5Z5w2mCDEgOJ17nj8T08y2jLehQavm7oJ9VYlHezX4zALkhOklx3U-2FuZfdPbiW37kuXupsFLX6CU0e5Ze4YLczEBDXvAduSrn-2BlnJDbnnUHk1wrwT5aUh9dl55Hg5k6JuX3EMkGuXUGkVWiNr9WLzBBYjhDJip8cX9YnIES6" target="_blank">Follow us on Twitter</a> for updates.
 
     </p>
 
