@@ -1,44 +1,64 @@
 class PicksController < ApplicationController
 helper :content
 	def index
-		query = "SELECT a.title, a.clicks, a.views, a.name, a.recurrence_id, a.start, a.id, a.event_id, a.venue_id, a.cover_image_url, a.picture_url
+
+		query = "SELECT a.title, a.clicks, a.views, a.name, a.recurrence_id, a.start, a.id, a.event_id, a.venue_id, a.cover_image_url, a.picture_url, a.tags
 				FROM
-				((SELECT DISTINCT ON (events.title) events.title, events.clicks, events.views, venues.name, occurrences.recurrence_id AS recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url
+				((SELECT DISTINCT ON (events.title) events.title, events.clicks, events.views, venues.name, occurrences.recurrence_id AS recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url, array_agg(events_tags.tag_id) AS tags
 					FROM bookmarks 
 					LEFT JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
 					LEFT JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
 					LEFT JOIN events ON occurrences.event_id = events.id
 					LEFT JOIN venues ON events.venue_id = venues.id
 	                LEFT JOIN recurrences ON events.id = recurrences.event_id
-	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL)
+	                LEFT JOIN events_tags ON events.id = events_tags.event_id
+	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL
+	                GROUP BY events.title, events.clicks, events.views, venues.name, recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url)
                 UNION 
-                (SELECT DISTINCT ON (events.title) events.title, events.clicks, events.views, venues.name, occurrences.recurrence_id AS recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url
+                (SELECT DISTINCT ON (events.title) events.title, events.clicks, events.views, venues.name, occurrences.recurrence_id AS recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url, array_agg(events_tags.tag_id) AS tags
 					FROM bookmarks 
 					LEFT JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
 					LEFT JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
 					LEFT JOIN events ON occurrences.event_id = events.id
 					LEFT JOIN venues ON events.venue_id = venues.id
 	                LEFT JOIN recurrences ON events.id = recurrences.event_id
-	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days')) a
-				ORDER BY a.views";
+	                LEFT JOIN events_tags ON events.id = events_tags.event_id
+	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days'
+	                GROUP BY events.title, events.clicks, events.views, venues.name, recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url)
+				) a
+				ORDER BY a.clicks DESC";
 		# Currently only sorting by clicks, might want to switch to popularity at some point but whatever, not that important.
 
-        @result = ActiveRecord::Base.connection.select_all(query)
+        @raw_data = ActiveRecord::Base.connection.select_all(query)
+        @result = []
+        pp "************ RESULTS FROM QUERY ***************"
 
-        # pp "************ RESULTS FROM QUERY ***************"
-        # y @result
-        # TODO: THIS CAN BE MADE MORE EFFICIENT
-        @result.each do |r|
-        	unless r["recurrence_id"].blank?
-        		puts r["title"]
-        		upcoming = Occurrence.find(r["id"]).event.nextOccurrence
-        		pp upcoming
-        		unless upcoming.nil?
-	        		r["id"] = upcoming.id
-	        		r["start"] = upcoming.start
+	    # Filter based on tags
+        if params[:cat].nil?
+        	@result = @raw_data
+        else
+	        @raw_data.each do |oneevent|
+	        	# puts oneevent
+	        	params[:cat].each do |c|
+	        		if oneevent["tags"].include?(c)
+		        		@result << oneevent 
+		        		# Replace start with next Occurrence for recurring events
+		        		# TODO: THIS CAN BE MADE MORE EFFICIENT
+			        	unless r["recurrence_id"].blank?
+			        		puts r["title"]
+			        		upcoming = Occurrence.find(r["id"]).event.nextOccurrence
+			        		# pp upcoming
+			        		unless upcoming.nil?
+				        		r["id"] = upcoming.id
+				        		r["start"] = upcoming.start
+				        	end
+			        	end
+		        		puts "Matched #{c} inside #{oneevent["tags"]}"
+		        		next
+		        	end
 	        	end
-        	end
-        end
+	        end
+	    end
 
 	end
 

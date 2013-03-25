@@ -127,6 +127,80 @@
 			<div class="list-cat-heading">Upcoming Top Pick Events</div>
 			<div class="list-cat-label">The best events in Austin, handpicked by locals and trendsetters. <a href="/picks/trendsetters">Get to know our trendsetters</a></div>
 		</div>
+
+		<div class="picks-cats">
+			<form id="cat-select">
+				<% puts "Params cat is #{params[:cat]}" %>
+
+				<% if params[:cat].nil? %>
+			    	<%= check_box_tag 'cat[]', '1', true %> Live Music
+			    	<%= check_box_tag 'cat[]', '104', true %> Food/Drink
+			    	<%= check_box_tag 'cat[]', '43', true %> Fitness
+			    	<%= check_box_tag 'cat[]', '134', true %> Tech
+			    	<%= check_box_tag 'cat[]', '12', true %> Arts
+			    	<%= check_box_tag 'cat[]', '192', true %> LGBT
+			    	<%= check_box_tag 'cat[]', '87', true %> Kid-friendly
+			    	<%= check_box_tag 'cat[]', '55', true %> Romantic
+			    	<%= check_box_tag 'cat[]', '141', true %> Non-profit
+		    	<% else %>
+					<% if params[:cat].include?("1")%>
+				    	<%= check_box_tag 'cat[]', '1', true %> Live Music
+					<% else %>
+				    	<%= check_box_tag 'cat[]', '1' %> Live Music
+				    <% end %>
+
+					<% if params[:cat].include?("104")%>
+				    	<%= check_box_tag 'cat[]', '104', true %> Food/Drink
+				    <% else %>
+				    	<%= check_box_tag 'cat[]', '104' %> Food/Drink
+				    <% end %>
+
+					<% if params[:cat].include?("43") %>
+				    	<%= check_box_tag 'cat[]', '43', true %> Fitness
+				    <% else %>
+				    	<%= check_box_tag 'cat[]', '43' %> Fitness
+				    <% end %>
+
+					<% if params[:cat].include?("134")%>
+				    	<%= check_box_tag 'cat[]', '134', true %> Tech
+				    <% else %>
+				    	<%= check_box_tag 'cat[]', '134' %> Tech
+				    <% end %>
+
+					<% if params[:cat].include?("12") %>
+				    	<%= check_box_tag 'cat[]', '12', true %> Arts
+				    <% else %>
+				    	<%= check_box_tag 'cat[]', '12' %> Arts
+				    <% end %>
+
+					<% if params[:cat].include?("192") %>
+				    	<%= check_box_tag 'cat[]', '192', true %> LGBT
+				    <% else %>
+				    	<%= check_box_tag 'cat[]', '192' %> LGBT
+				    <% end %>
+
+					<% if params[:cat].include?("87") %>
+				    	<%= check_box_tag 'cat[]', '87', true %> Kid-friendly
+				    <% else %>
+				    	<%= check_box_tag 'cat[]', '87' %> Kid-friendly
+				    <% end %>
+
+					<% if params[:cat].include?("55") %>
+				    	<%= check_box_tag 'cat[]', '55', true %> Romantic
+				    <% else %>
+				    	<%= check_box_tag 'cat[]', '55' %> Romantic
+				    <% end %>
+
+					<% if params[:cat].include?("141") || params[:cat].empty? %>
+				    	<%= check_box_tag 'cat[]', '141', true %> Non-profit
+				    <% else %>
+				    	<%= check_box_tag 'cat[]', '141' %> Non-profit
+				    <% end %>
+				<% end %>
+ 
+			    <%= submit_tag("Search") %>
+			</form>
+		</div>
 		<% end %>
 		<% if(@isFollowedLists) %>
 			<div style="font-weight: 700;margin: 9px 0 0 11px;font-size: 16px;">List View | <a href="/picks/followed?events=true">Event View</a></div>

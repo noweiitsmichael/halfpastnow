@@ -2977,7 +2977,7 @@ text-decoration: none;
   border: 1px solid #ccc;
 }
 
-#list-cat-wrapper { 
+#list-cat-wrapper, .picks-cats { 
   padding:12px; 
   background:white; 
   box-shadow: 1px 1px 3px rgba(0,0,0,.6); 
@@ -2996,6 +2996,11 @@ text-decoration: none;
   padding-left:10px;
   font-size: 20px;
   font-weight:300;
+}
+
+#cat-select input{
+  margin-left: 10px;
+  margin-right: 5px;
 }
 
 #info-content.top-picks {
@@ -3196,7 +3201,8 @@ text-decoration: none;
 
 .top-picks .picklists {
   float:none;
-  text-align: right;
+  text-align: left;
+  margin-left: 92px;
   padding-bottom:0px;
 }
 
