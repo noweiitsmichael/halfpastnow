@@ -797,6 +797,13 @@ input::-webkit-input-placeholder
 }
 #content.pick-content { margin-top:90px; }
 
+#content.pick-content .list-day-heading {
+  margin-left:340px;
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+
 #content.pick-content #map-wrapper { margin-top:90px; }
 
 .doublebar {
@@ -4028,12 +4035,12 @@ html, body {
     background: #CDEAF5;
 }
 
-.picklist-events li.see-more {
+.picklist-events li.see-more, li.see-more {
     min-height: auto;
    
 }
 
-.picklist-events li.see-more a {
+.picklist-events li.see-more a, li.see-more a {
     font-size: 13px;
     color:black;
     text-decoration:none;
@@ -4043,7 +4050,7 @@ html, body {
     display: block;
 }
 
-.picklist-events li.see-more:hover a {
+.picklist-events li.see-more:hover a, li.see-more:hover a {
     color:#126681;
 }
 

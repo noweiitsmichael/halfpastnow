@@ -67,6 +67,86 @@
 				modal(modality);   
 			}
 		});
+
+		var geocoder;
+		var map;
+		var markers = [];
+
+		function initialize() {
+			//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
+			geocoder = new google.maps.Geocoder();
+			var styles = [
+			    {
+			      stylers: [
+			        { saturation: 0 },
+			        { invert_lightness: false },
+			        { gamma: 1 },
+			        { lightness: 0 }
+			      ]
+			    }];
+			var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+			var myOptions = {
+				zoom: <%= @zoom %>,
+				center: latlng,
+				mapTypeId: 'map_style',
+				disableDefaultUI: true,
+				zoomControl: true,
+				scrollwheel: false,
+				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 3 }
+			};
+
+			var styledMap = new google.maps.StyledMapType(styles,
+    			{name: "Styled Map"});
+
+			map = new google.maps.Map($("#map")[0], myOptions);
+			map.mapTypes.set('map_style', styledMap);
+  			map.setMapTypeId('map_style');
+
+			var locations = [];
+			
+			$("#content .main .inner .events li").each(function(index) {
+				var latitude = parseFloat($(this).find(".latitude").html());
+				var longitude = parseFloat($(this).find(".longitude").html());
+				locations.push({lat: latitude, long: longitude});
+			});
+			placeMarkers({points: locations});
+		}
+
+		function to_i(obj) {
+			return parseInt(obj);
+		}
+		$(function() {
+		          
+			window.fbAsyncInit = function() {
+		        console.log("Loaded FB 222");
+					FB.init({
+					appId      : '475386955806720', // App ID
+					status     : true, // check login status
+					cookie     : true, // enable cookies to allow the server to access the session
+					xfbml      : true  // parse XFBML
+	          	});
+	        };
+
+	        // Load the SDK Asynchronously
+	        (function(d){
+	          var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+	          js = d.createElement('script'); js.id = id; js.async = true;
+	          js.src = "//connect.facebook.net/en_US/all.js";
+	          d.getElementsByTagName('head')[0].appendChild(js);
+	        }(document));// delete below   
+
+			$( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+			$('.head-title').tooltip('disable');
+			$('.icon-check').tooltip('disable');
+			$('.icon-check-empty').tooltip('disable');
+
+			$('.see-more-submit').click(function(){
+				console.log("See More Submit");
+			    $('#see-events-list').submit();
+			    return false;
+			});
+	  	});
+
 	</script>
 <% end %>
 
@@ -116,6 +196,12 @@
 							</li>
 						<% end %>
 					<% end %>
+					<form id="see-events-list">
+						<li class="see-more">
+							<input type="hidden" id="list_date" name="list_date" value="<%= day %>" />
+							<a href="" class="see-more-submit">see more </a>
+						</li>
+					</form>
 				<% end %>
 				</ul>
 			<% end %>
@@ -130,8 +216,7 @@
 
 		<div class="picks-cats">
 			<form id="cat-select">
-				<% puts "Params cat is #{params[:cat]}" %>
-
+			<% unless params[:list_date] %>	
 				<% if params[:cat].nil? %>
 			    	<%= check_box_tag 'cat[]', '1', true %> Live Music
 			    	<%= check_box_tag 'cat[]', '104', true %> Food/Drink
@@ -200,18 +285,40 @@
  
 			    <%= submit_tag("Filter") %>
 			</form>
+			<% end %>
 		</div>
 		<% end %>
 		<% if(@isFollowedLists) %>
 			<div style="font-weight: 700;margin: 9px 0 0 11px;font-size: 16px;">List View | <a href="/picks/followed?events=true">Event View</a></div>
 		<% end %>
 		<% hidden = "style=\"display:none;\"" %>
-		<div class='pick-cal'>
-			<% 	(0..6).each do |d| 
-					insert_day(Date.today + d.days, d)
-				end
-			%>
-		</div>
+
+		<% if params[:list_date].nil? %> 
+			<div class='pick-cal'>
+				<% 	(0..6).each do |d| 
+						insert_day(Date.today + d.days, d)
+					end
+				%>
+			</div>
+		<% else %>
+
+			<div id="content" class="pick-content" style="margin-top:8px">
+				<div class="list-day-heading">All Picks for <%= params[:list_date].to_time.strftime("%A, %B %-d") %></div>
+				<div id="map-wrapper" style="margin-top:215px">
+					<div id="map"></div>
+				</div>
+				<div class="main">
+					<div class="inner">
+						<ul class="events">
+							<% puts @result %>
+							<% occurrences = @result.select { |b| b if (b["start"].to_date == params[:list_date].to_date) }.collect {|o| Occurrence.find(o["id"])} %>
+							<%= render :partial => "events/event_list", :locals => { :occurrences => occurrences, :list_date => params[:list_date]} %>
+						</ul>
+						<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
+					</div>
+				</div>
+			</div>
+		<% end %>
 
 	</div>
 
