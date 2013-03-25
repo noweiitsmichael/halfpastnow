@@ -87,7 +87,7 @@ class UserMailer < ActionMailer::Base
           LEFT JOIN venues ON events.venue_id = venues.id
                   LEFT JOIN recurrences ON events.id = recurrences.event_id
                   WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days')) a
-        ";
+        ORDER BY a.views"
     # Currently only sorting by clicks, might want to switch to popularity at some point but whatever, not that important.
 
     @result = ActiveRecord::Base.connection.select_all(query)
@@ -107,7 +107,7 @@ class UserMailer < ActionMailer::Base
       end
     end
     @tpids =  @result.collect { |e| e["occurrence_id"].to_i }.uniq
-    @tpoccurrences = Occurrence.includes(:event => :tags).find(@tpids, :order => order_by)
+   
     @tpoccurrences = @tpoccurrences[0,2]
 
 
