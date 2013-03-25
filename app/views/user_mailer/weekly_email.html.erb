@@ -208,8 +208,12 @@
     <% names=occurrence.event.tags.collect{|t| t.name} %>
     <% a= tnames&names %>
     <% a.each do |t|%>
+   
         <% if t.to_s.eql? "Music"%>
-            <img src="http://finkorswim.com/wp-content/uploads/2010/05/colorful-music-notes-cutout-50x50.jpg" alt="Music" height="50" border="0" width="50">   
+            <img src="http://www.randomdetox.com/wp-content/uploads/2011/09/live-music-vector_preview-50x50.jpg" alt="Music" height="50" border="0" width="50">   
+        <% end %>
+        <% if t.to_s.eql? "Food/Drink Specials"%>
+            <img src=" http://www.goga-gastro.pl/media/products/a464b2529fcfcbb9c46f6fa954bed418/images/thumbnail/small_400104.jpg" alt="Happy Hours" height="50" border="0" width="50">   
         <% end %>
     <% end %>
     <!-- <div style="font-size:14px;color:#8c8c8c">Reason you would like this event because your preference has <b><%= a.split(",").join(",")%></b></div> -->
