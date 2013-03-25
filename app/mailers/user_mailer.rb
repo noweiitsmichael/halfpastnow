@@ -107,8 +107,8 @@ class UserMailer < ActionMailer::Base
       end
     end
     @tpids =  @result.collect { |e| e["occurrence_id"].to_i }.uniq
-   
-    @tpoccurrences = @tpoccurrences[0,2]
+    @tpids = @tpids[0,2]
+    @tpoccurrences = Occurrence.find(@tpids)
 
 
     mail(:to => user.email, :subject => "This week in halfpastnow!" , :from => "weekly@halfpastnow.com")
