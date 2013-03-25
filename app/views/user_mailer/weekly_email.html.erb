@@ -292,17 +292,16 @@
 
             <tbody><tr>
 
-            
-
-                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+                <% @tpoccurrences.each do |occurrence|%>
+                    <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
 
                     <div style="min-height:130px;padding:0;background-color:#f2f2f2">
 
-                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=131000" target="_blank">
+                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
 
                             
 
-                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/3691/large_Emily___Andy_s_Film_Club.jpg">
+                                <img title="" width="170" height="65" src="<%= occurrence.event.cover_image_url %>">
 
                             
 
@@ -312,15 +311,15 @@
 
                         <div style="padding:2px">
 
-                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=131000" target="_blank">
+                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
 
-                                <div style="font-size:13px;color:#4f2740">Emily + Andy's Film Club</div>
+                                <div style="font-size:13px;color:#4f2740"><%= occurrence.event.title %></div>
 
                             </a>
 
                             
 
-                                <div style="font-size:11px;color:#777777">at Austin Studios Screening Room</div>
+                                <div style="font-size:11px;color:#777777">at <%= occurrence.event.venue.name %></div>
 
                             
 
@@ -330,85 +329,7 @@
 
                 </td>
 
-
-
-            
-
-                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
-
-                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
-
-                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=139053" target="_blank">
-
-                            
-
-                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4754/large_parks_header_a.jpg">
-
-                            
-
-                        </a>
-
-                        <br>
-
-                        <div style="padding:2px">
-
-                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=139053" target="_blank">
-
-                                <div style="font-size:13px;color:#4f2740">Naturalist Workshop & Trade Corner</div>
-
-                            </a>
-
-                            
-
-                                <div style="font-size:11px;color:#777777">at Austin Nature and Science Center</div>
-
-                            
-
-                        </div>
-
-                    </div>
-
-                </td>
-
-
-
-            
-
-                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
-
-                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
-
-                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=154667" target="_blank">
-
-                            
-
-                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/170/large_images">
-
-                            
-
-                        </a>
-
-                        <br>
-
-                        <div style="padding:2px">
-
-                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=154667" target="_blank">
-                                <div style="font-size:13px;color:#4f2740">Ephraim Owens</div>
-
-                            </a>
-
-                            
-
-                                <div style="font-size:11px;color:#777777">at Continental Club</div>
-
-                            
-
-                        </div>
-
-                    </div>
-
-                </td>
-
+                <% end %>
 
 
             
