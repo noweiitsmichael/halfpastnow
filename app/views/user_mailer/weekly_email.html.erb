@@ -27,7 +27,18 @@
                                                     <a href="http://halfpastnow.com" target="_blank"><img style="float:left" width="250" height="44" alt="Your couch will miss you" src="http://www.halfpastnow.com/assets/halfpastnow_final_300.png"></a>
 
                                                 </td>
-
+                                                <td height="50" width="125"></td>
+                                                <a href="http://halfpastnow.com" target="_blank" style="border: 1px solid #9c8fad;
+                                                font-size: 16px;
+                                                font-weight: 900;
+                                                background-color: #A700A7;
+                                                color: white;
+                                                padding: 7px 0px 4px 0px;
+                                                margin-top: 0px;
+                                                text-decoration: none;
+                                                text-transform: none;
+                                                display: block;
+                                                text-align: center;vertical-align: middle; width: 250px;" >Update your preferences</a>
                                                 
 
                                             </tr>
@@ -196,9 +207,43 @@
     <% tnames=Tag.find(tids).collect{|t| t.name} %>
     <% names=occurrence.event.tags.collect{|t| t.name} %>
     <% a= tnames&names %>
-    <div style="font-size:14px;color:#8c8c8c">Reason you would like this event because your preference has <b><%= a.split(",").join(",")%></b></div>
+    <div>
+        <% a.each do |t|%>
+       
+            <% if t.to_s.eql? "Music"%>
+                <img style="float:left;" src="http://www.randomdetox.com/wp-content/uploads/2011/09/live-music-vector_preview-50x50.jpg" alt="Music" height="25" border="0" width="25">   
+            <% end %>
+            <% if t.to_s.eql? "Food/Drink Specials"%>
+                <img style="float:left;" src="http://www.goga-gastro.pl/media/products/a464b2529fcfcbb9c46f6fa954bed418/images/thumbnail/small_400104.jpg" alt="Happy Hours" height="25" border="0" width="25">   
+            <% end %>
+            <% if t.to_s.eql? "Fitness"%>
+                <img style="float:left;" src="http://www.yoga-essex.co.uk/images/featured-icon-2.jpg" alt="Fitness" height="25" border="0" width="25">   
+            <% end %>
+            <% if t.to_s.eql? "Tech"%>
+                <img style="float:left;" src="http://digitalethos.org/wp-content/uploads/2012/11/3rd-Generation-of-Websites-and-Inbound-Marketing-50x50.png" alt="Tech" height="25" border="0" width="25">   
+            <% end %>
+            <% if t.to_s.eql? "Charity / Non-Profit"%>
+                <img style="float:left;" src="http://avatar.hq-picture.com/avatars/img36/peace_logo_avatar_picture_43463.gif" alt="Non-Profit" height="25" border="0" width="25">   
+            <% end %>
+            <% if t.to_s.eql? "Art"%>
+                <img style="float:left;" src="http://engr.case.edu/merat_francis/eecs490f06/Images/Mona_Lisa.jpg" alt="Art" height="25" border="0" width="25">   
+            <% end %>
+             <% if t.to_s.eql? "Kid Friendly"%>
+                <img style="float:left;" src="http://bloggeritis.com/wp-content/uploads/2012/02/Logo-Design-told-by-Kids-64x64.jpg" alt="Kid Friendly" height="25" border="0" width="25">   
+            <% end %>
+            <% if t.to_s.eql? "Romantic"%>
+                <img style="float:left;" src="http://static.general-play.com/thumbs/ee3/31/gp74e6fh1f5i0.jpeg" alt="Romantic" height="25" border="0" width="25">   
+            <% end %>
+            <% if t.to_s.eql? "LGBT"%>
+                <img style="float:left;" src="http://www.lifechurch.tv/assets/jobs/icon_heart-3c3a5c611f0dd5b19b782308f3c33dbc.png" alt="LGBT" height="25" border="0" width="25">   
+            <% end %>
 
-<hr>
+        <% end %>
+    </div>
+    <br>
+    <!-- <div style="font-size:14px;color:#8c8c8c">Reason you would like this event because your preference has <b><%= a.split(",").join(",")%></b></div> -->
+
+
 
 
 
@@ -209,9 +254,73 @@
 
 
 <% end %>
-    <!-- end events generation -->
+<!-- end events generation -->
+<br>
+<hr style="color:#ccc;background-color:#ccc;margin:15px 0;min-height:1px;border:0">
+
+<!-- bookmarked Events -->
+<% if @bookmarkedEvents.count > 0 %>
+
+    <div style="margin:10px 0 10px 0;border:solid 0px #10add5;font-size:16px">
+
+        <div style="padding:5px 0 0 4px;font-size:16px;color:#595959;font-weight:bold">
+
+        
+
+            Your Upcomming Bookmarked Events 
+
+        
+
+        </div>
+
+        <table style="padding:10px 0 10px 0">
+
+            <tbody><tr>
+
+                <% @bookmarkedEvents.each do |occurrence| %>
+                    <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+
+                        <div style="min-height:130px;padding:0;background-color:#f2f2f2">
+
+                            <a href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
+                                    <img title="<%= occurrence.event.title %>" width="170" height="65"  src="<%= occurrence.event.cover_image_url %>">
+                             </a>
+
+                            <br>
+
+                            <div style="padding:2px">
+
+                                <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
+
+                                    <div style="font-size:13px;color:#4f2740"><%= truncate(occurrence.event.title, :length => 47) %></div>
+
+                                </a>
+
+                                
+
+                                    <div style="font-size:11px;color:#777777">at <%= occurrence.event.venue.name %></div>
+
+                                
+
+                            </div>
+
+                        </div>
+
+                    </td>
+                <% end %>
+                
 
 
+
+            
+
+                </tr>
+
+        </tbody></table>
+
+    </div>
+<% end %>
+<!-- end bookmarked events -->
 
 
     <div style="margin:10px 0 10px 0;border:solid 0px #10add5;font-size:16px">
@@ -230,17 +339,16 @@
 
             <tbody><tr>
 
-            
-
-                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+                <% @tpoccurrences.each do |occurrence|%>
+                    <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
 
                     <div style="min-height:130px;padding:0;background-color:#f2f2f2">
 
-                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=131000" target="_blank">
+                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
 
                             
 
-                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/3691/large_Emily___Andy_s_Film_Club.jpg">
+                                <img title="" width="170" height="65" src="<%= occurrence.event.cover_image_url %>">
 
                             
 
@@ -250,15 +358,15 @@
 
                         <div style="padding:2px">
 
-                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=131000" target="_blank">
+                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
 
-                                <div style="font-size:13px;color:#4f2740">Emily + Andy's Film Club</div>
+                                <div style="font-size:13px;color:#4f2740"><%= occurrence.event.title %></div>
 
                             </a>
 
                             
 
-                                <div style="font-size:11px;color:#777777">at Austin Studios Screening Room</div>
+                                <div style="font-size:11px;color:#777777">at <%= occurrence.event.venue.name %></div>
 
                             
 
@@ -268,85 +376,7 @@
 
                 </td>
 
-
-
-            
-
-                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
-
-                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
-
-                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=139053" target="_blank">
-
-                            
-
-                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4754/large_parks_header_a.jpg">
-
-                            
-
-                        </a>
-
-                        <br>
-
-                        <div style="padding:2px">
-
-                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=139053" target="_blank">
-
-                                <div style="font-size:13px;color:#4f2740">Naturalist Workshop & Trade Corner</div>
-
-                            </a>
-
-                            
-
-                                <div style="font-size:11px;color:#777777">at Austin Nature and Science Center</div>
-
-                            
-
-                        </div>
-
-                    </div>
-
-                </td>
-
-
-
-            
-
-                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
-
-                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
-
-                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=154667" target="_blank">
-
-                            
-
-                                <img title="" width="170" height="65" src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/170/large_images">
-
-                            
-
-                        </a>
-
-                        <br>
-
-                        <div style="padding:2px">
-
-                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=154667" target="_blank">
-                                <div style="font-size:13px;color:#4f2740">Ephraim Owens</div>
-
-                            </a>
-
-                            
-
-                                <div style="font-size:11px;color:#777777">at Continental Club</div>
-
-                            
-
-                        </div>
-
-                    </div>
-
-                </td>
-
+                <% end %>
 
 
             
