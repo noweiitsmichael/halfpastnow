@@ -15,16 +15,16 @@ class UserMailer < ActionMailer::Base
     event_end = event_start.advance(:days => 1)
     id = user.ref
     # check if user has a reference channel
-    if id.nil?
+    if (id.nil?) || (id.to_s.eql? "")
       c =  Channel.new 
         # Change to approriate tag ids for Production 
       c.included_tags = "1,134,43,141,29,87,55,192,104"
-       
-      user.ref = c.id.to_s
-      user.save
+      c.save!
+      @user.ref = c.id.to_s
+      @user.save!
       
     end
-    id = user.ref
+    id = @user.ref
     channel = Channel.find(id)
 
 
