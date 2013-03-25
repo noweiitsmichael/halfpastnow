@@ -57,7 +57,7 @@ class UserMailer < ActionMailer::Base
     puts queryResult
 
     @ids =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
-    @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+    @occurrences = Occurrence.includes(:event => :tags).find(@ids, :order => order_by)
     @ids = @occurrences.collect{|o| o.id}
     @ids=@ids[0,5]
     puts "6 events: "
