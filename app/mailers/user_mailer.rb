@@ -59,12 +59,12 @@ class UserMailer < ActionMailer::Base
     @ids =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
     @occurrences = Occurrence.includes(:event => :tags).find(@ids, :order => order_by)
     @ids = @occurrences.collect{|o| o.id}
-    @ids=@ids[0,5]
+    @ids=@ids[0,6]
     puts "6 events: "
     puts @ids
     @bookmarkedEvents=user.bookmarked_events.select{|o| o.start>Time.now}.uniq.sort! { |a,b| a.start <=> b.start }
     if @bookmarkedEvents.size > 3
-      @bookmarkedEvents = @bookmarkedEvents[0,2]
+      @bookmarkedEvents = @bookmarkedEvents[0,3]
     end
 
     # Find 3 upcomming Top Pick event
@@ -110,7 +110,7 @@ class UserMailer < ActionMailer::Base
     puts "Is there a Z"
     puts @tpids
     @tpoccurrences = Occurrence.includes(:event => :tags).find(@tpids, :order => order_by)
-    @tpoccurrences = @tpoccurrences[0,2]
+    @tpoccurrences = @tpoccurrences[0,3]
 
 
     mail(:to => user.email, :subject => "This week in halfpastnow!" , :from => "weekly@halfpastnow.com")

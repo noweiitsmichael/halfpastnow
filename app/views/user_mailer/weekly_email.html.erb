@@ -245,7 +245,7 @@
 
                                 <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
 
-                                    <div style="font-size:13px;color:#4f2740"><%= occurrence.event.title %></div>
+                                    <div style="font-size:13px;color:#4f2740"><%= truncate(occurrence.event.title, :length => 115) %></div>
 
                                 </a>
 
