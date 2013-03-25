@@ -63,10 +63,52 @@ class UserMailer < ActionMailer::Base
     puts "6 events: "
     puts @ids
     @bookmarkedEvents=user.bookmarked_events.select{|o| o.start>Time.now}.uniq.sort! { |a,b| a.start <=> b.start }
-    if @bookmarked_events.count > 3
-      @bookmarked_events = @bookmarked_events[0,2]
+    if @bookmarkedEvents.size > 3
+      @bookmarkedEvents = @bookmarkedEvents[0,2]
     end
 
+    # Find 3 upcomming Top Pick event
+    query = "SELECT a.title, a.clicks, a.views, a.name, a.recurrence_id, a.start, a.id, a.event_id, a.venue_id, a.cover_image_url, a.picture_url
+        FROM
+        ((SELECT DISTINCT ON (events.title) events.title, events.clicks, events.views, venues.name, occurrences.recurrence_id AS recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url
+          FROM bookmarks 
+          LEFT JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
+          LEFT JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
+          LEFT JOIN events ON occurrences.event_id = events.id
+          LEFT JOIN venues ON events.venue_id = venues.id
+                  LEFT JOIN recurrences ON events.id = recurrences.event_id
+                  WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL)
+                UNION 
+                (SELECT DISTINCT ON (events.title) events.title, events.clicks, events.views, venues.name, occurrences.recurrence_id AS recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url
+          FROM bookmarks 
+          LEFT JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
+          LEFT JOIN occurrences ON bookmarks.bookmarked_id = occurrences.id
+          LEFT JOIN events ON occurrences.event_id = events.id
+          LEFT JOIN venues ON events.venue_id = venues.id
+                  LEFT JOIN recurrences ON events.id = recurrences.event_id
+                  WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days')) a
+        ";
+    # Currently only sorting by clicks, might want to switch to popularity at some point but whatever, not that important.
+
+    @result = ActiveRecord::Base.connection.select_all(query)
+
+    # pp "************ RESULTS FROM QUERY ***************"
+    # y @result
+    # TODO: THIS CAN BE MADE MORE EFFICIENT
+    @result.each do |r|
+      unless r["recurrence_id"].blank?
+        puts r["title"]
+        upcoming = Occurrence.find(r["id"]).event.nextOccurrence
+        pp upcoming
+        unless upcoming.nil?
+          r["id"] = upcoming.id
+          r["start"] = upcoming.start
+        end
+      end
+    end
+    @tpids =  @result.collect { |e| e["occurrence_id"].to_i }.uniq
+    @tpoccurrences = Occurrence.includes(:event => :tags).find(@tpids, :order => order_by)
+    @tpoccurrences = @tpoccurrences[0,2]
 
 
     mail(:to => user.email, :subject => "This week in halfpastnow!" , :from => "weekly@halfpastnow.com")
