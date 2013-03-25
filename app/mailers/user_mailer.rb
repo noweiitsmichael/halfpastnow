@@ -126,7 +126,7 @@ class UserMailer < ActionMailer::Base
     
 
   #   mail(:to => user.email, :subject => "This week in halfpastnow!" , user_name: "support@halfpastnow.com", password: "chimeralabs", address: "http://radiant-flower-7307.herokuapp.com/")
-    mail(:to => user.email, :subject => "This week in halfpastnow!" , user_name: "bryan.k.le@gmail.com", password: "8452395", address: "http://www.gmail.com/")
+    mail(:to => user.email, :subject => "This week in halfpastnow!" , from: "khoa@halfpastnow.com")
   
    end
   
