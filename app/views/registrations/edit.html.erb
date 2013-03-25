@@ -131,15 +131,37 @@
           return false;
         });
       });
+
+    function check(field){
+            var str ="";
+            for (i=0;i<field.length;i++)
+            if (field[i].checked==true) {
+              if (str==="") {
+                str = field[i].value;
+              }
+              else{
+                str = str +"," +field[i].value;  
+              };
+              
+            }
+            
+            console.log("Checkebox : "+str);
+            $.get('/channels/updateReg?id=<%=current_user.ref%>'+'&included_tags='+str, function(data) {
+              
+            });
+
+
+            }
   </script>
   <div id="profile-sidebar">
     <%= image_tag resource.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic" %>
     <!-- <h2><%= current_user.firstname %> <%= current_user.lastname %> </h2> -->
     <ul id="profile-nav">
       <li class="streams selected">Saved Searches</li>
-      <li><a style="text-decoration:none; color:#333" href="/users/rsvp/<%=current_user.id%>">My RSVPs</a></li>
+      <!-- <li><a style="text-decoration:none; color:#333" href="/users/rsvp/<%=current_user.id%>">My RSVPs</a></li> -->
       <% if false %><!-- <li class="bookmarks">Bookmarks</li> --><% end %>
       <li class="picture">Picture</li>
+      <li class="preferences">My preferences</li>
       <li class="settings">Settings</li>
       <li class="password">Password</li>
     </ul>
@@ -290,7 +312,43 @@
         <% end %>
       </div>
     </div>
+     <div class="preferences">
+      <!-- Create a reference channel for current user if it does not exist -->
+      <% if current_user.ref.nil? %>
+        <% c =  Channel.new %>
+        <!-- Change to approriate tag ids for Production -->
+        <% c.included_tags = "1,134,43,141,29,87,55,192,104" %>
+        <% c.save %>
+        <% current_user.ref = c.id.to_s %>
+        <% current_user.save %>
+        <form name="form" method="post">
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Music").id%>" checked onclick="check(document.form.cat)">Live Music<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Fitness").id%>" checked onclick="check(document.form.cat)">Fitness<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Tech").id%>" checked onclick="check(document.form.cat)">Tech<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Charity / Non-Profit").id%>" checked onclick="check(document.form.cat)">Non-Profit<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Art").id%>" checked onclick="check(document.form.cat)">Arts<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Kid Friendly").id%>" checked onclick="check(document.form.cat)">Kid Friendly<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Romantic").id%>" checked onclick="check(document.form.cat)">Romantic<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("LGBT").id%>" checked onclick="check(document.form.cat)">LGBT<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Food/Drink Specials").id%>" checked onclick="check(document.form.cat)">Food/Drinks Special<br>
+        </form>
 
+      <% else %>
+        <% @refincluded_tags = Channel.find(current_user.ref.to_i).included_tags %>
+        <form name="form" method="post">
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Music").id%>"  <%= (@refincluded_tags.include? Tag.find_by_name("Music").id.to_s) ? "checked" : "" %> onclick="check(document.form.cat)">Live Music<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Fitness").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Fitness").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Fitness<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Tech").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Tech").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Tech<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Charity / Non-Profit").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Charity / Non-Profit").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Non-Profit<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Art").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Art").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Arts<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Kid Friendly").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Kid Friendly").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Kid Friendly<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Romantic").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Romantic").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Romantic<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("LGBT").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("LGBT").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">LGBT<br>
+          <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Food/Drink Specials").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Food/Drink Specials").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Food/Drinks Special<br>
+        </form>
+      <% end %>
+      
+     </div>
     <div class="settings">
       <h2>Settings</h2>
       <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put, :id => "edit_settings" }) do |f| %>

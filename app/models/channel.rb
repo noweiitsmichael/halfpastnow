@@ -20,4 +20,5 @@ class Channel < ActiveRecord::Base
 	self.search = params[:search].to_s.empty? ? nil : params[:search]
 	self.name = params[:name]
   end
+  
 end

@@ -176,7 +176,7 @@ helper :content
 	def filter_all_legit(result)
 		@list=[]
 		@exclude=[]
-		
+
 		result.uniq.each{ |r|
 			id = r["occurrence_id"]
 			lID = r["id"]
@@ -212,7 +212,7 @@ helper :content
 					end
 
 				end
-				
+
 			else 
 				if !recurrence_id.nil?
 					# puts " 4 "
