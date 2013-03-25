@@ -44,13 +44,13 @@ helper :content
 		        		@result << oneevent 
 		        		# Replace start with next Occurrence for recurring events
 		        		# TODO: THIS CAN BE MADE MORE EFFICIENT
-			        	unless r["recurrence_id"].blank?
-			        		puts r["title"]
-			        		upcoming = Occurrence.find(r["id"]).event.nextOccurrence
+			        	unless oneevent["recurrence_id"].blank?
+			        		puts oneevent["title"]
+			        		upcoming = Occurrence.find(oneevent["id"]).event.nextOccurrence
 			        		# pp upcoming
 			        		unless upcoming.nil?
-				        		r["id"] = upcoming.id
-				        		r["start"] = upcoming.start
+				        		oneevent["id"] = upcoming.id
+				        		oneevent["start"] = upcoming.start
 				        	end
 			        	end
 		        		puts "Matched #{c} inside #{oneevent["tags"]}"
