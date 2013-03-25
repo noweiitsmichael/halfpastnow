@@ -191,7 +191,7 @@
     </tbody>
 
 </table>
-    <% tids=Channel.find(user.ref).included_tags.split(",") %>
+    <% tids=Channel.find(@user.ref).included_tags.split(",") %>
     <% tnames=Tag.find(tids).collect{|t| t.name} %>
     <% names=occurrence.event.tags.collect{|t| t.name} %>
     <% a= tnames&names %>
