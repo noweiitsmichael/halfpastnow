@@ -14,6 +14,7 @@ class UserMailer < ActionMailer::Base
     event_start = Time.now
     event_end = event_start.advance(:days => 1)
     id = user.ref
+    # check if user has a reference channel
     if id.nil?
       c =  Channel.new 
         # Change to approriate tag ids for Production 
@@ -21,8 +22,9 @@ class UserMailer < ActionMailer::Base
        
       user.ref = c.id.to_s
       user.save
-      id = c.id.to_s
+      
     end
+    id = user.ref
     channel = Channel.find(id)
 
 
