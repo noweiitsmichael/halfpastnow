@@ -46,7 +46,7 @@ class UserMailer < ActionMailer::Base
                   END DESC"
 
     query ="
-    SELECT occurrences.id AS occurrence_id FROM occurrences 
+    SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id FROM occurrences 
     INNER JOIN events ON occurrences.event_id = events.id
     INNER JOIN venues ON events.venue_id = venues.id
     LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
