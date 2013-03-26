@@ -97,7 +97,7 @@ class UserMailer < ActionMailer::Base
           LEFT JOIN events ON occurrences.event_id = events.id
           LEFT JOIN venues ON events.venue_id = venues.id
                   LEFT JOIN recurrences ON events.id = recurrences.event_id
-                  WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL)
+                  WHERE bookmarks.bookmarked_type = 'Occurrence' AND occurrences.start >= '#{Date.today()}' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL)
                 UNION 
                 (SELECT DISTINCT ON (events.title) events.title, events.clicks, occurrences.id AS occurrence_id, events.views, venues.name, occurrences.recurrence_id AS recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url
           FROM bookmarks 
@@ -106,7 +106,7 @@ class UserMailer < ActionMailer::Base
           LEFT JOIN events ON occurrences.event_id = events.id
           LEFT JOIN venues ON events.venue_id = venues.id
                   LEFT JOIN recurrences ON events.id = recurrences.event_id
-                  WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days')) a
+                  WHERE bookmarks.bookmarked_type = 'Occurrence' AND occurrences.start >= '#{Date.today()}' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days')) a
         "
     # Currently only sorting by clicks, might want to switch to popularity at some point but whatever, not that important.
 

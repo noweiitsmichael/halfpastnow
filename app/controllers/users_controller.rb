@@ -264,5 +264,12 @@ class UsersController < ApplicationController
       render :json => { :success => false, :error => "Unable to follow list." }
     end
   end
+  def friends
+
+    respond_to do |format|
+      format.html { render action: "friends" }
+      
+    end
+  end
 
 end

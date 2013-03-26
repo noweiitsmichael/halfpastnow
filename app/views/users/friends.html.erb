@@ -1,6 +1,23 @@
-<% content_for :title do %>My Friends<% end %>
+<% content_for :title do %>Here are My Friends<% end %>
+<h2>My Friends</h2>
+<div id="profile-sidebar">
+    <%= image_tag resource.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic" %>
+    <!-- <h2><%= current_user.firstname %> <%= current_user.lastname %> </h2> -->
+    <ul id="profile-nav">
+      <li class="streams selected">Saved Searches</li>
+      <!-- <li><a style="text-decoration:none; color:#333" href="/users/rsvp/<%=current_user.id%>">My RSVPs</a></li> -->
+      <% if false %><!-- <li class="bookmarks">Bookmarks</li> --><% end %>
+      <li class="picture">Picture</li>
+      <li class="preferences">My preferences</li>
+      <li class="settings">Settings</li>
+      <li class="password">Password</li>
+    </ul>
+    <%= link_to('Logout', destroy_user_session_path, :method => 'delete', :class => 'logout') %>
+  </div>
 
 <% content_for :content do %>
+
+	
 
 	<h2>My Friends</h2>
 
@@ -8,7 +25,7 @@
 
 	<h2>Friends</h2>
 	<ul>
-	<% puts "loading" %>
+	<% puts "loading herererere .... " %>
 	<% puts current_user.friends.count %>
 	  <% current_user.friends.each do |friend| %>
 	    <li>
