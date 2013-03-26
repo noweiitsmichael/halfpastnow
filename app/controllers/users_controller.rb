@@ -273,8 +273,8 @@ class UsersController < ApplicationController
       @f=@facebook.fql_query(query)
       @fs = current_user.friends
       @f.each{|p|
-         s = "12023"
-         # @u = User.find_by_uid(p["uid"].to_s)
+         s = p["uid"].to_s
+         # @u = User.find_by_uid()
          @u = User.find_by_uid(s)
          @fid = @u.id
          puts @fid
