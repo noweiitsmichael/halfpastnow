@@ -1,11 +1,20 @@
 class UserMailer < ActionMailer::Base
-  default from: "support@halfpastnow.com"
+  # default from: "khoa@halfpastnow.com"
 
   def welcome_email(user)
   	puts "sending email..."
+    ActionMailer::Base.smtp_settings = {
+      address: "smtp.gmail.com",
+      port: 587,
+      domain: "halfpastnow.com",
+      authentication: "plain",
+      enable_starttls_auto: true,
+      user_name: "support@halfpastnow.com",
+      password: "chimeralabs"
+    }
     @user = user
     @url  = "http://halfpastnow.com/login"
-    mail(:to => user.email, :subject => "Welcome to halfpastnow!")
+    mail(:to => @user.email, :subject => "Welcome to halfpastnow!", :from => "support@halfpastnow.com")
   end
   def weekly_email(user)
   	puts "sending email..."
@@ -97,7 +106,7 @@ class UserMailer < ActionMailer::Base
           LEFT JOIN events ON occurrences.event_id = events.id
           LEFT JOIN venues ON events.venue_id = venues.id
                   LEFT JOIN recurrences ON events.id = recurrences.event_id
-                  WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days')) a
+                  WHERE bookmarks.bookmarked_type = 'Occurrence' AND occurrences.start >= '#{Date.today()}' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days')) a
         "
     # Currently only sorting by clicks, might want to switch to popularity at some point but whatever, not that important.
 
@@ -117,14 +126,25 @@ class UserMailer < ActionMailer::Base
         end
       end
     end
-    @tpids =  @result.collect { |e| e["occurrence_id"].to_i }.uniq
+    @tpids =  @result.collect { |e| e["id"].to_i }.uniq
     puts "Is there a Z"
     puts @tpids
     @tpoccurrences = Occurrence.includes(:event => :tags).find(@tpids, :order => order_by)
     @tpoccurrences = @tpoccurrences[0,3]
 
+    ActionMailer::Base.smtp_settings = {
+      address: "smtp.gmail.com",
+      port: 587,
+      domain: "halfpastnow.com",
+      authentication: "plain",
+      enable_starttls_auto: true,
+      user_name: "weekly@halfpastnow.com",
+      password: "chimeralabs"
+    }
 
-    mail(:to => user.email, :subject => "This week in halfpastnow!" , :from => "weekly@halfpastnow.com")
-  end
+  #   mail(:to => user.email, :subject => "This week in halfpastnow!" , user_name: "support@halfpastnow.com", password: "chimeralabs", address: "http://radiant-flower-7307.herokuapp.com/")
+    mail(:to => user.email, :subject => "This week in halfpastnow!",:from => "weekly@halfpastnow.com" )
+  
+   end
   
 end

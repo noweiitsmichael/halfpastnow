@@ -24,21 +24,10 @@
 
                                                 <td height="50">
 
-                                                    <a href="http://halfpastnow.com" target="_blank"><img style="float:left" width="250" height="44" alt="Your couch will miss you" src="http://www.halfpastnow.com/assets/halfpastnow_final_300.png"></a>
+                                                    <a href="http://www.halfpastnow.com" target="_blank"><img style="float:left" width="250" height="44" alt="Your couch will miss you" src="http://www.halfpastnow.com/assets/halfpastnow_final_300.png"></a>
 
                                                 </td>
                                                 <td height="50" width="125"></td>
-                                                <a href="http://halfpastnow.com" target="_blank" style="border: 1px solid #9c8fad;
-                                                font-size: 16px;
-                                                font-weight: 900;
-                                                background-color: #A700A7;
-                                                color: white;
-                                                padding: 7px 0px 4px 0px;
-                                                margin-top: 0px;
-                                                text-decoration: none;
-                                                text-transform: none;
-                                                display: block;
-                                                text-align: center;vertical-align: middle; width: 250px;" >Update your preferences</a>
                                                 
 
                                             </tr>
@@ -66,11 +55,40 @@
     </div>
 
     
-
-<div class="header-content"><webversion><a href="http://www.halfpastnow.com" style="text-decoration:none;color:#4f2740" target="_blank">half past now.</a></webversion><span class="hide">&nbsp;&nbsp;|&nbsp; <preferences lang="en"><a href="http://www.halfpastnow.com" style="text-decoration:none;color:#4f2740" target="_blank">Update preferences</a></preferences>&nbsp;&nbsp;|&nbsp; <unsubscribe><a href="mailto:?subject=Check out halfpastnow.&body=Signup for half past now. newsletter">Tell a friend</a></unsubscribe></span></div>
-
-<div style="font-size:16px;line-height:32px;">Hi, <%=@user.firstname%></div>
-<div style="font-size:16px;line-height:32px;">Here are events for this week.</div>  
+<table>
+    <tbody>
+        <tr>
+            <td>
+    <div class="header-content"><webversion><a href="http://www.halfpastnow.com" style="text-decoration:none;color:#4f2740" target="_blank">half past now.</a></webversion><span class="hide">&nbsp;&nbsp;|&nbsp; <preferences lang="en"><a href="http://www.halfpastnow.com" style="text-decoration:none;color:#4f2740" target="_blank">Update preferences</a></preferences>&nbsp;&nbsp;|&nbsp; <unsubscribe><a href="mailto:?subject=Check out halfpastnow.&body=Signup for half past now. newsletter">Tell a friend</a></unsubscribe></span></div>
+            </td>
+            <td height="50" width="125"></td>
+                                                <a href="http://www.halfpastnow.com" target="_blank" style="border: 1px solid #9C8FAD;
+                                                        font-size: 14px;
+                                                        font-weight: 900;
+                                                        background-color: #a700a7;
+                                                        color: white;
+                                                        padding: 7px 0px 4px 0px;
+                                                        margin-top: 0px;
+                                                        text-decoration: none;
+                                                        text-transform: none;
+                                                        display: block;
+                                                        text-align: center;
+                                                        vertical-align: middle;
+                                                        width: 180px;
+                                                        font-style: italic;
+                                                        text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+                                                        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0,0,0,0.1)), color-stop(100%, rgba(0,0,0,0.3)));
+                                                        font-family: Lato,Tahoma,sans-serif;
+                                                        border-bottom-left-radius: 2px;
+                                                        border-bottom-right-radius: 2px;
+                                                        border-top-left-radius: 2px;
+                                                        border-top-right-radius: 2px;
+                                                        box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3),0 1px 0 rgba(255, 255, 255, 0.4) inset;" >Update your preferences</a>
+            </tr>
+    </tbody>
+</table>
+<div style="font-size:16px;line-height:32px;">Hello <%=@user.firstname%>,</div>
+<div style="font-size:16px;line-height:32px;">Here are our events for this week. Update your preferences to receive your own weekly customized email!!!</div>  
 <!-- Start generating events -->
         
 <% @ids.each do |id| %>
@@ -95,7 +113,7 @@
 
 
 
-                    <a href="http://hpnstaging.herokuapp.com/search?event_id=158790" style="text-decoration:none;color:#4f2740" target="_blank">
+                    <a href="http://www.halfpastnow.com/search?event_id=158790" style="text-decoration:none;color:#4f2740" target="_blank">
 
                         
 
@@ -151,7 +169,10 @@
 
 
 
-
+<% tids=Channel.find(@user.ref).included_tags.split(",") %>
+<% tnames=Tag.find(tids).collect{|t| t.name} %>
+<% names=occurrence.event.tags.collect{|t| t.name} %>
+<% a= tnames&names %>
 
 <table width="600" height="125" cellpadding="0" border="0" style="color:#595959;font-size:12px;text-align:left;border:0" cellspacing="0">
 
@@ -160,24 +181,24 @@
 
             <td  width="250" height="125" style="background-color:#f2f2f2;border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;">
 
-                <a href="hpnstaging.herokuapp.com/?event_id=<%= occurrence.id %>" target="_blank"><img title="<%= occurrence.event.title %>" width="250" height="125" style="background-color:#f2f2f2;border-right:1px solid #c0c0c0;" src="<%= occurrence.event.cover_image_url %>">
+                <a href="www.halfpastnow.com/?event_id=<%= occurrence.id %>" target="_blank"><img title="<%= occurrence.event.title %>" width="250" height="125" style="background-color:#f2f2f2;border-right:1px solid #c0c0c0;" src="<%= occurrence.event.cover_image_url %>">
 
 
                 </a>
 
             </td>
-            <td width="300" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;"><%= truncate(strip_tags(occurrence.event.description), :length => 100) %>... <a style="color:#4f2740;text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=<%= occurrence.id %>" target="_blank"><b>Read More&nbsp;»</b></a>
+            <td width="300" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;"><%= truncate(strip_tags(occurrence.event.description), :length => 100) %>... <a style="color:#4f2740;text-decoration:none" href="http://www.halfpastnow.com/search?event_id=<%= occurrence.id %>" target="_blank"><b>Read More&nbsp;»</b></a>
                 <div height="0" style="font-size:1px">&nbsp;</div>
                 <div >
                     <i>
-                        <% if occurrence.event.tags.count > 0 %>
-                            <% occurrence.event.tags.each do |tag| %>
-                                <% if tag.parent_tag_id.nil? %>
-                                    <span style="font-size:16px;line-height:7px;color: #4f2740;"><%= tag.name %> </span>
-                                <% end %>
-                                
-                            <% end %>
+                        
+                        <% a.each do |tag| %>
+                            
+                                <span style="font-size:16px;line-height:7px;color: #4f2740;"><%= tag %> </span>
+                            
+                            
                         <% end %>
+                        
                        
                     </i>
                 </div>
@@ -203,10 +224,7 @@
     </tbody>
 
 </table>
-    <% tids=Channel.find(@user.ref).included_tags.split(",") %>
-    <% tnames=Tag.find(tids).collect{|t| t.name} %>
-    <% names=occurrence.event.tags.collect{|t| t.name} %>
-    <% a= tnames&names %>
+    
     <div>
         <% a.each do |t|%>
        
@@ -282,7 +300,7 @@
 
                         <div style="min-height:130px;padding:0;background-color:#f2f2f2">
 
-                            <a href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
+                            <a href="http://www.halfpastnow.com/picks?event_id=<%=occurrence.id%>" target="_blank">
                                     <img title="<%= occurrence.event.title %>" width="170" height="65"  src="<%= occurrence.event.cover_image_url %>">
                              </a>
 
@@ -290,7 +308,7 @@
 
                             <div style="padding:2px">
 
-                                <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
+                                <a style="text-decoration:none" href="http://www.halfpastnow.com/picks?event_id=<%=occurrence.id%>" target="_blank">
 
                                     <div style="font-size:13px;color:#4f2740"><%= truncate(occurrence.event.title, :length => 47) %></div>
 
@@ -344,7 +362,7 @@
 
                     <div style="min-height:130px;padding:0;background-color:#f2f2f2">
 
-                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
+                        <a href="http://www.halfpastnow.com/picks?event_id=<%=occurrence.id%>" target="_blank">
 
                             
 
@@ -358,7 +376,7 @@
 
                         <div style="padding:2px">
 
-                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=<%=occurrence.id%>" target="_blank">
+                            <a style="text-decoration:none" href="http://www.halfpastnow.com/picks?event_id=<%=occurrence.id%>" target="_blank">
 
                                 <div style="font-size:13px;color:#4f2740"><%= occurrence.event.title %></div>
 
@@ -425,7 +443,7 @@
 
                     <div style="min-height:130px;padding:0;background-color:#f2f2f2">
 
-                        <a href="http://hpnstaging.herokuapp.com/picks?event_id=160589" target="_blank">
+                        <a href="http://www.halfpastnow.com/picks?event_id=160589" target="_blank">
 
                             
 
@@ -439,7 +457,7 @@
 
                         <div style="padding:2px">
 
-                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks?event_id=160589" target="_blank">
+                            <a style="text-decoration:none" href="http://www.halfpastnow.com/picks?event_id=160589" target="_blank">
 
                                 <div style="font-size:13px;color:#4f2740">Statesman Capitol 10,000</div>
 
@@ -465,7 +483,7 @@
 
                     <div style="min-height:130px;padding:0;background-color:#f2f2f2">
 
-                        <a href="http://hpnstaging.herokuapp.com/picks/find/95?event_id=133000" target="_blank">
+                        <a href="http://www.halfpastnow.com/picks/find/95?event_id=133000" target="_blank">
 
                             
 
@@ -479,7 +497,7 @@
 
                         <div style="padding:2px">
 
-                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/picks/find/95?event_id=133000" target="_blank">
+                            <a style="text-decoration:none" href="http://www.halfpastnow.com/picks/find/95?event_id=133000" target="_blank">
 
                                 <div style="font-size:13px;color:#4f2740">Texas Parkour Academy Youth Classes</div>
 
@@ -505,7 +523,7 @@
 
                     <div style="min-height:130px;padding:0;background-color:#f2f2f2">
 
-                        <a href="http://hpnstaging.herokuapp.com/search?event_id=32467" target="_blank">
+                        <a href="http://www.halfpastnow.com/search?event_id=32467" target="_blank">
 
                             
 
@@ -519,7 +537,7 @@
 
                         <div style="padding:2px">
 
-                            <a style="text-decoration:none" href="http://hpnstaging.herokuapp.com/search?event_id=32467" target="_blank">
+                            <a style="text-decoration:none" href="http://www.halfpastnow.com/search?event_id=32467" target="_blank">
 
                                 <div style="font-size:13px;color:#4f2740">Happy Hour: $1 off drinks</div>
 
@@ -547,7 +565,21 @@
 
     </div>
 
-
+    <table>    
+        <tbody><tr><td style="padding: 5px 0 0 4px;
+            font-size: 16px;
+            color: #595959;
+            font-weight: bold;">
+                        Download our iOS app at     
+            </td>
+            <td>
+            <a href="https://itunes.apple.com/us/app/halfpastnow/id589530107" target="_blank">
+                <img src="http://www.halfpastnow.com/assets/apple_stoer.png" alt="Download our iOS app" width="80">
+            </a>
+                
+        </td>
+    </tr></tbody></table>
+    
     <table>    
         <td style="">
             <a href="http://www.yahoo.com" target="_blank">
