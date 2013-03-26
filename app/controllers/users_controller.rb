@@ -273,10 +273,10 @@ class UsersController < ApplicationController
       @f=@facebook.fql_query(query)
       puts @f
       @fs = current_user.friends
-      @f.each{|p|
-         s = p["uid"].to_s
-         # @u = User.find_by_uid()
-         @fid = User.find_by_uid(s).id
+      uids = @f.collect{|p| p["uid"].to_s}
+      uids.each{|uid|
+         
+         @fid = User.find_by_uid(uid).id
          
          puts @fid
          unless @fs.include? @u
