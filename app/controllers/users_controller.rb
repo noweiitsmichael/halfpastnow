@@ -280,7 +280,7 @@ class UsersController < ApplicationController
       ufs.each{|uf|
          
         
-         unless @fs.include? @ufs
+         unless @fs.include? uf
           friendship= current_user.friendships.build(:friend_id => uf.id)
           friendship.save!   
          end
