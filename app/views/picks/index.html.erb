@@ -73,17 +73,57 @@
 		var markers = [];
 
 		function initialize() {
+			//console.log("initialize");
 			//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
 			geocoder = new google.maps.Geocoder();
+
 			var styles = [
-			    {
-			      stylers: [
-			        { saturation: 0 },
-			        { invert_lightness: false },
-			        { gamma: 1 },
-			        { lightness: 0 }
-			      ]
-			    }];
+							  {
+							    "featureType": "road.highway",
+							    "elementType": "geometry.stroke",
+							    "stylers": [
+							      { "color": "#804580" }
+							    ]
+							  },{
+							    "featureType": "road.highway",
+							    "elementType": "labels.text.stroke",
+							    "stylers": [
+							      { "color": "#d5b5d5" }
+							    ]
+							  },{
+							    "featureType": "road.arterial",
+							    "elementType": "labels.text.stroke",
+							    "stylers": [
+							      { "color": "#f1e6f3" }
+							    ]
+							  },{
+							    "elementType": "geometry.fill",
+							    "stylers": [
+							      { "gamma": 1.54 },
+							      { "lightness": 12 }
+							    ]
+							  },{
+							    "featureType": "road.arterial",
+							    "elementType": "geometry.fill",
+							    "stylers": [
+							      { "color": "#e0dae0" }
+							    ]
+							  },{
+							    "featureType": "road.arterial",
+							    "elementType": "geometry.stroke",
+							    "stylers": [
+							      { "color": "#b8abb8" }
+							    ]
+							  },{
+							    "featureType": "road.highway",
+							    "elementType": "geometry.fill",
+							    "stylers": [
+							      { "color": "#af96af" }
+							    ]
+							  },{
+							  }
+							];
+
 			var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
 			var myOptions = {
 				zoom: <%= @zoom %>,
@@ -92,13 +132,15 @@
 				disableDefaultUI: true,
 				zoomControl: true,
 				scrollwheel: false,
-				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 3 }
+				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 2 },
+    			backgroundColor: '#FFFFFF'
 			};
 
 			var styledMap = new google.maps.StyledMapType(styles,
     			{name: "Styled Map"});
 
 			map = new google.maps.Map($("#map")[0], myOptions);
+
 			map.mapTypes.set('map_style', styledMap);
   			map.setMapTypeId('map_style');
 
@@ -109,7 +151,10 @@
 				var longitude = parseFloat($(this).find(".longitude").html());
 				locations.push({lat: latitude, long: longitude});
 			});
+			
 			placeMarkers({points: locations});
+
+			google.maps.event.addListener(map, 'idle', boundsChanged);
 		}
 
 		function to_i(obj) {
@@ -141,7 +186,7 @@
 			$('.icon-check-empty').tooltip('disable');
 
 			$('.see-more-submit').click(function(){
-				console.log("See More Submit");
+				$('.see-more').append('<input type="hidden" id="list_date" name="list_date" value="' + $(this).siblings('.see-more-date').val() + '" />')
 			    $('#see-events-list').submit();
 			    return false;
 			});
@@ -198,7 +243,7 @@
 					<% end %>
 					<form id="see-events-list">
 						<li class="see-more">
-							<input type="hidden" id="list_date" name="list_date" value="<%= day %>" />
+							<input type="hidden" class="see-more-date" name="see-more-date" value="<%= day %>" />
 							<a href="" class="see-more-submit">see more </a>
 						</li>
 					</form>
@@ -310,7 +355,7 @@
 				<div class="main">
 					<div class="inner">
 						<ul class="events">
-							<% puts @result %>
+							<% puts params %>
 							<% occurrences = @result.select { |b| b if (b["start"].to_date == params[:list_date].to_date) }.collect {|o| Occurrence.find(o["id"])}.sort_by {|o| o.start} %>
 							<%= render :partial => "events/event_list", :locals => { :occurrences => occurrences, :list_date => params[:list_date]} %>
 						</ul>
