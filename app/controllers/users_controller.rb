@@ -279,6 +279,27 @@ class UsersController < ApplicationController
       render :json => { :success => false, :error => "Unable to follow list." }
     end
   end
+
+  def allevents
+    friends = current_user.friends
+    @bookmarks = []
+    friends.each{ |friend|
+      bookmark_list=BookmarkList.where(:user_id => friend.id, :main_bookmarks_list => true).first
+      bms = bookmark_list.all_bookmarked_events
+      if bms.size > 0
+         @bookmarks << bms
+      end
+     
+    }
+    
+    puts "Inside bookmarks"
+    puts @bookmarks.size
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @user }
+    end 
+  end
+
   def friends
     puts "Check friends"
     unless current_user.uid.nil?
