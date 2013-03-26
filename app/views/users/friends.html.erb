@@ -174,15 +174,15 @@
 
     <div class="streams selected">
       <h2>My Friends</h2>
-      	<% current_user.friends.each do |user| %>
-	        <div class="stream-friend" stream-id="<%= user.id %>">
+      	<% @myfriends.each do |afriend| %>
+	        <div class="stream-friend" stream-id="<%= afriend.id %>">
 		        <div  class="image-friend">
 
-		        	<img border="0" src="https://graph.facebook.com/<%=user.uid%>/picture?type=large" alt="<%=user.firstname%>" width="50" height="50">
+		        	<img border="0" src="https://graph.facebook.com/<%=afriend.uid%>/picture?type=large" alt="<%=afriend.firstname%>" width="50" height="50">
 		        </div>
 		        <div class="stream-title">
 		       	    <span class="uber-title">
-		              <span class="title-friend"><%= user.firstname %> <%= user.lastname %></span>
+		              <span class="title-friend"><%= afriend.firstname %> <%= afriend.lastname %></span>
 		          	</span>
 		        </div>
 	      	</div>
