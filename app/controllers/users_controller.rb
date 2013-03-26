@@ -265,7 +265,22 @@ class UsersController < ApplicationController
     end
   end
   def friends
-
+    puts "Check friends"
+    unless current_user.uid.nil?
+      puts "FB User !!!!!"
+      query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
+      @facebook ||= Koala::Facebook::API.new(current_user.fb_access_token)
+      @f=@facebook.fql_query(query)
+      @fs = current_user.friends
+      @f.each{|p|
+         u1=User.find_by_uid(p["uid"])
+         unless @fs.include? u1
+          friendship= current_user.friendships.build(:friend_id => u1.id)
+          friendship.save!   
+         end
+         
+      }
+    end
     respond_to do |format|
       format.html { render action: "friends" }
       

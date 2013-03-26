@@ -1,19 +1,196 @@
 <% content_for :title do %>Here are My Friends<% end %>
+<% content_for :head do %>
+
+<%= stylesheet_link_tag "devise.css" %>
+<% end %>
+
+
+<script type="text/javascript">
+    var jcrop_api;
+
+    $(function() {
+      $('#profile-nav li').click(function() {
+      	console.log("Click at : "+$(this).index());
+        $('#profile-nav li').removeClass('selected');
+        $(this).addClass('selected');
+        $('#profile-menu > div').removeClass('selected');
+        $('#profile-menu > div:nth-child(' + ($(this).index() + 1) + ')').addClass('selected');
+      });
+
+      $('.profile .edit_user').ajaxForm({
+        dataType: 'json',
+        success: function() { alert('weeee'); }
+      });
+
+      $('.update-picture .edit_user').ajaxForm({
+        dataType: 'json',
+        beforeSubmit: function() {
+          $('.update-picture .form-indicator').hide();
+          $('.update-picture .form-loading').show();
+        },
+        success: function(user) {
+          $('.update-picture .form-indicator').hide();
+          $('.update-picture .form-success').show();
+          console.log(user.profilepic.url);
+          $('#cropbox').attr('src',user.profilepic.large.url);
+          $('#preview').attr('src',user.profilepic.large.url);
+          $('.update-picture').hide();
+          $('.crop-picture').show();
+          $('#cropbox').Jcrop({
+            aspectRatio: 1,
+            onSelect: updateCrop,
+            onChange: updateCrop
+          },function(){
+            jcrop_api = this;
+          });
+        }
+      });
+
+      $('.crop-picture .edit_user').ajaxForm({
+        dataType: 'json',
+        beforeSubmit: function() {
+          $('.crop-picture .form-indicator').hide();
+          $('.crop-picture .form-loading').show();
+        },
+        success: function(user) {
+          $('.crop-picture .form-indicator').hide();
+          $('.crop-picture .form-success').show();
+          $('#existing-pic').attr('src',user.profilepic.thumb.url);
+          $('.crop-picture').hide();
+          $('.update-picture').show();
+          jcrop_api.destroy();
+        }
+      });
+
+      $('#edit_settings').ajaxForm({
+        beforeSubmit: function() {
+          $('#edit_settings .form-indicator').hide();
+          $('#edit_settings .form-loading').show();
+        },
+        success: function() {
+          $('#edit_settings .form-indicator').hide();
+          $('#edit_settings .form-success').show();
+        }
+      });
+
+      $('#edit_password').ajaxForm({
+        beforeSubmit: function() {
+          $('#edit_password .form-indicator').hide();
+          $('#edit_password .form-loading').show();
+        },
+        success: function(data) {
+          console.log(data);
+          $('#edit_password .form-indicator').hide();
+          $('#edit_password .form-success').show();
+        }
+      });
+
+    });
+
+    function updateCrop(coords) {
+        $('#user_crop_x').val(coords.x);
+        $('#user_crop_y').val(coords.y);
+        $('#user_crop_w').val(coords.w);
+        $('#user_crop_h').val(coords.h);
+        $('#preview').css({
+          width: Math.round(150 / coords.w * $('#cropbox').width()) + 'px',
+          height: Math.round(150 / coords.h * $('#cropbox').height()) + 'px',
+          marginLeft: '-' + Math.round(150 / coords.w * coords.x) + 'px',
+          marginTop: '-' + Math.round(150 / coords.h * coords.y) + 'px'
+        });
+      }
+
+      $(function() {
+
+        $('.stream').on('click', ' .action.rename', function() {
+          var id = $(this).attr('stream-id');
+          var name = $(this).attr('stream-name');
+          $(this).parent('.uber-title').html("<input type='text' value='" + name + "' stream-id='" + id + "'/><button class='action save' stream-id='" + id + "'>save</button><button class='action cancel' stream-id='" + id + "' stream-name='" + name + "'>cancel</button>");
+          return false;
+        });
+
+        $('.stream').on('click', ' .action.save', function() {
+          var that = $(this);
+          var stream_name = $(this).siblings('input').val();
+          var stream_id = $(this).attr("stream-id");
+          $.get('/channels/rename/' + stream_id, { stream: { name: stream_name } },function(data) {
+            console.log(data);
+            that.parent('.uber-title').html("<span class='title'>" + stream_name + "</span><a href='' stream-id='" + stream_id + "' stream-name='" + stream_name + "' class='action rename'><span class='icon icon-edit'></span>rename</a>");
+          });
+        });
+
+        $('.stream').on('click', ' .action.cancel', function() {
+          var stream_name = $(this).attr("stream-name");
+          var stream_id = $(this).attr("stream-id");
+          $(this).parent('.uber-title').html("<span class='title'>" + stream_name + "</span><a href='' stream-id='" + stream_id + "' stream-name='" + stream_name + "' class='action rename'><span class='icon icon-edit'></span>rename</a>");
+        });
+
+        $('.stream').on('click', ' .action.delete', function() {
+          if(confirm("Are you sure you want to delete '" + $(this).attr('stream-name') + "'?")) {
+            var stream_id = $(this).attr("stream-id");
+            $.get('/channels/destroy/' + stream_id, function(data) {
+              console.log(data);
+              $('.stream[stream-id=' + stream_id + ']').remove();
+            });
+          }
+          return false;
+        });
+      });
+
+    function check(field){
+            var str ="";
+            for (i=0;i<field.length;i++)
+            if (field[i].checked==true) {
+              if (str==="") {
+                str = field[i].value;
+              }
+              else{
+                str = str +"," +field[i].value;  
+              };
+              
+            }
+            
+            console.log("Checkebox : "+str);
+            $.get('/channels/updateReg?id=<%=current_user.ref%>'+'&included_tags='+str, function(data) {
+              
+            });
+
+
+            }
+  </script>
+
 <h2>My Friends</h2>
 <div id="profile-sidebar">
-    <%= image_tag resource.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic" %>
-    <!-- <h2><%= current_user.firstname %> <%= current_user.lastname %> </h2> -->
+   
     <ul id="profile-nav">
-      <li class="streams selected">Saved Searches</li>
-      <!-- <li><a style="text-decoration:none; color:#333" href="/users/rsvp/<%=current_user.id%>">My RSVPs</a></li> -->
-      <% if false %><!-- <li class="bookmarks">Bookmarks</li> --><% end %>
-      <li class="picture">Picture</li>
-      <li class="preferences">My preferences</li>
-      <li class="settings">Settings</li>
-      <li class="password">Password</li>
+      <li class="streams selected">My Friends</li>
+     
+      <li class="preferences">My Friends' bookmarks</li>
+      
     </ul>
-    <%= link_to('Logout', destroy_user_session_path, :method => 'delete', :class => 'logout') %>
-  </div>
+   
+</div>
+<div id="profile-menu">
+
+    <div class="streams selected">
+      <h2>My Friends</h2>
+      	<% current_user.friends.each do |user| %>
+	        <div class="stream-friend" stream-id="<%= user.id %>">
+		        <div  class="image-friend">
+
+		        	<img border="0" src="http://graph.facebook.com/<%=user.uid%>" alt="<%=user.firstname%>" width="50" height="50">
+		        </div>
+		        <div class="stream-title">
+		       	    <span class="uber-title">
+		              <span class="title-friend"><%= user.firstname %> <%= user.lastname %></span>
+		          	</span>
+		        </div>
+	      	</div>
+	      	</br>
+      	<% end %>
+  	</div>
+</div>
+
 
 <% content_for :content do %>
 

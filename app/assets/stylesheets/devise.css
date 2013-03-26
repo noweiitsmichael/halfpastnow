@@ -24,6 +24,10 @@ a.logout { text-decoration:none; text-transform:lowercase; color:black; font-wei
 .stream .stream-details > div { float:left; margin-right:15px; }
 .stream .stream-details > div:after { content: "/"; margin-left:15px; }
 .stream .stream-details > div:last-child:after { content: none; margin-left:0; }
+.stream-friend { margin-bottom: 42px; border-top: 1px dotted; padding-top: 12px;}
+.title-friend { font-size: 18px; font-weight: 700; margin-right:9px; float: left; margin-left: 10px;
+margin-top: 10px;}
+.image-friend {float: left;}
 html, body
 {
   margin: 0;
