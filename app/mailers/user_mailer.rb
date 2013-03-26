@@ -138,7 +138,7 @@ class UserMailer < ActionMailer::Base
       domain: "halfpastnow.com",
       authentication: "plain",
       enable_starttls_auto: true,
-      user_name: "khoa@halfpastnow.com",
+      user_name: "weekly@halfpastnow.com",
       password: "chimeralabs"
     }
 
