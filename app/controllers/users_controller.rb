@@ -273,9 +273,10 @@ class UsersController < ApplicationController
       @f=@facebook.fql_query(query)
       @fs = current_user.friends
       @f.each{|p|
-         u1=User.find_by_uid(p["uid"].to_s)
-         unless @fs.include? u1
-          friendship= current_user.friendships.build(:friend_id => u1.id)
+         @u1=User.find_by_uid(p["uid"].to_s)
+         puts @u1
+         unless @fs.include? @u1
+          friendship= current_user.friendships.build(:friend_id => @u1.id)
           friendship.save!   
          end
          
