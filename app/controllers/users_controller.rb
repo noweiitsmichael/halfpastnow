@@ -105,6 +105,21 @@ class UsersController < ApplicationController
     end
   end
 
+  def bookmark
+    if params[:id] == nil
+      params[:id] = current_user.id
+    end
+    @user = User.find(params[:id])
+    @bookmark_list=BookmarkList.where(:user_id => @user.id, :main_bookmarks_list => true).first
+    @bookmarks = @bookmark_list.all_bookmarked_events
+    
+    puts @bookmarks
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @user }
+    end
+  end
+
   def itemslist
     @user = User.find(params[:user_id])
     @itemsList = []

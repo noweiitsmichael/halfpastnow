@@ -176,15 +176,17 @@
       <h2>My Friends</h2>
       	<% @myfriends.each do |afriend| %>
 	        <div class="stream-friend" stream-id="<%= afriend.id %>">
-		        <div  class="image-friend">
+	        	<a href="/users/bookmark/<%=afriend.id%>">
+			        <div  class="image-friend">
 
-		        	<img border="0" src="https://graph.facebook.com/<%=afriend.uid%>/picture?type=large" alt="<%=afriend.firstname%>" width="50" height="50">
-		        </div>
-		        <div class="stream-title">
-		       	    <span class="uber-title">
-		              <span class="title-friend"><%= afriend.firstname %> <%= afriend.lastname %></span>
-		          	</span>
-		        </div>
+			        	<img border="0" src="https://graph.facebook.com/<%=afriend.uid%>/picture?type=large" alt="<%=afriend.firstname%>" width="50" height="50">
+			        </div>
+			        <div class="stream-title">
+			       	    <span class="uber-title">
+			              <span class="title-friend"><%= afriend.firstname %> <%= afriend.lastname %></span>
+			          	</span>
+			        </div>
+			    </a>
 	      	</div>
 	      	</br>
       	<% end %>
