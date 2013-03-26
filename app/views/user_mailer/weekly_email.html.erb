@@ -169,7 +169,10 @@
 
 
 
-
+<% tids=Channel.find(@user.ref).included_tags.split(",") %>
+<% tnames=Tag.find(tids).collect{|t| t.name} %>
+<% names=occurrence.event.tags.collect{|t| t.name} %>
+<% a= tnames&names %>
 
 <table width="600" height="125" cellpadding="0" border="0" style="color:#595959;font-size:12px;text-align:left;border:0" cellspacing="0">
 
@@ -188,14 +191,14 @@
                 <div height="0" style="font-size:1px">&nbsp;</div>
                 <div >
                     <i>
-                        <% if occurrence.event.tags.count > 0 %>
-                            <% occurrence.event.tags.each do |tag| %>
-                                <% if tag.parent_tag_id.nil? %>
-                                    <span style="font-size:16px;line-height:7px;color: #4f2740;"><%= tag.name %> </span>
-                                <% end %>
-                                
-                            <% end %>
+                        
+                        <% a.each do |tag| %>
+                            
+                                <span style="font-size:16px;line-height:7px;color: #4f2740;"><%= a %> </span>
+                            
+                            
                         <% end %>
+                        
                        
                     </i>
                 </div>
@@ -221,10 +224,7 @@
     </tbody>
 
 </table>
-    <% tids=Channel.find(@user.ref).included_tags.split(",") %>
-    <% tnames=Tag.find(tids).collect{|t| t.name} %>
-    <% names=occurrence.event.tags.collect{|t| t.name} %>
-    <% a= tnames&names %>
+    
     <div>
         <% a.each do |t|%>
        
