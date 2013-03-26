@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: "khoa@halfpastnow.com"
+  # default from: "khoa@halfpastnow.com"
 
   def welcome_email(user)
   	puts "sending email..."
@@ -14,7 +14,7 @@ class UserMailer < ActionMailer::Base
     }
     @user = user
     @url  = "http://halfpastnow.com/login"
-    mail(:to => user.email, :subject => "Welcome to halfpastnow!", :from => "support@halfpastnow.com")
+    mail(:to => @user.email, :subject => "Welcome to halfpastnow!", :from => "support@halfpastnow.com")
   end
   def weekly_email(user)
   	puts "sending email..."
@@ -143,7 +143,7 @@ class UserMailer < ActionMailer::Base
     }
 
   #   mail(:to => user.email, :subject => "This week in halfpastnow!" , user_name: "support@halfpastnow.com", password: "chimeralabs", address: "http://radiant-flower-7307.herokuapp.com/")
-    mail(:to => user.email, :subject => "This week in halfpastnow!" )
+    mail(:to => user.email, :subject => "This week in halfpastnow!",:from => "weekly@halfpastnow.com" )
   
    end
   
