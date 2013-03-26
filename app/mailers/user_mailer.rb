@@ -3,6 +3,15 @@ class UserMailer < ActionMailer::Base
 
   def welcome_email(user)
   	puts "sending email..."
+    ActionMailer::Base.smtp_settings = {
+      address: "smtp.gmail.com",
+      port: 587,
+      domain: "halfpastnow.com",
+      authentication: "plain",
+      enable_starttls_auto: true,
+      user_name: "support@halfpastnow.com",
+      password: "chimeralabs"
+    }
     @user = user
     @url  = "http://halfpastnow.com/login"
     mail(:to => user.email, :subject => "Welcome to halfpastnow!", :from => "support@halfpastnow.com")
@@ -123,15 +132,15 @@ class UserMailer < ActionMailer::Base
     @tpoccurrences = Occurrence.includes(:event => :tags).find(@tpids, :order => order_by)
     @tpoccurrences = @tpoccurrences[0,3]
 
-  ActionMailer::Base.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: 587,
-    domain: "halfpastnow.com",
-    authentication: "plain",
-    enable_starttls_auto: true,
-    user_name: "khoa@halfpastnow.com",
-    password: "chimeralabs"
-  }
+    ActionMailer::Base.smtp_settings = {
+      address: "smtp.gmail.com",
+      port: 587,
+      domain: "halfpastnow.com",
+      authentication: "plain",
+      enable_starttls_auto: true,
+      user_name: "khoa@halfpastnow.com",
+      password: "chimeralabs"
+    }
 
   #   mail(:to => user.email, :subject => "This week in halfpastnow!" , user_name: "support@halfpastnow.com", password: "chimeralabs", address: "http://radiant-flower-7307.herokuapp.com/")
     mail(:to => user.email, :subject => "This week in halfpastnow!" )
