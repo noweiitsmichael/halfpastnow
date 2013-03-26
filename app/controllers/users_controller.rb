@@ -274,6 +274,7 @@ class UsersController < ApplicationController
       puts @f
       @fs = current_user.friends
       uids = @f.collect{|p| p["uid"].to_s}
+      puts uids
       uids.each{|uid|
          
          @fid = User.find_by_uid(uid).id
