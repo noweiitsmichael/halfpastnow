@@ -126,7 +126,7 @@ class UserMailer < ActionMailer::Base
         end
       end
     end
-    @tpids =  @result.collect { |e| e["occurrence_id"].to_i }.uniq
+    @tpids =  @result.collect { |e| e["id"].to_i }.uniq
     puts "Is there a Z"
     puts @tpids
     @tpoccurrences = Occurrence.includes(:event => :tags).find(@tpids, :order => order_by)
