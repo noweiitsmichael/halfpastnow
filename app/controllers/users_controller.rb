@@ -275,19 +275,17 @@ class UsersController < ApplicationController
       @fs = current_user.friends
       uids = @f.collect{|p| p["uid"].to_s}
       ufs = User.find_all_by_uid(uids)
-      puts ufs
+      # puts ufs
       # puts uids
-      # uids.each{|uid|
+      ufs.each{|uf|
          
-      #    @fid = User.find_by_uid(uid).id
+        
+         unless @fs.include? @ufs
+          friendship= current_user.friendships.build(:friend_id => uf.id)
+          friendship.save!   
+         end
          
-      #    puts @fid
-      #    unless @fs.include? @u
-      #     friendship= current_user.friendships.build(:friend_id => @fid)
-      #     friendship.save!   
-      #    end
-         
-      # }
+      }
     end
     respond_to do |format|
       format.html { render action: "friends" }
