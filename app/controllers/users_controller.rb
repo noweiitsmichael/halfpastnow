@@ -271,6 +271,7 @@ class UsersController < ApplicationController
       query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
       @facebook ||= Koala::Facebook::API.new(current_user.fb_access_token)
       @f=@facebook.fql_query(query)
+      puts @f
       @fs = current_user.friends
       @f.each{|p|
          s = p["uid"].to_s
