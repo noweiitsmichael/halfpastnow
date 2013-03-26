@@ -2757,6 +2757,19 @@ text-decoration: none;
   text-align:center;
 }
 
+.filter.nice-button {
+  display: inline-block;
+  border:1px solid #522752;
+  font-style:normal;
+  font-size:12px;
+  background-color: #6F376F;
+  color: white;
+  padding: 2px 6px;
+  margin: 5px 0 0 0;
+  text-decoration: none;
+  text-align:center;
+}
+
 .remove-from-picks.nice-button {
   display: inline-block;
   border:1px solid #522752;
