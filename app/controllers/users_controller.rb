@@ -276,8 +276,8 @@ class UsersController < ApplicationController
       @f.each{|p|
          s = p["uid"].to_s
          # @u = User.find_by_uid()
-         @u = User.find_by_uid(s)
-         @fid = @u.id
+         @fid = User.find_by_uid(s).id
+         
          puts @fid
          unless @fs.include? @u
           friendship= current_user.friendships.build(:friend_id => @fid)
