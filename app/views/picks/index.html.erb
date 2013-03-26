@@ -283,7 +283,7 @@
 				    <% end %>
 				<% end %>
  
-			    <%= submit_tag("Filter") %>
+			    <%= submit_tag("Filter", :class => "filter nice-button") %>
 			</form>
 			<% end %>
 		</div>
@@ -311,7 +311,7 @@
 					<div class="inner">
 						<ul class="events">
 							<% puts @result %>
-							<% occurrences = @result.select { |b| b if (b["start"].to_date == params[:list_date].to_date) }.collect {|o| Occurrence.find(o["id"])} %>
+							<% occurrences = @result.select { |b| b if (b["start"].to_date == params[:list_date].to_date) }.collect {|o| Occurrence.find(o["id"])}.sort_by {|o| o.start} %>
 							<%= render :partial => "events/event_list", :locals => { :occurrences => occurrences, :list_date => params[:list_date]} %>
 						</ul>
 						<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />

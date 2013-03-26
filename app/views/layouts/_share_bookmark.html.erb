@@ -1,8 +1,8 @@
 <script type="text/javascript">
 	var id = "<%= id  %>";
 	var type = "<%= type %>";
-	var root_url = "http%3A%2F%2Fhalfpastnow.com";
-	var link = root_url + "%3F" + type + "_id%3D" + id;
+	var root_url = "http://www.halfpastnow.com/";
+	var link = root_url + "?" + type + "_id=" + id;
     var app_id = "475386955806720";
     var redirect = "http://www.halfpastnow.com";
 	var bookmark_id = "<%= bookmarkId.to_s %>";
@@ -145,7 +145,7 @@
 			<% if type == "event" %>
 
 			var title = "<%= event.title  %>";
-		    var summary = "<%= (event.description.nil?) ? "" : truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"').gsub(/\n+/, '. ')  %>";
+		    var summary = "<%= (event.description.nil?) ? "" : truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"').gsub(/\n+/, '. ').gsub(/\r+/, '')  %>";
 		    var pic = "<%= event.cover_image_url  %>";
     		var venue = "<%= event.venue.name  %>";
 			var url = "https://www.facebook.com/dialog/feed?%20app_id=" + app_id + "&%20link=" + link + "&%20picture=" + pic + "&%20name=" + title + "&%20caption=" + venue + "&%20description=" + summary + "&%20redirect_uri=" + redirect;
@@ -258,15 +258,12 @@
 			window.focus();
       }
 </script>
-<input type="hidden" id="event" value="<%= event %>" />
-<input type="hidden" id="id" value ="<%= occurrence.id %>"/>
-
-
-
 
 
 <div class="bookmark-share">
 	<% if type == 'event' %>
+		<input type="hidden" id="event" value="<%= event %>" />
+		<input type="hidden" id="id" value ="<%= occurrence.id %>"/>
 		<% if !event.ticket_url.blank? %>
 		<a href="<%= event.ticket_url %>" target="_blank" class="nice-button attending-button <%= current_user ? "attending" : "" %> <%= attendingId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
 			<%= attendingId.nil? ? "Tickets" : "Already Going" %>
@@ -288,7 +285,7 @@
 	    <span class="icon icon-calendar cal"></span>
 	    <span class="_url">http://www.halfpastnow.com/?event_id=<%=id%></span>
 	    <span class="_start"><%= (occurrence.start.nil?) ? "" : occurrence.start.strftime('%m-%d-%Y %H:%M:%S') %></span>
-	    <span class="_end"><%= (occurrence.end.nil?) ? "" : occurrence.end.strftime('%m-%d-%Y %H:%M:%S') %></span>
+	    <span class="_end"><%= (occurrence.end.nil?) ? (occurrence.start.nil?) ? "" : (occurrence.start + 2.hours).strftime('%m-%d-%Y %H:%M:%S') : occurrence.end.strftime('%m-%d-%Y %H:%M:%S') %></span>
 	    <span class="_zonecode">11</span>
 	    <span class="_summary"><%= event.title %></span>
 	    <span class="_description"><%= (event.description.nil?) ? '' : truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"') %></span>
