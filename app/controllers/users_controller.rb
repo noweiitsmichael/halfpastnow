@@ -286,14 +286,12 @@ class UsersController < ApplicationController
     friends.each{ |friend|
       bookmark_list=BookmarkList.where(:user_id => friend.id, :main_bookmarks_list => true).first
       bms = bookmark_list.all_bookmarked_events
-      if bms.size > 0
-         @bookmarks << bms
-      end
+      @bookmarks << bms.flatten
      
     }
-    
+    @bookmarks = @bookmarks.flatten
     puts "Inside bookmarks"
-    puts @bookmarks.size
+    puts @bookmarks
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }
