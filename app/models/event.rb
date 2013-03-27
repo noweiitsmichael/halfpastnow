@@ -84,12 +84,8 @@ class Event < ActiveRecord::Base
     ## Cache Query
       self_occurrences = Rails.cache.read("self_occurrences_#{self.id}")
       if (self_occurrences == nil)
-        puts "**************** No cache found for self_occurrences_#{self.id} ****************"
         self_occurrences = self.occurrences
         Rails.cache.write("self_occurrences_#{self.id}", self_occurrences)
-        puts "**************** Cache Set for self_occurrences_#{self.id} ****************"
-      else
-        puts "**************** Cache FOUND for self_occurrences_#{self.id} ****************"
       end
       ## original query:
       # self_occurrences = self.occurrences
