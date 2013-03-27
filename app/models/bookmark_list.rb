@@ -51,16 +51,8 @@ class BookmarkList < ActiveRecord::Base
 				break
 			end
 			
-		      ## Cache Query
-		      occurrence = Rails.cache.read("bookmark_#{bookmark.id}_bookmarked_event")
-		      if (occurrence == nil)
-		        occurrence = bookmark.bookmarked_event
-		        Rails.cache.write("bookmark_#{bookmark.id}_bookmarked_event", occurrence)
-		      end
-		      ## original query:
-		      # occurrence = bookmark.bookmarked_event
-		      ## End Cache Query
-		      
+		    occurrence = bookmark.bookmarked_event
+
 			unless(occurrence.nil?)
 				occurrences.push(occurrence)
 			end
