@@ -171,14 +171,17 @@ namespace :m do
 
 	desc "bumping up bookmarked events"
 	task :bookmark_bump => :environment do
-		Bookmark.where(:featured => true).each do |b|
-			unless (b.id == 99) || (b.id == 101)
-				if b.bookmarked_type == "Occurrence"
-					unless Occurrence.where(:id => b.bookmarked_id).empty?
-						e = Occurrence.find(b.bookmarked_id).event
-						if e.clicks < 200
-							e.clicks = e.clicks + 100
-							e.save!
+		BookmarkList.where(:featured => true).each do |bl|
+			unless (bl.id == 99) || (bl.id == 101)
+				puts "Bumping all events bookmarked under #{bl.name}"
+				bl.bookmarks.each do |b|
+					if b.bookmarked_type == "Occurrence"
+						unless Occurrence.where(:id => b.bookmarked_id).empty?
+							e = Occurrence.find(b.bookmarked_id).event
+							if e.clicks < 300
+								e.clicks = e.clicks + 200
+								e.save!
+							end
 						end
 					end
 				end
@@ -207,8 +210,10 @@ namespace :m do
 			v = Venue.find(oneVenue[1])
 			puts "#{oneVenue[0]}, #{oneVenue[1]}"
 			v.events.each do |e|
-				e.clicks = e.clicks + 200
-				e.save!
+				if e.clicks < 300
+					e.clicks = e.clicks + 200
+					e.save!
+				end
 			end
 		end
 	end

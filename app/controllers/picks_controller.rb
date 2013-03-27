@@ -168,6 +168,8 @@ helper :content
 		# puts @parentTags
 		# puts @parentTags.collect{ |p| p.name}
 		tag_id = params[:id]
+		puts "---------------tag_id-----------"
+		puts tag_id.to_s.empty?
 		if tag_id.to_s.empty?
 
 			## Cache Query
