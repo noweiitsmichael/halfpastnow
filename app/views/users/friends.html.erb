@@ -183,9 +183,14 @@
 			        <div class="stream-title">
 			       	    <span class="uber-title">
 			              <span class="title-friend"><%= afriend.firstname %> <%= afriend.lastname %></span>
+                    <span class="stream-events"><%=(afriend.bookmarked_events.size >0) ? ((afriend.bookmarked_events.size < 2) ? "1 bookmarked event" : afriend.bookmarked_events.size.to_s + " bookmarked events" ): "" %></span>
 			          	</span>
+                  
 			        </div>
+              
 			    </a>
+          <br>
+          
 	      	</div>
 	      	</br>
       	<% end %>
