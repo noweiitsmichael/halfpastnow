@@ -45,13 +45,22 @@ class BookmarkList < ActiveRecord::Base
 	
 	def bookmarked_events(num)
 		occurrences = []
-		
+
 		self.bookmarks.each do |bookmark|
 			if(num && occurrences.size == num)
 				break
 			end
 			
-			occurrence = bookmark.bookmarked_event
+		      ## Cache Query
+		      occurrence = Rails.cache.read("bookmark_#{bookmark.id}_bookmarked_event")
+		      if (occurrence == nil)
+		        occurrence = bookmark.bookmarked_event
+		        Rails.cache.write("bookmark_#{bookmark.id}_bookmarked_event", occurrence)
+		      end
+		      ## original query:
+		      # occurrence = bookmark.bookmarked_event
+		      ## End Cache Query
+		      
 			unless(occurrence.nil?)
 				occurrences.push(occurrence)
 			end

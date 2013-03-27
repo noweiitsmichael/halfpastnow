@@ -9,6 +9,9 @@ class ApplicationController < ActionController::Base
   
   # # Mobile stuff 
   before_filter :prepare_for_mobile , :common_content
+
+  #Preload models for caching
+  before_filter  :preload_models
   
   # private
   
@@ -59,6 +62,16 @@ class ApplicationController < ActionController::Base
     else
       "application"
     end
+  end
+
+  def preload_models()
+    BookmarkList
+    Occurrence
+    Bookmark
+    Event
+    Venue
+    User
+    Act
   end
   
 

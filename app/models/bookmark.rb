@@ -8,7 +8,18 @@ class Bookmark < ActiveRecord::Base
 		if !Occurrence.exists?(self.bookmarked_id)
 			return nil
 		else
-			o = Occurrence.find(self.bookmarked_id)
+
+			## Cache Query
+		    o = Rails.cache.read("occurrence_find_#{self.bookmarked_id}")
+		    if (o == nil)
+		      o = Occurrence.find(self.bookmarked_id)
+		      Rails.cache.write("occurrence_find_#{self.bookmarked_id}", o)
+		    end
+		    ## original query:
+			# o = Occurrence.find(self.bookmarked_id)
+	        ## End Cache Query
+
+			
 			if o.start >= Date.today.to_datetime && !o.deleted
 				return o
 			else

@@ -80,7 +80,22 @@ class Event < ActiveRecord::Base
     #  # wtf is this
     occurrenceTime = DateTime.new(3000,1,1)
     occurrence = nil
-    self.occurrences.each do |occ|
+
+    ## Cache Query
+      self_occurrences = Rails.cache.read("self_occurrences_#{self.id}")
+      if (self_occurrences == nil)
+        puts "**************** No cache found for self_occurrences_#{self.id} ****************"
+        self_occurrences = self.occurrences
+        Rails.cache.write("self_occurrences_#{self.id}", self_occurrences)
+        puts "**************** Cache Set for self_occurrences_#{self.id} ****************"
+      else
+        puts "**************** Cache FOUND for self_occurrences_#{self.id} ****************"
+      end
+      ## original query:
+      # self_occurrences = self.occurrences
+      ## End Cache Query
+
+    self_occurrences.each do |occ|
       if occ.start && (occ.start > Time.now) && (occ.start < occurrenceTime)
         occurrence = occ
         occurrenceTime = occ.start
