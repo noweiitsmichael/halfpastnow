@@ -29,8 +29,11 @@
 			<% puts "occurrence"%>
 			<% puts occurrence.id %>
 			<%	listidsss = occurrence.event_bookmarks.collect{|b| b.bookmark_list_id if (b.bookmark_list && (not b.bookmark_list.featured))} %>
+			<% puts listidsss %>
 			<%  listidss = listidsss.reject{ |c| c.nil?} %>
+			<% puts listidss %>
 			<%  listids = listidss.flatten %>
+			<% puts listids %>
 			<% if listids.size > 0 %>
 				<%	eventUserids = BookmarkList.find(listids).select{|l| l.featured == false}.collect{|l| l.user_id} %>
 				<%	ids = friendids & eventUserids %>
