@@ -312,11 +312,14 @@ class UsersController < ApplicationController
       # puts ufs
       # puts uids
       ufs = uids - @fs
+      puts "The set: "
       puts ufs
       if ufs.size >0
         ufs.each{|uf|
+          puts "An uid "
           puts uf
           u = User.find_by_uid(uf.to_s)
+          puts "User"
           puts u
           friendship= current_user.friendships.build(:friend_id => u.id)
           friendship.save!   
