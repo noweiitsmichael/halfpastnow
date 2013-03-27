@@ -1,0 +1,28 @@
+
+<% content_for :title do %>Your friends' bookmarks<% end %>
+<% content_for :head do %>
+
+<%= stylesheet_link_tag "rsvp.css" %>
+<% end %>
+
+<% content_for :body do %>
+<div id="content" class="padded" style="margin-top:60px">
+<h2 style="color:#3D033D; font-style:italic;">Your friends' Upcoming Events</h2>
+	<% puts "bookmarks -----" %>
+	<% puts @bookmarks %> 
+	<% if (@bookmarks.count > 0) %>
+		<div class="main" style="margin-left:0px;">
+			<div class="inner">
+				<ul class="events" class="padded">
+				<% @bookmarks.sort_by { |d| d.start}.each_with_index do |occurrence, index| %>
+					<%= render :partial => "events/event_element_sxsw", :locals => { :occurrence => occurrence, :index => index, :bookmarkList => nil } %>
+					<% end %>
+				</ul>
+			</div>
+		</div>
+	<% end %>
+	
+</div>
+
+
+<% end %>

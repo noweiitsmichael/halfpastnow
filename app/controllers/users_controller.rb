@@ -105,6 +105,21 @@ class UsersController < ApplicationController
     end
   end
 
+  def bookmark
+    if params[:id] == nil
+      params[:id] = current_user.id
+    end
+    @user = User.find(params[:id])
+    @bookmark_list=BookmarkList.where(:user_id => @user.id, :main_bookmarks_list => true).first
+    @bookmarks = @bookmark_list.all_bookmarked_events
+    
+    puts @bookmarks
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @user }
+    end
+  end
+
   def itemslist
     @user = User.find(params[:user_id])
     @itemsList = []
@@ -264,8 +279,49 @@ class UsersController < ApplicationController
       render :json => { :success => false, :error => "Unable to follow list." }
     end
   end
-  def friends
 
+  def allevents
+    friends = current_user.friends
+    @bookmarks = []
+    friends.each{ |friend|
+      bookmark_list=BookmarkList.where(:user_id => friend.id, :main_bookmarks_list => true).first
+      bms = bookmark_list.all_bookmarked_events
+      @bookmarks << bms.flatten
+     
+    }
+    @bookmarks = @bookmarks.flatten
+    puts "Inside bookmarks"
+    puts @bookmarks
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @user }
+    end 
+  end
+
+  def friends
+    puts "Check friends"
+    unless current_user.uid.nil?
+      puts "FB User !!!!!"
+      query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
+      @facebook ||= Koala::Facebook::API.new(current_user.fb_access_token)
+      @f=@facebook.fql_query(query)
+      puts @f
+      @fs = current_user.friends
+      uids = @f.collect{|p| p["uid"].to_s}
+      ufs = User.find_all_by_uid(uids)
+      # puts ufs
+      # puts uids
+      ufs.each{|uf|
+         
+        
+         unless @fs.include? uf
+          friendship= current_user.friendships.build(:friend_id => uf.id)
+          friendship.save!   
+         end
+         
+      }
+    end
+    @myfriends = current_user.friends
     respond_to do |format|
       format.html { render action: "friends" }
       
