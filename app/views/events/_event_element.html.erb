@@ -29,9 +29,12 @@
 			<%	listids = occurrence.event_bookmarks.collect{|b| b.bookmark_list_id} %>
 			<%  puts listids %>
 			<%  listids = listids.reject! { |c| c.nil? } %>
-			<%	eventUserids = BookmarkList.find(listids).select{|l| l.featured == false}.collect{|l| l.user_id} %>
-			<%	ids = friendids & eventUserids %>
-			<%  @users = User.find(ids) %>
+			<% if listids.size > 0 %>
+				<%	eventUserids = BookmarkList.find(listids).select{|l| l.featured == false}.collect{|l| l.user_id} %>
+				<%	ids = friendids & eventUserids %>
+				<%  @users = User.find(ids) %>
+			<% end %>
+			
 			
 		<% end %>
 		<% picklists = occurrence.event_bookmarks.collect { |b| b.bookmark_list if (b.bookmark_list && b.bookmark_list.featured) }.compact %>
