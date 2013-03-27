@@ -56,9 +56,9 @@
 
 					<% @users.each_with_index do |user| %>
 						<% puts "Frined name "%>
-						<% puts user.firstname %>
-						<% pic = "https://graph.facebook.com/"+user.uid.to_s+"/picture?type=small" %>
-						<a href="/users/bookmark/<%=user.id%>"  class="picklist-link"><%= image_tag pic || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
+						<% fname =  user.firstname+" "+user.lastname %>
+						<% pic = "https://graph.facebook.com/"+user.uid.to_s+"/picture?type=square" %>
+						<a href="/users/bookmark/<%=user.id%>"  class="picklist-link"><%= image_tag pic || "/assets/picklist-placeholder.png", :class => "picklist-picture", :title => fname %></a>
 						
 						
 					<% end %>
@@ -79,9 +79,9 @@
 				<% end %>
 				<% @users.take(2).each_with_index do |user| %>
 						<% puts "Frined name "%>
-						<% puts user.firstname %>
-						<% pic = "https://graph.facebook.com/"+user.uid.to_s+"/picture?type=small" %>
-						<a href="/users/bookmark/<%=user.id%>"  class="picklist-link"><%= image_tag pic || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
+						<% fname =  user.firstname+" "+user.lastname %>
+						<% pic = "https://graph.facebook.com/"+user.uid.to_s+"/picture?type=square" %>
+						<a href="/users/bookmark/<%=user.id%>"  class="picklist-link"><%= image_tag pic || "/assets/picklist-placeholder.png", :class => "picklist-picture", :title => fname %></a>
 						
 						
 				<% end %>
@@ -103,9 +103,9 @@
 				
 				<% @users.take(4-picklists.size).each_with_index do |user| %>
 						<% puts "Frined name "%>
-						<% puts user.firstname %>
-						<% pic = "https://graph.facebook.com/"+user.uid.to_s+"/picture?type=small" %>
-						<a href="/users/bookmark/<%=user.id%>"  class="picklist-link"><%= image_tag pic || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
+						<% fname =  user.firstname+" "+user.lastname %>
+						<% pic = "https://graph.facebook.com/"+user.uid.to_s+"/picture?type=square" %>
+						<a href="/users/bookmark/<%=user.id%>"  class="picklist-link"><%= image_tag pic || "/assets/picklist-placeholder.png", :class => "picklist-picture", :title => fname %></a>
 						
 						
 				<% end %>
@@ -125,9 +125,9 @@
 				<% if @users.size > 0 %>
 					<% @users.each_with_index do |user| %>
 						<% puts "Frined name "%>
-						<% puts user.firstname %>
-						<% pic = "https://graph.facebook.com/"+user.uid.to_s+"/picture?type=small" %>
-						<a href="/users/bookmark/<%=user.id%>"  class="picklist-link"><%= image_tag pic || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
+						<% fname =  user.firstname+" "+user.lastname %>
+						<% pic = "https://graph.facebook.com/"+user.uid.to_s+"/picture?type=square" %>
+						<a href="/users/bookmark/<%=user.id%>"  class="picklist-link"><%= image_tag pic || "/assets/picklist-placeholder.png", :class => "picklist-picture", :title => fname %></a>
 						
 						
 					<% end %>
