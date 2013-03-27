@@ -122,7 +122,43 @@
 				<h3><a href="/picks/find/<%= picklist.id %>"><%= picklist.name %></a></h3>
 				<div class="picklist-description"><%= raw picklist.description %></div>
 			</div>
-			<% occurrences = picklist.bookmarked_events(1)
+<%
+			## Cache Query
+		    picklist_partial = Rails.cache.read("picklist_partial_for_#{picklist.id}")
+		    if (picklist_partial == nil)
+		      puts "**************** No cache found for picklist_partial_for_#{picklist.id} ****************"
+
+		      picklist_partial = ""
+		      occurrences = picklist.bookmarked_events(1)
+			  unless (occurrences.empty?) 
+			  	picklist_partial += "<ul class='picklist-events trendsetters'>"
+			  	occurrences.each do |occurrence| 
+			  		picklist_partial += "<li linkto='event' link-id='#{occurrence.id}'>"
+				  		picklist_partial += "<img class='picture' src='#{occurrence.event.cover_image_url ? occurrence.event.cover_image_url : '/assets/placeholder.png'}' />"
+				  		picklist_partial += "<div class='title'>#{occurrence.event.title}</div>"
+				  		picklist_partial += "<div class='venue'>#{occurrence.event.venue.name}</div>"
+				  		picklist_partial += "<div class='datetime'>#{occurrence.start.to_time.strftime('%A, %B %-d at %-l:%M%P')}</div>"
+				  	picklist_partial += "</li>"
+				end
+				picklist_partial += "<li class='see-more'>"
+					picklist_partial += "<a href='/picks/find/#{picklist.id}'><span>see all events</span></a>"
+				picklist_partial += "</li>"
+
+			  	picklist_partial += "</ul>"
+			  end
+
+		      Rails.cache.write("picklist_partial_for_#{picklist.id}", picklist_partial)
+		      puts "**************** Cache Set for picklist_partial_for_#{picklist.id} ****************"
+		    else
+		      puts "**************** Cache FOUND for picklist_partial_for_#{picklist.id}!!! ****************"
+		    end
+	        ## End Cache Query
+%>
+			<%= picklist_partial.html_safe %>
+<% if false 
+	# Took out because of cache partial query above 
+%>
+<!-- 			<% occurrences = picklist.bookmarked_events(1)
 			   unless (occurrences.empty?) %>
 				<ul class="picklist-events trendsetters">
 					<% occurrences.each do |occurrence| %>
@@ -136,7 +172,8 @@
 					<li class="see-more">
 						<a href="/picks/find/<%= picklist.id %>"><span>see all events</span></a>
 					</li>
-				</ul><% end %>
+				</ul><% end %> -->
+<% end %>
 		</div>
 	<% end %>
 	<div id="info-content" class="top-picks">
@@ -159,11 +196,22 @@
 			<div style="font-weight: 700;margin: 9px 0 0 11px;font-size: 16px;">List View | <a href="/picks/followed?events=true">Event View</a></div>
 		<% end %>
 		<% hidden = "style=\"display:none;\"" %>
+
 		<div class='outter-list'>
 			<div class="trendsetter">
 			<% @featuredLists.each_with_index do |featuredList, index|
 				currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
-				if (index % 2 == 0) && (featuredList.all_bookmarked_events.size > 0)
+
+				## Cache Query
+			    featuredlist_bookmarks_size = Rails.cache.read("featuredlist_bookmarks_size_#{featuredList.id}")
+			    if (featuredlist_bookmarks_size == nil)
+			      featuredlist_bookmarks_size = featuredList.all_bookmarked_events.size 
+			      Rails.cache.write("featuredlist_bookmarks_size_#{featuredList.id}", featuredlist_bookmarks_size)
+			    end
+			    ## Original
+				### "if" statements below should be: if (index % 2 == ) && (featuredList.all_bookmarked_events.size > 0)
+		        ## End Cache Query
+				if (index % 2 == 0) && (featuredlist_bookmarks_size > 0)
 					insert_picklist(featuredList,currentUserIsFollowing,hidden)
 				end
 			end %>
@@ -171,7 +219,15 @@
 		<div  class="trendsetter">
 			<% @featuredLists.each_with_index do |featuredList, index|
 				currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
-				if (index % 2 == 1) && (featuredList.all_bookmarked_events.size > 0)
+
+				## Cache Query
+			    featuredlist_bookmarks_size = Rails.cache.read("featuredlist_bookmarks_size_#{featuredList.id}")
+			    if (featuredlist_bookmarks_size == nil)
+			      featuredlist_bookmarks_size = featuredList.all_bookmarked_events.size 
+			      Rails.cache.write("featuredlist_bookmarks_size_#{featuredList.id}", featuredlist_bookmarks_size)
+			    end
+		        ## End Cache Query
+				if (index % 2 == 1) && (featuredlist_bookmarks_size > 0)
 					insert_picklist(featuredList,currentUserIsFollowing,hidden)
 				end
 			end %>

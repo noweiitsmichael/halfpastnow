@@ -166,6 +166,8 @@ class BookmarksController < ApplicationController
   	@bookmark.bookmarked_type = type
   	@bookmark.comment = comment
   	
+    Rails.cache.clear
+
   	respond_to do |format|
   		format.json {
 			if @bookmark.save!
