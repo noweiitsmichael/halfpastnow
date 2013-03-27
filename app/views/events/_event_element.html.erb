@@ -138,8 +138,8 @@
 			<% # End : Adding Friends and Trendsetters' Bookmark %>
 
 			<% message ="" %>
-			<% tpmessage = (picklists.size == 0) ? "" : (picklists.size == 1 ? picklists.size.to_s + " trendsetter list" : picklists.size.to_s + " trendsetter lists") %>
-			<% fmessage =  (@users.size == 0) ? "" : (@users.size == 1 ? @users.size.to_s + " friend list" : @users.size.to_s + " friend lists") %>
+			<% tpmessage = (picklists.size == 0) ? "" : (picklists.size == 1 ? picklists.size.to_s + " trendsetter list" : picklists.size.to_s + " trendsetters' lists") %>
+			<% fmessage =  (@users.size == 0) ? "" : (@users.size == 1 ? @users.size.to_s + " friend list" : @users.size.to_s + " friends' lists") %>
 			<% if (fmessage.eql? "" &&  (tpmessage.eql? "") ) %>
 			<% message = "" %>
 			<% elsif ((not fmessage.eql? "") &&  (tpmessage.eql? "") )%>
