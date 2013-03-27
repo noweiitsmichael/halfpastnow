@@ -80,6 +80,7 @@ class Event < ActiveRecord::Base
     #  # wtf is this
     occurrenceTime = DateTime.new(3000,1,1)
     occurrence = nil
+
     self.occurrences.each do |occ|
       if occ.start && (occ.start > Time.now) && (occ.start < occurrenceTime)
         occurrence = occ

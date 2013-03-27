@@ -31,8 +31,20 @@ helper :content
 				) a
 				ORDER BY a.clicks DESC";
 		# Currently only sorting by clicks, might want to switch to popularity at some point but whatever, not that important.
+		
+		## Cache Query
+	    @raw_data = Rails.cache.read("picklist_calendar_search")
+	    if (@raw_data == nil)
+	      puts "**************** No cache found for query ****************"
+	      @raw_data = ActiveRecord::Base.connection.select_all(query)
+	      Rails.cache.write("picklist_calendar_search", @raw_data)
+	      puts "**************** Cache Set for Query ****************"
+	    else
+	      puts "**************** Cache FOUND!!! ****************"
+	    end
+        # @raw_data = ActiveRecord::Base.connection.select_all(query)
+        ## End Cache Query
 
-        @raw_data = ActiveRecord::Base.connection.select_all(query)
         @result = []
         pp "************ RESULTS FROM QUERY ***************"
 
@@ -45,7 +57,16 @@ helper :content
     		@result.each do |oneevent|
 	        	unless oneevent["recurrence_id"].blank?
 	        		# puts oneevent["title"]
-	        		upcoming = Occurrence.find(oneevent["id"]).event.nextOccurrence
+
+	        		## Occurrence Cache Query
+        			upcoming = Rails.cache.read("occurrence_find_#{oneevent["id"]}_event_nextOccurrence")
+				    if (upcoming == nil)
+				      upcoming = Occurrence.find(oneevent["id"]).event.nextOccurrence
+				      Rails.cache.write("occurrence_find_#{oneevent["id"]}_event_nextOccurrence", upcoming)
+				    end
+	        		# upcoming = Occurrence.find(oneevent["id"]).event.nextOccurrence
+	        		## End Occcurrence Cache Query
+
 	        		# pp upcoming
 	        		unless upcoming.nil?
 		        		oneevent["id"] = upcoming.id
@@ -55,7 +76,7 @@ helper :content
 	        end
         else
 	        @raw_data.each do |oneevent|
-	        	# puts oneevent
+	        	# puts params[:cat]
 	        	params[:cat].each do |c|
 	        		if oneevent["tags"].include?(c)
 		        		@result << oneevent 
@@ -63,20 +84,29 @@ helper :content
 		        		# TODO: THIS CAN BE MADE MORE EFFICIENT
 			        	unless oneevent["recurrence_id"].blank?
 			        		# puts oneevent["title"]
-			        		upcoming = Occurrence.find(oneevent["id"]).event.nextOccurrence
-			        		# pp upcoming
+
+			        		## Occurrence Cache Query
+		        			upcoming = Rails.cache.read("occurrence_find_#{oneevent["id"]}_event_nextOccurrence")
+						    if (upcoming == nil)
+						      upcoming = Occurrence.find(oneevent["id"]).event.nextOccurrence
+						      Rails.cache.write("occurrence_find_#{oneevent["id"]}_event_nextOccurrence", upcoming)
+						    end
+			        		# upcoming = Occurrence.find(oneevent["id"]).event.nextOccurrence
+			        		## End Occcurrence Cache Query
+
 			        		unless upcoming.nil?
 				        		oneevent["id"] = upcoming.id
 				        		oneevent["start"] = upcoming.start
 				        	end
 			        	end
-		        		puts "Matched #{c} inside #{oneevent["tags"]}"
-		        		next
+		        		# puts "Matched #{c} inside #{oneevent["tags"]}"
+		        		break
 		        	end
 	        	end
 	        end
 	    end
 
+	    # pp @result
 	end
 
 	def trendsetters
@@ -98,7 +128,20 @@ helper :content
                 INNER JOIN events_tags ON events.id = events_tags.event_id
                 INNER JOIN tags ON events_tags.tag_id = tags.id
                 WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL)";
-        result = ActiveRecord::Base.connection.select_all(query)
+
+		## Cache Query
+	    result = Rails.cache.read("trendsetter_search")
+	    if (result == nil)
+	      puts "**************** No cache found for query ****************"
+	      result = ActiveRecord::Base.connection.select_all(query)
+	      Rails.cache.write("trendsetter_search", result)
+	      puts "**************** Cache Set for Query ****************"
+	    else
+	      puts "**************** Cache FOUND!!! ****************"
+	    end
+        # result = ActiveRecord::Base.connection.select_all(query)
+        ## End Cache Query
+
         # y result
 	    listIDs = result.collect { |e| e["id"] }.uniq
 	    tagIDs = result.collect { |e| e["tag_id"].to_i }.uniq
@@ -126,8 +169,20 @@ helper :content
 		# puts @parentTags.collect{ |p| p.name}
 		tag_id = params[:id]
 		if tag_id.to_s.empty?
-			@featuredLists = BookmarkList.where(:featured=>true)
-			# puts @featuredLists
+
+			## Cache Query
+		    @featuredLists = Rails.cache.read("trendsetter_featuredLists")
+		    if (@featuredLists == nil)
+		      puts "**************** No cache found for trendsetter_featuredLists ****************"
+		      @featuredLists = BookmarkList.where(:featured=>true)
+		      Rails.cache.write("trendsetter_featuredLists", @featuredLists)
+		      puts "**************** Cache Set for trendsetter_featuredLists ****************"
+		    else
+		      puts "**************** Cache FOUND for trendsetter_featuredLists!!! ****************"
+		    end
+			# @featuredLists = BookmarkList.where(:featured=>true)
+	        ## End Cache Query
+
 		else
 			@list=[]
 			@exclude=[]
@@ -184,6 +239,9 @@ helper :content
 					ls << l
 				end
 			}
+
+			puts "********* LS = #{ls}"
+
 			@featuredLists = BookmarkList.find(ls)
 			# puts @featuredLists
 			# @featuredLists = BookmarkList.find(result.select { |r| r["tag_id"] == tag_id.to_s }.collect { |e| e["id"] }.uniq)

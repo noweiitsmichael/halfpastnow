@@ -45,13 +45,14 @@ class BookmarkList < ActiveRecord::Base
 	
 	def bookmarked_events(num)
 		occurrences = []
-		
+
 		self.bookmarks.each do |bookmark|
 			if(num && occurrences.size == num)
 				break
 			end
 			
-			occurrence = bookmark.bookmarked_event
+		    occurrence = bookmark.bookmarked_event
+
 			unless(occurrence.nil?)
 				occurrences.push(occurrence)
 			end
