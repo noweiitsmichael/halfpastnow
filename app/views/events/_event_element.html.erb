@@ -26,9 +26,10 @@
 		<% @users =[] %>
 		<% unless current_user.nil? %>
 			<%	friendids = current_user.friends.collect{|f| f.id} %>
+			<% puts "occurrence"%>
+			<% puts occurrence.id %>
 			<%	listids = occurrence.event_bookmarks.collect{|b| b.bookmark_list_id} %>
 			<%  puts listids %>
-			<%  listids = listids.reject! { |c| c.nil? } %>
 			<% if listids.size > 0 %>
 				<%	eventUserids = BookmarkList.find(listids).select{|l| l.featured == false}.collect{|l| l.user_id} %>
 				<%	ids = friendids & eventUserids %>
