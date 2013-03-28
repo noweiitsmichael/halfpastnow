@@ -125,9 +125,10 @@
 
             <% if user_signed_in? %>
                 <ul class="profile-menu">
-                  <li><a href="/users/rsvp/<%=current_user.id%>">My Events</a></li>
-                  <li><%= link_to("My Settings", edit_user_registration_path) %></li>
+                  <li><a href="/users/rsvp/<%=current_user.id%>">My Upcoming Events</a></li>
+                  <li><a href="/users/bookmark/<%=current_user.id%>">My Bookmarks</a></li>
                   <li><a href="/users/friends">My Friends</a></li>
+                  <li><%= link_to("Settings", edit_user_registration_path) %></li>
                 </ul>
             <% end %>
           </div>
