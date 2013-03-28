@@ -298,31 +298,44 @@ class UsersController < ApplicationController
     end 
   end
 
+  # def friends
+  #   puts "Check friends"
+  #   unless current_user.uid.nil?
+  #     # puts "FB User !!!!!"
+  #     query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
+  #     @facebook ||= Koala::Facebook::API.new(current_user.fb_access_token)
+  #     @f=@facebook.fql_query(query)
+  #     # puts @f
+  #     @fs = current_user.friends.collect{|f| f.uid.to_s}
+  #     uids = @f.collect{|p| p["uid"].to_s}
+     
+  #     # puts ufs
+  #     # puts uids
+  #     ufs = uids - @fs
+  #     puts "The set: "
+  #     puts ufs
+  #     urs = User.find_all_by_uid(ufs)
+  #     if urs.size > 0
+  #       urs.each{|ur|
+  #         friendship= current_user.friendships.build(:friend_id => ur.id)
+  #         friendship.save!  
+  #       }  
+  #     end
+  #   end
+  #   @myfriends = current_user.friends
+  #   respond_to do |format|
+  #     format.html { render action: "friends" }
+      
+  #   end
+  # end
+
   def friends
     puts "Check friends"
+    @myfriends = []
     unless current_user.uid.nil?
-      # puts "FB User !!!!!"
-      query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
-      @facebook ||= Koala::Facebook::API.new(current_user.fb_access_token)
-      @f=@facebook.fql_query(query)
-      # puts @f
-      @fs = current_user.friends.collect{|f| f.uid.to_s}
-      uids = @f.collect{|p| p["uid"].to_s}
-     
-      # puts ufs
-      # puts uids
-      ufs = uids - @fs
-      puts "The set: "
-      puts ufs
-      urs = User.find_all_by_uid(ufs)
-      if urs.size > 0
-        urs.each{|ur|
-          friendship= current_user.friendships.build(:friend_id => ur.id)
-          friendship.save!  
-        }  
-      end
+      @myfriends = current_user.friends 
     end
-    @myfriends = current_user.friends
+    
     respond_to do |format|
       format.html { render action: "friends" }
       
