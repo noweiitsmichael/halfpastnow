@@ -173,27 +173,30 @@
 
     <div class="streams selected">
       <h2>My Friends</h2>
-      	<% @myfriends.each do |afriend| %>
-	        <div class="stream-friend" stream-id="<%= afriend.id %>">
-	        	<a href="/users/bookmark/<%=afriend.id%>">
-			        <div  class="image-friend">
+        <% if @myfriends.size > 0 %>
+          <% @myfriends.each do |afriend| %>
+          <div class="stream-friend" stream-id="<%= afriend.id %>">
+            <a href="/users/bookmark/<%=afriend.id%>">
+              <div  class="image-friend">
 
-			        	<img border="0" src="https://graph.facebook.com/<%=afriend.uid%>/picture?type=large" alt="<%=afriend.firstname%>" width="50" height="50">
-			        </div>
-			        <div class="stream-title">
-			       	    <span class="uber-title">
-			              <span class="title-friend"><%= afriend.firstname %> <%= afriend.lastname %></span>
-                    <span class="stream-events"><%=(afriend.bookmarked_events.size >0) ? ((afriend.bookmarked_events.size < 2) ? "1 bookmarked event" : afriend.bookmarked_events.size.to_s + " bookmarked events" ): "" %></span>
-			          	</span>
+                <img border="0" src="https://graph.facebook.com/<%=afriend.uid%>/picture?type=small" alt="<%=afriend.firstname%>" width="50" height="50">
+              </div>
+              <div class="stream-title">
+                  <span class="uber-title">
+                    <span class="title-friend"><%= afriend.firstname %> <%= afriend.lastname %> <%=(afriend.bookmarked_events.size >0) ? ((afriend.bookmarked_events.size < 2) ? " has 1 bookmarked event" : " has "+afriend.bookmarked_events.size.to_s + " bookmarked events" ): "" %> </span>
+                    
+                  </span>
                   
-			        </div>
+              </div>
               
-			    </a>
+            </a>
           <br>
           
-	      	</div>
-	      	</br>
-      	<% end %>
+          </div>
+          </br>
+        <% end %>
+        <% end %>
+      	
   	</div>
 </div>
 
