@@ -300,13 +300,15 @@ class UsersController < ApplicationController
 
   def friends
     puts "Check friends"
+    @myfriends = []
     unless current_user.uid.nil?
       # puts "FB User !!!!!"
       query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
       @facebook ||= Koala::Facebook::API.new(current_user.fb_access_token)
       @f=@facebook.fql_query(query)
       # puts @f
-      @fs = current_user.friends.collect{|f| f.uid.to_s}
+      @myfriends = current_user.friends
+      @fs = @myfriends.collect{|f| f.uid.to_s}
       uids = @f.collect{|p| p["uid"].to_s}
      
       # puts ufs
@@ -322,7 +324,7 @@ class UsersController < ApplicationController
         }  
       end
     end
-    @myfriends = current_user.friends
+    puts "end inquring"
     respond_to do |format|
       format.html { render action: "friends" }
       
