@@ -111,7 +111,7 @@ class UsersController < ApplicationController
     end
     @user = User.find(params[:id])
     @bookmark_list=BookmarkList.where(:user_id => @user.id, :main_bookmarks_list => true).first
-    @bookmarks = @bookmark_list.all_bookmarked_events
+    @bookmarks = @bookmark_list.all_bookmarked_events.select{|b| (not b.event.nil? ) }
     
     puts @bookmarks
     respond_to do |format|
