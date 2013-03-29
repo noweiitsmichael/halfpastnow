@@ -183,7 +183,8 @@
               </div>
               <div class="stream-title">
                   <span class="uber-title">
-                    <% size = afriend.bookmarked_events.size %>
+                    <% bms = afriend.bookmarked_events.select{|b| (not b.event.nil? )} %>
+                    <% size = bms.size %>
                     <span class="title-friend"><%= afriend.firstname %> <%= afriend.lastname %> <%=(size >0) ? ((size < 2) ? " has 1 bookmarked event" : " has "+size.to_s + " bookmarked events" ): "" %> </span>
                     
                   </span>

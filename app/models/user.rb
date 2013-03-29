@@ -185,6 +185,10 @@ class User < ActiveRecord::Base
     return BookmarkList.where(:user_id => self.id, :name => "Attending").first.all_bookmarked_events
   end
 
+  def bookmarking_events
+    return BookmarkList.where(:user_id => self.id, :name => "Attending").first.all_bookmarked_events
+  end
+
   def send_welcome_email
     puts "send_welcome_email"
     unless self.email.include?('@halfpastnow.com') && Rails.env != 'test'
