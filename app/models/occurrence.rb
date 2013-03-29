@@ -12,6 +12,8 @@ class Occurrence < ActiveRecord::Base
   validates_presence_of :start
   # validates :end, :presence => true
 
+  after_create :clear_cache
+
   def create
     self.day_of_week = (start ? start.to_date.wday : nil)
     # initally mark deleted flag as false
@@ -385,6 +387,11 @@ class Occurrence < ActiveRecord::Base
     
     return queryResult
   
+  end
+
+  def clear_cache
+    puts "-----Resetting cache....."
+    Rails.cache.clear
   end
 
 end

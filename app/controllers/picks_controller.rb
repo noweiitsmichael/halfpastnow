@@ -168,19 +168,19 @@ helper :content
 		# puts @parentTags
 		# puts @parentTags.collect{ |p| p.name}
 		tag_id = params[:id]
-		puts "---------------tag_id-----------"
-		puts tag_id.to_s.empty?
+		# puts "---------------tag_id-----------"
+		# puts tag_id.to_s.empty?
 		if tag_id.to_s.empty?
 
 			## Cache Query
 		    @featuredLists = Rails.cache.read("trendsetter_featuredLists")
 		    if (@featuredLists == nil)
-		      puts "**************** No cache found for trendsetter_featuredLists ****************"
+		      # puts "**************** No cache found for trendsetter_featuredLists ****************"
 		      @featuredLists = BookmarkList.where(:featured=>true)
-		      Rails.cache.write("trendsetter_featuredLists", @featuredLists)
-		      puts "**************** Cache Set for trendsetter_featuredLists ****************"
-		    else
-		      puts "**************** Cache FOUND for trendsetter_featuredLists!!! ****************"
+		    #   Rails.cache.write("trendsetter_featuredLists", @featuredLists)
+		    #   puts "**************** Cache Set for trendsetter_featuredLists ****************"
+		    # else
+		    #   puts "**************** Cache FOUND for trendsetter_featuredLists!!! ****************"
 		    end
 			# @featuredLists = BookmarkList.where(:featured=>true)
 	        ## End Cache Query
