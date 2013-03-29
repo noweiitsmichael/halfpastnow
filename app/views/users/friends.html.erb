@@ -169,35 +169,54 @@
     </ul>
    
 </div> -->
+<% def insert_friend(afriend) %>
+          <div class="stream-friend" stream-id="<%= afriend.id %>">
+                <a href="/users/bookmark/<%=afriend.id%>" style="text-decoration:none">
+                  <div  class="image-friend">
+
+                    <img border="0" src="https://graph.facebook.com/<%=afriend.uid%>/picture?type=small" alt="<%=afriend.firstname%>" width="50" height="50">
+                  </div>
+                
+                <div class="stream-title">
+                    <% bms = afriend.bookmarked_events.select{|b| (not b.event.nil? )} %>
+                    <% size = bms.size %>
+                    <div class="friendname"><%= afriend.firstname %> <%= afriend.lastname %></div>
+                    <div class="friendsbm"><%=(size >0) ? ((size < 2) ? "1 bookmarked event" : size.to_s + " bookmarked events" ): "" %></div>
+                    
+                </div>
+                
+               </a>
+             
+              
+          </div>
+            
+<% end %>
+
 <div id="profile-menu-friend">
 
     <div class="streams selected">
       <h2>My Friends</h2>
         <% if @myfriends.size > 0 %>
-          <% @myfriends.each do |afriend| %>
-          <div class="stream-friend" stream-id="<%= afriend.id %>">
-            <a href="/users/bookmark/<%=afriend.id%>">
-              <div  class="image-friend">
-
-                <img border="0" src="https://graph.facebook.com/<%=afriend.uid%>/picture?type=small" alt="<%=afriend.firstname%>" width="50" height="50">
-              </div>
-              <div class="stream-title">
-                  <span class="uber-title">
-                    <% bms = afriend.bookmarked_events.select{|b| (not b.event.nil? )} %>
-                    <% size = bms.size %>
-                    <span class="title-friend"><%= afriend.firstname %> <%= afriend.lastname %> <%=(size >0) ? ((size < 2) ? " has 1 bookmarked event" : " has "+size.to_s + " bookmarked events" ): "" %> </span>
-                    
-                  </span>
-                  
-              </div>
-              
-            </a>
-          <br>
-          
+          <div class="friends-set">
+            <% @myfriends.each_with_index do |afriend,index| %>
+              <div class="friends" %>
+              <% if index % 2 == 0 %>
+                <%  insert_friend(afriend) %>
+              <% end %>
+            </div>
+            <% end %>
           </div>
-          </br>
+          <div class="friends-set">
+              <% @myfriends.each_with_index do |afriend,index| %>
+                <div class="friends" %>
+                <% if index % 2 == 1 %>
+                <%  insert_friend(afriend) %>
+              <% end %>
+            </div>
+            <% end %>
+          </div>
         <% end %>
-        <% end %>
+        
       	
   	</div>
 </div>

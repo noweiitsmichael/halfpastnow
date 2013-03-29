@@ -24,7 +24,7 @@ a.logout { text-decoration:none; text-transform:lowercase; color:black; font-wei
 .stream .stream-details > div { float:left; margin-right:15px; }
 .stream .stream-details > div:after { content: "/"; margin-left:15px; }
 .stream .stream-details > div:last-child:after { content: none; margin-left:0; }
-.stream-friend { margin-bottom: 42px; border-top: 1px dotted; padding-top: 12px;}
+.stream-friend { margin-bottom: 42px; padding-top: 12px; height: 11px;}
 .title-friend { font-size: 18px; font-weight: 700; margin-right:9px; float: left; margin-left: 10px;}
 .image-friend {float: left; margin-left: 20px;}
 #profile-menu-friend { float: left; font-size: 12px; width: 990px;}
@@ -38,7 +38,36 @@ margin-right: 872px;
 float: right;
 margin-left: -70px;
 display: block;
-margin-top: 8px;}
+margin-top: 8px;
+}
+.friends{
+margin: 12px 0;
+overflow: hidden;
+background: white;
+border-radius: 1px;
+box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+width: 450px;
+text-decoration:none;
+}
+.friends-set{
+	float: left;
+	width: 450px;
+	margin-left: 28px;
+
+}
+.friendname{
+	color: #3b5998;
+	font-size: 18px;
+	text-decoration:none;
+}
+.friendsbm{
+	color: #89919c;
+	font-size: 14px;
+}
+.stream-title{
+	text-decoration:none;
+}
+
 html, body
 {
   margin: 0;

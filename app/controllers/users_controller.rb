@@ -324,6 +324,7 @@ class UsersController < ApplicationController
         }  
       end
     end
+    @myfriends = current_user.friends
     puts "end inquring"
     respond_to do |format|
       format.html { render action: "friends" }
