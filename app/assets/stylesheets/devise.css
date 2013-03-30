@@ -59,10 +59,14 @@ text-decoration:none;
 	color: #3b5998;
 	font-size: 18px;
 	text-decoration:none;
+	float: left;
+	margin-left: 10px;
 }
 .friendsbm{
 	color: #89919c;
 	font-size: 14px;
+	float: left;
+	margin-left: 10px;
 }
 .stream-title{
 	text-decoration:none;
