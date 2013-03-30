@@ -175,13 +175,14 @@
                   <div  class="image-friend">
 
                     <img border="0" src="https://graph.facebook.com/<%=afriend.uid%>/picture?type=small" alt="<%=afriend.firstname%>" width="50" height="50">
+
                   </div>
                 
                 <div class="stream-title">
                     <% bms = afriend.bookmarked_events.select{|b| (not b.event.nil? )} %>
                     <% size = bms.size %>
                     <div class="friendname"><%= afriend.firstname %> <%= afriend.lastname %></div>
-                    <div class="friendsbm"><%=(size >0) ? ((size < 2) ? "1 bookmarked event" : size.to_s + " bookmarked events" ): "" %></div>
+                    <div class="friendsbm"><%=(size >0) ? ((size < 2) ? "1 bookmarked event" : size.to_s + " bookmarked events" ): "" %></div> 
                     
                 </div>
                 
