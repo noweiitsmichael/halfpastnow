@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130321201933) do
+ActiveRecord::Schema.define(:version => 20130401150902) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -214,7 +214,6 @@ ActiveRecord::Schema.define(:version => 20130321201933) do
   add_index "occurrences", ["event_id"], :name => "index_occurrences_on_event_id"
   add_index "occurrences", ["recurrence_id"], :name => "index_occurrences_on_recurrence_id"
   add_index "occurrences", ["start"], :name => "index_occurrences_on_start"
-  add_index "occurrences", ["start"], :name => "occurrences_not_deleted_start_index"
 
   create_table "pictures", :force => true do |t|
     t.string   "image"
@@ -310,6 +309,15 @@ ActiveRecord::Schema.define(:version => 20130321201933) do
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
+  create_table "students", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "videoname"
+    t.string   "videonametest"
+  end
+
   create_table "tags", :force => true do |t|
     t.string   "name"
     t.integer  "parent_tag_id"
@@ -322,13 +330,6 @@ ActiveRecord::Schema.define(:version => 20130321201933) do
   create_table "tags_venues", :id => false, :force => true do |t|
     t.integer  "venue_id"
     t.integer  "tag_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "things", :force => true do |t|
-    t.string   "name"
-    t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -350,12 +351,14 @@ ActiveRecord::Schema.define(:version => 20130321201933) do
     t.string   "lastname"
     t.string   "username"
     t.string   "profilepic"
+    t.string   "authentication_token"
     t.string   "provider"
     t.string   "uid"
     t.string   "fb_access_token"
     t.string   "fb_picture"
     t.string   "role"
     t.string   "ref"
+    t.string   "subscribe"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -390,6 +393,17 @@ ActiveRecord::Schema.define(:version => 20130321201933) do
     t.integer  "updated_by"
     t.float    "completion"
     t.integer  "assigned_admin"
+  end
+
+  create_table "videos", :force => true do |t|
+    t.integer  "eventID"
+    t.integer  "venueId"
+    t.text     "comment"
+    t.float    "longitude"
+    t.float    "altitude"
+    t.string   "url"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
 end
