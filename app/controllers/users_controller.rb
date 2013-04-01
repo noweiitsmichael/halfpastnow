@@ -304,7 +304,7 @@ class UsersController < ApplicationController
     unless current_user.uid.nil?
       # puts "FB User !!!!!"
       query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
-      @facebook ||= Koala::Facebook::API.new(current_user.fb_access_token)
+      @facebook ||= Koala::Facebook::API.new(current_user.fb_access_token) rescue redirect_to new_user_registration_url
       @f=@facebook.fql_query(query)
       # puts @f
       @myfriends = current_user.friends
