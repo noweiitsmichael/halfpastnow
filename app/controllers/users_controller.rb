@@ -333,11 +333,14 @@ class UsersController < ApplicationController
   end
 
   def unsubscribe
-    email = params[:email]
+    email = params[:email].to_s
     u=User.find_by_email(email)
     u.subscribe = false
     u.save
-    
+    respond_to do |format|
+      format.html { render action: "unsubscribe" }
+      
+    end
   end
 
   # def friends
