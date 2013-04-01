@@ -332,6 +332,14 @@ class UsersController < ApplicationController
     end
   end
 
+  def unsubscribe
+    email = params[:email]
+    u=User.find_by_email(email)
+    u.subscribe = false
+    u.save
+    
+  end
+
   # def friends
   #   puts "Check friends"
   #   @myfriends = []
