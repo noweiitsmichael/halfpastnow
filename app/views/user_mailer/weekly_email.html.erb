@@ -177,7 +177,13 @@
 
             <td  width="250" height="125" style="background-color:#f2f2f2;border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;">
 
-                <a href="www.halfpastnow.com/?event_id=<%= occurrence.id %>" target="_blank"><img title="<%= occurrence.event.title %>" width="250" height="125" style="background-color:#f2f2f2;border-right:1px solid #c0c0c0;" src="<%= occurrence.event.cover_image_url %>">
+                <a href="www.halfpastnow.com/?event_id=<%= occurrence.id %>" target="_blank">
+
+                    <div style="width: 205px; height: 125px; overflow: hidden; position: relative;">
+                        <img title="<%= occurrence.event.title %>" src="<%= occurrence.event.cover_image_url %>" style="position: absolute; left:-45px; width:205px; height: 125px;"/>
+                    </div>
+
+                    
 
 
                 </a>
