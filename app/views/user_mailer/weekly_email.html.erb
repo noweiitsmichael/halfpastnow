@@ -85,14 +85,14 @@
                                                         border-top-right-radius: 2px;
                                                         box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3),0 1px 0 rgba(255, 255, 255, 0.4) inset;" >Select Event Categories</a>
             </tr>
-            <tr>
+            <tr style="float:right;margin-right:-300px;font-style: italic;color:rgb(84, 36, 88);" height="40px"><td>
                 "Select the most popular events based on your interest!!!"
-            </tr>
+            </td></tr>
             
     </tbody>
 </table>
 <div style="font-size:16px;line-height:32px;">Hello <%=@user.firstname%>,</div>
-<div style="font-size:16px;line-height:32px;">Here are our events for this week. Update your preferences to receive your own weekly customized email!!!</div>  
+<div style="font-size:16px;line-height:32px;">Here are our top event picks for this week. Update your preferences to receive your own personalized email with event categories you care about!</div>  
 <!-- Start generating events -->
         
 <% @ids.each do |id| %>
