@@ -191,6 +191,35 @@ class User < ActiveRecord::Base
 
   def send_welcome_email
     puts "send_welcome_email"
+    self.subscribe = true
+    self.save
+    # Making friends for FB users
+    unless self.uid.nil?
+      # puts "FB User !!!!!"
+      query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
+      @facebook ||= Koala::Facebook::API.new(self.fb_access_token) 
+      @f=@facebook.fql_query(query)
+      # puts @f
+      @myfriends = self.friends
+      @fs = @myfriends.collect{|f| f.uid.to_s}
+      uids = @f.collect{|p| p["uid"].to_s}
+     
+      # puts ufs
+      # puts uids
+      ufs = uids - @fs
+      puts "The set: "
+      puts ufs
+      urs = User.find_all_by_uid(ufs)
+      if urs.size > 0
+        urs.each{|ur|
+          friendship= self.friendships.build(:friend_id => ur.id)
+          friendship.save!  
+        }  
+      end
+    end
+
+
+
     unless self.email.include?('@halfpastnow.com') && Rails.env != 'test'
       UserMailer.welcome_email(self).deliver
     end
