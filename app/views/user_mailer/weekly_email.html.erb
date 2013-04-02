@@ -180,7 +180,7 @@
                 <a href="www.halfpastnow.com/?event_id=<%= occurrence.id %>" target="_blank">
 
                     <div style="width: 205px; height: 125px; overflow: hidden; position: relative;">
-                        <img title="<%= occurrence.event.title %>" src="<%= occurrence.event.cover_image_url %>" style="position: absolute; left:-45px; width:255px; height: 125px;"/>
+                        <img title="<%= occurrence.event.title %>" src="<%= occurrence.event.cover_image_url %>" style="position: absolute; left:-50px; width:255px; height: 125px;"/>
                     </div>
 
                     
@@ -189,7 +189,7 @@
                 </a>
 
             </td>
-            <td width="300" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;"><%= truncate(strip_tags(occurrence.event.description), :length => 100) %>... <a style="color:#4f2740;text-decoration:none" href="http://www.halfpastnow.com/search?event_id=<%= occurrence.id %>" target="_blank"><b>Read More»</b></a>
+            <td width="356" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;"><%= truncate(strip_tags(occurrence.event.description), :length => 100) %>... <a style="color:#4f2740;text-decoration:none" href="http://www.halfpastnow.com/search?event_id=<%= occurrence.id %>" target="_blank"><b>Read More»</b></a>
                 
                 <div >
                     <i>
