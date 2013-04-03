@@ -179,10 +179,20 @@
 
                 <a href="www.halfpastnow.com/?event_id=<%= occurrence.id %>" target="_blank">
 
-                    <div style="width: 205px; height: 125px; overflow: hidden; position: relative;">
-                        <img title="<%= occurrence.event.title %>" src="<%= occurrence.event.cover_image_url %>" style="position: absolute; left:-50px; width:255px; height: 125px;"/>
+                    <!-- <div style="width: 205px; height: 125px; overflow: hidden; position: relative;">
+                        <img title="<%= occurrence.event.title %>" src="<%= occurrence.event.cover_image_url %>" style="position: absolute; left:-50px; width:250px; height: 125px;"/>
+                    </div> -->
+                    <div style="background: <%=occurrence.event.cover_image_url%>;
+    opacity: 1;
+    
+    width: 205px;
+    height: 125px;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: -1;
+    content: "";">
                     </div>
-
                     
 
 
