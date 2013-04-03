@@ -231,9 +231,9 @@ class Occurrence < ActiveRecord::Base
       end
 
       if Time.now.hour < 17
-        start_date_where = "now() - interval '2 hours'"
+        start_date_where = Time.now - 2.hours #"now() - interval '2 hours'"
       else
-        start_date_where = "now() - interval '4 hours'"
+        start_date_where = Time.now - 4.hours #"now() - interval '4 hours'"
       end
 
 
