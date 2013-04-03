@@ -314,6 +314,8 @@
     </div>
      <div class="preferences <%= (params[:email].nil?) ? "": "selected" %>">
       <!-- Create a reference channel for current user if it does not exist -->
+      <div class="pretitle"> Choose your categories for your personalized email
+      </div>
       <% if current_user.ref.nil? %>
         <% c =  Channel.new %>
         <!-- Change to approriate tag ids for Production -->
