@@ -212,7 +212,11 @@ class Occurrence < ActiveRecord::Base
         event_end_date = Date.parse(params[:end_date]).advance(:days => 1)
       else
         puts "empty"
-        event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_i == -1) ? 365000 : params[:end_days].to_i + 1))
+        if Time.now.hour < 21
+          event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_i == -1) ? 365000 : params[:end_days].to_i + 1))
+        else
+          event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 2 : (params[:end_days].to_i == -1) ? 365000 : params[:end_days].to_i + 1))
+        end
       end
 
       start_date_check = "occurrences.start >= '#{event_start_date}'"
