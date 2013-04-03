@@ -85,3 +85,8 @@ html, body
   height:100%;
   overflow:hidden;
 }
+.reform{
+	float:left; 
+	margin-left:150px;
+	margin-top: 20px;
+}
