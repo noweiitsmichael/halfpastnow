@@ -201,31 +201,31 @@
                     <% a.each do |t|%>
        
                         <% if t.to_s.eql? "Music"%>
-                            <img style="float:left;" src="http://www.randomdetox.com/wp-content/uploads/2011/09/live-music-vector_preview-50x50.jpg" alt="Music" height="25" border="0" width="25">   
+                            <img style="float:left;margin-left:10px;" src="http://www.randomdetox.com/wp-content/uploads/2011/09/live-music-vector_preview-50x50.jpg" alt="Music" height="25" border="0" width="25">   
                         <% end %>
                         <% if t.to_s.eql? "Food/Drink Specials"%>
-                            <img style="float:left;" src="http://www.goga-gastro.pl/media/products/a464b2529fcfcbb9c46f6fa954bed418/images/thumbnail/small_400104.jpg" alt="Happy Hours" height="25" border="0" width="25">   
+                            <img style="float:left;margin-left:10px;" src="http://www.goga-gastro.pl/media/products/a464b2529fcfcbb9c46f6fa954bed418/images/thumbnail/small_400104.jpg" alt="Happy Hours" height="25" border="0" width="25">   
                         <% end %>
                         <% if t.to_s.eql? "Fitness"%>
-                            <img style="float:left;" src="http://www.yoga-essex.co.uk/images/featured-icon-2.jpg" alt="Fitness" height="25" border="0" width="25">   
+                            <img style="float:left;margin-left:10px;" src="http://www.yoga-essex.co.uk/images/featured-icon-2.jpg" alt="Fitness" height="25" border="0" width="25">   
                         <% end %>
                         <% if t.to_s.eql? "Tech"%>
-                            <img style="float:left;" src="http://digitalethos.org/wp-content/uploads/2012/11/3rd-Generation-of-Websites-and-Inbound-Marketing-50x50.png" alt="Tech" height="25" border="0" width="25">   
+                            <img style="float:left;margin-left:10px;" src="http://digitalethos.org/wp-content/uploads/2012/11/3rd-Generation-of-Websites-and-Inbound-Marketing-50x50.png" alt="Tech" height="25" border="0" width="25">   
                         <% end %>
                         <% if t.to_s.eql? "Charity / Non-Profit"%>
-                            <img style="float:left;" src="http://avatar.hq-picture.com/avatars/img36/peace_logo_avatar_picture_43463.gif" alt="Non-Profit" height="25" border="0" width="25">   
+                            <img style="float:left;margin-left:10px;" src="http://avatar.hq-picture.com/avatars/img36/peace_logo_avatar_picture_43463.gif" alt="Non-Profit" height="25" border="0" width="25">   
                         <% end %>
                         <% if t.to_s.eql? "Art"%>
-                            <img style="float:left;" src="http://engr.case.edu/merat_francis/eecs490f06/Images/Mona_Lisa.jpg" alt="Art" height="25" border="0" width="25">   
+                            <img style="float:left;margin-left:10px;" src="http://engr.case.edu/merat_francis/eecs490f06/Images/Mona_Lisa.jpg" alt="Art" height="25" border="0" width="25">   
                         <% end %>
                          <% if t.to_s.eql? "Kid Friendly"%>
-                            <img style="float:left;" src="http://bloggeritis.com/wp-content/uploads/2012/02/Logo-Design-told-by-Kids-64x64.jpg" alt="Kid Friendly" height="25" border="0" width="25">   
+                            <img style="float:left;margin-left:10px;" src="http://bloggeritis.com/wp-content/uploads/2012/02/Logo-Design-told-by-Kids-64x64.jpg" alt="Kid Friendly" height="25" border="0" width="25">   
                         <% end %>
                         <% if t.to_s.eql? "Romantic"%>
-                            <img style="float:left;" src="http://static.general-play.com/thumbs/ee3/31/gp74e6fh1f5i0.jpeg" alt="Romantic" height="25" border="0" width="25">   
+                            <img style="float:left;margin-left:10px;" src="http://static.general-play.com/thumbs/ee3/31/gp74e6fh1f5i0.jpeg" alt="Romantic" height="25" border="0" width="25">   
                         <% end %>
                         <% if t.to_s.eql? "LGBT"%>
-                            <img style="float:left;" src="http://www.lifechurch.tv/assets/jobs/icon_heart-3c3a5c611f0dd5b19b782308f3c33dbc.png" alt="LGBT" height="25" border="0" width="25">   
+                            <img style="float:left;margin-left:10px;" src="http://www.lifechurch.tv/assets/jobs/icon_heart-3c3a5c611f0dd5b19b782308f3c33dbc.png" alt="LGBT" height="25" border="0" width="25">   
                         <% end %>
 
                     <% end %>
@@ -234,11 +234,11 @@
                     <% picklists.take(3).each_with_index do |pList,index| %>
 
                         <a href="www.halfpastnow.com/picks/find/<%= pList.id %>" target="_blank">
-                            <img style="float:left;" src="<%=pList.picture_url(:mini)%>" height="25" border="0" width="25">
+                            <img style="float:left;margin-left:10px;" src="<%=pList.picture_url(:mini)%>" height="25" border="0" width="25">
                         </a>
 
                     <% end %>
-                    <em style="position: relative;top: -5px;margin-left: 2px;">on <%= picklists.size %> top picks <%= picklists.size == 1 ? "list" : "lists" %></em>
+                    <em style="position: relative;top: -5px;margin-left: 10px;">on <%= picklists.size %> top picks <%= picklists.size == 1 ? "list" : "lists" %></em>
                     <% end %>
                     
                                 
