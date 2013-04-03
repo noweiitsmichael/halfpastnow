@@ -84,7 +84,7 @@ class UserMailer < ActionMailer::Base
     @ids =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
     @occurrences = Occurrence.includes(:event => :tags).find(@ids, :order => order_by)
     @ids = @occurrences.collect{|o| o.id}
-    @ids=@ids[0,6]
+    @ids=@ids[0,5]
     puts "6 events: "
     puts @ids
     @bookmarkedEvents=user.bookmarked_events.select{|o| o.start>Time.now}.uniq.sort! { |a,b| a.start <=> b.start }
