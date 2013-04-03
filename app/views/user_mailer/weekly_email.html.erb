@@ -73,10 +73,10 @@
 </table>
 
 <div style="float:right;font-style:italic;color:rgb(84,36,88);max-width: 190px;text-align: center;" height="0px">
-    "Select the most popular events based on your interest!!!"
+    See the most popular events based on your interest
 </div>
 
-<div style="font-size: 14px;line-height: 30px;margin-top: 15px;">Hello <%=@user.firstname%>,</div>
+<div style="font-size: 14px;line-height: 30px;margin-top: 32px;">Hello <%=@user.firstname%>,</div>
 <div style="font-size:14px;line-height:20px;">Here are our top event picks for this week. Update your preferences to receive your own personalized email with event categories you care about!</div>  
 <!-- Start generating events -->
         
@@ -223,11 +223,11 @@
                     <% picklists.take(3).each_with_index do |pList,index| %>
 
                         <a href="www.halfpastnow.com/picks/find/<%= pList.id %>" target="_blank">
-                            <img style="float:left;margin-left:10px;" src="<%=pList.picture_url(:mini)%>" height="25" border="0" width="25">
+                            <img style="float:left;margin-left:5px;" src="<%=pList.picture_url(:mini)%>" height="25" border="0" width="25">
                         </a>
 
                     <% end %>
-                    <em style="position: relative;top: -5px;margin-left: 10px;">on <%= picklists.size %> top picks <%= picklists.size == 1 ? "list" : "lists" %></em>
+                    <em style="position: relative;top: -5px;margin-left: 5px;">on <%= picklists.size %> top picks <%= picklists.size == 1 ? "list" : "lists" %></em>
                     <% end %>
                     
                                 
@@ -266,7 +266,6 @@
 <% end %>
 <!-- end events generation -->
 <br>
-<hr style="color:#ccc;background-color:#ccc;margin:15px 0;min-height:1px;border:0">
 
 <table>    
         <tbody><tr><td style="padding: 5px 0 0 4px;
@@ -283,6 +282,79 @@
         </td>
     </tr></tbody>
 </table>
+
+
+<!-- end bookmarked events -->
+
+
+    <div style="margin:10px 0 10px 0;border:solid 0px #10add5;font-size:16px">
+
+        <div style="padding:5px 0 0 4px;font-size:16px;color:#595959;font-weight:bold">
+
+        
+
+            upcoming Top Picks for this week
+
+        
+
+        </div>
+
+        <table style="padding:10px 0 10px 0">
+
+            <tbody><tr>
+
+                <% @tpoccurrences.each do |occurrence|%>
+                    <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
+
+                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
+
+                        
+
+
+                        <a href="http://www.halfpastnow.com/picks?event_id=<%=occurrence.id%>" target="_blank">
+
+                            <div style="background: url(<%=occurrence.event.cover_image_url%>);border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;width: 170px; height: 65px;">
+
+                            </div>
+
+                                <!-- <img title="" width="170" height="65" src="<%= occurrence.event.cover_image_url %>"> -->
+
+                            
+
+                        </a>
+
+                        <br>
+
+                        <div style="padding:2px">
+
+                            <a style="text-decoration:none" href="http://www.halfpastnow.com/picks?event_id=<%=occurrence.id%>" target="_blank">
+
+                                <div style="font-size:13px;color:#4f2740"><%= occurrence.event.title %></div>
+
+                            </a>
+
+                            
+
+                                <div style="font-size:11px;color:#777777">at <%= occurrence.event.venue.name %></div>
+
+                            
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+                <% end %>
+
+
+            
+
+            </tr>
+
+        </tbody></table>
+
+    </div>
 
 
 <!-- bookmarked Events -->
@@ -347,72 +419,6 @@
 
     </div>
 <% end %>
-<!-- end bookmarked events -->
-
-
-    <div style="margin:10px 0 10px 0;border:solid 0px #10add5;font-size:16px">
-
-        <div style="padding:5px 0 0 4px;font-size:16px;color:#595959;font-weight:bold">
-
-        
-
-            upcoming Top Picks for this week
-
-        
-
-        </div>
-
-        <table style="padding:10px 0 10px 0">
-
-            <tbody><tr>
-
-                <% @tpoccurrences.each do |occurrence|%>
-                    <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
-
-                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
-
-                        <a href="http://www.halfpastnow.com/picks?event_id=<%=occurrence.id%>" target="_blank">
-
-                            
-
-                                <img title="" width="170" height="65" src="<%= occurrence.event.cover_image_url %>">
-
-                            
-
-                        </a>
-
-                        <br>
-
-                        <div style="padding:2px">
-
-                            <a style="text-decoration:none" href="http://www.halfpastnow.com/picks?event_id=<%=occurrence.id%>" target="_blank">
-
-                                <div style="font-size:13px;color:#4f2740"><%= occurrence.event.title %></div>
-
-                            </a>
-
-                            
-
-                                <div style="font-size:11px;color:#777777">at <%= occurrence.event.venue.name %></div>
-
-                            
-
-                        </div>
-
-                    </div>
-
-                </td>
-
-                <% end %>
-
-
-            
-
-            </tr>
-
-        </tbody></table>
-
-    </div>
 
 
 
