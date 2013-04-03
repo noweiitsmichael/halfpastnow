@@ -218,6 +218,14 @@ class Occurrence < ActiveRecord::Base
       start_date_check = "occurrences.start >= '#{event_start_date}'"
       end_date_check = "occurrences.start <= '#{event_end_date}'"
 
+      # unless(params[:start_seconds].to_s.empty? && params[:end_seconds].to_s.empty?)
+      #   event_start_time = params[:start_seconds].to_s.empty? ? 0 : params[:start_seconds].to_i
+      #   event_end_time = params[:end_seconds].to_s.empty? ? 86400 : params[:end_seconds].to_i
+
+      #   start_time_check = "#{occurrence_start_time} >= #{event_start_time}"
+      #   end_time_check = "#{occurrence_start_time} <= #{event_end_time}"
+      # end
+
       if Time.now.hour < 17
         start_date_where = "now() - interval '2 hours'"
       else
@@ -354,17 +362,17 @@ class Occurrence < ActiveRecord::Base
     #           WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS NOT TRUE
     #           ORDER BY events.id, occurrences.start"
     
-    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{join_cache_indicator}_#{search_match}_#{occurrence_match}_#{location_match}_#{tags_cache_included}_#{tags_cache_excluded}_#{low_price_match}_#{high_price_match}_#{start_date_where}")
-    queryResult = Rails.cache.read(really_long_cache_name)
-    if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
-      queryResult = ActiveRecord::Base.connection.select_all(query)
-      Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
-    else
-      puts "**************** Cache FOUND for search query!!! ****************"
-    end
-    # queryResult = ActiveRecord::Base.connection.select_all(query) 
+    # really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{join_cache_indicator}_#{search_match}_#{occurrence_match}_#{location_match}_#{tags_cache_included}_#{tags_cache_excluded}_#{low_price_match}_#{high_price_match}_#{start_date_where}")
+    # queryResult = Rails.cache.read(really_long_cache_name)
+    # if (queryResult == nil)
+    #   puts "**************** No cache found for search query ****************"
+    #   queryResult = ActiveRecord::Base.connection.select_all(query)
+    #   Rails.cache.write(really_long_cache_name, queryResult)
+    #   puts "**************** Cache Set for search Query ****************"
+    # else
+    #   puts "**************** Cache FOUND for search query!!! ****************"
+    # end
+    queryResult = ActiveRecord::Base.connection.select_all(query) 
 
     # @event_ids = queryResult.collect { |e| e["event_id"] }.uniq
     # @str_array = @event_ids.collect{|i| i.to_i}.join(',')
