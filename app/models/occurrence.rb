@@ -239,11 +239,10 @@ class Occurrence < ActiveRecord::Base
 
       unless(params[:day].to_s.empty?)
         event_days = params[:day].collect { |day| day.to_i } * ','
-
         day_check = "#{event_days ? "occurrences.day_of_week IN (#{event_days})" : "TRUE" }"
       end
 
-      occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{day_check}" #AND #{start_time_check} AND #{end_time_check}
+      occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check} AND #{day_check}" 
 
       puts occurrence_match
 
@@ -361,6 +360,8 @@ class Occurrence < ActiveRecord::Base
                 #{join_clause}
               WHERE #{where_clause} AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
               ORDER BY events.id, occurrences.start LIMIT 1000"
+
+    puts query
     # query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, events.title AS event_title, events.description AS event_description, tags.name AS tag_name, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
     #           FROM occurrences 
     #             #{join_clause}
