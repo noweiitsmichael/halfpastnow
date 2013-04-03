@@ -218,13 +218,13 @@ class Occurrence < ActiveRecord::Base
       start_date_check = "occurrences.start >= '#{event_start_date}'"
       end_date_check = "occurrences.start <= '#{event_end_date}'"
 
-      # unless(params[:start_seconds].to_s.empty? && params[:end_seconds].to_s.empty?)
-      #   event_start_time = params[:start_seconds].to_s.empty? ? 0 : params[:start_seconds].to_i
-      #   event_end_time = params[:end_seconds].to_s.empty? ? 86400 : params[:end_seconds].to_i
+      unless(params[:start_seconds].to_s.empty? && params[:end_seconds].to_s.empty?)
+        event_start_time = params[:start_seconds].to_s.empty? ? 0 : params[:start_seconds].to_i
+        event_end_time = params[:end_seconds].to_s.empty? ? 86400 : params[:end_seconds].to_i
 
-      #   start_time_check = "#{occurrence_start_time} >= #{event_start_time}"
-      #   end_time_check = "#{occurrence_start_time} <= #{event_end_time}"
-      # end
+        start_time_check = "#{occurrence_start_time} >= #{event_start_time}"
+        end_time_check = "#{occurrence_start_time} <= #{event_end_time}"
+      end
 
       if Time.now.hour < 17
         start_date_where = "now() - interval '2 hours'"
@@ -239,8 +239,9 @@ class Occurrence < ActiveRecord::Base
         day_check = "#{event_days ? "occurrences.day_of_week IN (#{event_days})" : "TRUE" }"
       end
 
-      occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check} AND #{day_check}"
+      occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{day_check}" #AND #{start_time_check} AND #{end_time_check}
 
+      puts occurrence_match
 
       # location
       if(params[:lat_min].to_s.empty? || params[:long_min].to_s.empty? || params[:lat_max].to_s.empty? || params[:long_max].to_s.empty?)
