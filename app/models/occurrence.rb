@@ -212,11 +212,7 @@ class Occurrence < ActiveRecord::Base
         event_end_date = Date.parse(params[:end_date]).advance(:days => 1)
       else
         puts "empty"
-        if Time.now.hour < 21
-          event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_i == -1) ? 365000 : params[:end_days].to_i + 1))
-        else
-          event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 2 : (params[:end_days].to_i == -1) ? 365000 : params[:end_days].to_i + 1))
-        end
+        event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_i == -1) ? 365000 : params[:end_days].to_i + 1))
       end
 
       start_date_check = "occurrences.start >= '#{event_start_date}'"
@@ -231,9 +227,9 @@ class Occurrence < ActiveRecord::Base
       end
 
       if Time.now.hour < 17
-        start_date_where = Time.now - 2.hours #"now() - interval '2 hours'"
+        start_date_where = "'#{(Time.now - 2.hours)}'" #"now() - interval '2 hours'"
       else
-        start_date_where = Time.now - 4.hours #"now() - interval '4 hours'"
+        start_date_where = "'#{(Time.now - 4.hours)}'" #"now() - interval '4 hours'"
       end
 
 
@@ -362,23 +358,23 @@ class Occurrence < ActiveRecord::Base
               ORDER BY events.id, occurrences.start LIMIT 1000"
 
     puts query
-    # query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, events.title AS event_title, events.description AS event_description, tags.name AS tag_name, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-    #           FROM occurrences 
-    #             #{join_clause}
-    #           WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS NOT TRUE
-    #           ORDER BY events.id, occurrences.start"
+    query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, events.title AS event_title, events.description AS event_description, tags.name AS tag_name, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+              FROM occurrences 
+                #{join_clause}
+              WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS NOT TRUE
+              ORDER BY events.id, occurrences.start"
     
-    # really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{join_cache_indicator}_#{search_match}_#{occurrence_match}_#{location_match}_#{tags_cache_included}_#{tags_cache_excluded}_#{low_price_match}_#{high_price_match}_#{start_date_where}")
-    # queryResult = Rails.cache.read(really_long_cache_name)
-    # if (queryResult == nil)
-    #   puts "**************** No cache found for search query ****************"
-    #   queryResult = ActiveRecord::Base.connection.select_all(query)
-    #   Rails.cache.write(really_long_cache_name, queryResult)
-    #   puts "**************** Cache Set for search Query ****************"
-    # else
-    #   puts "**************** Cache FOUND for search query!!! ****************"
-    # end
-    queryResult = ActiveRecord::Base.connection.select_all(query) 
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{join_cache_indicator}_#{search_match}_#{occurrence_match}_#{location_match}_#{tags_cache_included}_#{tags_cache_excluded}_#{low_price_match}_#{high_price_match}_#{start_date_where}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
+    # queryResult = ActiveRecord::Base.connection.select_all(query) 
 
     # @event_ids = queryResult.collect { |e| e["event_id"] }.uniq
     # @str_array = @event_ids.collect{|i| i.to_i}.join(',')
