@@ -242,13 +242,14 @@
                     <% if picklists.size > 0 %>
                     <% picklists.take(3).each_with_index do |pList,index| %>
 
-                        <a href="http://www.halfpastnow.com/picks/find/<%= pList.id %>" <%= image_tag pList.picture_url(:mini) || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
-
+                        
+                        <img style="float:left;" src="pList.picture_url(:mini)" alt="LGBT" height="25" border="0" width="25">
                         
 
                     <% end %>
-                    <% end %>
                     <em style="position: relative;top: -5px;margin-left: 2px;">on <%= picklists.size %> top picks <%= picklists.size == 1 ? "list" : "lists" %></em>
+                    <% end %>
+                    
                                 
                 </div>
              </td>
