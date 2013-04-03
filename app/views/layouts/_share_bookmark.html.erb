@@ -130,15 +130,12 @@
 		
 		$('.bookmark-share').click(function() {
 			console.log("Anything?????");
-
 		});
 
 		$('.bookmark-share .email').click(function() {
 			var url = 'mailto:?body=' + link;
-
 	      	window.open(url, '_blank');
 	      	window.focus();
-
 		});
 		
 		$('.bookmark-share .facebook').click(function() {      
@@ -159,6 +156,7 @@
 			window.open(url, '_blank');
 			window.focus();
 		});
+
 		$('.bookmark-share .comment-tp .add-tp').click(function() {
 			var that = $('.add-tp');
 			if (toggle) {
@@ -167,6 +165,7 @@
 			}
 			else {
 				if(that.hasClass('add')) {
+					submit_comment();
 					$('.popup-box').show();
 				}
 				else{
@@ -175,16 +174,7 @@
 				
 			}
 			toggle = !toggle;
-			
-			
-
-			// $('.bookmark-share .comment-tp .popup-box').hidden;
 		});
-		// $('.bookmark-share .gcal').click(function() {
-		// 	var url = '<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fsecret-citadel-5147.herokuapp.com%2F%3Fevent_id%3D1&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=80&amp;appId=449267651794206" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>';
-		// 	window.open(url, '_blank');
-		// 	window.focus();
-		// });
 	});
 	function submit_comment()
       {	
@@ -300,9 +290,9 @@
 			<div class="comment-tp">
 				<span class="add-tp  <%= @bookmarkFeaturedListId.nil? ? "add" : "remove" %>">TP</span>
 				<div class="popup-box">
-					<label> Add top pick (comment optional)</label>
+					<label> Top Pick Added! Include a comment too (optional)!</label>
 					<textarea class="comment-text" style="color:black;" placeholder="Comment"></textarea>
-					<button onclick='return submit_comment()'>Add Top Pick / Comment</button>
+					<button onclick='return submit_comment()'>Save Comment</button>
 				</div>
 				<div class="popup-box-1">
 					<label> Edit comment (Optional)</label>
