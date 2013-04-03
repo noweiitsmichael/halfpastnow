@@ -71,10 +71,10 @@ class Occurrence < ActiveRecord::Base
       params[:channel_id] = params[:stream_id]
     end
     # Different default for SXSW
-    if (params[:action] == "sxsw") && (params[:channel_id].to_s.empty?)
-        params[:channel_id] = 416
-        # params[:channel_id] = 4
-    end
+    # if (params[:action] == "sxsw") && (params[:channel_id].to_s.empty?)
+    #     params[:channel_id] = 416
+    #     # params[:channel_id] = 4
+    # end
     unless(params[:channel_id].to_s.empty?)
         channel = Channel.find(params[:channel_id].to_i)
         # channel = Channel.find(4)
@@ -217,14 +217,6 @@ class Occurrence < ActiveRecord::Base
 
       start_date_check = "occurrences.start >= '#{event_start_date}'"
       end_date_check = "occurrences.start <= '#{event_end_date}'"
-
-      unless(params[:start_seconds].to_s.empty? && params[:end_seconds].to_s.empty?)
-        event_start_time = params[:start_seconds].to_s.empty? ? 0 : params[:start_seconds].to_i
-        event_end_time = params[:end_seconds].to_s.empty? ? 86400 : params[:end_seconds].to_i
-
-        start_time_check = "#{occurrence_start_time} >= #{event_start_time}"
-        end_time_check = "#{occurrence_start_time} <= #{event_end_time}"
-      end
 
       if Time.now.hour < 17
         start_date_where = "now() - interval '2 hours'"
