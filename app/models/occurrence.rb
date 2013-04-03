@@ -71,10 +71,10 @@ class Occurrence < ActiveRecord::Base
       params[:channel_id] = params[:stream_id]
     end
     # Different default for SXSW
-    if (params[:action] == "sxsw") && (params[:channel_id].to_s.empty?)
-        params[:channel_id] = 416
-        # params[:channel_id] = 4
-    end
+    # if (params[:action] == "sxsw") && (params[:channel_id].to_s.empty?)
+    #     params[:channel_id] = 416
+    #     # params[:channel_id] = 4
+    # end
     unless(params[:channel_id].to_s.empty?)
         channel = Channel.find(params[:channel_id].to_i)
         # channel = Channel.find(4)
@@ -227,20 +227,20 @@ class Occurrence < ActiveRecord::Base
       end
 
       if Time.now.hour < 17
-        start_date_where = "now() - interval '2 hours'"
+        start_date_where = "'#{(Time.now - 2.hours)}'" #"now() - interval '2 hours'"
       else
-        start_date_where = "now() - interval '4 hours'"
+        start_date_where = "'#{(Time.now - 4.hours)}'" #"now() - interval '4 hours'"
       end
 
 
       unless(params[:day].to_s.empty?)
         event_days = params[:day].collect { |day| day.to_i } * ','
-
         day_check = "#{event_days ? "occurrences.day_of_week IN (#{event_days})" : "TRUE" }"
       end
 
-      occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check} AND #{day_check}"
+      occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check} AND #{day_check}" 
 
+      puts occurrence_match
 
       # location
       if(params[:lat_min].to_s.empty? || params[:long_min].to_s.empty? || params[:lat_max].to_s.empty? || params[:long_max].to_s.empty?)
@@ -356,6 +356,8 @@ class Occurrence < ActiveRecord::Base
                 #{join_clause}
               WHERE #{where_clause} AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
               ORDER BY events.id, occurrences.start LIMIT 1000"
+
+    puts query
     # query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, events.title AS event_title, events.description AS event_description, tags.name AS tag_name, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
     #           FROM occurrences 
     #             #{join_clause}
