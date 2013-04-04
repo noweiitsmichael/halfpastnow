@@ -170,7 +170,7 @@
             <td  style="background-color:#f2f2f2;border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;width: 198px;
     height: 125px;overflow-y: hidden;overflow-x: hidden;">
 
-                <a href="www.halfpastnow.com/?event_id=<%= occurrence.id %>" target="_blank">
+                <a href="http://www.halfpastnow.com/?event_id=<%= occurrence.id %>" target="_blank">
                     
                     <div style="width:198px; height:125px; border: solid thin gray;overflow:hidden;">
                         <img src="<%=occurrence.event.cover_image_url%>" alt="<%=occurrence.event.title%>" width="250px" height="125px"  >
@@ -357,11 +357,12 @@
 
                         <div style="min-height:130px;padding:0;background-color:#f2f2f2">
 
-                            <a href="http://www.halfpastnow.com/picks?event_id=<%=occurrence.id%>" target="_blank">
-                                <div style="background: url(<%=occurrence.event.cover_image_url%>);border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;width: 170px; height: 65px;background-position: center; background-size: cover;">
+                            
 
-                                </div>
-                                 
+                            <a href="http://www.halfpastnow.com/picks?event_id=<%=occurrence.id%>" target="_blank">
+                               <div style="width:170px; height:65px; border: solid thin gray;overflow:hidden;">
+                                    <img src="<%=occurrence.event.cover_image_url%>" alt="<%=occurrence.event.title%>" width="250px" height="125px"  >
+                                </div>  
                              </a>
 
                             <br>
