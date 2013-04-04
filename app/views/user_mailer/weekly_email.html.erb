@@ -167,13 +167,12 @@
     <tbody >
         <tr style="font-size:0;">
 
-            <td  style="background: url(<%=occurrence.event.cover_image_url%>);border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;width: 198px;
-    height: 125px;">
+            <td  >
 
                 <a href="www.halfpastnow.com/?event_id=<%= occurrence.id %>" target="_blank">
                     
-                    <div style="width:198px; height:100px; border: solid thin black; overflow-y: hidden;">
-                        <img src="<%=occurrence.event.cover_image_url%>" alt="<%=occurrence.event.title%>" width="198px" height="100px">
+                    <div style="width:205px; height:125px; border: solid thin black; overflow-y: hidden;">
+                        <img src="<%=occurrence.event.cover_image_url%>" alt="<%=occurrence.event.title%>" width="205px" height="135px">
                     </div>
 
 
@@ -267,7 +266,7 @@
                     <% if picklists.size > 0 %>
                     <% picklists.take(3).each_with_index do |pList,index| %>
 
-                        <a href="www.halfpastnow.com/picks/find/<%= pList.id %>" target="_blank">
+                        <a href="http://www.halfpastnow.com/picks/find/<%= pList.id %>" target="_blank">
                             <img style="float:left;margin-left:5px;" src="<%=pList.picture_url(:mini)%>" height="25" border="0" width="25">
                         </a>
 
