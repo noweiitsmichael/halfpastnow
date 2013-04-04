@@ -184,18 +184,23 @@
             <td width="356" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;"><%= truncate(strip_tags(occurrence.event.description), :length => 100) %>... <a style="color:#4f2740;text-decoration:none" href="http://www.halfpastnow.com/search?event_id=<%= occurrence.id %>" target="_blank"><b>Read More»</b></a>
                 
                 <div >
-                    <i>
+                    <table>
+                        <tbody>
+                            <td width="500px">
+                                <i>
                         
-                        <% a.each do |tag| %>
-                            
-                                <span style="font-size:16px;line-height:25px;color: #4f2740;"><%= tag %> </span>
-                            
-                            
-                        <% end %>
-                        
-                       
-                    </i>
-                    <a href="www.halfpastnow.com/?event_id=<%= occurrence.id %>" target="_blank" style="border: 1px solid #9C8FAD;
+                                    <% a.each do |tag| %>
+                                        
+                                            <span style="font-size:16px;line-height:25px;color: #4f2740;"><%= tag %> </span>
+                                        
+                                        
+                                    <% end %>
+                                    
+                                   
+                                </i>
+                            </td>
+                            <td with="82px">
+                                 <a href="www.halfpastnow.com/?event_id=<%= occurrence.id %>" target="_blank" style="border: 1px solid #9C8FAD;
                                                             font-size: 14px;
                                                             background-color: #a700a7;
                                                             color: white;
@@ -215,6 +220,12 @@
                                                             border-top-left-radius: 2px;
                                                             border-top-right-radius: 2px;
                                                             box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3),0 1px 0 rgba(255, 255, 255, 0.4) inset;float:right;" >Visit Event</a>
+                            </td>
+                        </tbody>
+
+                    </table>
+                    
+                   
                 </div>
                 <div>
                     <div style="font-size:14px"><i> Selected because... </i> </div>
