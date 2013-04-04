@@ -19,7 +19,7 @@ class UserMailer < ActionMailer::Base
 
 
     @url  = "http://halfpastnow.com/login"
-    mail(:to => @user.email, :subject => "Welcome to halfpastnow!", :from => "support@halfpastnow.com")
+    mail(:to => @user.email, :subject => "Welcome to halfpastnow!", :from => "Half Past Now <support@halfpastnow.com>")
   end
   def weekly_email(user)
   	puts "sending email..."
