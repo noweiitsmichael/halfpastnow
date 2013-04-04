@@ -289,76 +289,7 @@
 <!-- end bookmarked events -->
 
 
-    <div style="margin:10px 0 10px 0;border:solid 0px #10add5;font-size:16px">
-
-        <div style="padding:5px 0 0 4px;font-size:16px;color:#595959;font-weight:bold">
-
-        
-
-            upcoming Top Picks for this week
-
-        
-
-        </div>
-
-        <table style="padding:10px 0 10px 0">
-
-            <tbody><tr>
-
-                <% @tpoccurrences.each do |occurrence|%>
-                    <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
-
-                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
-
-                        
-
-
-                        <a href="http://www.halfpastnow.com/picks?event_id=<%=occurrence.id%>" target="_blank">
-
-                            <div style="background: url(<%=occurrence.event.cover_image_url%>);border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;width: 170px; height: 65px; background-position: center; background-size: cover;">
-
-                            </div>
-
-                                <!-- <img title="" width="170" height="65" src="<%= occurrence.event.cover_image_url %>"> -->
-
-                            
-
-                        </a>
-
-                        <br>
-
-                        <div style="padding:2px">
-
-                            <a style="text-decoration:none" href="http://www.halfpastnow.com/picks?event_id=<%=occurrence.id%>" target="_blank">
-
-                                <div style="font-size:13px;color:#4f2740"><%= occurrence.event.title %></div>
-
-                            </a>
-
-                            
-
-                                <div style="font-size:11px;color:#777777">at <%= occurrence.event.venue.name %></div>
-
-                            
-
-                        </div>
-
-                    </div>
-
-                </td>
-
-                <% end %>
-
-
-            
-
-            </tr>
-
-        </tbody></table>
-
-    </div>
-
-
+    
 <!-- bookmarked Events -->
 <% if @bookmarkedEvents.count > 0 %>
 
@@ -572,7 +503,12 @@
 
                 </td>
 
-
+                <td colspan="2" valign="middle" align="center">
+                            <div>
+                                <a href="https://twitter.com/halfpastnow" target="_blank">Follow on Twitter</a> | <a href="https://www.facebook.com/halfpastnow" target="_blank">Friend on Facebook
+                                </a>
+                            </div>
+                </td>
 
             
 
