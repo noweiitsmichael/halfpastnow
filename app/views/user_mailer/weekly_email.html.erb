@@ -171,11 +171,10 @@
     height: 125px;">
 
                 <a href="www.halfpastnow.com/?event_id=<%= occurrence.id %>" target="_blank">
-                    <div style="height:100px;width:198px;">
-                      hello world
-                    </div>
-                  
                     
+                    <div style="width:198px; height:100px; border: solid thin black; overflow-y: hidden;">
+                        <img src="<%=occurrence.event.cover_image_url%>" alt="<%=occurrence.event.title%>" width="198px" height="100px">
+                    </div>
 
 
                 </a>
