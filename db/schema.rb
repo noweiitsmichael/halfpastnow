@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130401153923) do
+ActiveRecord::Schema.define(:version => 20130405215807) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -116,6 +116,13 @@ ActiveRecord::Schema.define(:version => 20130401153923) do
   end
 
   add_index "channels", ["user_id"], :name => "index_channels_on_user_id"
+
+  create_table "emails", :force => true do |t|
+    t.string   "string"
+    t.string   "email"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "embeds", :force => true do |t|
     t.datetime "created_at",     :null => false
@@ -358,6 +365,7 @@ ActiveRecord::Schema.define(:version => 20130401153923) do
     t.string   "fb_picture"
     t.string   "role"
     t.string   "ref"
+    t.boolean  "subscribe"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
