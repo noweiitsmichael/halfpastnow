@@ -338,9 +338,8 @@ class UsersController < ApplicationController
 
   def unsubscribe
     email = params[:email].to_s
-    u=User.find_by_email(email)
-    u.subscribe = false
-    u.save
+    e=Email.find_by_email(email)
+    e.destroy
     respond_to do |format|
       format.html { render action: "unsubscribe" }
       
