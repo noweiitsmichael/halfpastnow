@@ -60,9 +60,13 @@ class UserMailer < ActionMailer::Base
 
 
     occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check}"
-
-    tags_mush = channel.included_tags.split(",").join(",")
-    tag_include_match = "tags.id IN (#{tags_mush})"
+    tgs = channel.included_tags
+    tags_mush = tgs.split(",").join(",")
+    tag_include_match = "TRUE"
+    if tgs.size >0
+      tag_include_match = "tags.id IN (#{tags_mush})"  
+    end
+    
     where_clause = "#{occurrence_match} AND #{tag_include_match}"
 
     order_by = "CASE events.views 
