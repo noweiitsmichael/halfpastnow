@@ -153,7 +153,7 @@
               };
               
             }
-            
+            $('.preferences .form-success').hide();
             console.log("Checkebox : "+str);
             $.get('/channels/updateReg?id=<%=current_user.ref%>'+'&included_tags='+str, function(data) {
               
