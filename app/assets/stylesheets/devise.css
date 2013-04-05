@@ -88,7 +88,7 @@ html, body
 .reform{
 	
 	margin-left:10px;
-	margin-top: 30px;
+	margin-top: 25px;
 }
 .pretitle{
 	font-style: italic;
@@ -99,20 +99,21 @@ html, body
 }
 .refimg{
 	float: left;
-	margin-left: -5px;
-	width: 35px;
-	height: 35px;
+	margin-left: 5px;
+	width: 45px;
+	height: 45px;
+	margin-top: -15px;
 }
 .refname{
 	float: left;
-	margin-left: 10px;
+	margin-left: -6px;
 	margin-top: -1px;
 }
 .reflabel{
 	float: left;
 	margin-left: 4px;
 	font-size: 18px;
-	margin-top: -8px;
+	margin-top: -21px;
 }
 .refbtn{
 	margin-top: 20px;
