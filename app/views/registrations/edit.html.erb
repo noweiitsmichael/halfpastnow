@@ -4,12 +4,20 @@
   <script type="text/javascript">
     var jcrop_api;
 
+    
     $(function() {
       $('#profile-nav li').click(function() {
         $('#profile-nav li').removeClass('selected');
         $(this).addClass('selected');
         $('#profile-menu > div').removeClass('selected');
         $('#profile-menu > div:nth-child(' + ($(this).index() + 1) + ')').addClass('selected');
+
+      });
+
+      $('.refbtn').click(function() {
+        console.log("Update");
+         $('.preferences .form-success').show();
+
       });
 
       $('.profile .edit_user').ajaxForm({
@@ -87,6 +95,7 @@
         $('#user_crop_y').val(coords.y);
         $('#user_crop_w').val(coords.w);
         $('#user_crop_h').val(coords.h);
+
         $('#preview').css({
           width: Math.round(150 / coords.w * $('#cropbox').width()) + 'px',
           height: Math.round(150 / coords.h * $('#cropbox').height()) + 'px',
@@ -96,7 +105,7 @@
       }
 
       $(function() {
-
+         $('.preferences .form-success').hide();
         $('.stream').on('click', ' .action.rename', function() {
           var id = $(this).attr('stream-id');
           var name = $(this).attr('stream-name');
@@ -314,7 +323,7 @@
     </div>
      <div class="preferences <%= (params[:email].nil?) ? "": "selected" %>">
       <!-- Create a reference channel for current user if it does not exist -->
-      <div class="pretitle"> Choose your categories for your personalized email
+      <div> <h2>Choose your categories for your personalized email</h2>
       </div>
       <% if current_user.ref.nil? %>
         <% c =  Channel.new %>
@@ -325,86 +334,113 @@
         <% current_user.save %>
         <form name="form" method="post">
           <div class = "reform"> 
-            <img border="0" src="http://thefinereport.com/wp-content/imagescaler/f31364f0389e5a2c04fca64638188f52.jpg" alt="Live Music" width="50" height="50"><br>
-            <input  type="checkbox" name="cat" value="<%=Tag.find_by_name("Music").id%>" checked onclick="check(document.form.cat)"> <img border="0" src="http://thefinereport.com/wp-content/imagescaler/f31364f0389e5a2c04fca64638188f52.jpg" alt="Live Music" width="50" height="50"><br>
+            <img class="refimg" border="0" src="/assets/music_beamed_note.png" alt="Live Music" ><br>
+            <label class="reflabel" for="Music">Live Music</label>
+            <input class="refname"  type="checkbox" name="cat" value="<%=Tag.find_by_name("Music").id%>" checked onclick="check(document.form.cat)" id="Music">
+            
+             
+          </div>
+          
+          
+
+          <div class = "reform"> 
+            <img class="refimg" border="0" src="/assets/weights.png" alt="Fitness"><br>
+             <label class="reflabel" for="Fitness">Fitness</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Fitness").id%>" checked onclick="check(document.form.cat)" id="Fitness"><br>
           </div>
 
           <div class = "reform"> 
-            <img border="0" src="https://si0.twimg.com/profile_images/2484501382/running_man_logo_normal.jpg" alt="Fitness" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Fitness").id%>" checked onclick="check(document.form.cat)">Fitness<br>
+            <img class="refimg" border="0" src="/assets/terminal2.png" alt="Tech"><br>
+            <label class="reflabel" for="Tech">Tech</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Tech").id%>" checked onclick="check(document.form.cat)"><br>
           </div>
 
           <div class = "reform"> 
-            <img border="0" src="http://digitalethos.org/wp-content/uploads/2012/11/3rd-Generation-of-Websites-and-Inbound-Marketing-50x50.png" alt="Tech" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Tech").id%>" checked onclick="check(document.form.cat)">Tech<br>
-          </div>
-
-          <div class = "reform"> 
-            <img border="0" src="http://business-icon.com/material/096.png" alt="Live Music" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Charity / Non-Profit").id%>" checked onclick="check(document.form.cat)">Non-Profit<br>
+            <img class="refimg" border="0" src="/assets/hand_handshake.png" alt="Live Music"><br>
+             <label class="reflabel" for="Non-Profit">Non-Profit</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Charity / Non-Profit").id%>" checked onclick="check(document.form.cat)" id="Non-Profit"><br>
           </div>
           <div class = "reform"> 
-            <img border="0" src="http://engr.case.edu/merat_francis/eecs490f06/Images/Mona_Lisa.jpg" alt="Art" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Art").id%>" checked onclick="check(document.form.cat)">Arts<br>
+            <img class="refimg" border="0" src="/assets/palette.png" alt="Art"><br>
+            <label class="reflabel" for="Arts">Arts</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Art").id%>" checked onclick="check(document.form.cat)" id="Arts"><br>
           </div>
           <div class = "reform"> 
-            <img border="0" src="http://boster-kobayashi.com/blog/wp-content/uploads/2012/05/playground_icon_BKA.jpg" alt="Kid Friendly" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Kid Friendly").id%>" checked onclick="check(document.form.cat)">Kid Friendly<br>
+            <img class="refimg" border="0" src="/assets/teddy_bear.png" alt="Kid Friendly"><br>
+            <label class="reflabel" for="Kid">Kid Friendly</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Kid Friendly").id%>" checked onclick="check(document.form.cat)" id="Kid"><br>
           </div>
           <div class = "reform"> 
-             <img border="0" src="http://www.lifechurch.tv/assets/jobs/icon_heart-3c3a5c611f0dd5b19b782308f3c33dbc.png" alt="Live Music" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Romantic").id%>" checked onclick="check(document.form.cat)">Romantic<br>
+             <img class="refimg" border="0" src="/assets/heart.png" alt="Live Music"><br>
+             <label class="reflabel" for="Romantic">Romantic</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Romantic").id%>" checked onclick="check(document.form.cat)" id="Romantic"><br>
           </div>
           <div class = "reform"> 
-            <img border="0" src="http://cdn6.staztic.com/cdn/logos/rainbow-flag-sticker-widet-10.png:w48h48" alt="LGBT" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("LGBT").id%>" checked onclick="check(document.form.cat)">LGBT<br>
+            <img class="refimg" border="0" src="/assets/color.png" alt="LGBT"><br>
+            <label class="reflabel" for="LGBT">LGBT</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("LGBT").id%>" checked onclick="check(document.form.cat)" id="LGBT"><br>
           </div>
           <div class = "reform"> 
-             <img border="0" src="http://www.goga-gastro.pl/media/products/a464b2529fcfcbb9c46f6fa954bed418/images/thumbnail/small_400104.jpg" alt="HH" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Food/Drink Specials").id%>" checked onclick="check(document.form.cat)">Food/Drinks Special<br>
+             <img class="refimg" border="0" src="/assets/cocktail.png" alt="HH"><br>
+             <label class="reflabel" for="HH">Food/Drinks Special</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Food/Drink Specials").id%>" checked onclick="check(document.form.cat)" id="HH"><br>
           </div>
         </form>
-
+         <div class="refbtn right nice-button" >Update Your Preferences</div>
+         <span style="margin-top: -25px; float: left; display: block; margin-left: 180px;" class="form-success form-indicator icon-ok-sign" ></span>
       <% else %>
         <% @refincluded_tags = Channel.find(current_user.ref.to_i).included_tags %>
         <form name="form" method="post">
           <div class = "reform"> 
-            <img border="0" src="http://thefinereport.com/wp-content/imagescaler/f31364f0389e5a2c04fca64638188f52.jpg" alt="Live Music" width="50" height="50"><br>
-            <input type="checkbox" style="vertical-align:-0.1em;" name="cat" value="<%=Tag.find_by_name("Music").id%>"  <%= (@refincluded_tags.include? Tag.find_by_name("Music").id.to_s) ? "checked" : "" %> onclick="check(document.form.cat)">Live Music<br>
+            <img class="refimg" border="0" src="/assets/music_beamed_note.png" alt="Live Music" ><br>
+            <label class="reflabel" for="Music">Live Music</label>
+            <input class="refname" type="checkbox" style="vertical-align:-0.1em;" name="cat" value="<%=Tag.find_by_name("Music").id%>"  <%= (@refincluded_tags.include? Tag.find_by_name("Music").id.to_s) ? "checked" : "" %> onclick="check(document.form.cat)" id="Music">
+            
+          </div>
+          
+          <div class = "reform"> 
+            <img class="refimg" border="0" src="/assets/weights.png" alt="Fitness"><br>
+            <label class="reflabel" for="Fitness">Fitness</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Fitness").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Fitness").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="Fitness"><br>
           </div>
           <div class = "reform"> 
-            <img border="0" src="https://si0.twimg.com/profile_images/2484501382/running_man_logo_normal.jpg" alt="Fitness" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Fitness").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Fitness").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Fitness<br>
+            <img class="refimg" border="0" src="/assets/terminal2.png" alt="Tech"><br>
+            <label class="reflabel" for="Tech">Tech</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Tech").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Tech").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="Tech"><br>
           </div>
           <div class = "reform"> 
-            <img border="0" src="http://digitalethos.org/wp-content/uploads/2012/11/3rd-Generation-of-Websites-and-Inbound-Marketing-50x50.png" alt="Tech" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Tech").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Tech").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Tech<br>
+            <img class="refimg" border="0" src="/assets/hand_handshake.png" alt="Non Profit"><br>
+            <label class="reflabel" for="Non-Profit">Non-Profit</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Charity / Non-Profit").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Charity / Non-Profit").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="Non-Profit"><br>
           </div>
           <div class = "reform"> 
-            <img border="0" src="http://business-icon.com/material/096.png" alt="Non Profit" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Charity / Non-Profit").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Charity / Non-Profit").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Non-Profit<br>
+            <img class="refimg" border="0" src="/assets/palette.png" alt="Art"><br>
+            <label class="reflabel" for="Arts">Arts</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Art").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Art").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="Arts"><br>
           </div>
           <div class = "reform"> 
-            <img border="0" src="http://engr.case.edu/merat_francis/eecs490f06/Images/Mona_Lisa.jpg" alt="Art" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Art").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Art").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Arts<br>
+            <img class="refimg" border="0" src="/assets/teddy_bear.png" alt="Kid Friendly"><br>
+            <label class="reflabel" for="Kid">Kid Friendly</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Kid Friendly").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Kid Friendly").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="Kid"><br>
           </div>
           <div class = "reform"> 
-            <img border="0" src="http://boster-kobayashi.com/blog/wp-content/uploads/2012/05/playground_icon_BKA.jpg" alt="Kid Friendly" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Kid Friendly").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Kid Friendly").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Kid Friendly<br>
+             <img class="refimg" border="0" src="/assets/heart.png" alt="Live Music"><br>
+             <label class="reflabel" for="Romantic">Romantic</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Romantic").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Romantic").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="Romantic"><br>
           </div>
           <div class = "reform"> 
-             <img border="0" src="http://www.lifechurch.tv/assets/jobs/icon_heart-3c3a5c611f0dd5b19b782308f3c33dbc.png" alt="Live Music" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Romantic").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Romantic").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Romantic<br>
+            <img class="refimg" border="0" src="/assets/color.png" alt="LGBT"><br>
+            <label class="reflabel" for="LGBT">LGBT</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("LGBT").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("LGBT").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="LGBT"><br>
           </div>
           <div class = "reform"> 
-            <img border="0" src="http://cdn6.staztic.com/cdn/logos/rainbow-flag-sticker-widet-10.png:w48h48" alt="LGBT" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("LGBT").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("LGBT").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">LGBT<br>
-          </div>
-          <div class = "reform"> 
-             <img border="0" src="http://www.goga-gastro.pl/media/products/a464b2529fcfcbb9c46f6fa954bed418/images/thumbnail/small_400104.jpg" alt="HH" width="50" height="50"><br>
-            <input type="checkbox" name="cat" value="<%=Tag.find_by_name("Food/Drink Specials").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Food/Drink Specials").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)">Food/Drinks Special<br>
+             <img class="refimg" border="0" src="/assets/cocktail.png" alt="HH"><br>
+             <label class="reflabel" for="HH">Food/Drinks Special</label>
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Food/Drink Specials").id%>" <%= (@refincluded_tags.include? Tag.find_by_name("Food/Drink Specials").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="HH"><br>
           </div>
         </form>
+        <div class="refbtn right nice-button" >Update Your Preferences</div>
+        <span style="margin-top: -25px; float: left; display: block; margin-left: 180px;" class="form-success form-indicator icon-ok-sign" ></span>
       <% end %>
       
      </div>
