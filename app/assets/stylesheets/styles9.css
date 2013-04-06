@@ -343,6 +343,92 @@ background-size: cover;
   margin-left: 270px;
 }
 
+#email-hero {
+  position: relative;
+  margin-top:34px;
+  background-color: #ddd;
+  background-image: url('/assets/kite-hero.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 420px; 
+  overflow: hidden;
+-webkit-background-size: cover;
+-khtml-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+  box-shadow: 0px 0px 8px #666;
+}
+
+#email-hero .hero-writing {
+  width: 900px;
+  margin: 0 auto;
+  margin-top: 20px;
+  text-align: right;
+  position: relative;
+}
+
+#email-hero .hero-label {
+  font-size: 42px;
+  font-weight: 700;
+}
+
+#email-hero .hero-label .hpn{
+  font-size: 42px;
+  font-weight: 700;
+  font-style: italic;
+  color: purple;
+  line-height: 1.4em;
+}
+
+#email-hero .hero-text {
+  font-size: 22px;
+  font-weight: 300;
+}
+
+#email-hero .left-column {
+  margin-top:30px;
+  float: left;
+  width: 420px;
+}
+
+#email-hero .right-column {
+  /*color: white;*/
+  padding: 10px;
+  /*margin-top:10px;*/
+  margin-left: 10px;
+  float: right;
+  width: 420px;
+  background-color:rgba(235, 235, 235, 0.75);
+  height: 360px;
+  text-align: center;
+}
+
+#email-hero .right-column INPUT[type=text] {
+  font-size:20px;
+  width: 200px;
+}
+
+#email-hero .nice-button.subscribe-button {
+  text-decoration: none;
+  border: 1px solid rgba(0,0,0,0.2);
+  text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
+  font-size:20px;
+  background-color: #A700A7;
+  padding: 1px 12px 2px 12px;
+  border-radius: 3px;
+  width: 140px;
+  margin: 0 auto;
+}
+
+#email-hero .fb-login-button {
+  color: white;
+}
+
+#email-hero .fb-login-button a:link {color:#FF0000;}      /* unvisited link */
+#email-hero .fb-login-button a:visited {color:#00FF00;}  /* visited link */
+#email-hero .fb-login-button a:hover {color:#FF00FF;}  /* mouse over link */
+#email-hero .fb-login-button a:active {color:#0000FF;}  /* selected link */
+
 #splash-actions {
   font-weight: 300; 
   text-align: center; 
@@ -2155,7 +2241,7 @@ input::-webkit-input-placeholder
 }
 
 .mode.shunt .window.lite {
-  width: 522px;
+  width: 650px;
 }
 
 .mode.shunt .window.lite .inner {
@@ -2177,12 +2263,46 @@ input::-webkit-input-placeholder
     background:white;
     padding: 0 30px 0;
     float:left;
-    width: 200px;
+    width: 263px;
     margin: 23px 0;
 }
 
 .mode.shunt .window.lite .method.signup {
     border-right: 1px dotted #888;
+}
+
+.mode.shunt .window.lite .nice-button.facebook-button, #email-hero .nice-button.facebook-button {
+  text-decoration: none;
+  border: 1px solid rgba(0,0,0,0.2);
+  text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
+  font-size:16px;
+  background-color: #415ea3;
+  padding: 8px 16px 8px 16px;
+  border-radius: 3px;
+  display:block;
+  width: 210px;
+  margin: 0 auto;
+  font-style: normal;
+}
+
+.mode.shunt .nice-button.-button a{
+  text-decoration: none;
+  color: white;
+}
+
+.mode.shunt .icon-facebook, #email-hero .icon-facebook {
+  line-height: 1em;
+  float: left;
+  font-size:22px;
+  border-right: 2px solid rgba(255, 255, 255,.1);
+  padding-right: 13px;
+  margin-left: -1px;
+  margin-right: 12px;
+}
+
+.mode.shunt .reasons-box {
+  background-color: #eee;
+  padding: 7px;
 }
 
 .mode .window.lite .new-channel-name {

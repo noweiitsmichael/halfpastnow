@@ -38,7 +38,7 @@ gem 'sanitize'
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
 # Use unicorn as the web server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Deploy with Capistrano
 # gem 'capistrano'
@@ -85,3 +85,7 @@ gem 'dalli'
 
 # gem 'eventfulapi'
 # gem 'eventbrite-client'
+
+## From Procfile:
+# web: bundle exec rails server thin -p $PORT
+# worker: bundle exec rake jobs:work

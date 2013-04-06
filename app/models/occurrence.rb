@@ -113,7 +113,7 @@ class Occurrence < ActiveRecord::Base
     end
 
     puts "....in find"
-    puts params
+    # puts params
     # @tags = Tag.includes(:parentTag, :childTags).all
     # @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
 
@@ -227,9 +227,9 @@ class Occurrence < ActiveRecord::Base
       end
 
       if Time.now.hour < 17
-        start_date_where = "'#{(Time.now - 2.hours)}'" #"now() - interval '2 hours'"
+        start_date_where = "'#{(Time.now - 2.hours)}'"
       else
-        start_date_where = "'#{(Time.now - 4.hours)}'" #"now() - interval '4 hours'"
+        start_date_where = "'#{(Time.now - 3.hours)}'" 
       end
 
 
@@ -240,7 +240,7 @@ class Occurrence < ActiveRecord::Base
 
       occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check} AND #{day_check}" 
 
-      puts occurrence_match
+      # puts occurrence_match
 
       # location
       if(params[:lat_min].to_s.empty? || params[:long_min].to_s.empty? || params[:lat_max].to_s.empty? || params[:long_max].to_s.empty?)
@@ -357,12 +357,7 @@ class Occurrence < ActiveRecord::Base
               WHERE #{where_clause} AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
               ORDER BY events.id, occurrences.start LIMIT 1000"
 
-    puts query
-    # query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id, events.id AS event_id, events.title AS event_title, events.description AS event_description, tags.name AS tag_name, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-    #           FROM occurrences 
-    #             #{join_clause}
-    #           WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS NOT TRUE
-    #           ORDER BY events.id, occurrences.start"
+    # puts query
     
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{join_cache_indicator}_#{search_match}_#{occurrence_match}_#{location_match}_#{tags_cache_included}_#{tags_cache_excluded}_#{low_price_match}_#{high_price_match}_#{start_date_where}")
     queryResult = Rails.cache.read(really_long_cache_name)
