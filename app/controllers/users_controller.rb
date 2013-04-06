@@ -111,7 +111,7 @@ class UsersController < ApplicationController
     end
     @user = User.find(params[:id])
     @bookmark_list=BookmarkList.where(:user_id => @user.id, :main_bookmarks_list => true).first
-    @bookmarks = @bookmark_list.all_bookmarked_events
+    @bookmarks = @bookmark_list.all_bookmarked_events.select{|b| (not b.event.nil? ) }
     
     puts @bookmarks
     respond_to do |format|
@@ -300,13 +300,19 @@ class UsersController < ApplicationController
 
   def friends
     puts "Check friends"
+    @myfriends = []
     unless current_user.uid.nil?
       # puts "FB User !!!!!"
       query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
-      @facebook ||= Koala::Facebook::API.new(current_user.fb_access_token)
+      begin
+      @facebook ||= Koala::Facebook::API.new(current_user.fb_access_token) 
+      rescue
+        redirect_to new_user_registration_url
+      end
       @f=@facebook.fql_query(query)
       # puts @f
-      @fs = current_user.friends.collect{|f| f.uid.to_s}
+      @myfriends = current_user.friends
+      @fs = @myfriends.collect{|f| f.uid.to_s}
       uids = @f.collect{|p| p["uid"].to_s}
      
       # puts ufs
@@ -323,8 +329,19 @@ class UsersController < ApplicationController
       end
     end
     @myfriends = current_user.friends
+    puts "end inquring"
     respond_to do |format|
       format.html { render action: "friends" }
+      
+    end
+  end
+
+  def unsubscribe
+    email = params[:email].to_s
+    e=Email.find_by_email(email)
+    e.destroy
+    respond_to do |format|
+      format.html { render action: "unsubscribe" }
       
     end
   end

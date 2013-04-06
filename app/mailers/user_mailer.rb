@@ -13,8 +13,13 @@ class UserMailer < ActionMailer::Base
       password: "chimeralabs"
     }
     @user = user
+    
+
+
+
+
     @url  = "http://halfpastnow.com/login"
-    mail(:to => @user.email, :subject => "Welcome to halfpastnow!", :from => "support@halfpastnow.com")
+    mail(:to => @user.email, :subject => "Welcome to halfpastnow!", :from => "Half Past Now <support@halfpastnow.com>")
   end
   def weekly_email(user)
   	puts "sending email..."
@@ -55,9 +60,13 @@ class UserMailer < ActionMailer::Base
 
 
     occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check}"
-
-    tags_mush = channel.included_tags.split(",").join(",")
-    tag_include_match = "tags.id IN (#{tags_mush})"
+    tgs = channel.included_tags
+    tags_mush = tgs.split(",").join(",")
+    tag_include_match = "TRUE"
+    if tgs.size >0
+      tag_include_match = "tags.id IN (#{tags_mush})"  
+    end
+    
     where_clause = "#{occurrence_match} AND #{tag_include_match}"
 
     order_by = "CASE events.views 
@@ -79,7 +88,7 @@ class UserMailer < ActionMailer::Base
     @ids =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
     @occurrences = Occurrence.includes(:event => :tags).find(@ids, :order => order_by)
     @ids = @occurrences.collect{|o| o.id}
-    @ids=@ids[0,6]
+    @ids=@ids[0,5]
     puts "6 events: "
     puts @ids
     @bookmarkedEvents=user.bookmarked_events.select{|o| o.start>Time.now}.uniq.sort! { |a,b| a.start <=> b.start }
@@ -139,11 +148,12 @@ class UserMailer < ActionMailer::Base
       authentication: "plain",
       enable_starttls_auto: true,
       user_name: "weekly@halfpastnow.com",
-      password: "chimeralabs"
+      password: "chimeralabs",
+      :from => "Half Past Now NewsLetter <weekly@halfpastnow.com>"
     }
 
   #   mail(:to => user.email, :subject => "This week in halfpastnow!" , user_name: "support@halfpastnow.com", password: "chimeralabs", address: "http://radiant-flower-7307.herokuapp.com/")
-    mail(:to => user.email, :subject => "This week in halfpastnow!",:from => "weekly@halfpastnow.com" )
+    mail(:to => user.email, :subject => "This week at Half Past Now",:from => "Half Past Now NewsLetter <weekly@halfpastnow.com>" )
   
    end
   
