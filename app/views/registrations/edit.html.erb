@@ -4,6 +4,10 @@
   <script type="text/javascript">
     var jcrop_api;
 
+    // Select all checkboxes
+    function toggle() {
+      
+    }
     
     $(function() {
       $('#profile-nav li').click(function() {
@@ -128,6 +132,31 @@
           var stream_id = $(this).attr("stream-id");
           $(this).parent('.uber-title').html("<span class='title'>" + stream_name + "</span><a href='' stream-id='" + stream_id + "' stream-name='" + stream_name + "' class='action rename'><span class='icon icon-edit'></span>rename</a>");
         });
+
+
+        $('.subscribe.button').click(function() {
+          console.log("Subscribe!!!");
+          $('.subscribe.button').hide();
+          $('.unsubscribe.button').show();
+         checkboxes = document.getElementsByName('cat');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+          checkboxes[i].checked = true;
+        }
+        
+        });
+
+        $('.unsubscribe.button').click(function() {
+           console.log("UnSubscribe!!!");
+          $('.subscribe.button').show();
+          $('.unsubscribe.button').hide();
+          checkboxes = document.getElementsByName('cat');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+          checkboxes[i].checked = false;
+        }
+         
+        });
+
+
 
         $('.stream').on('click', ' .action.delete', function() {
           if(confirm("Are you sure you want to delete '" + $(this).attr('stream-name') + "'?")) {
@@ -323,8 +352,8 @@
     </div>
      <div class="preferences <%= (params[:email].nil?) ? "": "selected" %>">
       <!-- Create a reference channel for current user if it does not exist -->
-      <div> <h2>Choose your categories for your personalized email</h2>
-      </div>
+     
+      <h2> Choose your categories for your personalized email</h2>
       <% if current_user.ref.nil? %>
         <% c =  Channel.new %>
         <!-- Change to approriate tag ids for Production -->
@@ -400,6 +429,7 @@
          <span style="margin-top: -25px; float: left; display: block; margin-left: 180px;" class="form-success form-indicator icon-ok-sign" ></span>
       <% else %>
         <% @refincluded_tags = Channel.find(current_user.ref.to_i).included_tags %>
+
         <form name="form" method="post">
           <div class = "reform"> 
             <input class="refname" type="checkbox" style="vertical-align:-0.1em;" name="cat" value="<%=Tag.find_by_name("Music").id%>"  <%= (@refincluded_tags.include? Tag.find_by_name("Music").id.to_s) ? "checked" : "" %> onclick="check(document.form.cat)" id="Music">
@@ -462,6 +492,9 @@
         <div class="refbtn right nice-button" >Update Your Preferences</div>
         <span style="margin-top: -25px; float: left; display: block; margin-left: 180px;" class="form-success form-indicator icon-ok-sign" ></span>
       <% end %>
+      <div class="subscribe button nice-button" style="display:none;">Subscribe to Newsletter</div>
+      <div class="unsubscribe button nice-button" >Unsubscribe to Newsletter </div>
+      <br>
       
 
      </div>
