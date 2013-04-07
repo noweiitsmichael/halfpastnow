@@ -50,8 +50,35 @@
 		}, function() {
 			// console.log("not do");
 		});
+
+        $('.right-column').on('click', '.subscribe-button', function() {
+          var that = $(this);
+          var email = 
+	          {"email":
+	            { "email": $(this).siblings('input').val()
+	            }
+	          };
+          // var email = $(this).siblings('input').val();
+          console.log("Posting email address:");
+          console.log($(this).siblings('input').val());
+          $.post('/events/create/',email,function(data) {
+          	console.log("Returned!");
+            console.log(data);
+          });
+	      return false;
+        });
 	});
 </script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=475386955806720";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
   <div id="body">
     <div id="header">
       <div class="one">
@@ -76,27 +103,37 @@
     </div>
 
     <div id="splash-content">
-		<div id="hero">
+		<div id="email-hero">
 			<div class="hero-writing">
-<!--     <div id="sxsw-banner">
-    	<img src="/assets/sxsw_banner_bg.jpg">
-    </div> -->
+				<div class="left-column">
+					<div class="hero-label">
+						Welcome to <br><span class="hpn">half past now.</span>
+					</div>
 
-<!--     	<a href="/sxsw">
-	    	<div id="sxsw-banner" class="box6">
-	        	<div class="box6_corner_lf"></div>
-	            <div class="box6_corner_rt"></div>
-	        </div>
-	        <div id="sxsw-banner" class="boxbackground">
-	        </div>
-	        <p id="sxsw-banner-text">Filter through <span style="font-size:30px"><span style="color:#ba613b">S</span><span style="color:#26749b">X</span><span style="color:#438758">S</span><span style="color:#888">W</span></span> parties and <span style="font-size:28px">RSVPs</span> <i class="icon-chevron-right" style="font-size: 24px"></i></p>
-    	</a> -->
-				<div class="hero-label">
-					Welcome to <span class="hpn">half past now.</span>
+					<div class="hero-text">
+						Discover amazing events and activities, find communities for the things that you love.
+					</div>
 				</div>
 
-				<div class="hero-text">
-					Discover amazing events and activities, find communities for the things that you love.
+				<div class="right-column">
+					<h5>Join our Weekly Event Mailing List</h5><br>
+					<input type="text" name="email">
+					<a href="" class="nice-button subscribe-button">Subscribe</a><br><br>
+					Receive one email a week with 5 event picks selected by Austin trendsetters and organizations<br>
+					We will NOT share your email address with anyone else<br><br>
+	
+				<div style="text-align: center"> - or - </div><br>
+					<a href="/users/auth/facebook" class="fb-login nice-button facebook-button">
+									<i class="icon-facebook"></i>
+									Connect with Facebook
+					</a>
+				<div style="text-align: center">
+					<br>
+					Login with Facebook to see events friends are bookmarking in the categories you care about
+					<br>
+					<br>
+				</div>		
+					<div class="fb-login-button" data-show-faces="true" data-width="360" data-max-rows="1" data-size:"large"></div>
 				</div>
 			</div>
 			<div class="accredit2">
