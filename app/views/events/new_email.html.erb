@@ -61,13 +61,28 @@
           // var email = $(this).siblings('input').val();
           console.log("Posting email address:");
           console.log($(this).siblings('input').val());
-          $.post('/events/create/',email,function(data) {
+          $.post('/emails/create/',email,function(data) {
           	console.log("Returned!");
-            console.log(data);
+            closeMode();
           });
 	      return false;
         });
 	});
+
+function closeMode() {
+	$( "#confirm-close" ).dialog({
+        resizable: false,
+        height:240,
+        width: 400,
+        modal: true,
+        buttons: {
+            "Continue": function() {
+                window.location = '/search';
+            }
+        }
+	});
+};
+
 </script>
 
 <div id="fb-root"></div>
@@ -243,9 +258,9 @@
 			<a href="/info/terms">Terms</a> | 
 		 	&#169; halfpastnow. chimera labs 2013
 
-	    <div class="accredit">
+<!-- 	    <div class="accredit">
 	    	<a href="http://www.sabrinabeanphotography.com/" target="_blank">Photo: Sabrina{Bean}Photography</a>
-	    </div>
+	    </div> -->
 	    </div>
 	</div>
 
@@ -259,6 +274,10 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div id="confirm-close" title="Email address saved!" style="display:none;">
+    <p><span class="ui-icon ui-icon-heart" style="float: left; margin: 0 7px 20px 0;"></span>Thank you for submitting your email address! You'll get your first events newsletter soon. In the meantime, check out some top picks for events this week!</p>
   </div>
 
 </body>

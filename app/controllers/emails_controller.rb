@@ -18,14 +18,15 @@ class EmailsController < ApplicationController
 
   def create
     puts "created new email"
+    puts params[:email]
     @email = Email.new(params[:email])
 
     respond_to do |format|
       if @email.save
-        format.html { redirect_to @email, notice: 'email was successfully added.' }
-        format.json { render json: @email, status: :created, location: @email }
+        # format.html { redirect_to @email, notice: 'email was successfully added.' }
+        format.json { render json: @email, status: :created }
       else
-        format.html { render action: "new" }
+        # format.html { render action: "new" }
         format.json { render json: @email.errors, status: :unprocessable_entity }
       end
     end

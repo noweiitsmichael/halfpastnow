@@ -27,7 +27,7 @@
 	<div style="text-align: center"> - or - </div>
 
 	<div class="method signup">
-		<h4>Sign Up via Email</h4>
+		<h4>Register via Email</h4>
 
 		<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :validate => true) do |f| %>
 		  <%= devise_error_messages! %>
@@ -47,11 +47,11 @@
 		  <div><%= f.label :password_confirmation %>
 		  <%= f.password_field :password_confirmation %></div>
 
-		  <div><%= f.submit "Sign Up" %></div>
+		  <div><%= f.submit "Register" %></div>
 		<% end %>
 	</div>
 	<div class="method login">
-		<h4>Log In Manually</h4>
+		<h4>Sign In via Email</h4>
 
 		<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
 		    <div><%= f.label :email %>
@@ -60,7 +60,7 @@
 		    <div><%= f.label :password %>
 		    <%= f.password_field :password %></div>
 
-		    <div><%= f.submit "Log In" %></div>
+		    <div><%= f.submit "Sign in" %></div>
 	    <% end %>
 	    <br>
 	    <div class="reasons-box">
