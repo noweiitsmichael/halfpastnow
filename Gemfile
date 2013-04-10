@@ -40,9 +40,6 @@ gem 'sanitize'
 # Use unicorn as the web server
 gem 'unicorn'
 
-# Deploy with Capistrano
-# gem 'capistrano'
-
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
@@ -53,7 +50,6 @@ gem 'rolify'
 gem 'omniauth-facebook'
 gem 'koala'
 gem 'sinatra'
-
 
 #file attachments and Amazon S3
 gem 'carrierwave'
@@ -67,9 +63,7 @@ end
 
 gem "ruby-prof", "~> 0.11.2"
 
-
 gem 'mobile-fu'
-
 
 gem 'delayed_job_active_record'
 
@@ -82,6 +76,8 @@ gem "librato-metrics" #logging/error reporting to Liberato add-on
 gem 'memcachier'
 gem 'dalli'
 
+# Email via mandrill
+gem 'mandrill-api'
 
 # gem 'eventfulapi'
 # gem 'eventbrite-client'

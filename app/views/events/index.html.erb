@@ -93,7 +93,11 @@
 		  var cookie = $.cookie(COOKIE_NAME);
 		  if (cookie == null) {
 		    $.cookie(COOKIE_NAME, true, { path: '/', expires: 9001 });
-		    window.location = "/events/new_splash";
+
+		  	// ** Adding this check because if a new user is directly linked to a top pick or event, it sucks to be redirected to the splash page.
+		    if ((window.location.pathname === "/search") || (window.location.pathname === "/picks") || (window.location.pathname === "/")) {
+		    	window.location = "/events/new_splash";
+		    }
 		  }
 		  else {
 		  }
