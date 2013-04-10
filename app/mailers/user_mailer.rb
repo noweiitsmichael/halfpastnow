@@ -156,8 +156,8 @@ class UserMailer < ActionMailer::Base
     :address =>        'smtp.mandrillapp.com',
     :port =>           '587',
     :domain =>         'halfpastnow.com',
-    :authentication => :plain,
-    :enable_starttls_auto: true,
+    :authentication => 'plain',
+    :enable_starttls_auto => true,
     :user_name =>      ENV['MANDRILL_USERNAME'],
     :password =>       ENV['MANDRILL_APIKEY'],
     :from =>           "Half Past Now NewsLetter <weekly@halfpastnow.com>"
