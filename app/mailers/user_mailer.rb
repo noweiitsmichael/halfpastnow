@@ -152,6 +152,18 @@ class UserMailer < ActionMailer::Base
       :from => "Half Past Now NewsLetter <weekly@halfpastnow.com>"
     }
 
+    ActionMailer::Base.smtp_settings = {
+    :address =>        'smtp.mandrillapp.com',
+    :port =>           '587',
+    :domain =>         'halfpastnow.com',
+    :authentication => :plain,
+    :enable_starttls_auto: true,
+    :user_name =>      ENV['MANDRILL_USERNAME'],
+    :password =>       ENV['MANDRILL_APIKEY'],
+    :from =>           "Half Past Now NewsLetter <weekly@halfpastnow.com>"
+}
+ActionMailer::Base.delivery_method = :smtp
+
   #   mail(:to => user.email, :subject => "This week in halfpastnow!" , user_name: "support@halfpastnow.com", password: "chimeralabs", address: "http://radiant-flower-7307.herokuapp.com/")
     mail(:to => user.email, :subject => "This week at Half Past Now",:from => "Half Past Now NewsLetter <weekly@halfpastnow.com>" )
   
