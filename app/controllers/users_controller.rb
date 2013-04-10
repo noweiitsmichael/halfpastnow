@@ -337,13 +337,14 @@ class UsersController < ApplicationController
   end
 
   def unsubscribe
-    email = params[:email].to_s
-    e=Email.find_by_email(email)
+    channel = Channel.find(current_user.ref.to_i)
+    channel.included_tags=""
+    channel.save
+    puts "Currenet emeil"
+    puts current_user.email
+    e=Email.find_by_email(current_user.email)
     e.destroy
-    respond_to do |format|
-      format.html { render action: "unsubscribe" }
-      
-    end
+    
   end
 
   # def friends

@@ -36,8 +36,8 @@ class UserMailer < ActionMailer::Base
       c.save!
       @user.ref = c.id.to_s
       @user.save!
-      
     end
+    
     id = @user.ref
     channel = Channel.find(id)
 

@@ -117,6 +117,10 @@ ActiveRecord::Schema.define(:version => 20130407135717) do
 
   add_index "channels", ["user_id"], :name => "index_channels_on_user_id"
 
+  create_table "emails", :force => true do |t|
+    t.string "email"
+  end
+
   create_table "embeds", :force => true do |t|
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false

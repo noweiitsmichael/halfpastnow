@@ -4,10 +4,7 @@
   <script type="text/javascript">
     var jcrop_api;
 
-    // Select all checkboxes
-    function toggle() {
-      
-    }
+    
     
     $(function() {
       $('#profile-nav li').click(function() {
@@ -139,9 +136,20 @@
           $('.subscribe.button').hide();
           $('.unsubscribe.button').show();
          checkboxes = document.getElementsByName('cat');
-        for(var i=0, n=checkboxes.length;i<n;i++) {
-          checkboxes[i].checked = true;
-        }
+         var str ="";
+          for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = true;
+             if (str==="") {
+                  str = checkboxes[i].value;
+                }
+                else{
+                  str = str +"," +checkboxes[i].value;  
+                };
+          }
+          $.get('/channels/updateReg?id=<%=current_user.ref%>'+'&included_tags='+str, function(data) {
+              
+          });
+
         
         });
 
@@ -150,9 +158,12 @@
           $('.subscribe.button').show();
           $('.unsubscribe.button').hide();
           checkboxes = document.getElementsByName('cat');
-        for(var i=0, n=checkboxes.length;i<n;i++) {
-          checkboxes[i].checked = false;
-        }
+          for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = false;
+          }
+         $.get('/users/unsubscribe', function(data) {
+              
+          });
          
         });
 
@@ -187,9 +198,11 @@
             $.get('/channels/updateReg?id=<%=current_user.ref%>'+'&included_tags='+str, function(data) {
               
             });
+            $('.subscribe.button').hide();
+            $('.unsubscribe.button').show();
 
 
-            }
+    }
   </script>
   <div id="profile-sidebar">
     <%= image_tag resource.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic" %>
@@ -361,9 +374,10 @@
         <% c.save %>
         <% current_user.ref = c.id.to_s %>
         <% current_user.save %>
+        <% email = Email.find_by_email(current_user.email) %>
         <form name="form" method="post">
           <div class = "reform"> 
-            <input class="refname"  type="checkbox" name="cat" value="<%=Tag.find_by_name("Music").id%>" checked onclick="check(document.form.cat)" id="Music">
+            <input class="refname"  type="checkbox" name="cat" value="<%=Tag.find_by_name("Music").id%>" <%=( email.nil?) ? "" : "checked" %>  onclick="check(document.form.cat)" id="Music">
            
             <img class="refimg" border="0" src="/assets/music_beamed_note.png" alt="Live Music" ><br>
             <label class="reflabel" for="Music">Live Music</label>
@@ -374,51 +388,51 @@
           
 
           <div class = "reform"> 
-            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Fitness").id%>" checked onclick="check(document.form.cat)" id="Fitness">
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Fitness").id%>"  <%=( email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="Fitness">
             <img class="refimg" border="0" src="/assets/weights.png" alt="Fitness"><br>
              <label class="reflabel" for="Fitness">Fitness</label>
             
           </div>
 
           <div class = "reform"> 
-            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Tech").id%>" checked onclick="check(document.form.cat)">
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Tech").id%>"  <%=( email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)">
           
             <img class="refimg" border="0" src="/assets/terminal2.png" alt="Tech"><br>
             <label class="reflabel" for="Tech">Tech</label>
           </div>
 
           <div class = "reform"> 
-            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Charity / Non-Profit").id%>" checked onclick="check(document.form.cat)" id="Non-Profit">
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Charity / Non-Profit").id%>"  <%=( email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="Non-Profit">
             <img class="refimg" border="0" src="/assets/hand_handshake.png" alt="Live Music"><br>
              <label class="reflabel" for="Non-Profit">Non-Profit</label>
             
           </div>
           <div class = "reform"> 
-            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Art").id%>" checked onclick="check(document.form.cat)" id="Arts">
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Art").id%>"  <%=( email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="Arts">
             <img class="refimg" border="0" src="/assets/palette.png" alt="Art"><br>
             <label class="reflabel" for="Arts">Arts</label>
             
           </div>
           <div class = "reform"> 
-            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Kid Friendly").id%>" checked onclick="check(document.form.cat)" id="Kid">
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Kid Friendly").id%>"  <%=( email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="Kid">
             <img class="refimg" border="0" src="/assets/teddy_bear.png" alt="Kid Friendly"><br>
             <label class="reflabel" for="Kid">Kid Friendly</label>
             
           </div>
           <div class = "reform"> 
-            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Romantic").id%>" checked onclick="check(document.form.cat)" id="Romantic">
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Romantic").id%>"  <%=( email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="Romantic">
              <img class="refimg" border="0" src="/assets/heart.png" alt="Live Music"><br>
              <label class="reflabel" for="Romantic">Romantic</label>
             
           </div>
           <div class = "reform"> 
-            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("LGBT").id%>" checked onclick="check(document.form.cat)" id="LGBT">
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("LGBT").id%>"  <%=( email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="LGBT">
             <img class="refimg" border="0" src="/assets/color.png" alt="LGBT"><br>
             <label class="reflabel" for="LGBT">LGBT</label>
             
           </div>
           <div class = "reform"> 
-            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Food/Drink Specials").id%>" checked onclick="check(document.form.cat)" id="HH">
+            <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("Food/Drink Specials").id%>"  <%=( email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="HH">
              <img class="refimg" border="0" src="/assets/cocktail.png" alt="HH"><br>
              <label class="reflabel" for="HH">Food/Drinks Special</label>
             
@@ -492,8 +506,9 @@
         <div class="refbtn right nice-button" >Update Your Preferences</div>
         <span style="margin-top: -25px; float: left; display: block; margin-left: 180px;" class="form-success form-indicator icon-ok-sign" ></span>
       <% end %>
-      <div class="subscribe button nice-button" style="display:none;">Subscribe to Newsletter</div>
-      <div class="unsubscribe button nice-button" >Unsubscribe to Newsletter </div>
+      <% email = Email.find_by_email(current_user.email) %>
+      <div class="subscribe button nice-button" style="<%=(email.nil?) ? "" : "display:none;"%>" >Subscribe to Newsletter</div>
+      <div class="unsubscribe button nice-button"  style="<%=(email.nil?) ? "display:none;" : "" %>" >Unsubscribe to Newsletter </div>
       <br>
       
 

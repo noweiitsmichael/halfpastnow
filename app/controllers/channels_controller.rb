@@ -95,6 +95,13 @@ class ChannelsController < ApplicationController
 	  	channel = Channel.find(params[:id])
 	  	channel.included_tags = params[:included_tags].split(",").join(",")
 	  	channel.save
+	  	e = Email.find_by_email(current_user.email)
+	  	if e.nil?
+	  		e = Email.new
+		  	e.email = current_user.email
+		  	e.save 	
+	  	end 
+	  	
 	end
 
   def destroy
