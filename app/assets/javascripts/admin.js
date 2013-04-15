@@ -8,11 +8,11 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require jquery-ui-timepicker-addon
-//= require jcrop
+//= require jquery.Jcrop.min
 //= require underscore
 //= require viewport
 //= require date
-//= require dropkick
+//= require jquery.dropkick-1.0.0
 //= require tokeninput
 //= require jquery.validate
 //= require jquery.tabSlideOut.v1.3
