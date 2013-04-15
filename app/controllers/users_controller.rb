@@ -337,14 +337,18 @@ class UsersController < ApplicationController
   end
 
   def unsubscribe
-    channel = Channel.find(current_user.ref.to_i)
-    channel.included_tags=""
-    channel.save
-    puts "Currenet emeil"
-    puts current_user.email
-    e=Email.find_by_email(current_user.email)
+    
+    e=Email.find_by_email(params[:email])
     unless e.nil
-      e.destroy  
+      e.destroy 
+      user =  User.find_by_email(params[:email])
+      unless user.nil?
+        channel = Channel.find(user.ref.to_i)
+        channel.included_tags=""
+        channel.save   
+      end
+     
+     
     end
     
     
