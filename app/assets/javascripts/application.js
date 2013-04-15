@@ -7,11 +7,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui-1.10.0.custom.min
-//= require jcrop
+//= require jquery.Jcrop.min
 //= require underscore
 //= require viewport
 //= require date
-//= require dropkick
+//= require jquery.dropkick-1.0.0
 //= require galleria-1.2.8.min
 //= require jquery.form
 //= require history.min
