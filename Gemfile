@@ -27,7 +27,7 @@ end
 #fancy jquery stuff
 gem 'jquery-rails'
 gem 'client_side_validations'
-gem 'jcrop-rails', '~>1.0.2'
+gem 'jcrop-rails'
 
 gem 'htmlentities'
 
