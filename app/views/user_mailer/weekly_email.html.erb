@@ -86,7 +86,7 @@
     </table>
 </div>
 
-<div style="font-size: 14px;line-height: 30px;">Hello <%=@user.firstname%>,</div>
+<div style="font-size: 14px;line-height: 30px;">Hello<%=(@user.nil?) ? "," : " " +@user.firstname+"," %></div>
 <div style="font-size:14px;line-height:20px;">Here are our top event picks for this week. Update your preferences to receive your own personalized email with event categories you care about!</div>  
 <!-- Start generating events -->
         
