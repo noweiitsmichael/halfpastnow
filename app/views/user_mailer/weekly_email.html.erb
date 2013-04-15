@@ -86,7 +86,7 @@
     </table>
 </div>
 
-<div style="font-size: 14px;line-height: 30px;">Hello <%=@user.firstname%>,</div>
+<div style="font-size: 14px;line-height: 30px;">Hello<%=(@user.nil?) ? "," : " " +@user.firstname+"," %></div>
 <div style="font-size:14px;line-height:20px;">Here are our top event picks for this week. Update your preferences to receive your own personalized email with event categories you care about!</div>  
 <!-- Start generating events -->
         
@@ -103,7 +103,7 @@
 
 
 
-                    <a href="http://www.halfpastnow.com/search?event_id=158790" style="text-decoration:none;color:#4f2740" target="_blank">
+                    <a href="http://www.halfpastnow.com/events/show/<%= occurrence.id %>?fullmode=true" style="text-decoration:none;color:#4f2740" target="_blank">
 
                         
 
@@ -155,9 +155,14 @@
 
 </tbody></table>
 
-
-
-<% tids=Channel.find(@user.ref).included_tags.split(",") %>
+<% tnames = [] %>
+<% tids = [] %>
+<% unless @user.nil? %>
+    <% tids=Channel.find(@user.ref).included_tags.split(",") %>
+   
+<% else %>
+    <% tids =  "1,134,43,141,29,87,55,192,104".split(",") %>
+<% end %>
 <% tnames=Tag.find(tids).collect{|t| t.name} %>
 <% names=occurrence.event.tags.collect{|t| t.name} %>
 <% a= tnames&names %>
@@ -427,24 +432,25 @@
         
 
         </div>
-
+        <!-- Our sponsor events -->
         <table style="padding:10px 0 10px 0">
-
+            <% ids = [] %>
+            <% ids << 171705 <<101002<< 171311 %>
+            <% @occurrences= Occurrence.find(ids) %>
             <tbody><tr>
 
-            
-
+             <% @occurrences.each do |occurrence| %>
                 <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
 
                     <div style="min-height:130px;padding:0;background-color:#f2f2f2">
 
-                        <a href="http://www.halfpastnow.com/picks?event_id=160589" target="_blank">
+                        <a href="http://www.halfpastnow.com/events/show/<%=occurrence.id%>?fullmode=true" target="_blank">
 
                            
 
                              
                                <div style="width:170px; max-height:65px; border: solid thin gray;overflow:hidden;">
-                                    <img src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/8657/large_2102_47562344207_6358_n.jpg" >
+                                    <img src="<%=occurrence.event.cover_image_url%>" >
                                 </div>  
                             
 
@@ -456,15 +462,16 @@
 
                         <div style="padding:2px">
 
-                            <a style="text-decoration:none" href="http://www.halfpastnow.com/picks?event_id=160589" target="_blank">
+                            <a style="text-decoration:none" href="http://www.halfpastnow.com/events/show/<%=occurrence.id%>?fullmode=true" target="_blank">
 
-                                <div style="font-size:13px;color:#4f2740">Statesman Capitol 10,000</div>
+                                <div style="font-size:13px;color:#4f2740"><%= truncate(occurrence.event.title, :length => 47) %></div>
+                               
 
                             </a>
 
                             
 
-                                <div style="font-size:11px;color:#777777">by Austin American-Statesman</div>
+                                <div style="font-size:11px;color:#777777"><%= occurrence.event.venue.name %></div>
 
                             
 
@@ -474,82 +481,9 @@
 
                 </td>
 
+             <% end %>
 
-
-            
-
-                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
-
-                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
-
-                        <a href="http://www.halfpastnow.com/picks/find/95?event_id=133000" target="_blank">
-
-                            <div style="width:170px; max-height:65px; border: solid thin gray;overflow:hidden;">
-                                <img src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/4122/large_event-5568.jpg" >
-                            </div>  
-
-                         </a>
-
-                        <br>
-
-                        <div style="padding:2px">
-
-                            <a style="text-decoration:none" href="http://www.halfpastnow.com/picks/find/95?event_id=133000" target="_blank">
-
-                                <div style="font-size:13px;color:#4f2740">Texas Parkour Academy Youth Classes</div>
-
-                            </a>
-
-                            
-
-                                <div style="font-size:11px;color:#777777">by Texas Parkour Academy</div>
-
-                            
-
-                        </div>
-
-                    </div>
-
-                </td>
-
-
-
-            
-
-                <td style="vertical-align:top;width:157px;padding:0 12px 0 12px">
-
-                    <div style="min-height:130px;padding:0;background-color:#f2f2f2">
-
-                        <a href="http://www.halfpastnow.com/search?event_id=32467" target="_blank">
-
-                            
-                            <div style="width:170px; max-height:65px; border: solid thin gray;overflow:hidden;">
-                                <img src="http://hpn-pictures.s3.amazonaws.com/uploads/picture/image/667/large_spiderhouse4conradb.800w_600h.jpg" >
-                            </div>
-                        </a>
-
-                        <br>
-
-                        <div style="padding:2px">
-
-                            <a style="text-decoration:none" href="http://www.halfpastnow.com/search?event_id=32467" target="_blank">
-
-                                <div style="font-size:13px;color:#4f2740">Happy Hour: $1 off drinks</div>
-
-                            </a>
-
-                            
-
-                                <div style="font-size:11px;color:#777777">by Spider House</div>
-
-                            
-
-                        </div>
-
-                    </div>
-
-                </td>
-
+             
                 
 
             
@@ -572,8 +506,8 @@
     
     <table>    
         <td style="">
-            <a href="http://www.yahoo.com" target="_blank">
-                <img src="http://images.highspeedbackbone.net/email/wem3531/TD_TaxHQ_bnr_620x90.jpg" alt="We're Your TAX Headquarters" height="90" border="0" width="620">
+            <a href="http://www.roguerunning.com/" target="_blank">
+                <img src="http://www.halfpastnow.com/assets/rogue_running.jpg" alt="Visit Rogue Running" height="90" border="0" width="620">
             </a>
                 
         </td>
@@ -583,7 +517,7 @@
 
     <p style="font-size:11px;color:#777777">
 
-        You're receiving this email because you are a member of <a style="color:#4f2740;text-decoration:none" href="http://wwww.halfpastnow.com" target="_blank">half past now.</a>Don't want to receive our half past now. Weekly <a style="color:#4f2740;text-decoration:none" href="http://www.halfpastnow.com/users/unsubscribe?email=<%=@user.email%>" target="_blank">Unsubscribe</a>.  half past now. is a Chimera Labs production. 
+        You're receiving this email because you are a member of <a style="color:#4f2740;text-decoration:none" href="http://wwww.halfpastnow.com" target="_blank">half past now.</a>Don't want to receive our half past now. Weekly <a style="color:#4f2740;text-decoration:none" href="http://www.halfpastnow.com/info/unsubscribe?email=<%=@email%>" target="_blank">Unsubscribe</a>.  half past now. is a Chimera Labs production. 
 
     </p>
 
