@@ -339,7 +339,7 @@ class UsersController < ApplicationController
   def unsubscribe
     
     e=Email.find_by_email(params[:email])
-    unless e.nil
+    unless e.nil?
       e.destroy 
       user =  User.find_by_email(params[:email])
       unless user.nil?
