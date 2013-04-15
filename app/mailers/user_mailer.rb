@@ -21,25 +21,33 @@ class UserMailer < ActionMailer::Base
     @url  = "http://halfpastnow.com/login"
     mail(:to => @user.email, :subject => "Welcome to halfpastnow!", :from => "Half Past Now <support@halfpastnow.com>")
   end
-  def weekly_email(user)
+  def weekly_email(email)
   	puts "sending email..."
-    @user = user
+    @user = User.find_by_email
+    tgs =[]
+    unless @user.nil?
+      id = @user.ref
+      # check if user has a reference channel
+      if (id.nil?) || (id.to_s.eql? "")
+        c =  Channel.new 
+          # Change to approriate tag ids for Production 
+        c.included_tags = "1,134,43,141,29,87,55,192,104"
+        c.save!
+        @user.ref = c.id.to_s
+        @user.save!
+      end
+      
+      id = @user.ref
+      channel = Channel.find(id)  
+      tgs = channel.included_tags
+    else
+      tgs = "1,134,43,141,29,87,55,192,104"
+    end
+
     @url  = "http://halfpastnow.com/login"
     event_start = Time.now
     event_end = event_start.advance(:days => 1)
-    id = user.ref
-    # check if user has a reference channel
-    if (id.nil?) || (id.to_s.eql? "")
-      c =  Channel.new 
-        # Change to approriate tag ids for Production 
-      c.included_tags = "1,134,43,141,29,87,55,192,104"
-      c.save!
-      @user.ref = c.id.to_s
-      @user.save!
-    end
     
-    id = @user.ref
-    channel = Channel.find(id)
 
 
     start_date_check = "occurrences.start >= '#{Date.today()}'"
@@ -60,7 +68,7 @@ class UserMailer < ActionMailer::Base
 
 
     occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check}"
-    tgs = channel.included_tags
+    
     tags_mush = tgs.split(",").join(",")
     tag_include_match = "TRUE"
     if tgs.size >0
@@ -91,10 +99,17 @@ class UserMailer < ActionMailer::Base
     @ids=@ids[0,5]
     puts "6 events: "
     puts @ids
-    @bookmarkedEvents=user.bookmarked_events.select{|o| o.start>Time.now}.uniq.sort! { |a,b| a.start <=> b.start }
-    if @bookmarkedEvents.size > 3
-      @bookmarkedEvents = @bookmarkedEvents[0,3]
+    user=@user
+    @bookmarkedEvents =[]
+    unless user.nil?
+       @bookmarkedEvents=user.bookmarked_events.select{|o| o.start>Time.now}.uniq.sort! { |a,b| a.start <=> b.start }
+      if @bookmarkedEvents.size > 3
+        @bookmarkedEvents = @bookmarkedEvents[0,3]
+      end 
+    else  
+       @bookmarkedEvents =[]
     end
+   
 
     # Find 3 upcomming Top Pick event
     query = "SELECT a.title, a.clicks, a.views, a.name, a.occurrence_id, a.recurrence_id, a.start, a.id, a.event_id, a.venue_id, a.cover_image_url, a.picture_url
