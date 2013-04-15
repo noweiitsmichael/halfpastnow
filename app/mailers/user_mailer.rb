@@ -36,8 +36,8 @@ class UserMailer < ActionMailer::Base
       c.save!
       @user.ref = c.id.to_s
       @user.save!
-      
     end
+    
     id = @user.ref
     channel = Channel.find(id)
 
@@ -141,23 +141,23 @@ class UserMailer < ActionMailer::Base
     @tpoccurrences = Occurrence.includes(:event => :tags).find(@tpids, :order => order_by)
     @tpoccurrences = @tpoccurrences[0,3]
 
-    ActionMailer::Base.smtp_settings = {
-      address: "smtp.gmail.com",
-      port: 587,
-      domain: "halfpastnow.com",
-      authentication: "plain",
-      enable_starttls_auto: true,
-      user_name: "weekly@halfpastnow.com",
-      password: "chimeralabs",
-      :from => "Half Past Now NewsLetter <weekly@halfpastnow.com>"
-    }
+    # ActionMailer::Base.smtp_settings = {
+    #   address: "smtp.gmail.com",
+    #   port: 587,
+    #   domain: "halfpastnow.com",
+    #   authentication: "plain",
+    #   enable_starttls_auto: true,
+    #   user_name: "weekly@halfpastnow.com",
+    #   password: "chimeralabs",
+    #   :from => "Half Past Now NewsLetter <weekly@halfpastnow.com>"
+    # }
 
     ActionMailer::Base.smtp_settings = {
     :address =>        'smtp.mandrillapp.com',
     :port =>           '587',
     :domain =>         'halfpastnow.com',
-    :authentication => :plain,
-    :enable_starttls_auto: true,
+    :authentication => 'plain',
+    :enable_starttls_auto => true,
     :user_name =>      ENV['MANDRILL_USERNAME'],
     :password =>       ENV['MANDRILL_APIKEY'],
     :from =>           "Half Past Now NewsLetter <weekly@halfpastnow.com>"

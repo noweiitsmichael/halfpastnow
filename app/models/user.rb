@@ -226,7 +226,12 @@ class User < ActiveRecord::Base
   end
 
   def create_default_list
+    puts "to email list"
+    e=Email.new
+    e.email=self.email
+    e.save
     puts "creating default list"
+
     BookmarkList.create(:name => "Bookmarks", :description => "Bookmarks", :public => false, 
                         :featured => false, :main_bookmarks_list => true, :user_id => self.id)
     puts "creating default attending list"

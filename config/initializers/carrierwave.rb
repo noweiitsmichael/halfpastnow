@@ -6,7 +6,7 @@ CarrierWave.configure do |config|
     :region                 => 'us-east-1'  # optional, defaults to 'us-east-1'
   }
   config.fog_directory  = 'hpn-pictures'#ENV['S3_BUCKET_NAME'] #                    # required
-  config.fog_host = "http://#{config.fog_directory}.s3.amazonaws.com"
+  config.asset_host = "http://#{config.fog_directory}.s3.amazonaws.com"
 
   if ENV['RAILS_ENV'] != 'production'
       config.delete_tmp_file_after_storage = false
