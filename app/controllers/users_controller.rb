@@ -343,7 +343,10 @@ class UsersController < ApplicationController
     puts "Currenet emeil"
     puts current_user.email
     e=Email.find_by_email(current_user.email)
-    e.destroy
+    unless e.nil
+      e.destroy  
+    end
+    
     
   end
 
