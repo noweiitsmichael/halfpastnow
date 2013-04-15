@@ -23,7 +23,7 @@ class UserMailer < ActionMailer::Base
   end
   def weekly_email(email)
   	puts "sending email..."
-    @user = User.find_by_email
+    @user = User.find_by_email(email)
     tgs =[]
     unless @user.nil?
       id = @user.ref
