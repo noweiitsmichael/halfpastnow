@@ -23,6 +23,15 @@ every 1.day, :at => '12:00 am' do
   rake "update_occurrences"
 end
 
+every 1.week, :at => '12:00 am' do 
+  emails = Email.all
+  emails.each{|email|
+  	UserMailer.weekly_email(email).deliver
+  }
+end
+
+
+
 # every 2.hours do
 #   rake "ts:index"
 # end
