@@ -110,7 +110,7 @@ class UserMailer < ActionMailer::Base
        @bookmarkedEvents =[]
     end
    
-
+    @email = email
     # Find 3 upcomming Top Pick event
     query = "SELECT a.title, a.clicks, a.views, a.name, a.occurrence_id, a.recurrence_id, a.start, a.id, a.event_id, a.venue_id, a.cover_image_url, a.picture_url
         FROM
