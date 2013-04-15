@@ -311,6 +311,15 @@ task :update_occurrences => :environment do
 	end
 end
 
+desc "Send weekly_email"
+task :send_emails => :environment do
+	puts "send_emails"
+	emails = Email.all
+	emails.each{|email|
+		UserMailer.weekly_email(email).deliver
+    }
+end
+
 desc "bind parent tags to events"
 task :bind_parent_tags => :environment do
 	

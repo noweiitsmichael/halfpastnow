@@ -23,11 +23,9 @@ every 1.day, :at => '12:00 am' do
   rake "update_occurrences"
 end
 
-every :monday, :at => '12:00 am' do 
-  emails = Email.all
-  emails.each{|email|
-  	UserMailer.weekly_email(email).deliver
-  }
+every :monday, :at => '12:00 am' do
+	rake "send_emails" 
+  
 end
 
 
