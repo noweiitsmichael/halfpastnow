@@ -238,35 +238,35 @@
                 <div>
                     
                     <% a.each do |t|%>
-       
-                        <% if t.to_s.eql? "Music"%>
-                            <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/music_beamed_note.png" alt="Music" height="25" border="0" width="25">   
-                        <% end %>
-                        <% if t.to_s.eql? "Food/Drink Specials"%>
-                            <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/cocktail.png" alt="Happy Hours" height="25" border="0" width="25">   
-                        <% end %>
-                        <% if t.to_s.eql? "Fitness"%>
-                            <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/weights.png" alt="Fitness" height="25" border="0" width="25">   
-                        <% end %>
-                        <% if t.to_s.eql? "Tech"%>
-                            <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/terminal2.png" alt="Tech" height="25" border="0" width="25">   
-                        <% end %>
-                        <% if t.to_s.eql? "Charity / Non-Profit"%>
-                            <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/hand_handshake.png" alt="Non-Profit" height="25" border="0" width="25">   
-                        <% end %>
-                        <% if t.to_s.eql? "Art"%>
-                            <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/palette.png" alt="Art" height="25" border="0" width="25">   
-                        <% end %>
-                         <% if t.to_s.eql? "Kid Friendly"%>
-                            <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/teddy_bear.png" alt="Kid Friendly" height="25" border="0" width="25">   
-                        <% end %>
-                        <% if t.to_s.eql? "Romantic"%>
-                            <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/heart.png" alt="Romantic" height="25" border="0" width="25">   
-                        <% end %>
-                        <% if t.to_s.eql? "LGBT"%>
-                            <img style="float:left;margin-left:10px;" src="http://www.halfpastnow.com/assets/color.png" alt="LGBT" height="25" border="0" width="25">   
-                        <% end %>
-
+                        <a href="http://www.halfpastnow.com/users/edit?email=y" target="_blank">
+                            <% if t.to_s.eql? "Music"%>
+                                <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/music_beamed_note.png" alt="Music" height="25" border="0" width="25">   
+                            <% end %>
+                            <% if t.to_s.eql? "Food/Drink Specials"%>
+                                <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/cocktail.png" alt="Happy Hours" height="25" border="0" width="25">   
+                            <% end %>
+                            <% if t.to_s.eql? "Fitness"%>
+                                <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/weights.png" alt="Fitness" height="25" border="0" width="25">   
+                            <% end %>
+                            <% if t.to_s.eql? "Tech"%>
+                                <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/terminal2.png" alt="Tech" height="25" border="0" width="25">   
+                            <% end %>
+                            <% if t.to_s.eql? "Charity / Non-Profit"%>
+                                <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/hand_handshake.png" alt="Non-Profit" height="25" border="0" width="25">   
+                            <% end %>
+                            <% if t.to_s.eql? "Art"%>
+                                <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/palette.png" alt="Art" height="25" border="0" width="25">   
+                            <% end %>
+                             <% if t.to_s.eql? "Kid Friendly"%>
+                                <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/teddy_bear.png" alt="Kid Friendly" height="25" border="0" width="25">   
+                            <% end %>
+                            <% if t.to_s.eql? "Romantic"%>
+                                <img style="float:left;margin-left:5px;" src="http://www.halfpastnow.com/assets/heart.png" alt="Romantic" height="25" border="0" width="25">   
+                            <% end %>
+                            <% if t.to_s.eql? "LGBT"%>
+                                <img style="float:left;margin-left:10px;" src="http://www.halfpastnow.com/assets/color.png" alt="LGBT" height="25" border="0" width="25">   
+                            <% end %>
+                        </a>
                     <% end %>
                     <% picklists = occurrence.event_bookmarks.collect { |b| b.bookmark_list if (b.bookmark_list && b.bookmark_list.featured) }.compact %>
                     <% if picklists.size > 0 %>
