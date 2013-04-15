@@ -316,7 +316,7 @@ task :send_emails => :environment do
 	puts "send_emails"
 	emails = Email.all
 	emails.each{|email|
-		UserMailer.weekly_email(email).deliver
+		UserMailer.weekly_email(email.email).deliver
     }
 end
 
