@@ -155,9 +155,14 @@
 
 </tbody></table>
 
-
-
-<% tids=Channel.find(@user.ref).included_tags.split(",") %>
+<% tnames = [] %>
+<% tids = [] %>
+<% unless @user.nil? %>
+    <% tids=Channel.find(@user.ref).included_tags.split(",") %>
+   
+<% else %>
+    <% tids =  "1,134,43,141,29,87,55,192,104".split(",") %>
+<% end %>
 <% tnames=Tag.find(tids).collect{|t| t.name} %>
 <% names=occurrence.event.tags.collect{|t| t.name} %>
 <% a= tnames&names %>
