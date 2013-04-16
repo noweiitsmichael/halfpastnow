@@ -387,7 +387,7 @@
 						timeAssign("helper_end_event[recurrences_attributes][" + num_occurrence_wrappers + "]");
 						toggleDisability($('.occurrence-list .occurrence-toggle, .occurrence-list .recurrence-toggle'));
 
-						$(".occurrence-list '[name$='[interval]']'").each(recurrenceSet);
+						$(".occurrence-list [name$='[interval]']").each(recurrenceSet);
 
 						return false;
 					});
