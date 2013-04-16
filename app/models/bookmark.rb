@@ -23,7 +23,13 @@ class Bookmark < ActiveRecord::Base
 			if o.start >= Date.today.to_datetime && !o.deleted
 				return o
 			else
-				return o.event.nextOccurrence
+				# return o.event.nextOccurrence
+				unless o.event.nil?
+					return o.event.nextOccurrence
+				else	
+					return nil
+				end
+				
 			end
 		end
 	end
