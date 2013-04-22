@@ -23,10 +23,10 @@ every 1.day, :at => '12:00 am' do
 	rake "update_occurrences"
 end
 
-every :monday, :at => '12:00 am' do
-	rake "send_emails" 
+# every :monday, :at => '12:00 am' do
+# 	rake "send_emails" 
   
-end
+# end
 
 
 

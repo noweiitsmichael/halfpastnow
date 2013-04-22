@@ -50,13 +50,13 @@ class UserMailer < ActionMailer::Base
     
 
 
-    start_date_check = "occurrences.start >= '#{Date.today()}'"
+    start_date_check = "occurrences.start >= '#{Time.now}'"
     end_date_check = start_time_check = end_time_check = day_check = "TRUE"
     occurrence_start_time = "((EXTRACT(HOUR FROM occurrences.start) * 3600) + (EXTRACT(MINUTE FROM occurrences.start) * 60))"
 
     event_start_date = event_end_date = nil
-    event_start_date = Date.today()
-    event_end_date = Date.today().advance(:days =>7)
+    event_start_date =  Time.now
+    event_end_date =  Time.now.advance(:days =>7)
     start_date_check = "occurrences.start >= '#{event_start_date}'"
     end_date_check = "occurrences.start <= '#{event_end_date}'"
 
