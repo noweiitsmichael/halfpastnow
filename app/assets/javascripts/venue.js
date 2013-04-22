@@ -13,8 +13,8 @@ var validators = {};
 var eventActs = {};
 
   function generateValidator(selector, options) {
-    console.log(selector);
-    console.log(options);
+    // console.log(selector);
+    // console.log(options);
     options = options || {};
 
     if(options["ajax"] == true) {
@@ -40,25 +40,29 @@ var eventActs = {};
                   $(this).attr("disabled","disabled");
               });
             }
-            console.log(obj);
             obj.ajaxSubmit({
                 dataType:'json',
                 beforeSubmit: function() {
                                 return (validators[selector].numberOfInvalids() == 0);
                               },
                 beforeSerialize:  function() {
-                                    var actIDs = obj.find(".act-names").val().split(",");
+
+                                    var actIDs = obj.find("input.act-names").val().split(",");
+                                    // console.log("Checking Act Ids:");
+                                    // console.log(obj.find(".act-names"));
+                                    // console.log(obj.find(".act-names").val());
+                                    // console.log(actIDs);
                                     var htmlStr = "";
                                     for (var i in actIDs) {
                                       htmlStr += "<input checked='checked' type='checkbox' id='event_act_ids_" + actIDs[i] + "' name='event[act_ids][]' value='" + actIDs[i] + "'/>"
                                     }
                                     obj.find(".act-inputs").html(htmlStr);
 
+                                    // console.log(htmlStr);
 
 
                                   },
                 success:  function(data) {
-                            console.log(data);
                             //if raw event submission
                             if(data.event_id) {
                               obj.find('.form-load').remove();
@@ -207,7 +211,6 @@ var eventActs = {};
                     };
                 },
                 results: function(data) {
-
                     for(var i in data) {
                       if(typeof actsInfo[data[i].id] === 'undefined') {
                         actsInfo[data[i].id] = { tags: data[i].tags,
@@ -221,13 +224,13 @@ var eventActs = {};
                     return { results: data };
                 }
             },
-      initSelection : function (element) {
+      initSelection : function (element, callback) {
         var data = [];
         var sibling = element.siblings(".act-inits");
         $(element.val().split(",")).each(function (index) {
             data.push({id: this, text: sibling.find(":nth-child(" + (index + 1) + ")").html() });
         });
-        return data;
+        callback(data);
       },
       formatInputTooShort : function (input, min) { 
         var eventID = actNames.attr("event-id");
@@ -254,13 +257,17 @@ var eventActs = {};
     if(newActs[0] == "")
       newActs = [];
 
-    var oldActs = eventActs[$(obj).attr("event-id")].split("");
+    var oldActs = eventActs[$(obj).attr("event-id")].split(",");
+
 
     var addedActs = [];
     for(var i in newActs) {
       if($.inArray(newActs[i], oldActs) === -1)
         addedActs.push(newActs[i]);
     }
+
+    // console.log(oldActs);
+    // console.log(addedActs);
 
     for(var i in addedActs) {
       console.log("wtf is this tags shit");
