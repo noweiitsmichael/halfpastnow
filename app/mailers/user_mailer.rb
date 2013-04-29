@@ -45,17 +45,17 @@ class UserMailer < ActionMailer::Base
     end
 
     @url  = "http://halfpastnow.com/login"
-    event_start = Time.now
+    event_start = Time.now.advance(:hours => 12)
     event_end = event_start.advance(:days => 1)
     
 
 
-    start_date_check = "occurrences.start >= '#{Time.now}'"
+    start_date_check = "occurrences.start >= '#{Time.now.advance(:hours => 12)}'"
     end_date_check = start_time_check = end_time_check = day_check = "TRUE"
     occurrence_start_time = "((EXTRACT(HOUR FROM occurrences.start) * 3600) + (EXTRACT(MINUTE FROM occurrences.start) * 60))"
 
     event_start_date = event_end_date = nil
-    event_start_date =  Time.now
+    event_start_date =  Time.now.advance(:hours => 12)
     event_end_date =  Time.now.advance(:days =>7)
     start_date_check = "occurrences.start >= '#{event_start_date}'"
     end_date_check = "occurrences.start <= '#{event_end_date}'"
@@ -102,7 +102,7 @@ class UserMailer < ActionMailer::Base
     user=@user
     @bookmarkedEvents =[]
     unless user.nil?
-       @bookmarkedEvents=user.bookmarked_events.select{|o| o.start>Time.now}.uniq.sort! { |a,b| a.start <=> b.start }
+       @bookmarkedEvents=user.bookmarked_events.select{|o| o.start>Time.now.advance(:hours => 12)}.uniq.sort! { |a,b| a.start <=> b.start }
       if @bookmarkedEvents.size > 3
         @bookmarkedEvents = @bookmarkedEvents[0,3]
       end 
@@ -130,7 +130,7 @@ class UserMailer < ActionMailer::Base
           LEFT JOIN events ON occurrences.event_id = events.id
           LEFT JOIN venues ON events.venue_id = venues.id
                   LEFT JOIN recurrences ON events.id = recurrences.event_id
-                  WHERE bookmarks.bookmarked_type = 'Occurrence' AND occurrences.start >= '#{Date.today()}' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days')) a
+                  WHERE bookmarks.bookmarked_type = 'Occurrence' AND occurrences.start >= '#{Date.today().advance(:hours => 12)}' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days')) a
         "
     # Currently only sorting by clicks, might want to switch to popularity at some point but whatever, not that important.
 
