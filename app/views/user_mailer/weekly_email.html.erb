@@ -44,7 +44,7 @@
         <div class="header-content"><webversion><a href="http://www.halfpastnow.com" style="text-decoration:none;color:#4f2740" target="_blank">half past now.</a></webversion><span class="hide">&nbsp;&nbsp;|&nbsp; <preferences lang="en"><a href="http://www.halfpastnow.com/users/edit?email=y" style="text-decoration:none;color:#4f2740" target="_blank">Select event categories</a></preferences>&nbsp;&nbsp;|&nbsp; <unsubscribe><a href="mailto:?subject=Check out halfpastnow.'s event newsletter&body=Signup for half past now. newsletter at http%3A%2F%2Fwww.halfpastnow.com. It's an awesome way to find events in Austin based on on your profile and the categories of events that interest you!">Tell a friend</a></unsubscribe></span></div>
                 </td>
                 <td height="50" width="125"></td>
-                <td height="50" width="125">
+                <!-- <td height="50" width="125">
                                                     <a href="http://www.halfpastnow.com/users/edit?email=y" target="_blank" style="border: 1px solid #9C8FAD;
                                                             font-size: 14px;
                                                             background-color: #a700a7;
@@ -64,15 +64,15 @@
                                                             border-bottom-right-radius: 2px;
                                                             border-top-left-radius: 2px;
                                                             border-top-right-radius: 2px;
-                                                            box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3),0 1px 0 rgba(255, 255, 255, 0.4) inset;" >Select Event Categories</a>
-                </td>
+                                                            box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3),0 1px 0 rgba(255, 255, 255, 0.4) inset;" >Select Event Categories</a> 
+                </td> -->
                 </tr>
                 
                 
         </tbody>
     </table>
 </div>
-<div>
+<!-- <div>
     <table >
         
         <tbody>
@@ -84,7 +84,7 @@
             </td>
         </tbody>
     </table>
-</div>
+</div> -->
 
 <div style="font-size: 14px;line-height: 30px;">Hello<%=(@user.nil?) ? "," : " " +@user.firstname+"," %></div>
 <div style="font-size:14px;line-height:20px;">Here are our top event picks for this week. Update your preferences to receive your own personalized email with event categories you care about!</div>  
@@ -347,7 +347,7 @@
 
         
 
-            Your Upcomming Bookmarked Events 
+            Your Upcoming Bookmarked Events 
 
         
 
@@ -435,7 +435,7 @@
         <!-- Our sponsor events -->
         <table style="padding:10px 0 10px 0">
             <% ids = [] %>
-            <% ids << 147726 <<143097<< 172973 %>
+            <% ids << 174704 <<155888<< 175479 %>
             <% @occurrences= Occurrence.find(ids) %>
             <tbody><tr>
 
@@ -503,9 +503,17 @@
     </table>
         
     
+    <table>    
+        <td style="width:620px; max-height:90px; border: solid thin gray;overflow:hidden;">
+            <a href="http://thelongcenter.org/" target="_blank">
+                <img src="http://www.halfpastnow.com/assets/longCenter.png" alt="Visit the Long Center" height="90" border="0" width="620">
+            </a>
+                
+        </td>
+    </table>
     
     <table>    
-        <td style="">
+        <td style="width:620px; max-height:90px; border: solid thin gray;overflow:hidden;">
             <a href="http://www.roguerunning.com/" target="_blank">
                 <img src="http://www.halfpastnow.com/assets/rogue_running.jpg" alt="Visit Rogue Running" height="90" border="0" width="620">
             </a>
