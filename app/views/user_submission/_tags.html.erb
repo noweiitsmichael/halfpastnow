@@ -33,14 +33,14 @@
 	<h5 style="margin-top:10px;">Categories</h5>
 	<div class="parent">
 		<% @parentTags.sort { |a,b| a.name <=> b.name }.each do |parentTag|  %>
-			<% unless parentTag.name == "Tags" %>
+			<% unless parentTag.name == "Tags" || parentTag.name == "SXSW" || parentTag.name == "SXSW Credentials" %>
 			<div class="tag-thing" this-id="<%= parentTag.id %>"><%= check_box_tag (type + "[tag_ids][]"), parentTag.id, element.tags.include?(parentTag) %>
 				<label><%= parentTag.name %></label></div>
 			<% end %>
 		<% end %>
 	</div>
 	<% @parentTags.each do |parentTag|  %>
-		<% unless parentTag.name == "Tags" %>
+		<% unless parentTag.name == "Tags" || parentTag.name == "SXSW" || parentTag.name == "SXSW Credentials" %>
 			<% if parentTag.childTags.size > 0 %>
 				<div style="display:none;" parent-id="<%= parentTag.id %>" class="child">
 				<% parentTag.childTags.sort { |a,b| a.name <=> b.name }.each do |childTag| %>
