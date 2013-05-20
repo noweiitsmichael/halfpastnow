@@ -545,11 +545,13 @@ function placeMarker(lat, long) {
 
   google.maps.event.addListener(marker, 'mouseover', function() {
     marker.setIcon("/assets/markers/marker_hover_" + marker.index % 100 +  ".png");
+    marker.setZIndex(9999);
     $("#content .main .inner .events li:nth-child(" + marker.index + ")").addClass("hover");
   });
 
   google.maps.event.addListener(marker, 'mouseout', function() {
     marker.setIcon("/assets/markers/marker_" + marker.index % 100 + ".png");
+    marker.setZIndex(0);
     $("#content .main .inner .events li:nth-child(" + marker.index + ")").removeClass("hover");
   });
 
