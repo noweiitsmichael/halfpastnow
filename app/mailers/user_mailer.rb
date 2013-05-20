@@ -175,12 +175,12 @@ class UserMailer < ActionMailer::Base
     :enable_starttls_auto => true,
     :user_name =>      ENV['MANDRILL_USERNAME'],
     :password =>       ENV['MANDRILL_APIKEY'],
-    :from =>           "Half Past Now NewsLetter <weekly@halfpastnow.com>"
+    :from =>           "Half Past Now Newsletter <weekly@halfpastnow.com>"
 }
 ActionMailer::Base.delivery_method = :smtp
 
   #   mail(:to => user.email, :subject => "This week in halfpastnow!" , user_name: "support@halfpastnow.com", password: "chimeralabs", address: "http://radiant-flower-7307.herokuapp.com/")
-    mail(:to => email, :subject => "This week in Austin",:from => "Half Past Now NewsLetter <weekly@halfpastnow.com>" )
+    mail(:to => email, :subject => "This week in Austin",:from => "Half Past Now Newsletter <weekly@halfpastnow.com>" )
   
    end
   
