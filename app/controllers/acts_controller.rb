@@ -39,6 +39,8 @@ class ActsController < ApplicationController
         end
       end
     end
+    @recurrences.reject! { |c| c.nil? }
+    @occurrences.reject! { |c| c.nil? }
 
     @act.pictures.each do |pic|
       @pictures << pic
