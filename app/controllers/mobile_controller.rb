@@ -742,6 +742,11 @@ class MobileController < ApplicationController
     
   end
 
+def getbookmarks
+
+end
+
+
 def FacebookLogin
     puts params[:email]
     unless(params[:channel_id].to_s.empty?)
@@ -842,7 +847,7 @@ def FacebookLogin
     start_date_check = "occurrences.start >= '#{event_start_date}'"
     end_date_check = "occurrences.start <= '#{event_end_date}'"
 
-    unless(params[:start_seconds].to_s.empty? && params[:end_seconds].to_s.empty?)
+    unless(params[:start_seconds].to_s.empty? && params[:endf_seconds].to_s.empty?)
       event_start_time = params[:start_seconds].to_s.empty? ? 0 : params[:start_seconds].to_i
       event_end_time = params[:end_seconds].to_s.empty? ? 86400 : params[:end_seconds].to_i
 
@@ -4952,8 +4957,11 @@ def SX
         end
       end
     end
+    @recurrences.reject! { |c| c.nil? }
+    @occurrences.reject! { |c| c.nil? }
     @eventidsocc = @occurrences.collect(&:event_id)
     @eventidsrec = @recurrences.collect(&:event_id)
+
     @occevents = Event.includes(:tags).find(@eventidsocc)
     @recevents = Event.includes(:tags).find(@eventidsrec)
 
