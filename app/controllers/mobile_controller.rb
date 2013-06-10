@@ -236,7 +236,7 @@ class MobileController < ApplicationController
             :latitude=> c.latitude,
             :longitude=> c.longitude
             }.values
-
+          }
         
          
 
