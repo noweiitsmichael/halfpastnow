@@ -89,6 +89,175 @@ class MobileController < ApplicationController
     end
 
   end
+
+  def checkUserAndroid
+    email = params[:email]
+    password = params[:password]
+    @user=User.find_by_email(email.downcase)
+    if @user.nil?
+        respond_to do |format|
+          format.html # index.html.erb
+          format.json { render json: {:code=>"0" } }
+            # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+        end
+        return
+      else
+        if @user.valid_password?(params[:password])
+          @channels= Channel.where("user_id=?",@user.id)
+      query= "SELECT DISTINCT ON (recurrences.id,events.id) events.event_url AS url, events.ticket_url AS tix,occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, recurrences.start AS rec_start, recurrences.end AS rec_end, recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            FROM occurrences
+              INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
+              INNER JOIN events ON occurrences.event_id = events.id
+              INNER JOIN venues ON events.venue_id = venues.id
+              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
+              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
+              INNER JOIN recurrences ON events.id = recurrences.event_id
+              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id 
+              INNER JOIN bookmark_lists ON  bookmarks.bookmark_list_id = bookmark_lists.id
+           WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NOT NULL AND  occurrences.start >= '#{Date.today()}'
+            UNION
+            SELECT DISTINCT ON (events.id,events.id) events.event_url AS url,events.ticket_url AS tix,occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            FROM occurrences
+              INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
+              INNER JOIN events ON occurrences.event_id = events.id
+              INNER JOIN venues ON events.venue_id = venues.id
+              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
+              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
+              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
+              INNER JOIN bookmark_lists ON  bookmarks.bookmark_list_id = bookmark_lists.id
+            WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
+            "
+
+           queryResult = ActiveRecord::Base.connection.select_all(query)
+           # puts queryResult
+           @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
+
+           # puts @eventIDsputs
+            
+            @eventIDs.each{ |id|
+              # puts id
+              # puts "SET"
+              set =  queryResult.select{ |r| r["event_id"] == id.to_s }
+               act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+               # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
+              # Find the uniq recurrence id
+              rec_ids = set.collect { |e| e["rec_id"] }.uniq
+               rec = set.collect { |s| { 
+                :every_other => s["every_other"], # 0
+                :day_of_week => s["day_of_week"], # 1
+                :week_of_month => s["week_of_month"], # 2 
+                :day_of_month => s["day_of_month"],  # 3
+                :rec_start => s["rec_start"],  # 4
+                :rec_end => s["rec_end"]  # 5
+                }.values
+                }.uniq 
+                # puts rec
+              # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
+              
+              s = set.first
+              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+              item = {
+                :act => act, # 0
+                :rec => rec , # 1
+                :description => s["description"], # 2
+                :title => s["title"], # 3
+                :occurrence_id => s["occurrence_id"], #4
+                :cover => s["cover"] , #5
+                :venue_name => s["venue_name"], #6
+                :address => s["address"] , #7
+                :zip => s["zip"] , #8
+                :city => s["city"], #9
+                :state => s["state"] , #10
+                :phone => s["phone"], # 11
+                :lat => s["latitude"], # 12
+                :long => s["longitude"], #13
+                :venue_id => s["venue_id"], # 14
+                :price => s["price"] , #15
+                :views => s["views"],  #16
+                :clicks => s["clicks"], #17
+                :tags  => tags , # 18
+                :event_id => s["event_id"], #19
+                :start => s["occurrence_start"] , #20
+                :end => s["end"], #21,
+                :user => [], #22
+                :tps =>  [], #23
+                :tix => s["tix"],
+                :url => s["url"]
+              }.values
+              # item = {:act => act, :rec => rec , s["occurrence_start"] , s["end"] , s["cover"] , s["phone"],  s["description"],
+              # s["title"], s["venue_name"], s["longitude"],s["latitude"], s["event_id"],  s["venue_id"],
+              #  s["occurrence_id"], s["price"] ,  s["address"] ,  s["zip"] ,  s["city"],  s["state"] , s["clicks"],
+              # s["views"], :tags  => Event.find(id).tags.collect{ |t| {t.id, t.name}}  }
+
+              @bmEvents << item
+            }
+            # puts esinfo.to_json
+
+            @channels =  @channels.collect{|s| 
+          {
+
+          :end_date=> s.end_date,
+          :id=> s.id,
+          :start_date=> s.start_date,
+          :end_days=> s.end_days,
+          :end_seconds=> s.end_seconds,
+          :excluded_tags=> s.excluded_tags,
+          :high_price=> s.high_price,
+          :user_id=> s.user_id,
+          :included_tags=> s.included_tags,
+          :low_price=> s.low_price,
+          :name=> s.name,
+          :option_day=> s.option_day,
+          :start_days=> s.start_days,
+          :start_seconds=> s.start_seconds
+          }.values
+
+         }
+         @acts =  @user.bookmarked_acts.collect{|c|
+
+          {
+          :id=> c.id,
+          :name=> c.name,
+          }.values
+
+
+         }
+         @venues = @user.bookmarked_venues.collect{|c| 
+          {
+          :name=> c.name,
+          :id=> c.id,
+          :address => c.address,
+          :city=> c.city ,
+          :zip=> c.zip,
+          :latitude=> c.latitude,
+          :longitude=> c.longitude
+          }.values
+
+
+         
+
+
+
+          respond_to do |format|
+          format.html # index.html.erb
+          format.json { render json: {:code=>"1",user:@user, channels: @channels,:bookmarked=>@bmEvents, :events => esinfo,:acts=>@acts, :venues=>@venues } }
+            # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+          end
+          return
+        else
+         respond_to do |format|
+          format.html # index.html.erb
+          format.json { render json: {:code=>"2" } }
+            # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
+          end
+          return
+        end
+    end
+
+  end
+
   def checkFB
     email = params[:email]
     @user=User.find_by_email(email)
