@@ -94,6 +94,7 @@ class MobileController < ApplicationController
     email = params[:email]
     password = params[:password]
     @bmEvents = []
+    tmp ="0"
     @user=User.find_by_email(email.downcase)
     if @user.nil?
         respond_to do |format|
