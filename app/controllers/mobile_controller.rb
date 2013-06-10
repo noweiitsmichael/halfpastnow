@@ -93,6 +93,7 @@ class MobileController < ApplicationController
   def checkUserAndroid
     email = params[:email]
     password = params[:password]
+    @bmEvents = []
     @user=User.find_by_email(email.downcase)
     if @user.nil?
         respond_to do |format|
@@ -103,8 +104,9 @@ class MobileController < ApplicationController
         return
       else
         if @user.valid_password?(params[:password])
-          @channels= Channel.where("user_id=?",@user.id)
-          query= "SELECT DISTINCT ON (recurrences.id,events.id) events.event_url AS url, events.ticket_url AS tix,occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, recurrences.start AS rec_start, recurrences.end AS rec_end, recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+         
+           @channels= Channel.where("user_id=?",@user.id)
+           query= "SELECT DISTINCT ON (recurrences.id,events.id) events.event_url AS url, events.ticket_url AS tix,occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, recurrences.start AS rec_start, recurrences.end AS rec_end, recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM occurrences
               INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
               INNER JOIN events ON occurrences.event_id = events.id
@@ -196,46 +198,46 @@ class MobileController < ApplicationController
             # puts esinfo.to_json
 
             @channels =  @channels.collect{|s| 
-          {
+            {
 
-          :end_date=> s.end_date,
-          :id=> s.id,
-          :start_date=> s.start_date,
-          :end_days=> s.end_days,
-          :end_seconds=> s.end_seconds,
-          :excluded_tags=> s.excluded_tags,
-          :high_price=> s.high_price,
-          :user_id=> s.user_id,
-          :included_tags=> s.included_tags,
-          :low_price=> s.low_price,
-          :name=> s.name,
-          :option_day=> s.option_day,
-          :start_days=> s.start_days,
-          :start_seconds=> s.start_seconds
-          }.values
+            :end_date=> s.end_date,
+            :id=> s.id,
+            :start_date=> s.start_date,
+            :end_days=> s.end_days,
+            :end_seconds=> s.end_seconds,
+            :excluded_tags=> s.excluded_tags,
+            :high_price=> s.high_price,
+            :user_id=> s.user_id,
+            :included_tags=> s.included_tags,
+            :low_price=> s.low_price,
+            :name=> s.name,
+            :option_day=> s.option_day,
+            :start_days=> s.start_days,
+            :start_seconds=> s.start_seconds
+            }.values
 
-         }
-         @acts =  @user.bookmarked_acts.collect{|c|
+           }
+           @acts =  @user.bookmarked_acts.collect{|c|
 
-          {
-          :id=> c.id,
-          :name=> c.name,
-          }.values
+            {
+            :id=> c.id,
+            :name=> c.name,
+            }.values
 
 
-         }
-         @venues = @user.bookmarked_venues.collect{|c| 
-          {
-          :name=> c.name,
-          :id=> c.id,
-          :address => c.address,
-          :city=> c.city ,
-          :zip=> c.zip,
-          :latitude=> c.latitude,
-          :longitude=> c.longitude
-          }.values
+           }
+           @venues = @user.bookmarked_venues.collect{|c| 
+            {
+            :name=> c.name,
+            :id=> c.id,
+            :address => c.address,
+            :city=> c.city ,
+            :zip=> c.zip,
+            :latitude=> c.latitude,
+            :longitude=> c.longitude
+            }.values
 
-        end
+        
          
 
 
