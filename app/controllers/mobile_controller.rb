@@ -245,7 +245,7 @@ class MobileController < ApplicationController
 
           respond_to do |format|
           format.html # index.html.erb
-          format.json { render json: {:code=>"1",user:@user, channels: @channels,:bookmarked=>@bmEvents, :events => esinfo,:acts=>@acts, :venues=>@venues } }
+          format.json { render json: {:code=>"1",user:@user, channels: @channels,:bookmarked=>@bmEvents, :acts=>@acts, :venues=>@venues } }
             # render json: @events.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
           end
           return
