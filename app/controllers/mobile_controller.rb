@@ -1590,6 +1590,7 @@ def FacebookLoginAndroid
         @user.email = params[:email]
         @user.lastname = params[:lastname]
         @user.firstname = params[:firstname]
+        @user.save! 
         @user.uid = params[:uid]
         pix = "https://graph.facebook.com/"+params[:uid].to_s+"/picture?type=square"
         @user.fb_picture = pix
