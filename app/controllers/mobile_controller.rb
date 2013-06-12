@@ -1590,13 +1590,14 @@ def FacebookLoginAndroid
         @user.email = params[:email]
         @user.lastname = params[:lastname]
         @user.firstname = params[:firstname]
+        @user.password =  Devise.friendly_token[0,20]
         @user.save! 
         @user.uid = params[:uid]
         pix = "https://graph.facebook.com/"+params[:uid].to_s+"/picture?type=square"
         @user.fb_picture = pix
         @user.profilepic = pix
         # @user.username = params[:username]
-        @user.password =  Devise.friendly_token[0,20]
+        
         @user.provider = "facebook"
         @user.save! 
         @bmEvents=[]
