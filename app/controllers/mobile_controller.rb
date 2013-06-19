@@ -3047,20 +3047,21 @@ def gettpevents
        end
     }
     # puts occurrences
-    ttttmp = queryResult.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
-    es = queryResult.select{|r|
-      r["occurrence_start"].to_datetime >= event_start_date && r["occurrence_start"].to_datetime <= event_end_date
-    }
-    # tes =[]
-    # es.each{|r|
-    #   t = Time.parse(r["occurrence_start"])
-    #   s = t.hour * 60 * 60 + t.min * 60 + t.sec
-    #   if (s>=event_start_time) && (s<=event_end_time)
-    #     tes<<r
-    #   end
+    # ttttmp = queryResult.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
+    # es = queryResult.select{|r|
+    #   r["occurrence_start"].to_datetime >= event_start_date && r["occurrence_start"].to_datetime <= event_end_date
     # }
+    tes =[]
+    es.each{|r|
+      t = Time.parse(r["occurrence_start"])
+      s = t.hour * 60 * 60 + t.min * 60 + t.sec
+      if (s>=event_start_time) && (s<=event_end_time)
+        tes<<r
+      end
+    }
+    ttttmp = tes.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
     # esinfo = tes.drop(@offset).take(@amount)
-    esinfo = es.drop(@offset).take(@amount)
+    esinfo = ttttmp.drop(@offset).take(@amount)
     @eventIDs =  esinfo.collect { |e| e["event_id"] }.uniq
     # puts @eventIDs
     esinfo = []
