@@ -3051,15 +3051,16 @@ def gettpevents
     es = queryResult.select{|r|
       r["occurrence_start"].to_datetime >= event_start_date && r["occurrence_start"].to_datetime <= event_end_date
     }
-    tes =[]
-    es.each{|r|
-      t = Time.parse(r["occurrence_start"])
-      s = t.hour * 60 * 60 + t.min * 60 + t.sec
-      if (s>=event_start_time) && (s<=event_end_time)
-        tes<<r
-      end
-    }
-    esinfo = tes.drop(@offset).take(@amount)
+    # tes =[]
+    # es.each{|r|
+    #   t = Time.parse(r["occurrence_start"])
+    #   s = t.hour * 60 * 60 + t.min * 60 + t.sec
+    #   if (s>=event_start_time) && (s<=event_end_time)
+    #     tes<<r
+    #   end
+    # }
+    # esinfo = tes.drop(@offset).take(@amount)
+    esinfo = es.drop(@offset).take(@amount)
     @eventIDs =  esinfo.collect { |e| e["event_id"] }.uniq
     # puts @eventIDs
     esinfo = []
