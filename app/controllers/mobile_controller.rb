@@ -3059,7 +3059,7 @@ def gettpevents
         tes<<r
       end
     }
-    ttmp = tes.uniq{|x| e["event_id"]}
+    ttmp = tes.uniq{|x| x["event_id"]}
     ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
     # esinfo = tes.drop(@offset).take(@amount)
     puts "offset"
