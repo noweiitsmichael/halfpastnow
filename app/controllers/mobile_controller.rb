@@ -36,7 +36,7 @@ class MobileController < ApplicationController
 
     @user=User.find_by_email(email.downcase)
     if not @user.nil?
-        puts "Existing email"
+        #puts "Existing email"
           respond_to do |format|
           format.html # index.html.erb
           format.json { render json: {:code=>"1" } }
@@ -137,21 +137,21 @@ class MobileController < ApplicationController
            really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
             queryResult = Rails.cache.read(really_long_cache_name)
             if (queryResult == nil)
-              puts "**************** No cache found for search query ****************"
+              #puts "**************** No cache found for search query ****************"
               queryResult = ActiveRecord::Base.connection.select_all(query)
               Rails.cache.write(really_long_cache_name, queryResult)
-              puts "**************** Cache Set for search Query ****************"
+              #puts "**************** Cache Set for search Query ****************"
             else
-              puts "**************** Cache FOUND for search query!!! ****************"
+              #puts "**************** Cache FOUND for search query!!! ****************"
             end
-           # puts queryResult
+           # #puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
-           # puts @eventIDsputs
+           # #puts @eventIDs#puts
             
             @eventIDs.each{ |id|
-              # puts id
-              # puts "SET"
+              # #puts id
+              # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
               
               s = set.first
@@ -167,7 +167,7 @@ class MobileController < ApplicationController
 
               @bmEvents << item
             }
-            # puts esinfo.to_json
+            # #puts esinfo.to_json
 
             @channels=[]
            @acts =  @user.bookmarked_acts.collect{|c|
@@ -243,21 +243,21 @@ class MobileController < ApplicationController
            really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
             queryResult = Rails.cache.read(really_long_cache_name)
             if (queryResult == nil)
-              puts "**************** No cache found for search query ****************"
+              #puts "**************** No cache found for search query ****************"
               queryResult = ActiveRecord::Base.connection.select_all(query)
               Rails.cache.write(really_long_cache_name, queryResult)
-              puts "**************** Cache Set for search Query ****************"
+              #puts "**************** Cache Set for search Query ****************"
             else
-              puts "**************** Cache FOUND for search query!!! ****************"
+              #puts "**************** Cache FOUND for search query!!! ****************"
             end
-           # puts queryResult
+           # #puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
-           # puts @eventIDsputs
+           # #puts @eventIDs#puts
             
             @eventIDs.each{ |id|
-              # puts id
-              # puts "SET"
+              # #puts id
+              # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
                act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
@@ -272,7 +272,7 @@ class MobileController < ApplicationController
                 :rec_end => s["rec_end"]  # 5
                 }.values
                 }.uniq 
-                # puts rec
+                # #puts rec
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
@@ -312,7 +312,7 @@ class MobileController < ApplicationController
 
               @bmEvents << item
             }
-            # puts esinfo.to_json
+            # #puts esinfo.to_json
 
             @channels =  @channels.collect{|s| 
             {
@@ -464,12 +464,12 @@ class MobileController < ApplicationController
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end 
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
     esinfo = []
@@ -544,7 +544,7 @@ class MobileController < ApplicationController
   
   
   def FacebookLogin2
-    puts params[:email]
+    #puts params[:email]
     unless(params[:channel_id].to_s.empty?)
       channel = Channel.find(params[:channel_id].to_i)
 
@@ -785,32 +785,32 @@ class MobileController < ApplicationController
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
-    # puts "queryResult------------------------"
-    # puts queryResult.to_json
+    # #puts "queryResult------------------------"
+    # #puts queryResult.to_json
     @ids = queryResult
-    # puts queryResult.uniq
+    # #puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-    # puts @eventIDs
+    # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
-      # puts id
-      # puts "SET"
+      # #puts id
+      # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      # puts set
+      # #puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
       tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
-      # puts tps
+      # #puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -825,7 +825,7 @@ class MobileController < ApplicationController
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
       tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
-      # puts tags
+      # #puts tags
      
       s = set.first
       # item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
@@ -884,7 +884,7 @@ class MobileController < ApplicationController
       @offset = params[:offset].to_i
     end
 
-    # puts esinfo.to_json
+    # #puts esinfo.to_json
     #  Bookmarked events
     email = params[:email]
     @user=User.find_by_email(email)
@@ -921,21 +921,21 @@ class MobileController < ApplicationController
           really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
           queryResult = Rails.cache.read(really_long_cache_name)
           if (queryResult == nil)
-            puts "**************** No cache found for search query ****************"
+            #puts "**************** No cache found for search query ****************"
             queryResult = ActiveRecord::Base.connection.select_all(query)
             Rails.cache.write(really_long_cache_name, queryResult)
-            puts "**************** Cache Set for search Query ****************"
+            #puts "**************** Cache Set for search Query ****************"
           else
-            puts "**************** Cache FOUND for search query!!! ****************"
+            #puts "**************** Cache FOUND for search query!!! ****************"
           end
-           # puts queryResult
+           # #puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
-           # puts @eventIDs
+           # #puts @eventIDs
             
             @eventIDs.each{ |id|
-              # puts id
-              # puts "SET"
+              # #puts id
+              # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
                act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
@@ -950,7 +950,7 @@ class MobileController < ApplicationController
                 :rec_end => s["rec_end"]  # 5
                 }.values
                 }.uniq 
-                # puts rec
+                # #puts rec
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
@@ -988,7 +988,7 @@ class MobileController < ApplicationController
 
               @bmEvents << item
             }
-            # puts esinfo.to_json
+            # #puts esinfo.to_json
 
             @channels =  @channels.collect{|s| 
           {
@@ -1065,7 +1065,7 @@ end
 
 
 def FacebookLoginAndroid
-    puts params[:email]
+    #puts params[:email]
     unless(params[:channel_id].to_s.empty?)
       channel = Channel.find(params[:channel_id].to_i)
 
@@ -1322,21 +1322,21 @@ def FacebookLoginAndroid
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
-    puts "queryResult 10 "
+    #puts "queryResult 10 "
     occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
     ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
     esinfo = ttttmp.drop(@offset).take(@amount)
     
     ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
-    # puts "iDs"
-    # puts ids
+    # #puts "iDs"
+    # #puts ids
     esinfo = []
     if (ids.size > 0) && !ids.empty?
       query = "SELECT DISTINCT ON (recurrences.id,users.id,bookmark_lists.id) events.event_url AS url,events.ticket_url AS tix, bookmark_lists.id AS listid, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
@@ -1387,31 +1387,31 @@ def FacebookLoginAndroid
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE occurrences.id IN (#{ids})"
     
-    # puts "Query"
-    # puts query
+    # #puts "Query"
+    # #puts query
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
 
-    # puts "queryResult------------------------"
-    # puts queryResult.to_json
+    # #puts "queryResult------------------------"
+    # #puts queryResult.to_json
     @ids = queryResult
-    # puts queryResult.uniq
+    # #puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-    # puts @eventIDs
+    # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
-      # puts id
-      # puts "SET"
+      # #puts id
+      # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      # puts set
+      # #puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
@@ -1428,7 +1428,7 @@ def FacebookLoginAndroid
       end
       
       
-      # puts tps
+      # #puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -1443,7 +1443,7 @@ def FacebookLoginAndroid
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
       tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
-      # puts tags
+      # #puts tags
      
       s = set.first
       # item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
@@ -1490,8 +1490,8 @@ def FacebookLoginAndroid
 
       esinfo << item
     }
-    # puts "Output: - before sorting "
-    # puts esinfo.to_json
+    # #puts "Output: - before sorting "
+    # #puts esinfo.to_json
     ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
     
     esinfo = ttttmp.collect{|es| es.values}
@@ -1507,8 +1507,8 @@ def FacebookLoginAndroid
     unless(params[:offset].to_s.empty?)
       @offset = params[:offset].to_i
     end
-    # puts "Output: "
-    # puts esinfo.to_json
+    # #puts "Output: "
+    # #puts esinfo.to_json
     #  Bookmarked events
     email = params[:email]
     @user=User.find_by_email(email)
@@ -1545,21 +1545,21 @@ def FacebookLoginAndroid
           really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
           queryResult = Rails.cache.read(really_long_cache_name)
           if (queryResult == nil)
-            puts "**************** No cache found for search query ****************"
+            #puts "**************** No cache found for search query ****************"
             queryResult = ActiveRecord::Base.connection.select_all(query)
             Rails.cache.write(really_long_cache_name, queryResult)
-            puts "**************** Cache Set for search Query ****************"
+            #puts "**************** Cache Set for search Query ****************"
           else
-            puts "**************** Cache FOUND for search query!!! ****************"
+            #puts "**************** Cache FOUND for search query!!! ****************"
           end
-           # puts queryResult
+           # #puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
-           # puts @eventIDsputs
+           # #puts @eventIDs#puts
             
             @eventIDs.each{ |id|
-              # puts id
-              # puts "SET"
+              # #puts id
+              # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
                act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
@@ -1574,7 +1574,7 @@ def FacebookLoginAndroid
                 :rec_end => s["rec_end"]  # 5
                 }.values
                 }.uniq 
-                # puts rec
+                # #puts rec
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
@@ -1614,7 +1614,7 @@ def FacebookLoginAndroid
 
               @bmEvents << item
             }
-            # puts esinfo.to_json
+            # #puts esinfo.to_json
 
             @channels =  @channels.collect{|s| 
           {
@@ -1706,7 +1706,7 @@ def FacebookLoginAndroid
 
 
 def FacebookLogin
-    puts params[:email]
+    #puts params[:email]
     unless(params[:channel_id].to_s.empty?)
       channel = Channel.find(params[:channel_id].to_i)
 
@@ -1966,21 +1966,21 @@ def FacebookLogin
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
-    puts "queryResult 10 "
+    #puts "queryResult 10 "
     occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
     ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
     esinfo = ttttmp.drop(@offset).take(@amount)
     
     ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
-    # puts "iDs"
-    # puts ids
+    # #puts "iDs"
+    # #puts ids
     esinfo = []
     if (ids.size > 0) && !ids.empty?
       query = "SELECT DISTINCT ON (recurrences.id,users.id,bookmark_lists.id) events.event_url AS url,events.ticket_url AS tix, bookmark_lists.id AS listid, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
@@ -2031,42 +2031,42 @@ def FacebookLogin
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE occurrences.id IN (#{ids})"
     
-    # puts "Query"
-    # puts query
+    # #puts "Query"
+    # #puts query
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
 
-    # puts "queryResult------------------------"
-    # puts queryResult.to_json
+    # #puts "queryResult------------------------"
+    # #puts queryResult.to_json
     @ids = queryResult
-    # puts queryResult.uniq
+    # #puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-    # puts @eventIDs
+    # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
-      # puts id
-      # puts "SET"
+      # #puts id
+      # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      # puts set
+      # #puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       usersid = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       really_long_cache_name = Digest::SHA1.hexdigest("search_for_user_#{usersid}")
       users = Rails.cache.read(really_long_cache_name)
       if (users == nil)
-        puts "**************** No cache found for search query - user ids ****************"
+        #puts "**************** No cache found for search query - user ids ****************"
         users = User.find(usersid).collect{|s| s.uid.to_s}.uniq
         Rails.cache.write(really_long_cache_name, users)
-        puts "**************** Cache Set for search Query ****************"
+        #puts "**************** Cache Set for search Query ****************"
       else
-        puts "**************** Cache FOUND for search query - user ids !!! ****************"
+        #puts "**************** Cache FOUND for search query - user ids !!! ****************"
       end
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
@@ -2081,7 +2081,7 @@ def FacebookLogin
       end
       
       
-      # puts tps
+      # #puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -2099,15 +2099,15 @@ def FacebookLogin
       really_long_cache_name = "event_find_#{id}"
       tags = Rails.cache.read(really_long_cache_name)
       if (tags==nil)
-        puts "**************** No cache found for search event -id  ****************"
+        #puts "**************** No cache found for search event -id  ****************"
         tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
         Rails.cache.write(really_long_cache_name, tags)
-        puts "**************** Cache Set for search Query ****************"
+        #puts "**************** Cache Set for search Query ****************"
       else
-        puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+        #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
       end
 
-      # puts tags
+      # #puts tags
      
       s = set.first
       # item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
@@ -2154,8 +2154,8 @@ def FacebookLogin
 
       esinfo << item
     }
-    # puts "Output: - before sorting "
-    # puts esinfo.to_json
+    # #puts "Output: - before sorting "
+    # #puts esinfo.to_json
     ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
     
     esinfo = ttttmp.collect{|es| es.values}
@@ -2171,8 +2171,8 @@ def FacebookLogin
     unless(params[:offset].to_s.empty?)
       @offset = params[:offset].to_i
     end
-    # puts "Output: "
-    # puts esinfo.to_json
+    # #puts "Output: "
+    # #puts esinfo.to_json
     #  Bookmarked events
     email = params[:email]
     @user=User.find_by_email(email)
@@ -2209,21 +2209,21 @@ def FacebookLogin
           really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
           queryResult = Rails.cache.read(really_long_cache_name)
           if (queryResult == nil)
-            puts "**************** No cache found for search query ****************"
+            #puts "**************** No cache found for search query ****************"
             queryResult = ActiveRecord::Base.connection.select_all(query)
             Rails.cache.write(really_long_cache_name, queryResult)
-            puts "**************** Cache Set for search Query ****************"
+            #puts "**************** Cache Set for search Query ****************"
           else
-            puts "**************** Cache FOUND for search query!!! ****************"
+            #puts "**************** Cache FOUND for search query!!! ****************"
           end
-           # puts queryResult
+           # #puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
-           # puts @eventIDsputs
+           # #puts @eventIDs#puts
             
             @eventIDs.each{ |id|
-              # puts id
-              # puts "SET"
+              # #puts id
+              # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
                act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
@@ -2238,19 +2238,19 @@ def FacebookLogin
                 :rec_end => s["rec_end"]  # 5
                 }.values
                 }.uniq 
-                # puts rec
+                # #puts rec
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
               really_long_cache_name = "event_find_#{id}"
               tags = Rails.cache.read(really_long_cache_name)
               if (tags==nil)
-                puts "**************** No cache found for search event -id  ****************"
+                #puts "**************** No cache found for search event -id  ****************"
                 tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
                 Rails.cache.write(really_long_cache_name, tags)
-                puts "**************** Cache Set for search Query ****************"
+                #puts "**************** Cache Set for search Query ****************"
               else
-                puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+                #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
               end
               item = {
                 :act => act, # 0
@@ -2287,7 +2287,7 @@ def FacebookLogin
 
               @bmEvents << item
             }
-            # puts esinfo.to_json
+            # #puts esinfo.to_json
 
             @channels =  @channels.collect{|s| 
           {
@@ -2363,7 +2363,7 @@ def FacebookLogin
 
 
 # def FBlogin
-#     puts params[:email]
+#     #puts params[:email]
 #     unless(params[:channel_id].to_s.empty?)
 #       channel = Channel.find(params[:channel_id].to_i)
 
@@ -2605,14 +2605,14 @@ def FacebookLogin
     
     
 #     queryResult = ActiveRecord::Base.connection.select_all(query)
-#     puts "queryResult 10 "
+#     #puts "queryResult 10 "
 #     occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
 #     ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
 #     esinfo = ttttmp.drop(@offset).take(@amount)
     
 #     ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
-#     # puts "iDs"
-#     # puts ids
+#     # #puts "iDs"
+#     # #puts ids
 #     esinfo = []
 #     if (ids.size > 0) && !ids.empty?
 #       query = "SELECT DISTINCT ON (recurrences.id,users.id,bookmark_lists.id) events.event_url AS url,events.ticket_url AS tix, bookmark_lists.id AS listid, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
@@ -2663,22 +2663,22 @@ def FacebookLogin
 #               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
 #             WHERE occurrences.id IN (#{ids})"
     
-#     # puts "Query"
-#     # puts query
+#     # #puts "Query"
+#     # #puts query
 #     queryResult = ActiveRecord::Base.connection.select_all(query)
 
-#     # puts "queryResult------------------------"
-#     # puts queryResult.to_json
+#     # #puts "queryResult------------------------"
+#     # #puts queryResult.to_json
 #     @ids = queryResult
-#     # puts queryResult.uniq
+#     # #puts queryResult.uniq
 #     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-#     # puts @eventIDs
+#     # #puts @eventIDs
 #     esinfo = []
 #     @eventIDs.each{ |id|
-#       # puts id
-#       # puts "SET"
+#       # #puts id
+#       # #puts "SET"
 #       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-#       # puts set
+#       # #puts set
 #       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
 #       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
 #       users = User.find(users).collect{|s| s.uid.to_s}.uniq
@@ -2695,7 +2695,7 @@ def FacebookLogin
 #       end
       
       
-#       # puts tps
+#       # #puts tps
 #       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
 #       # Find the uniq recurrence id
 #       rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -2710,7 +2710,7 @@ def FacebookLogin
 #         }.values}.uniq 
 #       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
 #       tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
-#       # puts tags
+#       # #puts tags
      
 #       s = set.first
 #       # item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
@@ -2757,8 +2757,8 @@ def FacebookLogin
 
 #       esinfo << item
 #     }
-#     # puts "Output: - before sorting "
-#     # puts esinfo.to_json
+#     # #puts "Output: - before sorting "
+#     # #puts esinfo.to_json
 #     ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
     
 #     esinfo = ttttmp.collect{|es| es.values}
@@ -2774,8 +2774,8 @@ def FacebookLogin
 #     unless(params[:offset].to_s.empty?)
 #       @offset = params[:offset].to_i
 #     end
-#     # puts "Output: "
-#     # puts esinfo.to_json
+#     # #puts "Output: "
+#     # #puts esinfo.to_json
 #     #  Bookmarked events
 #     email = params[:email]
 #     @user=User.find_by_email(email)
@@ -2810,14 +2810,14 @@ def FacebookLogin
 #             "
 
 #            queryResult = ActiveRecord::Base.connection.select_all(query)
-#            # puts queryResult
+#            # #puts queryResult
 #            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
-#            # puts @eventIDsputs
+#            # #puts @eventIDs#puts
             
 #             @eventIDs.each{ |id|
-#               # puts id
-#               # puts "SET"
+#               # #puts id
+#               # #puts "SET"
 #               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
 #                act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
 #                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
@@ -2832,7 +2832,7 @@ def FacebookLogin
 #                 :rec_end => s["rec_end"]  # 5
 #                 }.values
 #                 }.uniq 
-#                 # puts rec
+#                 # #puts rec
 #               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
 #               s = set.first
@@ -2872,7 +2872,7 @@ def FacebookLogin
 
 #               @bmEvents << item
 #             }
-#             # puts esinfo.to_json
+#             # #puts esinfo.to_json
 
 #          #    @channels =  @channels.collect{|s| 
 #          #  {
@@ -2946,7 +2946,7 @@ def FacebookLogin
 #   end
 
 def gettpevents
-    puts params[:email]
+    #puts params[:email]
     unless(params[:channel_id].to_s.empty?)
       channel = Channel.find(params[:channel_id].to_i)
 
@@ -3170,12 +3170,12 @@ def gettpevents
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult==nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)   
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
 
    
@@ -3187,11 +3187,11 @@ def gettpevents
 
         occ = Rails.cache.read("occurrence_find_#{r["event_id"].to_s}_event_nextOccurrence")
         if (occ==nil)
-          puts "Cache not found"
+          #puts "Cache not found"
           occ = Event.find(r["event_id"].to_i).nextOccurrence
           Rails.cache.write("occurrence_find_#{r["event_id"].to_s}_event_nextOccurrence", occ)
         else
-          puts "Cache found"
+          #puts "Cache found"
         end
         
         unless occ.nil?
@@ -3201,7 +3201,7 @@ def gettpevents
         
        end
     }
-    # puts occurrences
+    # #puts occurrences
     # ttttmp = queryResult.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
     es = queryResult.select{|r|
       r["occurrence_start"].to_datetime >= event_start_date && r["occurrence_start"].to_datetime <= event_end_date
@@ -3217,19 +3217,19 @@ def gettpevents
     ttmp = tes.uniq{|x| x["event_id"]}
     ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
     # esinfo = tes.drop(@offset).take(@amount)
-    puts "offset"
-    puts @offset
-    puts "amount"
-    puts @amount
+    #puts "offset"
+    #puts @offset
+    #puts "amount"
+    #puts @amount
     esinfo = ttttmp.drop(@offset).take(@amount)
     @eventIDs =  esinfo.collect { |e| e["event_id"] }.uniq
-    # puts @eventIDs
+    # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
-      # puts id
-      # puts "SET"
+      # #puts id
+      # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      # puts set
+      # #puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
@@ -3250,7 +3250,7 @@ def gettpevents
         tps << "http://hpn-pictures.s3.amazonaws.com/uploads/bookmark_list/picture/"+tpid[:id].to_s+"/mini_"+tpid[:pix]
       }
       
-      # puts tps
+      # #puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -3265,7 +3265,7 @@ def gettpevents
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
       tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
-      # puts tags
+      # #puts tags
      
       s = set.first
       
@@ -3325,7 +3325,7 @@ def gettpevents
     
 end
 def FacebookLoginSX
-    puts params[:email]
+    #puts params[:email]
     unless(params[:channel_id].to_s.empty?)
       channel = Channel.find(params[:channel_id].to_i)
 
@@ -3566,21 +3566,21 @@ def FacebookLoginSX
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
-    puts "queryResult 10 "
+    #puts "queryResult 10 "
     occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
     ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
     esinfo = ttttmp.drop(@offset).take(@amount)
     
     ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
-    # puts "iDs"
-    # puts ids
+    # #puts "iDs"
+    # #puts ids
     esinfo = []
     if (ids.size > 0) && !ids.empty?
       query = "SELECT DISTINCT ON (recurrences.id,users.id,bookmark_lists.id) events.event_url AS url,events.ticket_url AS tix, bookmark_lists.id AS listid, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
@@ -3631,31 +3631,31 @@ def FacebookLoginSX
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE occurrences.id IN (#{ids})"
     
-    # puts "Query"
-    # puts query
+    # #puts "Query"
+    # #puts query
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
 
-    # puts "queryResult------------------------"
-    # puts queryResult.to_json
+    # #puts "queryResult------------------------"
+    # #puts queryResult.to_json
     @ids = queryResult
-    # puts queryResult.uniq
+    # #puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-    # puts @eventIDs
+    # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
-      # puts id
-      # puts "SET"
+      # #puts id
+      # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      # puts set
+      # #puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
@@ -3672,7 +3672,7 @@ def FacebookLoginSX
       end
       
       
-      # puts tps
+      # #puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -3687,7 +3687,7 @@ def FacebookLoginSX
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
       tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
-      # puts tags
+      # #puts tags
      
       s = set.first
       # item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
@@ -3734,8 +3734,8 @@ def FacebookLoginSX
 
       esinfo << item
     }
-    # puts "Output: - before sorting "
-    # puts esinfo.to_json
+    # #puts "Output: - before sorting "
+    # #puts esinfo.to_json
     ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
     
     esinfo = ttttmp.collect{|es| es.values}
@@ -3751,8 +3751,8 @@ def FacebookLoginSX
     unless(params[:offset].to_s.empty?)
       @offset = params[:offset].to_i
     end
-    # puts "Output: "
-    # puts esinfo.to_json
+    # #puts "Output: "
+    # #puts esinfo.to_json
     #  Bookmarked events
     email = params[:email]
     @user=User.find_by_email(email)
@@ -3790,21 +3790,21 @@ def FacebookLoginSX
           really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
           queryResult = Rails.cache.read(really_long_cache_name)
           if (queryResult == nil)
-            puts "**************** No cache found for search query ****************"
+            #puts "**************** No cache found for search query ****************"
             queryResult = ActiveRecord::Base.connection.select_all(query)
             Rails.cache.write(really_long_cache_name, queryResult)
-            puts "**************** Cache Set for search Query ****************"
+            #puts "**************** Cache Set for search Query ****************"
           else
-            puts "**************** Cache FOUND for search query!!! ****************"
+            #puts "**************** Cache FOUND for search query!!! ****************"
           end
-           # puts queryResult
+           # #puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
-           # puts @eventIDsputs
+           # #puts @eventIDs#puts
             
             @eventIDs.each{ |id|
-              # puts id
-              # puts "SET"
+              # #puts id
+              # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
                act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
@@ -3819,7 +3819,7 @@ def FacebookLoginSX
                 :rec_end => s["rec_end"]  # 5
                 }.values
                 }.uniq 
-                # puts rec
+                # #puts rec
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
@@ -3891,21 +3891,21 @@ def FacebookLoginSX
           really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
           queryResult = Rails.cache.read(really_long_cache_name)
           if (queryResult == nil)
-            puts "**************** No cache found for search query ****************"
+            #puts "**************** No cache found for search query ****************"
             queryResult = ActiveRecord::Base.connection.select_all(query)
             Rails.cache.write(really_long_cache_name, queryResult)
-            puts "**************** Cache Set for search Query ****************"
+            #puts "**************** Cache Set for search Query ****************"
           else
-            puts "**************** Cache FOUND for search query!!! ****************"
+            #puts "**************** Cache FOUND for search query!!! ****************"
           end
-           # puts queryResult
+           # #puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
-           # puts @eventIDsputs
+           # #puts @eventIDs#puts
             @RSVP =[]
             @eventIDs.each{ |id|
-              # puts id
-              # puts "SET"
+              # #puts id
+              # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
                act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
@@ -3920,7 +3920,7 @@ def FacebookLoginSX
                 :rec_end => s["rec_end"]  # 5
                 }.values
                 }.uniq 
-                # puts rec
+                # #puts rec
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
@@ -3964,7 +3964,7 @@ def FacebookLoginSX
 
 
 
-            # puts esinfo.to_json
+            # #puts esinfo.to_json
 
             @channels =  @channels.collect{|s| 
           {
@@ -4035,7 +4035,7 @@ def FacebookLoginSX
     
   end
 def SX
-    puts params[:email]
+    #puts params[:email]
     unless(params[:channel_id].to_s.empty?)
       channel = Channel.find(params[:channel_id].to_i)
 
@@ -4258,12 +4258,12 @@ def SX
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
       queryResult = ActiveRecord::Base.connection.select_all(query)
-      puts "queryResult 10 "
+      #puts "queryResult 10 "
       occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
       ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
       esinfo = ttttmp.drop(@offset).take(@amount)
       ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
-      # puts esinfo
+      # #puts esinfo
 
 
      query = "SELECT DISTINCT ON (recurrences.id,users.id,bookmark_lists.id) bookmark_lists.id AS listid, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
@@ -4317,25 +4317,25 @@ def SX
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
-    # puts "queryResult------------------------"
-    # puts queryResult.to_json
+    # #puts "queryResult------------------------"
+    # #puts queryResult.to_json
     @ids = queryResult
-    # puts queryResult.uniq
+    # #puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-    # puts @eventIDs
+    # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
-      # puts id
-      # puts "SET"
+      # #puts id
+      # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      # puts set
+      # #puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
@@ -4343,7 +4343,7 @@ def SX
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
       tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
       
-      # puts tps
+      # #puts tps
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -4358,7 +4358,7 @@ def SX
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
       tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
-      # puts tags
+      # #puts tags
      
       s = set.first
       # item = {:act => act, :rec => rec , :start => s["occurrence_start"] , :end => s["end"] ,:cover => s["cover"] , :phone => s["phone"], :description => s["description"],
@@ -4417,7 +4417,7 @@ def SX
       @offset = params[:offset].to_i
     end
 
-    # puts esinfo.to_json
+    # #puts esinfo.to_json
     #  Bookmarked events
     
 
@@ -4491,20 +4491,20 @@ def SX
       really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
       queryResult = Rails.cache.read(really_long_cache_name)
       if (queryResult == nil)
-        puts "**************** No cache found for search query ****************"
+        #puts "**************** No cache found for search query ****************"
         queryResult = ActiveRecord::Base.connection.select_all(query)
         Rails.cache.write(really_long_cache_name, queryResult)
-        puts "**************** Cache Set for search Query ****************"
+        #puts "**************** Cache Set for search Query ****************"
       else
-        puts "**************** Cache FOUND for search query!!! ****************"
+        #puts "**************** Cache FOUND for search query!!! ****************"
       end
       
       @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-      # puts @eventIDs
+      # #puts @eventIDs
       
       @eventIDs.each{ |id|
-        # puts id
-        # puts "SET"
+        # #puts id
+        # #puts "SET"
         set =  queryResult.select{ |r| r["event_id"] == id.to_s }
         act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
         # act = set.collect { |s|  {s["actor"], s["act_id"]} }
@@ -4521,7 +4521,7 @@ def SX
           }.values}.uniq 
         # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
         tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
-        # puts tags
+        # #puts tags
         s = set.first
         lastname = s["lastname"].to_s
         firstname =s["firstname"].to_s
@@ -4597,20 +4597,20 @@ def SX
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
     
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-    # puts @eventIDs
+    # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
-      # puts id
-      # puts "SET"
+      # #puts id
+      # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
@@ -4627,7 +4627,7 @@ def SX
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
       tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
-      # puts tags
+      # #puts tags
       s = set.first
       lastname = s["lastname"].to_s
       firstname =s["firstname"].to_s
@@ -4736,20 +4736,20 @@ def SX
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
     
     @eventIDs =  queryResult.collect { |e| e["bookmarked_id"] }.uniq
-    # puts @eventIDs
+    # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
-      # puts id
-      # puts "SET"
+      # #puts id
+      # #puts "SET"
       set =  queryResult.select{ |r| r["bookmarked_id"] == id.to_s }
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
@@ -4767,7 +4767,7 @@ def SX
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
       # tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
       tags  = Occurrence.find(id).event.tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
-      # puts tags
+      # #puts tags
       s = set.first
       lastname = s["lastname"].to_s
       firstname =s["firstname"].to_s
@@ -4845,7 +4845,7 @@ def SX
       @occurrences = list.all_bookmarked_events.collect{|o| {:id =>o.id, :start => o.start , :list => list, :event_id => o.event_id} }
 
     }
-    puts @occurrences
+    #puts @occurrences
 
     ttttmp = @occurrences.sort_by{ |hsh| hsh[:start] }
     
@@ -4877,14 +4877,14 @@ def SX
           really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
           queryResult = Rails.cache.read(really_long_cache_name)
           if (queryResult == nil)
-            puts "**************** No cache found for search query ****************"
+            #puts "**************** No cache found for search query ****************"
             queryResult = ActiveRecord::Base.connection.select_all(query)
             Rails.cache.write(really_long_cache_name, queryResult)
-            puts "**************** Cache Set for search Query ****************"
+            #puts "**************** Cache Set for search Query ****************"
           else
-            puts "**************** Cache FOUND for search query!!! ****************"
+            #puts "**************** Cache FOUND for search query!!! ****************"
           end
-          # puts queryResult
+          # #puts queryResult
           @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
           
           @eventIDs.each{ |id|
@@ -4965,8 +4965,8 @@ def SX
     @lists.each{
       |list|
       @occurrencesid = list.all_bookmarked_events.collect{|o| o.id}
-      puts "Bookmark"
-      # puts list.all_bookmarked_events
+      #puts "Bookmark"
+      # #puts list.all_bookmarked_events
       if @occurrencesid.size > 0
           where_clause = "occurrences.id IN (#{@occurrencesid.join(',')})"
           query = "SELECT DISTINCT ON (recurrences.id,acts.id) events.event_url AS url,events.ticket_url AS tix, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
@@ -4990,19 +4990,19 @@ def SX
                   INNER JOIN tags ON events_tags.tag_id = tags.id
                   WHERE #{where_clause} AND occurrences.recurrence_id IS NULL
                   "
-          # puts query
+          # #puts query
           really_long_cache_name = Digest::SHA1.hexdigest("search_for_uniq_#{query}")
           queryResult = Rails.cache.read(really_long_cache_name)
           if (queryResult == nil)
-            puts "**************** No cache found for search query ****************"
+            #puts "**************** No cache found for search query ****************"
             queryResult = ActiveRecord::Base.connection.select_all(query).uniq
             Rails.cache.write(really_long_cache_name, queryResult)
-            puts "**************** Cache Set for search Query ****************"
+            #puts "**************** Cache Set for search Query ****************"
           else
-            puts "**************** Cache FOUND for search query!!! ****************"
+            #puts "**************** Cache FOUND for search query!!! ****************"
           end
           
-          # puts queryResult
+          # #puts queryResult
           @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
           
           @eventIDs.each{ |id|
@@ -5087,8 +5087,8 @@ def SX
     @lists.each{
       |list|
       @occurrencesid = list.all_bookmarked_events.collect{|o| o.id}
-      puts "Bookmark"
-      # puts list.all_bookmarked_events
+      #puts "Bookmark"
+      # #puts list.all_bookmarked_events
       if @occurrencesid.size > 0
           where_clause = "occurrences.id IN (#{@occurrencesid.join(',')})"
           query = "SELECT DISTINCT ON (recurrences.id,acts.id) events.event_url AS url,events.ticket_url AS tix, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
@@ -5112,18 +5112,18 @@ def SX
                   INNER JOIN tags ON events_tags.tag_id = tags.id
                   WHERE #{where_clause} AND occurrences.recurrence_id IS NULL
                   "
-          # puts query
+          # #puts query
           really_long_cache_name = Digest::SHA1.hexdigest("search_for_uniq_#{query}")
           queryResult = Rails.cache.read(really_long_cache_name)
           if (queryResult == nil)
-            puts "**************** No cache found for search query ****************"
+            #puts "**************** No cache found for search query ****************"
             queryResult = ActiveRecord::Base.connection.select_all(query).uniq
             Rails.cache.write(really_long_cache_name, queryResult)
-            puts "**************** Cache Set for search Query ****************"
+            #puts "**************** Cache Set for search Query ****************"
           else
-            puts "**************** Cache FOUND for search query!!! ****************"
+            #puts "**************** Cache FOUND for search query!!! ****************"
           end
-          # puts queryResult
+          # #puts queryResult
           @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
           
           @eventIDs.each{ |id|
@@ -5242,14 +5242,14 @@ def SX
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_uniq_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query).uniq
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end 
-          # puts queryResult
+          # #puts queryResult
           @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
           
           @eventIDs.each{ |id|
@@ -5517,17 +5517,17 @@ def SX
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
 
-    # puts "FBlogin"
-    # puts query
+    # #puts "FBlogin"
+    # #puts query
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
     @ids = queryResult
     
@@ -5580,15 +5580,15 @@ def SX
 
     
     # pp @occurringTags
-    # puts ""
-    # puts "- - - - - - - - - - - - -"
-    # puts ""
+    # #puts ""
+    # #puts "- - - - - - - - - - - - -"
+    # #puts ""
     # @occurringTags.each do |id,tuple|
     #   pp tuple[:tag]
     #   pp tuple[:tag].childTags
     # end
-    # puts "_________________________"
-    # puts ""
+    # #puts "_________________________"
+    # #puts ""
 
     if @event_ids.size > 0
       ActiveRecord::Base.connection.update("UPDATE events
@@ -5651,7 +5651,7 @@ def SX
       @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts}
       @esinfo << @item
     }
-    puts "esinfo"
+    #puts "esinfo"
     @channels =  @channels.collect{|s| 
           {
 
@@ -5674,7 +5674,7 @@ def SX
     @channels=[]
     @esinfo=[]
     @es
-    # puts @esinfo.to_json
+    # #puts @esinfo.to_json
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
@@ -5929,17 +5929,17 @@ def SX
                 LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
               WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
     end
-    puts "newFBLogin"
-    # puts query
+    #puts "newFBLogin"
+    # #puts query
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
     @ids = queryResult
 
@@ -6128,12 +6128,12 @@ def SX
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_venue_#{params[:id]}_#{startTime}")
     @occs =  Rails.cache.read(really_long_cache_name)
     if (@occs == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       @occs = @venue.events.collect { |event| event.occurrences.select { |occ| occ.start >= startTime &&  occ.start <= endTime}  }.flatten.sort_by { |occ| occ.start }
       Rails.cache.write(really_long_cache_name, @occs)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
          
 
@@ -6155,23 +6155,23 @@ def SX
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_event_occ_#{@eventidsocc}")
     @occevents = Rails.cache.read(really_long_cache_name)
     if (@occevents == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       @occevents = Event.includes(:tags).find(@eventidsocc)
       Rails.cache.write(really_long_cache_name, @occevents)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
 
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_event_rec_#{@eventidsrec}")
     @recevents = Rails.cache.read(really_long_cache_name)
     if (@recevents == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       @recevents = Event.includes(:tags).find(@eventidsrec)
       Rails.cache.write(really_long_cache_name, @recevents)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
 
 
@@ -6194,23 +6194,23 @@ def showact
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_act_#{params[:id]}_#{startTime}")
     @occs =  Rails.cache.read(really_long_cache_name)
     if (@occs == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       @occs = @act.events.collect { |event| event.occurrences.select { |occ| occ.start >= startTime }  }.flatten.sort_by { |occ| occ.start }
       Rails.cache.write(really_long_cache_name, @occs)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
     # @venues = @act.events.collect {|event| event.venue}
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_act_venue_#{params[:id]}_#{startTime}")
     @venues =  Rails.cache.read(really_long_cache_name)
     if (@venues == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       @venues = @act.events.collect {|event| event.venue}
       Rails.cache.write(really_long_cache_name, @venues)
-      puts "**************** Cache Set for search Query ****************"
+      #puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      #puts "**************** Cache FOUND for search query!!! ****************"
     end
 
 
@@ -6451,24 +6451,24 @@ end
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
-      puts "**************** No cache found for search query ****************"
+      #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
       Rails.cache.write(really_long_cache_name, queryResult)
-      puts "**************** Cache Set for search Query ****************"
+      ##puts "**************** Cache Set for search Query ****************"
     else
-      puts "**************** Cache FOUND for search query!!! ****************"
+      ##puts "**************** Cache FOUND for search query!!! ****************"
     end
     queryResult =[]
     @ids = queryResult
-    # puts queryResult.uniq
+    # ##puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-    # puts @eventIDs
+    # ##puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
-      # puts id
-      # puts "SET"
+      # ##puts id
+      # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      # puts set
+      # #puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       
       
@@ -6485,7 +6485,7 @@ end
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
       tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
-      # puts tags
+      # #puts tags
      
       s = set.first
       
