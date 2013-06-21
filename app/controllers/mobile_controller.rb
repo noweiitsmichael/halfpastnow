@@ -134,7 +134,16 @@ class MobileController < ApplicationController
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
             "
 
-           queryResult = ActiveRecord::Base.connection.select_all(query)
+           really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+            queryResult = Rails.cache.read(really_long_cache_name)
+            if (queryResult == nil)
+              puts "**************** No cache found for search query ****************"
+              queryResult = ActiveRecord::Base.connection.select_all(query)
+              Rails.cache.write(really_long_cache_name, queryResult)
+              puts "**************** Cache Set for search Query ****************"
+            else
+              puts "**************** Cache FOUND for search query!!! ****************"
+            end
            # puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
@@ -231,7 +240,16 @@ class MobileController < ApplicationController
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
             "
 
-           queryResult = ActiveRecord::Base.connection.select_all(query)
+           really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+            queryResult = Rails.cache.read(really_long_cache_name)
+            if (queryResult == nil)
+              puts "**************** No cache found for search query ****************"
+              queryResult = ActiveRecord::Base.connection.select_all(query)
+              Rails.cache.write(really_long_cache_name, queryResult)
+              puts "**************** Cache Set for search Query ****************"
+            else
+              puts "**************** Cache FOUND for search query!!! ****************"
+            end
            # puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
@@ -443,7 +461,16 @@ class MobileController < ApplicationController
             LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
           WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS NOT TRUE"
     end
-    queryResult = ActiveRecord::Base.connection.select_all(query).uniq 
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end 
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
     esinfo = []
     @eventIDs.each{ |id|
@@ -755,7 +782,16 @@ class MobileController < ApplicationController
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
     
     
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
     # puts "queryResult------------------------"
     # puts queryResult.to_json
     @ids = queryResult
@@ -882,7 +918,16 @@ class MobileController < ApplicationController
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL
             "
 
-           queryResult = ActiveRecord::Base.connection.select_all(query)
+          really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+          queryResult = Rails.cache.read(really_long_cache_name)
+          if (queryResult == nil)
+            puts "**************** No cache found for search query ****************"
+            queryResult = ActiveRecord::Base.connection.select_all(query)
+            Rails.cache.write(really_long_cache_name, queryResult)
+            puts "**************** Cache Set for search Query ****************"
+          else
+            puts "**************** Cache FOUND for search query!!! ****************"
+          end
            # puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
@@ -1273,7 +1318,16 @@ def FacebookLoginAndroid
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
     
     
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
     puts "queryResult 10 "
     occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
     ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
@@ -1334,7 +1388,16 @@ def FacebookLoginAndroid
     
     # puts "Query"
     # puts query
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
 
     # puts "queryResult------------------------"
     # puts queryResult.to_json
@@ -1478,7 +1541,16 @@ def FacebookLoginAndroid
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
             "
 
-           queryResult = ActiveRecord::Base.connection.select_all(query)
+          really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+          queryResult = Rails.cache.read(really_long_cache_name)
+          if (queryResult == nil)
+            puts "**************** No cache found for search query ****************"
+            queryResult = ActiveRecord::Base.connection.select_all(query)
+            Rails.cache.write(really_long_cache_name, queryResult)
+            puts "**************** Cache Set for search Query ****************"
+          else
+            puts "**************** Cache FOUND for search query!!! ****************"
+          end
            # puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
@@ -3458,7 +3530,16 @@ def FacebookLoginSX
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
     
     
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
     puts "queryResult 10 "
     occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
     ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
@@ -3519,7 +3600,16 @@ def FacebookLoginSX
     
     # puts "Query"
     # puts query
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
 
     # puts "queryResult------------------------"
     # puts queryResult.to_json
@@ -3664,7 +3754,16 @@ def FacebookLoginSX
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
             "
 
-           queryResult = ActiveRecord::Base.connection.select_all(query)
+          really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+          queryResult = Rails.cache.read(really_long_cache_name)
+          if (queryResult == nil)
+            puts "**************** No cache found for search query ****************"
+            queryResult = ActiveRecord::Base.connection.select_all(query)
+            Rails.cache.write(really_long_cache_name, queryResult)
+            puts "**************** Cache Set for search Query ****************"
+          else
+            puts "**************** Cache FOUND for search query!!! ****************"
+          end
            # puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
@@ -3756,7 +3855,16 @@ def FacebookLoginSX
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.name ='Attending' AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
             "
 
-           queryResult = ActiveRecord::Base.connection.select_all(query)
+          really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+          queryResult = Rails.cache.read(really_long_cache_name)
+          if (queryResult == nil)
+            puts "**************** No cache found for search query ****************"
+            queryResult = ActiveRecord::Base.connection.select_all(query)
+            Rails.cache.write(really_long_cache_name, queryResult)
+            puts "**************** Cache Set for search Query ****************"
+          else
+            puts "**************** Cache FOUND for search query!!! ****************"
+          end
            # puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
@@ -4173,7 +4281,16 @@ def SX
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE occurrences.id IN (#{ids})"
 
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
     # puts "queryResult------------------------"
     # puts queryResult.to_json
     @ids = queryResult
@@ -4338,7 +4455,16 @@ def SX
               INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id 
               INNER JOIN users ON bookmark_lists.user_id = users.id 
               WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND bookmarks.bookmarked_type='Occurrence' AND bookmark_lists.main_bookmarks_list IS TRUE AND occurrences.recurrence_id IS NULL"
-      queryResult = ActiveRecord::Base.connection.select_all(query)
+      really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+      queryResult = Rails.cache.read(really_long_cache_name)
+      if (queryResult == nil)
+        puts "**************** No cache found for search query ****************"
+        queryResult = ActiveRecord::Base.connection.select_all(query)
+        Rails.cache.write(really_long_cache_name, queryResult)
+        puts "**************** Cache Set for search Query ****************"
+      else
+        puts "**************** Cache FOUND for search query!!! ****************"
+      end
       
       @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
       # puts @eventIDs
@@ -4435,7 +4561,16 @@ def SX
             LEFT OUTER JOIN acts ON acts.id = acts_events.act_id 
             INNER JOIN occurrences ON events.id = occurrences.event_id 
             WHERE occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND occurrences.id IN (166014)"
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
     
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
     # puts @eventIDs
@@ -4565,7 +4700,16 @@ def SX
             INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id 
             INNER JOIN users ON bookmark_lists.user_id = users.id 
             WHERE #{where_clause} AND occurrences.start >= '#{Date.today()}' AND occurrences.deleted IS false AND bookmarks.bookmarked_type='Occurrence' AND bookmark_lists.name ='Attending' AND occurrences.recurrence_id IS NULL"
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
     
     @eventIDs =  queryResult.collect { |e| e["bookmarked_id"] }.uniq
     # puts @eventIDs
@@ -4697,7 +4841,16 @@ def SX
                   INNER JOIN tags ON events_tags.tag_id = tags.id
                   WHERE #{where_clause} AND occurrences.recurrence_id IS NULL
                   "
-          queryResult = ActiveRecord::Base.connection.select_all(query).uniq 
+          really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+          queryResult = Rails.cache.read(really_long_cache_name)
+          if (queryResult == nil)
+            puts "**************** No cache found for search query ****************"
+            queryResult = ActiveRecord::Base.connection.select_all(query)
+            Rails.cache.write(really_long_cache_name, queryResult)
+            puts "**************** Cache Set for search Query ****************"
+          else
+            puts "**************** Cache FOUND for search query!!! ****************"
+          end
           # puts queryResult
           @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
           
@@ -4805,7 +4958,17 @@ def SX
                   WHERE #{where_clause} AND occurrences.recurrence_id IS NULL
                   "
           # puts query
-          queryResult = ActiveRecord::Base.connection.select_all(query).uniq 
+          really_long_cache_name = Digest::SHA1.hexdigest("search_for_uniq_#{query}")
+          queryResult = Rails.cache.read(really_long_cache_name)
+          if (queryResult == nil)
+            puts "**************** No cache found for search query ****************"
+            queryResult = ActiveRecord::Base.connection.select_all(query).uniq
+            Rails.cache.write(really_long_cache_name, queryResult)
+            puts "**************** Cache Set for search Query ****************"
+          else
+            puts "**************** Cache FOUND for search query!!! ****************"
+          end
+          
           # puts queryResult
           @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
           
@@ -4917,7 +5080,16 @@ def SX
                   WHERE #{where_clause} AND occurrences.recurrence_id IS NULL
                   "
           # puts query
-          queryResult = ActiveRecord::Base.connection.select_all(query).uniq 
+          really_long_cache_name = Digest::SHA1.hexdigest("search_for_uniq_#{query}")
+          queryResult = Rails.cache.read(really_long_cache_name)
+          if (queryResult == nil)
+            puts "**************** No cache found for search query ****************"
+            queryResult = ActiveRecord::Base.connection.select_all(query).uniq
+            Rails.cache.write(really_long_cache_name, queryResult)
+            puts "**************** Cache Set for search Query ****************"
+          else
+            puts "**************** Cache FOUND for search query!!! ****************"
+          end
           # puts queryResult
           @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
           
@@ -5033,7 +5205,17 @@ def SX
             WHERE bookmark_lists.id IN (#{@ids}) AND bookmark_lists.featured IS NOT FALSE AND occurrences.start >= '#{Date.today()}' AND occurrences.recurrence_id IS NULL
             "
 
-    queryResult = ActiveRecord::Base.connection.select_all(query).uniq 
+   
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_uniq_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query).uniq
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end 
           # puts queryResult
           @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
           
@@ -5304,7 +5486,16 @@ def SX
 
     # puts "FBlogin"
     # puts query
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
     @ids = queryResult
     
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
@@ -5707,7 +5898,16 @@ def SX
     end
     puts "newFBLogin"
     # puts query
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
     @ids = queryResult
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
@@ -6159,7 +6359,16 @@ end
             WHERE bookmarks.bookmarked_id IN ( SELECT bookmarks.bookmarked_id FROM bookmarks FULL JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id  WHERE bookmark_lists.id = #{@listid})"
     
     # queryResult = ActiveRecord::Base.connection.select_all(query)
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
     queryResult =[]
     @ids = queryResult
     # puts queryResult.uniq
