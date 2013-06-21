@@ -6089,10 +6089,21 @@ def SX
     @venue.save
     @occurrences  = []
     @recurrences = []
-    startTime = DateTime.now
+    startTime = DateTime.today()
     endTime = startTime.advance(:days =>1)
    
-    @occs = @venue.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now &&  occ.start <= endTime}  }.flatten.sort_by { |occ| occ.start }
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_venue_#{params[:id]}_#{startTime}")
+    @occs =  Rails.cache.read(really_long_cache_name)
+    if (@occs == nil)
+      puts "**************** No cache found for search query ****************"
+      @occs = @venue.events.collect { |event| event.occurrences.select { |occ| occ.start >= startTime &&  occ.start <= endTime}  }.flatten.sort_by { |occ| occ.start }
+      Rails.cache.write(really_long_cache_name, @occs)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
+         
+
     @occs.each do |occ|
       # check if occurrence is instance of a recurrence
       if occ.recurrence_id.nil?
@@ -6108,8 +6119,30 @@ def SX
     @eventidsocc = @occurrences.collect(&:event_id)
     @eventidsrec = @recurrences.collect(&:event_id)
 
-    @occevents = Event.includes(:tags).find(@eventidsocc)
-    @recevents = Event.includes(:tags).find(@eventidsrec)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_event_occ_#{@eventidsocc}")
+    @occevents = Rails.cache.read(really_long_cache_name)
+    if (@occevents == nil)
+      puts "**************** No cache found for search query ****************"
+      @occevents = Event.includes(:tags).find(@eventidsocc)
+      Rails.cache.write(really_long_cache_name, @occevents)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
+
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_event_rec_#{@eventidsrec}")
+    @recevents = Rails.cache.read(really_long_cache_name)
+    if (@recevents == nil)
+      puts "**************** No cache found for search query ****************"
+      @recevents = Event.includes(:tags).find(@eventidsrec)
+      Rails.cache.write(really_long_cache_name, @recevents)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
+
+
+    
 
     respond_to do |format|
 
