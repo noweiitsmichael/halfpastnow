@@ -5535,7 +5535,22 @@ def SX
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
 
-    @allOccurrences = Occurrence.includes(:event => :tags, :event => :venue, :event => :occurrences, :event => :recurrences).find(@occurrence_ids, :order => order_by)
+    # @allOccurrences = Occurrence.includes(:event => :tags, :event => :venue, :event => :occurrences, :event => :recurrences).find(@occurrence_ids, :order => order_by)
+    
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_allOccurrences_#{@occurrence_ids}")
+    @allOccurrences = Rails.cache.read(really_long_cache_name)
+    if (@allOccurrences == nil)
+      puts "**************** No cache found for search query allOccurrences ****************"
+      @allOccurrences = Occurrence.includes(:event => :tags, :event => :venue, :event => :occurrences, :event => :recurrences).find(@occurrence_ids, :order => order_by)
+    
+      Rails.cache.write(really_long_cache_name, @allOccurrences)
+      puts "**************** Cache Set for search Query allOccurrences ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! allOccurrences ****************"
+    end
+
+
+
     @occurrences = @allOccurrences.drop(@offset).take(@amount)
 
     # generating tag list for occurrences
@@ -5947,7 +5962,17 @@ def SX
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
 
-    @allOccurrences = Occurrence.includes(:event => :tags, :event => :venue, :event => :occurrences, :event => :recurrences).find(@occurrence_ids, :order => order_by)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_allOccurrences_#{@occurrence_ids}")
+    @allOccurrences = Rails.cache.read(really_long_cache_name)
+    if (@allOccurrences == nil)
+      puts "**************** No cache found for search query allOccurrences ****************"
+      @allOccurrences = Occurrence.includes(:event => :tags, :event => :venue, :event => :occurrences, :event => :recurrences).find(@occurrence_ids, :order => order_by)
+    
+      Rails.cache.write(really_long_cache_name, @allOccurrences)
+      puts "**************** Cache Set for search Query allOccurrences ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! allOccurrences ****************"
+    end
     @occurrences = @allOccurrences.drop(@offset).take(@amount)
 
     # generating tag list for occurrences
