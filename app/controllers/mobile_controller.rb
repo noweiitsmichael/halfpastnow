@@ -155,7 +155,16 @@ class MobileController < ApplicationController
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
               
               s = set.first
-              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+              really_long_cache_name = "event_find_#{id}"
+              tags = Rails.cache.read(really_long_cache_name)
+              if (tags==nil)
+                #puts "**************** No cache found for search event -id  ****************"
+                tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+                Rails.cache.write(really_long_cache_name, tags)
+                #puts "**************** Cache Set for search Query ****************"
+              else
+                #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+              end
               item = {
                 :occurrence_id => s["occurrence_id"], #4
                 
@@ -276,7 +285,16 @@ class MobileController < ApplicationController
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
-              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+              really_long_cache_name = "event_find_#{id}"
+              tags = Rails.cache.read(really_long_cache_name)
+              if (tags==nil)
+                #puts "**************** No cache found for search event -id  ****************"
+                tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+                Rails.cache.write(really_long_cache_name, tags)
+                #puts "**************** Cache Set for search Query ****************"
+              else
+                #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+              end
               item = {
                 :act => act, # 0
                 :rec => rec , # 1
@@ -486,7 +504,16 @@ class MobileController < ApplicationController
         :rec_end => s["rec_end"]  # 5
 
         }.values}.uniq 
-      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+      really_long_cache_name = "event_find_#{id}"
+      tags = Rails.cache.read(really_long_cache_name)
+      if (tags==nil)
+        #puts "**************** No cache found for search event -id  ****************"
+        tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+        Rails.cache.write(really_long_cache_name, tags)
+        #puts "**************** Cache Set for search Query ****************"
+      else
+        #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+      end
       s = set.first
       item = {
                 :act => act, # 0
@@ -824,7 +851,16 @@ class MobileController < ApplicationController
 
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
-      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+      really_long_cache_name = "event_find_#{id}"
+      tags = Rails.cache.read(really_long_cache_name)
+      if (tags==nil)
+        #puts "**************** No cache found for search event -id  ****************"
+        tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+        Rails.cache.write(really_long_cache_name, tags)
+        #puts "**************** Cache Set for search Query ****************"
+      else
+        #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+      end
       # #puts tags
      
       s = set.first
@@ -954,7 +990,16 @@ class MobileController < ApplicationController
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
-              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+              really_long_cache_name = "event_find_#{id}"
+              tags = Rails.cache.read(really_long_cache_name)
+              if (tags==nil)
+                #puts "**************** No cache found for search event -id  ****************"
+                tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+                Rails.cache.write(really_long_cache_name, tags)
+                #puts "**************** Cache Set for search Query ****************"
+              else
+                #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+              end
               item = {
                 :act => act, # 0
                 :rec => rec , # 1
@@ -1442,7 +1487,16 @@ def FacebookLoginAndroid
 
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
-      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+      really_long_cache_name = "event_find_#{id}"
+      tags = Rails.cache.read(really_long_cache_name)
+      if (tags==nil)
+        #puts "**************** No cache found for search event -id  ****************"
+        tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+        Rails.cache.write(really_long_cache_name, tags)
+        #puts "**************** Cache Set for search Query ****************"
+      else
+        #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+      end
       # #puts tags
      
       s = set.first
@@ -1578,7 +1632,16 @@ def FacebookLoginAndroid
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
-              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+              really_long_cache_name = "event_find_#{id}"
+              tags = Rails.cache.read(really_long_cache_name)
+              if (tags==nil)
+                #puts "**************** No cache found for search event -id  ****************"
+                tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+                Rails.cache.write(really_long_cache_name, tags)
+                #puts "**************** Cache Set for search Query ****************"
+              else
+                #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+              end
               item = {
                 :act => act, # 0
                 :rec => rec , # 1
@@ -3264,7 +3327,16 @@ def gettpevents
 
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
-      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+      really_long_cache_name = "event_find_#{id}"
+      tags = Rails.cache.read(really_long_cache_name)
+      if (tags==nil)
+        #puts "**************** No cache found for search event -id  ****************"
+        tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+        Rails.cache.write(really_long_cache_name, tags)
+        #puts "**************** Cache Set for search Query ****************"
+      else
+        #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+      end
       # #puts tags
      
       s = set.first
@@ -3686,7 +3758,16 @@ def FacebookLoginSX
 
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
-      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+      really_long_cache_name = "event_find_#{id}"
+      tags = Rails.cache.read(really_long_cache_name)
+      if (tags==nil)
+        #puts "**************** No cache found for search event -id  ****************"
+        tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+        Rails.cache.write(really_long_cache_name, tags)
+        #puts "**************** Cache Set for search Query ****************"
+      else
+        #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+      end
       # #puts tags
      
       s = set.first
@@ -3823,7 +3904,16 @@ def FacebookLoginSX
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
-              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+              really_long_cache_name = "event_find_#{id}"
+              tags = Rails.cache.read(really_long_cache_name)
+              if (tags==nil)
+                #puts "**************** No cache found for search event -id  ****************"
+                tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+                Rails.cache.write(really_long_cache_name, tags)
+                #puts "**************** Cache Set for search Query ****************"
+              else
+                #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+              end
               item = {
                 :act => act, # 0
                 :rec => rec , # 1
@@ -3924,7 +4014,16 @@ def FacebookLoginSX
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
-              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+              really_long_cache_name = "event_find_#{id}"
+              tags = Rails.cache.read(really_long_cache_name)
+              if (tags==nil)
+                #puts "**************** No cache found for search event -id  ****************"
+                tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+                Rails.cache.write(really_long_cache_name, tags)
+                #puts "**************** Cache Set for search Query ****************"
+              else
+                #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+              end
               item = {
                 :act => act, # 0
                 :rec => rec , # 1
@@ -4357,7 +4456,16 @@ def SX
 
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
-      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+      really_long_cache_name = "event_find_#{id}"
+      tags = Rails.cache.read(really_long_cache_name)
+      if (tags==nil)
+        #puts "**************** No cache found for search event -id  ****************"
+        tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+        Rails.cache.write(really_long_cache_name, tags)
+        #puts "**************** Cache Set for search Query ****************"
+      else
+        #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+      end
       # #puts tags
      
       s = set.first
@@ -4520,7 +4628,16 @@ def SX
 
           }.values}.uniq 
         # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
-        tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+        really_long_cache_name = "event_find_#{id}"
+        tags = Rails.cache.read(really_long_cache_name)
+        if (tags==nil)
+          #puts "**************** No cache found for search event -id  ****************"
+          tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+          Rails.cache.write(really_long_cache_name, tags)
+          #puts "**************** Cache Set for search Query ****************"
+        else
+          #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+        end
         # #puts tags
         s = set.first
         lastname = s["lastname"].to_s
@@ -4626,7 +4743,16 @@ def SX
 
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
-      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+      really_long_cache_name = "event_find_#{id}"
+      tags = Rails.cache.read(really_long_cache_name)
+      if (tags==nil)
+        #puts "**************** No cache found for search event -id  ****************"
+        tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+        Rails.cache.write(really_long_cache_name, tags)
+        #puts "**************** Cache Set for search Query ****************"
+      else
+        #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+      end
       # #puts tags
       s = set.first
       lastname = s["lastname"].to_s
@@ -4902,7 +5028,16 @@ def SX
               :rec_end => s["rec_end"]  # 5
 
               }.values}.uniq 
-            tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+            really_long_cache_name = "event_find_#{id}"
+            tags = Rails.cache.read(really_long_cache_name)
+            if (tags==nil)
+              #puts "**************** No cache found for search event -id  ****************"
+              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+              Rails.cache.write(really_long_cache_name, tags)
+              #puts "**************** Cache Set for search Query ****************"
+            else
+              #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+            end
             s = set.first
             
             item = {
@@ -5018,7 +5153,16 @@ def SX
               :rec_end => s["rec_end"]  # 5
 
               }.values}.uniq 
-            tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+            really_long_cache_name = "event_find_#{id}"
+            tags = Rails.cache.read(really_long_cache_name)
+            if (tags==nil)
+              #puts "**************** No cache found for search event -id  ****************"
+              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+              Rails.cache.write(really_long_cache_name, tags)
+              #puts "**************** Cache Set for search Query ****************"
+            else
+              #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+            end
             s = set.first
             if s["latitude"].nil?
                s["latitude"] = "30.2003363"
@@ -5139,7 +5283,16 @@ def SX
               :rec_end => s["rec_end"]  # 5
 
               }.values}.uniq 
-            tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+            really_long_cache_name = "event_find_#{id}"
+            tags = Rails.cache.read(really_long_cache_name)
+            if (tags==nil)
+              #puts "**************** No cache found for search event -id  ****************"
+              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+              Rails.cache.write(really_long_cache_name, tags)
+              #puts "**************** Cache Set for search Query ****************"
+            else
+              #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+            end
             s = set.first
             if s["latitude"].nil?
                s["latitude"] = "30.2003363"
@@ -5265,7 +5418,16 @@ def SX
               :rec_end => s["rec_end"]  # 5
 
               }.values}.uniq 
-            tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+            really_long_cache_name = "event_find_#{id}"
+            tags = Rails.cache.read(really_long_cache_name)
+            if (tags==nil)
+              #puts "**************** No cache found for search event -id  ****************"
+              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+              Rails.cache.write(really_long_cache_name, tags)
+              #puts "**************** Cache Set for search Query ****************"
+            else
+              #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+            end
             s = set.first
             if s["latitude"].nil?
                s["latitude"] = "30.2003363"
@@ -6509,7 +6671,16 @@ end
 
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
-      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+      really_long_cache_name = "event_find_#{id}"
+      tags = Rails.cache.read(really_long_cache_name)
+      if (tags==nil)
+        #puts "**************** No cache found for search event -id  ****************"
+        tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+        Rails.cache.write(really_long_cache_name, tags)
+        #puts "**************** Cache Set for search Query ****************"
+      else
+        #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+      end
       # #puts tags
      
       s = set.first
