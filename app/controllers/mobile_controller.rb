@@ -3033,7 +3033,19 @@ def gettpevents
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
             WHERE bookmark_lists.featured IS NOT FALSE AND occurrences.start >= '#{Date.today()}' AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{days_check} AND #{low_price_match} AND #{high_price_match}
             "
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult==nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)   
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
+
+   
     occurrences =[]
     recurrenceids = queryResult.select{|r| r["recurrence_id"] != "0"}.collect { |e| e["recurrence_id"].to_i }.uniq
     queryResult.each{|r|
