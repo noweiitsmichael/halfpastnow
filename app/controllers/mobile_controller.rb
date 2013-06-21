@@ -1799,7 +1799,8 @@ def FacebookLogin
       event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
     end
     if(!params[:next5].to_s.empty?)
-      event_end_date = Time.now.advance(:hours => 5)
+      now = Time.now
+      event_end_date = DateTime.new(now.year, now.month, now.day, now.hour+5, 0, 0, 0)
     else
       event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_i == -1) ? 365000 : params[:end_days].to_i + 1))
     end
