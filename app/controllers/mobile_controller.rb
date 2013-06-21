@@ -6189,8 +6189,31 @@ def showact
     @occurrences  = []
     @recurrences = []
     @pictures = []
-    @occs = @act.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now }  }.flatten.sort_by { |occ| occ.start }
-    @venues = @act.events.collect {|event| event.venue}
+    startTime = Date.today()
+    # @occs = @act.events.collect { |event| event.occurrences.select { |occ| occ.start >= startTime }  }.flatten.sort_by { |occ| occ.start }
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_act_#{params[:id]}_#{startTime}")
+    @occs =  Rails.cache.read(really_long_cache_name)
+    if (@occs == nil)
+      puts "**************** No cache found for search query ****************"
+      @occs = @act.events.collect { |event| event.occurrences.select { |occ| occ.start >= startTime }  }.flatten.sort_by { |occ| occ.start }
+      Rails.cache.write(really_long_cache_name, @occs)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
+    # @venues = @act.events.collect {|event| event.venue}
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_act_venue_#{params[:id]}_#{startTime}")
+    @venues =  Rails.cache.read(really_long_cache_name)
+    if (@venues == nil)
+      puts "**************** No cache found for search query ****************"
+      @venues = @act.events.collect {|event| event.venue}
+      Rails.cache.write(really_long_cache_name, @venues)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
+
+
     @occs.each do |occ|
       # check if occurrence is instance of a recurrence
       if occ.recurrence_id.nil?
