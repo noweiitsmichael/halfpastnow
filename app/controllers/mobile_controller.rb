@@ -3038,7 +3038,14 @@ def gettpevents
     recurrenceids = queryResult.select{|r| r["recurrence_id"] != "0"}.collect { |e| e["recurrence_id"].to_i }.uniq
     queryResult.each{|r|
       if r["recurrence_id"] != "0"
-        occ = Event.find(r["event_id"].to_i).nextOccurrence
+
+
+        occ = Rails.cache.read("occurrence_find_#{r["event_id"].to_s}_event_nextOccurrence")
+        if (occ==nil)
+          occ = Event.find(r["event_id"].to_i).nextOccurrence
+          Rails.cache.write("occurrence_find_#{r["event_id"].to_s}_event_nextOccurrence", occ)
+        end
+        
         unless occ.nil?
           r["occurrence"] = occ[:id]
           r["occurrence_start"]  = occ[:start].strftime("%F %T")
