@@ -1170,8 +1170,8 @@ def FacebookLoginAndroid
     
     # For next 5 hours
     if(!params[:next5].to_s.empty?)
-      now = Time.now
-      event_start_date = DateTime.new(now.year, now.month, now.day, now.hour, 0, 0, 0)
+      # now = Time.now
+      event_start_date = Time.now #DateTime.new(now.year, now.month, now.day, now.hour, 0, 0, 0)
     else
       event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
     end
@@ -1822,9 +1822,9 @@ def FacebookLogin
     
     # For next 5 hours
     if(!params[:next5].to_s.empty?)
-      # event_start_date = Time.now
-      now = Time.now
-      event_start_date = DateTime.new(now.year, now.month, now.day, now.hour, 0, 0, 0)
+      event_start_date = Time.now
+      # now = Time.now
+      # event_start_date = DateTime.new(now.year, now.month, now.day, now.hour, 0, 0, 0)
     else
       event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
     end
