@@ -2057,8 +2057,17 @@ def FacebookLogin
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       # puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
-      users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
-      users = User.find(users).collect{|s| s.uid.to_s}.uniq
+      usersid = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
+      really_long_cache_name = Digest::SHA1.hexdigest("search_for_user_#{usersid}")
+      users = Rails.cache.read(really_long_cache_name)
+      if (users == nil)
+        puts "**************** No cache found for search query - user ids ****************"
+        users = User.find(usersid).collect{|s| s.uid.to_s}.uniq
+        Rails.cache.write(really_long_cache_name, users)
+        puts "**************** Cache Set for search Query ****************"
+      else
+        puts "**************** Cache FOUND for search query - user ids !!! ****************"
+      end
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
       tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
@@ -2086,7 +2095,18 @@ def FacebookLogin
 
         }.values}.uniq 
       # rec = set.collect { |s| { s["every_other"],s["day_of_week"],s["week_of_month"], s["day_of_month"] }}.uniq 
-      tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+     
+      really_long_cache_name = "event_find_#{id}"
+      tags = Rails.cache.read(really_long_cache_name)
+      if (tags==nil)
+        puts "**************** No cache found for search event -id  ****************"
+        tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+        Rails.cache.write(really_long_cache_name, tags)
+        puts "**************** Cache Set for search Query ****************"
+      else
+        puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+      end
+
       # puts tags
      
       s = set.first
@@ -2222,7 +2242,16 @@ def FacebookLogin
               # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
               
               s = set.first
-              tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+              really_long_cache_name = "event_find_#{id}"
+              tags = Rails.cache.read(really_long_cache_name)
+              if (tags==nil)
+                puts "**************** No cache found for search event -id  ****************"
+                tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+                Rails.cache.write(really_long_cache_name, tags)
+                puts "**************** Cache Set for search Query ****************"
+              else
+                puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+              end
               item = {
                 :act => act, # 0
                 :rec => rec , # 1
