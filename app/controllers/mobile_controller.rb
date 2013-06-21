@@ -6090,7 +6090,7 @@ def SX
     @venue.save
     @occurrences  = []
     @recurrences = []
-    startTime = DateTime.today()
+    startTime = Date.today()
     endTime = startTime.advance(:days =>1)
    
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_venue_#{params[:id]}_#{startTime}")
