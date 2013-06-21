@@ -1886,7 +1886,17 @@ def FacebookLogin
             WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
     
     
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+   
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
     puts "queryResult 10 "
     occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
     ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
@@ -1947,7 +1957,16 @@ def FacebookLogin
     
     # puts "Query"
     # puts query
-    queryResult = ActiveRecord::Base.connection.select_all(query)
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
 
     # puts "queryResult------------------------"
     # puts queryResult.to_json
@@ -2091,7 +2110,16 @@ def FacebookLogin
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
             "
 
-           queryResult = ActiveRecord::Base.connection.select_all(query)
+          really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+          queryResult = Rails.cache.read(really_long_cache_name)
+          if (queryResult == nil)
+            puts "**************** No cache found for search query ****************"
+            queryResult = ActiveRecord::Base.connection.select_all(query)
+            Rails.cache.write(really_long_cache_name, queryResult)
+            puts "**************** Cache Set for search Query ****************"
+          else
+            puts "**************** Cache FOUND for search query!!! ****************"
+          end
            # puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
