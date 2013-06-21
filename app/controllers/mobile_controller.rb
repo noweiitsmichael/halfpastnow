@@ -3042,8 +3042,11 @@ def gettpevents
 
         occ = Rails.cache.read("occurrence_find_#{r["event_id"].to_s}_event_nextOccurrence")
         if (occ==nil)
+          puts "Cache not found"
           occ = Event.find(r["event_id"].to_i).nextOccurrence
           Rails.cache.write("occurrence_find_#{r["event_id"].to_s}_event_nextOccurrence", occ)
+        else
+          puts "Cache found"
         end
         
         unless occ.nil?
