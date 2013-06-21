@@ -134,16 +134,7 @@ class MobileController < ApplicationController
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
             "
 
-           really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
-            queryResult = Rails.cache.read(really_long_cache_name)
-            if (queryResult == nil)
-              #puts "**************** No cache found for search query ****************"
-              queryResult = ActiveRecord::Base.connection.select_all(query)
-              Rails.cache.write(really_long_cache_name, queryResult)
-              #puts "**************** Cache Set for search Query ****************"
-            else
-              #puts "**************** Cache FOUND for search query!!! ****************"
-            end
+           queryResult = ActiveRecord::Base.connection.select_all(query)
            # #puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
@@ -249,16 +240,8 @@ class MobileController < ApplicationController
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
             "
 
-           really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
-            queryResult = Rails.cache.read(really_long_cache_name)
-            if (queryResult == nil)
-              #puts "**************** No cache found for search query ****************"
-              queryResult = ActiveRecord::Base.connection.select_all(query)
-              Rails.cache.write(really_long_cache_name, queryResult)
-              #puts "**************** Cache Set for search Query ****************"
-            else
-              #puts "**************** Cache FOUND for search query!!! ****************"
-            end
+           
+           queryResult = ActiveRecord::Base.connection.select_all(query)
            # #puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
@@ -954,16 +937,7 @@ class MobileController < ApplicationController
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL
             "
 
-          really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
-          queryResult = Rails.cache.read(really_long_cache_name)
-          if (queryResult == nil)
-            #puts "**************** No cache found for search query ****************"
-            queryResult = ActiveRecord::Base.connection.select_all(query)
-            Rails.cache.write(really_long_cache_name, queryResult)
-            #puts "**************** Cache Set for search Query ****************"
-          else
-            #puts "**************** Cache FOUND for search query!!! ****************"
-          end
+           queryResult = ActiveRecord::Base.connection.select_all(query)
            # #puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
@@ -1462,6 +1436,7 @@ def FacebookLoginAndroid
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
       tpids = set.collect { |e|  e["listid"].to_i}.uniq
+      # This could be cached
       tps = BookmarkList.where(:id=>tpids,:featured=>true).collect{|l| l.picture.mini.url}.uniq
       if tps.count == 0
         e = Event.find(id)
@@ -1596,17 +1571,9 @@ def FacebookLoginAndroid
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
             "
 
-          really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
-          queryResult = Rails.cache.read(really_long_cache_name)
-          if (queryResult == nil)
-            #puts "**************** No cache found for search query ****************"
-            queryResult = ActiveRecord::Base.connection.select_all(query)
-            Rails.cache.write(really_long_cache_name, queryResult)
-            #puts "**************** Cache Set for search Query ****************"
-          else
-            #puts "**************** Cache FOUND for search query!!! ****************"
-          end
+         
            # #puts queryResult
+           queryResult = ActiveRecord::Base.connection.select_all(query)
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
            # #puts @eventIDs#puts
@@ -2269,16 +2236,7 @@ def FacebookLogin
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
             "
 
-          really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
-          queryResult = Rails.cache.read(really_long_cache_name)
-          if (queryResult == nil)
-            #puts "**************** No cache found for search query ****************"
-            queryResult = ActiveRecord::Base.connection.select_all(query)
-            Rails.cache.write(really_long_cache_name, queryResult)
-            #puts "**************** Cache Set for search Query ****************"
-          else
-            #puts "**************** Cache FOUND for search query!!! ****************"
-          end
+          queryResult = ActiveRecord::Base.connection.select_all(query)
            # #puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
@@ -3868,16 +3826,8 @@ def FacebookLoginSX
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.main_bookmarks_list IS true AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
             "
 
-          really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
-          queryResult = Rails.cache.read(really_long_cache_name)
-          if (queryResult == nil)
-            #puts "**************** No cache found for search query ****************"
-            queryResult = ActiveRecord::Base.connection.select_all(query)
-            Rails.cache.write(really_long_cache_name, queryResult)
-            #puts "**************** Cache Set for search Query ****************"
-          else
-            #puts "**************** Cache FOUND for search query!!! ****************"
-          end
+         
+          queryResult = ActiveRecord::Base.connection.select_all(query)
            # #puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
@@ -3978,16 +3928,7 @@ def FacebookLoginSX
             WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.name ='Attending' AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
             "
 
-          really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
-          queryResult = Rails.cache.read(really_long_cache_name)
-          if (queryResult == nil)
-            #puts "**************** No cache found for search query ****************"
-            queryResult = ActiveRecord::Base.connection.select_all(query)
-            Rails.cache.write(really_long_cache_name, queryResult)
-            #puts "**************** Cache Set for search Query ****************"
-          else
-            #puts "**************** Cache FOUND for search query!!! ****************"
-          end
+          queryResult = ActiveRecord::Base.connection.select_all(query)
            # #puts queryResult
            @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
 
