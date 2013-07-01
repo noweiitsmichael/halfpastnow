@@ -653,9 +653,9 @@ namespace :api do
 
 	desc "pull events from api for a venue"
 	task :get_venue_event, [:num_venues]  => [:environment] do |t, args|
-		puts "Execute..."
+		# puts "Execute..."
 		num_venues = args[:num_venues].to_s.empty? ? 1 : args[:num_venues].to_i
-
+		puts "Executing on #{num_venues}"
 		@raw_venues = RawVenue.includes(:venue).where("events_url IS NOT NULL AND (last_visited IS NULL OR last_visited < '#{ (Date.today - 7).to_datetime }')").take(num_venues)
 
 		# pp @raw_venues
@@ -673,7 +673,13 @@ namespace :api do
 			puts apiURL
 			# apiXML = Net::HTTP.get(apiURL)
 			# doc = Document.new(apiXML)	
-			doc = Nokogiri::XML(open(apiURL))
+			begin
+				doc = Nokogiri::XML(open(apiURL))
+			rescue => error
+				error.message
+				error.backtrace
+				next
+			end
 			doc.xpath('//event').each do |item|
 				if RawEvent.where(:raw_id => item.xpath("event_id").inner_text, :from => "do512").size > 0
 					puts "Found event #{RawEvent.where(:raw_id => item.xpath("event_id").inner_text, :from => "do512").first.title}"
@@ -691,15 +697,15 @@ namespace :api do
 				    :raw_venue_id => raw_venue.id
 				})
 
-				if item.xpath("image").inner_text
-					cover_i = Picture.create(:pictureable_id => raw_event.id, :pictureable_type => "RawEvent", 
-							   	   :image => open(item.xpath("image").inner_text)) rescue nil
-					if cover_i
-						raw_event.cover_image = cover_i.id
-						raw_event.cover_image_url = cover_i.image_url(:cover).to_s
-						raw_event.save!
-					end
-				end
+				# if item.xpath("image").inner_text
+				# 	cover_i = Picture.create(:pictureable_id => raw_event.id, :pictureable_type => "RawEvent", 
+				# 			   	   :image => open(item.xpath("image").inner_text)) rescue nil
+				# 	if cover_i
+				# 		raw_event.cover_image = cover_i.id
+				# 		raw_event.cover_image_url = cover_i.image_url(:cover).to_s
+				# 		raw_event.save!
+				# 	end
+				# end
 			end
 			raw_venue.last_visited = DateTime.now
 			raw_venue.save

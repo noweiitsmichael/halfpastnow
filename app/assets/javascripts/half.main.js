@@ -535,7 +535,7 @@ function clearMarkers() {
 
 function placeMarker(lat, long) {
   var i = markers.length;
-
+  var timer;
   var marker = new google.maps.Marker({ //MarkerWithLabel({
     map: map,
     position: new google.maps.LatLng(lat,long),
@@ -543,16 +543,47 @@ function placeMarker(lat, long) {
     index: i + 1
   });
 
+  //** Gotta check to see if the infobox exists first so that we don't end up making a bajillion hidden infoboxes
+  // *** Took out infobox stuff for now
   google.maps.event.addListener(marker, 'mouseover', function() {
+    // clearTimeout($(".infobox_" + marker.index).data('timeoutId'));
     marker.setIcon("/assets/markers/marker_hover_" + marker.index % 100 +  ".png");
     marker.setZIndex(9999);
     $("#content .main .inner .events li:nth-child(" + marker.index + ")").addClass("hover");
+    // if ($(".infobox_" + marker.index).length === 0) {
+    //   var infobox = new SmartInfoWindow({
+    //       position: marker.getPosition(), 
+    //       map: map, 
+    //       number: marker.index,
+    //       content: "<div style='padding-left: 5px; font-size: 12px; color: #6F376F; font-style: italic; font-weight:900'>" + 
+    //                   $("#content .main .inner .events li:nth-child(" + marker.index + ") .title").html().substring(0,40)+"..." + 
+    //                "</div>" + 
+    //                "<div style='padding-left: 5px; font-size: 14px; color: #6F376F; font-weight:900; font-variant: small-caps; text-transform: lowercase'>" + 
+    //                   "@ " + $("#content .main .inner .events li:nth-child(" + marker.index + ") .venue-inner").html().substring(0,30)+"..." + 
+    //                "</div>" + 
+    //                "<div style='padding-left: 5px; font-size: 12px; font-weight:700; text-transform: lowercase'>" + 
+    //                   $("#content .main .inner .events li:nth-child(" + marker.index + ") .datetime").html() + 
+    //                "</div>"
+    //   });
+    // } else {
+    //   if ($("#content .main .inner .events li:nth-child(" + marker.index + ")").hasClass("hover")) {
+    //     $(".infobox_" + marker.index).show();
+    //   } else {
+    //     $(".infobox_" + marker.index).hide();
+    //   }
+    // }
   });
 
+  // The timeout thing acts as a debounce and also allows time to enter the infobox before hiding it
   google.maps.event.addListener(marker, 'mouseout', function() {
     marker.setIcon("/assets/markers/marker_" + marker.index % 100 + ".png");
     marker.setZIndex(0);
     $("#content .main .inner .events li:nth-child(" + marker.index + ")").removeClass("hover");
+
+    // var timeoutId = setTimeout(function(){
+    //   $(".infobox_" + marker.index).hide();
+    // }, 50);
+    // $(".infobox_" + marker.index).data('timeoutId', timeoutId); 
   });
 
   google.maps.event.addListener(marker, 'click', function() {

@@ -65,9 +65,25 @@
   $(document).ready(function () {
     console.log(".....ready");
       $(".profile-hover").mouseenter(function() {
+          // $(".profile-hover").addClass('hover');
           $('ul.profile-menu').slideDown('fast');
       }), 
+      $(".profile-hover").mouseleave(function() {
+          // $(".profile-hover").removeClass('hover');
+          setTimeout(function() {
+            if (!$(".profile-menu").hasClass('hover')){
+                $("ul.profile-menu").removeClass('hover');
+                $('ul.profile-menu').slideUp('fast');
+            }
+          },100);
+
+      }), 
+      $(".profile-menu").mouseenter(function() {
+          $("ul.profile-menu").addClass('hover');
+          // $('ul.profile-menu').slideDown('fast');
+      }), 
       $(".profile-menu").mouseleave(function () {
+          $("ul.profile-menu").removeClass('hover');
           $('ul.profile-menu').slideUp('fast');
         }
       );
@@ -107,8 +123,6 @@
                   <%= link_to(current_user.firstname + " " + current_user.lastname, edit_user_registration_path) %>
                   <%= link_to image_tag(current_user.profilepic_url(:mini) || "/assets/profile.png", :class => "top-profile-pic"), edit_user_registration_path %>
                 </div>
-
-
 
             <% else %>
               <div class="menu-element right">
