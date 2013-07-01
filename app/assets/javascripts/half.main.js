@@ -349,25 +349,40 @@ $(function() {
     var type = "event";
     var root_url = encodeURIComponent(window.location.origin);
     var link = root_url + "%3F" + type + "_id%3D" + id;
+    var facebook_url = "http://www.halfpastnow.com/events/show/" + id + "?fullmode=true";
+
+    var html_title = title.replace(/[%&\/#"\\]/g, function(m) {
+          return (m === '"' || m === '\\') ? " " : "%" + m.charCodeAt(0).toString(16);
+    });
+    var html_venue = venue.replace(/[%&\/#"\\]/g, function(m) {
+          return (m === '"' || m === '\\') ? " " : "%" + m.charCodeAt(0).toString(16);
+    });
+
+    console.log(html_title);
+    console.log(venue);
+    console.log(link);
     
     if($(this).hasClass('facebook')) {
-      var url = "https://www.facebook.com/dialog/feed?%20app_id=" + app_id + "&%20link=" + link + "&%20picture=" + pic + "&%20name=" + title + "&%20caption=" + venue + "&%20description=" + summary + "&%20redirect_uri=" + redirect;
-      // var url = "http://www.facebook.com/sharer.php?s=100&p[title]=" + title + "&p[summary]=" + summary + "&p[url]=" + link + "&p[images][0]=" + pic;
-      // var url = 'http://www.facebook.com/sharer/sharer.php?u=' + link;
+      console.log(facebook_url);
+      // var url = "https://www.facebook.com/dialog/feed?%20app_id=" + app_id + "&%20link=" + link + "&%20picture=" + pic + "&%20name=" + title + "&%20caption=" + venue + "&%20description=" + summary + "&%20redirect_uri=" + redirect;
+      var url = "http://www.facebook.com/sharer.php?u=" + facebook_url;
       window.open(url, '_blank');
       window.focus();
       stopPropagation(event);
     } else if($(this).hasClass('twitter')) {
-      var url = 'https://twitter.com/intent/tweet?text=' + link;
+      console.log(title.replace(/(<([^>]+)>)/ig,"").replace(/&/ig,"and"));
+      var url = 'http://twitter.com/intent/tweet?text=' + title.replace(/(<([^>]+)>)/ig,"").replace(/&/ig,"and").substring(0,50) + ' ' + link + ' @halfpastnow %23discoveraustin';
       window.open(url, '_blank');
       window.focus();
       stopPropagation(event);
     } else if($(this).hasClass('email')) {
-      var url = 'mailto:?body=' + link;
+      var url = 'mailto:?subject=Check out this event&body=Take a look at this event: %0D%0A%0D%0A' + html_title + '%0D%0A' + 'at ' + venue + '%0D%0A%0D%0A' + link + '%0D%0AAvia http://www.halfpastnow.com';
       window.open(url, '_blank');
       window.focus();
       stopPropagation(event);
     } else if($(this).hasClass('bookmark')) {
+
+      console.log(title);
       var bookmark_id = that.attr('bookmark-id');
       if(that.hasClass('add')) {
 

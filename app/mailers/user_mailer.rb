@@ -180,7 +180,7 @@ class UserMailer < ActionMailer::Base
 ActionMailer::Base.delivery_method = :smtp
 
   #   mail(:to => user.email, :subject => "This week in halfpastnow!" , user_name: "support@halfpastnow.com", password: "chimeralabs", address: "http://radiant-flower-7307.herokuapp.com/")
-    mail(:to => email, :subject => "This week in Austin",:from => "Half Past Now Newsletter <weekly@halfpastnow.com>" )
+    mail(:to => email, :subject => "This week in Austin - your event itinerary",:from => "Half Past Now Newsletter <weekly@halfpastnow.com>" )
   
    end
   
