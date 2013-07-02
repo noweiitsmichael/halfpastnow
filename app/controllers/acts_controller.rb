@@ -136,7 +136,19 @@ class ActsController < ApplicationController
     render json: @acts
   end
 
-  
+  def actsTable
+    @actsList = Act.joins("LEFT OUTER JOIN acts_events ON acts.id = acts_events.act_id GROUP BY acts.id").select("acts.id, acts.name, acts.completion, COUNT(acts_events.act_id) as num_events")
+
+    @outputList = []
+
+    @actsList.each do |e|
+      @outputList << {'id' => e["id"], 'name' => e["name"], 'num_events' => e["num_events"], 'completion' => e["completion"]} #, 'owner' => User.where(:id => e["user_id"]).exists? ? User.find(e["user_id"]).fullname : ""}
+    end
+
+    respond_to do |format|
+      format.json { render json: @outputList }
+    end
+  end
 
   def actsMode
     if(params[:id].to_s.empty?)

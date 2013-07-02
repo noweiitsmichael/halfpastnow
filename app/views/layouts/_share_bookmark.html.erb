@@ -156,7 +156,7 @@
 		$('.bookmark-share .twitter').click(function() {
 			// var url = 'https://twitter.com/intent/tweet?text=' + link;
 			var title = "<%= event.title  %>";
-   		    var url = 'http://twitter.com/intent/tweet?text=' + title.replace(/(<([^>]+)>)/ig,"").replace("&amp;","and").substring(0,50) + ' ' + link + ' @halfpastnow %23discoveraustin';
+   		    var url = 'http://twitter.com/intent/tweet?text=' + title.replace(/(<([^>]+|)>)/ig,"").replace("&amp;","and").substring(0,50) + ' ' + link + ' @halfpastnow %23discoveraustin';
       
 			window.open(url, '_blank');
 			window.focus();
