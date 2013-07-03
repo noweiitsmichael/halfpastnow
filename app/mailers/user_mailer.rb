@@ -459,7 +459,7 @@ class UserMailer < ActionMailer::Base
 
 
     if bmids.size > 0
-      @bookmarkedEvents =  Occurrence.find(bmids)
+      @bookmarkedEvents =  Occurrence.find(bmids[0,1])
     end
 
     unless user.nil?
