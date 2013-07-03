@@ -433,7 +433,8 @@ class UserMailer < ActionMailer::Base
     end
     # Get events from channels
     bmids = []
-    channelids.each{
+    if channelids.size > 0
+      channelids.each{
       |id|
       puts "find_with output: "
       es =  self.class.find_with(id)
@@ -449,7 +450,9 @@ class UserMailer < ActionMailer::Base
       if count == 2
         break
       end
-    }
+    }  
+    end
+    
 
     puts "bmids hehre"
     puts bmids
