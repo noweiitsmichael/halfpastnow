@@ -461,8 +461,8 @@ class UserMailer < ActionMailer::Base
     else  
        @bookmarkedEvents =[]
     end
-
-
+    puts "Bookamark ebents"
+    puts @bookmarkedEvents
 
 
 
