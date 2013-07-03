@@ -423,6 +423,7 @@ class UserMailer < ActionMailer::Base
     user=@user
     count = 0;
     @bookmarkedEvents =[]
+    @bookmarkedEventstmp =[]
     
     
     # Channnels
@@ -457,12 +458,16 @@ class UserMailer < ActionMailer::Base
     if bmids.size > 0
       @bookmarkedEvents =  Occurrence.find(bmids)
     end
-    
+
     unless user.nil?
       @bookmarkedEventstmp=user.bookmarked_events.select{|o| o.start>Time.now.advance(:hours => 12)}.uniq.sort! { |a,b| a.start <=> b.start }
-      if (@bookmarkedEventstmp.size > 3 -  @bookmarkedEvents.size)
-        @bookmarkedEvents =  @bookmarkedEvents << @bookmarkedEventstmp[0, 3 -  @bookmarkedEventstmp.size]
-      end 
+      
+      if @bookmarkedEvents.size < 3 && @bookmarkedEvents.size > 0
+         @bookmarkedEventstmp.sort_by{|user| (user.recurrence_id==nil) ? 1 : 0 }
+         @bookmarkedEvents =  @bookmarkedEvents << @bookmarkedEvents[0, 3 -  @bookmarkedEvents.size]
+         @bookmarkedEvents = bookmarkedEvents.flatten
+
+      end
     
     end
     puts "Bookamark ebents"
