@@ -522,6 +522,7 @@ def index
     @occurrence = Occurrence.new(:start => params[:start], :end => params[:end], :event_id => @event.id)
     # puts params[:start]
     # puts params[:end]
+    @event.completion = @event.completedness
     respond_to do |format|
       if @event.save && @occurrence.save
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
@@ -539,6 +540,7 @@ def index
 
     @event = Event.find(params[:id])
 
+    @event.completion = @event.completedness
     respond_to do |format|
       if @event.update_attributes(params[:event])
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }

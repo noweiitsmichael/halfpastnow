@@ -351,10 +351,10 @@ $(function() {
     var link = root_url + "%3F" + type + "_id%3D" + id;
     var facebook_url = "http://www.halfpastnow.com/events/show/" + id + "?fullmode=true";
 
-    var html_title = title.replace(/[%\|&\/#"\\]/g, function(m) {
+    var html_title = title.replace(/[%|&\/#"\\]/g, function(m) {
           return (m === '"' || m === '\\') ? " " : "%" + m.charCodeAt(0).toString(16);
     });
-    var html_venue = venue.replace(/[%\|&\/#"\\]/g, function(m) {
+    var html_venue = venue.replace(/[%|&\/#"\\]/g, function(m) {
           return (m === '"' || m === '\\') ? " " : "%" + m.charCodeAt(0).toString(16);
     });
 
