@@ -456,10 +456,11 @@ class UserMailer < ActionMailer::Base
 
     if bmids.size > 0
       @bookmarkedEvents =  Occurrence.find(bmids)
+    end
     
     unless user.nil?
       @bookmarkedEvents=user.bookmarked_events.select{|o| o.start>Time.now.advance(:hours => 12)}.uniq.sort! { |a,b| a.start <=> b.start }
-      if @bookmarkedEvents.size > 3 -  @bookmarkedEvents.size
+      if (@bookmarkedEvents.size > 3 -  @bookmarkedEvents.size)
         @bookmarkedEvents =  @bookmarkedEvents << @bookmarkedEvents[0, 3 -  @bookmarkedEvents.size]
       end 
     
