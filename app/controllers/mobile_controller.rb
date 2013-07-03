@@ -160,10 +160,7 @@ class MobileController < ApplicationController
                 :occurrence_id => s["occurrence_id"], #4
                 
               }.values
-              # item = {:act => act, :rec => rec , s["occurrence_start"] , s["end"] , s["cover"] , s["phone"],  s["description"],
-              # s["title"], s["venue_name"], s["longitude"],s["latitude"], s["event_id"],  s["venue_id"],
-              #  s["occurrence_id"], s["price"] ,  s["address"] ,  s["zip"] ,  s["city"],  s["state"] , s["clicks"],
-              # s["views"], :tags  => Event.find(id).tags.collect{ |t| {t.id, t.name}}  }
+              
 
               @bmEvents << item
             }
@@ -306,10 +303,7 @@ class MobileController < ApplicationController
                 :tix => s["tix"],
                 :url => s["url"]
               }.values
-              # item = {:act => act, :rec => rec , s["occurrence_start"] , s["end"] , s["cover"] , s["phone"],  s["description"],
-              # s["title"], s["venue_name"], s["longitude"],s["latitude"], s["event_id"],  s["venue_id"],
-              #  s["occurrence_id"], s["price"] ,  s["address"] ,  s["zip"] ,  s["city"],  s["state"] , s["clicks"],
-              # s["views"], :tags  => Event.find(id).tags.collect{ |t| {t.id, t.name}}  }
+              
 
               @bmEvents << item
             }
@@ -412,6 +406,11 @@ class MobileController < ApplicationController
     
 
   end
+
+
+  # http://halfpastnow.herokuapp.com/mobile/myevents?format=json&collection_type=venue&collection=47065,39419,41428
+  # http://halfpastnow.herokuapp.com/mobile/myevents?format=json&collection_type=act&collection=105,263,10028
+
 
   def myevents
     query = ""
@@ -528,10 +527,6 @@ class MobileController < ApplicationController
               }
 
 
-      # item = {:act => act, :rec => rec , s["occurrence_start"] ,  s["end"] ,s["cover"] , s["phone"], s["description"],
-      # ["title"],  s["venue_name"],s["longitude"], s["latitude"], s["event_id"],  s["venue_id"],
-      # s["occurrence_id"], s["price"] ,s["address"] ,  s["zip"] , s["city"], s["state"] , s["clicks"],
-      # s["views"], :tags  => Event.find(id).tags.collect{ |t| {t.id, t.name}}  }
 
 
 
@@ -552,7 +547,7 @@ class MobileController < ApplicationController
     end
   end
   
-  
+  # deprecated method
   def FacebookLogin2
     #puts params[:email]
     unless(params[:channel_id].to_s.empty?)
@@ -1735,6 +1730,8 @@ def FacebookLoginAndroid
   end
 
 
+
+# http://halfpastnow.herokuapp.com/mobile/FacebookLogin?format=json&sort=1&offset=0&amount=10&day=0,1,2,3,4,5,6&start_days=0&end_days=0&start_seconds=0&end_seconds=86399&low_price=&high_price=
 def FacebookLogin
     #puts params[:email]
     unless(params[:channel_id].to_s.empty?)
