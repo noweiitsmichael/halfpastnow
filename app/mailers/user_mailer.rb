@@ -463,16 +463,20 @@ class UserMailer < ActionMailer::Base
       @bookmarkedEventstmp=user.bookmarked_events.select{|o| o.start>Time.now.advance(:hours => 12)}.uniq.sort! { |a,b| a.start <=> b.start }
       
       if @bookmarkedEvents.size < 3 && @bookmarkedEvents.size > 0
-         @bookmarkedEventstmp.sort_by{|user| (user.recurrence_id==nil) ? 1 : 0 }
+         @bookmarkedEventstmp.sort_by{|oc| (oc.recurrence_id==nil) ? 1 : 0 }
          @bookmarkedEvents =  @bookmarkedEvents << @bookmarkedEventstmp[0, 3 -  @bookmarkedEvents.size]
-         @bookmarkedEvents = bookmarkedEvents.flatten
+         @bookmarkedEvents = @bookmarkedEvents.flatten
 
       end
     
     end
     puts "Bookamark ebents"
     puts @bookmarkedEvents
-
+    @bookmarkedEvents.each{
+      |bm|
+      puts "Event title"
+      puts occurrence.event.title
+    }
 
 
     @email = email
