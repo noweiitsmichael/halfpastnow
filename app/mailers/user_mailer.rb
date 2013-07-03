@@ -25,7 +25,7 @@ class UserMailer < ActionMailer::Base
 
   def self.find_with(id)
     puts "occurrence.rb"
-    pp params
+    
 
     
    
