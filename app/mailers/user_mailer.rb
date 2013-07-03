@@ -475,7 +475,8 @@ class UserMailer < ActionMailer::Base
     @bookmarkedEvents.each{
       |bm|
       puts "Event title"
-      puts occurrence.event.title
+      puts bm.event.title
+      puts bm.id
     }
 
 
