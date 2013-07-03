@@ -439,7 +439,9 @@ class UserMailer < ActionMailer::Base
     # Get events from channels
     channelids.each{
       |id|
-      self.class.find_with(id)
+      puts "find_with output: "
+      puts self.class.find_with(id)
+
     }
 
 
