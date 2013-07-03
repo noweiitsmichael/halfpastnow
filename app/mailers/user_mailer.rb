@@ -421,7 +421,35 @@ class UserMailer < ActionMailer::Base
     puts "6 events: "
     puts @ids
     user=@user
+    count = 0;
     @bookmarkedEvents =[]
+    
+    
+    # Channnels
+    channels = []
+    unless user.nil?
+      channelids =  user.channels.collect{|c| c.id}
+    end
+    # Get events from channels
+    bmids = []
+    channelids.each{
+      |id|
+      puts "find_with output: "
+      es =  self.class.find_with(id)
+      es.each{
+        |ev|
+        bmids << ev["occurrence_id"]
+        if count == 2
+          break
+        else
+          count = count + 1
+        end
+      }
+    }
+
+    puts "bmids hehre"
+    puts bmids
+
     unless user.nil?
        @bookmarkedEvents=user.bookmarked_events.select{|o| o.start>Time.now.advance(:hours => 12)}.uniq.sort! { |a,b| a.start <=> b.start }
       if @bookmarkedEvents.size > 3
@@ -430,20 +458,6 @@ class UserMailer < ActionMailer::Base
     else  
        @bookmarkedEvents =[]
     end
-    
-    # Channnels
-    channels = []
-    unless user.nil?
-      channelids =  user.channels.collect{|c| c.id}
-    end
-    # Get events from channels
-    channelids.each{
-      |id|
-      puts "find_with output: "
-      puts self.class.find_with(id)
-
-    }
-
 
 
 
