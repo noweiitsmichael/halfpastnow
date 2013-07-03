@@ -464,7 +464,7 @@ class UserMailer < ActionMailer::Base
       
       if @bookmarkedEvents.size < 3 && @bookmarkedEvents.size > 0
          @bookmarkedEventstmp.sort_by{|user| (user.recurrence_id==nil) ? 1 : 0 }
-         @bookmarkedEvents =  @bookmarkedEvents << @bookmarkedEvents[0, 3 -  @bookmarkedEvents.size]
+         @bookmarkedEvents =  @bookmarkedEvents << @bookmarkedEventstmp[0, 3 -  @bookmarkedEvents.size]
          @bookmarkedEvents = bookmarkedEvents.flatten
 
       end
