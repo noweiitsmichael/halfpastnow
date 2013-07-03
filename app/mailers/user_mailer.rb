@@ -459,9 +459,9 @@ class UserMailer < ActionMailer::Base
     end
     
     unless user.nil?
-      @bookmarkedEvents=user.bookmarked_events.select{|o| o.start>Time.now.advance(:hours => 12)}.uniq.sort! { |a,b| a.start <=> b.start }
-      if (@bookmarkedEvents.size > 3 -  @bookmarkedEvents.size)
-        @bookmarkedEvents =  @bookmarkedEvents << @bookmarkedEvents[0, 3 -  @bookmarkedEvents.size]
+      @bookmarkedEventstmp=user.bookmarked_events.select{|o| o.start>Time.now.advance(:hours => 12)}.uniq.sort! { |a,b| a.start <=> b.start }
+      if (@bookmarkedEventstmp.size > 3 -  @bookmarkedEvents.size)
+        @bookmarkedEvents =  @bookmarkedEvents << @bookmarkedEventstmp[0, 3 -  @bookmarkedEventstmp.size]
       end 
     
     end
