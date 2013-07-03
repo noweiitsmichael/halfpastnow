@@ -26,7 +26,7 @@ class UserMailer < ActionMailer::Base
   def self.find_with(id)
     puts "occurrence.rb"
     
-
+    params = Hash.new
     
    
     channel = Channel.find(id)
