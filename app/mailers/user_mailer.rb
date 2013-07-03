@@ -445,6 +445,9 @@ class UserMailer < ActionMailer::Base
           count = count + 1
         end
       }
+      if count == 2
+        break
+      end
     }
 
     puts "bmids hehre"
