@@ -522,9 +522,10 @@ def index
     @occurrence = Occurrence.new(:start => params[:start], :end => params[:end], :event_id => @event.id)
     # puts params[:start]
     # puts params[:end]
-    @event.completion = @event.completedness
     respond_to do |format|
       if @event.save && @occurrence.save
+          @event.completion = @event.completedness
+          @event.save
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render json: @event, status: :created, location: @event }
       else
@@ -540,9 +541,11 @@ def index
 
     @event = Event.find(params[:id])
 
-    @event.completion = @event.completedness
     respond_to do |format|
       if @event.update_attributes(params[:event])
+        @event.completion = @event.completedness
+        @event.save
+
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { head :ok }
       else
