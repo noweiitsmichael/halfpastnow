@@ -450,7 +450,7 @@ class UserMailer < ActionMailer::Base
     # Channnels
     channels = []
     unless user.nil?
-      channelids =  user.channels.collect{|c| c.id}
+      channelids =  user.channels.select{|c| !c.day_of_week.nil? || !c.start_seconds.nil? || !c.end_seconds.nil?|| !c.start_days.nil? || !c.end_days.nil?|| !c.option_day.nil? || !c.low_price.nil? || !c.high_price.nil?|| !c.excluded_tags.nil? || !c.sort.nil? || !c.start_date.nil? || !c.end_date.nil? || !c.search.nil? || !c.and_tags.nil?}.collect{|c| c.id}
     end
     # Get events from channels
     bmids = []
