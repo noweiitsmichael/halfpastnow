@@ -155,18 +155,12 @@ class UserMailer < ActionMailer::Base
       occurrence_start_time = "((EXTRACT(HOUR FROM occurrences.start) * 3600) + (EXTRACT(MINUTE FROM occurrences.start) * 60))"
 
       event_start_date = event_end_date = nil
-      if(!params[:start_date].to_s.empty?)
-        event_start_date = Date.parse(params[:start_date])
-      else
-        event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
-      end
-      if(!params[:end_date].to_s.empty?)
-        puts "not empty"
-        event_end_date = Date.parse(params[:end_date]).advance(:days => 1)
-      else
-        puts "empty"
-        event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_i == -1) ? 365000 : params[:end_days].to_i + 1))
-      end
+
+      
+
+
+      event_start_date =  Time.now.advance(:hours => 12)
+      event_end_date =  Time.now.advance(:days =>7)
 
       start_date_check = "occurrences.start >= '#{event_start_date}'"
       end_date_check = "occurrences.start <= '#{event_end_date}'"
@@ -411,13 +405,40 @@ class UserMailer < ActionMailer::Base
     LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id 
     WHERE #{where_clause} AND occurrences.deleted IS NOT TRUE
               ORDER BY events.id, occurrences.start LIMIT 1000"
-    queryResult = ActiveRecord::Base.connection.select_all(query)
-    puts queryResult
 
-    @ids =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
-    @occurrences = Occurrence.includes(:event => :tags).find(@ids, :order => order_by)
-    @ids = @occurrences.collect{|o| o.id}
-    @ids=@ids[0,5]
+    really_long_cache_name = Digest::SHA1.hexdigest(query)
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, queryResult)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
+
+
+
+    # @ids =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
+    # @occurrences = Occurrence.includes(:event => :tags).find(@ids, :order => order_by)
+    # @ids = @occurrences.collect{|o| o.id}
+    # @ids=@ids[0,5]
+
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_ids_#{@ids}_#{order_by}")
+    @ids=   Rails.cache.read(really_long_cache_name)
+    if (@ids == nil)
+      @ids =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
+      @occurrences = Occurrence.includes(:event => :tags).find(@ids, :order => order_by)
+      @ids = @occurrences.collect{|o| o.id}
+      @ids=@ids[0,5]
+      Rails.cache.write(really_long_cache_name, @ids)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
+
+
+
     puts "6 events: "
     puts @ids
     user=@user
@@ -459,7 +480,7 @@ class UserMailer < ActionMailer::Base
 
 
     if bmids.size > 0
-      @bookmarkedEvents =  Occurrence.find(bmids[0,1])
+      @bookmarkedEvents =  Occurrence.find(bmids)
     end
 
     unless user.nil?
@@ -473,14 +494,14 @@ class UserMailer < ActionMailer::Base
       end
     
     end
-    puts "Bookamark ebents"
-    puts @bookmarkedEvents
-    @bookmarkedEvents.each{
-      |bm|
-      puts "Event title"
-      puts bm.event.title
-      puts bm.id
-    }
+    # puts "Bookamark ebents"
+    # puts @bookmarkedEvents
+    # @bookmarkedEvents.each{
+    #   |bm|
+    #   puts "Event title"
+    #   puts bm.event.title
+    #   puts bm.id
+    # }
 
 
     @email = email
@@ -507,7 +528,22 @@ class UserMailer < ActionMailer::Base
         "
     # Currently only sorting by clicks, might want to switch to popularity at some point but whatever, not that important.
 
-    @result = ActiveRecord::Base.connection.select_all(query)
+    really_long_cache_name = Digest::SHA1.hexdigest(query)
+    @result = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      puts "**************** No cache found for search query ****************"
+      # queryResult = ActiveRecord::Base.connection.select_all(query)
+      @result     = ActiveRecord::Base.connection.select_all(query)
+      Rails.cache.write(really_long_cache_name, @result)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
+
+
+
+
+    # @result = ActiveRecord::Base.connection.select_all(query)
 
     # pp "************ RESULTS FROM QUERY ***************"
     # y @result
@@ -526,8 +562,19 @@ class UserMailer < ActionMailer::Base
     @tpids =  @result.collect { |e| e["id"].to_i }.uniq
     puts "Is there a Z"
     puts @tpids
-    @tpoccurrences = Occurrence.includes(:event => :tags).find(@tpids, :order => order_by)
-    @tpoccurrences = @tpoccurrences[0,3]
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_toppick_#{@tpids}_#{order_by}")
+    @tpoccurrences =   Rails.cache.read(really_long_cache_name)
+    if (@tpoccurrences == nil)
+      puts "**************** No cache found for search query ****************"
+      @tpoccurrences = Occurrence.includes(:event => :tags).find(@tpids, :order => order_by)
+      @tpoccurrences = @tpoccurrences[0,3]
+      Rails.cache.write(really_long_cache_name, @tpoccurrences)
+      puts "**************** Cache Set for search Query ****************"
+    else
+      puts "**************** Cache FOUND for search query!!! ****************"
+    end
+
+    
 
     # ActionMailer::Base.smtp_settings = {
     #   address: "smtp.gmail.com",
