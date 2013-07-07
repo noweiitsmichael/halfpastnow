@@ -1,0 +1,134 @@
+	<script type="text/javascript" src="/assets/stupidtable.js"></script>
+	<script type="text/javascript">
+
+		function addNewPerformer(data) {
+			console.log("returned!");
+			$("#confirm-submit").append("<p><span class='ui-icon ui-icon-alert' style='float: left; margin: 0 7px 20px 0;''></span> Thank you for submitting performer " + data.name + "!</p>")
+			closeMode();
+			callbackEdit(data);
+		}
+
+		$(function() {
+			$('#acts-table').stupidtable();
+			// $('a.new-act').click(function() {
+			// 	showActsMode(undefined,undefined,callbackNew);
+			// 	return false;
+			// });
+			// $('#acts-table').on('click', 'a.act-name',function() {
+			// 	showActsMode(undefined,$(this).attr("act-id"),callbackEdit);
+			// 	return false;
+			// });
+
+			$('#acts-table').on('click', 'a.act-delete',function() {
+				if(confirm("Are you sure you want to delete " + $('.act-name[act-id=' + $(this).attr("act-id") + ']').html() + "?")) {
+					$.getJSON("/acts/destroy/" + $(this).attr("act-id"), function(data) {
+						$('.act-name[act-id=' + data.act_id + "]").parents("tr").remove();
+					});
+				}
+				return false;
+			});
+		});
+
+		function callbackEdit(act) {
+			$('.act-name[act-id=' + act.id + ']').html(act.name);
+			$('.act-completedness[act-id=' + act.id + ']').css("background-color","rgba(" + Math.round((1 - act.completedness) * 192) + "," + Math.round(act.completedness * 192) + ",0,1)");
+			$('.act-completedness[act-id=' + act.id + '] div').css("width", Math.round(30 * (1 - act.completedness)) + "px");
+		}
+
+		function callbackNew(act) {
+			var newActTr = $('#acts-table tbody tr:nth-child(1)').clone();
+
+			newActTr.find('[act-id]').each(function() {
+				$(this).attr("act-id",act.id);
+			});
+			newActTr.find('.act-name').html(act.name);
+			newActTr.find('.act-name').parent().attr("data-order-by",act.name);
+
+			newActTr.find('.act-completedness').css("background-color","rgba(" + Math.round((1 - act.completedness) * 192) + "," + Math.round(act.completedness * 192) + ",0,1)");
+			newActTr.find('.act-completedness div').css("width", Math.round(30 * (1 - act.completedness)) + "px");
+			newActTr.find('.act-completedness').parent().attr("data-order-by",act.completedness);
+
+			newActTr.prependTo('#acts-table tbody');
+		}
+
+		function closeMode() {
+			console.log("running");
+			$( "#confirm-submit" ).dialog({
+	            resizable: false,
+	            height:240,
+	            modal: true,
+	            buttons: {
+	                "Continue": function() {
+	                    $('.mode').hide();
+	                    $( this ).dialog( "close" );
+	                },
+	                Cancel: function() {
+	                    $( this ).dialog( "close" );
+	                }
+	            }
+	        });
+		};
+
+
+	</script>
+	<style type="text/css">
+		#acts-table {
+			margin:20px 10px;
+			border-spacing: 0;
+			border-collapse:collapse;
+		}
+
+		#acts-table th {
+
+		}
+		#acts-table td, #acts-table th {
+			padding:5px;
+		}
+		#acts-table td:nth-child(1) {
+			width:50px;
+		}
+		#acts-table td:nth-child(2) {
+			width:400px;
+		}
+		#acts-table td:nth-child(3) {
+			width:27px;
+			text-align:center;
+		}
+		#acts-table tbody tr:nth-child(odd) {
+			background:#eeeeee;
+		}
+	</style>
+	<a href="/userSubmission/actCreate" class="new-act" target="_blank">Add New Performer</a>
+	<table id="acts-table">
+		<thead>
+			<tr>
+				<th class="type-float" style="cursor:pointer;">%</th>
+				<th class="type-string" style="cursor:pointer;text-align:left;">name</th>
+				<th class="type-string" style="cursor:pointer;text-align:left;">events</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+		<% @acts.each do |act| %>
+			<tr id="anchor<%=act.id%>">
+				<td data-order-by="<%= act.completion %>">
+					<div class="act-completedness" act-id="<%= act.id %>" style="padding:1px;overflow:hidden;width:30px;margin:0 auto;background-color:rgba(<%= ((1 - act.completion) * 192).round %>,<%= (act.completion * 192).round %>,0,1);">
+						<div style="float:right;height:5px;width:<%= (30 * (1 - act.completion)).round %>px;background-color:white;"></div>
+					</div>
+				</td>
+				<td data-order-by="<%= act.name %>"><a href="/userSubmission/actEdit/<%= act.id %>" class="act-name" act-id="<%= act.id %>" target="_blank"><%= act.name %></a></td>
+				<td data-order-by="<%= act.num_events %>"><%= act.num_events %></td>
+				<td><a href="#" class="act-delete" act-id="<%= act.id %>">[delete]</a></td>
+			</tr>
+		<% end %>
+		</tbody>
+	</table>
+<div class="acts mode">
+	<div class="overlay">
+		<div class="window">
+		</div>
+	</div>
+</div>
+  	<div id="confirm-submit" title="Successfully entered artist!" style="display:none; font-size:14px;">
+</div>
+

@@ -351,10 +351,10 @@ $(function() {
     var link = root_url + "%3F" + type + "_id%3D" + id;
     var facebook_url = "http://www.halfpastnow.com/events/show/" + id + "?fullmode=true";
 
-    var html_title = title.replace(/[%&\/#"\\]/g, function(m) {
+    var html_title = title.replace(/[%|&\/#"\\]/g, function(m) {
           return (m === '"' || m === '\\') ? " " : "%" + m.charCodeAt(0).toString(16);
     });
-    var html_venue = venue.replace(/[%&\/#"\\]/g, function(m) {
+    var html_venue = venue.replace(/[%|&\/#"\\]/g, function(m) {
           return (m === '"' || m === '\\') ? " " : "%" + m.charCodeAt(0).toString(16);
     });
 
@@ -370,13 +370,13 @@ $(function() {
       window.focus();
       stopPropagation(event);
     } else if($(this).hasClass('twitter')) {
-      console.log(title.replace(/(<([^>]+)>)/ig,"").replace(/&/ig,"and"));
-      var url = 'http://twitter.com/intent/tweet?text=' + title.replace(/(<([^>]+)>)/ig,"").replace(/&/ig,"and").substring(0,50) + ' ' + link + ' @halfpastnow %23discoveraustin';
+      console.log(title.replace(/(<([|^>]+)>)/ig,"").replace(/&/ig,"and"));
+      var url = 'http://twitter.com/intent/tweet?text=' + title.replace(/(<([|^>]+)>)/ig,"").replace(/&/ig,"and").substring(0,50) + ' ' + link + ' @halfpastnow %23discoveraustin';
       window.open(url, '_blank');
       window.focus();
       stopPropagation(event);
     } else if($(this).hasClass('email')) {
-      var url = 'mailto:?subject=Check out this event&body=Take a look at this event: %0D%0A%0D%0A' + html_title + '%0D%0A' + 'at ' + venue + '%0D%0A%0D%0A' + link + '%0D%0AAvia http://www.halfpastnow.com';
+      var url = 'mailto:?subject=Check out this event&body=Take a look at this event: %0D%0A%0D%0A' + html_title + '%0D%0A' + 'at ' + venue + '%0D%0A%0D%0A' + link + '%0D%0Avia http://www.halfpastnow.com';
       window.open(url, '_blank');
       window.focus();
       stopPropagation(event);

@@ -119,7 +119,7 @@ private
 
     # venues = venues.paginate(:page => page, :per_page => per_page)
     #venues = venues.select {|v| v["events_count"].to_i > 0 && v["raw_events_count"].to_i > 0}
-    puts venues
+    # puts venues
     venues
   end
 

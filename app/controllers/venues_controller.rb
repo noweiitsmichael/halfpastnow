@@ -264,11 +264,12 @@ class VenuesController < ApplicationController
     @raw_event = RawEvent.find(params[:raw_event_id])
     @event.cover_image = @raw_event.cover_image
     @event.cover_image_url = @raw_event.cover_image_url
-    @event.completion = @event.completedness
     
     if @event.save
       @raw_event.submitted = true
       @raw_event.save
+      @event.completion = @event.completedness
+      @event.save
       render json: {:event_id => @event.occurrences.first.id, :event_title => @event.title}
     else
       render json: {:event_id => nil}
@@ -382,7 +383,6 @@ class VenuesController < ApplicationController
       @event = Event.find(params[:id])
     end
 
-    @event.completion = @event.completedness
     params[:event][:user_id] = current_user.id
     if params[:event][:cover_image]
       @event.cover_image_url = Picture.find(params[:event][:cover_image]).image_url(:cover)
@@ -407,6 +407,8 @@ class VenuesController < ApplicationController
 
     respond_to do |format|
       if @event.save!
+        @event.completion = @event.completedness
+        @event.save
         format.html { redirect_to :action => :list_events, :id => @venue.id }
         format.json { render json: { :from => "eventEdit", :result => true } }
       else

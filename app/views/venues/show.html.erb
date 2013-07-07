@@ -1,3 +1,12 @@
+<% content_for :meta do %>
+     <meta property="og:type"                 content="halfpastnow:event"/> 
+     <meta property="og:url"                  content="http://www.halfpastnow.com/venues/show/<%= @venue.id%>?fullmode=true"/>
+     <meta property="og:site_name"            content="halfpastnow"/>
+     <meta property="og:image"                content="<%=@venue.pictures.first ? @venue.pictures.first.image_url(:large) : ""%>"/>
+     <meta property="og:title"                content="<%=@venue.name%> on halfpastnow.com">
+     <meta property="og:description"          content="<%=strip_tags(@venue.description)%>"/> 
+<% end %>
+
 <% content_for :mode_title do %>
 	<h1>Venue: <%= @venue.name %></h1>
 <% end %>

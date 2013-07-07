@@ -23,6 +23,8 @@ class Event < ActiveRecord::Base
   validates_presence_of :title, :message => "Please input event title"
 
   after_create :clear_cache
+  # after_create :completedness
+  # after_save :completedness
 
   def matches? (search)
     if (search.nil? || search == "")
@@ -70,6 +72,10 @@ class Event < ActiveRecord::Base
     unless(self.pictures.empty?)
       complete_elements += 1
     end
+
+    # puts "*******calculating completedness*************"
+    # puts complete_elements.to_f / total_elements.to_f
+
     return complete_elements.to_f / total_elements.to_f
   end
 

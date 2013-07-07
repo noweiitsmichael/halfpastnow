@@ -205,7 +205,7 @@
 			      bookmarkId = nil
 			    end 
 		    %>
-			<div title="Bookmark This"><span class="icon icon-bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" <%= current_user ? "" : "linkto='shunt'" %> event-id="<%= occurrence.id %>"></span><span class="text">bookmark</span></div>
+			<div title="Bookmark This"><span class="icon icon-bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" <%= current_user ? "" : "linkto='shunt'" %> event-title="<%= occurrence.event.title %>" event-id="<%= occurrence.id %>" event-venue="<%= occurrence.event.venue.name %>" event-id="<%= occurrence.id %>"></span><span class="text">bookmark</span></div>
 		</div>
 		<div style="display:none;">
 			<div class="latitude"><%= occurrence.event.venue.latitude %></div>
