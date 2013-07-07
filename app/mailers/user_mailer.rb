@@ -530,7 +530,7 @@ class UserMailer < ActionMailer::Base
 
     really_long_cache_name = Digest::SHA1.hexdigest(query)
     @result = Rails.cache.read(really_long_cache_name)
-    if (queryResult == nil)
+    if (@result == nil)
       puts "**************** No cache found for search query ****************"
       # queryResult = ActiveRecord::Base.connection.select_all(query)
       @result     = ActiveRecord::Base.connection.select_all(query)
