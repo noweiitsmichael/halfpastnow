@@ -16,7 +16,7 @@ helper :content
 					LEFT JOIN venues ON events.venue_id = venues.id
 	                LEFT JOIN recurrences ON events.id = recurrences.event_id
 	                LEFT JOIN events_tags ON events.id = events_tags.event_id
-	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.id = 101 AND occurrences.recurrence_id IS NOT NULL
+	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.id = 2370 AND occurrences.recurrence_id IS NOT NULL
 	                GROUP BY events.title, events.clicks, events.views, venues.name, recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url)
                 UNION 
                 (SELECT DISTINCT ON (events.title) events.title, events.clicks, events.views, venues.name, occurrences.recurrence_id AS recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url, array_agg(events_tags.tag_id) AS tags
@@ -27,7 +27,7 @@ helper :content
 					LEFT JOIN venues ON events.venue_id = venues.id
 	                LEFT JOIN recurrences ON events.id = recurrences.event_id
 	                LEFT JOIN events_tags ON events.id = events_tags.event_id
-	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.id = 101 AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days'
+	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.id = 2370 AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days'
 	                GROUP BY events.title, events.clicks, events.views, venues.name, recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url)
 				) a
 				ORDER BY a.clicks DESC";

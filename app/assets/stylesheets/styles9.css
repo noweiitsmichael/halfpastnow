@@ -306,7 +306,8 @@ z-index: 100;*/
   background-color: #ddd;
   background-image: url('/assets/kite-hero.jpg');
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: center center;/*
+  background-attachment: fixed;*/
   height: 620px; 
   overflow: hidden;
 -webkit-background-size: cover;
