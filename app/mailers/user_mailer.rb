@@ -423,12 +423,12 @@ class UserMailer < ActionMailer::Base
     # @occurrences = Occurrence.includes(:event => :tags).find(@ids, :order => order_by)
     # @ids = @occurrences.collect{|o| o.id}
     # @ids=@ids[0,5]
-
-    really_long_cache_name = Digest::SHA1.hexdigest("search_for_ids_#{@ids}_#{order_by}")
+    @ocids =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
+      
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_ids_#{@ocids}_#{order_by}")
     @ids=   Rails.cache.read(really_long_cache_name)
     if (@ids == nil)
-      @ids =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
-      @occurrences = Occurrence.includes(:event => :tags).find(@ids, :order => order_by)
+      @occurrences = Occurrence.includes(:event => :tags).find(@ocids, :order => order_by)
       @ids = @occurrences.collect{|o| o.id}
       @ids=@ids[0,5]
       Rails.cache.write(really_long_cache_name, @ids)
