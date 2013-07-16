@@ -1,3 +1,4 @@
+require 'pp'
 class Occurrence < ActiveRecord::Base
   belongs_to :event
   belongs_to :recurrence
@@ -59,6 +60,21 @@ class Occurrence < ActiveRecord::Base
              AND bookmark_lists.id = #{ bookmarklistID }"
     results = ActiveRecord::Base.connection.select_all(query)
     return Bookmark.find(results.collect { |e| e["id"] }.uniq)
+  end
+
+
+  def trending_event
+    query = "SELECT bookmarks.id FROM occurrences
+             INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id 
+             INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
+             WHERE occurrences.event_id = #{ self.event_id } AND bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.id = '2370'"
+    results = ActiveRecord::Base.connection.select_all(query)
+    pp results
+    if results.empty?
+      return false
+    else
+      return true
+    end
   end
 
   def self.find_with(params)
