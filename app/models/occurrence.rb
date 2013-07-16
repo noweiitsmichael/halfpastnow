@@ -69,7 +69,7 @@ class Occurrence < ActiveRecord::Base
              INNER JOIN bookmark_lists ON bookmarks.bookmark_list_id = bookmark_lists.id
              WHERE occurrences.event_id = #{ self.event_id } AND bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.id = '2370'"
     results = ActiveRecord::Base.connection.select_all(query)
-    pp results
+    # pp results
     if results.empty?
       return false
     else
@@ -79,7 +79,7 @@ class Occurrence < ActiveRecord::Base
 
   def self.find_with(params)
     puts "occurrence.rb"
-    pp params
+    # pp params
 
     user_id = params[:user_id]
 

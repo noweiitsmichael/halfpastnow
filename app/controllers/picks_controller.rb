@@ -110,7 +110,7 @@ helper :content
 	        end
 	    end
 
-	    pp @result
+	    # pp @result
 	end
 
 	def trendsetters
