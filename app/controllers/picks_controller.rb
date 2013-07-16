@@ -1,3 +1,5 @@
+require 'pp'
+
 class PicksController < ApplicationController
 helper :content
 	def index
@@ -16,7 +18,7 @@ helper :content
 					LEFT JOIN venues ON events.venue_id = venues.id
 	                LEFT JOIN recurrences ON events.id = recurrences.event_id
 	                LEFT JOIN events_tags ON events.id = events_tags.event_id
-	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.id = 2370 AND occurrences.recurrence_id IS NOT NULL
+	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NOT NULL
 	                GROUP BY events.title, events.clicks, events.views, venues.name, recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url)
                 UNION 
                 (SELECT DISTINCT ON (events.title) events.title, events.clicks, events.views, venues.name, occurrences.recurrence_id AS recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url, array_agg(events_tags.tag_id) AS tags
@@ -27,12 +29,12 @@ helper :content
 					LEFT JOIN venues ON events.venue_id = venues.id
 	                LEFT JOIN recurrences ON events.id = recurrences.event_id
 	                LEFT JOIN events_tags ON events.id = events_tags.event_id
-	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.id = 2370 AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days'
+	                WHERE bookmarks.bookmarked_type = 'Occurrence' AND bookmark_lists.featured IS TRUE AND occurrences.recurrence_id IS NULL AND occurrences.start < now() + INTERVAL '8 days'
 	                GROUP BY events.title, events.clicks, events.views, venues.name, recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url)
 				) a
 				ORDER BY a.clicks DESC";
 		# Currently only sorting by clicks, might want to switch to popularity at some point but whatever, not that important.
-		## July 3rd, 2013 - made the picks index return ONLY From Trending top picks list ( changed "bookmark_lists.featured IS TRUE" in WHERE clauses to "bookmark_lists.id = ")
+		## July 3rd, 2013 - made the picks index return ONLY From Trending top picks list ( changed "bookmark_lists.featured IS TRUE" in WHERE clauses to "bookmark_lists"
 		
 		## Cache Query
 	    @raw_data = Rails.cache.read("picklist_calendar_search")
