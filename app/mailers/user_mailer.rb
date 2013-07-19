@@ -18,7 +18,7 @@ class UserMailer < ActionMailer::Base
     mail(:to => @user.email, :subject => "Welcome to halfpastnow!", :from => "Half Past Now <support@halfpastnow.com>")
   end
 
-  def special_email(user)
+  def vote_email(user)
     # puts "sending email..."
     ActionMailer::Base.smtp_settings = {
       address: "smtp.gmail.com",
