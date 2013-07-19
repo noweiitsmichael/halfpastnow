@@ -2,7 +2,7 @@ class UserMailer < ActionMailer::Base
   # default from: "khoa@halfpastnow.com"
 
   def welcome_email(user)
-  	puts "sending email..."
+  	# puts "sending email..."
     ActionMailer::Base.smtp_settings = {
       address: "smtp.gmail.com",
       port: 587,
@@ -14,12 +14,25 @@ class UserMailer < ActionMailer::Base
     }
     @user = user
     
-
-
-
-
     @url  = "http://halfpastnow.com/login"
     mail(:to => @user.email, :subject => "Welcome to halfpastnow!", :from => "Half Past Now <support@halfpastnow.com>")
+  end
+
+  def special_email(user)
+    # puts "sending email..."
+    ActionMailer::Base.smtp_settings = {
+      address: "smtp.gmail.com",
+      port: 587,
+      domain: "halfpastnow.com",
+      authentication: "plain",
+      enable_starttls_auto: true,
+      user_name: "support@halfpastnow.com",
+      password: "chimeralabs"
+    }
+    @user = user
+
+    @url  = "http://halfpastnow.com/login"
+    mail(:to => @user.email, :subject => "Austin's Best of 2013 by the Austin Chronicle", :from => "Half Past Now <support@halfpastnow.com>")
   end
 
 
