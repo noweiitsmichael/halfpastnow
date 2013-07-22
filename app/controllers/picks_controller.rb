@@ -1,3 +1,5 @@
+require 'pp'
+
 class PicksController < ApplicationController
 helper :content
 	def index
@@ -5,6 +7,7 @@ helper :content
 		@lat = 30.268093
 	    @long = -97.742808
 	    @zoom = 11
+
 		query = "SELECT a.title, a.clicks, a.views, a.name, a.recurrence_id, a.start, a.id, a.event_id, a.venue_id, a.cover_image_url, a.picture_url, a.tags
 				FROM
 				((SELECT DISTINCT ON (events.title) events.title, events.clicks, events.views, venues.name, occurrences.recurrence_id AS recurrence_id, occurrences.start, occurrences.id, occurrences.event_id, events.venue_id, events.cover_image_url, bookmark_lists.picture_url, array_agg(events_tags.tag_id) AS tags
@@ -31,6 +34,7 @@ helper :content
 				) a
 				ORDER BY a.clicks DESC";
 		# Currently only sorting by clicks, might want to switch to popularity at some point but whatever, not that important.
+		## July 3rd, 2013 - made the picks index return ONLY From Trending top picks list ( changed "bookmark_lists.featured IS TRUE" in WHERE clauses to "bookmark_lists"
 		
 		## Cache Query
 	    @raw_data = Rails.cache.read("picklist_calendar_search")

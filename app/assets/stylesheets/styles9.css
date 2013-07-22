@@ -306,8 +306,9 @@ z-index: 100;*/
   background-color: #ddd;
   background-image: url('/assets/kite-hero.jpg');
   background-repeat: no-repeat;
-  background-position: center center;
-  height: 420px; 
+  background-position: center center;/*
+  background-attachment: fixed;*/
+  height: 620px; 
   overflow: hidden;
 -webkit-background-size: cover;
 -khtml-background-size: cover;
@@ -319,7 +320,7 @@ background-size: cover;
 #hero .hero-writing {
   width: 870px;
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 80px;
   text-align: right;
   position: relative;
 }
@@ -348,6 +349,7 @@ background-size: cover;
   margin-top:34px;
   background-color: #ddd;
   background-image: url('/assets/kite-hero.jpg');
+  -webkit-filter: grayscale(1);
   background-repeat: no-repeat;
   background-position: center center;
   height: 420px; 
@@ -453,6 +455,13 @@ background-size: cover;
   
 }
 
+
+.main-action {
+  margin-top:30px;
+  float: right;
+  width: 240px;
+}
+
 #splash-actions .action-description {
   margin-top: 20px;
   float: right;
@@ -472,7 +481,7 @@ background-size: cover;
   margin: 0 auto;
 }
 
-#splash-actions .nice-button.-button a{
+#splash-actions .nice-button.-button a, .main-action .nice-button.-button a{
   text-decoration: none;
   color: white;
 }
@@ -485,7 +494,11 @@ background-size: cover;
   margin-right:3px;
 }
 
-#splash-actions .nice-button.search-button {
+.main-action .search-button .icon-search {
+  line-height: 1.3em;
+}
+
+#splash-actions .nice-button.search-button{
   text-decoration: none;
   border: 1px solid rgba(0,0,0,0.2);
   text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
@@ -498,7 +511,20 @@ background-size: cover;
   margin: 0 auto;
 }
 
-#splash-actions .nice-button.search-button a{
+.main-action .nice-button.search-button {
+  padding: 16px 16px 16px 16px;
+  text-decoration: none;
+  border: 1px solid rgba(0,0,0,0.2);
+  text-shadow: 0 -2px 0 rgba(0,0,0,0.25);
+  font-size:20px;
+  background-color: #A700A7;
+  border-radius: 3px;
+  display:block;
+  width: 200px;
+  margin: 0 auto;
+}
+
+#splash-actions .nice-button.search-button a, .main-action .nice-button.search-button a{
   text-decoration: none;
   color: white;
 }
