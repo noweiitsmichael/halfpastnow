@@ -102,7 +102,7 @@ class User < ActiveRecord::Base
     user = super
     if user
       Channel.default_channels.each do |channel| 
-        if (channel.name == "Happy Hours") || (channel.name == "Live Music")
+        if (channel.name == "Happy Hours") || (channel.name == "Live Music") || (channel.name == "Fitness") || (channel.name == "Shows") || (channel.name == "Nightlife") 
           new_channel = channel.dup
           new_channel.id = nil
           new_channel.default = nil

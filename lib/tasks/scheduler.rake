@@ -44,6 +44,21 @@ namespace :m do
 	# Event.find(:all).each {|d| d.completion = d.completedness; d.save!;}
 
 
+	desc "backfill new default channels"
+	task :default_channels => :environment do
+		User.find_each do |u|
+			puts "Adding channels for #{u.firstname}"
+			Channel.default_channels.each do |channel| 
+		        if (channel.name == "Fitness") || (channel.name == "Shows") || (channel.name == "Nightlife") 
+		          new_channel = channel.dup
+		          new_channel.user_id = u.id
+		          new_channel.default = nil
+		          new_channel.save!
+		        end
+	      end
+	  end
+	end
+
 	desc "clearing dangling bookmarks and tags"
 	task :scrub => :environment do
 		puts "Scrubbing..."
