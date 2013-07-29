@@ -6248,7 +6248,8 @@ def SX
     @occurrences  = []
     @recurrences = []
     startTime = Date.today()
-    endTime = startTime.advance(:days =>1)
+
+    endTime = startTime.advance(:days =>7)
    
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_venue_#{params[:id]}_#{startTime}")
     @occs =  Rails.cache.read(really_long_cache_name)
