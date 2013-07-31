@@ -44,26 +44,26 @@ gem 'unicorn'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 #roles and login
-gem 'devise'
-gem 'cancan'
-gem 'rolify'
-gem 'omniauth-facebook'
-gem 'koala'
-gem 'sinatra'
+# gem 'devise'
+# gem 'cancan'
+# gem 'rolify'
+# gem 'omniauth-facebook'
+# gem 'koala'
+# gem 'sinatra'
 
 #file attachments and Amazon S3
-gem 'carrierwave'
-gem 'rmagick'
-gem 'fog'
+# gem 'carrierwave'
+# gem 'rmagick'
+# gem 'fog'
 
-group :test do
-  # Pretty printed test output
-  gem 'turn', '~> 0.8.3', :require => false
-end
+# group :test do
+#   # Pretty printed test output
+#   gem 'turn', '~> 0.8.3', :require => false
+# end
 
-gem "ruby-prof", "~> 0.11.2"
+# gem "ruby-prof", "~> 0.11.2"
 
-gem 'mobile-fu'
+# gem 'mobile-fu'
 
 # gem 'delayed_job_active_record'
 
@@ -77,7 +77,7 @@ gem 'mobile-fu'
 # gem 'dalli'
 
 # Email via mandrill
-gem 'mandrill-api'
+# gem 'mandrill-api'
 
 # gem 'eventfulapi'
 # gem 'eventbrite-client'
