@@ -2249,7 +2249,7 @@ def FacebookLogin
               acts.each{ |act|
                 tag_item = []
                 tags = act.tags.collect { |tag| tag.name}
-                tag_item  << act.name << act.id << tags
+                tag_item  << act.name << act.id << tags << act.pictures.first.image
                 act << tag_item
 
               }
