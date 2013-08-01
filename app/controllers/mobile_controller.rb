@@ -2243,16 +2243,16 @@ def FacebookLogin
               # #puts id
               # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-              # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
-              acts = Event.find(id).acts
-              act = []
-              acts.each{ |a|
-                tag_item = []
-                tags = a.tags.collect { |tag| tag.name}
-                tag_item  << a.name << a.id << tags << a.pictures.first.image
-                act << tag_item
+               act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+              # acts = Event.find(id).acts
+              # act = []
+              # acts.each{ |a|
+              #   tag_item = []
+              #   tags = a.tags.collect { |tag| tag.name}
+              #   tag_item  << a.name << a.id << tags << a.pictures.first.image
+              #   act << tag_item
 
-              }
+              # }
 
               # Find the uniq recurrence id
               rec_ids = set.collect { |e| e["rec_id"] }.uniq
