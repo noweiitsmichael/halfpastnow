@@ -2085,6 +2085,7 @@ def FacebookLogin
       # #puts set
       act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
       e = Event.find(id)
+      acts = e.acts
       # act = []
       # acts.each{ |a|
       #   tag_item = []
