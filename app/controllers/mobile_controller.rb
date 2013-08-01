@@ -2244,7 +2244,8 @@ def FacebookLogin
               # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
                act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
-              # acts = Event.find(id).acts
+               # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
+               # acts = Event.find(id).acts
               # act = []
               # acts.each{ |a|
               #   tag_item = []
@@ -2253,7 +2254,6 @@ def FacebookLogin
               #   act << tag_item
 
               # }
-
               # Find the uniq recurrence id
               rec_ids = set.collect { |e| e["rec_id"] }.uniq
                rec = set.collect { |s| { 
