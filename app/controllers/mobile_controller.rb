@@ -2246,10 +2246,10 @@ def FacebookLogin
               # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
               acts = Event.find(id).acts
               act = []
-              acts.each{ |act|
+              acts.each{ |a|
                 tag_item = []
-                tags = act.tags.collect { |tag| tag.name}
-                tag_item  << act.name << act.id << tags << act.pictures.first.image
+                tags = a.tags.collect { |tag| tag.name}
+                tag_item  << a.name << a.id << tags << a.pictures.first.image
                 act << tag_item
 
               }
