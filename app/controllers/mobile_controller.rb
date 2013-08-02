@@ -2079,7 +2079,7 @@ def FacebookLogin
     # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
-      # #puts id
+      puts id
       # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       # #puts set
