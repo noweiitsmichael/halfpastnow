@@ -61,7 +61,7 @@ gem 'fog' # Khoa
 #   gem 'turn', '~> 0.8.3', :require => false
 # end
 
-# gem "ruby-prof", "~> 0.11.2"
+gem "ruby-prof", "~> 0.11.2" # Khoa
 
 gem 'mobile-fu' # Khoa
 
