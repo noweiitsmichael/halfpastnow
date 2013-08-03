@@ -25,7 +25,7 @@ group :assets do
 end
 
 #fancy jquery stuff
-# gem 'jquery-rails'
+gem 'jquery-rails' # Khoa
 # gem 'client_side_validations'
 # gem 'jcrop-rails'
 
@@ -45,7 +45,7 @@ gem "oink"  # Khoa
 
 #roles and login
 gem 'devise' # Khoa
-# gem 'cancan'
+gem 'cancan' # Khoa
 gem 'rolify' # Khoa
 gem 'omniauth-facebook' # Khoa
 # gem 'koala'
