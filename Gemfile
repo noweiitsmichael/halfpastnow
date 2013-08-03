@@ -29,7 +29,7 @@ gem 'jquery-rails' # Khoa
 # gem 'client_side_validations'
 # gem 'jcrop-rails'
 
-# gem 'htmlentities'
+gem 'htmlentities' # Khoa
 
 # gem 'nokogiri', '>= 1.4.4'
 # gem 'sanitize'
