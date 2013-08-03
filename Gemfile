@@ -74,7 +74,7 @@ gem 'fog' # Khoa
 
 # # Data caching
 # gem 'memcachier'
-# gem 'dalli'
+gem 'dalli' # Khoa
 
 # Email via mandrill
 # gem 'mandrill-api'
