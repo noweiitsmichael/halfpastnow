@@ -73,7 +73,7 @@ gem 'mobile-fu' # Khoa
 # gem "librato-metrics" #logging/error reporting to Liberato add-on
 
 # # Data caching
-# gem 'memcachier'
+gem 'memcachier'
 gem 'dalli' # Khoa
 
 # Email via mandrill
