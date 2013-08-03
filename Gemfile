@@ -12,7 +12,7 @@ gem 'pg'
 # # gem 'thinking-sphinx', '2.0.11'
 # # gem 'flying-sphinx',   '0.6.4'
 
-# gem 'admin_data', '>= 1.1.16'
+gem 'admin_data', '>= 1.1.16' # Khoa
 
 
 # Gems used only for assets and not required
@@ -39,22 +39,22 @@ end
 
 # Use unicorn as the web server
 gem 'unicorn'
-
+gem "oink"  # Khoa 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 #roles and login
-# gem 'devise'
+gem 'devise' # Khoa
 # gem 'cancan'
-# gem 'rolify'
-# gem 'omniauth-facebook'
+gem 'rolify' # Khoa
+gem 'omniauth-facebook' # Khoa
 # gem 'koala'
 # gem 'sinatra'
 
 #file attachments and Amazon S3
-# gem 'carrierwave'
-# gem 'rmagick'
-# gem 'fog'
+gem 'carrierwave' # Khoa
+gem 'rmagick' # Khoa
+gem 'fog' # Khoa
 
 # group :test do
 #   # Pretty printed test output
