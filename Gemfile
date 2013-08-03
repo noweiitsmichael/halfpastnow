@@ -63,7 +63,7 @@ gem 'fog' # Khoa
 
 # gem "ruby-prof", "~> 0.11.2"
 
-# gem 'mobile-fu'
+gem 'mobile-fu' # Khoa
 
 # gem 'delayed_job_active_record'
 
