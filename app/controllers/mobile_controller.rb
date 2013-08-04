@@ -2090,7 +2090,7 @@ def FacebookLogin
       acts.each{ |a|
         tag_item = []
         tags = a.tags.collect { |tag| tag.name}
-        unless a.pictures.first
+        unless a.pictures.first.nil?
           tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
         else
           tag_item  << a.name << a.id << tags << ""
