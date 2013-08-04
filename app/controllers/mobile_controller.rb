@@ -6834,10 +6834,7 @@ end
       end
       
       @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
-
-
-      e = o.event
-      acts = e.acts
+      acts = o.acts
       act = []
       acts.each{ |a|
         tag_item = []
