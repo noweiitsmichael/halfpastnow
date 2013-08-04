@@ -248,7 +248,22 @@ class MobileController < ApplicationController
               # #puts id
               # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-               act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+               # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq
+              e = Event.find(id)
+              acts = e.acts
+              act = []
+              acts.each{ |a|
+                tag_item = []
+                tags = a.tags.collect { |tag| tag.name}
+                unless a.pictures.first.nil?
+                  tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+                else
+                  tag_item  << a.name << a.id << tags << ""
+                end
+                
+                act << tag_item
+
+              } 
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
               # Find the uniq recurrence id
               rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -475,7 +490,22 @@ class MobileController < ApplicationController
     esinfo = []
     @eventIDs.each{ |id|
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq
+      e = Event.find(id)
+      acts = e.acts
+      act = []
+      acts.each{ |a|
+        tag_item = []
+        tags = a.tags.collect { |tag| tag.name}
+        unless a.pictures.first.nil?
+          tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+        else
+          tag_item  << a.name << a.id << tags << ""
+        end
+        
+        act << tag_item
+
+      } 
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
       rec = set.collect { |s| { 
         :every_other => s["every_other"],
@@ -809,7 +839,22 @@ class MobileController < ApplicationController
       # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       # #puts set
-      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      e = Event.find(id)
+      acts = e.acts
+      act = []
+      acts.each{ |a|
+        tag_item = []
+        tags = a.tags.collect { |tag| tag.name}
+        unless a.pictures.first.nil?
+          tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+        else
+          tag_item  << a.name << a.id << tags << ""
+        end
+        
+        act << tag_item
+
+      }
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
@@ -942,7 +987,22 @@ class MobileController < ApplicationController
               # #puts id
               # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-               act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+               # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq
+              e = Event.find(id)
+              acts = e.acts
+              act = []
+              acts.each{ |a|
+                tag_item = []
+                tags = a.tags.collect { |tag| tag.name}
+                unless a.pictures.first.nil?
+                  tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+                else
+                  tag_item  << a.name << a.id << tags << ""
+                end
+                
+                act << tag_item
+
+              } 
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
               # Find the uniq recurrence id
               rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -1426,7 +1486,22 @@ def FacebookLoginAndroid
       # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       # #puts set
-      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq
+      e = Event.find(id)
+      acts = e.acts
+      act = []
+      acts.each{ |a|
+        tag_item = []
+        tags = a.tags.collect { |tag| tag.name}
+        unless a.pictures.first.nil?
+          tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+        else
+          tag_item  << a.name << a.id << tags << ""
+        end
+        
+        act << tag_item
+
+      } 
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
@@ -1577,7 +1652,22 @@ def FacebookLoginAndroid
               # #puts id
               # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-               act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+               # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+               e = Event.find(id)
+              acts = e.acts
+              act = []
+              acts.each{ |a|
+                tag_item = []
+                tags = a.tags.collect { |tag| tag.name}
+                unless a.pictures.first.nil?
+                  tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+                else
+                  tag_item  << a.name << a.id << tags << ""
+                end
+                
+                act << tag_item
+
+              }
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
               # Find the uniq recurrence id
               rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -2261,7 +2351,22 @@ def FacebookLogin
               # #puts id
               # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-               act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+               # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+              e = Event.find(id)
+              acts = e.acts
+              act = []
+              acts.each{ |a|
+                tag_item = []
+                tags = a.tags.collect { |tag| tag.name}
+                unless a.pictures.first.nil?
+                  tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+                else
+                  tag_item  << a.name << a.id << tags << ""
+                end
+                
+                act << tag_item
+
+              }
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
               # Find the uniq recurrence id
               rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -3266,7 +3371,22 @@ def gettpevents
       # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       # #puts set
-      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      e = Event.find(id)
+      acts = e.acts
+      act = []
+      acts.each{ |a|
+        tag_item = []
+        tags = a.tags.collect { |tag| tag.name}
+        unless a.pictures.first.nil?
+          tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+        else
+          tag_item  << a.name << a.id << tags << ""
+        end
+        
+        act << tag_item
+
+      }
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
@@ -3701,7 +3821,22 @@ def FacebookLoginSX
       # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       # #puts set
-      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      e = Event.find(id)
+      acts = e.acts
+      act = []
+      acts.each{ |a|
+        tag_item = []
+        tags = a.tags.collect { |tag| tag.name}
+        unless a.pictures.first.nil?
+          tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+        else
+          tag_item  << a.name << a.id << tags << ""
+        end
+        
+        act << tag_item
+
+      }
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
@@ -3852,7 +3987,22 @@ def FacebookLoginSX
               # #puts id
               # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-               act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+               # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+              e = Event.find(id)
+              acts = e.acts
+              act = []
+              acts.each{ |a|
+                tag_item = []
+                tags = a.tags.collect { |tag| tag.name}
+                unless a.pictures.first.nil?
+                  tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+                else
+                  tag_item  << a.name << a.id << tags << ""
+                end
+                
+                act << tag_item
+
+              }
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
               # Find the uniq recurrence id
               rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -3953,7 +4103,22 @@ def FacebookLoginSX
               # #puts id
               # #puts "SET"
               set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-               act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+               # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+              e = Event.find(id)
+              acts = e.acts
+              act = []
+              acts.each{ |a|
+                tag_item = []
+                tags = a.tags.collect { |tag| tag.name}
+                unless a.pictures.first.nil?
+                  tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+                else
+                  tag_item  << a.name << a.id << tags << ""
+                end
+                
+                act << tag_item
+
+              }
                # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
               # Find the uniq recurrence id
               rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -4391,7 +4556,22 @@ def SX
       # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       # #puts set
-      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      e = Event.find(id)
+      acts = e.acts
+      act = []
+      acts.each{ |a|
+        tag_item = []
+        tags = a.tags.collect { |tag| tag.name}
+        unless a.pictures.first.nil?
+          tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+        else
+          tag_item  << a.name << a.id << tags << ""
+        end
+        
+        act << tag_item
+
+      }
       users = set.select {|s| s["user_id"].to_i != 0}.collect{|s| s["user_id"].to_i}.uniq
       users = User.find(users).collect{|s| s.uid.to_s}.uniq
       
@@ -4570,7 +4750,22 @@ def SX
         # #puts id
         # #puts "SET"
         set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-        act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+        # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq
+        e = Event.find(id)
+        acts = e.acts
+        act = []
+        acts.each{ |a|
+          tag_item = []
+          tags = a.tags.collect { |tag| tag.name}
+          unless a.pictures.first.nil?
+            tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+          else
+            tag_item  << a.name << a.id << tags << ""
+          end
+          
+          act << tag_item
+
+        } 
         # act = set.collect { |s|  {s["actor"], s["act_id"]} }
         # Find the uniq recurrence id
         rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -4685,7 +4880,22 @@ def SX
       # #puts id
       # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq
+      e = Event.find(id)
+      acts = e.acts
+      act = []
+      acts.each{ |a|
+        tag_item = []
+        tags = a.tags.collect { |tag| tag.name}
+        unless a.pictures.first.nil?
+          tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+        else
+          tag_item  << a.name << a.id << tags << ""
+        end
+        
+        act << tag_item
+
+      }
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -4833,7 +5043,22 @@ def SX
       # #puts id
       # #puts "SET"
       set =  queryResult.select{ |r| r["bookmarked_id"] == id.to_s }
-      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq
+      e = Event.find(id)
+      acts = e.acts
+      act = []
+      acts.each{ |a|
+        tag_item = []
+        tags = a.tags.collect { |tag| tag.name}
+        unless a.pictures.first.nil?
+          tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+        else
+          tag_item  << a.name << a.id << tags << ""
+        end
+        
+        act << tag_item
+
+      } 
       # act = set.collect { |s|  {s["actor"], s["act_id"]} }
       # Find the uniq recurrence id
       rec_ids = set.collect { |e| e["rec_id"] }.uniq
@@ -4973,7 +5198,22 @@ def SX
             set =  queryResult.select{ |r| r["event_id"] == id.to_s }
             oc = @occurrences.select { |o| o[:event_id]=id}.first
             
-            act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+            # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq
+            e = Event.find(id)
+            acts = e.acts
+            act = []
+            acts.each{ |a|
+              tag_item = []
+              tags = a.tags.collect { |tag| tag.name}
+              unless a.pictures.first.nil?
+                tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+              else
+                tag_item  << a.name << a.id << tags << ""
+              end
+              
+              act << tag_item
+
+            }
             rec_ids = set.collect { |e| e["rec_id"] }.uniq
             rec = set.collect { |s| { 
               :every_other => s["every_other"],
@@ -5098,7 +5338,22 @@ def SX
           
           @eventIDs.each{ |id|
             set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-            act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+            # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq
+            e = Event.find(id)
+            acts = e.acts
+            act = []
+            acts.each{ |a|
+              tag_item = []
+              tags = a.tags.collect { |tag| tag.name}
+              unless a.pictures.first.nil?
+                tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+              else
+                tag_item  << a.name << a.id << tags << ""
+              end
+              
+              act << tag_item
+
+            } 
             rec_ids = set.collect { |e| e["rec_id"] }.uniq
             rec = set.collect { |s| { 
               :every_other => s["every_other"],
@@ -5228,7 +5483,22 @@ def SX
           
           @eventIDs.each{ |id|
             set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-            act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+            # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq
+            e = Event.find(id)
+            acts = e.acts
+            act = []
+            acts.each{ |a|
+              tag_item = []
+              tags = a.tags.collect { |tag| tag.name}
+              unless a.pictures.first.nil?
+                tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+              else
+                tag_item  << a.name << a.id << tags << ""
+              end
+              
+              act << tag_item
+
+            } 
             rec_ids = set.collect { |e| e["rec_id"] }.uniq
             rec = set.collect { |s| { 
               :every_other => s["every_other"],
@@ -5363,7 +5633,22 @@ def SX
           
           @eventIDs.each{ |id|
             set =  queryResult.select{ |r| r["event_id"] == id.to_s }
-            act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+            # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq
+            e = Event.find(id)
+            acts = e.acts
+            act = []
+            acts.each{ |a|
+              tag_item = []
+              tags = a.tags.collect { |tag| tag.name}
+              unless a.pictures.first.nil?
+                tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+              else
+                tag_item  << a.name << a.id << tags << ""
+              end
+              
+              act << tag_item
+
+            } 
             rec_ids = set.collect { |e| e["rec_id"] }.uniq
             rec = set.collect { |s| { 
               :every_other => s["every_other"],
@@ -6613,7 +6898,22 @@ end
       # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       # #puts set
-      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      e = Event.find(id)
+      acts = e.acts
+      act = []
+      acts.each{ |a|
+        tag_item = []
+        tags = a.tags.collect { |tag| tag.name}
+        unless a.pictures.first.nil?
+          tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+        else
+          tag_item  << a.name << a.id << tags << ""
+        end
+        
+        act << tag_item
+
+      }
       
       
       tps = set.collect { |e|  e["list_pic"].to_i}.uniq
