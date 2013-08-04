@@ -6834,7 +6834,26 @@ end
       end
       
       @ocs=o.occurrences.select{|o| o.recurrence_id==nil}
-      @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts}
+
+
+      e = o.event
+      acts = e.acts
+      act = []
+      acts.each{ |a|
+        tag_item = []
+        tags = a.tags.collect { |tag| tag.name}
+        unless a.pictures.first.nil?
+          tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+        else
+          tag_item  << a.name << a.id << tags << ""
+        end
+        
+        act << tag_item
+
+      }
+
+
+      @item = {event: o, tags: o.tags, venue: o.venue, recurrences: @rcs, occurrences: @ocs, act: o.acts , actist: act}
       @esinfo << @item
     }
     respond_to do |format|
