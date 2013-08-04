@@ -5044,7 +5044,7 @@ def SX
       # #puts "SET"
       set =  queryResult.select{ |r| r["bookmarked_id"] == id.to_s }
       # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq
-      e = Event.find(id)
+      e = Occurrence.find(id).event
       acts = e.acts
       act = []
       acts.each{ |a|
