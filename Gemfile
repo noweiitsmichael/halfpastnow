@@ -48,8 +48,8 @@ gem 'devise' # Khoa
 gem 'cancan' # Khoa
 gem 'rolify' # Khoa
 gem 'omniauth-facebook' # Khoa
-# gem 'koala'
-# gem 'sinatra'
+gem 'koala' # Khoa
+gem 'sinatra' # Khoa
 
 #file attachments and Amazon S3
 gem 'carrierwave' # Khoa
@@ -68,7 +68,7 @@ gem 'mobile-fu' # Khoa
 # gem 'delayed_job_active_record'
 
 # gem 'therubyracer'
-# gem 'will_paginate'
+gem 'will_paginate' # Khoa
 # gem 'oink' #memory logging
 # gem "librato-metrics" #logging/error reporting to Liberato add-on
 
@@ -77,7 +77,7 @@ gem 'memcachier'
 gem 'dalli' # Khoa
 
 # Email via mandrill
-# gem 'mandrill-api'
+gem 'mandrill-api' # Khoa
 
 # gem 'eventfulapi'
 # gem 'eventbrite-client'

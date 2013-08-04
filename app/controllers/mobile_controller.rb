@@ -2083,17 +2083,17 @@ def FacebookLogin
       # #puts "SET"
       set =  queryResult.select{ |r| r["event_id"] == id.to_s }
       # #puts set
-      act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
-      # e = Event.find(id)
-      # acts = e.acts
-      # act = []
-      # acts.each{ |a|
-      #   tag_item = []
-      #   tags = a.tags.collect { |tag| tag.name}
-      #   tag_item  << a.name << a.id << tags << a.pictures.first.image
-      #   act << tag_item
+      # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+      e = Event.find(id)
+      acts = e.acts
+      act = []
+      acts.each{ |a|
+        tag_item = []
+        tags = a.tags.collect { |tag| tag.name}
+        tag_item  << a.name << a.id << tags << a.pictures.first.image
+        act << tag_item
 
-      # }
+      }
 
 
 
