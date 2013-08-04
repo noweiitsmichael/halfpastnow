@@ -2090,7 +2090,7 @@ def FacebookLogin
       acts.each{ |a|
         tag_item = []
         tags = a.tags.collect { |tag| tag.name}
-        tag_item  << a.name << a.id << tags << a.pictures.first.image
+        tag_item  << a.name << a.id << tags << act.pictures.first.image.large.url
         act << tag_item
 
       }
