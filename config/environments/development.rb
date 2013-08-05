@@ -32,7 +32,7 @@ Myapp::Application.configure do
   config.assets.debug = true
 
   # Oink logging
-  config.middleware.use( Oink::Middleware, :logger => Rails.logger )
+  config.middleware.use( Oink::Middleware, :logger => Hodel3000CompliantLogger.new(STDOUT), :instruments => :memory)
 
   #config.log_level = :warn
    config.log_level = :debug

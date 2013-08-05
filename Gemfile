@@ -14,7 +14,6 @@ gem 'newrelic_rpm'
 
 gem 'admin_data', '>= 1.1.16'
 
-
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -28,9 +27,7 @@ end
 gem 'jquery-rails'
 gem 'client_side_validations'
 gem 'jcrop-rails'
-
 gem 'htmlentities'
-
 gem 'nokogiri', '>= 1.4.4'
 gem 'sanitize'
 
@@ -69,8 +66,8 @@ gem 'delayed_job_active_record'
 
 gem 'therubyracer'
 gem 'will_paginate'
-gem 'oink' #memory logging
-gem "librato-metrics" #logging/error reporting to Liberato add-on
+# gem 'oink' #memory logging
+# gem "librato-metrics" #logging/error reporting to Liberato add-on
 
 # Data caching
 gem 'memcachier'
