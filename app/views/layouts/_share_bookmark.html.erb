@@ -280,8 +280,8 @@
 	<a href="http://www.halfpastnow.com/?event_id=<%=id%>" title="Add to Calendar" class="addthisevent">
 	    <span class="icon icon-calendar cal"></span>
 	    <span class="_url">http://www.halfpastnow.com/?event_id=<%=id%></span>
-	    <span class="_start"><%= (occurrence.start.nil?) ? "" : occurrence.start.strftime('%m-%d-%Y %H:%M:%S') %></span>
-	    <span class="_end"><%= (occurrence.end.nil?) ? (occurrence.start.nil?) ? "" : (occurrence.start + 2.hours).strftime('%m-%d-%Y %H:%M:%S') : occurrence.end.strftime('%m-%d-%Y %H:%M:%S') %></span>
+	    <span class="_start"><%= (occurrence.start.nil?) ? "" : occurrence.start.strftime('%d-%m-%Y %H:%M:%S') %></span>
+	    <span class="_end"><%= (occurrence.end.nil?) ? (occurrence.start.nil?) ? "" : (occurrence.start + 2.hours).strftime('%d-%m-%Y %H:%M:%S') : occurrence.end.strftime('%d-%m-%Y %H:%M:%S') %></span>
 	    <span class="_zonecode">11</span>
 	    <span class="_summary"><%= event.title %></span>
 	    <span class="_description"><%= (event.description.nil?) ? '' : truncate(strip_tags(event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"') %></span>
