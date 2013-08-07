@@ -85,7 +85,9 @@
 		  var cookie = $.cookie(COOKIE_NAME);
 		  if (cookie == null) {
 		    $.cookie(COOKIE_NAME, true, { path: '/', expires: 9001 });
-		    window.location = "/events/new_splash";
+		    if (window.location == "/") {
+		    	window.location = "/events/new_splash";
+		    }
 		  }
 		  else {
 		  }
