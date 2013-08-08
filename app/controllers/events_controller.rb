@@ -614,11 +614,11 @@ def index
       SELECT occurrences.recurrence_id, occurrences.id, events.id AS event_id, events.title, events.completion, events.venue_id, occurrences.start, events.updated_at, events.user_id, users.role, users.firstname, users.lastname
       FROM occurrences, events, users 
       WHERE occurrences.event_id = events.id AND events.user_id = users.id AND occurrences.deleted = false AND occurrences.recurrence_id IS NULL 
-           AND occurrences.start < now() + interval '4 weeks' AND occurrences.start >= now() AND users.role NOT IN ('super_admin', 'admin')
+           AND occurrences.start < now() + interval '4 weeks' AND occurrences.start >= now() AND users.role NOT IN ('super_admin', 'admin', 'old_admin')
       UNION 
       SELECT DISTINCT ON (occurrences.recurrence_id) occurrences.recurrence_id, occurrences.id, events.id AS event_id, events.title, events.completion, events.venue_id, occurrences.start, events.updated_at, events.user_id, users.role, users.firstname, users.lastname
       FROM occurrences, events, users 
-      WHERE occurrences.event_id = events.id AND events.user_id = users.id AND occurrences.deleted = false AND occurrences.recurrence_id IS NOT NULL AND users.role NOT IN ('super_admin', 'admin')
+      WHERE occurrences.event_id = events.id AND events.user_id = users.id AND occurrences.deleted = false AND occurrences.recurrence_id IS NOT NULL AND users.role NOT IN ('super_admin', 'admin', 'old_admin')
            AND occurrences.start < now() + interval '4 weeks' AND occurrences.start >= now()"
     @eventsList = ActiveRecord::Base.connection.select_all(eventsQuery)
 
