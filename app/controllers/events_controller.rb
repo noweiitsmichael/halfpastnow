@@ -607,6 +607,33 @@ def index
     end
   end
 
+  def upcoming_user_input
+    puts "upcoming user input evets...."
+
+    eventsQuery = "
+      SELECT occurrences.recurrence_id, occurrences.id, events.id AS event_id, events.title, events.completion, events.venue_id, occurrences.start, events.updated_at, events.user_id, users.role, users.firstname, users.lastname
+      FROM occurrences, events, users 
+      WHERE occurrences.event_id = events.id AND events.user_id = users.id AND occurrences.deleted = false AND occurrences.recurrence_id IS NULL 
+           AND occurrences.start < now() + interval '4 weeks' AND occurrences.start >= now() AND users.role NOT IN ('super_admin', 'admin')
+      UNION 
+      SELECT DISTINCT ON (occurrences.recurrence_id) occurrences.recurrence_id, occurrences.id, events.id AS event_id, events.title, events.completion, events.venue_id, occurrences.start, events.updated_at, events.user_id, users.role, users.firstname, users.lastname
+      FROM occurrences, events, users 
+      WHERE occurrences.event_id = events.id AND events.user_id = users.id AND occurrences.deleted = false AND occurrences.recurrence_id IS NOT NULL AND users.role NOT IN ('super_admin', 'admin')
+           AND occurrences.start < now() + interval '4 weeks' AND occurrences.start >= now()"
+    @eventsList = ActiveRecord::Base.connection.select_all(eventsQuery)
+
+    @outputList = []
+
+    @eventsList.each do |e|
+      unless e["event_id"].nil?
+        # @outputList << {'id' => e.id, 'event_id' => e.event.id, 'event_title' => e.event.title,  'event_completedness' => e.event.completedness, 'venue_id' => e.event.venue.id, 'start' => e.start.strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e.event.user_id).exists? ? User.find(e.event.user_id).fullname : "", 'updated_at' => e.event.updated_at.strftime("%m/%d @ %I:%M %p")}
+        @outputList << {'id' => e["id"], 'event_id' => e["event_id"], 'event_title' => e["title"],  'event_completedness' => e["completion"], 'venue_id' => e["venue_id"], 'start' => Time.parse(e["start"]).strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e["user_id"]).exists? ? User.find(e["user_id"]).fullname : "", 'owner_id' => e["user_id"], 'updated_at' => Time.parse(e["updated_at"]).strftime("%m/%d @ %I:%M %p")}
+      end
+    end
+    respond_to do |format|
+      format.json { render json: @outputList }
+    end
+  end
   
   
   def venuesTable
