@@ -32,11 +32,7 @@ GEM
     admin_data (1.2.1)
       rails (~> 3.1)
       will_paginate (>= 3.0.0)
-<<<<<<< HEAD
-    aggregate (0.2.2)
     ansi (1.4.3)
-=======
->>>>>>> 2b2bd6c6e621965a8bdd212e408485f2a40d6df9
     arel (3.0.2)
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
@@ -44,10 +40,7 @@ GEM
     carrierwave (0.8.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
-<<<<<<< HEAD
     client_side_validations (3.2.5)
-=======
->>>>>>> 2b2bd6c6e621965a8bdd212e408485f2a40d6df9
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -55,7 +48,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.6.2)
-<<<<<<< HEAD
     daemons (1.1.9)
     dalli (2.6.2)
     delayed_job (3.0.5)
@@ -63,19 +55,13 @@ GEM
     delayed_job_active_record (0.4.4)
       activerecord (>= 2.1.0, < 4)
       delayed_job (~> 3.0)
-=======
-    dalli (2.6.2)
->>>>>>> 2b2bd6c6e621965a8bdd212e408485f2a40d6df9
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (~> 3.1)
       warden (~> 1.2.1)
     erubis (2.7.0)
-<<<<<<< HEAD
     eventmachine (1.0.3)
-=======
->>>>>>> 2b2bd6c6e621965a8bdd212e408485f2a40d6df9
     excon (0.16.10)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -115,23 +101,12 @@ GEM
       addressable (~> 2.2)
       faraday (~> 0.8)
       multi_json (~> 1.3)
-<<<<<<< HEAD
-    librato-metrics (1.0.4)
-      aggregate (~> 0.2.2)
-      faraday (~> 0.7)
-      multi_json
     libv8 (3.11.8.17)
-=======
->>>>>>> 2b2bd6c6e621965a8bdd212e408485f2a40d6df9
     mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-<<<<<<< HEAD
-    mandrill-api (1.0.23)
-=======
     mandrill-api (1.0.20)
->>>>>>> 2b2bd6c6e621965a8bdd212e408485f2a40d6df9
       excon (~> 0.16.0)
       json (~> 1.7.7)
     memcachier (0.0.2)
@@ -143,12 +118,8 @@ GEM
     multipart-post (1.2.0)
     net-scp (1.1.0)
       net-ssh (>= 2.6.5)
-<<<<<<< HEAD
-    net-ssh (2.6.7)
-    newrelic_rpm (3.6.0.83)
-=======
     net-ssh (2.6.6)
->>>>>>> 2b2bd6c6e621965a8bdd212e408485f2a40d6df9
+    newrelic_rpm (3.6.0.83)
     nokogiri (1.5.9)
     oauth2 (0.8.1)
       faraday (~> 0.8)
@@ -200,19 +171,13 @@ GEM
     rake (10.0.4)
     rdoc (3.12.2)
       json (~> 1.4)
-<<<<<<< HEAD
     ref (1.0.4)
-=======
->>>>>>> 2b2bd6c6e621965a8bdd212e408485f2a40d6df9
     rmagick (2.13.2)
     rolify (3.2.0)
     ruby-hmac (0.4.0)
     ruby-prof (0.11.3)
-<<<<<<< HEAD
     sanitize (2.0.3)
       nokogiri (>= 1.4.4, < 1.6)
-=======
->>>>>>> 2b2bd6c6e621965a8bdd212e408485f2a40d6df9
     sass (3.2.7)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -259,7 +224,6 @@ DEPENDENCIES
   admin_data (>= 1.1.16)
   cancan
   carrierwave
-<<<<<<< HEAD
   client_side_validations
   coffee-rails (~> 3.2.2)
   dalli
@@ -271,25 +235,11 @@ DEPENDENCIES
   jquery-datatables-rails
   jquery-rails
   koala
-  librato-metrics
   mandrill-api
   memcachier
   mobile-fu
   newrelic_rpm
   nokogiri (>= 1.4.4)
-=======
-  coffee-rails (~> 3.2.2)
-  dalli
-  devise
-  fog
-  htmlentities
-  jquery-datatables-rails
-  jquery-rails
-  koala
-  mandrill-api
-  memcachier
-  mobile-fu
->>>>>>> 2b2bd6c6e621965a8bdd212e408485f2a40d6df9
   oink
   omniauth-facebook
   pg
@@ -297,17 +247,12 @@ DEPENDENCIES
   rmagick
   rolify
   ruby-prof (~> 0.11.2)
-<<<<<<< HEAD
   sanitize
   sass-rails (~> 3.2.5)
   sinatra
   therubyracer
   thin
   turn (~> 0.8.3)
-=======
-  sass-rails (~> 3.2.5)
-  sinatra
->>>>>>> 2b2bd6c6e621965a8bdd212e408485f2a40d6df9
   uglifier (>= 1.0.3)
   unicorn
   will_paginate

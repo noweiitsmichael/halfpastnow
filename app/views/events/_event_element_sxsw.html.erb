@@ -87,8 +87,8 @@
 				<a href="http://www.halfpastnow.com/?event_id=<%=occurrence.id%>" title="Add to Calendar" class="addthisevent">
 				    <span class="icon icon-calendar cal"></span>
 				    <span class="_url" style="display:none;">http://www.halfpastnow.com/?event_id=<%=occurrence.id%></span>
-				    <span class="_start" style="display:none;"><%= (occurrence.start.nil?) ? "" : occurrence.start.strftime('%m-%d-%Y %H:%M:%S') %></span>
-				    <span class="_end" style="display:none;"><%= occurrence.end ? occurrence.end.strftime('%m-%d-%Y %H:%M:%S'): "" %></span>
+				    <span class="_start" style="display:none;"><%= (occurrence.start.nil?) ? "" : occurrence.start.strftime('%d-%m-%Y %H:%M:%S') %></span>
+				    <span class="_end" style="display:none;"><%= occurrence.end ? occurrence.end.strftime('%d-%m-%Y %H:%M:%S'): "" %></span>
 				    <span class="_zonecode" style="display:none;">11</span>
 				    <span class="_summary" style="display:none;"><%= occurrence.event.title %></span>
 				    <span class="_description" style="display:none;"><%= strip_tags(occurrence.event.description)%></span>

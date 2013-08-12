@@ -13,7 +13,12 @@
 	</thead>
 	<tbody>
 		<% Bookmark.where(:bookmark_list_id => @bookmarklist.id).each do |bm| %>
-
+			<% if bm.bookmarked_type == "Occurrence" && Occurrence.exists?(bm.bookmarked_id)  %>
+				<% occ = Occurrence.find(bm.bookmarked_id) %>
+				<% if occ.event.nextOccurrence.nil? %>
+						<% next %>
+				<% end %>
+			<% end %>
 			<tr id="anchor<%=bm.id%>">
 				<td>
 					<% if bm.bookmarked_type == "Occurrence" %>
@@ -24,12 +29,11 @@
 				</td>
 				<td>
 					<% if bm.bookmarked_type == "Occurrence" && Occurrence.exists?(bm.bookmarked_id)  %>
-						<% occ = Occurrence.find(bm.bookmarked_id) %>
 						<a href="/venues/list_events/<%=occ.event.venue.id%>#anchor<%=occ.id%>" target="_blank"><%= occ.event.title %></a>
 					<% elsif bm.bookmarked_type == "Venue" && Venue.exists?(bm.bookmarked_id) %>
 						<% ven = Venue.find(bm.bookmarked_id) %>
 						<a href="/venues/edit/<%=ven.id%>" target="_blank"><%= ven.name %></a>
-					<%elsif bm.bookmarked_type == "Act" && Act.exists?(bm.bookmarked_id) %>
+					<% elsif bm.bookmarked_type == "Act" && Act.exists?(bm.bookmarked_id) %>
 						<a href="/admin/artists#anchor<%=Act.find(bm.bookmarked_id).id%>" target="_blank"><%= Act.find(bm.bookmarked_id).name %></a>
 					<% end %>
 				</td>

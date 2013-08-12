@@ -44,7 +44,6 @@
 <% end %>
 
 <div id="profile-nav">
-<h2><i>my hpn. </i></h2>
 
 <br>
 <% if @user.profilepic.blank? == false %>
@@ -56,6 +55,10 @@
 <% end %>
 
 <h4><b><i><%= @user.firstname.titleize %> <%= @user.lastname.titleize %></i></h4>
+<h4><b><i><%= @user.email %></i></h4>
+<h4><b>Member Since <i><%= @user.created_at %></i></h4>
+<h4><b>Last Signed In On <i><%= @user.last_sign_in_at %></i></h4>
+<h4><b>Role:  <i><%= @user.role %></i></h4>
 <div id="location"><%= image_tag("location-icon.png") %>  Austin, TX</div></b>
 <br><br>
 
