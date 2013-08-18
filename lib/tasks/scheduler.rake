@@ -372,7 +372,6 @@ namespace :api do
 
 	desc "Eventbrite"
 	task :get_eventbrite_events => :environment do
-		# SXSW events in Austin from 3/07 to 3/18
 		rawdata = Net::HTTP.get(URI.parse('http://www.eventbrite.com/json/event_search?app_key=QRZVIYQZFUIDXQ6Z4P&city=austin'))
 		eb = JSON.parse(rawdata)
 		puts "Total results: #{eb["events"][0]["summary"]["total_items"]}"
