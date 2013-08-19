@@ -974,7 +974,7 @@ input::-webkit-input-placeholder
 #header .filterbar, #header .advancedbar
 {
   position: relative;
-  z-index: 600;
+  z-index: 500;
 }
 
 #header .advancedbar {
@@ -3607,7 +3607,7 @@ html, body {
 
 #header .streambar {
     color: #666;
-    z-index: 500;
+    z-index: 600;
 }
 
 #header .stream {
