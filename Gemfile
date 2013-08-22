@@ -22,7 +22,12 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-datatables-rails'
 end
+group :development do
+  gem 'quiet_assets'
+  gem 'rack-mini-profiler'
+  gem 'pry-rails'
 
+end
 #fancy jquery stuff
 gem 'jquery-rails'
 gem 'client_side_validations'

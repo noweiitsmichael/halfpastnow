@@ -490,17 +490,28 @@ $('.sxsw-dates').dropkick({
     updateBoundsFlag = $(this).prop("checked");
   });
 
-  //on keyup, start the countdown
-  $('.search-input').keyup(function(){
-    console.log("keyup");
-      typingTimer = setTimeout(doneTyping, doneTypingInterval);
-  });
+    //on keyup, start the countdown
+    var timer_is_on = 0
+    //on keyup, start the countdown
+    $('.search-input').keyup(function () {
+        if (!timer_is_on) {
+            timer_is_on = 1;
+            if($(this).val().length >= 3){
+                console.log("keyup");
+                typingTimer = setTimeout(doneTyping , doneTypingInterval);
+                console.log(typingTimer)
+            }
+        }
+    });
 
-  //on keydown, clear the countdown 
-  $('.search-input').keydown(function(){
-    console.log("keydown");
-      clearTimeout(typingTimer);
-  });
+    //on keydown, clear the countdown
+    $('.search-input').keydown(function () {
+
+        console.log("keydown");
+        clearTimeout(typingTimer);
+        timer_is_on = 0
+        console.log("key down" + typingTimer)
+    });
 
   var slideTime = 0;
   $('.filter-toggle:not(.search):not(.filter-action) .filter-text').click(function(event) {
