@@ -6,6 +6,7 @@ require 'rubygems'
 require 'sanitize'
 require 'carrierwave'
 include REXML
+require 'mechanize'
 
 namespace :test do 
 	desc "advance timestamps of events' occurrences"
@@ -595,10 +596,11 @@ namespace :api do
 
 	desc "flag all old events as deleted"
 	task :trim_events => :environment do
-		RawEvent.where("start <= ? AND deleted IS NULL",DateTime.now).each do |o|
-			o.deleted = true
-			o.save
-		end
+		#RawEvent.where("start <= ? AND deleted IS NULL",DateTime.now).each do |o|
+		#	o.deleted = true
+		#	o.save
+		#end
+    RawEvent.where("start <= ? AND deleted IS NULL",DateTime.now).update_all(:deleted => true)
 	end
 	 
 	desc "pull events from apis"
@@ -724,6 +726,88 @@ namespace :api do
 			raw_venue.last_visited = DateTime.now
 			raw_venue.save
 		end
-	end
+  end
+
+  task :ac_scrap => :environment do
+    d_until = DateTime.now.advance(:weeks => 4)
+    d_start = DateTime.now
+    d_iter = d_start
+    puts "getting events before " + d_until.to_s
+    #url = "http://www.austinchronicle.com/calendar/music/2013-08-21/"
+
+    agent = Mechanize.new
+    all_events_data = []
+
+    while d_iter < d_until
+      d_format_iter = d_iter.strftime("%Y-%m-%d")
+      url = "http://www.austinchronicle.com/calendar/music/#{d_format_iter}/"
+      #puts "#{url}"
+      events_data = {}
+      events_data[:date] = d_iter
+      events_data[:events] = []
+      d_iter = d_iter + 1.day
+
+
+      page = agent.get(url)
+      page.links_with(:href => %r{/calendar/music/[a-z]} ).each do |link|
+        #next if link.href =~ %r{/calendar/music/[a-z]}
+
+        puts 'Loading %-30s %s' % [link.href, link.text]
+        begin
+          event_page = link.click
+          #content = event_page.search("#CenterColumn")
+          #event_name = content.search("h1").text
+
+          title = event_page.parser.xpath("//*[@id='CenterColumn']/h1").inner_text
+          start = event_page.parser.xpath("//*[@id='CenterColumn']/div/h2[1]/b").inner_text
+          venue_name = event_page.parser.xpath("//*[@id='CenterColumn']/div/h2[2]/a").inner_text
+          venue_addr = event_page.parser.xpath("//*[@id='CenterColumn']/div/h2[2]").inner_text
+          venue_addr = venue_addr.sub "#{venue_name}, ",''
+          event_url = event_page.parser.xpath("//*[@id='CenterColumn']/div/h2[3]/a").inner_text
+          description = event_page.parser.xpath("//*[@id='CenterColumn']/div[2]/p").inner_text
+          event_map = event_page.parser.xpath("//*[@id='CenterColumn']/div[3]/script").inner_text
+          latitude = event_map.scan(/-?\d+[.]-?\d+/)[0]
+          longitude = event_map.scan(/-?\d+[.]-?\d+/)[1]
+
+          events_data[:events] << {:title => title,:start => start,:venue_name => venue_name,:venue_addr => venue_addr,:url => event_url,:description => description,:latitude => latitude,:longitude => longitude}
+
+          raw_venue = RawVenue.where(:raw_id => 1, :from => "austinchronicle").first
+
+          puts "Creating event #{title}"
+          raw_event = RawEvent.create({
+                                          :title => title,
+                                          :description => description,
+                                          :start => start,
+                                          :latitude => latitude,
+                                          :longitude => longitude,
+                                          :venue_name => venue_name,
+                                          :venue_address => venue_addr,
+                                          :venue_city => '',
+                                          :venue_state => '',
+                                          :venue_zip => '',
+                                          :url => event_url,
+                                          :raw_id => 1,
+                                          :from => "austinchronicle",
+                                          :raw_venue_id => (raw_venue ? raw_venue.id : nil)
+                                      })
+
+
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+        break
+      end
+      all_events_data << events_data
+      break
+    end
+    puts "Event Data --> #{all_events_data}"
+
+
+#    all_events_data.each do |events_data|
+#    end
+
+
+
+  end
 end
 
