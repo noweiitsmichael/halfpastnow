@@ -534,24 +534,48 @@ namespace :api do
 
 	desc "generate venues from raw_venues"
 	task :convert_venues => :environment do
+		new_real_venues = 0
 		raw_venues = RawVenue.all
 		raw_venues.each do |raw_venue| 
-			venue = Venue.create({
-				:name => raw_venue.name,
-				:address => raw_venue.address,
-				:address2 => raw_venue.address2,
-				:city => raw_venue.city,
-				:state => raw_venue.state_code,
-				:zip => raw_venue.zip,
-				:latitude => raw_venue.latitude,
-				:longitude => raw_venue.longitude,
-				:phonenumber => raw_venue.phone,
-				:url => raw_venue.url,
-				:description => raw_venue.description
-			})
-			raw_venue.venue_id = venue.id
-			raw_venue.save
+			begin
+				if Venue.find(:first, :conditions => [ "lower(name) = ?", raw_venue.name.downcase ]) == nil
+					if Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '', 'g')) = ?", raw_venue.address.gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
+						puts "!! Creating real venue for #{raw_venue.name}"
+						venue = Venue.create({
+							:name => raw_venue.name,
+							:address => raw_venue.address,
+							:address2 => raw_venue.address2,
+							:city => raw_venue.city,
+							:state => raw_venue.state_code,
+							:zip => raw_venue.zip,
+							:latitude => raw_venue.latitude,
+							:longitude => raw_venue.longitude,
+							:phonenumber => raw_venue.phone,
+							:url => raw_venue.url,
+							:description => raw_venue.description
+						})
+						raw_venue.venue_id = venue.id
+						raw_venue.save
+						new_real_venues += 1
+					else
+						puts "....Found venue for #{raw_venue.name} by address"
+						real_venue = Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '', 'g')) = ?", raw_venue.address.gsub(/[^0-9a-zA-Z ]/, '').downcase ]).id
+						raw_venue.venue_id = real_venue
+						raw_venue.save
+					end
+				else
+					puts "....Found venue for #{raw_venue.name} by name"
+					real_venue = Venue.find(:first, :conditions => [ "lower(name) = ?", raw_venue.name.downcase ]).id
+					raw_venue.venue_id = real_venue
+					raw_venue.save
+				end
+			rescue Exception => exc
+				puts "!!!!!! Error #{exc.message} !!!!!"
+				next
+			end
+
 		end
+		puts "Total new venues created: #{new_real_venues}"
 	end
 
 	desc "pull venues from apis"
