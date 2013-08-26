@@ -3829,8 +3829,10 @@ def homeEvents
 
 
     # Choose 2 events for today and tomorrow
-    today_events = esinfo.select{|e| e[20] < Date.today().advance(1)}.take(2)
-    tomorrow_events = esinfo.select{|e| e[20] > Date.today().advance(1)}.take(2)
+    today_events = []
+    tomorrow_events =[]
+    # today_events = esinfo.select{|e| e[20] < Date.today().advance(1)}.take(2)
+    # tomorrow_events = esinfo.select{|e| e[20] > Date.today().advance(1)}.take(2)
      
     respond_to do |format|
       format.html do
@@ -3842,7 +3844,7 @@ def homeEvents
       # format.json { render json: {code:"3",tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       if (params[:email].to_s.empty?)
         # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
-        format.json { render json: {:today=>today_events, :tomorrow => today_events} }
+        format.json { render json: {:today=>today_events, :tomorrow => tomorrow_events} }
       else
         
          format.json { render json: {user:@user, :RSVP =>@RSVP, channels: [],:bookmarked=>@bmEvents, :events => esinfo,:acts=>@acts, :venues=>@venues, :listids=> @followedList}}
