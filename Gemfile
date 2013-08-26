@@ -7,7 +7,7 @@ gem 'rails', '3.2.3'
 
 gem 'pg'
 gem 'thin'
-gem 'newrelic_rpm'
+# gem 'newrelic_rpm'
 
 # gem 'thinking-sphinx', '2.0.11'
 # gem 'flying-sphinx',   '0.6.4'
@@ -50,7 +50,7 @@ gem 'sinatra'
 
 #file attachments and Amazon S3
 gem 'carrierwave'
-gem 'rmagick'
+#gem 'rmagick'
 gem 'fog'
 
 group :test do
