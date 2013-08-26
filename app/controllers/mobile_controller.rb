@@ -3829,8 +3829,8 @@ def homeEvents
 
 
     # Choose 2 events for today and tomorrow
-    today_events = esinfo.collect{|e| e[20] < Date.today().advance(1)}.take(2)}
-    tomorrow_events = esinfo.collect{|e| e[20] > Date.today().advance(1)}.take(2)}
+    today_events = esinfo.collect{|e| e[20] < Date.today().advance(1)}.take(2)
+    tomorrow_events = esinfo.collect{|e| e[20] > Date.today().advance(1)}.take(2)
      
     respond_to do |format|
       format.html do
