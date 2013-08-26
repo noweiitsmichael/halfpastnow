@@ -3336,15 +3336,15 @@ def homeEvents
     end
     #puts "queryResult 10 "
     occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
+   
     # ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
     # esinfo = ttttmp.drop(@offset).take(@amount)
    
     today_events = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 1)}.take(2)
     tomorrow_events = queryResult.select{|e| e["start"].to_datetime > Date.today().advance(:days => 1)}.take(2)
-      
+    esinfo =[]
     esinfo << today_events << tomorrow_events
-
-
+    esinfo=esinfo.flatten
 
 
     ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
