@@ -3336,9 +3336,17 @@ def homeEvents
     end
     #puts "queryResult 10 "
     occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
-    ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
-    esinfo = ttttmp.drop(@offset).take(@amount)
-    
+    # ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
+    # esinfo = ttttmp.drop(@offset).take(@amount)
+   
+    today_events = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 1)}.take(2)
+    tomorrow_events = queryResult.select{|e| e["start"].to_datetime > Date.today().advance(:days => 1)}.take(2)
+      
+    esinfo << today_events << tomorrow_events
+
+
+
+
     ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
     # #puts "iDs"
     # #puts ids
@@ -3830,7 +3838,7 @@ def homeEvents
 
     # Choose 2 events for today and tomorrow
    
-    today_events = esinfo.select{|e| e[20].to_time < Date.today().advance(:days => 1)}.take(2)
+    today_events = esinfo.select{|e| e[20].to_time > Time.now && e[20].to_time < Date.today().advance(:days => 1)}.take(2)
     tomorrow_events = esinfo.select{|e| e[20].to_time > Date.today().advance(:days => 1)}.take(2)
      
     respond_to do |format|
