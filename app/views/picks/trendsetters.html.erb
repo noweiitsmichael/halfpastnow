@@ -184,9 +184,9 @@
 				<option value="">All Categories</option>
 				<% @parentTags.each do |prTg|%>
 					<% if(params[:id]==prTg.id.to_s)  %>
-						<option selected="selected" value="<%= prTg.id =%>" > <%= prTg.name =%> </option>
+						<option selected="selected" value="<%= prTg.id %>" > <%= prTg.name %> </option>
 					<% else %>
-					    <option value="<%= prTg.id =%>" > <%= prTg.name =%> </option>
+					    <option value="<%= prTg.id %>" > <%= prTg.name %> </option>
 					<% end %>
 				<% end %>
 			</select>
@@ -197,46 +197,48 @@
 		<% end %>
 		<% hidden = "style=\"display:none;\"" %>
 
-		<div class='outter-list'>
-			<div class="trendsetter">
-			<% @featuredLists.each_with_index do |featuredList, index|
-				currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
+      <div class='outter-list'>
+        <div class="trendsetter">
+          <% @featuredLists.each_with_index do |featuredList, index|
+            currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
 
-				## Cache Query
-			    featuredlist_bookmarks_size = Rails.cache.read("featuredlist_bookmarks_size_#{featuredList.id}")
-			    if (featuredlist_bookmarks_size == nil)
-			      featuredlist_bookmarks_size = featuredList.all_bookmarked_events.size 
-			      Rails.cache.write("featuredlist_bookmarks_size_#{featuredList.id}", featuredlist_bookmarks_size)
-			    end
-			    ## Original
-				### "if" statements below should be: if (index % 2 == ) && (featuredList.all_bookmarked_events.size > 0)
-		        ## End Cache Query
-				if (index % 2 == 0) && (featuredlist_bookmarks_size > 0)
-					insert_picklist(featuredList,currentUserIsFollowing,hidden)
-				end
-			end %>
-		</div>
-		<div  class="trendsetter">
-			<% @featuredLists.each_with_index do |featuredList, index|
-				currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
+            ## Cache Query
+            featuredlist_bookmarks_size = Rails.cache.read("featuredlist_bookmarks_size_#{featuredList.id}")
+            if (featuredlist_bookmarks_size == nil)
+              featuredlist_bookmarks_size =  featuredList.first_bookmarked_event.size
+              Rails.cache.write("featuredlist_bookmarks_size_#{featuredList.id}", 1) if featuredlist_bookmarks_size == 1
+            end
+            ## Original
+            ### "if" statements below should be: if (index % 2 == ) && (featuredList.all_bookmarked_events.size > 0)
+            ## End Cache Query
+            if (index % 2 == 0) && (featuredlist_bookmarks_size > 0)
+              insert_picklist(featuredList,currentUserIsFollowing,hidden)
+            end
+          end %>
+        </div>
+        <div  class="trendsetter">
+          <% @featuredLists.each_with_index do |featuredList, index|
+            currentUserIsFollowing = current_user && current_user.followedLists.exists?(featuredList.id)
 
-				## Cache Query
-			    featuredlist_bookmarks_size = Rails.cache.read("featuredlist_bookmarks_size_#{featuredList.id}")
-			    if (featuredlist_bookmarks_size == nil)
-			      featuredlist_bookmarks_size = featuredList.all_bookmarked_events.size 
-			      Rails.cache.write("featuredlist_bookmarks_size_#{featuredList.id}", featuredlist_bookmarks_size)
-			    end
-		        ## End Cache Query
-				if (index % 2 == 1) && (featuredlist_bookmarks_size > 0)
-					insert_picklist(featuredList,currentUserIsFollowing,hidden)
-				end
-			end %>
-		</div>
-		</div>
-		
-	</div>
+            ## Cache Query
+            featuredlist_bookmarks_size = Rails.cache.read("featuredlist_bookmarks_size_#{featuredList.id}")
+            if (featuredlist_bookmarks_size == nil)
+              featuredlist_bookmarks_size = featuredList.first_bookmarked_event.size
+              Rails.cache.write("featuredlist_bookmarks_size_#{featuredList.id}", 1) if featuredlist_bookmarks_size == 1
+            end
+            ## End Cache Query
+            if (index % 2 == 1) && (featuredlist_bookmarks_size > 0)
+              insert_picklist(featuredList,currentUserIsFollowing,hidden)
+            end
+          end %>
+        </div>
+      </div>
+
+    </div>
 
 
-	
+
 <% end %>
+
+
 

@@ -88,14 +88,26 @@ class BookmarkList < ActiveRecord::Base
 
 	end
 
-	def all_bookmarked_events
-		@bookmarked_events = Bookmark.where(:bookmark_list_id => self.id, :bookmarked_type => "Occurrence")
-		@bookmarked_events.collect! do |b|
-			b.bookmarked_event
-		end
+  def all_bookmarked_events
+    @bookmarked_events = Bookmark.where(:bookmark_list_id => self.id, :bookmarked_type => "Occurrence")
+    @bookmarked_events.collect! do |b|
+      b.bookmarked_event
 
-		return @bookmarked_events.compact
-	end
+    end
+
+    return @bookmarked_events.compact
+  end
+  def first_bookmarked_event
+    @bookmarked_events = self.bookmarks.where(:bookmarked_type => "Occurrence")
+    @bookmarked_events.collect! do |b|
+      unless b.bookmarked_event.nil?
+        return Array(b.bookmarked_event)
+      end
+
+    end
+
+    return @bookmarked_events.compact
+  end
 
 	def first_legit_bookmarked_event
 		self.bookmarks.each do |bookmark|
