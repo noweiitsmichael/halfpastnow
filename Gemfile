@@ -50,7 +50,7 @@ gem 'sinatra'
 
 #file attachments and Amazon S3
 gem 'carrierwave'
-#gem 'rmagick'
+# gem 'rmagick'
 gem 'fog'
 
 group :test do
