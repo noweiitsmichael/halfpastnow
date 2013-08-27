@@ -1,84 +1,84 @@
-# # encoding: utf-8
+# encoding: utf-8
 
-# class ProfilepicUploader < CarrierWave::Uploader::Base
+class ProfilepicUploader < CarrierWave::Uploader::Base
   
-#   # Include RMagick or MiniMagick support:
-#   # include CarrierWave::RMagick
-#   # include CarrierWave::MiniMagick
+  # Include RMagick or MiniMagick support:
+   include CarrierWave::RMagick
+  # include CarrierWave::MiniMagick
 
-#   # Choose what kind of storage to use for this uploader:
-#   #storage :file
-#   storage :fog
+  # Choose what kind of storage to use for this uploader:
+  #storage :file
+  storage :fog
 
-#   # Override the directory where uploaded files will be stored.
-#   # This is a sensible default for uploaders that are meant to be mounted:
-#   def store_dir
-#     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-#   end
+  # Override the directory where uploaded files will be stored.
+  # This is a sensible default for uploaders that are meant to be mounted:
+  def store_dir
+    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+  end
 
-#   # Cache directory for use with Heroku and S3
-#    def cache_dir
-#      "#{Rails.root}/tmp/uploads"
-#    end
+  # Cache directory for use with Heroku and S3
+   def cache_dir
+     "#{Rails.root}/tmp/uploads"
+   end
 
-#   # Provide a default URL as a default if there hasn't been a file uploaded:
-#   # def default_url
-#   #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
-#   # end
+  # Provide a default URL as a default if there hasn't been a file uploaded:
+  # def default_url
+  #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
+  # end
 
-#   # Process files as they are uploaded:
-#   # process :scale => [200, 300]
-#   #
-#   # def scale(width, height)
-#   #   # do something
-#   # end
+  # Process files as they are uploaded:
+  # process :scale => [200, 300]
+  #
+  # def scale(width, height)
+  #   # do something
+  # end
 
-#   # Create different versions of your uploaded files:
+  # Create different versions of your uploaded files:
 
-#   version :mini do
-#     process :crop
-#     process :resize_and_pad => [35, 35, "white", Magick::CenterGravity]
-#   end
+  version :mini do
+    process :crop
+    process :resize_and_pad => [35, 35, "white", Magick::CenterGravity]
+  end
 
-#   version :tiny do
-#     process :crop
-#     process :resize_and_pad => [60, 60, "white", Magick::CenterGravity]
-#   end
+  version :tiny do
+    process :crop
+    process :resize_and_pad => [60, 60, "white", Magick::CenterGravity]
+  end
 
-#   version :thumb do
-#     process :crop
-#     process :resize_and_pad => [150, 150, "white", Magick::CenterGravity]
-#   end
+  version :thumb do
+    process :crop
+    process :resize_and_pad => [150, 150, "white", Magick::CenterGravity]
+  end
 
-#   version :large do
-#     process :crop
-#     process :resize_to_limit => [500, 500]
-#   end
+  version :large do
+    process :crop
+    process :resize_to_limit => [500, 500]
+  end
 
-#   def crop
-#     # puts "prof pic cropping...."
-#     if model.crop_x.present?
-#       resize_to_limit(500,500)
-#       manipulate! do |img|
-#         x = model.crop_x.to_i
-#         y = model.crop_y.to_i
-#         w = model.crop_w.to_i
-#         h = model.crop_h.to_i
-#         img.crop!(x, y, w, h)
-#       end
-#     end
-#   end
+  def crop
+    # puts "prof pic cropping...."
+    if model.crop_x.present?
+      resize_to_limit(500,500)
+      manipulate! do |img|
+        x = model.crop_x.to_i
+        y = model.crop_y.to_i
+        w = model.crop_w.to_i
+        h = model.crop_h.to_i
+        img.crop!(x, y, w, h)
+      end
+    end
+  end
 
-#   # Add a white list of extensions which are allowed to be uploaded.
-#   # For images you might use something like this:
-#   # def extension_white_list
-#   #   %w(jpg jpeg gif png)
-#   # end
+  # Add a white list of extensions which are allowed to be uploaded.
+  # For images you might use something like this:
+  # def extension_white_list
+  #   %w(jpg jpeg gif png)
+  # end
 
-#   # Override the filename of the uploaded files:
-#   # Avoid using model.id or version_name here, see uploader/store.rb for details.
-#   # def filename
-#   #   "something.jpg" if original_filename
-#   # end
+  # Override the filename of the uploaded files:
+  # Avoid using model.id or version_name here, see uploader/store.rb for details.
+  # def filename
+  #   "something.jpg" if original_filename
+  # end
 
-# end
+end

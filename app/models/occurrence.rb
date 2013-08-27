@@ -79,7 +79,7 @@ class Occurrence < ActiveRecord::Base
 
   def self.find_with(params)
     puts "occurrence.rb"
-    pp params
+    # pp params
 
     user_id = params[:user_id]
 
