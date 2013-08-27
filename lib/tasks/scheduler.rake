@@ -752,26 +752,24 @@ namespace :api do
 		end
   end
 
-  task :austin_chronicle => :environment do
+  task :austin_chronicle_music => :environment do
     d_until = DateTime.now.advance(:weeks => 4)
     d_start = DateTime.now
     d_iter = d_start
     puts "getting events before " + d_until.to_s
-    types = ["music","arts"]
 
     agent = Mechanize.new
     events = []
     event = {}
 
     while d_iter < d_until
-      types.each do |type|
         d_format_iter = d_iter.strftime("%Y-%m-%d")
-        url = "http://www.austinchronicle.com/calendar/#{type}/#{d_format_iter}/"
+        url = "http://www.austinchronicle.com/calendar/music/#{d_format_iter}/"
+        puts url
         d_iter = d_iter + 1.day
 
         page = agent.get(url)
-        pattern = type =="music" ? "music" : "theatre"
-        page.links_with(:href => %r{/calendar/#{pattern}/[a-z]} ).each do |link|
+        page.links_with(:href => %r{/calendar/music/[a-z]} ).each do |link|
           puts 'Loading %-30s %s' % [link.href, link.text]
           begin
             event_page = link.click
@@ -786,18 +784,17 @@ namespace :api do
             event_map = event_page.parser.xpath("//*[@id='CenterColumn']/div[3]/script").inner_text
             latitude = event_map.scan(/-?\d+[.]-?\d+/)[0]
             longitude = event_map.scan(/-?\d+[.]-?\d+/)[1]
-            raw_id = event_page.parser.xpath("//*[@id='shareFacebook']/@rel").text.split(':')[1]
+            raw_id = link.href.scan(/\d+/)[0]#event_page.parser.xpath("//*[@id='shareFacebook']/@rel").text.split(':')[1]
             venue_id = event_page.parser.xpath("//*[@id='CenterColumn']/div/h2[2]/a/@href").text.split('/')[2]
 
             event = {:venue_id => venue_id,:venue_name => venue_name,:venue_addr => venue_addr,:raw_id => raw_id,:title => title,:start => start,:url => event_url,:description => description,:latitude => latitude,:longitude => longitude,:event_date => d_iter}
-            puts "Event Data:\n #{event}"
+            #puts "Event Data:\n #{event}"
             events << event
           rescue => e
             $stderr.puts "#{e.class}: #{e.message}"
           end
           #break    #test one event
         end
-      end
       #break       #test day events
     end
 
@@ -807,39 +804,36 @@ namespace :api do
       if raw_venue.nil? and !event[:venue_id].nil?
         begin
           url = "http://www.austinchronicle.com/locations/#{event[:venue_id]}/"
+          puts "venue url : #{url}"
           venue_page = agent.get(url)
           name = venue_page.parser.xpath("//*[@id='CenterColumn']/h1").inner_text
-          address = venue_page.parser.xpath("//*[@id='CenterColumn']/div[2]/div[1]").inner_text.split("\n")[3].strip
-          city_zip = venue_page.parser.xpath("//*[@id='CenterColumn']/div[2]/div[1]").inner_text.split("\n")[7].strip
+          address = venue_page.parser.xpath("//*[@id='CenterColumn']//*[@class='body']").inner_text.split("\n")[3].strip
+          city_zip = venue_page.parser.xpath("//*[@id='CenterColumn']//*[@class='body']").inner_text.split("\n")[7].strip
           #city = city_zip.split[0]
-          zip = city_zip.split[1].split('-')[0]
-          phone_list = venue_page.parser.xpath("//*[@id='CenterColumn']/div[2]/div[1]").inner_text.split("\n")[11].strip.split("/")
+          zip = city_zip.split[1].split('-')[0] rescue nil
+          phone_list = venue_page.parser.xpath("//*[@id='CenterColumn']//*[@class='body']").inner_text.split("\n")[11].strip.split("/")
           phone = "(#{phone_list[0]}) #{phone_list[1]}"
           venue_map = venue_page.parser.xpath("//*[@id='CenterColumn']/div/script").inner_text
           latitude = venue_map.scan(/-?\d+[.]-?\d+/)[0]
           longitude = venue_map.scan(/-?\d+[.]-?\d+/)[1]
-          venue_url = venue_page.parser.xpath("//*[@id='CenterColumn']/div[2]/div[2]/a").inner_text
-          description = venue_page.parser.xpath("//*[@id='CenterColumn']/div[2]/div[3]").inner_text.gsub(/\n/," ").strip
+          venue_url = venue_page.parser.xpath("//*[@id='CenterColumn']/div[1]/div[2]/a").inner_text
+          description = venue_page.parser.xpath("//*[@id='CenterColumn']/div[1]/div[3]").inner_text.gsub(/\n/," ").strip
+
+          venue = {:name => name, :address => address,:city => 'Austin',:zip => zip,:state_code => 'TX',:phone => phone,:latitude => latitude,:longitude => longitude,:raw_id => event[:raw_id],:from => "austin_chronicle",:venue_id => event[:venue_id],:url =>venue_url}
+          #puts "Venue Data:\n #{venue}"
+          puts "Creating Venue '#{name}'"
+          raw_venue = RawVenue.create(venue)
         rescue => e
           $stderr.puts "#{e.class}: #{e.message}"
         end
-          raw_venue = RawVenue.create({:name => name,
-                                       :address => address,
-                                       :city => 'Austin',
-                                       :zip => zip,
-                                       :state_code => 'TX',
-                                       :phone => phone,
-                                       :latitude => latitude,
-                                       :longitude => longitude,
-                                       :raw_id => event[:raw_id],
-                                       :from => "austin_chronicle",
-                                       :venue_id => event[:venue_id],
-                                       :url =>venue_url})
-        puts "Creating event #{event[:title]}"
+      else
+        puts "Using Venue '#{raw_venue.name}'"
       end
+
       raw_event = RawEvent.where(:raw_id => event[:raw_id], :from => "austin_chronicle").first
 
       if raw_event.nil?
+        puts "Creating Event '#{event[:title]}'"
         raw_event = RawEvent.create({
                                         :title => event[:title],
                                         :description => event[:description],
@@ -855,6 +849,111 @@ namespace :api do
                                         :from => "austin_chronicle",
                                         :raw_venue_id => (raw_venue ? raw_venue.id : nil)
                                     })
+      else
+        puts "Event '#{raw_event.title}' exists"
+      end
+    end
+  end
+
+  task :austin_chronicle_art => :environment do
+    d_until = DateTime.now.advance(:weeks => 4)
+    d_start = DateTime.now
+    d_iter = d_start
+    puts "getting events before " + d_until.to_s
+
+    agent = Mechanize.new
+    events = []
+    event = {}
+    venue = {}
+
+    while d_iter < d_until
+      d_format_iter = d_iter.strftime("%Y-%m-%d")
+      url = "http://www.austinchronicle.com/calendar/arts/#{d_format_iter}/"
+      puts url
+      d_iter = d_iter + 1.day
+
+      page = agent.get(url)
+      page.links_with(:href => %r{/calendar/theatre/[a-z]} ).each do |link|
+        puts 'Loading %-30s %s' % [link.href, link.text]
+        begin
+          event_page = link.click
+          venue_id = event_page.parser.xpath("//*[@id='CenterColumn']/h3/a/@href").text.split('/')[2]
+          venue_name = event_page.parser.xpath("//*[@id='CenterColumn']/h3[1]/a").inner_text
+          venue_addr = event_page.parser.xpath("//*[@id='CenterColumn']/h3[1]").inner_text
+          venue_addr = venue_addr.sub "#{venue_name}, ",''
+          raw_id = link.href.scan(/\d+/)[0]
+          title = event_page.parser.xpath("//*[@id='CenterColumn']/h1").inner_text
+          start = DateTime.parse(event_page.parser.xpath("//*[@id='CenterColumn']/h2[1]/b").inner_text) rescue nil
+          event_url = event_page.parser.xpath("//*[@id='CenterColumn']/h3[2]/a[1]").inner_text
+          description = event_page.parser.xpath("//*[@id='CenterColumn']/div").inner_text
+          event_map = event_page.parser.xpath("//*[@id='CenterColumn']/script[2]").inner_text
+          latitude = event_map.scan(/-?\d+[.]-?\d+/)[0]
+          longitude = event_map.scan(/-?\d+[.]-?\d+/)[1]
+
+          event = {:venue_id => venue_id,:venue_name => venue_name,:venue_addr => venue_addr,:raw_id => raw_id,:title => title,:start => start,:url => event_url,:description => description,:latitude => latitude,:longitude => longitude,:event_date => d_iter}
+          #puts "Event Data:\n #{event}"
+          events << event
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+        #break    #test one event
+      end
+      #break       #test day events
+    end
+
+
+    events.each do |event|
+      raw_venue = RawVenue.where(:venue_id => event[:venue_id], :from => "austin_chronicle").first
+      if raw_venue.nil? and !event[:venue_id].nil?
+        begin
+          url = "http://www.austinchronicle.com/locations/#{event[:venue_id]}/"
+          puts "venue url : #{url}"
+          venue_page = agent.get(url)
+          name = venue_page.parser.xpath("//*[@id='CenterColumn']/h1").inner_text
+          address = venue_page.parser.xpath("//*[@id='CenterColumn']//*[@class='body']").inner_text.split("\n")[3].strip
+          city_zip = venue_page.parser.xpath("//*[@id='CenterColumn']//*[@class='body']").inner_text.split("\n")[7].strip
+          #city = city_zip.split[0]
+          zip = city_zip.split[1].split('-')[0] rescue nil
+          phone_list = venue_page.parser.xpath("//*[@id='CenterColumn']//*[@class='body']").inner_text.split("\n")[11].strip.split("/")
+          phone = "(#{phone_list[0]}) #{phone_list[1]}"
+          venue_map = venue_page.parser.xpath("//*[@id='CenterColumn']/div/script").inner_text
+          latitude = venue_map.scan(/-?\d+[.]-?\d+/)[0]
+          longitude = venue_map.scan(/-?\d+[.]-?\d+/)[1]
+          venue_url = venue_page.parser.xpath("//*[@id='CenterColumn']/div[1]/div[2]/a").inner_text
+          description = venue_page.parser.xpath("//*[@id='CenterColumn']/div[1]/div[3]").inner_text.gsub(/\n/," ").strip
+
+          venue = {:name => name, :address => address,:city => 'Austin',:zip => zip,:state_code => 'TX',:phone => phone,:latitude => latitude,:longitude => longitude,:raw_id => event[:raw_id],:from => "austin_chronicle",:venue_id => event[:venue_id],:url =>venue_url}
+          #puts "Venue Data:\n #{venue}"
+          puts "Creating Venue '#{name}'"
+          raw_venue = RawVenue.create(venue)
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+      else
+        puts "Using Venue '#{raw_venue.name}'"
+      end
+
+      raw_event = RawEvent.where(:raw_id => event[:raw_id], :from => "austin_chronicle").first
+
+      if raw_event.nil?
+        puts "Creating Event '#{event[:title]}'"
+        raw_event = RawEvent.create({
+                                        :title => event[:title],
+                                        :description => event[:description],
+                                        :start => event[:start],
+                                        :latitude => event[:latitude],
+                                        :longitude => event[:longitude],
+                                        :venue_name => event[:venue_name],
+                                        :venue_address => event[:venue_addr],
+                                        :venue_city => 'Austin',
+                                        :venue_state => 'Tx',
+                                        :url => event[:event_url],
+                                        :raw_id => event[:raw_id],
+                                        :from => "austin_chronicle",
+                                        :raw_venue_id => (raw_venue ? raw_venue.id : nil)
+                                    })
+      else
+        puts "Event '#{raw_event.title}' exists"
       end
     end
   end
