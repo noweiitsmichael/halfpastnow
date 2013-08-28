@@ -76,6 +76,10 @@ gem 'dalli'
 # Email via mandrill
 gem 'mandrill-api'
 
+gem 'mechanize'
+
+gem 'ri_cal'
+
 # gem 'eventfulapi'
 # gem 'eventbrite-client'
 

@@ -958,5 +958,95 @@ namespace :api do
     end
   end
 
+  task :wanderless => :environment do
+    d_until = DateTime.now.advance(:weeks => 4)
+    d_start = DateTime.now
+    d_iter = d_start
+    puts "getting events before " + d_until.to_s
+
+    agent = Mechanize.new
+    events = []
+    event = {}
+    venue = {}
+
+    while d_iter < d_until
+      d_format_iter = d_iter.strftime("%Y-%m-%d")
+      url = "http://www.wanderless.com/events/#{d_format_iter}/"
+      puts url
+      d_iter = d_iter + 1.day
+
+      page = agent.get(url)
+      page.parser.xpath("//*[@id='day-1']/li/a/@href").each do |link|
+
+        url = "http://www.wanderless.com#{link.value}"
+        puts 'Loading %-30s' % [url]
+        begin
+          event_page = agent.get(url)
+          ics = event_page.link_with(:text => 'Add to Calendar')
+          url = "http://www.wanderless.com#{ics.href}"
+          puts url
+
+          component= RiCal.parse(open(url))[0]
+          event = component.events[0]
+
+          puts "#{event.summary} starts at: #{event.dtstart} and ends at #{event.dtend}"
+          venue_name = event.location
+          raw_id = link.value.scan(/\d+/)[0]
+          title = event.summary
+          start = event.dtstart
+          dtend = event.dtend
+          description = event.description
+
+          event = {:venue_name => venue_name,:raw_id => raw_id,:title => title,:start => start,:end => dtend, :description => description,:event_date => d_iter}
+          puts "Event Data:\n #{event}"
+          events << event
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+        #break    #test one event
+      end
+      #break       #test day events
+    end
+
+
+    events.each do |event|
+      raw_venue = RawVenue.where(:name => event[:venue_name], :from => "wanderless").first
+      if raw_venue.nil? and !event[:venue_name].nil?
+        begin
+          name = event[:venue_name]
+
+          venue = {:name => name, :city => 'Austin',:state_code => 'TX',:raw_id => event[:raw_id],:from => "wanderless"}
+          puts "Venue Data:\n #{venue}"
+          puts "Creating Venue '#{name}'"
+          raw_venue = RawVenue.create(venue)
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+      else
+        puts "Using Venue '#{raw_venue.name}'"
+      end
+
+      raw_event = RawEvent.where(:raw_id => event[:raw_id], :from => "wanderless").first
+
+      if raw_event.nil?
+        puts "Creating Event '#{event[:title]}'"
+        raw_event = RawEvent.create({
+                                        :title => event[:title],
+                                        :description => event[:description],
+                                        :start => event[:start],
+                                        :end => event[:end],
+                                        :venue_name => event[:venue_name],
+                                        :venue_city => 'Austin',
+                                        :venue_state => 'Tx',
+                                        :raw_id => event[:raw_id],
+                                        :from => "wanderless",
+                                        :raw_venue_id => (raw_venue ? raw_venue.id : nil)
+                                    })
+      else
+        puts "Event '#{raw_event.title}' exists"
+      end
+    end
+  end
+
 end
 
