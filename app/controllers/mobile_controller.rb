@@ -4246,7 +4246,7 @@ def gethometpevents
      esinfo << item
     }
 
-    today_events = esinfo.select{|e| e["occurrence_start"].to_time > Time.now && e[20].to_time < Date.today().advance(:days => 1)}.take(@amount)
+    today_events = esinfo.select{|e| e["occurrence_start"].to_time > Time.now && e["occurrence_start"].to_time < Date.today().advance(:days => 1)}.take(@amount)
     tomorrow_events = esinfo.select{|e| e["occurrence_start"].to_time > Date.today().advance(:days => 1)}.take(@amount)
     
     
