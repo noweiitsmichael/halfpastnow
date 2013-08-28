@@ -4143,8 +4143,8 @@ def gethometpevents
     #puts @offset
     #puts "amount"
     #puts @amount
-    # esinfo = ttttmp.drop(@offset).take(@amount)
-    @eventIDs =  esinfo.collect { |e| e["event_id"] }.uniq
+    
+    @eventIDs =  ttttmp.collect { |e| e["event_id"] }.uniq
     # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
