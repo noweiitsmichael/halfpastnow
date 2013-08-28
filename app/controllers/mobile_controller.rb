@@ -4246,8 +4246,8 @@ def gethometpevents
      esinfo << item
     }
 
-    today_events = esinfo.select{|e| e[:start].to_time > Time.now && e[:start].to_time < Date.today().advance(:days => 1)}.take(@amount)
-    tomorrow_events = esinfo.select{|e| e[:start].to_time > Date.today().advance(:days => 1)}.take(@amount)
+    today_events = esinfo.select{|e| e[:start].to_time > Time.now && e[:start].to_time < Date.today().advance(:days => 1)}.take(@amount).collect{|es| es.values}
+    tomorrow_events = esinfo.select{|e| e[:start].to_time > Date.today().advance(:days => 1)}.take(@amount).collect{|es| es.values}
     
     
     respond_to do |format|
@@ -4260,7 +4260,7 @@ def gethometpevents
       # format.json { render json: {code:"3",tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       if (params[:email].to_s.empty?)
         # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
-        format.json { render json: {:events=>esinfo,:today=>today_events, :tomorrow => tomorrow_events} }
+        format.json { render json: {:today=>today_events, :tomorrow => tomorrow_events} }
       else
         
          format.json { render json: {:today=>today_events, :tomorrow => tomorrow_events,user:@user, channels: [],:bookmarked=>@bmEvents, :events => esinfo,:acts=>@acts, :venues=>@venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten  } }
