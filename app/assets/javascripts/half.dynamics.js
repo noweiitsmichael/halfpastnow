@@ -497,9 +497,9 @@ $('.sxsw-dates').dropkick({
         if (!timer_is_on) {
             timer_is_on = 1;
             if($(this).val().length >= 3){
-                console.log("keyup");
+                //console.log("keyup");
                 typingTimer = setTimeout(doneTyping , doneTypingInterval);
-                console.log(typingTimer)
+                //console.log(typingTimer)
             }
         }
     });
@@ -507,10 +507,10 @@ $('.sxsw-dates').dropkick({
     //on keydown, clear the countdown
     $('.search-input').keydown(function () {
 
-        console.log("keydown");
+        //console.log("keydown");
         clearTimeout(typingTimer);
         timer_is_on = 0
-        console.log("key down" + typingTimer)
+        //console.log("key down" + typingTimer)
     });
 
   var slideTime = 0;
@@ -981,11 +981,10 @@ function doneTyping () {
     filter.search = $('.search-input').val();
 
     //if they type in a search term, the default "today" term is removed? This should only happen the user has not selected any other filter options
-    if(filter.included_tags.length == 0 && filter.high_price == ''){
+    if(filter.excluded_tags.length == 0 && filter.included_tags.length == 0 && filter.high_price == ''){
         filter.end_days = -1;
     }
-    console.log(filter.included_tags.length);
-    console.log(filter.high_price);
+
 
     pullEvents({update_search: false});
 
