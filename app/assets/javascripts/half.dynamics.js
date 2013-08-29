@@ -979,7 +979,16 @@ function streamSelector() {
 //user is "finished typing," do something
 function doneTyping () {
     filter.search = $('.search-input').val();
+
+    //if they type in a search term, the default "today" term is removed? This should only happen the user has not selected any other filter options
+    if(filter.included_tags.length == 0 && filter.high_price == ''){
+        filter.end_days = -1;
+    }
+    console.log(filter.included_tags.length);
+    console.log(filter.high_price);
+
     pullEvents({update_search: false});
+
 }
 
 var boundsChangedFlag = false;
