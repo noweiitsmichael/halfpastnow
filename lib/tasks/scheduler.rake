@@ -1048,5 +1048,168 @@ namespace :api do
     end
   end
 
+  task :startupdigest => :environment do
+
+    event_count = 0
+    venue_count = 0
+    components = nil
+    events = []
+    venue = {}
+
+    open("https://www.google.com/calendar/ical/startupdigest.com_3b5o5in3jemu3dee12umo9mnu4@group.calendar.google.com/public/basic.ics") do |cal|
+      components = RiCal.parse(cal)
+    end
+
+    components.each do |calendar|
+      calendar.events.each do |event|
+        if event.occurrences(:before => Date.today).empty?
+          begin
+            puts "#{event.summary} starts at: #{event.dtstart} and ends at #{event.dtend}"
+
+            venue_name = event.location
+            raw_id = event.uid
+            title = event.summary
+            start = event.dtstart
+            dtend = event.dtend
+            event_date = event.created
+            description = event.description
+
+            event = {:venue_name => venue_name,:raw_id => raw_id,:title => title,:start => start,:end => dtend, :description => description,:event_date => event_date}
+            events << event
+          rescue => e
+            $stderr.puts "#{e.class}: #{e.message}"
+          end
+        end
+      end
+    end
+
+    events.each do |event|
+      raw_venue = RawVenue.where(:name => event[:venue_name], :from => "startupdigest").first
+      if raw_venue.nil? and !event[:venue_name].nil?
+        begin
+          name = event[:venue_name]
+          venue = {:name => name, :city => 'Austin',:state_code => 'TX',:raw_id => event[:raw_id],:from => "startupdigest"}
+          puts "Creating Venue '#{name}'"
+          raw_venue = RawVenue.create(venue)
+          venue_count = venue_count + 1
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+      else
+        puts "Using Venue '#{raw_venue.name}'"
+      end
+
+      raw_event = RawEvent.where(:raw_id => event[:raw_id], :from => "startupdigest").first
+
+      if raw_event.nil?
+        puts "Creating Event '#{event[:title]}'"
+        raw_event = RawEvent.create({
+                                        :title => event[:title],
+                                        :description => event[:description],
+                                        :start => event[:start],
+                                        :end => event[:end],
+                                        :venue_name => event[:venue_name],
+                                        :venue_city => 'Austin',
+                                        :venue_state => 'Tx',
+                                        :raw_id => event[:raw_id],
+                                        :from => "startupdigest",
+                                        :raw_venue_id => (raw_venue ? raw_venue.id : nil)
+                                    })
+        event_count = event_count + 1
+      else
+        puts "Event '#{raw_event.title}' exists"
+      end
+    end
+
+
+    puts "Total number of events created #{event_count}"
+    puts "Total number of venues created #{venue_count}"
+
+  end
+
+  task :freefuninaustin => :environment do
+
+    event_count = 0
+    venue_count = 0
+    components = nil
+    events = []
+    venue = {}
+
+    open("https://www.google.com/calendar/ical/1lqapbmd7087tsfif7rksefigk@group.calendar.google.com/public/basic.ics") do |cal|
+      components = RiCal.parse(cal)
+    end
+
+
+    components.each do |calendar|
+      calendar.events.each do |event|
+        puts event
+        if event.occurrences(:before => Date.today).empty?
+          begin
+            puts "#{event.summary} starts at: #{event.dtstart} and ends at #{event.dtend}"
+
+            venue_name = event.location
+            raw_id = event.uid
+            title = event.summary
+            start = event.dtstart
+            dtend = event.dtend
+            event_date = event.created
+            description = event.description
+
+            event = {:venue_name => venue_name,:raw_id => raw_id,:title => title,:start => start,:end => dtend, :description => description,:event_date => event_date}
+            events << event
+          rescue => e
+            $stderr.puts "#{e.class}: #{e.message}"
+          end
+        end
+      end
+    end
+
+    events.each do |event|
+      raw_venue = RawVenue.where(:name => event[:venue_name], :from => "freefuninaustin").first
+      if raw_venue.nil? and !event[:venue_name].nil?
+        begin
+          name = event[:venue_name]
+          zip = name.scan(/\d{5}/)[0] rescue ''
+          name.sub(zip,'')
+          name.sub(zip,', Austin, Texas')
+          venue = {:name => name, :city => 'Austin',:state_code => 'TX',:raw_id => event[:raw_id],:zip => zip ,:from => "freefuninaustin"}
+          puts "Creating Venue '#{name}'"
+          raw_venue = RawVenue.create(venue)
+          venue_count = venue_count + 1
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+      else
+        puts "Using Venue '#{raw_venue.name}'"
+      end
+
+      raw_event = RawEvent.where(:raw_id => event[:raw_id], :from => "freefuninaustin").first
+
+      if raw_event.nil?
+        puts "Creating Event '#{event[:title]}'"
+        raw_event = RawEvent.create({
+                                        :title => event[:title],
+                                        :description => event[:description],
+                                        :start => event[:start],
+                                        :end => event[:end],
+                                        :venue_name => event[:venue_name],
+                                        :venue_city => 'Austin',
+                                        :venue_state => 'Tx',
+                                        :raw_id => event[:raw_id],
+                                        :from => "freefuninaustin",
+                                        :raw_venue_id => (raw_venue ? raw_venue.id : nil)
+                                    })
+        event_count = event_count + 1
+      else
+        puts "Event '#{raw_event.title}' exists"
+      end
+    end
+
+
+    puts "Total number of events created #{event_count}"
+    puts "Total number of venues created #{venue_count}"
+
+  end
+
 end
 
