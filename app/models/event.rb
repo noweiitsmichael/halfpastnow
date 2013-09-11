@@ -54,7 +54,15 @@ class Event < ActiveRecord::Base
     p = self.clicks
     z = 1.96
     phat = [1.0*p/n,1].min
-    return (phat + z*z/(2*n) - z * Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)
+    event_score = (phat + z*z/(2*n) - z * Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)
+
+    tags_weights = self.tags.collect(&:weight)
+    acts_weights = self.acts.collect(&:weight)
+    tags_weight = tags_weights.empty? ? 1 : tags_weights.sum/tags_weights.size.to_f
+    acts_weight = acts_weights.empty? ? 1 : acts_weights.max
+
+    event_score =  event_score * self.weight * self.venue.weight * tags_weight * acts_weight
+    return event_score
   end
 
   def completedness

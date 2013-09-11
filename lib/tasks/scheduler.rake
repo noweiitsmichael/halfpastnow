@@ -1211,5 +1211,19 @@ namespace :api do
 
   end
 
+  task :score_update => :environment do
+    events=Event.where("created_at >= ?",Date.today)
+    events.each do |event|
+      begin
+        event.escore = (event.score * 100).round(4)
+        puts event.escore
+        event.save
+      rescue => e
+        $stderr.puts "#{e.class}: #{e.message}"
+      end
+    end
+    puts "updated #{events.count} event scores"
+  end
+
 end
 
