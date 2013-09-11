@@ -68,7 +68,7 @@ class Recurrence < ActiveRecord::Base
     #set start and end dates for occurrence generation
     occurrences_exist = (self.occurrences.size > 0)
     puts "do occurrences exist? " + (occurrences_exist ? "YES" : "NO")
-    until_time = (range_end && range_end.to_time < Time.now.advance(:years => 1)) ? range_end.to_time : Time.now.advance(:years => 1)
+    until_time = (range_end && range_end.to_time < Time.now.advance(:months => 6)) ? range_end.to_time : Time.now.advance(:months => 6)
 
     #counter_time is starts with last existing occurrence, or range_start, or now
     counter_time = occurrences_exist ? self.occurrences.last(:order => "start").start.to_date.to_time : ((range_start && range_start.to_date.to_time > Date.today.to_time) ? range_start.to_date.to_time : Date.today.to_time)
