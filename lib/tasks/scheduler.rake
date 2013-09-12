@@ -123,7 +123,7 @@ namespace :m do
 			finalVenue = Venue.find(:first, :conditions => [ 'lower(name) = ?', finalVenueName.downcase ])
 			if finalVenue.nil?
 				puts "------ No venue found for #{finalVenueName}"
-				next                                  r
+				next
 			end
 			puts "Found it, working on #{finalVenueName}"
 			otherVenues.slice!(0)
