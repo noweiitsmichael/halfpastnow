@@ -123,7 +123,7 @@ namespace :m do
 			finalVenue = Venue.find(:first, :conditions => [ 'lower(name) = ?', finalVenueName.downcase ])
 			if finalVenue.nil?
 				puts "------ No venue found for #{finalVenueName}"
-				next
+				next                                  r
 			end
 			puts "Found it, working on #{finalVenueName}"
 			otherVenues.slice!(0)
@@ -301,8 +301,11 @@ end
 desc "discard old occurrences and create new ones from recurrences"
 task :update_occurrences => :environment do
 	puts "update_occurrences"
-	old_occurrences = Occurrence.where(:start => (DateTime.new(1900))..(DateTime.now))
-	old_occurrences.find_each(:batch_size => 1000) do |occurrence|
+      month =  ENV["MONTH"].to_i
+	old_occurrences = Occurrence.where("start > ? AND date_part('month',start)=?",DateTime.new(1900),month)
+    puts ENV["MONTH"]
+    puts old_occurrences.count
+	old_occurrences.each do |occurrence|
 		event = occurrence.event
 		puts "occurrence id: " + occurrence.id.to_s
 		#if occurrence doesn't have a recurrence, then just delete it
@@ -750,4 +753,5 @@ namespace :api do
 		end
 	end
 end
+
 
