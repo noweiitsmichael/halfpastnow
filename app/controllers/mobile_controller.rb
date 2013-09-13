@@ -4146,7 +4146,7 @@ def gethometpevents
     #puts @amount
     
     @eventIDs =  ttttmp.collect { |e| e["event_id"] }.uniq
-    size = @eventids.size
+    size = @eventIDs.size
     # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
