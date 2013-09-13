@@ -3418,7 +3418,7 @@ def homeEvents
     @ids = queryResult
     # #puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-    size  = @evenyIDs
+    size  = @eventIDs.size
     # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
