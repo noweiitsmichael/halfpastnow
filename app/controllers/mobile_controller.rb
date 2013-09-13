@@ -3336,7 +3336,7 @@ def homeEvents
     end
     #puts "queryResult 10 "
     occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
-   
+    size  = occurrenceIDs.size
     # ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
     # esinfo = ttttmp.drop(@offset).take(@amount)
    
@@ -3418,7 +3418,7 @@ def homeEvents
     @ids = queryResult
     # #puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
-    size  = @eventIDs.size
+    
     # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
