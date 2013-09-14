@@ -3360,7 +3360,7 @@ def homeEvents
     #puts "queryResult 10 "
 
 
-    ttmp = queryResult.uniq{|x| x["event_id"]}
+    ttmp = queryResult.uniq{|x| x["occurrence_id"]}
     # ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
     # esinfo = tes.drop(@offset).take(@amount)
     #puts "offset"
@@ -4178,7 +4178,7 @@ def gethometpevents
     #puts @amount
     size = ttmp.size
    
-    ttttmp = ttmp.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 14)}
+    ttttmp = ttmp.select{|e| e["occurrence_start"].to_datetime > Time.now && e["occurrence_start"].to_datetime < Date.today().advance(:days => 14)}
     @eventIDs =  ttttmp.collect { |e| e["occurrence_id"] }.uniq.take(5)
    
 
