@@ -3369,7 +3369,7 @@ def homeEvents
     #puts @amount
     size = ttmp.size
    
-    ttttmp = ttmp.select{|e| e["occurrence_start"].to_time > Time.now && e["occurrence_start"].to_time < Date.today().advance(:days => 14)}
+    ttttmp = ttmp.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 14)}
     occurrenceIDs =  ttttmp.collect { |e| e["occurrence_id"].to_i }.uniq.take(5)
    
     # today_events = queryResult.select{|e| e["start"].to_datetime < Date.today().advance(:days => 1)}.take(2)
@@ -4178,7 +4178,7 @@ def gethometpevents
     #puts @amount
     size = ttmp.size
    
-    ttttmp = ttmp.select{|e| e["occurrence_start"].to_time > Time.now && e["occurrence_start"].to_time < Date.today().advance(:days => 14)}
+    ttttmp = ttmp.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 14)}
     @eventIDs =  ttttmp.collect { |e| e["occurrence_id"] }.uniq.take(5)
    
 
