@@ -3335,10 +3335,19 @@ def homeEvents
       #puts "**************** Cache FOUND for search query!!! ****************"
     end
     #puts "queryResult 10 "
-    occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
-    size  = occurrenceIDs.size
-    # ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
-    queryResult = occurrenceIDs.take(5)
+
+
+    ttmp = queryResult.uniq{|x| x["event_id"]}
+    # ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
+    # esinfo = tes.drop(@offset).take(@amount)
+    #puts "offset"
+    #puts @offset
+    #puts "amount"
+    #puts @amount
+    size = ttmp.size
+   
+    ttttmp = ttmp.select{|e| e["occurrence_start"].to_time > Time.now && e["occurrence_start"].to_time < Date.today().advance(:days => 14)}
+    occurrenceIDs =  ttttmp.collect { |e| e["occurrence_id"].to_i }.uniq.take(5)
    
     # today_events = queryResult.select{|e| e["start"].to_datetime < Date.today().advance(:days => 1)}.take(2)
     # tomorrow_events = queryResult.select{|e| e["start"].to_datetime > Date.today().advance(:days => 1)}.take(2)
@@ -3347,7 +3356,7 @@ def homeEvents
     # esinfo=esinfo.flatten
 
 
-    ids =  queryResult.join(',')
+    ids =  occurrenceIDs.join(',')
     # #puts "iDs"
     # #puts ids
     esinfo = []
@@ -3530,9 +3539,9 @@ def homeEvents
     }
     # #puts "Output: - before sorting "
     # #puts esinfo.to_json
-    ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
+    # ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
     
-    esinfo = ttttmp.collect{|es| es.values}
+    esinfo = esinfo.collect{|es| es.values}
     end
 
     
@@ -3841,7 +3850,7 @@ def homeEvents
    
     # today_events = esinfo.select{|e| e[20].to_time < Date.today().advance(:days => 1)}.take(@amount)
     # tomorrow_events = esinfo.select{|e| e[20].to_time > Date.today().advance(:days => 1)}.take(@amount)
-    first5 = esinfo.take(5)
+    first5 = esinfo
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
@@ -4138,17 +4147,24 @@ def gethometpevents
       end
     }
     ttmp = tes.uniq{|x| x["event_id"]}
-    ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
+    # ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
     # esinfo = tes.drop(@offset).take(@amount)
     #puts "offset"
     #puts @offset
     #puts "amount"
     #puts @amount
-    
-    @eventIDs =  ttttmp.collect { |e| e["event_id"] }.uniq
-    size = @eventIDs.size
+    size = ttmp.size
+   
+    ttttmp = ttmp.select{|e| e["occurrence_start"].to_time > Time.now && e["occurrence_start"].to_time < Date.today().advance(:days => 14)}
+    @eventIDs =  ttttmp.collect { |e| e["occurrence_id"] }.uniq.take(5)
+   
+
+
+
+
+
+
     # #puts @eventIDs
-    @eventIDs = @eventID.take(5)
     esinfo = []
     @eventIDs.each{ |id|
       # #puts id
@@ -4251,7 +4267,7 @@ def gethometpevents
 
     # today_events = esinfo.select{|e| e[:start].to_time > Time.now && e[:start].to_time < Date.today().advance(:days => 1)}.take(@amount).collect{|es| es.values}
     # tomorrow_events = esinfo.select{|e| e[:start].to_time > Date.today().advance(:days => 1)}.take(@amount).collect{|es| es.values}
-    first5 = esinfo.take(5)
+    first5 = esinfo
     
     respond_to do |format|
       format.html do
