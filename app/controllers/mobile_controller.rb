@@ -34,7 +34,11 @@ class MobileController < ApplicationController
         return
       end
 
-    @user=User.find_by_email(email.downcase)
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user = nil  
+    end
     if not @user.nil?
         #puts "Existing email"
           respond_to do |format|
@@ -62,7 +66,14 @@ class MobileController < ApplicationController
   def checkUser
     email = params[:email]
     password = params[:password]
-    @user=User.find_by_email(email.downcase)
+    
+     
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user = nil
+      
+    end
     if @user.nil?
         respond_to do |format|
           format.html # index.html.erb
@@ -96,7 +107,13 @@ class MobileController < ApplicationController
     password = params[:password]
     @bmEvents = []
     tmp ="0"
-    @user=User.find_by_email(email.downcase)
+     
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user=nil
+      
+    end
     if @user.nil?
         respond_to do |format|
           format.html # index.html.erb
@@ -199,7 +216,13 @@ class MobileController < ApplicationController
     password = params[:password]
     @bmEvents = []
     tmp ="0"
-    @user=User.find_by_email(email.downcase)
+      
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user=nil
+      
+    end
     if @user.nil?
         respond_to do |format|
           format.html # index.html.erb
@@ -5151,7 +5174,12 @@ def FacebookLoginSX
     # #puts esinfo.to_json
     #  Bookmarked events
     email = params[:email]
-    @user=User.find_by_email(email.downcase)
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user=nil
+    end
+    
     @bmEvents = []
     @followedList = []
     if not @user.nil?
@@ -7228,7 +7256,12 @@ def SX
     # case 1 - params[:email] empty - return all event only
     # case 2 - params[:email] not empty - return bookmarks, customized channels, and all events
     email = params[:email]
-    @user=User.find_by_email(email.downcase)
+      
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user = nil
+    end
     @tagss = Tag.all.collect{|t| [t.id,t.name]}
     @tagss = Tag.all.sort_by do |tag|
         tag.id
@@ -7639,7 +7672,12 @@ def SX
     # case 1 - params[:email] empty - return all event only
     # case 2 - params[:email] not empty - return bookmarks, customized channels, and all events
     email = params[:email]
-    @user=User.find_by_email(email.downcase)
+     
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user = nil
+    end
     @tagss = Tag.all.collect{|t| [t.id,t.name]}
     @tagss = Tag.all.sort_by do |tag|
         tag.id
@@ -7713,7 +7751,13 @@ def SX
 
   def eventsList
     email = params[:email]
-    @user=User.find_by_email(email.downcase)
+     
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user=nil
+      
+    end
     # @occurrences = @user.followedLists.collect { |list| list.bookmarked_events }.flatten
     # @es = @occurrences.collect { |occ| occ.event }
     # @esinfo =[]
