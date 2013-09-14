@@ -4290,7 +4290,7 @@ def gethometpevents
 
     # today_events = esinfo.select{|e| e[:start].to_time > Time.now && e[:start].to_time < Date.today().advance(:days => 1)}.take(@amount).collect{|es| es.values}
     # tomorrow_events = esinfo.select{|e| e[:start].to_time > Date.today().advance(:days => 1)}.take(@amount).collect{|es| es.values}
-    first5 = esinfo
+    first5 = esinfo.collect{|es| es.values}
     
     respond_to do |format|
       format.html do
