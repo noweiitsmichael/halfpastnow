@@ -373,7 +373,7 @@ class Occurrence < ActiveRecord::Base
               WHERE #{where_clause} AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
               ORDER BY events.id, occurrences.start LIMIT 1000"
 
-    # puts query
+    puts query
     
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{join_cache_indicator}_#{search_match}_#{occurrence_match}_#{location_match}_#{tags_cache_included}_#{tags_cache_excluded}_#{low_price_match}_#{high_price_match}_#{start_date_where}")
     queryResult = Rails.cache.read(really_long_cache_name)

@@ -27,7 +27,7 @@ function pushFilterTag(tag_id, tag_type) {
     if(filter.included_tags.indexOf(tag_id) === -1) {
       filter.included_tags.push(tag_id);
     }
-  } else if (tag_type === "and_tags"){
+  } else if (tag_type === "andtags"){
     if(filter.and_tags.indexOf(tag_id) === -1) {
       filter.and_tags.push(tag_id);
     }
@@ -46,7 +46,7 @@ function popFilterTag(tag_id, tag_type) {
     if(filter.included_tags.indexOf(tag_id) != -1) {
       filter.included_tags.splice(filter.included_tags.indexOf(tag_id),1);
     }
-  } else if (tag_type === "and_tags"){
+  } else if (tag_type === "andtags"){
     if(filter.and_tags.indexOf(tag_id) != -1) {
       filter.and_tags.splice(filter.and_tags.indexOf(tag_id),1);
     }
@@ -61,7 +61,7 @@ function inFilterTag(tag_id, tag_type) {
   tag_type = defaultTo(tag_type, "included_tags");
   if (tag_type === "included_tags"){
     return !(typeof filter.included_tags === 'undefined' || filter.included_tags.indexOf(tag_id) === -1);
-  } else if (tag_type === "and_tags"){
+  } else if (tag_type === "andtags"){
     return !(typeof filter.and_tags === 'undefined' || filter.and_tags.indexOf(tag_id) === -1);
   } else {
     return !(typeof filter.excluded_tags === 'undefined' || filter.excluded_tags.indexOf(tag_id) === -1);
@@ -180,6 +180,7 @@ $('.sxsw-dates').dropkick({
     if($(this).hasClass('selected')) {
       popFilterTag(tagID);
     } else {
+
       pushFilterTag(tagID);
     }
 
