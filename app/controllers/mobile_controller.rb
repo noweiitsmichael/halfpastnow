@@ -34,7 +34,11 @@ class MobileController < ApplicationController
         return
       end
 
-    @user=User.find_by_email(email.downcase)
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user = nil  
+    end
     if not @user.nil?
         #puts "Existing email"
           respond_to do |format|
@@ -62,7 +66,14 @@ class MobileController < ApplicationController
   def checkUser
     email = params[:email]
     password = params[:password]
-    @user=User.find_by_email(email.downcase)
+    
+     
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user = nil
+      
+    end
     if @user.nil?
         respond_to do |format|
           format.html # index.html.erb
@@ -96,7 +107,13 @@ class MobileController < ApplicationController
     password = params[:password]
     @bmEvents = []
     tmp ="0"
-    @user=User.find_by_email(email.downcase)
+     
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user=nil
+      
+    end
     if @user.nil?
         respond_to do |format|
           format.html # index.html.erb
@@ -199,7 +216,13 @@ class MobileController < ApplicationController
     password = params[:password]
     @bmEvents = []
     tmp ="0"
-    @user=User.find_by_email(email.downcase)
+      
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user=nil
+      
+    end
     if @user.nil?
         respond_to do |format|
           format.html # index.html.erb
@@ -3335,19 +3358,28 @@ def homeEvents
       #puts "**************** Cache FOUND for search query!!! ****************"
     end
     #puts "queryResult 10 "
-    occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
-   
-    # ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
-    # esinfo = ttttmp.drop(@offset).take(@amount)
-   
-    today_events = queryResult.select{|e| e["start"].to_datetime < Date.today().advance(:days => 1)}.take(2)
-    tomorrow_events = queryResult.select{|e| e["start"].to_datetime > Date.today().advance(:days => 1)}.take(2)
-    esinfo =[]
-    esinfo << today_events << tomorrow_events
-    esinfo=esinfo.flatten
 
 
-    ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
+    ttmp = queryResult.uniq{|x| x["occurrence_id"]}
+    # ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
+    # esinfo = tes.drop(@offset).take(@amount)
+    #puts "offset"
+    #puts @offset
+    #puts "amount"
+    #puts @amount
+    size = ttmp.size
+   
+    ttttmp = ttmp.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 14)}
+    occurrenceIDs =  ttttmp.collect { |e| e["occurrence_id"].to_i }.uniq.take(5)
+   
+    # today_events = queryResult.select{|e| e["start"].to_datetime < Date.today().advance(:days => 1)}.take(2)
+    # tomorrow_events = queryResult.select{|e| e["start"].to_datetime > Date.today().advance(:days => 1)}.take(2)
+    # esinfo =[]
+    # esinfo << today_events << tomorrow_events
+    # esinfo=esinfo.flatten
+
+
+    ids =  occurrenceIDs.join(',')
     # #puts "iDs"
     # #puts ids
     esinfo = []
@@ -3418,6 +3450,7 @@ def homeEvents
     @ids = queryResult
     # #puts queryResult.uniq
     @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
+    
     # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
@@ -3529,9 +3562,9 @@ def homeEvents
     }
     # #puts "Output: - before sorting "
     # #puts esinfo.to_json
-    ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
+    # ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
     
-    esinfo = ttttmp.collect{|es| es.values}
+    esinfo = esinfo.collect{|es| es.values}
     end
 
     
@@ -3838,9 +3871,9 @@ def homeEvents
 
     # Choose 2 events for today and tomorrow
    
-    today_events = esinfo.select{|e| e[20].to_time < Date.today().advance(:days => 1)}.take(@amount)
-    tomorrow_events = esinfo.select{|e| e[20].to_time > Date.today().advance(:days => 1)}.take(@amount)
-     
+    # today_events = esinfo.select{|e| e[20].to_time < Date.today().advance(:days => 1)}.take(@amount)
+    # tomorrow_events = esinfo.select{|e| e[20].to_time > Date.today().advance(:days => 1)}.take(@amount)
+    first5 = esinfo
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
@@ -3851,10 +3884,10 @@ def homeEvents
       # format.json { render json: {code:"3",tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       if (params[:email].to_s.empty?)
         # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
-        format.json { render json: {:today=>today_events, :tomorrow => tomorrow_events,:events => esinfo} }
+        format.json { render json: {:size => size,:first5=>first5,:events => esinfo} }
       else
         
-         format.json { render json: {:today=>today_events, :tomorrow => tomorrow_events, user:@user, :RSVP =>@RSVP, channels: [],:bookmarked=>@bmEvents, :events => esinfo,:acts=>@acts, :venues=>@venues, :listids=> @followedList}}
+         format.json { render json: {:size => size,:first5=>first5, user:@user, :RSVP =>@RSVP, channels: [],:bookmarked=>@bmEvents, :events => esinfo,:acts=>@acts, :venues=>@venues, :listids=> @followedList}}
          # format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo,:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten }} 
         # format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       
@@ -4137,14 +4170,23 @@ def gethometpevents
       end
     }
     ttmp = tes.uniq{|x| x["event_id"]}
-    ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
+    # ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
     # esinfo = tes.drop(@offset).take(@amount)
     #puts "offset"
     #puts @offset
     #puts "amount"
     #puts @amount
-    
-    @eventIDs =  ttttmp.collect { |e| e["event_id"] }.uniq
+    size = ttmp.size
+   
+    ttttmp = ttmp.select{|e| e["occurrence_start"].to_datetime > Time.now && e["occurrence_start"].to_datetime < Date.today().advance(:days => 14)}
+    @eventIDs =  ttttmp.collect { |e| e["event_id"] }.uniq.take(5)
+   
+
+
+
+
+
+
     # #puts @eventIDs
     esinfo = []
     @eventIDs.each{ |id|
@@ -4246,9 +4288,9 @@ def gethometpevents
      esinfo << item
     }
 
-    today_events = esinfo.select{|e| e[:start].to_time > Time.now && e[:start].to_time < Date.today().advance(:days => 1)}.take(@amount).collect{|es| es.values}
-    tomorrow_events = esinfo.select{|e| e[:start].to_time > Date.today().advance(:days => 1)}.take(@amount).collect{|es| es.values}
-    
+    # today_events = esinfo.select{|e| e[:start].to_time > Time.now && e[:start].to_time < Date.today().advance(:days => 1)}.take(@amount).collect{|es| es.values}
+    # tomorrow_events = esinfo.select{|e| e[:start].to_time > Date.today().advance(:days => 1)}.take(@amount).collect{|es| es.values}
+    first5 = esinfo.collect{|es| es.values}
     
     respond_to do |format|
       format.html do
@@ -4260,10 +4302,10 @@ def gethometpevents
       # format.json { render json: {code:"3",tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       if (params[:email].to_s.empty?)
         # format.json { render json: @occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) }
-        format.json { render json: {:today=>today_events, :tomorrow => tomorrow_events} }
+        format.json { render json: {:size=>size,:first5=>first5} }
       else
         
-         format.json { render json: {:today=>today_events, :tomorrow => tomorrow_events,user:@user, channels: [],:bookmarked=>@bmEvents, :events => esinfo,:acts=>@acts, :venues=>@venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten  } }
+         format.json { render json: {:size=>size,:first5=>first5,user:@user, channels: [],:bookmarked=>@bmEvents, :events => esinfo,:acts=>@acts, :venues=>@venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten  } }
          # format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo,:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten }} 
         # format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       
@@ -5132,7 +5174,12 @@ def FacebookLoginSX
     # #puts esinfo.to_json
     #  Bookmarked events
     email = params[:email]
-    @user=User.find_by_email(email)
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user=nil
+    end
+    
     @bmEvents = []
     @followedList = []
     if not @user.nil?
@@ -7209,7 +7256,12 @@ def SX
     # case 1 - params[:email] empty - return all event only
     # case 2 - params[:email] not empty - return bookmarks, customized channels, and all events
     email = params[:email]
-    @user=User.find_by_email(email)
+      
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user = nil
+    end
     @tagss = Tag.all.collect{|t| [t.id,t.name]}
     @tagss = Tag.all.sort_by do |tag|
         tag.id
@@ -7620,7 +7672,12 @@ def SX
     # case 1 - params[:email] empty - return all event only
     # case 2 - params[:email] not empty - return bookmarks, customized channels, and all events
     email = params[:email]
-    @user=User.find_by_email(email)
+     
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user = nil
+    end
     @tagss = Tag.all.collect{|t| [t.id,t.name]}
     @tagss = Tag.all.sort_by do |tag|
         tag.id
@@ -7694,7 +7751,13 @@ def SX
 
   def eventsList
     email = params[:email]
-    @user=User.find_by_email(email)
+     
+    unless email.nil?
+      @user=User.find_by_email(email.downcase)
+    else
+      @user=nil
+      
+    end
     # @occurrences = @user.followedLists.collect { |list| list.bookmarked_events }.flatten
     # @es = @occurrences.collect { |occ| occ.event }
     # @esinfo =[]
@@ -7869,7 +7932,8 @@ end
 
   def attend
     @occurrenceid =  params[:occurrence_id]
-    current_user =  User.find_by_email(params[:email])
+    email = params[:email]
+    current_user =  User.find_by_email(email.downcase)
     @attendlist = current_user.attending_list
     if @attendlist.nil?
       @attendlist = BookmarkList.create(:name => "Attending", :description => "Attending", :public => false, :featured => false, :main_bookmarks_list => false, :user_id => current_user.id)
@@ -7885,7 +7949,8 @@ end
 
   def unattend
     @userid = User.find_by_email(params[:email]).id
-    current_user =  User.find_by_email(params[:email])
+    email = params[:email]
+    current_user =  User.find_by_email(email.downcase)
     @list = current_user.attending_list
     @event= Occurrence.find(params[:event_id]).event
     @bms= @list.bookmarks.select{ |o| o.bookmarked_type == 'Occurrence' }
@@ -7915,7 +7980,8 @@ end
   def bookmark
     @event = Event.find(params[:event_id])
     @occurrenceid =  @event.nextOccurrence.id #@event.occurrences.select { |occ| occ.start >= Date.today.to_datetime }.sort_by { |occ| occ.start }.first.id
-    current_user =  User.find_by_email(params[:email])
+    email = params[:email]
+    current_user =  User.find_by_email(email.downcase)
     @bookmark = current_user.main_bookmark_list.bookmarks.build
     @bookmark.bookmarked_id = @occurrenceid
     @bookmark.bookmarked_type = "Occurrence"
@@ -7928,6 +7994,7 @@ end
 
   
   def unbookmark
+
     @userid = User.find_by_email(params[:email]).id
     current_user =  User.find_by_email(params[:email])
     @list = current_user.main_bookmark_list
