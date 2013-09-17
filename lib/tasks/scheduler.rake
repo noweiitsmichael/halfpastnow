@@ -1237,7 +1237,7 @@ namespace :api do
 
   end
 
-  task :score_update => :environment do
+  task :score_update => :environment do          # Runs every 15min
     events=Event.where("created_at >= ?",Date.today)
     events.each do |event|
       begin

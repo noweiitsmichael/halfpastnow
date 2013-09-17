@@ -46,6 +46,28 @@ class Event < ActiveRecord::Base
     return true
   end
 
+  searchable do
+    text :title, :boost => 5
+    text :description, :event_time
+    text :venue_name, :boost => 3 do
+      venue.name if venue.present?
+    end
+    text :venue_description do
+      venue.description if venue.present?
+    end
+    text :artists, :boost => 2 do
+      acts.map(&:name)
+    end
+    text :tags, :boost => 4 do
+      tags.map(&:name)
+    end
+  end
+
+  def event_time
+    updated_at.strftime("%B %Y")
+  end
+
+
   def score
     if self.views == 0
       return 0

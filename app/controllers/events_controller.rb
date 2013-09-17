@@ -339,7 +339,25 @@ def index
 
     params[:user_id] = current_user ? current_user.id : nil
 
-    @ids = Occurrence.find_with(params)
+    #@ids = Occurrence.find_with(params)
+
+
+    if params[:search].present?
+      @ids = ["occurrence_id","event_id","venue_id","occurrence_start"]
+      @search = Event.search do
+        fulltext params[:search]
+      end
+      events = @search.results
+      events.each do |e|
+        @ids << [e.occurrences[0]["id"] ,e["id"], e["venue_id"], e.occurrences[0]["start"]]
+      end
+      puts @ids
+      raise @ids.to_yaml
+    else
+      @ids = Occurrence.find_with(params)
+    end
+
+
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq

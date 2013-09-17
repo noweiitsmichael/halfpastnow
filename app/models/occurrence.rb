@@ -323,9 +323,10 @@ class Occurrence < ActiveRecord::Base
                         HAVING COUNT(tag_id) >= #{ params[:and_tags].count }
                     )"
       end
-      puts "---------Excluded Tags: ------------"
-      puts params[:excluded_tags]
+
       unless(params[:excluded_tags].to_s.empty?)
+        puts "---------Excluded Tags: ------------"
+        puts params[:excluded_tags]
         tags_mush = params[:excluded_tags] * ','
         tags_cache_excluded = params[:excluded_tags] * ','
         tag_exclude_match = "events.id NOT IN (
