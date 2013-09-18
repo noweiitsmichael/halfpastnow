@@ -229,7 +229,7 @@ class User < ActiveRecord::Base
     end
   end
 
-   def send_welcome_email
+   def send_contest_entry_email
     unless self.email.include?('@halfpastnow.com') && Rails.env != 'test'
       UserMailer.contest_entry_email(self).deliver
     end
