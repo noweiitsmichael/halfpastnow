@@ -3387,7 +3387,10 @@ def homeEvents
       #puts "**************** Cache FOUND for search query!!! ****************"
     end
     #puts "queryResult 10 "
-
+    order_by = "CASE events.views 
+                    WHEN 0 THEN 0
+                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+                  END DESC"
 
     ttmp = queryResult.uniq{|x| x["occurrence_id"]}
     # ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
@@ -3398,8 +3401,12 @@ def homeEvents
     #puts @amount
     size = ttmp.size
    
+
     ttttmp = ttmp.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 14)}
-    occurrenceIDs =  ttttmp.collect { |e| e["occurrence_id"].to_i }.uniq.take(5)
+    occurrenceIDs =  ttttmp.collect { |e| e["occurrence_id"].to_i }.uniq
+    # ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
+    @allOccurrences = Occurrence.includes(:event => :venue).find(occurrenceIDs, :order => order_by)
+    occurrenceIDs =  @allOccurrences.collect { |e| e.id.to_i }.uniq.take(5)
    
     # today_events = queryResult.select{|e| e["start"].to_datetime < Date.today().advance(:days => 1)}.take(2)
     # tomorrow_events = queryResult.select{|e| e["start"].to_datetime > Date.today().advance(:days => 1)}.take(2)
