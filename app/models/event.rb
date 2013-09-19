@@ -48,17 +48,17 @@ class Event < ActiveRecord::Base
 
   searchable do
     text :title, :boost => 5
-    text :description, :event_time
-    text :venue_name, :boost => 3 do
+    text :description
+    text :venue_name do
       venue.name if venue.present?
     end
     text :venue_description do
       venue.description if venue.present?
     end
-    text :artists, :boost => 2 do
+    text :artists do
       acts.map(&:name)
     end
-    text :tags, :boost => 4 do
+    text :tags do
       tags.map(&:name)
     end
   end

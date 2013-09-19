@@ -134,6 +134,7 @@ class Occurrence < ActiveRecord::Base
     # @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
 
     search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = tag_and_match = low_price_match = high_price_match = "TRUE"
+    order_by = nil
 
     @amount = 200
     @offset = 0
@@ -200,15 +201,26 @@ class Occurrence < ActiveRecord::Base
     else
       # search
       unless(params[:search].to_s.empty?)
-        search = params[:search].gsub(/[^0-9a-z ]/i, '').upcase
-        searches = search.split(' ')
-        
-        search_match_arr = []
-        searches.each do |word|
-          search_match_arr.push("(upper(venues.name) LIKE '%#{word}%' OR upper(events.description) LIKE '%#{word}%' OR upper(events.title) LIKE '%#{word}%')")
-        end
+        #search = params[:search].gsub(/[^0-9a-z ]/i, '').upcase
+        #searches = search.split(' ')
+        #
+        #search_match_arr = []
+        #searches.each do |word|
+        #  search_match_arr.push("(upper(venues.name) LIKE '%#{word}%' OR upper(events.description) LIKE '%#{word}%' OR upper(events.title) LIKE '%#{word}%')")
+        #end
+        #
+        #search_match = search_match_arr * " AND "
 
-        search_match = search_match_arr * " AND "
+        #solr search code
+        @search = Event.search do
+          fulltext params[:search]
+        end
+        events = @search.results
+        puts "#### searched events count = #{events.count}"
+        ids = events.collect(&:id).join(',')
+        search_match = "events.id IN (#{ids})"
+        #after search dont change order
+        order_by = ""
       end
 
 
@@ -367,12 +379,16 @@ class Occurrence < ActiveRecord::Base
 
     end
 
+    if order_by.nil?
+      order_by = "ORDER BY events.id, occurrences.start "
+    end
+
     # the big enchilada
     query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id,  events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
               FROM occurrences 
                 #{join_clause}
               WHERE #{where_clause} AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
-              ORDER BY events.id, occurrences.start LIMIT 1000"
+              #{order_by} LIMIT 1000"
 
     puts query
     
