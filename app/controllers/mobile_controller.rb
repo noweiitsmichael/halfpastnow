@@ -1964,7 +1964,13 @@ def FacebookLogin
 
     occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check} AND #{days_check}"
 
-
+    longitude = -97.742913
+    latitude = 30.268021
+    unless (params[:longitude].to_s.empty?)
+      longitude = params[:longitude]
+      latitude = params[:latitude] 
+    end
+     
     # location
     if(params[:lat_min].to_s.empty? || params[:long_min].to_s.empty? || params[:lat_max].to_s.empty? || params[:long_max].to_s.empty?)
       @ZoomDelta = {
@@ -2049,9 +2055,20 @@ def FacebookLogin
                     WHEN 0 THEN 0
                     ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
                   END DESC"
+    elsif ( params[:sort].to_i == 1)
+       order_by = "occurrences.start  ASC"
+    elsif (params[:sort].to_i == 2) # Distance
+       order_by = "ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(#{longitude}-venues.longitude)  ) ASC"
+    elsif (params[:sort].to_i == 3)
+         order_by = "events.price ASC"
+                   
     end
     tmp ="0"
     tmp1 ="o"
+
+    # order_by = "occurrences.start"
+    puts "order_by"
+    puts order_by
     
     query = "SELECT DISTINCT ON (recurrences.id,users.id,bookmark_lists.id) occurrences.id AS occurrence_id, occurrences.start AS start 
             FROM users
@@ -2099,9 +2116,19 @@ def FacebookLogin
               INNER JOIN venues ON events.venue_id = venues.id
               LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}"
+            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
+           "
     
-    
+     # query = "SELECT occurrences.id AS occurrence_id, occurrences.start AS start
+     #        FROM occurrences 
+     #          INNER JOIN events ON occurrences.event_id = events.id
+     #          LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
+     #          LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
+     #          INNER JOIN venues ON events.venue_id = venues.id
+     #          LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+     #          LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
+     #        WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
+     #       ORDER BY #{order_by}"
    
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
     queryResult = Rails.cache.read(really_long_cache_name)
@@ -2115,10 +2142,12 @@ def FacebookLogin
     end
     #puts "queryResult 10 "
     occurrenceIDs =  queryResult.collect { |e| e["occurrence_id"].to_i }.uniq
-    ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
-    esinfo = ttttmp.drop(@offset).take(@amount)
-    
-    ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
+    # ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
+    @allOccurrences = Occurrence.includes(:event => :venue).find(occurrenceIDs, :order => order_by)
+    # esinfo = queryResult.drop(@offset).take(@amount)
+    esinfo = @allOccurrences.drop(@offset).take(@amount)
+    # ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
+    ids =  esinfo.collect { |e| e.id.to_i }.uniq.join(',')
     # #puts "iDs"
     # #puts ids
     esinfo = []
