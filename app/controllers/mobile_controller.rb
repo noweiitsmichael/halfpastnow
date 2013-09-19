@@ -2058,7 +2058,7 @@ def FacebookLogin
     elsif ( params[:sort].to_i == 1)
        order_by = "occurrences.start  ASC"
     elsif (params[:sort].to_i == 2) # Distance
-       order_by = "ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(#{longitude}-venues.longitude)  ) ASC"
+       order_by = "ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(0.0174532925*#{longitude}-0.0174532925*venues.longitude)  ) ASC"
     elsif (params[:sort].to_i == 3)
          order_by = "events.price ASC"
                    
