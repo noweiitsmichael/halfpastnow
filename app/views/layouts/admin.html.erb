@@ -78,9 +78,9 @@
         <h2><b>Admin Control Panel</b></h2>
 
         <br><div class="profpic">
-        <% if current_user.profilepic.blank? == false %>
+        <% if current_user.profilepic %>
           <%= image_tag current_user.profilepic_url(:tiny).to_s %>
-        <% elsif current_user.fb_picture.blank? == false %>
+        <% elsif current_user.fb_picture %>
           <%= image_tag current_user.fb_picture %>
         <% else %>
           <%= image_tag("buddy.jpg") %>

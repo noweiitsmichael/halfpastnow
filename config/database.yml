@@ -44,6 +44,7 @@ test:
   encoding: unicode
   database: myapp_test
   pool: 5
+  host: localhost
   username: myapp
   password: myapp
 

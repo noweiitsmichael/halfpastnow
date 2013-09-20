@@ -429,12 +429,13 @@ def index
   # GET /events/1
   # GET /events/1.json
   def show
-
+     begin
     puts "Share content"
     @fullmode = (!params[:fullmode].to_s.empty?) || (@mobileMode)
     @modeType = "event"
-    
+
     @occurrence = Occurrence.find(params[:id])
+
     @event = @occurrence.event
     @pageTitle = @event.title + " | half past now."
 
@@ -489,6 +490,11 @@ def index
       # format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }
       format.mobile 
     end
+     rescue
+       respond_to do |format|
+         format.js { render template: "events/error_show" }
+       end
+       end
   end
 
   def shunt
