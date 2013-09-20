@@ -5,6 +5,7 @@ class Event < ActiveRecord::Base
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :acts
 
+
   has_many :recurrences, :dependent => :destroy
   has_many :occurrences, :dependent => :destroy
   has_many :bookmarks, :through => :occurrences
@@ -49,22 +50,26 @@ class Event < ActiveRecord::Base
   searchable do
     text :title, :boost => 5
     text :description
-    text :venue_name do
+    text :venue_name, :boost => 4 do
       venue.name if venue.present?
     end
     text :venue_description do
       venue.description if venue.present?
     end
-    text :artists do
-      acts.map(&:name)
-    end
-    text :tags do
-      tags.map(&:name)
-    end
+    #text :artists do
+    #  acts.map(&:name)
+    #end
+    #string :tag_names, multiple: true, stored: true do
+    #  tags.map(&:name)
+    #end
+    #string :price_search do
+    #  price.downcase.gsub(/^(an?|the)\b/, '')
+    #end
+    integer :price
   end
 
-  def event_time
-    updated_at.strftime("%B %Y")
+  def price_search
+    #price.strftime("%B %Y")
   end
 
 

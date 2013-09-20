@@ -218,6 +218,7 @@ class Occurrence < ActiveRecord::Base
         events = @search.results
         puts "#### searched events count = #{events.count}"
         ids = events.collect(&:id).join(',')
+        ids = 0 if ids.empty?
         search_match = "events.id IN (#{ids})"
         #after search dont change order
         order_by = ""
