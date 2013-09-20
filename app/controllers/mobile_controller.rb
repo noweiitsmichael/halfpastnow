@@ -1885,7 +1885,7 @@ def FacebookLogin
     tpmatch =search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
     bookmarked = !params[:bookmark_type].to_s.empty?
     # amount/offset
-    @amount = 20
+    @amount = 10
     unless(params[:amount].to_s.empty?)
       @amount = params[:amount].to_i
     end
@@ -2147,7 +2147,7 @@ def FacebookLogin
     # esinfo = queryResult.drop(@offset).take(@amount)
     esinfo = @allOccurrences.drop(@offset).take(@amount)
     # ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
-    ids =  esinfo.collect { |e| e.id.to_i }.uniq.join(',')
+    ids =  esinfo.collect { |e| e.id.to_i }.join(',')
     # #puts "iDs"
     # #puts ids
     esinfo = []
@@ -3177,7 +3177,7 @@ def homeEvents
     search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
     bookmarked = !params[:bookmark_type].to_s.empty?
     # amount/offset
-    @amount = 20
+    @amount = 10
     unless(params[:amount].to_s.empty?)
       @amount = params[:amount].to_i
     end
@@ -3976,7 +3976,7 @@ def gethometpevents
     tpmatch =search_match = occurrence_match = location_match = tag_include_match = tag_exclude_match = low_price_match = high_price_match = "TRUE"
     bookmarked = !params[:bookmark_type].to_s.empty?
     # amount/offset
-    @amount = 20
+    @amount = 10
     unless(params[:amount].to_s.empty?)
       @amount = params[:amount].to_i
     end
