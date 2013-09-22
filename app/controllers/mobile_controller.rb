@@ -4467,8 +4467,8 @@ def gettpevents
     longitude = -97.742913
     latitude = 30.268021
     unless (params[:longitude].to_s.empty?)
-      longitude = params[:longitude]
-      latitude = params[:latitude] 
+      longitude = params[:longitude].to_f
+      latitude = params[:latitude] .to_f
     end
     
     # Check distance
@@ -4557,20 +4557,7 @@ def gettpevents
     end
 
     order_by = "occurrences.start"
-    if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
-      # order by event score when sorting by popularity
-      order_by = "CASE events.views 
-                    WHEN 0 THEN 0
-                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
-                  END DESC"
-    elsif ( params[:sort].to_i == 1)
-       order_by = "occurrences.start  ASC"
-    elsif (params[:sort].to_i == 2) # Distance
-       order_by = "ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(0.0174532925*#{longitude}-0.0174532925*venues.longitude)  ) ASC"
-    elsif (params[:sort].to_i == 3)
-         order_by = "events.price ASC"
-                   
-    end
+    
 
     tmp ="0"
     tmp1 ="o"
@@ -4652,19 +4639,57 @@ def gettpevents
       end
     }
     ttmp = tes.uniq{|x| x["event_id"]}
-    # ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
-    # esinfo = ttmp.drop(@offset).take(@amount)
+
+
+   
+
+
+    ttttmp = ttmp
+
+    
 
 
 
+    if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
+      # order by event score when sorting by popularity
+      ttttmp = ttmp.sort_by{ |hsh| hsh["views"].to_i }
+    elsif ( params[:sort].to_i == 1)
+      ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
+    elsif (params[:sort].to_i == 2) # Distance
+      temp = []
+      ttttmp.each{ |item|
+        log = item["longitude"].to_f*0.0174532925
+        lat = item["latitude"].to_f*0.0174532925
+        d = ACOS( SIN(latitude*0.0174532925)*SIN(lat) +COS(latitude*0.0174532925)*COS(lat)*COS(longitude*0.0174532925-log))
+        item.merge({"distance"=>d})
+        temp << item
+      }
+      ttttmp = temp.sort_by{ |hsh| hsh["distance"].to_f} 
+    elsif (params[:sort].to_i == 3)
+       ttttmp = ttmp.sort_by{ |hsh| hsh["price"].to_i }            
+    end
 
-    occurrenceIDs =  ttmp.collect { |e| e["occurrence_id"].to_i }.uniq
-    # ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
-    @allOccurrences = Occurrence.includes(:event => :venue).find(occurrenceIDs, :order => order_by)
-    # esinfo = queryResult.drop(@offset).take(@amount)
-    esinfo = @allOccurrences.drop(@offset).take(@amount)
-    # ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
-    #ids =  esinfo.collect { |e| e.id.to_i }.join(',')
+    if (!params[:distance].to_s.empty?)
+      d = params[:distance]
+      unless d.to_i == 77777
+      temp = []
+      ttttmp.each{ |item|
+        log = item["longitude"].to_f*0.0174532925
+        lat = item["latitude"].to_f*0.0174532925
+        d = ACOS( SIN(latitude*0.0174532925)*SIN(lat) +COS(latitude*0.0174532925)*COS(lat)*COS(longitude*0.0174532925-log))
+        item.merge({"cadistance"=>d})
+        temp << item
+      }
+      ttttmp.select{|item| item["cadistance"] <= d.to_f}
+
+      end 
+    end
+
+
+    
+    esinfo = ttttmp.drop(@offset).take(@amount)
+
+
 
 
 
