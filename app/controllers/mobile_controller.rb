@@ -4652,7 +4652,7 @@ def gettpevents
 
     if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
       # order by event score when sorting by popularity
-      ttttmp = ttmp.sort_by{ |hsh| hsh["views"].to_i }
+      ttttmp = ttmp.sort_by{ |a,b| a["views"].to_i  <=> b["views"].to_i}
     elsif ( params[:sort].to_i == 1)
       ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
     elsif (params[:sort].to_i == 2) # Distance
