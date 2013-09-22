@@ -4670,7 +4670,7 @@ def gettpevents
       temp = []
       ttttmp.each{ |item|
         p = 77777777777
-        if ((!item["price"].to_s.empty?) && (!item["price"].nil?) && (!item["price"].to_s.eql?(""))
+        if ((!item["price"].to_s.empty?) && (!item["price"].nil?) && (!item["price"].to_s.eql?("")))
           p = item["price"].to_f 
         end
         item.merge({"p"=>p})
