@@ -1915,7 +1915,7 @@ def FacebookLogin
 
     # date/time
     start_date_check = "occurrences.start >= '#{Date.today()}'"
-    end_date_check = start_time_check = end_time_check = day_check = "TRUE"
+    end_date_check = distance_check=start_time_check = end_time_check = day_check = "TRUE"
     occurrence_start_time = "((EXTRACT(HOUR FROM occurrences.start) * 3600) + (EXTRACT(MINUTE FROM occurrences.start) * 60))"
 
     event_start_date = event_end_date = nil
@@ -1970,7 +1970,14 @@ def FacebookLogin
       longitude = params[:longitude]
       latitude = params[:latitude] 
     end
-     
+    
+    # Check distance
+    if (!params[:distance].to_s.empty?)
+      d = params[:distance]
+      distance_check ="ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(#{longitude}-venues.longitude)  ) <= #{d}"
+
+    end
+
     # location
     if(params[:lat_min].to_s.empty? || params[:long_min].to_s.empty? || params[:lat_max].to_s.empty? || params[:long_max].to_s.empty?)
       @ZoomDelta = {
@@ -2082,7 +2089,7 @@ def FacebookLogin
               LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
               INNER JOIN recurrences ON events.id = recurrences.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE  #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL AND recurrences.end >= '#{Date.today()}'
+            WHERE #{distance_check} AND #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL AND recurrences.end >= '#{Date.today()}'
             UNION
             SELECT DISTINCT ON (events.id,users.id,bookmark_lists.id) occurrences.id AS occurrence_id, occurrences.start AS start
             FROM users
@@ -2095,7 +2102,7 @@ def FacebookLogin
               INNER JOIN venues ON events.venue_id = venues.id
               LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
+            WHERE #{distance_check} AND #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
             UNION
             SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.id AS occurrence_id, occurrences.start AS start
             FROM occurrences 
@@ -2106,7 +2113,7 @@ def FacebookLogin
               LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
               INNER JOIN recurrences ON events.id = recurrences.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL AND recurrences.end >= '#{Date.today()}'
+            WHERE #{distance_check} AND #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL AND recurrences.end >= '#{Date.today()}'
             UNION
             SELECT DISTINCT ON (events.id,acts.id) occurrences.id AS occurrence_id, occurrences.start AS start
             FROM occurrences 
@@ -2116,7 +2123,7 @@ def FacebookLogin
               INNER JOIN venues ON events.venue_id = venues.id
               LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
+            WHERE #{distance_check} AND #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
            "
     
      # query = "SELECT occurrences.id AS occurrence_id, occurrences.start AS start
