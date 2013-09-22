@@ -1974,8 +1974,9 @@ def FacebookLogin
     # Check distance
     if (!params[:distance].to_s.empty?)
       d = params[:distance]
-      distance_check ="ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(#{longitude}-venues.longitude)  ) <= #{d}"
-
+      unless d.to_i == 77777
+        distance_check ="ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(#{longitude}-venues.longitude)  ) <= #{d}"
+      end 
     end
 
     # location
