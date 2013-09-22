@@ -4801,9 +4801,9 @@ def gettpevents
               }
      esinfo << item
     }
-    ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
+    # ttttmp = esinfo.sort_by{ |hsh| hsh[:start].to_datetime }
     
-    esinfo = ttttmp.collect{|es| es.values}
+    # esinfo = ttttmp.collect{|es| es.values}
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
