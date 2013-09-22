@@ -4660,13 +4660,24 @@ def gettpevents
       ttttmp.each{ |item|
         log = item["longitude"].to_f*0.0174532925
         lat = item["latitude"].to_f*0.0174532925
-        d = ACOS( SIN(latitude*0.0174532925)*SIN(lat) +COS(latitude*0.0174532925)*COS(lat)*COS(longitude*0.0174532925-log))
+        d = Math.acos( Math.sin(latitude*0.0174532925)*Math.sin(lat) +Math.cos(latitude*0.0174532925)*Math.cos(lat)*Math.cos(longitude*0.0174532925-log))
         item.merge({"distance"=>d})
         temp << item
       }
       ttttmp = temp.sort_by{ |hsh| hsh["distance"].to_f} 
     elsif (params[:sort].to_i == 3)
-       ttttmp = ttmp.sort_by{ |hsh| hsh["price"].to_i }            
+
+      temp = []
+      ttttmp.each{ |item|
+        p = 77777777777
+        unless item["price"].to_s.empty?
+          p = item["price"].to_i 
+        end
+        item.merge({"p"=>p})
+        temp << item
+
+      }
+      ttttmp = temp.sort_by{ |hsh| hsh["p"] }            
     end
 
     if (!params[:distance].to_s.empty?)
@@ -4676,7 +4687,7 @@ def gettpevents
       ttttmp.each{ |item|
         log = item["longitude"].to_f*0.0174532925
         lat = item["latitude"].to_f*0.0174532925
-        d = ACOS( SIN(latitude*0.0174532925)*SIN(lat) +COS(latitude*0.0174532925)*COS(lat)*COS(longitude*0.0174532925-log))
+        d = Math.acos( Math.sin(latitude*0.0174532925)*Math.sin(lat) +Math.cos(latitude*0.0174532925)*Math.cos(lat)*Math.cos(longitude*0.0174532925-log))
         item.merge({"cadistance"=>d})
         temp << item
       }
