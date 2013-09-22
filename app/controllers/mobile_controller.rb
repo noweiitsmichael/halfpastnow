@@ -4430,7 +4430,7 @@ def gettpevents
 
     # date/time
     start_date_check = "occurrences.start >= '#{Date.today()}'"
-    end_date_check = start_time_check = end_time_check = day_check = "TRUE"
+    end_date_check = distance_check = start_time_check = end_time_check = day_check = "TRUE"
     occurrence_start_time = "((EXTRACT(HOUR FROM occurrences.start) * 3600) + (EXTRACT(MINUTE FROM occurrences.start) * 60))"
 
     event_start_date = event_end_date = nil
@@ -4464,6 +4464,20 @@ def gettpevents
 
     occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check} AND #{days_check}"
 
+    longitude = -97.742913
+    latitude = 30.268021
+    unless (params[:longitude].to_s.empty?)
+      longitude = params[:longitude]
+      latitude = params[:latitude] 
+    end
+    
+    # Check distance
+    if (!params[:distance].to_s.empty?)
+      d = params[:distance]
+      unless d.to_i == 77777
+        distance_check ="ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(0.0174532925*#{longitude}-0.0174532925*venues.longitude)  )<= #{d}"
+      end 
+    end
 
     # location
     if(params[:lat_min].to_s.empty? || params[:long_min].to_s.empty? || params[:lat_max].to_s.empty? || params[:long_max].to_s.empty?)
@@ -4549,7 +4563,15 @@ def gettpevents
                     WHEN 0 THEN 0
                     ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
                   END DESC"
+    elsif ( params[:sort].to_i == 1)
+       order_by = "occurrences.start  ASC"
+    elsif (params[:sort].to_i == 2) # Distance
+       order_by = "ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(0.0174532925*#{longitude}-0.0174532925*venues.longitude)  ) ASC"
+    elsif (params[:sort].to_i == 3)
+         order_by = "events.price ASC"
+                   
     end
+
     tmp ="0"
     tmp1 ="o"
     
@@ -4566,7 +4588,7 @@ def gettpevents
               LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
               INNER JOIN recurrences ON events.id = recurrences.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE bookmark_lists.featured IS NOT FALSE AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND #{days_check} AND occurrences.recurrence_id IS NOT NULL AND (recurrences.range_end >= '#{Date.today()}' OR recurrences.range_end IS NULL)
+            WHERE bookmark_lists.featured IS NOT FALSE AND #{distance_check} AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND #{days_check} AND occurrences.recurrence_id IS NOT NULL AND (recurrences.range_end >= '#{Date.today()}' OR recurrences.range_end IS NULL)
             UNION
             SELECT DISTINCT ON (events.id) events.event_url AS url,events.ticket_url AS tix,bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
             FROM users
@@ -4579,7 +4601,7 @@ def gettpevents
               INNER JOIN venues ON events.venue_id = venues.id
               LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE bookmark_lists.featured IS NOT FALSE AND occurrences.start >= '#{Date.today()}' AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{days_check} AND #{low_price_match} AND #{high_price_match}
+            WHERE bookmark_lists.featured IS NOT FALSE AND #{distance_check} AND occurrences.start >= '#{Date.today()}' AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{days_check} AND #{low_price_match} AND #{high_price_match}
             "
 
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
@@ -4630,13 +4652,29 @@ def gettpevents
       end
     }
     ttmp = tes.uniq{|x| x["event_id"]}
-    ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
+    # ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
+    # esinfo = ttmp.drop(@offset).take(@amount)
+
+
+
+
+    occurrenceIDs =  ttmp.collect { |e| e["occurrence_id"].to_i }.uniq
+    # ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
+    @allOccurrences = Occurrence.includes(:event => :venue).find(occurrenceIDs, :order => order_by)
+    # esinfo = queryResult.drop(@offset).take(@amount)
+    esinfo = @allOccurrences.drop(@offset).take(@amount)
+    # ids =  esinfo.collect { |e| e["occurrence_id"].to_i }.uniq.join(',')
+    #ids =  esinfo.collect { |e| e.id.to_i }.join(',')
+
+
+
+
     # esinfo = tes.drop(@offset).take(@amount)
     #puts "offset"
     #puts @offset
     #puts "amount"
     #puts @amount
-    esinfo = ttttmp.drop(@offset).take(@amount)
+    
     @eventIDs =  esinfo.collect { |e| e["event_id"] }.uniq
     # #puts @eventIDs
     esinfo = []
