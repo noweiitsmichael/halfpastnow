@@ -4691,7 +4691,7 @@ def gettpevents
         item.merge({"cadistance"=>k})
         temp << item
       }
-      ttttmp.select{|item| item["cadistance"] =< d.to_f}
+      ttttmp = temp.select{|item| item["cadistance"].to_f <= d.to_f}
 
       end 
     end
