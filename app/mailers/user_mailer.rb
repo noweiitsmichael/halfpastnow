@@ -18,6 +18,23 @@ class UserMailer < ActionMailer::Base
     mail(:to => @user.email, :subject => "Welcome to halfpastnow!", :from => "Half Past Now <support@halfpastnow.com>")
   end
 
+  def contest_entry_email(user)
+    # puts "sending email..."
+    ActionMailer::Base.smtp_settings = {
+      address: "smtp.gmail.com",
+      port: 587,
+      domain: "halfpastnow.com",
+      authentication: "plain",
+      enable_starttls_auto: true,
+      user_name: "support@halfpastnow.com",
+      password: "chimeralabs"
+    }
+    @user = user
+    
+    @url  = "http://halfpastnow.com/login"
+    mail(:to => @user.email, :subject => "You're entered to win ACL wristbands from halfpastnow!", :from => "Half Past Now <support@halfpastnow.com>")
+  end
+
   def vote_email(user)
     # puts "sending email..."
     ActionMailer::Base.smtp_settings = {

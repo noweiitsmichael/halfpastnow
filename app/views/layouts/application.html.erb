@@ -2,7 +2,12 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta property="fb:app_id" content="475386955806720" /> 
+  <meta property="fb:app_id" content="475386955806720" />
+
+
+
+
+
   
   <% if @pick %>
     <meta property="og:type" content="halfpastnow:toppick" />
@@ -113,9 +118,9 @@
               </li>
             </ul>
             <span class="divider"></span>
-            
-              
-            
+
+
+
             <% if false %><% end %>
             <% if user_signed_in? %>
 
@@ -131,9 +136,9 @@
             <% end %>
 
 
-            <% if user_signed_in? %>             
+            <% if user_signed_in? %>
               <div class="menu-element right nice-button" id ="add-event-button"><a href="/userSubmission/eventSearch">Add an Event!</a></div>
-            <% else %>           
+            <% else %>
               <div class="menu-element right nice-button" id ="add-event-button"><a href="#" linkto="shunt">Add an Event!</a></div>
             <% end %>
 

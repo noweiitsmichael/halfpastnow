@@ -55,7 +55,7 @@ var modalities = {
  
 $(function() {
   var toggle = false;
-  scrollbarWidth = $.getScrollbarWidth();
+  scrollbarWidth = 13;  //$.getScrollbarWidth();
   var item_id;
   $('#content .events').on('click','li',function(event) {
     if ($(".edit-popup-box:visible").length > 0) {
@@ -623,7 +623,7 @@ function showPageMarkers() {
 
 function checkScroll() {
   var mapWrapperWidth = 990;
-  if($('#body').hasScrollBar()) {
+    if(true) {//if($('#body').hasScrollBar()) {
     //$('#map-wrapper').width(mapWrapperWidth);
     $('#header').width($('#body').width() - scrollbarWidth);
     $('#sxsw-wrap').width($('#body').width() - scrollbarWidth);
