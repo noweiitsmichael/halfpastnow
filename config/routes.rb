@@ -1,6 +1,10 @@
 Myapp::Application.routes.draw do
-  
 
+  resources :unofficialacl do
+    collection do
+      post :search
+    end
+  end
 
   get "mobile/new"
 
@@ -93,7 +97,7 @@ Myapp::Application.routes.draw do
   authenticated :user do
     root :to => 'events#index'
   end
-  
+
   #root :to => 'events#new_splash'
   root :to => 'unofficialacl#index'
 

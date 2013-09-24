@@ -38,8 +38,10 @@
         </div>
         <div class="large-3 columns ptx">
           <div class="text-rounded dark">
-            <input tabindex="2" type="text" value="Search">
-            <input class="search-button" tabindex="6" type="submit" value="">
+            <%= form_tag "/unofficialacl/search" do %>
+              <%= text_field_tag :search,"", placeholder: "Search", "tabindex" => "2" %>
+              <%= submit_tag "",class: "search-button", "tabindex" => "6" %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -63,7 +65,7 @@
         <div class="large-3 small-4 columns">
           <select class="select js-select">
             <option></option>
-            <option value="Aaliyah">Happy Hours</option>
+            <option value="Aaliyah"><%=link_to "Happy Hours", search_unofficialacl_index_path(included_tags: 12), method: :post%></option>
             <option value="Barbara">Live music</option>
             <option value="Azura">For kids</option>
             <option value="Babs">Babs</option>

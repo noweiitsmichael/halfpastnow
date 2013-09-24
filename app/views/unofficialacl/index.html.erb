@@ -2,29 +2,21 @@
 <div class="wrapper row header">
   <div class="large-8 columns">
     <ul class="header-navigation">
-      <li class="current">
-        <a href="#">Official ACL</a>
-      </li>
-      <li>
-        <a href="#">Official Night Late Shows</a>
-      </li>
-      <li>
-        <a href="#">Unofficial ACL</a>
-      </li>
-      <li>
-        <a href="#">Local Recommendations</a>
-      </li>
+      <li class="current"><%= link_to "Official ACL", search_unofficialacl_index_path(included_tags: 12), method: :post %></li>
+      <li><%= link_to "Official Night Late Shows", search_unofficialacl_index_path(included_tags: 13), method: :post %></li>
+      <li><%= link_to "Unofficial ACL", search_unofficialacl_index_path(included_tags: 14), method: :post %></li>
+      <li><%= link_to "Local Recommendations", search_unofficialacl_index_path(included_tags: 15), method: :post %></li>
     </ul>
   </div>
   <div class="large-4 columns">
     <div class="small-navbar-note">Show me events with:</div>
     <div id="small-navbar">
       <ul>
-        <li><a class="active" href="index.html">Free drinks</a></li>
-        <li><a href="#">free food</a></li>
-        <li><a href="#">party</a></li>
-        <li><a href="#">no cover</a></li>
-        <li><a href="#">RSVP</a></li>
+        <li><%= link_to "Free drinks", search_unofficialacl_index_path(and_tags: 12), method: :post,class: "active" %></li>
+        <li><%= link_to "free food", search_unofficialacl_index_path(and_tags: 13), method: :post %></li>
+        <li><%= link_to "party", search_unofficialacl_index_path(and_tags: 14), method: :post %></li>
+        <li><%= link_to "no cover", search_unofficialacl_index_path(and_tags: 15), method: :post %></li>
+        <li><%= link_to "RSVP", search_unofficialacl_index_path(and_tags: 16), method: :post %></li>
       </ul>
     </div>
   </div>

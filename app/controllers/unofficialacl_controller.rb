@@ -16,11 +16,11 @@ class UnofficialaclController < ApplicationController
     end
 
     query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id,  events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
-              FROM occurrences
-                #{join_clause}
-              WHERE #{where_clause}
+              FROM occurrences #{join_clause} WHERE #{where_clause}
               AND tags.id IN (25) AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
               ORDER BY events.id, occurrences.start LIMIT 1000"
+
+    #raise query.to_yaml
 
     ids = ActiveRecord::Base.connection.select_all(query)
     @occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
@@ -31,7 +31,13 @@ class UnofficialaclController < ApplicationController
   end
 
   def search
+
     search_match = tag_include_match = tag_and_match = "TRUE"
+
+    join_clause = "INNER JOIN events ON occurrences.event_id = events.id
+                     INNER JOIN venues ON events.venue_id = venues.id
+                     LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+                     LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id"
 
     unless(params[:search].to_s.empty?)
       search = params[:search].gsub(/[^0-9a-z ]/i, '').upcase
@@ -57,7 +63,6 @@ class UnofficialaclController < ApplicationController
     # tags
     unless(params[:and_tags].to_s.empty?)
       tags_mush = params[:and_tags] * ','
-      tags_cache_included = params[:and_tags] * ','
 
       tag_and_match = "events.id IN (
                       SELECT event_id
@@ -70,6 +75,12 @@ class UnofficialaclController < ApplicationController
 
     where_clause = "#{search_match} AND #{tag_include_match} AND #{tag_and_match}"
 
+    if Time.now.hour < 17
+      start_date_where = "'#{(Time.now - 2.hours)}'"
+    else
+      start_date_where = "'#{(Time.now - 3.hours)}'"
+    end
+
     query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id,  events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
               FROM occurrences
                 #{join_clause}
@@ -77,8 +88,8 @@ class UnofficialaclController < ApplicationController
               AND tags.id IN (25) AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
               ORDER BY events.id, occurrences.start LIMIT 1000"
     ids = ActiveRecord::Base.connection.select_all(query)
-    occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
-
+    @occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
+     raise query.inspect
     render layout: "unofficialacl"
 
   end
