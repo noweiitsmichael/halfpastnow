@@ -35,61 +35,31 @@
 <div class="row">
 <!-- Big things: column left -->
 <div class="large-6 columns left ptm stretch">
-  <a href="#">
+  <% @occurrence_ids.each_with_index do |occurrence_id, count| %>
+      <% occurrence = Occurrence.find occurrence_id %>
+
+  <a href="/?event_id=<%= occurrence.id %>">
     <div class="big-event-container clearfix">
       <div class="event-image">
-        <img src="content/a.jpg">
+        <img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
       </div>
       <div class="text antialiased">
-        <p class="event-title">This is a big event</p>
-        <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
+        <p class="event-title"><%= truncate(occurrence.event.title, :length => 18) %></p>
+        <p class="event-tags">
+          <% if occurrence.event.tags.count > 0 %>
+              <% occurrence.event.tags.each_with_index  do |tag, index| %>
+                  <span><%= tag.name %></span>
+                  <% if index == 3 %><% break %><% else %>,<% end %>
+              <% end %>
+          <% end %>
+        </p>
       </div>
     </div>
   </a>
-  <a href="#">
-    <div class="big-event-container clearfix">
-      <div class="event-image">
-        <img src="content/a.jpg">
-      </div>
-      <div class="text antialiased">
-        <p class="event-title">This is a big event</p>
-        <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-      </div>
-    </div>
-  </a>
-  <a href="#">
-    <div class="big-event-container clearfix">
-      <div class="event-image">
-        <img src="content/b.jpg">
-      </div>
-      <div class="text antialiased">
-        <p class="event-title">This is a big event</p>
-        <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-      </div>
-    </div>
-  </a>
-  <a href="#">
-    <div class="big-event-container clearfix">
-      <div class="event-image">
-        <img src="content/a.jpg">
-      </div>
-      <div class="text antialiased">
-        <p class="event-title">This is a big event</p>
-        <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-      </div>
-    </div>
-  </a>
-  <a href="#">
-    <div class="big-event-container clearfix">
-      <div class="event-image">
-        <img src="content/b.jpg">
-      </div>
-      <div class="text antialiased">
-        <p class="event-title">This is a big event</p>
-        <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-      </div>
-    </div>
-  </a>
+      <% break if count == 4 %>
+  <% end %>
+
+
   <div class="by-center">Scroll Down to See More!
     <div id="triangle-down"></div>
   </div>
@@ -98,202 +68,33 @@
 <!-- Small things: column left -->
 <div class="large-6 columns right ptm stretch">
 <ul class="small-block-grid-2">
-
+  <% @occurrence_ids.each_with_index do |occurrence_id, count| %>
+      <% occurrence = Occurrence.find occurrence_id %>
   <li>
-    <a href="#">
+    <a href="/?event_id=<%= occurrence.id %>">
       <div class="small-event-container clearfix">
         <div class="event-image">
-          <img src="content/b.jpg">
+          <img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
         </div>
         <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
+          <p class="event-title"><%= truncate(occurrence.event.title, :length => 18) %></p>
+          <p class="event-tags">
+            <% if occurrence.event.tags.count > 0 %>
+                <% occurrence.event.tags.each_with_index  do |tag, index| %>
+                    <span><%= tag.name %></span>
+                    <% if index == 1 %><% break %><% else %>,<% end %>
+                <% end %>
+            <% end %>
+          </p>
         </div>
       </div>
     </a>
   </li>
+      <% break if count == 14 %>
+  <% end %>
 
-  <li>
-    <a href="#">
-      <div class="small-event-container clearfix">
-        <div class="event-image">
-          <img src="content/b.jpg">
-        </div>
-        <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-        </div>
-      </div>
-    </a>
-  </li>
 
-  <li>
-    <a href="#">
-      <div class="small-event-container clearfix">
-        <div class="event-image">
-          <img src="content/b.jpg">
-        </div>
-        <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-        </div>
-      </div>
-    </a>
-  </li>
 
-  <li>
-    <a href="#">
-      <div class="small-event-container clearfix">
-        <div class="event-image">
-          <img src="content/b.jpg">
-        </div>
-        <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-        </div>
-      </div>
-    </a>
-  </li>
-
-  <li>
-    <a href="#">
-      <div class="small-event-container clearfix">
-        <div class="event-image">
-          <img src="content/b.jpg">
-        </div>
-        <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-        </div>
-      </div>
-    </a>
-  </li>
-
-  <li>
-    <a href="#">
-      <div class="small-event-container clearfix">
-        <div class="event-image">
-          <img src="content/b.jpg">
-        </div>
-        <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-        </div>
-      </div>
-    </a>
-  </li>
-
-  <li>
-    <a href="#">
-      <div class="small-event-container clearfix">
-        <div class="event-image">
-          <img src="content/b.jpg">
-        </div>
-        <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-        </div>
-      </div>
-    </a>
-  </li>
-
-  <li>
-    <a href="#">
-      <div class="small-event-container clearfix">
-        <div class="event-image">
-          <img src="content/b.jpg">
-        </div>
-        <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-        </div>
-      </div>
-    </a>
-  </li>
-
-  <li>
-    <a href="#">
-      <div class="small-event-container clearfix">
-        <div class="event-image">
-          <img src="content/b.jpg">
-        </div>
-        <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-        </div>
-      </div>
-    </a>
-  </li>
-
-  <li>
-    <a href="#">
-      <div class="small-event-container clearfix">
-        <div class="event-image">
-          <img src="content/b.jpg">
-        </div>
-        <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-        </div>
-      </div>
-    </a>
-  </li>
-
-  <li>
-    <a href="#">
-      <div class="small-event-container clearfix">
-        <div class="event-image">
-          <img src="content/b.jpg">
-        </div>
-        <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-        </div>
-      </div>
-    </a>
-  </li>
-
-  <li>
-    <a href="#">
-      <div class="small-event-container clearfix">
-        <div class="event-image">
-          <img src="content/b.jpg">
-        </div>
-        <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-        </div>
-      </div>
-    </a>
-  </li>
-
-  <li>
-    <a href="#">
-      <div class="small-event-container clearfix">
-        <div class="event-image">
-          <img src="content/b.jpg">
-        </div>
-        <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-        </div>
-      </div>
-    </a>
-  </li>
-
-  <li>
-    <a href="#">
-      <div class="small-event-container clearfix">
-        <div class="event-image">
-          <img src="content/b.jpg">
-        </div>
-        <div class="text antialiased">
-          <p class="event-title">This is an small event</p>
-          <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
-        </div>
-      </div>
-    </a>
-  </li>
 
 </ul>
 
