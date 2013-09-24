@@ -3,30 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Un Official ACL | A Half Past Now Service</title>
-  <link href="foundation.css" media="screen" rel="stylesheet" type="text/css" />
-  <link href="bundle.css" media="screen" rel="stylesheet" type="text/css" />
+  <%= stylesheet_link_tag    "acl/foundation.css" %>
+  <%= stylesheet_link_tag    "acl/bundle.css" %>
+  <%= javascript_include_tag "application" %>
+
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-  <script src="javascripts/vendor/jquery-ui-1.8.18.custom.min.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui.js" type="text/javascript"></script>
-  <script src="javascripts/vendor/chosen.jquery.js" type="text/javascript"></script>
-  <script src="javascripts/vendor/jquery.placeholder.js" type="text/javascript"></script>
-  <script src="javascripts/jquery.sticky.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui/Equalizer.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui/appreciate.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui/commutator.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui/datepicker.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui/pagination.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui/scrollbox.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui/slideshow.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui/tabbox.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui/starbar.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui/checkbox.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui/radio.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui/player.js" type="text/javascript"></script>
-  <script src="javascripts/SCF.ui/currentlyPlaying.js" type="text/javascript"></script>
   <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA1Qi_Q7Uio7pOZKdKwiiIY4QVVIyv_yes&sensor=false">
   </script>
-  <script src="javascripts/gm.js" type="text/javascript"></script>
 </head>
 <body>
 <div class="container">
@@ -48,8 +31,8 @@
     <div class="pink-banner">
       <div class="wrapper row">
         <div class="large-9 columns">
-          <a class="callout" tabindex="1" href="http://halfpastnow.com">
-            <img src="images/layout/hpn-marker.png">
+          <a class="callout" tabindex="1" href="http://www.halfpastnow.com">
+            <img src="/assets/acl/layout/hpn-marker.png">
             <p>See Even More Awesome Events at <span>HalfPastNow.com!</span></p>
           </a>
         </div>
@@ -94,7 +77,7 @@
     <div id="googleMap"></div>
   </div>
 
-  <%= yield :code %>
+  <%= yield %>
 
   <div class="footer row">
     <div class="small-6 small-centered columns by-center">
