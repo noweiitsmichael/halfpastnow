@@ -3,6 +3,7 @@ Myapp::Application.routes.draw do
   resources :unofficialacl do
     collection do
       post :search
+      get :show_event
     end
   end
 
