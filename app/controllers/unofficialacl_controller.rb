@@ -98,6 +98,15 @@ class UnofficialaclController < ApplicationController
 
   def show_event
     @occurrence = Occurrence.find params[:event_id]
+    @event = @occurrence.event
+    @venue = @occurrence.event.venue
+    @acts = @event.acts
+    render layout: "unofficialacl"
+  end
+
+  def show_venue
+    @occurrence = Occurrence.find params[:event_id]
+    @venue = @occurrence.event.venue
     render layout: "unofficialacl"
   end
 
