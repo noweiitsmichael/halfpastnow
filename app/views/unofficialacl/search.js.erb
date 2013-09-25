@@ -1,1 +1,8 @@
-$('div#search_content').html("<%= escape_javascript(render :partial => 'results')%>");
+<% if params[:page].present? %>
+$('div#search_content').append("<%= escape_javascript(render :partial => 'results', locals: {occurrences: @occurrences})%>")
+<% else %>
+$('div#search_content').html("<%= escape_javascript(render :partial => 'results', locals: {occurrences: @occurrences})%>")
+<% end %>
+
+$('#next_page').val(<%= @occurrences.next_page %>);
+$('#total_pages').val(<%= @occurrences.total_pages %>);
