@@ -102,8 +102,8 @@
       <div class="mll mrl clearfix">
         <h1 class="title"><%= @event.title %></h1>
         <ul class="details">
-          <li>The house of music</li>
-          <li>9:00pm</li>
+          <li><%= @event.venue.name %></li>
+          <li><%= @occurrence.start.to_time.strftime("%I:%M%p") %></li>
         </ul>
       </div>
       <div class="mll mrl mbl">
@@ -114,10 +114,12 @@
         <% end %>
       </div>
       <div class="text-center">
-        <a href="#" class="button-huge positive">
+        <% if !@event.ticket_url.blank? %>
+        <a href="<%= @event.ticket_url %>" class="button-huge positive">
           RESERVE NOW
           <span class="button-description">I Won't Miss It!</span>
         </a>
+        <% end %>
       </div>
     </div>
 
@@ -135,7 +137,7 @@
       <div class="row">
         <div class="event-picture">
               <img src="<%= @venue.pictures.first ? @venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
-          <div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>?80</div>
+          <% if false %><div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>?80</div> <% end %>
         </div>
       </div>
 
@@ -201,24 +203,19 @@
         </div>
 
         <ul class="features upcoming">
+          <% @recurrences.each do |rec| %>
           <li class="row">
             <div class="small-3 columns">
               <img src="content/a.jpg">
             </div>
             <div class="small-9 columns">
-              <h2 class="pbm">Alvin and the chipmunks</h2>
-              <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie est ut facilisis convallis. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+              <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
+              <% unless rec.event.description.to_s.empty? %>
+                  <p> <%= raw(rec.event.description) %> </p>
+              <% end %>
             </div>
           </li>
-          <li class="row">
-            <div class="small-3 columns">
-              <img src="content/a.jpg">
-            </div>
-            <div class="small-9 columns">
-              <h2 class="pbm">Alvin and the chipmunks</h2>
-              <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie est ut facilisis convallis. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
-            </div>
-          </li>
+          <% end %>
         </ul>
       </div>
 
