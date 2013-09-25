@@ -1,6 +1,7 @@
 <% params[:included_tags] = params[:included_tags].present? ? params[:included_tags] : '230'   %>
 <% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : '166'   %>
 
+<% unless params[:page].to_i > 1  %>
 <div class="wrapper row header">
   <div class="large-8 columns">
     <ul id="tab-anchors" class="header-navigation">
@@ -32,6 +33,7 @@
     </div>
   </div>
 </div>
+<% end %>
 
 <!-- tab offical ACL -->
 <div class="content tab" id="tab-1">
@@ -58,6 +60,7 @@
           </div>
         </div>
       <% break if count == 4 %>
+      <a href="#" class="scrollup pull-right">Scroll</a>
     <% end %>
     <div class="by-center">Scroll Down to See More!
       <div id="triangle-down"></div>
