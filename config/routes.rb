@@ -103,15 +103,15 @@ Myapp::Application.routes.draw do
   root :to => 'events#new_splash'
   #root :to => 'unofficialacl#index'
 
-  # root :to => 'unofficialacl#index', :conditions => { :host => "www.unofficialacl.com" }
+  root :to => 'unofficialacl#index', :conditions => { :host => "www.unofficialacl.com" }
   # map.connect "", :controller => "unofficialacl", :conditions => { :host => "www.unofficialacl.com" }
 
 
-# Below did not work when it was just root :to 'unofficialacl#index'
-constraints(:host => /^unofficialacl.com/) do 
-     root :to => 'unofficialacl#index'
-     # match '/*path', :to => redirect {|params| "http://www.unofficialacl.com/#{params[:path]}"} 
-end 
+# Below did not work when it was just root :to 'unofficialacl#index', with or without carrot in front of host def.
+# constraints(:host => /^unofficialacl.com/) do 
+#      root :to => 'unofficialacl#index'
+#      # match '/*path', :to => redirect {|params| "http://www.unofficialacl.com/#{params[:path]}"} 
+# end 
   # See how all your routes lay out with "rake routes"
 
   # TODO: overcome the stupidity that is rails 3 routing and clean this up.

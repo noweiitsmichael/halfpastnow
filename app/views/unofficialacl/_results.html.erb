@@ -9,13 +9,13 @@
         <%= link_to "Official ACL", search_unofficialacl_index_path(and_tags: 230), method: :post, remote:true %>
       </li>
       <li id="tab-anchor-2" class = <%= (params[:and_tags].include? '247') ? "current" : "" %>>
-        <%= link_to "Official Night Late Shows", search_unofficialacl_index_path(and_tags: 247), method: :post, remote:true %>
+        <%= link_to "Official Late Night Shows", search_unofficialacl_index_path(and_tags: 247), method: :post, remote:true %>
       </li>
       <li id="tab-anchor-3" class = <%= (params[:and_tags].include? '232') ? "current" : "" %>>
         <%= link_to "Unofficial ACL", search_unofficialacl_index_path(and_tags: 232), method: :post, remote:true %>
       </li>
       <li id="tab-anchor-4" class = <%= (params[:and_tags].include? '15') ? "current" : "" %>>
-        <%= link_to "Local Recommendations", search_unofficialacl_index_path(and_tags: 15), method: :post, remote:true %>
+        <a href="unofficialacl.wordpress.com">Local Recommendations</a>
       </li>
     </ul>
   </div>
