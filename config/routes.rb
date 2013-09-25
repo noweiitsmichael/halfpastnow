@@ -102,7 +102,7 @@ Myapp::Application.routes.draw do
   #root :to => 'unofficialacl#index'
 
   root :to => 'unofficialacl#index', :conditions => { :host => "www.unofficialacl.com" }
-  map.connect "", :controller => "unofficialacl", :conditions => { :host => "www.unofficialacl.com" }
+  # map.connect "", :controller => "unofficialacl", :conditions => { :host => "www.unofficialacl.com" }
 
   # See how all your routes lay out with "rake routes"
 
