@@ -1,19 +1,27 @@
 <div class="wrapper row header">
   <div class="small-12 columns">
     <ul id="tab-anchors" class="header-navigation">
+      <% unless @event.nil? %>
       <li id="tab-anchor-1" class="current">
         <a href="javascript:ShowTab(1);">Event overview</a>
       </li>
+      <% end %>
+      <% unless @venue.nil? %>
       <li id="tab-anchor-2">
         <a href="javascript:ShowTab(2);">Venue details</a>
       </li>
+      <% end %>
+      <% unless @acts.empty? %>
       <li id="tab-anchor-3">
         <a href="javascript:ShowTab(3);">Artist details</a>
       </li>
+      <% end %>
     </ul>
   </div>
 </div>
 
+
+<% unless @event.nil? %>
 <!-- tab event overview -->
 <div class="content tab" id="tab-1">
   <div class="row">
@@ -22,10 +30,14 @@
 
       <div class="row">
         <div class="event-picture">
-          <img src="http://lorempixel.com/480/320/nightlife">
-          <div class="sticker pack detail-badge"><div class="sticker-discount">$30</div><div class="sticker-label">1 beer</div></div>
+          <img src="<%= @event.pictures.first ? @event.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
+          <% if @event.price && @event.price != 0 %>
+              <div class="sticker pack detail-badge"><div class="sticker-discount"><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 0) : "" %></div><div class="sticker-label"></div></div>
+          <% end %>
         </div>
       </div>
+
+      <% unless @event.acts.length == 0 %>
       <div class="row">
         <div class="small-9 small-offset-3 columns">
           <h1 class="featuring-title">Featuring:</h1>
@@ -33,25 +45,20 @@
       </div>
 
       <ul class="features">
+        <% @event.acts.each do |act| %>
         <li class="row">
           <div class="small-3 columns">
             <img src="content/a.jpg">
           </div>
           <div class="small-9 columns">
-            <h2 class="pbm">Alvin and the chipmunks</h2>
-            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie est ut facilisis convallis. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+            <h2 class="pbm"><%= act.name %></h2>
+            <p>  ?? </p>
           </div>
         </li>
-        <li class="row">
-          <div class="small-3 columns">
-            <img src="content/a.jpg">
-          </div>
-          <div class="small-9 columns">
-            <h2 class="pbm">Alvin and the chipmunks</h2>
-            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie est ut facilisis convallis. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
-          </div>
-        </li>
+        <% end %>
       </ul>
+      <% end %>
+      <% if false %>
       <div class="row ptl">
         <div class="large-6 columns">
           <div class="user-slug">
@@ -81,27 +88,30 @@
             <div class="star"></div>
             <div class="star"></div>
             <div class="starbar-rating">
-              Rating: 175
+               ? Rating: 175
             </div>
           </div>
         </div>
       </div>
+      <% end %>
 
     </div>
 
     <!-- Small things: column right -->
     <div class="large-6 columns rightCol stretch">
       <div class="mll mrl clearfix">
-        <h1 class="title">A night with the stars</h1>
+        <h1 class="title"><%= @event.title %></h1>
         <ul class="details">
           <li>The house of music</li>
           <li>9:00pm</li>
         </ul>
       </div>
       <div class="mll mrl mbl">
+        <% unless @event.description.to_s.empty? %>
         <p class="text">
-          Suspendisse et consequat turpis. Aliquam tincidunt arcu ac porta commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus sit amet gravida ligula. Donec eu varius erat. Curabitur tincidunt tellus nec erat ornare commodo. Duis feugiat felis id quam luctus, fermentum ultricies erat blandit. Fusce iaculis ut enim non iaculis. Vivamus vel risus in urna convallis sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut tristique vehicula enim at dignissim. Donec porttitor, augue ac aliquet malesuada, diam elit malesuada augue, sed viverra tortor lectus vel magna. Aenean porta diam sit amet dapibus auctor. Proin scelerisque felis at pellentesque blandit.
+          <%= raw(@event.description) %>
         </p>
+        <% end %>
       </div>
       <div class="text-center">
         <a href="#" class="button-huge positive">
@@ -113,7 +123,9 @@
 
   </div>
 </div>
+<% end %>
 
+<% unless @venue.nil? %>
 <!-- the next tab venue details  -->
 <div class="content tab" id="tab-2">
   <div class="row">
@@ -122,17 +134,20 @@
 
       <div class="row">
         <div class="event-picture">
-          <img src="http://lorempixel.com/480/320/nightlife">
-          <div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>80</div>
+              <img src="<%= @venue.pictures.first ? @venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
+          <div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>?80</div>
         </div>
       </div>
 
       <div class="row ptl">
         <div class="small-8 small-offset-4 columns">
-          <p> Suspendisse et consequat turpis. Aliquam tincidunt arcu ac porta commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus sit amet gravida ligula. Donec eu varius erat. Curabitur tincidunt tellus nec erat ornare commodo. Duis feugiat felis id quam luctus, fermentum ultricies erat blandit. Fusce iaculis ut enim non iaculis. Vivamus vel risus in urna convallis sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut tristique vehicula enim at dignissim. Donec porttitor, augue ac aliquet malesuada, diam elit malesuada augue, sed viverra tortor lectus vel magna. Aenean porta diam sit amet dapibus auctor. Proin scelerisque felis at pellentesque blandit. </p>
+          <% unless @venue.description.to_s.empty? %>
+          <p> <%= raw(@venue.description) %> </p>
+          <% end %>
         </div>
       </div>
 
+      <% if false %>
       <div class="row ptl">
         <div class="small-8 small-offset-4 columns">
           <div class="user-slug">
@@ -162,21 +177,22 @@
             <div class="star"></div>
             <div class="star"></div>
             <div class="starbar-rating">
-              Rating: 175
+              ?Rating: 175
             </div>
           </div>
         </div>
       </div>
+      <% end %>
 
     </div>
 
     <!-- Small things: column right -->
     <div class="large-6 columns rightCol stretch">
       <div class="mll mrl clearfix">
-        <h1 class="title">The house of music</h1>
+        <h1 class="title"><%= @event.venue.name %></h1>
         <ul class="details">
-          <li><i class="icon-map-marker pull-left icon-large mbl"></i> 123 Terrace Street<br>34571</li>
-          <li><a href="tel:1-800-555-555"><i class="icon-mobile-phone icon-large"></i> 1-800-555-555</a></li>
+          <li><i class="icon-map-marker pull-left icon-large mbl"></i> <%= @event.venue.address %><br><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></li>
+          <li><a href="tel:1-800-555-555"><i class="icon-mobile-phone icon-large"></i> <%= @venue.phonenumber %></a></li>
         </ul>
         <div class="row">
           <div class="small-12 columns">
@@ -210,7 +226,9 @@
 
   </div>
 </div>
+<% end %>
 
+<% unless @acts.empty? %>
 <!-- the last tab artist details -->
 <div class="content tab" id="tab-3">
   <div class="row">
@@ -280,6 +298,6 @@
 
   </div>
 </div>
-
+<% end %>
 <!-- end tabs -->
 
