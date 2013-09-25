@@ -100,16 +100,16 @@ Myapp::Application.routes.draw do
     root :to => 'events#index'
   end
 
-  #root :to => 'events#new_splash'
+  root :to => 'events#new_splash'
   #root :to => 'unofficialacl#index'
 
   # root :to => 'unofficialacl#index', :conditions => { :host => "www.unofficialacl.com" }
   # map.connect "", :controller => "unofficialacl", :conditions => { :host => "www.unofficialacl.com" }
 
-# constraints(:host => /unofficialacl.com/) do 
-#      root :to => 'unofficialacl#index'
-#      match '/*path', :to => redirect {|params| "http://www.unofficialacl.com/#{params[:path]}"} 
-# end 
+constraints(:host => /unofficialacl.com/) do 
+     root :to => 'unofficialacl#index'
+     match '/*path', :to => redirect {|params| "http://www.unofficialacl.com/#{params[:path]}"} 
+end 
   # See how all your routes lay out with "rake routes"
 
   # TODO: overcome the stupidity that is rails 3 routing and clean this up.
