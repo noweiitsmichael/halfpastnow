@@ -4,6 +4,7 @@ Myapp::Application.routes.draw do
     collection do
       post :search
       get :show_event
+      get :show_venue
     end
   end
 
