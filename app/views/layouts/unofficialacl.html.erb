@@ -2,21 +2,32 @@
 <html lang="en-US">
 <head>
   <meta charset="UTF-8">
-  <title>Un Official ACL | A Half Past Now Service</title>
-  <%= stylesheet_link_tag    "acl/foundation.css" %>
+  <title>Unnofical ACL | A Half Past Now Service</title>
+  <%= stylesheet_link_tag    "acl/grid.css" %>
   <%= stylesheet_link_tag    "acl/bundle.css" %>
+  <%= stylesheet_link_tag    "acl/simpletextrotator.css" %>
   <%= javascript_include_tag "application" %>
 
+  <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+  <script src="/assets/acl/vendor/jquery-ui-1.8.18.custom.min.js" type="text/javascript"></script>
+  <script src="/assets/acl/SCF.ui.js" type="text/javascript"></script>
+  <script src="/assets/acl/vendor/chosen.jquery.js" type="text/javascript"></script>
+  <script src="/assets/acl/vendor/jquery.placeholder.js" type="text/javascript"></script>
+  <script src="/assets/acl/jquery.sticky.js" type="text/javascript"></script>
+  <script src="/assets/acl/vendor/jquery.simple-text-rotator.min.js" type="text/javascript"></script>
+
   <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA1Qi_Q7Uio7pOZKdKwiiIY4QVVIyv_yes&sensor=false">
   </script>
+  <script src="/assets/acl/gm.js" type="text/javascript"></script>
 </head>
 <body>
 <div class="container">
   <div class="top-container">
     <div class="top row">
       <div class="small-6 large-3 columns">
-        <div class="logo-container"><div class="logo">Unofficial ACL</div></div>
+        <div class="logo-container"><div class="logo"><img src="/assets/acl/layout/logo-glow.png"> </div></div>
       </div>
       <div class="small-6 large-9 columns">
         <div class="tagline">
@@ -33,12 +44,12 @@
         <div class="large-9 columns">
           <a class="callout" tabindex="1" href="http://www.halfpastnow.com">
             <img src="/assets/acl/layout/hpn-marker.png">
-            <p>See Even More Awesome Events at <span>HalfPastNow.com!</span></p>
+            <p>See Even More <span class="rotate">Awesome, Incredible, Exciting, Fun, Touching, Healthy, Fancy, Funny, Fantastic, Great</span> Events at HalfPastNow.com!</p>
           </a>
         </div>
         <div class="large-3 columns ptx">
           <div class="text-rounded dark">
-            <%= form_tag "/unofficialacl/search" do %>
+            <%= form_tag "/unofficialacl/search", remote: true  do %>
               <%= text_field_tag :search,"", placeholder: "Search", "tabindex" => "2" %>
               <%= submit_tag "",class: "search-button", "tabindex" => "6" %>
             <% end %>
@@ -63,14 +74,8 @@
           <h3 class="ptx">You are seeing: </h3>
         </div>
         <div class="large-3 small-4 columns">
-          <select class="select js-select">
-            <option></option>
-            <option value="Aaliyah"><%=link_to "Happy Hours", search_unofficialacl_index_path(included_tags: 12), method: :post%></option>
-            <option value="Barbara">Live music</option>
-            <option value="Azura">For kids</option>
-            <option value="Babs">Babs</option>
-            <option value="Fox">Fox</option>
-          </select>
+          <%= select_tag :search_tag, options_for_select([["Happy Hours","Happy Hours"],["Live music","Live music"]]), :include_blank => true,
+                         :onchange => "$.post('/unofficialacl/search', {'_method':'post', 'search':this.value} );" %>
         </div>
       </div>
     </div>
@@ -89,7 +94,7 @@
   </div>
 </div>
 
-<script src="javascripts/script.js" type="text/javascript"></script>
+
 
 <!-- Live Reload -->
 
@@ -97,6 +102,7 @@
 
 <!-- -->
 
+<script src="/assets/acl/script.js" type="text/javascript"></script>
 
 </body>
 </html>

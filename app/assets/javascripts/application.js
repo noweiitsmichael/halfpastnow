@@ -18,4 +18,3 @@
 //= require history.min
 //= require h5utils
 //= require half.main
-//= require_tree ./acl

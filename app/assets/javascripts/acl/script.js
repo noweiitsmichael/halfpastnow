@@ -8,7 +8,7 @@ $(window).bind('resize', function(e)
   }, 200);
 });
 
-$(function(){
+$(window).load(function(){
 
     var H = 0;
     $(".stretch").each(function(i){
@@ -38,12 +38,66 @@ $(function(){
 	        	$('#map').hide();
 	        	$('#map-onoff').removeClass("on").addClass("off");
 	        };
-	    } else if(y_scroll_pos < 10) {
-	    	if ($('#map-onoff').hasClass('off')) {
-	        	$('#map').show();
-	        	$('#map-onoff').removeClass("off").addClass("on");
-	        };
-	    }
+	    }; 
 	});
+
+    $(".big-event-container, .small-event-container").click(function(){
+        window.location=$(this).find("a").attr("href");return false;
+    });
     	
+    $(".big-event-container, .small-event-container").hover(function(){
+        $(this).find(".event-image img").addClass("blur");
+    }, function(){
+        $(this).find(".event-image img").removeClass("blur");
+    });
+
+    $(".big-event-container").hover(function(){
+        $(this).find(".text").css("background-color","rgba(255,255,255,0)");
+        $(this).find("a.event-title").css("color","white");
+    }, function(){
+        $(this).find(".text").css("background-color","rgba(255,255,255,.8)");
+        $(this).find("a.event-title").css("color","#0D0500");
+    });
+
+    $(".small-event-container").hover(function(){
+        $(this).find(".text").css("top","0px");
+    }, function(){
+        $(this).find(".text").css("top","inherit");
+    });
+
+
+    $(".filter").click(function(){
+        if ($(this).find('a').hasClass('active')) {
+            $(this).find('a').removeClass('active');
+        } else {
+            $(this).find('a').addClass('active');
+        }
+    });
+
+    $(".rotate").textrotator({
+      animation: "flip", // You can pick the way it animates when rotating through words. Options are dissolve (default), fade, flip, flipUp, flipCube, flipCubeUp and spin.
+      separator: ",", // If you don't want commas to be the separator, you can define a new separator (|, &, * etc.) by yourself using this field.
+      speed: 5000 // How many milliseconds until the next word show.
+    });
+
+
 });
+
+// very simple tabs
+function ShowTab(num){
+  $('#tab-anchors li').removeClass('current');
+  $('#tab-anchor-' + num).addClass('current');
+
+  $('.tab').hide();
+  $('#tab-' + num).fadeIn("slow");
+}
+
+
+// make logo glow
+
+var $FlickImg = $('.logo img'), c = 0;
+
+(function loop(){
+  var time = ~~(Math.random()*600) + 1; // increase the value affecting random to change max duration of flickering
+  $FlickImg.delay( time ).fadeTo(30, ++c%2, loop);
+})();

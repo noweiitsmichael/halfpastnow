@@ -23,15 +23,14 @@ class UnofficialaclController < ApplicationController
     #raise query.to_yaml
 
     ids = ActiveRecord::Base.connection.select_all(query)
-    @occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
-
-    #raise @occurrence_ids.to_yaml
+    occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
+    @occurrences = Occurrence.where("id in (?)",occurrence_ids)
+    #raise @occurrences.to_yaml
 
     render layout: "unofficialacl"
   end
 
   def search
-
     search_match = tag_include_match = tag_and_match = "TRUE"
 
     join_clause = "INNER JOIN events ON occurrences.event_id = events.id
@@ -53,6 +52,10 @@ class UnofficialaclController < ApplicationController
 
     if(params[:included_tags] && params[:included_tags].is_a?(String))
       params[:included_tags] = params[:included_tags].split(",")
+    end
+
+    if(params[:and_tags] && params[:and_tags].is_a?(String))
+      params[:and_tags] = params[:and_tags].split(",")
     end
 
     unless(params[:included_tags].to_s.empty?)
@@ -88,14 +91,14 @@ class UnofficialaclController < ApplicationController
               AND tags.id IN (25) AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
               ORDER BY events.id, occurrences.start LIMIT 1000"
     ids = ActiveRecord::Base.connection.select_all(query)
-    @occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
-     raise query.inspect
-    render layout: "unofficialacl"
-
+    occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
+    @occurrences = Occurrence.where("id in (?)",occurrence_ids)
+    #render layout: "unofficialacl"
   end
 
-  def show
-
+  def show_event
+    @occurrence = Occurrence.find params[:event_id]
+    render layout: "unofficialacl"
   end
 
   def find_all

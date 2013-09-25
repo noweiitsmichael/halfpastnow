@@ -171,6 +171,78 @@ textarea {
     clear: both;
     visibility: hidden; }
 
+.col1of2,
+.col1of3, .col2of3,
+.col1of4, .col2of4, .col3of4,
+.col1of5, .col2of5, .col3of5, .col4of5,
+.col1of6, .col2of6, .col3of6, .col4of6, .col5of6 {
+  float: left; }
+
+.last-col {
+  display: table-cell;
+  float: none;
+  width: auto;
+  _margin-right: -3px;
+  _left: -3px;
+  _position: relative;
+  *display: block;
+  *zoom: 1; }
+  .last-col:after {
+    content: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .";
+    clear: both;
+    display: block;
+    height: 0 !important;
+    line-height: 0;
+    visibility: hidden; }
+
+.col1of2 {
+  width: 50%; }
+
+.col1of3 {
+  width: 33.33333%; }
+
+.col2of3 {
+  width: 66.66666%; }
+
+.col1of4 {
+  width: 25%; }
+
+.col3of4 {
+  width: 75%; }
+
+.col1of5 {
+  width: 20%; }
+
+.col2of5 {
+  width: 40%; }
+
+.col3of5 {
+  width: 60%; }
+
+.col4of5 {
+  width: 80%; }
+
+.col1of6 {
+  width: 16.66666%; }
+
+.col2of6 {
+  width: 33.33333%; }
+
+.col3of6 {
+  width: 50%; }
+
+.col4of6 {
+  width: 66.66666%; }
+
+.col5of6 {
+  width: 83.33333%; }
+
+.right {
+  float: right; }
+
+.left {
+  float: left; }
+
 .center {
   margin-left: auto;
   margin-right: auto; }
@@ -402,7 +474,7 @@ a {
   -webkit-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.4), 1px 1px 0 rgba(255, 255, 255, 0.15);
   -moz-box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.4), 1px 1px 0 rgba(255, 255, 255, 0.15);
   box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.4), 1px 1px 0 rgba(255, 255, 255, 0.15);
-  behavior: url("javascripts/vendor/PIE.htc"); }
+  behavior: url("/assets/acl/vendor/PIE.htc"); }
   .crosslink:hover {
     background-color: #0d0500;
     color: #bbbbbb; }
@@ -424,15 +496,15 @@ a {
 .logo-container {
   display: table-cell;
   vertical-align: middle;
-  height: 130px; }
+  height: 130px;
+  width: 150px; }
 
 .logo {
-  width: 188px;
-  height: 50px;
-  text-indent: -9999px;
+  width: 150px;
+  height: 100px;
   display: inline-block;
   background-image: url("/assets/acl/layout/logo.png");
-  background-size: 188px 50px;
+  background-size: 150px 100px;
   background-repeat: no-repeat; }
 
 .tagline {
@@ -465,13 +537,12 @@ a {
     float: left;
     margin-right: 10px; }
   .pink-banner p {
-    float: left;
+    display: block;
+    overflow: hidden;
     line-height: 30px;
+    height: 30px !important;
     font-size: 16px;
     font-weight: 900; }
-    .pink-banner p span {
-      font-style: italic;
-      text-decoration: underline; }
 
 .toolbar {
   background-color: #0d0500; }
@@ -590,9 +661,9 @@ a {
       top: 0;
       left: 0; } }
 
-.content .left {
+.content .leftCol {
   background-color: #3a3430; }
-.content .right {
+.content .rightCol {
   background-color: #5e5956; }
 
 .event-image {
@@ -628,7 +699,8 @@ a {
     .big-event-container .text .event-title, .big-event-container .text-rounded .event-title {
       font-weight: 100;
       font-size: 52px;
-      text-transform: capitalize; }
+      text-transform: capitalize;
+      text-decoration: none; }
       @media only screen and (max-width: 767px) {
         .big-event-container .text .event-title, .big-event-container .text-rounded .event-title {
           font-size: 46px; } }
@@ -660,7 +732,8 @@ a {
     .small-event-container .text .event-title, .small-event-container .text-rounded .event-title {
       font-weight: 100;
       font-size: 26px;
-      text-transform: capitalize; }
+      text-transform: capitalize;
+      text-decoration: none; }
     .small-event-container .text .event-tags, .small-event-container .text-rounded .event-tags {
       font-size: 12px;
       font-weight: 300; }
@@ -695,6 +768,87 @@ a.callout:hover {
   margin-left: auto;
   margin-right: auto; }
 
+.rightCol li {
+  padding-bottom: 2px !important; }
+
+.blur {
+  filter: blur(20px);
+  -webkit-filter: blur(20px);
+  -moz-filter: blur(20px) !important;
+  -o-filter: blur(20px);
+  -ms-filter: blur(20px); }
+
+.detail-badge {
+  top: -52px;
+  left: 12px; }
+
+.popular-badge {
+  top: -65px;
+  left: 24px;
+  height: 124px !important; }
+
+.event-picture {
+  height: 320px;
+  width: 480px;
+  margin: 0 auto; }
+  .event-picture img {
+    max-height: 100%;
+    width: auto; }
+
+.featuring-title {
+  padding: 20px 0;
+  font-weight: 900; }
+  .featuring-title.upcoming {
+    border-top: 1px solid #ff0073; }
+
+.features li {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px 0 !important; }
+  .features li:last-child {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.features.upcoming li {
+  border-top: 1px solid #3a3430;
+  margin: 0px !important; }
+  .features.upcoming li:last-child {
+    border-bottom: 1px solid #3a3430; }
+
+.title {
+  display: table-cell;
+  vertical-align: bottom;
+  font-weight: 100;
+  font-size: 72px;
+  border-bottom: 1px solid #ff0073;
+  text-transform: capitalize;
+  height: 320px;
+  left: 0;
+  bottom: 0; }
+
+.details {
+  margin: 10px 0; }
+  .details li {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 20px; }
+    .details li:last-child {
+      float: right; }
+    .details li a {
+      text-decoration: none; }
+      .details li a:hover {
+        color: #ff0073; }
+
+.text, .text-rounded {
+  font-size: 14px; }
+
+.tab {
+  display: none; }
+
+#tab-1 {
+  display: block; }
+
+.pinkrule {
+  border: none;
+  border-top: 1px solid #ff0073; }
+
 .button, .button-huge {
   border-radius: 20px;
   color: rgba(0, 0, 0, 0.66);
@@ -728,7 +882,7 @@ a.callout:hover {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  behavior: url("javascripts/vendor/PIE.htc"); }
+  behavior: url("/assets/acl/vendor/PIE.htc"); }
   .button:hover, .button-huge:hover, .button:focus, .button-huge:focus {
     color: rgba(0, 0, 0, 0.8);
     -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), inset 1px 1px 1px rgba(255, 255, 255, 0.3), inset 0 -1px 5px rgba(0, 0, 0, 0.4);
@@ -909,12 +1063,13 @@ input.button, input.button-huge {
     -webkit-box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.06);
     -moz-box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.06);
     box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.06);
-    behavior: url("javascripts/vendor/PIE.htc"); }
+    behavior: url("/assets/acl/vendor/PIE.htc"); }
   .select .selected, .select-arrowed .selected {
     background-color: #15040a;
     border-radius: 30px;
     color: #cccccc;
     font-weight: 900;
+    font-size: 12px;
     cursor: pointer;
     display: block;
     height: 26px;
@@ -931,7 +1086,7 @@ input.button, input.button-huge {
     -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
     line-height: 16px \9;
-    behavior: url("javascripts/vendor/PIE.htc"); }
+    behavior: url("/assets/acl/vendor/PIE.htc"); }
     .select .selected:hover, .select-arrowed .selected:hover {
       background-color: black; }
       .select .selected:hover .icon, .select-arrowed .selected:hover .icon {
@@ -1032,7 +1187,7 @@ input[type='password'] {
     -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
     padding-top: 4px \9;
-    behavior: url("javascripts/vendor/PIE.htc"); }
+    behavior: url("/assets/acl/vendor/PIE.htc"); }
     .text.dark input[type='text']:-moz-placeholder, .dark.text-rounded input[type='text']:-moz-placeholder,
     .text.dark input[type='password']:-moz-placeholder,
     .dark.text-rounded input[type='password']:-moz-placeholder {
@@ -1073,7 +1228,7 @@ input[type='password'] {
     background-image: linear-gradient(top, #fdfdfd, #9a9a9a);
     -pie-background: linear-gradient(#fdfdfd, #9a9a9a);
     padding-top: 5px \9;
-    behavior: url("javascripts/vendor/PIE.htc"); }
+    behavior: url("/assets/acl/vendor/PIE.htc"); }
     .text.light input[type='text']:-moz-placeholder, .light.text-rounded input[type='text']:-moz-placeholder,
     .text.light input[type='password']:-moz-placeholder,
     .light.text-rounded input[type='password']:-moz-placeholder {
@@ -1134,13 +1289,13 @@ input[type='password'] {
   border-radius: 30px;
   padding-left: 16px;
   padding-right: 16px;
-  behavior: url("javascripts/vendor/PIE.htc"); }
+  behavior: url("/assets/acl/vendor/PIE.htc"); }
 
 .text input.search-button, .text-rounded input.search-button {
   background-image: url("/assets/acl/text-input/search-button.png"); }
 
 .appreciate {
-  background: url("/assets/acl/appreciate/splash.png") 0 0 no-repeat;
+  background: transparent url("/assets/acl/appreciate/splash.png") 0 0 no-repeat;
   display: block;
   cursor: pointer;
   font-size: 13px;
@@ -1170,7 +1325,7 @@ input[type='password'] {
   -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
   -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
-  behavior: url("javascripts/vendor/PIE.htc"); }
+  behavior: url("/assets/acl/vendor/PIE.htc"); }
   .circle-banner .banner-inner {
     padding-top: 20px; }
   .circle-banner .banner-description {
@@ -1220,6 +1375,7 @@ input[type='password'] {
   cursor: pointer;
   display: inline-block;
   font-weight: bold;
+  font-size: 12px;
   height: 26px;
   overflow: hidden;
   position: relative;
@@ -1227,7 +1383,7 @@ input[type='password'] {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  behavior: url("javascripts/vendor/PIE.htc"); }
+  behavior: url("/assets/acl/vendor/PIE.htc"); }
   .commutator.on {
     color: #15040a;
     text-shadow: 0 1px rgba(255, 255, 255, 0.2);
@@ -1341,7 +1497,7 @@ input[type='password'] {
   background-image: -o-linear-gradient(top, #d9aed8, #db9bda);
   background-image: linear-gradient(top, #d9aed8, #db9bda);
   -pie-background: linear-gradient(#d9aed8, #db9bda);
-  behavior: url("javascripts/vendor/PIE.htc"); }
+  behavior: url("/assets/acl/vendor/PIE.htc"); }
   .currently-playing:after {
     background-color: rgba(255, 255, 255, 0.4);
     border-radius: 10px;
@@ -1702,7 +1858,7 @@ input[type='password'] {
   -webkit-box-shadow: inset 0 1px 0 #0d0500, 0 1px 0 rgba(255, 255, 255, 0.06);
   -moz-box-shadow: inset 0 1px 0 #0d0500, 0 1px 0 rgba(255, 255, 255, 0.06);
   box-shadow: inset 0 1px 0 #0d0500, 0 1px 0 rgba(255, 255, 255, 0.06);
-  behavior: url("javascripts/vendor/PIE.htc"); }
+  behavior: url("/assets/acl/vendor/PIE.htc"); }
   .login-block .login-ear {
     background: url("/assets/acl/login-block/ear.png") 0 0 no-repeat;
     height: 13px;
@@ -1748,7 +1904,7 @@ input[type='password'] {
     -webkit-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 0 rgba(255, 255, 255, 0.1);
     -moz-box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 0 rgba(255, 255, 255, 0.1);
     box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.3), 1px 1px 0 rgba(255, 255, 255, 0.1);
-    behavior: url("javascripts/vendor/PIE.htc"); }
+    behavior: url("/assets/acl/vendor/PIE.htc"); }
     .pagination a:hover {
       background-color: #473f42; }
   .pagination .pagination-up, .pagination .pagination-down, .pagination .pagination-left, .pagination .pagination-right {
@@ -1873,7 +2029,7 @@ input[type='password'] {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  behavior: url("javascripts/vendor/PIE.htc"); }
+  behavior: url("/assets/acl/vendor/PIE.htc"); }
   .scrollbox.dot .hitbox {
     height: 11px;
     top: -2px; }
@@ -1891,7 +2047,7 @@ input[type='password'] {
     background-image: -o-linear-gradient(top, #f7f7f7, #9f9f9f);
     background-image: linear-gradient(top, #f7f7f7, #9f9f9f);
     -pie-background: linear-gradient(#f7f7f7, #9f9f9f);
-    behavior: url("javascripts/vendor/PIE.htc"); }
+    behavior: url("/assets/acl/vendor/PIE.htc"); }
   .scrollbox.disk .hitbox {
     height: 19px;
     top: -6px; }
@@ -1919,7 +2075,7 @@ input[type='password'] {
     background-image: -o-linear-gradient(top, #bf0056, #7f0039);
     background-image: linear-gradient(top, #bf0056, #7f0039);
     -pie-background: linear-gradient(#bf0056, #7f0039);
-    behavior: url("javascripts/vendor/PIE.htc"); }
+    behavior: url("/assets/acl/vendor/PIE.htc"); }
   .scrollbox.fat .ui-slider-handle {
     background: url("/assets/acl/scrollbox/sliders.png") 0 0 no-repeat;
     top: -2px;
@@ -2088,12 +2244,11 @@ input[type='password'] {
   background: #d794f3 url("/assets/acl/starbar/background.png") 0 0 repeat-x;
   border-radius: 8px;
   display: inline-block;
-  height: 16px;
   padding: 10px;
   -webkit-box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 1px 1px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 1px 1px rgba(0, 0, 0, 0.4);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 1px 1px rgba(0, 0, 0, 0.4);
-  behavior: url("javascripts/vendor/PIE.htc"); }
+  behavior: url("/assets/acl/vendor/PIE.htc"); }
   .starbar .star {
     background: url("/assets/acl/starbar/star.png") 0 0 no-repeat;
     float: left;
@@ -2131,23 +2286,24 @@ input[type='password'] {
   .sticker.pack {
     background: url("/assets/acl/sticker/pack.png") 0 0 no-repeat;
     font: bold 38px "Roboto", Arial, sans-serif;
-    height: 84px;
-    padding-top: 13px;
+    height: 97px;
+    padding-top: 14px;
     width: 97px; }
-    .sticker.pack .sticker-label {
-      background-color: #7b186e;
-      border-radius: 20px;
-      font: bold 9px "Roboto", Arial, sans-serif;
-      display: inline-block;
-      letter-spacing: 1px;
-      padding: 3px 10px;
-      position: relative;
-      text-transform: uppercase;
-      top: -26px;
-      -webkit-box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.1);
-      -moz-box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.1);
-      box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.1);
-      behavior: url("javascripts/vendor/PIE.htc"); }
+  .sticker .sticker-label {
+    font: bold 9px "Roboto", Arial, sans-serif;
+    display: inline-block;
+    border: none;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    position: relative;
+    text-transform: uppercase;
+    top: -32px;
+    behavior: url("/assets/acl/vendor/PIE.htc"); }
+  .sticker .popular {
+    position: absolute;
+    top: 22px;
+    left: 24px;
+    font-size: 8px; }
 
 .tabbox .ui-tabs-hide {
   display: none; }
@@ -2178,7 +2334,7 @@ input[type='password'] {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    behavior: url("javascripts/vendor/PIE.htc"); }
+    behavior: url("/assets/acl/vendor/PIE.htc"); }
     .tabbox-tabs li:hover {
       background: #3a3430;
       background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4a433e), color-stop(100%, #3a3430));
@@ -2221,7 +2377,7 @@ input[type='password'] {
   border-radius: 0 10px 10px;
   padding: 14px;
   position: relative;
-  behavior: url("javascripts/vendor/PIE.htc"); }
+  behavior: url("/assets/acl/vendor/PIE.htc"); }
 
 .tabbox-navigation {
   float: left;
