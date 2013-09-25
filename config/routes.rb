@@ -106,7 +106,9 @@ Myapp::Application.routes.draw do
   # root :to => 'unofficialacl#index', :conditions => { :host => "www.unofficialacl.com" }
   # map.connect "", :controller => "unofficialacl", :conditions => { :host => "www.unofficialacl.com" }
 
-constraints(:host => /unofficialacl.com/) do 
+
+# Below did not work when it was just root :to 'unofficialacl#index'
+constraints(:host => /^unofficialacl.com/) do 
      root :to => 'unofficialacl#index'
      # match '/*path', :to => redirect {|params| "http://www.unofficialacl.com/#{params[:path]}"} 
 end 
