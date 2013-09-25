@@ -121,6 +121,7 @@ Myapp::Application.routes.draw do
   match 'users/friends' => 'users#friends'
   match '/search' => 'events#index'
   match '/sxsw' => 'events#sxsw'
+  match '/unofficialacl' => 'unofficialacl#index'
 
   match '/auth/:provider/callback' => 'authentications#create'
 
