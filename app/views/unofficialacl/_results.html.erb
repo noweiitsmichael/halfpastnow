@@ -3,17 +3,17 @@
 
 <div class="wrapper row header">
   <div class="large-8 columns">
-    <ul class="header-navigation">
-      <li  class = <%= (params[:included_tags].include? '230') ? "current" : "" %>>
+    <ul id="tab-anchors" class="header-navigation">
+      <li  id="tab-anchor-1" class = <%= (params[:included_tags].include? '230') ? "current" : "" %>>
         <%= link_to "Official ACL", search_unofficialacl_index_path(included_tags: 230), method: :post, remote:true %>
       </li>
-      <li class = <%= (params[:included_tags].include? '247') ? "current" : "" %>>
+      <li id="tab-anchor-2" class = <%= (params[:included_tags].include? '247') ? "current" : "" %>>
         <%= link_to "Official Night Late Shows", search_unofficialacl_index_path(included_tags: 247), method: :post, remote:true %>
       </li>
-      <li class = <%= (params[:included_tags].include? '232') ? "current" : "" %>>
+      <li id="tab-anchor-3" class = <%= (params[:included_tags].include? '232') ? "current" : "" %>>
         <%= link_to "Unofficial ACL", search_unofficialacl_index_path(included_tags: 232), method: :post, remote:true %>
       </li>
-      <li class = <%= (params[:included_tags].include? '15') ? "current" : "" %>>
+      <li id="tab-anchor-4" class = <%= (params[:included_tags].include? '15') ? "current" : "" %>>
         <%= link_to "Local Recommendations", search_unofficialacl_index_path(included_tags: 15), method: :post, remote:true %>
       </li>
     </ul>
@@ -33,30 +33,30 @@
   </div>
 </div>
 
-
-<div class="row">
+<!-- tab offical ACL -->
+<div class="content tab" id="tab-1">
+  <div class="row">
   <!-- Big things: column left -->
   <div class="large-6 columns left ptm stretch">
     <% @occurrences.each_with_index do |occurrence, count| %>
 
-      <a href="/?event_id=<%= occurrence.id %>">
         <div class="big-event-container clearfix">
           <div class="event-image">
-            <img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
+            <!--<img src="<%#= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />-->
+            <img src="<%= occurrence.event.pictures.first ? occurrence.event.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
           </div>
           <div class="text antialiased">
-            <p class="event-title"><%= truncate(occurrence.event.title, :length => 18) %></p>
+            <a class="event-title" href="unofficialacl/show_event?event_id=<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 18) %></a>
             <p class="event-tags">
               <% if occurrence.event.tags.count > 0 %>
                 <% occurrence.event.tags.each_with_index  do |tag, index| %>
                   <span><%= tag.name %></span>
-                  <% if index == 3 %><% break %><% else %>,<% end %>
+                  <% if index == 1 %><% break %><% else %>,<% end %>
                 <% end %>
               <% end %>
             </p>
           </div>
         </div>
-      </a>
       <% break if count == 4 %>
     <% end %>
     <div class="by-center">Scroll Down to See More!
@@ -65,17 +65,16 @@
   </div>
 
   <!-- Small things: column left -->
-  <div class="large-6 columns right ptm stretch">
+  <div class="large-6 columns rightCol ptm stretch">
     <ul class="small-block-grid-2">
       <% @occurrences.each_with_index do |occurrence, count| %>
-        <li>
-          <a href="/?event_id=<%= occurrence.id %>">
-            <div class="small-event-container clearfix">
+        <li class="mix freedrink">
+            <div class="small-event-container">
               <div class="event-image">
-                <img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
+                <img src="<%= occurrence.event.pictures.first ? occurrence.event.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
               </div>
               <div class="text antialiased">
-                <p class="event-title"><%= truncate(occurrence.event.title, :length => 18) %></p>
+                <a class="event-title" href="unofficialacl/show_event?event_id=<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 18) %></a>
                 <p class="event-tags">
                   <% if occurrence.event.tags.count > 0 %>
                     <% occurrence.event.tags.each_with_index  do |tag, index| %>
@@ -86,10 +85,10 @@
                 </p>
               </div>
             </div>
-          </a>
         </li>
         <% break if count == 14 %>
       <% end %>
     </ul>
   </div>
+</div>
 </div>

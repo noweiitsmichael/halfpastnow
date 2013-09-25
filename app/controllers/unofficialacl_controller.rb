@@ -96,8 +96,9 @@ class UnofficialaclController < ApplicationController
     #render layout: "unofficialacl"
   end
 
-  def show
-
+  def show_event
+    @occurrence = Occurrence.find params[:event_id]
+    render layout: "unofficialacl"
   end
 
   def find_all
