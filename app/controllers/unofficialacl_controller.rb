@@ -23,9 +23,9 @@ class UnofficialaclController < ApplicationController
     #raise query.to_yaml
 
     ids = ActiveRecord::Base.connection.select_all(query)
-    @occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
-
-    #raise @occurrence_ids.to_yaml
+    occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
+    @occurrences = Occurrence.where("id in (?)",occurrence_ids)
+    #raise @occurrences.to_yaml
 
     render layout: "unofficialacl"
   end

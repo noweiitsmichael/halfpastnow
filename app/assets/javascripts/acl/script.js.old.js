@@ -91,13 +91,3 @@ function ShowTab(num){
   $('.tab').hide();
   $('#tab-' + num).fadeIn("slow");
 }
-
-
-// make logo glow
-
-var $FlickImg = $('.logo img'), c = 0;
-
-(function loop(){
-  var time = ~~(Math.random()*600) + 1; // increase the value affecting random to change max duration of flickering
-  $FlickImg.delay( time ).fadeTo(30, ++c%2, loop);
-})();

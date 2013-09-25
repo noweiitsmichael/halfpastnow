@@ -27,8 +27,7 @@
 <div class="row">
 <!-- Big things: column left -->
 <div class="large-6 columns left ptm stretch">
-  <% @occurrence_ids.each_with_index do |occurrence_id, count| %>
-      <% occurrence = Occurrence.find occurrence_id %>
+  <% @occurrences.each_with_index do |occurrence, count| %>
 
   <a href="/?event_id=<%= occurrence.id %>">
     <div class="big-event-container clearfix">
@@ -60,8 +59,7 @@
 <!-- Small things: column left -->
 <div class="large-6 columns right ptm stretch">
 <ul class="small-block-grid-2">
-  <% @occurrence_ids.each_with_index do |occurrence_id, count| %>
-      <% occurrence = Occurrence.find occurrence_id %>
+  <% @occurrences.each_with_index do |occurrence, count| %>
   <li>
     <a href="/?event_id=<%= occurrence.id %>">
       <div class="small-event-container clearfix">
