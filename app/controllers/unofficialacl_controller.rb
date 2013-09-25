@@ -25,6 +25,7 @@ class UnofficialaclController < ApplicationController
     ids = ActiveRecord::Base.connection.select_all(query)
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
     @occurrences = Occurrence.where("id in (?)",occurrence_ids)
+    @occurrences = @occurrences.paginate(:page => params[:page] || 1, :per_page => 20)
     #raise @occurrences.to_yaml
 
     render layout: "unofficialacl"
@@ -93,6 +94,8 @@ class UnofficialaclController < ApplicationController
     ids = ActiveRecord::Base.connection.select_all(query)
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
     @occurrences = Occurrence.where("id in (?)",occurrence_ids)
+    @occurrences = @occurrences.paginate(:page => params[:page] || 1, :per_page => 20)
+
     #render layout: "unofficialacl"
   end
 
