@@ -1,0 +1,95 @@
+<% params[:included_tags] = params[:included_tags].present? ? params[:included_tags] : '230'   %>
+<% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : '166'   %>
+
+<div class="wrapper row header">
+  <div class="large-8 columns">
+    <ul class="header-navigation">
+      <li  class = <%= (params[:included_tags].include? '230') ? "current" : "" %>>
+        <%= link_to "Official ACL", search_unofficialacl_index_path(included_tags: 230), method: :post, remote:true %>
+      </li>
+      <li class = <%= (params[:included_tags].include? '247') ? "current" : "" %>>
+        <%= link_to "Official Night Late Shows", search_unofficialacl_index_path(included_tags: 247), method: :post, remote:true %>
+      </li>
+      <li class = <%= (params[:included_tags].include? '232') ? "current" : "" %>>
+        <%= link_to "Unofficial ACL", search_unofficialacl_index_path(included_tags: 232), method: :post, remote:true %>
+      </li>
+      <li class = <%= (params[:included_tags].include? '15') ? "current" : "" %>>
+        <%= link_to "Local Recommendations", search_unofficialacl_index_path(included_tags: 15), method: :post, remote:true %>
+      </li>
+    </ul>
+  </div>
+
+  <div class="large-4 columns">
+    <div class="small-navbar-note">Show me events with:</div>
+    <div id="small-navbar">
+      <ul>
+        <li><%= link_to "Free drinks", search_unofficialacl_index_path(and_tags: 166), method: :post, remote:true, class: (params[:and_tags].include? '166') ? "active" : "" %></li>
+        <li><%= link_to "free food", search_unofficialacl_index_path(and_tags: 165), method: :post, remote:true, class: (params[:and_tags].include? '165') ? "active" : "" %></li>
+        <li><%= link_to "party", search_unofficialacl_index_path(and_tags: 130), method: :post, remote:true, class: (params[:and_tags].include? '130') ? "active" : "" %></li>
+        <li><%= link_to "no cover", search_unofficialacl_index_path(and_tags: 167), method: :post, remote:true, class: (params[:and_tags].include? '167') ? "active" : "" %></li>
+        <li><%= link_to "RSVP", search_unofficialacl_index_path(and_tags: 182), method: :post, remote:true, class: (params[:and_tags].include? '182') ? "active" : "" %></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <!-- Big things: column left -->
+  <div class="large-6 columns left ptm stretch">
+    <% @occurrences.each_with_index do |occurrence, count| %>
+
+      <a href="/?event_id=<%= occurrence.id %>">
+        <div class="big-event-container clearfix">
+          <div class="event-image">
+            <img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
+          </div>
+          <div class="text antialiased">
+            <p class="event-title"><%= truncate(occurrence.event.title, :length => 18) %></p>
+            <p class="event-tags">
+              <% if occurrence.event.tags.count > 0 %>
+                <% occurrence.event.tags.each_with_index  do |tag, index| %>
+                  <span><%= tag.name %></span>
+                  <% if index == 3 %><% break %><% else %>,<% end %>
+                <% end %>
+              <% end %>
+            </p>
+          </div>
+        </div>
+      </a>
+      <% break if count == 4 %>
+    <% end %>
+    <div class="by-center">Scroll Down to See More!
+      <div id="triangle-down"></div>
+    </div>
+  </div>
+
+  <!-- Small things: column left -->
+  <div class="large-6 columns right ptm stretch">
+    <ul class="small-block-grid-2">
+      <% @occurrences.each_with_index do |occurrence, count| %>
+        <li>
+          <a href="/?event_id=<%= occurrence.id %>">
+            <div class="small-event-container clearfix">
+              <div class="event-image">
+                <img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
+              </div>
+              <div class="text antialiased">
+                <p class="event-title"><%= truncate(occurrence.event.title, :length => 18) %></p>
+                <p class="event-tags">
+                  <% if occurrence.event.tags.count > 0 %>
+                    <% occurrence.event.tags.each_with_index  do |tag, index| %>
+                      <span><%= tag.name %></span>
+                      <% if index == 1 %><% break %><% else %>,<% end %>
+                    <% end %>
+                  <% end %>
+                </p>
+              </div>
+            </div>
+          </a>
+        </li>
+        <% break if count == 14 %>
+      <% end %>
+    </ul>
+  </div>
+</div>
