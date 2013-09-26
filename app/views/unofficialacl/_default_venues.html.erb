@@ -32,7 +32,14 @@
   <li class="mix freedrink">
     <div class="small-event-container">
       <div class="event-image">
-        <img src="<%= occurrence.event.pictures.first ? occurrence.event.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
+        <!--<img src="<%#= occurrence.event.pictures.first ? occurrence.event.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />-->
+        <% if occurrence.event.pictures.first %>
+            <img src="<%= occurrence.event.pictures.first.image_url(:cover) %>" />
+        <% elsif occurrence.event.acts.length != 0 && occurrence.event.acts.first.pictures.first %>
+            <img src="<%= occurrence.event.acts.first.pictures.first.image_url(:cover) %>" />
+        <% else %>
+            <img src="<%= occurrence.event.venue.pictures.first ? occurrence.event.venue.pictures.first.image_url(:cover) : "/assets/placeholder.png" %>" />
+        <% end %>
       </div>
       <div class="text antialiased">
         <a class="event-title" href="unofficialacl/show_event?event_id=<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 18) %></a>

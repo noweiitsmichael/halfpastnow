@@ -3,13 +3,13 @@
 
 
   <% @occurrences.each_with_index do |occurrence, count| %>
-      <% count = 0 if count == 18 %>
+
 
       <!-- Big things: column left -->
        <% if (0..4).include?(count) %>
 
           <% if count == 0 %>
-            <div class="row"><!--Row tag for first 19 elements -->
+            <div class="row <%= count %>"><!--Row tag for first 19 elements -->
               <div class="large-6 columns left ptm stretch"><!--(0..4) events left -->
           <% end %>
              <div class="big-event-container clearfix">
@@ -47,10 +47,17 @@
             <div class="large-6 columns rightCol ptm stretch">   <!--(5..18) events right -->
               <ul class="small-block-grid-2">
           <% end %>
-             <li class="mix freedrink">
+             <li class="mix freedrink <%= count %>">
                  <div class="small-event-container">
                    <div class="event-image">
-                     <img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />
+                     <!--<img src="<%#= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />-->
+                     <% if occurrence.event.pictures.first %>
+                         <img src="<%= occurrence.event.pictures.first.image_url(:cover) %>" />
+                     <% elsif occurrence.event.acts.length != 0 && occurrence.event.acts.first.pictures.first %>
+                         <img src="<%= occurrence.event.acts.first.pictures.first.image_url(:cover) %>" />
+                     <% else %>
+                         <img src="<%= occurrence.event.venue.pictures.first ? occurrence.event.venue.pictures.first.image_url(:cover) : "/assets/placeholder.png" %>" />
+                     <% end %>
                      <!--<img src="<%#= occurrence.event.pictures.first ? occurrence.event.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />-->
                    </div>
                    <div class="text antialiased">
@@ -78,6 +85,7 @@
           <% end %>
 
        <% end %> <!--End if condition 0..19 -->
+    <% count = 0 if count == 18 %>
   <% end %> <!--End of main occurrences loop -->
 
 
