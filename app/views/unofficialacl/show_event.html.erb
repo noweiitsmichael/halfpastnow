@@ -194,7 +194,7 @@
         <h1 class="title"><%= @event.venue.name %></h1>
         <ul class="details">
           <li><i class="icon-map-marker pull-left icon-large mbl"></i> <%= @event.venue.address %><br><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></li>
-          <li><a href="tel:1-800-555-555"><i class="icon-mobile-phone icon-large"></i> <%= @venue.phonenumber %></a></li>
+          <li><% unless @venue.phonenumber.empty? %><a href="tel:1-800-555-555"><i class="icon-mobile-phone icon-large"></i> <%= @venue.phonenumber %></a><% end %></li>
         </ul>
         <div class="row">
           <div class="small-12 columns">
@@ -209,7 +209,6 @@
               <img src="content/a.jpg">
             </div>
             <div class="small-9 columns">
-              <% puts rec.id %>
               <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
               <% unless rec.event.description.to_s.empty? %>
                   <p> <%= raw(rec.event.description) %> </p>

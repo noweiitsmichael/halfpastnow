@@ -95,8 +95,8 @@ class UnofficialaclController < ApplicationController
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
     @occurrences = Occurrence.where("id in (?)",occurrence_ids)
     @occurrences = @occurrences.paginate(:page => params[:page] || 1, :per_page => 10)
-    render 'unofficialacl/index' unless request.xhr?
-    #render layout: "unofficialacl"
+    #render 'unofficialacl/index' unless request.xhr?
+    render layout: "unofficialacl"
   end
 
   def show_event
@@ -106,14 +106,11 @@ class UnofficialaclController < ApplicationController
     @venue = @occurrence.event.venue
     @acts = @event.acts
 
-    @occurrences  = []
     @recurrences = []
     @occs = @venue.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now }  }.flatten.sort_by { |occ| occ.start }
     @occs.each do |occ|
       # check if occurrence is instance of a recurrence
-      if occ.recurrence_id.nil?
-        @occurrences << occ
-      else
+      unless occ.recurrence.nil?
         if @recurrences.index(occ.recurrence).nil?
           @recurrences << occ.recurrence
         end
