@@ -24,8 +24,8 @@ class UnofficialaclController < ApplicationController
 
     ids = ActiveRecord::Base.connection.select_all(query)
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
-    @occurrences = Occurrence.where("id in (?)",occurrence_ids)
-    @occurrences = @occurrences.paginate(:page => params[:page] || 1, :per_page => 20)
+    occurrences = Occurrence.where("id in (?)",occurrence_ids)
+    @occurrences = occurrences.paginate(:page => params[:page] || 1, :per_page => 20)
     #raise @occurrences.to_yaml
 
     render layout: "unofficialacl"
@@ -100,11 +100,11 @@ class UnofficialaclController < ApplicationController
   end
 
   def show_event
-    @occurrence = Occurrence.find params[:event_id]
+    #raise  params[:event_id].to_yaml
+    @occurrence = Occurrence.find(params[:event_id])
     @event = @occurrence.event
     @venue = @occurrence.event.venue
     @acts = @event.acts
-    @recurrences = []
 
     @occurrences  = []
     @recurrences = []
@@ -119,6 +119,7 @@ class UnofficialaclController < ApplicationController
         end
       end
     end
+    #raise  @recurrences.to_yaml
 
     render layout: "unofficialacl"
   end
