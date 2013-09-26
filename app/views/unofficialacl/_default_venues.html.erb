@@ -35,7 +35,7 @@
         <img src="<%= occurrence.event.pictures.first ? occurrence.event.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
       </div>
       <div class="text antialiased">
-        <a class="event-title" href="detail.html">This is an small event</a>
+        <a class="event-title" href="unofficialacl/show_event?event_id=<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 18) %></a>
         <p class="event-tags">
           <% if occurrence.event.tags.count > 0 %>
               <% occurrence.event.tags.each_with_index  do |tag, index| %>
