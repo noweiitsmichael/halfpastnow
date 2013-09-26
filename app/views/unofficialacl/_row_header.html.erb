@@ -1,21 +1,20 @@
-<% params[:included_tags] = params[:included_tags].present? ? params[:included_tags] : '230'   %>
-<% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : '166'   %>
+<% params[:included_tags] = params[:included_tags].present? ? params[:included_tags] : '232'   %>
+<% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : ''   %>
 
-<% unless params[:page].to_i > 1  %>
     <div class="wrapper row header">
       <div class="large-8 columns">
         <ul id="tab-anchors" class="header-navigation">
-          <li  id="tab-anchor-1" class = <%= (params[:and_tags].include? '230') ? "current" : "" %>>
-            <%= link_to "Official ACL", search_unofficialacl_index_path(and_tags: 230), method: :post, remote:true %>
+          <li id="tab-anchor-3" class = <%= (params[:included_tags].include? '232') ? "current" : "" %>>
+            <%= link_to "Unofficial ACL", search_unofficialacl_index_path(included_tags: 232), method: :post %>
+          </li>          
+          <li id="tab-anchor-2" class = <%= (params[:included_tags].include? '247') ? "current" : "" %>>
+            <%= link_to "Official Night Late Shows", search_unofficialacl_index_path(included_tags: 247), method: :post %>
           </li>
-          <li id="tab-anchor-2" class = <%= (params[:and_tags].include? '247') ? "current" : "" %>>
-            <%= link_to "Official Night Late Shows", search_unofficialacl_index_path(and_tags: 247), method: :post, remote:true %>
+          <li  id="tab-anchor-1" class = <%= (params[:included_tags].include? '230') ? "current" : "" %>>
+            <%= link_to "Official ACL", search_unofficialacl_index_path(included_tags: 230), method: :post %>
           </li>
-          <li id="tab-anchor-3" class = <%= (params[:and_tags].include? '232') ? "current" : "" %>>
-            <%= link_to "Unofficial ACL", search_unofficialacl_index_path(and_tags: 232), method: :post, remote:true %>
-          </li>
-          <li id="tab-anchor-4" class = <%= (params[:and_tags].include? '15') ? "current" : "" %>>
-            <%= link_to "Local Recommendations", search_unofficialacl_index_path(and_tags: 15), method: :post, remote:true %>
+          <li id="tab-anchor-4" class = <%= (params[:included_tags].include? '15') ? "current" : "" %>>
+            <%= link_to "Local Recommendations", search_unofficialacl_index_path(included_tags: 15), method: :post %>
           </li>
         </ul>
       </div>
@@ -24,13 +23,12 @@
         <div class="small-navbar-note">Show me events with:</div>
         <div id="small-navbar">
           <ul>
-            <li><%= link_to "Free drinks", search_unofficialacl_index_path(and_tags: 166), method: :post, remote:true, class: (params[:and_tags].include? '166') ? "active" : "" %></li>
-            <li><%= link_to "free food", search_unofficialacl_index_path(and_tags: 165), method: :post, remote:true, class: (params[:and_tags].include? '165') ? "active" : "" %></li>
-            <li><%= link_to "party", search_unofficialacl_index_path(and_tags: 130), method: :post, remote:true, class: (params[:and_tags].include? '130') ? "active" : "" %></li>
-            <li><%= link_to "no cover", search_unofficialacl_index_path(and_tags: 167), method: :post, remote:true, class: (params[:and_tags].include? '167') ? "active" : "" %></li>
-            <li><%= link_to "RSVP", search_unofficialacl_index_path(and_tags: 182), method: :post, remote:true, class: (params[:and_tags].include? '182') ? "active" : "" %></li>
+            <li><%= link_to "Free drinks", search_unofficialacl_index_path(and_tags: 166), method: :post, class: (params[:and_tags].include? '166') ? "active" : "" %></li>
+            <li><%= link_to "free food", search_unofficialacl_index_path(and_tags: 165), method: :post, class: (params[:and_tags].include? '165') ? "active" : "" %></li>
+            <li><%= link_to "party", search_unofficialacl_index_path(and_tags: 130), method: :post, class: (params[:and_tags].include? '130') ? "active" : "" %></li>
+            <li><%= link_to "no cover", search_unofficialacl_index_path(and_tags: 167), method: :post, class: (params[:and_tags].include? '167') ? "active" : "" %></li>
+            <li><%= link_to "RSVP", search_unofficialacl_index_path(and_tags: 182), method: :post, class: (params[:and_tags].include? '182') ? "active" : "" %></li>
           </ul>
         </div>
       </div>
     </div>
-<% end %>
