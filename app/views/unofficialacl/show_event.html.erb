@@ -1,22 +1,25 @@
 <div class="wrapper row header">
   <div class="small-12 columns">
-    <ul id="tab-anchors" class="header-navigation">
-      <% unless @event.nil? %>
-      <li id="tab-anchor-1" class="current">
-        <a href="javascript:ShowTab(1);">Event overview</a>
-      </li>
-      <% end %>
-      <% unless @venue.nil? %>
-      <li id="tab-anchor-2">
-        <a href="javascript:ShowTab(2);">Venue details</a>
-      </li>
-      <% end %>
-      <% unless @acts.empty? %>
-      <li id="tab-anchor-3">
-        <a href="javascript:ShowTab(3);">Artist details</a>
-      </li>
-      <% end %>
-    </ul>
+    <nav>
+      <a id="menu-icon"><i class="icon-reorder"></i></a>
+      <ul id="tab-anchors" class="header-navigation">
+        <% unless @event.nil? %>
+        <li id="tab-anchor-1" class="current">
+          <a href="javascript:ShowTab(1);">Event overview</a>
+        </li>
+        <% end %>
+        <% unless @venue.nil? %>
+        <li id="tab-anchor-2">
+          <a href="javascript:ShowTab(2);">Venue details</a>
+        </li>
+        <% end %>
+        <% unless @acts.empty? %>
+        <li id="tab-anchor-3">
+          <a href="javascript:ShowTab(3);">Artist details</a>
+        </li>
+        <% end %>
+      </ul>
+    </nav>
   </div>
 </div>
 
