@@ -1,11 +1,11 @@
 <%# params[:included_tags] = params[:included_tags].present? ? params[:included_tags] : '25'   %>
-<% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : '25'   %>
+<% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : '232'   %>
 
     <div class="wrapper row header">
       <div class="large-8 columns">
         <ul id="tab-anchors" class="header-navigation">
-          <li id="tab-anchor-3" class = <%= (params[:and_tags].include? '25') ? "current" : "" %>>
-            <%= link_to "Unofficial ACL", search_unofficialacl_index_path(and_tags: 25), method: :post %>
+          <li id="tab-anchor-3" class = <%= (params[:and_tags].include? '232') ? "current" : "" %>>
+            <%= link_to "Unofficial ACL", search_unofficialacl_index_path(and_tags: 232), method: :post %>
           </li>          
           <li id="tab-anchor-2" class = <%= (params[:and_tags].include? '247') ? "current" : "" %>>
             <%= link_to "Official Night Late Shows", search_unofficialacl_index_path(and_tags: 247), method: :post %>
