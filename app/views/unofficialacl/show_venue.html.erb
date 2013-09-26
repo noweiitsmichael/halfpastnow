@@ -1,0 +1,89 @@
+<div class="wrapper row header">
+  <div class="small-12 columns">
+    <ul id="tab-anchors" class="header-navigation">
+          <li id="tab-anchor-1" class="current">
+            <a href="javascript:ShowTab(1);">Venue details</a>
+          </li>
+    </ul>
+  </div>
+</div>
+
+
+
+
+<% unless @venue.nil? %>
+    <!-- the next tab venue details  -->
+    <div class="content tab" id="tab-1">
+      <div class="row">
+        <!-- Big things: column left -->
+        <div class="large-6 columns stretch">
+
+          <div class="row">
+            <div class="event-picture">
+              <img src="<%= @venue.pictures.first ? @venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
+              <% if false %><div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>?80</div> <% end %>
+            </div>
+          </div>
+
+          <div class="row ptl">
+            <div class="small-8 small-offset-4 columns">
+              <% unless @venue.description.to_s.empty? %>
+                  <p> <%= raw(@venue.description) %> </p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Small things: column right -->
+        <div class="large-6 columns rightCol stretch">
+          <div class="mll mrl clearfix">
+            <h1 class="title"><%= @venue.name %></h1>
+            <ul class="details">
+              <li><i class="icon-map-marker pull-left icon-large mbl"></i> <%= @venue.address %><br><%= @venue.city + ", " + @venue.state + " " + @venue.zip.to_s %></li>
+              <li><% unless @venue.phonenumber.empty? %><a href="tel:1-800-555-555"><i class="icon-mobile-phone icon-large"></i> <%= @venue.phonenumber %></a><% end %></li>
+            </ul>
+            <div class="row">
+              <div class="small-12 columns">
+                <h1 class="featuring-title upcoming">Upcoming events:</h1>
+              </div>
+            </div>
+
+            <ul class="features upcoming">
+              <% @recurrences.each do |rec| %>
+                  <li class="row">
+                    <div class="small-3 columns">
+                      <img src="<%= rec.event.pictures.first ? rec.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                    </div>
+                    <div class="small-9 columns">
+                      <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
+                      <% unless rec.event.description.to_s.empty? %>
+                          <p> <%= raw(rec.event.description) %> </p>
+                      <% end %>
+                    </div>
+                  </li>
+              <% end %>
+              <% @occurrences.each do |occ| %>
+                  <li class="row">
+                    <div class="small-3 columns">
+                      <img src="<%= occ.event.pictures.first ? occ.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                    </div>
+                    <div class="small-9 columns">
+                      <a href="/unofficialacl/show_event?event_id=<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
+                      <% unless occ.event.description.to_s.empty? %>
+                          <p> <%= raw(occ.event.description) %> </p>
+                      <% end %>
+                    </div>
+                  </li>
+              <% end %>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+<% end %>
+
+
+<!-- end tabs -->
+
