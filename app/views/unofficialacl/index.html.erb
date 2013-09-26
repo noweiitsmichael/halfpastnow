@@ -1,11 +1,15 @@
 
 <div class="content">
   <%= render 'row_header', locals: {occurrences: @occurrences} %>
-  <div class="content tab" id="tab-1">
+  <div class="content tab search_content" id="tab-1">
   <%= render 'default_venues' %>
-  <div id="search_content">
-    <%= render 'results', locals: {occurrences: @occurrences} %>
+  <%#= render 'results', locals: {occurrences: @occurrences} %>
   </div>
+  <div class="footer row">
+    <div class="small-6 small-centered columns by-center">
+      <div id="loaderImage" class="mbl"></div>
+      loading more content
+    </div>
   </div>
 </div>
 

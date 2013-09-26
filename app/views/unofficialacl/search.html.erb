@@ -1,9 +1,15 @@
 
 <div class="content">
   <%= render 'row_header', locals: {occurrences: @occurrences} %>
-  <div id="search_content">
+  <div class="content tab search_content" id="tab-1">
     <%= render 'results', locals: {occurrences: @occurrences} %>
   </div>
+  <!--<div class="footer row">-->
+    <!--<div class="small-6 small-centered columns by-center">-->
+      <!--<div id="loaderImage" class="mbl"></div>-->
+      <!--loading more content-->
+    <!--</div>-->
+  <!--</div>-->
 </div>
 
 <%= hidden_field_tag :next_page, @occurrences.next_page %>

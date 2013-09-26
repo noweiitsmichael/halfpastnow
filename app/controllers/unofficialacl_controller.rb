@@ -30,7 +30,7 @@ class UnofficialaclController < ApplicationController
     occurrence_ids = occurrence_ids - default_occurrence_ids
 
     occurrences = Occurrence.where("id in (?)",occurrence_ids)
-    @occurrences = occurrences.paginate(:page => params[:page] || 1, :per_page => 20)
+    @occurrences = occurrences.paginate(:page => params[:page] || 1, :per_page => 19)
     #raise occurrence_ids.to_yaml
 
     #venues for default page
@@ -103,7 +103,7 @@ class UnofficialaclController < ApplicationController
     ids = ActiveRecord::Base.connection.select_all(query)
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
     @occurrences = Occurrence.where("id in (?)",occurrence_ids)
-    @occurrences = @occurrences.paginate(:page => params[:page] || 1, :per_page => 10)
+    @occurrences = @occurrences.paginate(:page => params[:page] || 1, :per_page => 19)
     #render 'unofficialacl/index' unless request.xhr?
     render layout: "unofficialacl"
   end
