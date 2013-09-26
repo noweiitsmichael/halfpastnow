@@ -1,4 +1,4 @@
-<div class="content tab" id="tab-1">
+
 <div class="row">
 <!-- Big things: column left -->
 <div class="large-6 columns leftCol ptm stretch">
@@ -28,23 +28,27 @@
 <!-- Small things: column right -->
 <div class="large-6 columns rightCol ptm stretch">
 <ul class="small-block-grid-2">
-  <% (1..14).each do |venue| %>
+  <% @default_occurrences.each_with_index do |occurrence| %>
   <li class="mix freedrink">
-
     <div class="small-event-container">
       <div class="event-image">
-        <img src="assets/acl/content/b.jpg">
+        <img src="<%= occurrence.event.pictures.first ? occurrence.event.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
       </div>
       <div class="text antialiased">
         <a class="event-title" href="detail.html">This is an small event</a>
-        <p class="event-tags"><span>Happy Hours</span>, <span>Live music</span></p>
+        <p class="event-tags">
+          <% if occurrence.event.tags.count > 0 %>
+              <% occurrence.event.tags.each_with_index  do |tag, index| %>
+                  <span><%= tag.name %></span>
+                  <% if index == 1 %><% break %><% else %>,<% end %>
+              <% end %>
+          <% end %>
+        </p>
       </div>
     </div>
-
   </li>
   <% end %>
 </ul>
 
-</div>
 </div>
 </div>

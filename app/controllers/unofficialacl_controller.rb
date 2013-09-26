@@ -18,18 +18,24 @@ class UnofficialaclController < ApplicationController
     query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id,  events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
               FROM occurrences #{join_clause} WHERE #{where_clause}
               AND tags.id IN (25) AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
-              ORDER BY events.id, occurrences.start LIMIT 1000"
+              ORDER BY events.id, occurrences.start LIMIT 500"
 
     #raise query.to_yaml
 
+    occurrence_ids = []
+    default_occurrence_ids = []
     ids = ActiveRecord::Base.connection.select_all(query)
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
+    default_occurrence_ids = occurrence_ids[0..13]
+    occurrence_ids = occurrence_ids - default_occurrence_ids
+
     occurrences = Occurrence.where("id in (?)",occurrence_ids)
     @occurrences = occurrences.paginate(:page => params[:page] || 1, :per_page => 20)
-    #raise @occurrences.to_yaml
+    #raise occurrence_ids.to_yaml
 
     #venues for default page
     @default_venues=Venue.where("id in (?)",[39473,39334,39349,47138,39329])
+    @default_occurrences = Occurrence.where("id in (?)",default_occurrence_ids)
 
     render layout: "unofficialacl"
   end
@@ -93,7 +99,7 @@ class UnofficialaclController < ApplicationController
                 #{join_clause}
               WHERE #{where_clause}
               AND tags.id IN (25) AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
-              ORDER BY events.id, occurrences.start LIMIT 1000"
+              ORDER BY events.id, occurrences.start LIMIT 500"
     ids = ActiveRecord::Base.connection.select_all(query)
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
     @occurrences = Occurrence.where("id in (?)",occurrence_ids)
