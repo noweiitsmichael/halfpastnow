@@ -18,15 +18,24 @@ class UnofficialaclController < ApplicationController
     query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id,  events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
               FROM occurrences #{join_clause} WHERE #{where_clause}
               AND tags.id IN (25) AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
-              ORDER BY events.id, occurrences.start LIMIT 1000"
+              ORDER BY events.id, occurrences.start LIMIT 500"
 
     #raise query.to_yaml
 
+    occurrence_ids = []
+    default_occurrence_ids = []
     ids = ActiveRecord::Base.connection.select_all(query)
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
-    @occurrences = Occurrence.where("id in (?)",occurrence_ids)
-    @occurrences = @occurrences.paginate(:page => params[:page] || 1, :per_page => 20)
-    #raise @occurrences.to_yaml
+    default_occurrence_ids = occurrence_ids[0..13]
+    occurrence_ids = occurrence_ids - default_occurrence_ids
+
+    occurrences = Occurrence.where("id in (?)",occurrence_ids)
+    @occurrences = occurrences.paginate(:page => params[:page] || 1, :per_page => 19)
+    #raise occurrence_ids.to_yaml
+
+    #venues for default page
+    @default_venues=Venue.where("id in (?)",[39473,39334,39349,47138,39329])
+    @default_occurrences = Occurrence.where("id in (?)",default_occurrence_ids)
 
     render layout: "unofficialacl"
   end
@@ -90,28 +99,76 @@ class UnofficialaclController < ApplicationController
                 #{join_clause}
               WHERE #{where_clause}
               AND tags.id IN (25) AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
-              ORDER BY events.id, occurrences.start LIMIT 1000"
+              ORDER BY events.id, occurrences.start LIMIT 500"
     ids = ActiveRecord::Base.connection.select_all(query)
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
     @occurrences = Occurrence.where("id in (?)",occurrence_ids)
-    @occurrences = @occurrences.paginate(:page => params[:page] || 1, :per_page => 20)
-
-    #render layout: "unofficialacl"
+    @occurrences = @occurrences.paginate(:page => params[:page] || 1, :per_page => 19)
+    #render 'unofficialacl/index' unless request.xhr?
+    render layout: "unofficialacl"
   end
 
   def show_event
-    @occurrence = Occurrence.find params[:event_id]
-    @event = @occurrence.event
-    @venue = @occurrence.event.venue
-    @acts = @event.acts
-    @recurrences = []
+    #raise  params[:event_id].to_yaml
+    @occurrence = Occurrence.find_by_id(params[:event_id])
+    unless @occurrence.nil?
+      @event = @occurrence.event
+      @venue = @occurrence.event.venue
+      @acts = @event.acts
+
+
+      #venue events
+      @occurrences  = []
+      @recurrences = []
+      occs = @venue.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now }  }.flatten.sort_by { |occ| occ.start }
+      occs.each do |occ|
+        # check if occurrence is instance of a recurrence
+        if occ.recurrence.nil?
+          @occurrences << occ
+        else
+          if @recurrences.index(occ.recurrence).nil?
+            @recurrences << occ.recurrence
+          end
+        end
+      end
+
+      #artist events
+
+      @a_occurrences  = []
+      @a_recurrences = []
+      act = @event.acts[0]
+      unless act.nil?
+        occs = act.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now }  }.flatten.sort_by { |occ| occ.start }
+        occs.each do |occ|
+          # check if occurrence is instance of a recurrence
+          if occ.recurrence_id.nil?
+            @a_occurrences << occ
+          else
+            if @a_recurrences.index(occ.recurrence).nil?
+              @a_recurrences << occ.recurrence
+            end
+          end
+        end
+        @a_recurrences.reject! { |c| c.nil? }
+        @a_occurrences.reject! { |c| c.nil? }
+      end
+
+      render layout: "unofficialacl"
+    else
+      redirect_to :controller => :unofficialacl,:action => :index
+    end
+
+  end
+
+  def show_venue
+    @venue = Venue.find_by_id(params[:id])
 
     @occurrences  = []
     @recurrences = []
-    @occs = @venue.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now }  }.flatten.sort_by { |occ| occ.start }
-    @occs.each do |occ|
+    occs = @venue.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now }  }.flatten.sort_by { |occ| occ.start }
+    occs.each do |occ|
       # check if occurrence is instance of a recurrence
-      if occ.recurrence_id.nil?
+      if occ.recurrence.nil?
         @occurrences << occ
       else
         if @recurrences.index(occ.recurrence).nil?
@@ -119,13 +176,6 @@ class UnofficialaclController < ApplicationController
         end
       end
     end
-
-    render layout: "unofficialacl"
-  end
-
-  def show_venue
-    @occurrence = Occurrence.find params[:event_id]
-    @venue = @occurrence.event.venue
     render layout: "unofficialacl"
   end
 

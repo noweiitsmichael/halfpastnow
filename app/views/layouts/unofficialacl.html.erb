@@ -74,8 +74,11 @@
           <h3 class="ptx">You are seeing: </h3>
         </div>
         <div class="large-3 small-4 columns">
-          <%= select_tag :search_tag, options_for_select([["Happy Hours","Happy Hours"],["Live music","Live music"]]), :include_blank => true,
-                         :onchange => "$.post('/unofficialacl/search', {'_method':'post', 'search':this.value} );" %>
+          <select class="select js-select" onchange= "$.post('/unofficialacl/search', {'_method':'post', 'search':this.value} )" >
+            <option></option>
+            <option value="Happy Hours">Happy Hours</option>
+            <option value="Live music">Live music</option>
+          </select>
         </div>
       </div>
     </div>

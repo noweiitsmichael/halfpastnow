@@ -30,7 +30,7 @@
 
       <div class="row">
         <div class="event-picture">
-          <img src="<%= @event.pictures.first ? @event.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
+          <img src="<%= @event.pictures.first ? @event.pictures.first.image_url(:full) : "/assets/placeholder.png" %>" />
           <% if @event.price && @event.price != 0 %>
               <div class="sticker pack detail-badge"><div class="sticker-discount"><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 0) : "" %></div><div class="sticker-label"></div></div>
           <% end %>
@@ -48,11 +48,11 @@
         <% @event.acts.each do |act| %>
         <li class="row">
           <div class="small-3 columns">
-            <img src="content/a.jpg">
+            <img src="<%= act.pictures.first ? act.pictures.first.image_url(:thumb) : "" %>" />
           </div>
           <div class="small-9 columns">
             <h2 class="pbm"><%= act.name %></h2>
-            <p>  ?? </p>
+            <% unless act.description.to_s.empty? %><p>  <%= raw(act.description) %> </p> <% end %>
           </div>
         </li>
         <% end %>
@@ -194,7 +194,7 @@
         <h1 class="title"><%= @event.venue.name %></h1>
         <ul class="details">
           <li><i class="icon-map-marker pull-left icon-large mbl"></i> <%= @event.venue.address %><br><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></li>
-          <li><a href="tel:1-800-555-555"><i class="icon-mobile-phone icon-large"></i> <%= @venue.phonenumber %></a></li>
+          <li><% unless @venue.phonenumber.empty? %><a href="tel:1-800-555-555"><i class="icon-mobile-phone icon-large"></i> <%= @venue.phonenumber %></a><% end %></li>
         </ul>
         <div class="row">
           <div class="small-12 columns">
@@ -204,17 +204,30 @@
 
         <ul class="features upcoming">
           <% @recurrences.each do |rec| %>
-          <li class="row">
-            <div class="small-3 columns">
-              <img src="content/a.jpg">
-            </div>
-            <div class="small-9 columns">
-              <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
-              <% unless rec.event.description.to_s.empty? %>
-                  <p> <%= raw(rec.event.description) %> </p>
-              <% end %>
-            </div>
-          </li>
+              <li class="row">
+                <div class="small-3 columns">
+                  <img src="<%= rec.event.pictures.first ? rec.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                </div>
+                <div class="small-9 columns">
+                  <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
+                  <% unless rec.event.description.to_s.empty? %>
+                      <p> <%= raw(rec.event.description) %> </p>
+                  <% end %>
+                </div>
+              </li>
+          <% end %>
+          <% @occurrences.each do |occ| %>
+              <li class="row">
+                <div class="small-3 columns">
+                  <img src="<%= occ.event.pictures.first ? occ.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                </div>
+                <div class="small-9 columns">
+                  <a href="/unofficialacl/show_event?event_id=<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
+                  <% unless occ.event.description.to_s.empty? %>
+                      <p> <%= raw(occ.event.description) %> </p>
+                  <% end %>
+                </div>
+              </li>
           <% end %>
         </ul>
       </div>
@@ -225,44 +238,57 @@
 </div>
 <% end %>
 
-<% unless @acts.empty? %>
+<% unless @event.acts.length == 0 %>
 <!-- the last tab artist details -->
 <div class="content tab" id="tab-3">
   <div class="row">
     <!-- Big things: column left -->
     <div class="large-6 columns stretch">
 
+      <% @event.acts.each_with_index do |act,index| %>
+          <% unless (act.fb_picture.blank? && act.pictures.nil?) %>
       <div class="row">
         <div class="event-picture">
-          <img src="content/a.jpg">
-          <div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>80</div>
+          <img src="<%= act.pictures.first ? act.pictures.first.image_url(:full) : "" %>" />
+          <!--<div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>80</div>-->
         </div>
       </div>
+          <% end %>
 
+        <% unless act.description.to_s.empty? %>
+        <div class="row ptl">
+        <div class="small-8 small-offset-4 columns">
+          <p class="text"> <%= raw(act.description) %></p>
+        </div>
+
+        </div>
+        <% end %>
+
+          <% unless act.embeds.length == 0 %>
+          <% act.embeds.select { |e| e.primary }.each do |embed| %>
       <div class="row ptl">
         <div class="small-8 small-offset-4 columns">
-          <p class="text"> Suspendisse et consequat turpis. Aliquam tincidunt arcu ac porta commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus sit amet gravida ligula. Donec eu varius erat. Curabitur tincidunt tellus nec erat ornare commodo. Duis feugiat felis id quam luctus, fermentum ultricies erat blandit.</p>
+          <%= raw(embed.source) %>
+          <!--<iframe width="300" height="225" src="http://www.youtube.com/embed/0mtw2bNdCIk?rel=0" frameborder="0" allowfullscreen></iframe>-->
         </div>
       </div>
-
-      <div class="row ptl">
-        <div class="small-8 small-offset-4 columns">
-          <iframe width="300" height="225" src="http://www.youtube.com/embed/0mtw2bNdCIk?rel=0" frameborder="0" allowfullscreen></iframe>
-        </div>
-      </div>
+          <% end %>
+          <% end %>
+      <% end %>
 
     </div>
 
     <!-- Small things: column right -->
     <div class="large-6 columns rightCol stretch">
+      <% @event.acts.each_with_index do |act,index| %>
       <div class="mll mrl clearfix">
-        <h1 class="title">John doe and his hipster band</h1>
-        <ul class="details">
+        <h1 class="title"><%= act.name %></h1>
+        <!--<ul class="details">
           <li><a href="#"><i class="icon-link pull-left icon-large"></i>hipsterband.com</a></li>
           <li>
             <a href="#"><i class="icon-facebook-sign icon-large"></i></a> <a href="#"><i class="icon-twitter-sign icon-large"></i></a> <a href="#"><i class="icon-youtube-sign icon-large"></i></a>
           </li>
-        </ul>
+        </ul>-->
         <div class="row">
           <div class="small-12 columns">
             <h1 class="featuring-title upcoming">Upcoming events:</h1>
@@ -270,27 +296,36 @@
         </div>
 
         <ul class="features upcoming">
-          <li class="row">
-            <div class="small-3 columns">
-              <img src="content/a.jpg">
-            </div>
-            <div class="small-9 columns">
-              <h2 class="pbm">Alvin and the chipmunks</h2>
-              <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie est ut facilisis convallis. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
-            </div>
-          </li>
-          <li class="row">
-            <div class="small-3 columns">
-              <img src="content/a.jpg">
-            </div>
-            <div class="small-9 columns">
-              <h2 class="pbm">Alvin and the chipmunks</h2>
-              <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie est ut facilisis convallis. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
-            </div>
-          </li>
+          <% @a_recurrences.each do |rec| %>
+              <li class="row">
+                <div class="small-3 columns">
+                  <img src="<%= rec.event.pictures.first ? rec.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                </div>
+                <div class="small-9 columns">
+                  <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
+                  <% unless rec.event.description.to_s.empty? %>
+                      <p> <%= raw(rec.event.description) %> </p>
+                  <% end %>
+                </div>
+              </li>
+          <% end %>
+          <% @a_occurrences.each do |occ| %>
+              <li class="row">
+                <div class="small-3 columns">
+                  <img src="<%= occ.event.pictures.first ? occ.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                </div>
+                <div class="small-9 columns">
+                  <a href="/unofficialacl/show_event?event_id=<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
+                  <% unless occ.event.description.to_s.empty? %>
+                      <p> <%= raw(occ.event.description) %> </p>
+                  <% end %>
+                </div>
+              </li>
+          <% end %>
+
         </ul>
       </div>
-
+      <% end %>
     </div>
 
   </div>
