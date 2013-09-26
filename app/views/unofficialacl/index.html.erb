@@ -1,4 +1,7 @@
+
 <div class="content" id="search_content">
+  <%= render 'row_header', locals: {occurrences: @occurrences} %>
+  <%= render 'default_venues' %>
   <%= render 'results', locals: {occurrences: @occurrences} %>
 </div>
 
