@@ -1,0 +1,54 @@
+
+<div class="row">
+<!-- Big things: column left -->
+<div class="large-6 columns leftCol ptm stretch">
+
+  <% @default_venues.each do |venue| %>
+    <div class="big-event-container clearfix">
+      <div class="event-image">
+        <img src="<%= venue.pictures.first ? venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
+      </div>
+      <div class="text antialiased">
+        <a class="event-title" href="unofficialacl/show_venue/<%= venue.id %>"><%= truncate(venue.name, :length => 20) %></a>
+        <p class="event-tags">
+          <span>Happy Hours</span>, <span>Live music</span>
+          <% if venue.tags.count > 0 %>
+              <% venue.tags.each_with_index  do |tag, index| %>
+                  <span><%= tag.name %></span>
+                  <% if index == 1 %><% break %><% else %>,<% end %>
+              <% end %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  <% end %>
+
+</div>
+
+<!-- Small things: column right -->
+<div class="large-6 columns rightCol ptm stretch">
+<ul class="small-block-grid-2">
+  <% @default_occurrences.each_with_index do |occurrence| %>
+  <li class="mix freedrink">
+    <div class="small-event-container">
+      <div class="event-image">
+        <img src="<%= occurrence.event.pictures.first ? occurrence.event.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
+      </div>
+      <div class="text antialiased">
+        <a class="event-title" href="unofficialacl/show_event?event_id=<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 18) %></a>
+        <p class="event-tags">
+          <% if occurrence.event.tags.count > 0 %>
+              <% occurrence.event.tags.each_with_index  do |tag, index| %>
+                  <span><%= tag.name %></span>
+                  <% if index == 1 %><% break %><% else %>,<% end %>
+              <% end %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  </li>
+  <% end %>
+</ul>
+
+</div>
+</div>
