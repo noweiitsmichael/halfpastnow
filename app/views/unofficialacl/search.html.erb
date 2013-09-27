@@ -1,4 +1,4 @@
-
+ <%#= raise "check" %>
 <div class="content">
   <%= render 'row_header', locals: {occurrences: @occurrences} %>
   <div class="content tab search_content" id="tab-1">
@@ -7,13 +7,15 @@
   <div class="footer row">
     <div class="small-6 small-centered columns by-center">
       <div id="loaderImage" class="mbl"></div>
-      loading more content
+      <div id="footer_text">loading more content</div>
     </div>
   </div>
 </div>
 
+<%= hidden_field_tag :and_tags, params[:and_tags] %>
 <%= hidden_field_tag :next_page, @occurrences.next_page %>
 <%= hidden_field_tag :total_pages, @occurrences.total_pages %>
+<%= hidden_field_tag :two_pages, "true" %>
 
 <style>
     .scrollup{
@@ -44,19 +46,27 @@
             next_page = parseInt(next_page);
             var total_pages = $('#total_pages').val();
             total_pages = parseInt(total_pages);
+            var and_tags = $('#and_tags').val();
+
+            if((total_pages==2) && ($('#two_pages').val()=="true"))
+            {
+                append_data(next_page,and_tags);
+                $('#two_pages').val("false");
+            }
 
             if (next_page < total_pages) {
-                append_data(next_page);
-            }   else{
-                $('.footer').hide();
+                append_data(next_page,and_tags);
+            } else{
+                $('#loaderImage').hide();
+                $('#footer_text').hide();
             }
         }
 
     });
 
-    function append_data(page) {
+    function append_data(page,and_tags) {
 
-        $.post('/unofficialacl/search', {page: page},
+        $.post('/unofficialacl/search', {page: page,and_tags: and_tags},
                 function () {
                 }, 'script');
         return false;

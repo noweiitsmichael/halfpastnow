@@ -6,7 +6,7 @@
   <%= stylesheet_link_tag    "acl/grid.css" %>
   <%= stylesheet_link_tag    "acl/bundle.css" %>
   <%= stylesheet_link_tag    "acl/simpletextrotator.css" %>
-  <%= javascript_include_tag "application" %>
+  <%#= javascript_include_tag "application" %>
   <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
@@ -45,59 +45,7 @@
     <div class="austin"></div>
   </div>
 
-  <div id="sticker">
-    <div class="pink-banner">
-      <div class="wrapper row">
-        <div class="large-9 columns">
-          <a class="callout" tabindex="1" href="http://www.halfpastnow.com">
-            <img src="/assets/acl/layout/hpn-marker.png">
-            <p>Sponsored: See all of Austin's <span class="rotate">Live Music, Happy Hour, Outdoor, Fitness, Business, Tech, Arts, Exhibition</span> events at halfpastnow.com!</p>
-          </a>
 
-              <div class="comments">
-                <div class="ear left"></div>
-                <i class="icon-chevron-right"></i> Go On!
-              </div>
-        </div>
-        <div class="large-3 columns ptx">
-          <div class="text-rounded dark">
-            <%= form_tag "/unofficialacl/search", remote: true  do %>
-              <%= text_field_tag :search,"", placeholder: "Search", "tabindex" => "2" %>
-              <%= submit_tag "",class: "search-button", "tabindex" => "6" %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="toolbar">
-      <div class="wrapper row">
-        <div class="large-3 small-4 columns">
-          <div class="ptx prm left"><h3>Map is: </h3></div>
-          <div class="commutator off" id="map-onoff">
-            <div class="is on">
-              On
-              <div class="is off">
-                Off
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- <div class="large-3 small-4 large-offset-3 columns by-right">
-          <h3 class="ptx">Choose a Category: </h3>
-        </div>
-        <div class="large-3 small-4 columns">
-          <select class="select js-select" onchange= "$.post('/unofficialacl/search', {'_method':'post', 'search':this.value} )" >
-            <option></option>
-            <option value="Happy Hours">Happy Hours</option>
-            <option value="Live music">Live music</option>
-          </select>
-        </div> -->
-      </div>
-    </div>
-  </div>
-  <div class="row" id="map">
-    <div id="googleMap"></div>
-  </div>
 
   <%= yield %>
 

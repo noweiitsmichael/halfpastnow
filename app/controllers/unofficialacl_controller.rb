@@ -26,12 +26,13 @@ class UnofficialaclController < ApplicationController
     default_occurrence_ids = []
     ids = ActiveRecord::Base.connection.select_all(query)
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
-    default_occurrence_ids = occurrence_ids[0..13]
-    occurrence_ids = occurrence_ids - default_occurrence_ids
 
     occurrences = Occurrence.where("id in (?)",occurrence_ids)
     @occurrences = occurrences.paginate(:page => params[:page] || 1, :per_page => 19)
-    #raise occurrence_ids.to_yaml
+
+    default_occurrence_ids = occurrence_ids[0..13]
+    occurrence_ids = occurrence_ids - default_occurrence_ids
+    #raise @occurrences.count.to_yaml
 
     #venues for default page
     @default_venues=Venue.where("id in (?)",[39473,39334,39349,47138,39329])
@@ -41,6 +42,7 @@ class UnofficialaclController < ApplicationController
   end
 
   def search
+
     search_match = tag_include_match = tag_and_match = "TRUE"
 
     join_clause = "INNER JOIN events ON occurrences.event_id = events.id
@@ -48,8 +50,10 @@ class UnofficialaclController < ApplicationController
                      LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
                      LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id"
 
-    unless(params[:search].to_s.empty?)
-      search = params[:search].gsub(/[^0-9a-z ]/i, '').upcase
+    unless params[:search].to_s.empty? and params[:category_search].to_s.empty?
+      search_word = params[:search].to_s + ' ' +params[:category_search].to_s
+      #raise search_word.to_yaml
+      search = search_word.gsub(/[^0-9a-z ]/i, '').upcase
       searches = search.split(' ')
 
       search_match_arr = []
@@ -100,12 +104,13 @@ class UnofficialaclController < ApplicationController
               WHERE #{where_clause}
               AND tags.id IN (232,230,247) AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
               ORDER BY events.id, occurrences.start LIMIT 500"
-    #raise query.to_yaml
+
     ids = ActiveRecord::Base.connection.select_all(query)
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
     @occurrences = Occurrence.where("id in (?)",occurrence_ids)
     @occurrences = @occurrences.paginate(:page => params[:page] || 1, :per_page => 19)
-    #render 'unofficialacl/index' unless request.xhr?
+    #render 'unofficialacl/results' unless request.xhr?
+    #raise query.to_yaml
     render layout: "unofficialacl"
   end
 

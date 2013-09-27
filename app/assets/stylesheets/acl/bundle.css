@@ -671,7 +671,19 @@ a {
     left: 0;
     right: 0;
     bottom: 0;
-    top: 0; }
+    top: 0;
+      max-height: 100%;
+      zoom: 2;
+      width: 458px;
+      height: 343px;
+  }
+.small-event-container .event-image img {
+    max-height: 100%;
+    zoom: 2;
+    width: 221px;
+    height: 219px;
+    background-size: 200px;
+}
 
 .big-event-container {
   position: relative;
@@ -874,7 +886,11 @@ a.callout {
   margin: 0 auto; }
   .event-picture img {
     max-height: 100%;
-    width: auto; }
+    zoom: 2;
+    width: 480px;
+    height: 320px;
+    /*width: auto; */
+  }
 
 .featuring-title {
   padding: 20px 0;
