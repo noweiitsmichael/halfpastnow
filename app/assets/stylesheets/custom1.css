@@ -38,6 +38,7 @@ body {
 figure{
 	margin:0;
 	padding:0;
+    height:130px;
 }
 
 input, button, select, textarea {

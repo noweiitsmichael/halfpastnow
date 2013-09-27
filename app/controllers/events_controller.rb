@@ -35,7 +35,7 @@ def new_splash
   ids = Occurrence.find_with(params)
   occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
   order_by = "occurrences.start"
-  @Occurrences = Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by)
+  @Occurrences = Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(9)
 
   respond_to do |format|
     format.html { render :layout => false }
@@ -441,7 +441,7 @@ def index
   # GET /events/1
   # GET /events/1.json
   def show
-     begin
+    # begin
     puts "Share content"
     @fullmode = (!params[:fullmode].to_s.empty?) || (@mobileMode)
     @modeType = "event"
@@ -502,11 +502,11 @@ def index
       # format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }
       format.mobile 
     end
-     rescue
-       respond_to do |format|
-         format.js { render template: "events/error_show" }
-       end
-       end
+     #rescue
+     #  respond_to do |format|
+     #    format.js { render template: "events/error_show" }
+     # # end
+     #  end
   end
 
   def shunt

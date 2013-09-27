@@ -1,0 +1,23 @@
+<article class="slide-item" link-id="<%= occurrence.id %>" linkto="event">
+  <figure><a href="#"><img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>"/></a></figure>
+  <div class="name"><a href="#"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
+  <div class="info clearfix">
+    <span class="time pull-left"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></span>
+    <span class="value pull-right"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price, :unit => "$").to_s + " " : "FREE ") : "" %></span>
+  </div>
+  <div class="additional-info">
+    <span class="place"><%= occurrence.event.venue.name %></span>
+    <%
+       if (current_user)
+         bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
+         bookmarkId = bookmark.nil? ? nil : bookmark.id
+       else
+         bookmarkId = nil
+       end
+    %>
+
+      <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" <%= current_user ? "" : "linkto='shunt'" %> event-title="<%= occurrence.event.title %>" event-id="<%= occurrence.id %>" event-venue="<%= occurrence.event.venue.name %>" event-id="<%= occurrence.id %>"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
+
+
+  </div>
+</article>
