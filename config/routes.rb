@@ -11,7 +11,7 @@ Myapp::Application.routes.draw do
   root :to => 'events#new_splash'
   #root :to => 'unofficialacl#index'
 
-
+  match "unofficialacl/search" => "unofficialacl#search"
 
   resources :unofficialacl do
     collection do
@@ -20,7 +20,6 @@ Myapp::Application.routes.draw do
       get :show_venue
     end
   end
-
 
   get "mobile/new"
 

@@ -63,7 +63,8 @@
               <a href="http://www.unofficialacl.com">Unofficial ACL</a>
             </li>          
             <li id="tab-anchor-2" class = <%= (params[:and_tags].include? '247') ? "current" : "" %>>
-              <%= link_to "Official Late Night Shows", search_unofficialacl_index_path(and_tags: 247), method: :post %>
+              <%#= link_to "Official Late Night Shows", search_unofficialacl_index_path(and_tags: 247), method: :post %>
+              <a rel="nofollow" data-method="post" href="/unofficialacl/search?and_tags=247">Official Late Night Shows</a>
             </li>
             <li  id="tab-anchor-1" class = <%= (params[:and_tags].include? '230') ? "current" : "" %>>
               <%= link_to "Official ACL", search_unofficialacl_index_path(and_tags: 230), method: :post %>

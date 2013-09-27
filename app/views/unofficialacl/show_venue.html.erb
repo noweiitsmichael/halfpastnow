@@ -1,3 +1,33 @@
+<%# params[:included_tags] = params[:included_tags].present? ? params[:included_tags] : '25'   %>
+<% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : '232'   %>
+
+<%= form_tag "/unofficialacl/search"  do %>
+    <div id="sticker">
+      <div class="pink-banner">
+        <div class="wrapper row">
+          <div class="large-9 columns">
+            <a class="callout" tabindex="1" href="http://www.halfpastnow.com">
+              <img src="/assets/acl/layout/hpn-marker.png">
+              <p>Sponsored: See all of Austin's <span class="rotate">Live Music, Happy Hour, Outdoor, Fitness, Business, Tech, Arts, Exhibition</span> events at halfpastnow.com!</p>
+            </a>
+
+            <div class="comments">
+              <div class="ear left"></div>
+              <i class="icon-chevron-right"></i> Go On!
+            </div>
+          </div>
+          <div class="large-3 columns ptx">
+            <div class="text-rounded dark">
+              <%= text_field_tag :search,"", placeholder: "Search", "tabindex" => "2" %>
+              <%= submit_tag "",class: "search-button", "tabindex" => "6" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<% end %>
+
+
 <div class="wrapper row header">
   <div class="small-12 columns">
     <nav>
