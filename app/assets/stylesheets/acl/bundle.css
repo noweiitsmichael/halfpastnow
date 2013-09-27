@@ -700,24 +700,27 @@ a {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    font-weight: 100;
-    font-size: 52px;
+    font-weight: 200;
+    font-size: 36px;
     text-transform: capitalize; }
     .big-event-container .text .event-title, .big-event-container .text-rounded .event-title {
-      text-decoration: none; }
+      text-decoration: none; 
+      font-size: 1em;
+      font-weight: 300;}
       @media only screen and (max-width: 767px) {
         .big-event-container .text .event-title, .big-event-container .text-rounded .event-title {
-          font-size: 46px; } }
+          font-size: 32px; } }
     .big-event-container .text .event-tags, .big-event-container .text-rounded .event-tags {
-      font-size: 25px;
-      font-weight: 300; }
+      font-size: 20px;
+      font-weight: 300;
+      text-transform: none; }
       .big-event-container .text .event-tags span, .big-event-container .text-rounded .event-tags span {
         color: #8b00bf; }
         .big-event-container .text .event-tags span:hover, .big-event-container .text-rounded .event-tags span:hover {
           color: white; }
       @media only screen and (max-width: 767px) {
         .big-event-container .text .event-tags, .big-event-container .text-rounded .event-tags {
-          font-size: 20px; } }
+          font-size: 18px; } }
 
 .small-event-container {
   position: relative;
