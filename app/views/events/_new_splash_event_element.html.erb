@@ -1,4 +1,4 @@
-<article class="slide-item" link-id="<%= occurrence.id %>" linkto="event">
+<article class="slide-item product-item" link-id="<%= occurrence.id %>" linkto="event">
   <figure><a href="#"><img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>"/></a></figure>
   <div class="name"><a href="#"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
   <div class="info clearfix">

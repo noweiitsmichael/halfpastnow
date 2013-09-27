@@ -493,6 +493,7 @@ $('.sxsw-dates').dropkick({
     //on keyup, start the countdown
     var timer_is_on = 0
     //on keyup, start the countdown
+
     $('.search-input').keyup(function () {
         if (!timer_is_on) {
             timer_is_on = 1;

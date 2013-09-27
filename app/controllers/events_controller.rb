@@ -435,7 +435,7 @@ def index
       format.mobile
       
     end
-    
+
   end
 
   # GET /events/1

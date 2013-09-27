@@ -1,374 +1,416 @@
 <% content_for :meta do %>
-  <meta class="meta-type"          property="og:type"                 content="website"> 
-  <meta class="meta-url"           property="og:url"                  content="http://www.halfpastnow.com"> 
+  <meta class="meta-type"          property="og:type"                 content="website">
+  <meta class="meta-url"           property="og:url"                  content="http://www.halfpastnow.com">
   <meta class="meta-image"         property="og:image"                content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png">
   <meta class="meta-title"         property="og:title"                content="half past now | your couch will miss you">
-  <meta class="meta-description"   property="og:description"          content="Find the best events in Austin"> 
+  <meta class="meta-description"   property="og:description"          content="Find the best events in Austin">
 <% end %>
-
 <% content_for :head do %>
-  <%= javascript_include_tag "half.dynamics" %>
-  <%= javascript_include_tag "smartinfowindow.js" %>
+    <%= javascript_include_tag "half.dynamics" %>
+    <%= javascript_include_tag "smartinfowindow.js" %>
 <% end %>
-
 <% content_for :code do %>
 <%# TODO: put this stuff in the controller eventually %>
 
-	<% 	@now = DateTime.now.change(:hour => 0)
-		@channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
-	
-	<script type="text/javascript">
-		//cookie redirect
+    <% 	@now = DateTime.now.change(:hour => 0)
+          @channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
 
-		
-		
-		(function ($, document, undefined) {
-
-			var pluses = /\+/g;
-
-			function raw(s) {
-				return s;
-			}
-
-			function decoded(s) {
-				return decodeURIComponent(s.replace(pluses, ' '));
-			}
-
-			var config = $.cookie = function (key, value, options) {
-
-				// write
-				if (value !== undefined) {
-					options = $.extend({}, config.defaults, options);
-
-					if (value === null) {
-						options.expires = -1;
-					}
-
-					if (typeof options.expires === 'number') {
-						var days = options.expires, t = options.expires = new Date();
-						t.setDate(t.getDate() + days);
-					}
-
-					value = config.json ? JSON.stringify(value) : String(value);
-
-					return (document.cookie = [
-						encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
-						options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-						options.path    ? '; path=' + options.path : '',
-						options.domain  ? '; domain=' + options.domain : '',
-						options.secure  ? '; secure' : ''
-					].join(''));
-				}
-
-				// read
-				var decode = config.raw ? raw : decoded;
-				var cookies = document.cookie.split('; ');
-				for (var i = 0, l = cookies.length; i < l; i++) {
-					var parts = cookies[i].split('=');
-					if (decode(parts.shift()) === key) {
-						var cookie = decode(parts.join('='));
-						return config.json ? JSON.parse(cookie) : cookie;
-					}
-				}
-
-				return null;
-			};
-
-			config.defaults = {};
-
-			$.removeCookie = function (key, options) {
-				if ($.cookie(key) !== null) {
-					$.cookie(key, null, options);
-					return true;
-				}
-				return false;
-			};
-
-		})(jQuery, document);
-
-		
+    <script type="text/javascript">
+        //cookie redirect
 
 
-		$(function() {
-		  var COOKIE_NAME = 'splash-page';
-		  var cookie = $.cookie(COOKIE_NAME);
-		  if (cookie == null) {
-		    $.cookie(COOKIE_NAME, true, { path: '/', expires: 9001 });
 
-		  	// ** Adding this check because if a new user is directly linked to a top pick or event, it sucks to be redirected to the splash page.
-		    if ((window.location.pathname === "/search") || (window.location.pathname === "/picks") || (window.location.pathname === "/")) {
-		    	window.location = "/events/new_splash";
-		    }
-		  }
-		  else {
-		  }
-		});
+        (function ($, document, undefined) {
+
+            var pluses = /\+/g;
+
+            function raw(s) {
+                return s;
+            }
+
+            function decoded(s) {
+                return decodeURIComponent(s.replace(pluses, ' '));
+            }
+
+            var config = $.cookie = function (key, value, options) {
+
+                // write
+                if (value !== undefined) {
+                    options = $.extend({}, config.defaults, options);
+
+                    if (value === null) {
+                        options.expires = -1;
+                    }
+
+                    if (typeof options.expires === 'number') {
+                        var days = options.expires, t = options.expires = new Date();
+                        t.setDate(t.getDate() + days);
+                    }
+
+                    value = config.json ? JSON.stringify(value) : String(value);
+
+                    return (document.cookie = [
+                        encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
+                        options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+                        options.path    ? '; path=' + options.path : '',
+                        options.domain  ? '; domain=' + options.domain : '',
+                        options.secure  ? '; secure' : ''
+                    ].join(''));
+                }
+
+                // read
+                var decode = config.raw ? raw : decoded;
+                var cookies = document.cookie.split('; ');
+                for (var i = 0, l = cookies.length; i < l; i++) {
+                    var parts = cookies[i].split('=');
+                    if (decode(parts.shift()) === key) {
+                        var cookie = decode(parts.join('='));
+                        return config.json ? JSON.parse(cookie) : cookie;
+                    }
+                }
+
+                return null;
+            };
+
+            config.defaults = {};
+
+            $.removeCookie = function (key, options) {
+                if ($.cookie(key) !== null) {
+                    $.cookie(key, null, options);
+                    return true;
+                }
+                return false;
+            };
+
+        })(jQuery, document);
 
 
-		var geocoder;
-		var map;
-		var markers = [];
-		var tags = {};
-		var channelFilters = {};
 
-		var filter = {
-		  start_days: <%= params[:start_days].coalesce_to 0 %>,
-		  end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
-		  start_seconds: <%= params[:start_seconds].coalesce_to "''" %>,
-		  end_seconds: <%= params[:end_seconds].coalesce_to "''" %>,
-		  day: [0,1,2,3,4,5,6],
-		  low_price: <%= params[:low_price].coalesce_to "''" %>,
-		  high_price: <%= params[:high_price].coalesce_to "''" %>,
-		  included_tags: <%= params[:included_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[]" %>,
-		  excluded_tags: <%= params[:excluded_tags] ? "[" + (params[:excluded_tags] * ",") + "]" : "[]" %>,
-		  and_tags: <%= params[:and_tags] ? "[" + (params[:and_tags] * ",") + "]" : "[]" %>,
-		  lat_min: "",
-		  lat_max: "",
-		  long_min: "",
-		  long_max: "",
-		  offset: 0,
-		  search: "",
-		  sort: <%= params[:sort].coalesce_to 0 %>,
-		  name: "<%= params[:name].coalesce_to "" %>",
-		  start_date: "",
-		  end_date: ""
-		};
 
-		function initialize() {
-			//console.log("initialize");
-			//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
-			geocoder = new google.maps.Geocoder();
+        $(function() {
+            var COOKIE_NAME = 'splash-page';
+            var cookie = $.cookie(COOKIE_NAME);
+            if (cookie == null) {
+                $.cookie(COOKIE_NAME, true, { path: '/', expires: 9001 });
 
-			var styles = [
-							  {
-							    "featureType": "road.highway",
-							    "elementType": "geometry.stroke",
-							    "stylers": [
-							      { "color": "#804580" }
-							    ]
-							  },{
-							    "featureType": "road.highway",
-							    "elementType": "labels.text.stroke",
-							    "stylers": [
-							      { "color": "#d5b5d5" }
-							    ]
-							  },{
-							    "featureType": "road.arterial",
-							    "elementType": "labels.text.stroke",
-							    "stylers": [
-							      { "color": "#f1e6f3" }
-							    ]
-							  },{
-							    "elementType": "geometry.fill",
-							    "stylers": [
-							      { "gamma": 1.54 },
-							      { "lightness": 12 }
-							    ]
-							  },{
-							    "featureType": "road.arterial",
-							    "elementType": "geometry.fill",
-							    "stylers": [
-							      { "color": "#e0dae0" }
-							    ]
-							  },{
-							    "featureType": "road.arterial",
-							    "elementType": "geometry.stroke",
-							    "stylers": [
-							      { "color": "#b8abb8" }
-							    ]
-							  },{
-							    "featureType": "road.highway",
-							    "elementType": "geometry.fill",
-							    "stylers": [
-							      { "color": "#af96af" }
-							    ]
-							  },{
-							  }
-							];
+                // ** Adding this check because if a new user is directly linked to a top pick or event, it sucks to be redirected to the splash page.
+                if ((window.location.pathname === "/search") || (window.location.pathname === "/picks") || (window.location.pathname === "/")) {
+                    window.location = "/events/new_splash";
+                }
+            }
+            else {
+            }
+        });
 
-			var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-			var myOptions = {
-				zoom: <%= @zoom %>,
-				center: latlng,
-				mapTypeId: 'map_style',
-				disableDefaultUI: true,
-				zoomControl: true,
-				scrollwheel: false,
-				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 2 },
-    			backgroundColor: '#FFFFFF'
-			};
 
-			var styledMap = new google.maps.StyledMapType(styles,
-    			{name: "Styled Map"});
+        var geocoder;
+        var map;
+        var markers = [];
+        var tags = {};
+        var channelFilters = {};
 
-			map = new google.maps.Map($("#map")[0], myOptions);
+        var filter = {
+            start_days: <%= params[:start_days].coalesce_to 0 %>,
+            end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
+            start_seconds: <%= params[:start_seconds].coalesce_to "''" %>,
+            end_seconds: <%= params[:end_seconds].coalesce_to "''" %>,
+            day: [0,1,2,3,4,5,6],
+            low_price: <%= params[:low_price].coalesce_to "''" %>,
+            high_price: <%= params[:high_price].coalesce_to "''" %>,
+            included_tags: <%= params[:included_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[]" %>,
+            excluded_tags: <%= params[:excluded_tags] ? "[" + (params[:excluded_tags] * ",") + "]" : "[]" %>,
+            and_tags: <%= params[:and_tags] ? "[" + (params[:and_tags] * ",") + "]" : "[]" %>,
+            lat_min: "",
+            lat_max: "",
+            long_min: "",
+            long_max: "",
+            offset: 0,
+            search: "",
+            sort: <%= params[:sort].coalesce_to 0 %>,
+            name: "<%= params[:name].coalesce_to "" %>",
+            start_date: "",
+            end_date: ""
+        };
 
-			map.mapTypes.set('map_style', styledMap);
-  			map.setMapTypeId('map_style');
+        function initialize() {
+            //console.log("initialize");
+            //$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
+            geocoder = new google.maps.Geocoder();
 
-			var locations = [];
-			
-			$("#content .main .inner .events li").each(function(index) {
-				var latitude = parseFloat($(this).find(".latitude").html());
-				var longitude = parseFloat($(this).find(".longitude").html());
-				locations.push({lat: latitude, long: longitude});
-			});
-			
-			placeMarkers({points: locations});
+            var styles = [
+                {
+                    "featureType": "road.highway",
+                    "elementType": "geometry.stroke",
+                    "stylers": [
+                        { "color": "#804580" }
+                    ]
+                },{
+                    "featureType": "road.highway",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [
+                        { "color": "#d5b5d5" }
+                    ]
+                },{
+                    "featureType": "road.arterial",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [
+                        { "color": "#f1e6f3" }
+                    ]
+                },{
+                    "elementType": "geometry.fill",
+                    "stylers": [
+                        { "gamma": 1.54 },
+                        { "lightness": 12 }
+                    ]
+                },{
+                    "featureType": "road.arterial",
+                    "elementType": "geometry.fill",
+                    "stylers": [
+                        { "color": "#e0dae0" }
+                    ]
+                },{
+                    "featureType": "road.arterial",
+                    "elementType": "geometry.stroke",
+                    "stylers": [
+                        { "color": "#b8abb8" }
+                    ]
+                },{
+                    "featureType": "road.highway",
+                    "elementType": "geometry.fill",
+                    "stylers": [
+                        { "color": "#af96af" }
+                    ]
+                },{
+                }
+            ];
 
-			google.maps.event.addListener(map, 'idle', boundsChanged);
-		}
+            var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+            var myOptions = {
+                zoom: <%= @zoom %>,
+                center: latlng,
+                mapTypeId: 'map_style',
+                disableDefaultUI: true,
+                zoomControl: true,
+                scrollwheel: false,
+                zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 2 },
+                backgroundColor: '#FFFFFF'
+            };
 
-		function to_i(obj) {
-			return parseInt(obj);
-		}
+            var styledMap = new google.maps.StyledMapType(styles,
+                    {name: "Styled Map"});
 
-		$(function() {
-			<% @channels.each do |channel| %>
-				channelFilters[<%= channel.id %>] = {
-				  stream_id: <%= channel.id %>,
-				  start_days: <%= channel.start_days || 0 %>,
-				  end_days: <%= channel.end_days || 0 %>,
-				  start_seconds: <%= channel.start_seconds || "''" %>,
-				  end_seconds: <%= channel.end_seconds || "''" %>,
-				  day: <%= channel.day_of_week ? "'" + channel.day_of_week + "'.split(',').map(to_i)" : "[]" %>,
-				  low_price: <%= channel.low_price || "''" %>,
-				  high_price: <%= channel.high_price || "''" %>,
-				  included_tags: <%= channel.included_tags ? "'" + channel.included_tags + "'.split(',')" : "[]" %>,
-				  excluded_tags: <%= channel.excluded_tags ? "'" + channel.excluded_tags + "'.split(',')" : "[]" %>,
-				  and_tags: <%= channel.and_tags ? "'" + channel.and_tags + "'.split(',')" : "[]" %>,
-				  lat_min: "",
-				  lat_max: "",
-				  long_min: "",
-				  long_max: "",
-				  offset: 0,
-				  search: "<%= channel.search || "" %>",
-				  sort: <%= channel.sort || 0 %>,
-				  name: "<%= channel.name || "" %>",
-				  start_date: "<%= channel.start_date ? channel.start_date.to_s : "" %>",
-				  end_date: "<%= channel.end_date ? channel.end_date.to_s : "" %>"
-				};
-			<% end %>
+            map = new google.maps.Map($("#map")[0], myOptions);
 
-    		channelFilters[0] = { 
-    			  stream_id: "",
-				  start_days: 0,
-				  end_days: 0,
-				  start_seconds: '',
-				  end_seconds: '',
-				  day: [0,1,2,3,4,5,6],
-				  low_price: '',
-				  high_price: '',
-				  included_tags: [],
-				  and_tags: [],
-				  excluded_tags: [],
-				  lat_min: "",
-				  lat_max: "",
-				  long_min: "",
-				  long_max: "",
-				  offset: 0,
-				  search: "",
-				  name: "",
-				  start_date: "",
-				  end_date: "",
-				  sort: 0 };
+            map.mapTypes.set('map_style', styledMap);
+            map.setMapTypeId('map_style');
 
-			<% @tagCounts.each do |tagCount| %>
-			tags['<%= tagCount[:id] %>'] = 
-				{ name: "<%= tagCount[:name] %>",
-				  parent_id: <%= tagCount[:parent] ? "'#{tagCount[:parent][:id]}'" : 'null' %>,
-				  <% children = tagCount[:children].collect { |child| "'#{child[:id]}'" } * ',' %>
-				  child_ids: [<%= children %>]
-				}
-			<% end %>
+            var locations = [];
 
-			// var event_id = <%= params[:event_id] || "null" %>;
-			var venue_id = <%= params[:venue_id] || "null" %>;
-			var act_id = <%= params[:act_id] || "null" %>;
-			var modality;
+            $("#content .main .inner .events li").each(function(index) {
+                var latitude = parseFloat($(this).find(".latitude").html());
+                var longitude = parseFloat($(this).find(".longitude").html());
+                locations.push({lat: latitude, long: longitude});
+            });
 
-			// if(event_id) {
-			// 	modality = spawn(modalities["event"],{id: event_id});
-			// 	modal(modality);
-			// }
-			if(venue_id) {
-				modality = spawn(modalities["venue"],{id: venue_id});
-				modal(modality);
-			}
-			if(act_id) {
-				modality = spawn(modalities["act"],{id: act_id});
-				modal(modality);   
-			}
+            placeMarkers({points: locations});
 
-	      $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
-	      $('.head-title').tooltip('disable');
-	      $('.icon-check').tooltip('disable');
-	      $('.icon-check-empty').tooltip('disable');
+            google.maps.event.addListener(map, 'idle', boundsChanged);
+        }
 
-		});
+        function to_i(obj) {
+            return parseInt(obj);
+        }
 
-		$(window).load(function() {
-			var stream_id = "<%= params['channel_id'] %>";
-			if(stream_id !== "") {
-				// $('#header').addClass('selected');
-				$(".streambar .stream[stream-id=" + stream_id + "]").addClass('selected');
-				filter.stream_id = parseInt(stream_id);
-				filter.included_tags = channelFilters[parseInt(stream_id)].included_tags;
-				updateViewFromFilter();
-			}
-		});
-	</script>
+        $(function() {
+            <% @channels.each do |channel| %>
+            channelFilters[<%= channel.id %>] = {
+                stream_id: <%= channel.id %>,
+                start_days: <%= channel.start_days || 0 %>,
+                end_days: <%= channel.end_days || 0 %>,
+                start_seconds: <%= channel.start_seconds || "''" %>,
+                end_seconds: <%= channel.end_seconds || "''" %>,
+                day: <%= channel.day_of_week ? "'" + channel.day_of_week + "'.split(',').map(to_i)" : "[]" %>,
+                low_price: <%= channel.low_price || "''" %>,
+                high_price: <%= channel.high_price || "''" %>,
+                included_tags: <%= channel.included_tags ? "'" + channel.included_tags + "'.split(',')" : "[]" %>,
+                excluded_tags: <%= channel.excluded_tags ? "'" + channel.excluded_tags + "'.split(',')" : "[]" %>,
+                and_tags: <%= channel.and_tags ? "'" + channel.and_tags + "'.split(',')" : "[]" %>,
+                lat_min: "",
+                lat_max: "",
+                long_min: "",
+                long_max: "",
+                offset: 0,
+                search: "<%= channel.search || "" %>",
+                sort: <%= channel.sort || 0 %>,
+                name: "<%= channel.name || "" %>",
+                start_date: "<%= channel.start_date ? channel.start_date.to_s : "" %>",
+                end_date: "<%= channel.end_date ? channel.end_date.to_s : "" %>"
+            };
+            <% end %>
+
+            channelFilters[0] = {
+                stream_id: "",
+                start_days: 0,
+                end_days: 0,
+                start_seconds: '',
+                end_seconds: '',
+                day: [0,1,2,3,4,5,6],
+                low_price: '',
+                high_price: '',
+                included_tags: [],
+                and_tags: [],
+                excluded_tags: [],
+                lat_min: "",
+                lat_max: "",
+                long_min: "",
+                long_max: "",
+                offset: 0,
+                search: "",
+                name: "",
+                start_date: "",
+                end_date: "",
+                sort: 0 };
+
+            <% @tagCounts.each do |tagCount| %>
+            tags['<%= tagCount[:id] %>'] =
+            { name: "<%= tagCount[:name] %>",
+                parent_id: <%= tagCount[:parent] ? "'#{tagCount[:parent][:id]}'" : 'null' %>,
+                <% children = tagCount[:children].collect { |child| "'#{child[:id]}'" } * ',' %>
+                child_ids: [<%= children %>]
+            }
+            <% end %>
+
+            // var event_id = <%= params[:event_id] || "null" %>;
+            var venue_id = <%= params[:venue_id] || "null" %>;
+            var act_id = <%= params[:act_id] || "null" %>;
+            var modality;
+
+            // if(event_id) {
+            // 	modality = spawn(modalities["event"],{id: event_id});
+            // 	modal(modality);
+            // }
+            if(venue_id) {
+                modality = spawn(modalities["venue"],{id: venue_id});
+                modal(modality);
+            }
+            if(act_id) {
+                modality = spawn(modalities["act"],{id: act_id});
+                modal(modality);
+            }
+
+            $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+            $('.head-title').tooltip('disable');
+            $('.icon-check').tooltip('disable');
+            $('.icon-check-empty').tooltip('disable');
+
+        });
+
+        $(window).load(function() {
+            var stream_id = "<%= params['channel_id'] %>";
+            if(stream_id !== "") {
+                // $('#header').addClass('selected');
+                $(".streambar .stream[stream-id=" + stream_id + "]").addClass('selected');
+                filter.stream_id = parseInt(stream_id);
+                filter.included_tags = channelFilters[parseInt(stream_id)].included_tags;
+                updateViewFromFilter();
+            }
+        });
+    </script>
 <% end %>
-
-
-
 <% content_for :body do %>
-	<div id="content">
-		<% unless @mobileMode %>
-		<div id="map-wrapper">
-			<div id="map"></div>
-			<div class="map-move">
-				<strong>zoom and move around the map to see events</strong><br />
-				redo search based on map move + zoom<input type="checkbox" checked id="unnecessarily-long-id-for-toggling-search-on-map-move-and-zoom"/>
-			</div>
-		</div>
-		<% end %>
 
-		<%= render :partial => "/layouts/footer" %>
-		<div class="main">
-			<% if (@mobileMode) %> </center> <% end %>
-			<div class="inner">
-				<div class="filter-summary">
-					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sort-type" style="display:none;">[by popularity/<span class="sort date">date</span>]</span>
-				</div>
-				<ul class="events">
-					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
-				</ul>
-				<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
-			</div>
-			<% if (@mobileMode) %> <center> <% end %>
-			<img id="loading" src="/assets/ajax-loader.gif" />
-		</div>
-		<%#= render :partial => "layouts/grid" %>
-	</div>
+<section class="search">
+  <div class="tabs">
+    <div class="container">
+      <ul class="nav nav-tabs" id="search-tab">
+        <li class=""><a data-toggle="tab" href="#events">Events</a></li>
 
-<!-- crazy egg -->
-<script type="text/javascript">
-setTimeout(function(){var a=document.createElement("script");
-var b=document.getElementsByTagName("script")[0];
-a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0014/9731.js?"+Math.floor(new Date().getTime()/3600000);
-a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
-</script>
+      </ul>
+    </div>
+    <div class="tab-content">
+      <div id="fitness" class="tab-pane fade">
+        <div class="container">
+          <div class="content">
+            Fitness
+          </div>
+        </div>
+      </div>
+      <div id="events" class="tab-pane fade in active">
+
+        <div class="sort-panel">
+          <div class="container">
+            <a href="#" class="sort-item filter-toggle date"><i class="icon-bottom-arrow"></i>Date</a>
+
+            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Time</a>
+            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Cost</a>
+            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Area</a>
+          </div>
+        </div>
+        <div class="content">
+          <div class="container">
+            <h2 class="text-info"><%= @allOccurrences.size %> results for</h2>
+            <p class="lead text-info">"happy hour, south congress, 5pm"</p>
+            <section class="product-list clearfix">
+              <% @occurrences.each_with_index do |occurrence, index| %>
+                  <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
+              <% end %>
+              <article class="product-item">
+                <figure><a href="#"><img src="assets/new_design/scroller1-img03.gif" alt=""/></a></figure>
+                <div class="name"><a href="#">Austin City Limits Music Festival</a></div>
+                <div class="info clearfix">
+                  <span class="time pull-left">Today @ 5:00pm</span>
+                  <span class="value pull-right">FREE</span>
+                </div>
+                <div class="additional-info">
+                  <span class="place">ACL</span>
+                  <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
+                </div>
+              </article>
+            </section>
+          </div>
+        </div>
+      </div>
+      <div id="related_events" class="tab-pane fade">
+        <div class="sort-panel">
+          <div class="container">
+            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Date</a>
+            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Time</a>
+            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Cost</a>
+            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Area</a>
+          </div>
+        </div>
+        <div class="content">This is tab content ,it will replace with related events(like events tab) once all the queries properly build up </div>
+      </div>
+    </div>
+  </div>
+</section>
+    <script>
+        $('.icon-remove').on("click",function(){
+            $(this).parents('li').remove()
+        })
+        $('.dropdown-menu a').click(function(){
+            $('#search-tab').append("<li class=''><a data-toggle='tab' href='#events'>"+$(this).text()+" <i class='icon-white-pin icon-remove'></i></a></li>")
+            $('.icon-remove').on("click",function(){
+                $(this).parents('li').remove()
+            })
+            $.get('search',{},function(data){
+
+
+            })
+        })
+        $(".submit").click(function(){
+            if($("#appendedInput").val().length >= 3){
+            $('#search-tab').append("<li class=''><a data-toggle='tab' href='#events'>"+$("#appendedInput").val()+" <i class='icon-white-pin icon-remove'></i></a></li>")
+            $('.icon-remove').on("click",function(){
+                $(this).parents('li').remove()
+            })
+            }
+
+        })
+    </script>
 
 <% end %>
-<% content_for :overlay do %>
-	<div class="mode">
-		<div class="overlay">
-			<div class="insert-point">
-				<div class="window">
-				</div>
-			</div>
-		</div>
-	</div>
-<% end %>
+
+
+
 
