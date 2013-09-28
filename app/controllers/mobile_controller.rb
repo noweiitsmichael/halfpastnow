@@ -2138,7 +2138,18 @@ def FacebookLogin
      #        WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
      #       ORDER BY #{order_by}"
    
-    if (!params[:distance].to_s.empty?)
+    
+
+
+
+
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}_#{distance_check}")
+    queryResult = Rails.cache.read(really_long_cache_name)
+    if (queryResult == nil)
+      #puts "**************** No cache found for search query ****************"
+      queryResult = ActiveRecord::Base.connection.select_all(query)
+
+      if (!params[:distance].to_s.empty?)
       d = params[:distance]
       unless d.to_i == 77777
         # distance_check ="ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(0.0174532925*#{longitude}-0.0174532925*venues.longitude)  )<= #{d}"
@@ -2161,14 +2172,7 @@ def FacebookLogin
     end
 
 
-
-
-
-    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}_#{distance_check}")
-    queryResult = Rails.cache.read(really_long_cache_name)
-    if (queryResult == nil)
-      #puts "**************** No cache found for search query ****************"
-      queryResult = ActiveRecord::Base.connection.select_all(query)
+      
       Rails.cache.write(really_long_cache_name, queryResult)
       #puts "**************** Cache Set for search Query ****************"
     else
