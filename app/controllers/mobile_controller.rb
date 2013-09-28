@@ -4593,7 +4593,7 @@ def gettpevents
     tmp1 ="o"
     
 
-    query = "SELECT DISTINCT ON (recurrences.id) events.event_url AS url,events.ticket_url AS tix, bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+    query = "SELECT DISTINCT ON (recurrences.id) events.event_url AS url,events.ticket_url AS tix, bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, venues.longitude AS longitude, venues.latitude AS latitude
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
@@ -4605,9 +4605,9 @@ def gettpevents
               LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
               INNER JOIN recurrences ON events.id = recurrences.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE bookmark_lists.featured IS NOT FALSE AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND #{days_check} AND occurrences.recurrence_id IS NOT NULL AND (recurrences.range_end >= '#{Date.today()}' OR recurrences.range_end IS NULL) AND #{distance_check} 
+            WHERE bookmark_lists.featured IS NOT FALSE AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND #{days_check} AND occurrences.recurrence_id IS NOT NULL AND (recurrences.range_end >= '#{Date.today()}' OR recurrences.range_end IS NULL)
             UNION
-            SELECT DISTINCT ON (events.id) events.event_url AS url,events.ticket_url AS tix,bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            SELECT DISTINCT ON (events.id) events.event_url AS url,events.ticket_url AS tix,bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, venues.longitude AS longitude, venues.latitude AS latitude
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
@@ -4618,10 +4618,10 @@ def gettpevents
               INNER JOIN venues ON events.venue_id = venues.id
               LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE bookmark_lists.featured IS NOT FALSE AND occurrences.start >= '#{Date.today()}' AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{days_check} AND #{low_price_match} AND #{high_price_match} AND #{distance_check}
+            WHERE bookmark_lists.featured IS NOT FALSE AND occurrences.start >= '#{Date.today()}' AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{days_check} AND #{low_price_match} AND #{high_price_match}
             "
 
-    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}_#{distance_check}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult==nil)
       #puts "**************** No cache found for search query ****************"
@@ -4650,7 +4650,7 @@ def gettpevents
       end 
 
 
-      
+
       Rails.cache.write(really_long_cache_name, queryResult)   
       #puts "**************** Cache Set for search Query ****************"
     else
