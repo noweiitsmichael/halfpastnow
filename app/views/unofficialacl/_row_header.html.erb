@@ -1,6 +1,60 @@
 <%# params[:included_tags] = params[:included_tags].present? ? params[:included_tags] : '25'   %>
 <% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : '232'   %>
 
+<%= form_tag "/unofficialacl/search"  do %>
+<div id="sticker">
+  <div class="pink-banner">
+    <div class="wrapper row">
+      <div class="large-9 columns">
+        <a class="callout" tabindex="1" href="http://www.halfpastnow.com">
+          <img src="/assets/acl/layout/hpn-marker.png">
+          <p>Sponsored: See all of Austin's <span class="rotate">Live Music, Happy Hour, Outdoor, Fitness, Business, Tech, Arts, Exhibition</span> events at halfpastnow.com!</p>
+        </a>
+
+        <div class="comments">
+          <div class="ear left"></div>
+          <i class="icon-chevron-right"></i> Go On!
+        </div>
+      </div>
+      <div class="large-3 columns ptx">
+        <div class="text-rounded dark">
+              <%= text_field_tag :search,"", placeholder: "Search", "tabindex" => "2" %>
+              <%= submit_tag "",class: "search-button", "tabindex" => "6" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="wrapper row">
+      <div class="large-3 small-4 columns">
+        <div class="ptx prm left"><h3>Map is: </h3></div>
+        <div class="commutator off" id="map-onoff">
+          <div class="is on">
+            On
+            <div class="is off">
+              Off
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="large-3 small-4 large-offset-3 columns by-right">
+        <h3 class="ptx">Choose a Category: </h3>
+      </div>
+      <div class="large-3 small-4 columns">
+        <select class="select js-select" name="category_search" onchange= "this.form.submit();" >
+          <option></option>
+          <option value="Happy Hours">Happy Hours</option>
+          <option value="Live music">Live music</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
+<div class="row" id="map">
+  <div id="googleMap"></div>
+</div>
+
     <div class="wrapper row header">
       <div class="large-8 columns">
         <nav>
@@ -9,7 +63,8 @@
               <a href="http://www.unofficialacl.com">Unofficial ACL</a>
             </li>          
             <li id="tab-anchor-2" class = <%= (params[:and_tags].include? '247') ? "current" : "" %>>
-              <%= link_to "Official Late Night Shows", search_unofficialacl_index_path(and_tags: 247), method: :post %>
+              <%#= link_to "Official Late Night Shows", search_unofficialacl_index_path(and_tags: 247), method: :post %>
+              <a rel="nofollow" data-method="post" href="/unofficialacl/search?and_tags=247">Official Late Night Shows</a>
             </li>
             <li  id="tab-anchor-1" class = <%= (params[:and_tags].include? '230') ? "current" : "" %>>
               <%= link_to "Official ACL", search_unofficialacl_index_path(and_tags: 230), method: :post %>

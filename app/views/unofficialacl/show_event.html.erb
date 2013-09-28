@@ -1,3 +1,34 @@
+<%# params[:included_tags] = params[:included_tags].present? ? params[:included_tags] : '25'   %>
+<% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : '232'   %>
+
+<%= form_tag "/unofficialacl/search"  do %>
+    <div id="sticker">
+      <div class="pink-banner">
+        <div class="wrapper row">
+          <div class="large-9 columns">
+            <a class="callout" tabindex="1" href="http://www.halfpastnow.com">
+              <img src="/assets/acl/layout/hpn-marker.png">
+              <p>Sponsored: See all of Austin's <span class="rotate">Live Music, Happy Hour, Outdoor, Fitness, Business, Tech, Arts, Exhibition</span> events at halfpastnow.com!</p>
+            </a>
+
+            <div class="comments">
+              <div class="ear left"></div>
+              <i class="icon-chevron-right"></i> Go On!
+            </div>
+          </div>
+          <div class="large-3 columns ptx">
+            <div class="text-rounded dark">
+              <%= text_field_tag :search,"", placeholder: "Search", "tabindex" => "2" %>
+              <%= submit_tag "",class: "search-button", "tabindex" => "6" %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+<% end %>
+
+
 <div class="wrapper row header">
   <div class="small-12 columns">
     <nav>
@@ -33,7 +64,14 @@
 
       <div class="row">
         <div class="event-picture">
-          <img src="<%= @event.pictures.first ? @event.pictures.first.image_url(:full) : "/assets/placeholder.png" %>" />
+          <% if @event.pictures.first %>
+              <img src="<%= @event.pictures.first.image_url(:large)  %>" alt="Event picture" />
+          <% elsif @event.acts.length != 0 && @event.acts.first.pictures.first %>
+              <img src="<%= @event.acts.first.pictures.first.image_url(:large) %>" alt="occurrence pic"/>
+          <% else %>
+              <img src="<%= @event.venue.pictures.first ? @event.venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" alt="venue pic" />
+          <% end %>
+          <!--<img src="<%#= @event.pictures.first ? @event.pictures.first.image_url(:full) : "/assets/placeholder.png" %>" />-->
           <% if @event.price && @event.price != 0 %>
               <div class="sticker pack detail-badge"><div class="sticker-discount"><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 0) : "" %></div><div class="sticker-label"></div></div>
           <% end %>
@@ -55,7 +93,7 @@
           </div>
           <div class="small-9 columns">
             <h2 class="pbm"><%= act.name %></h2>
-            <% unless act.description.to_s.empty? %><p>  <%= raw(act.description) %> </p> <% end %>
+            <% unless act.description.to_s.empty? %><p>  <%= strip_tags(act.description) %> </p> <% end %>
           </div>
         </li>
         <% end %>
@@ -112,7 +150,7 @@
       <div class="mll mrl mbl">
         <% unless @event.description.to_s.empty? %>
         <p class="text">
-          <%= raw(@event.description) %>
+          <%= strip_tags(@event.description) %>
         </p>
         <% end %>
       </div>
@@ -139,7 +177,7 @@
 
       <div class="row">
         <div class="event-picture">
-              <img src="<%= @venue.pictures.first ? @venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
+          <img src="<%= @venue.pictures.first ? @venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
           <% if false %><div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>?80</div> <% end %>
         </div>
       </div>
@@ -147,7 +185,7 @@
       <div class="row ptl">
         <div class="small-8 small-offset-4 columns">
           <% unless @venue.description.to_s.empty? %>
-          <p> <%= raw(@venue.description) %> </p>
+          <p> <%= strip_tags(@venue.description) %> </p>
           <% end %>
         </div>
       </div>
@@ -209,12 +247,21 @@
           <% @recurrences.each do |rec| %>
               <li class="row">
                 <div class="small-3 columns">
-                  <img src="<%= rec.event.pictures.first ? rec.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                  <!--<img src="<%#= rec.event.pictures.first ? rec.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />-->
+                  <% if rec.event.pictures.first %>
+                      <img src="<%= rec.event.pictures.first.image_url(:thumb)  %>" alt="Event picture" />
+                  <% elsif rec.event.acts.length != 0 && rec.event.acts.first.pictures.first %>
+                      <img src="<%= rec.event.acts.first.pictures.first.image_url(:thumb) %>" alt="occurrence pic"/>
+                  <% elsif rec.event.venue.pictures.first %>
+                      <img src="<%= rec.event.venue.pictures.first.image_url(:thumb) %>" alt="venue pic" />
+                  <% else %>
+                      <img src="<%= rec.event.cover_image_url ? rec.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic" />
+                  <% end %>
                 </div>
                 <div class="small-9 columns">
                   <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
                   <% unless rec.event.description.to_s.empty? %>
-                      <p> <%= raw(rec.event.description) %> </p>
+                      <p> <%= strip_tags(rec.event.description) %> </p>
                   <% end %>
                 </div>
               </li>
@@ -222,12 +269,21 @@
           <% @occurrences.each do |occ| %>
               <li class="row">
                 <div class="small-3 columns">
-                  <img src="<%= occ.event.pictures.first ? occ.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                  <!--<img src="<%#= occ.event.pictures.first ? occ.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />-->
+                  <% if occ.event.pictures.first %>
+                      <img src="<%= occ.event.pictures.first.image_url(:thumb)  %>" alt="Event picture" />
+                  <% elsif occ.event.acts.length != 0 && occ.event.acts.first.pictures.first %>
+                      <img src="<%= occ.event.acts.first.pictures.first.image_url(:thumb) %>" alt="Artist pic"/>
+                  <% elsif occ.event.venue.pictures.first %>
+                      <img src="<%= occ.event.venue.pictures.first.image_url(:thumb) %>" alt="venue pic" />
+                  <% else %>
+                      <img src="<%= occ.event.cover_image_url ? occ.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic" />
+                  <% end %>
                 </div>
                 <div class="small-9 columns">
                   <a href="/unofficialacl/show_event?event_id=<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
                   <% unless occ.event.description.to_s.empty? %>
-                      <p> <%= raw(occ.event.description) %> </p>
+                      <p> <%= strip_tags(occ.event.description) %> </p>
                   <% end %>
                 </div>
               </li>
@@ -261,7 +317,7 @@
         <% unless act.description.to_s.empty? %>
         <div class="row ptl">
         <div class="small-8 small-offset-4 columns">
-          <p class="text"> <%= raw(act.description) %></p>
+          <p class="text"> <%= strip_tags(act.description) %></p>
         </div>
 
         </div>
@@ -277,6 +333,7 @@
       </div>
           <% end %>
           <% end %>
+          <% break %>
       <% end %>
 
     </div>
@@ -302,12 +359,21 @@
           <% @a_recurrences.each do |rec| %>
               <li class="row">
                 <div class="small-3 columns">
-                  <img src="<%= rec.event.pictures.first ? rec.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                  <!--<img src="<%#= rec.event.pictures.first ? rec.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />-->
+                  <% if rec.event.pictures.first %>
+                      <img src="<%= rec.event.pictures.first.image_url(:thumb)  %>" alt="Event picture" />
+                  <% elsif rec.event.acts.length != 0 && rec.event.acts.first.pictures.first %>
+                      <img src="<%= rec.event.acts.first.pictures.first.image_url(:thumb) %>" alt="occurrence pic"/>
+                  <% elsif rec.event.venue.pictures.first %>
+                      <img src="<%= rec.event.venue.pictures.first.image_url(:thumb) %>" alt="venue pic" />
+                  <% else %>
+                      <img src="<%= rec.event.cover_image_url ? rec.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic" />
+                  <% end %>
                 </div>
                 <div class="small-9 columns">
                   <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
                   <% unless rec.event.description.to_s.empty? %>
-                      <p> <%= raw(rec.event.description) %> </p>
+                      <p> <%= strip_tags(rec.event.description) %> </p>
                   <% end %>
                 </div>
               </li>
@@ -315,12 +381,21 @@
           <% @a_occurrences.each do |occ| %>
               <li class="row">
                 <div class="small-3 columns">
-                  <img src="<%= occ.event.pictures.first ? occ.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                  <!--<img src="<%#= occ.event.pictures.first ? occ.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />-->
+                  <% if occ.event.pictures.first %>
+                      <img src="<%= occ.event.pictures.first.image_url(:thumb)  %>" alt="Event picture" />
+                  <% elsif occ.event.acts.length != 0 && occ.event.acts.first.pictures.first %>
+                      <img src="<%= occ.event.acts.first.pictures.first.image_url(:thumb) %>" alt="Artist pic"/>
+                  <% elsif occ.event.venue.pictures.first %>
+                      <img src="<%= occ.event.venue.pictures.first.image_url(:thumb) %>" alt="venue pic" />
+                  <% else %>
+                      <img src="<%= occ.event.cover_image_url ? occ.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic" />
+                  <% end %>
                 </div>
                 <div class="small-9 columns">
                   <a href="/unofficialacl/show_event?event_id=<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
                   <% unless occ.event.description.to_s.empty? %>
-                      <p> <%= raw(occ.event.description) %> </p>
+                      <p> <%= strip_tags(occ.event.description) %> </p>
                   <% end %>
                 </div>
               </li>
@@ -328,6 +403,7 @@
 
         </ul>
       </div>
+          <% break %>
       <% end %>
     </div>
 
