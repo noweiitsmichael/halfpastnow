@@ -2145,10 +2145,11 @@ def FacebookLogin
         temp_result =[]
         latitude = latitude.to_f*0.0174532925
         longitude = longitude.to_f*0.0174532925
-        venue_lat = r["latitude"].to_f*0.0174532925
-        venue_log = r["longitude"].to_f*0.0174532925
+       
 
         queryResult.each{ |r|
+          venue_lat = r["latitude"].to_f*0.0174532925
+          venue_log = r["longitude"].to_f*0.0174532925
           if MATH.ACOS( MATH.SIN(latitude)*MATH.SIN(venue_lat) +MATH.COS(latitude)*MATH.COS(venue_lat)*MATH.COS(longitude-venue_log)  )<= d.to_f
             temp_result << r
           end
