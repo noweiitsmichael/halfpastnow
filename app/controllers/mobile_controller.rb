@@ -4718,6 +4718,7 @@ def gettpevents
         lat = item["latitude"].to_f*0.0174532925
         d = Math.acos( Math.sin(latitude*0.0174532925)*Math.sin(lat) +Math.cos(latitude*0.0174532925)*Math.cos(lat)*Math.cos(longitude*0.0174532925-log))
         item.merge({"distance"=>d})
+        puts item
         temp << item
       }
       ttttmp = temp.sort_by{ |hsh| hsh["distance"]} 
@@ -4730,6 +4731,7 @@ def gettpevents
           p = item["price"].to_f 
         end
         item.merge({"p"=>p})
+        puts item
         temp << item
 
       }
