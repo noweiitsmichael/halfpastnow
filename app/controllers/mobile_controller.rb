@@ -4717,7 +4717,7 @@ def gettpevents
         log = item["longitude"].to_f*0.0174532925
         lat = item["latitude"].to_f*0.0174532925
         d = Math.acos( Math.sin(latitude*0.0174532925)*Math.sin(lat) +Math.cos(latitude*0.0174532925)*Math.cos(lat)*Math.cos(longitude*0.0174532925-log))
-        item.merge({"distance"=>d})
+        item=item.merge({"distance"=>d})
         puts item
         puts d
         temp << item
@@ -4731,7 +4731,7 @@ def gettpevents
         if ((!item["price"].to_s.empty?) && (!item["price"].nil?) && (!item["price"].to_s.eql?("")) &&( !item["price"].blank? ))
           p = item["price"].to_f 
         end
-        item.merge({"p"=>p})
+        item = item.merge({"p"=>p})
         puts item
         puts p
         temp << item
