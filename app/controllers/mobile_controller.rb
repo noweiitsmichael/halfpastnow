@@ -4738,22 +4738,22 @@ def gettpevents
       ttttmp = temp.sort_by{ |hsh| hsh["p"] }            
     end
 
-    if (!params[:distance].to_s.empty?)
-      d = params[:distance]
-      unless d.to_i == 77777
-      temp = []
-      ttttmp.each{ |item|
-        log = item["longitude"].to_f*0.0174532925
-        lat = item["latitude"].to_f*0.0174532925
-        k = Math.acos( Math.sin(latitude*0.0174532925)*Math.sin(lat) +Math.cos(latitude*0.0174532925)*Math.cos(lat)*Math.cos(longitude*0.0174532925-log))
-        item.merge({"cadistance"=>k})
+    # if (!params[:distance].to_s.empty?)
+    #   d = params[:distance]
+    #   unless d.to_i == 77777
+    #   temp = []
+    #   ttttmp.each{ |item|
+    #     log = item["longitude"].to_f*0.0174532925
+    #     lat = item["latitude"].to_f*0.0174532925
+    #     k = Math.acos( Math.sin(latitude*0.0174532925)*Math.sin(lat) +Math.cos(latitude*0.0174532925)*Math.cos(lat)*Math.cos(longitude*0.0174532925-log))
+    #     item.merge({"cadistance"=>k})
 
-        temp << item
-      }
-      ttttmp = temp.select{|item| item["cadistance"].to_f <= d.to_f}
+    #     temp << item
+    #   }
+    #   ttttmp = temp.select{|item| item["cadistance"].to_f <= d.to_f}
 
-      end 
-    end
+    #   end 
+    # end
 
 
     
