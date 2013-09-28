@@ -674,14 +674,19 @@ a {
     top: 0;
     max-height: 100%;
     zoom: 2;
+    width: 100%;
+    height: auto;
+    /*
     width: 458px;
-    /*height: 343px;*/
+    height: 343px;*/
   }
 .small-event-container .event-image img {
     max-height: 100%;
     zoom: 2;
+    width: 100%;
+    height: auto;/*
     width: 221px;
-    /*height: 219px;*/
+    height: 219px;*/
     background-size: 200px;
 }
 
