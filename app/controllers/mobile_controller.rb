@@ -4633,14 +4633,14 @@ def gettpevents
         unless d.to_i == 77777
           # distance_check ="ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(0.0174532925*#{longitude}-0.0174532925*venues.longitude)  )<= #{d}"
           temp_result =[]
-          latitude = latitude.to_f*0.0174532925
-          longitude = longitude.to_f*0.0174532925
+          latitude1 = latitude.to_f*0.0174532925
+          longitude1 = longitude.to_f*0.0174532925
          
 
           queryResult.each{ |r|
             venue_lat = r["latitude"].to_f*0.0174532925
             venue_log = r["longitude"].to_f*0.0174532925
-            if Math.acos( Math.sin(latitude)*Math.sin(venue_lat) +Math.cos(latitude)*Math.cos(venue_lat)*Math.cos(longitude-venue_log)  )<= d.to_f
+            if Math.acos( Math.sin(latitude1)*Math.sin(venue_lat) +Math.cos(latitude1)*Math.cos(venue_lat)*Math.cos(longitude1-venue_log)  )<= d.to_f
               temp_result << r
             end
           }
@@ -4713,10 +4713,12 @@ def gettpevents
       ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
     elsif (params[:sort].to_i == 2) # Distance
       temp = []
+      latitude1 = latitude.to_f*0.0174532925
+      longitude1 = longitude.to_f*0.0174532925
       ttttmp.each{ |item|
         log = item["longitude"].to_f*0.0174532925
         lat = item["latitude"].to_f*0.0174532925
-        d = Math.acos( Math.sin(latitude*0.0174532925)*Math.sin(lat) +Math.cos(latitude*0.0174532925)*Math.cos(lat)*Math.cos(longitude*0.0174532925-log))
+        d = Math.acos( Math.sin(latitude1)*Math.sin(lat) +Math.cos(latitude1)*Math.cos(lat)*Math.cos(longitude1-log))
         item=item.merge({"distance"=>d})
        
         temp << item
