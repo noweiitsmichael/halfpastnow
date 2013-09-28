@@ -2161,7 +2161,7 @@ def FacebookLogin
         queryResult.each{ |r|
           venue_lat = r["latitude"].to_f*0.0174532925
           venue_log = r["longitude"].to_f*0.0174532925
-          if MATH.ACOS( MATH.SIN(latitude)*MATH.SIN(venue_lat) +MATH.COS(latitude)*MATH.COS(venue_lat)*MATH.COS(longitude-venue_log)  )<= d.to_f
+          if Math.acos( Math.sin(latitude)*Math.sin(venue_lat) +Math.cos(latitude)*Math.cos(venue_lat)*Math.cos(longitude-venue_log)  )<= d.to_f
             temp_result << r
           end
         }
@@ -2172,7 +2172,7 @@ def FacebookLogin
     end
 
 
-      
+
       Rails.cache.write(really_long_cache_name, queryResult)
       #puts "**************** Cache Set for search Query ****************"
     else
