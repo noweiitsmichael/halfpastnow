@@ -4719,6 +4719,7 @@ def gettpevents
         d = Math.acos( Math.sin(latitude*0.0174532925)*Math.sin(lat) +Math.cos(latitude*0.0174532925)*Math.cos(lat)*Math.cos(longitude*0.0174532925-log))
         item.merge({"distance"=>d})
         puts item
+        puts d
         temp << item
       }
       ttttmp = temp.sort_by{ |hsh| hsh["distance"]} 
@@ -4732,6 +4733,7 @@ def gettpevents
         end
         item.merge({"p"=>p})
         puts item
+        puts p
         temp << item
 
       }
@@ -4747,6 +4749,7 @@ def gettpevents
         lat = item["latitude"].to_f*0.0174532925
         k = Math.acos( Math.sin(latitude*0.0174532925)*Math.sin(lat) +Math.cos(latitude*0.0174532925)*Math.cos(lat)*Math.cos(longitude*0.0174532925-log))
         item.merge({"cadistance"=>k})
+
         temp << item
       }
       ttttmp = temp.select{|item| item["cadistance"].to_f <= d.to_f}
