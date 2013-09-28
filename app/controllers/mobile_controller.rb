@@ -4626,6 +4626,31 @@ def gettpevents
     if (queryResult==nil)
       #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
+
+
+      if (!params[:distance].to_s.empty?)
+      d = params[:distance]
+      unless d.to_i == 77777
+        # distance_check ="ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(0.0174532925*#{longitude}-0.0174532925*venues.longitude)  )<= #{d}"
+        temp_result =[]
+        latitude = latitude.to_f*0.0174532925
+        longitude = longitude.to_f*0.0174532925
+       
+
+        queryResult.each{ |r|
+          venue_lat = r["latitude"].to_f*0.0174532925
+          venue_log = r["longitude"].to_f*0.0174532925
+          if Math.acos( Math.sin(latitude)*Math.sin(venue_lat) +Math.cos(latitude)*Math.cos(venue_lat)*Math.cos(longitude-venue_log)  )<= d.to_f
+            temp_result << r
+          end
+        }
+        queryResult = temp_result
+
+
+      end 
+
+
+      
       Rails.cache.write(really_long_cache_name, queryResult)   
       #puts "**************** Cache Set for search Query ****************"
     else
