@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <title>Unnofical ACL | A Half Past Now Service</title>
+
+    <link href="bundle.css" media="screen" rel="stylesheet" />
+    <link href="grid.css" media="screen" rel="stylesheet" />
+    <link href="javascripts/vendor/simpletextrotator.css" media="screen" rel="stylesheet" />
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    
+    <link rel="shortcut icon" href="favicon.ico" >
+    <link rel="icon" sizes="512x512" href="images/apple-touch-icon-512x512.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="javascripts/vendor/jquery-ui-1.8.18.custom.min.js" type="text/javascript"></script>
+    <script src="javascripts/SCF.ui.js" type="text/javascript"></script>
+    <script src="javascripts/vendor/chosen.jquery.js" type="text/javascript"></script>
+    <script src="javascripts/vendor/jquery.placeholder.js" type="text/javascript"></script>
+    <script src="javascripts/jquery.sticky.js" type="text/javascript"></script>
+    <script src="javascripts/vendor/jquery.simple-text-rotator.min.js" type="text/javascript"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA1Qi_Q7Uio7pOZKdKwiiIY4QVVIyv_yes&sensor=false">
+</script>
+    <script src="javascripts/gm.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="top-container">
+        <div class="top row">
+          <div class="small-6 large-3 columns">
+            <div class="logo-container"><div class="logo"><img src="images/layout/logo-glow.png"> </div></div>
+          </div>
+          <div class="small-6 large-9 columns">
+            <div class="tagline">
+              The best unofficial ACL events and venues around Austin!
+            </div>
+          </div>
+        </div>
+        <div class="austin"></div>
+      </div>
+      
+      <div id="sticker">
+        <div class="pink-banner">
+          <div class="wrapper row">
+            <div class="large-9 columns">
+              <a class="callout" tabindex="1" href="http://halfpastnow.com">
+                <img src="images/layout/hpn-marker.png">
+                <p>See Even More <span class="rotate">Awesome, Incredible, Exciting, Fun, Touching, Healthy, Fancy, Funny, Fantastic, Great</span> Events at HalfPastNow.com!</p>
+              </a>
+            </div>
+            <div class="large-3 columns ptx">
+              <div class="text-rounded dark">
+                <input tabindex="2" type="text" value="Search">
+                <input class="search-button" tabindex="6" type="submit" value="">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div class="wrapper row">
+            <div class="large-3 small-4 columns">
+                <div class="ptx prm left"><h3>Map is: </h3></div>
+                  <div class="commutator on" id="map-onoff">
+                    <div class="is on">
+                      On
+                      <div class="is off">
+                         Off
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="large-3 small-4 large-offset-3 columns by-right">
+                <h3 class="ptx">You are seeing: </h3>
+              </div>
+              <div class="large-3 small-4 columns">
+                <select class="select js-select">
+                  <option></option>
+                  <option value="Aaliyah">Happy Hours</option>
+                  <option value="Barbara">Live music</option>
+                  <option value="Azura">For kids</option>
+                  <option value="Babs">Babs</option>
+                  <option value="Fox">Fox</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" id="map">
+          <div id="googleMap"></div>
+        </div>
+        <div class="wrapper row header">
+          <div class="small-12 columns">
+            <nav>
+              <a id="menu-icon"><i class="icon-reorder"></i></a>
+              <ul id="tab-anchors" class="header-navigation">
+                <li id="tab-anchor-1" class="current">
+                  <a href="javascript:ShowTab(1);">Event overview</a>
+                </li>
+                <li id="tab-anchor-2">
+                  <a href="javascript:ShowTab(2);">Venue details</a>
+                </li>
+                <li id="tab-anchor-3">
+                  <a href="javascript:ShowTab(3);">Artist details</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+      <!-- tab event overview -->
+      <div class="content tab" id="tab-1">
+        <div class="row">
+        <!-- Big things: column left -->
+         <div class="large-6 columns stretch">
+
+            <div class="row">
+              <div class="event-picture">
+                <img src="http://lorempixel.com/480/320/nightlife">
+                <div class="sticker pack detail-badge"><div class="sticker-discount">$30</div><div class="sticker-label">1 beer</div></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-9 small-offset-3 columns">
+                <h1 class="featuring-title">Featuring:</h1>
+              </div>
+            </div>
+            
+            <ul class="features">
+              <li class="row">
+                <div class="small-3 columns">
+                  <img src="content/a.jpg">
+                </div>
+                <div class="small-9 columns">
+                  <h2 class="pbm">Alvin and the chipmunks</h2>
+                  <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie est ut facilisis convallis. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+                </div>
+              </li>
+              <li class="row">
+                <div class="small-3 columns">
+                  <img src="content/a.jpg">
+                </div>
+                <div class="small-9 columns">
+                  <h2 class="pbm">Alvin and the chipmunks</h2>
+                  <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie est ut facilisis convallis. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+                </div>
+              </li>
+            </ul>
+            <div class="row ptl">
+              <div class="large-6 columns">
+                <div class="user-slug">
+                  <img src="images/avatars/iurevych.jpg" class="slug-avatar" alt="Sergii Iurevych">
+                  <ul class="last-col">
+                    <li class="slug-name">Sergii Iurevych</li>
+                    <li class="slug-status online">Online</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="large-6 columns">
+                <div class="user-slug">
+                  <img src="images/avatars/kudinov.jpg" class="slug-avatar" alt="Vladimir Kudinov">
+                  <ul class="last-col">
+                    <li class="slug-name">Vladimir Kudinov</li>
+                    <li class="slug-status away">Away</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="row ptl pbl">
+              <div class="large-6 large-offset-6 columns">
+                <div class="starbar clearfix">
+                  <div class="star full focus"></div>
+                  <div class="star full focus"></div>
+                  <div class="star full focus"></div>
+                  <div class="star"></div>
+                  <div class="star"></div>
+                  <div class="starbar-rating">
+                    Rating: 175
+                  </div>
+                </div>
+              </div>
+            </div>
+
+         </div>
+
+         <!-- Small things: column right -->
+         <div class="large-6 columns rightCol stretch">
+            <div class="mll mrl clearfix">
+              <h1 class="title">A night with the stars</h1>
+              <ul class="details">
+                <li>The house of music</li>
+                <li>9:00pm</li>
+              </ul>
+            </div>
+            <div class="mll mrl mbl">
+              <p class="text">
+               Suspendisse et consequat turpis. Aliquam tincidunt arcu ac porta commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus sit amet gravida ligula. Donec eu varius erat. Curabitur tincidunt tellus nec erat ornare commodo. Duis feugiat felis id quam luctus, fermentum ultricies erat blandit. Fusce iaculis ut enim non iaculis. Vivamus vel risus in urna convallis sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut tristique vehicula enim at dignissim. Donec porttitor, augue ac aliquet malesuada, diam elit malesuada augue, sed viverra tortor lectus vel magna. Aenean porta diam sit amet dapibus auctor. Proin scelerisque felis at pellentesque blandit. 
+              </p>
+            </div>
+            <div class="text-center">
+              <a href="#" class="button-huge positive">
+                RESERVE NOW
+                <span class="button-description">I Won't Miss It!</span>
+              </a>
+            </div>
+         </div>
+
+        </div>
+      </div>
+
+      <!-- the next tab venue details  -->
+      <div class="content tab" id="tab-2">
+        <div class="row">
+        <!-- Big things: column left -->
+         <div class="large-6 columns stretch">
+
+            <div class="row">
+              <div class="event-picture">
+                <img src="http://lorempixel.com/480/320/nightlife">
+                <div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>80</div>
+              </div>
+            </div>
+            
+            <div class="row ptl">
+              <div class="small-8 small-offset-4 columns">
+                <p> Suspendisse et consequat turpis. Aliquam tincidunt arcu ac porta commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus sit amet gravida ligula. Donec eu varius erat. Curabitur tincidunt tellus nec erat ornare commodo. Duis feugiat felis id quam luctus, fermentum ultricies erat blandit. Fusce iaculis ut enim non iaculis. Vivamus vel risus in urna convallis sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut tristique vehicula enim at dignissim. Donec porttitor, augue ac aliquet malesuada, diam elit malesuada augue, sed viverra tortor lectus vel magna. Aenean porta diam sit amet dapibus auctor. Proin scelerisque felis at pellentesque blandit. </p>
+              </div>
+            </div>
+
+            <div class="row ptl">
+              <div class="small-8 small-offset-4 columns">
+                <div class="user-slug">
+                  <img src="images/avatars/iurevych.jpg" class="slug-avatar" alt="Sergii Iurevych">
+                  <ul class="last-col">
+                    <li class="slug-name">Sergii Iurevych</li>
+                    <li class="slug-status online">Online</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="ptl small-8 small-offset-4 columns">
+                <div class="user-slug">
+                  <img src="images/avatars/kudinov.jpg" class="slug-avatar" alt="Vladimir Kudinov">
+                  <ul class="last-col">
+                    <li class="slug-name">Vladimir Kudinov</li>
+                    <li class="slug-status away">Away</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="row ptl pbl">
+              <div class="small-8 small-offset-4 columns">
+                <div class="starbar clearfix">
+                  <div class="star full focus"></div>
+                  <div class="star full focus"></div>
+                  <div class="star full focus"></div>
+                  <div class="star"></div>
+                  <div class="star"></div>
+                  <div class="starbar-rating">
+                    Rating: 175
+                  </div>
+                </div>
+              </div>
+            </div>
+
+         </div>
+
+         <!-- Small things: column right -->
+         <div class="large-6 columns rightCol stretch">
+            <div class="mll mrl clearfix">
+              <h1 class="title">The house of music</h1>
+              <ul class="details">
+                <li><i class="icon-map-marker pull-left icon-large mbl"></i> 123 Terrace Street<br>34571</li>
+                <li><a href="tel:1-800-555-555"><i class="icon-mobile-phone icon-large"></i> 1-800-555-555</a></li>
+              </ul>
+              <div class="row">
+                <div class="small-12 columns">
+                  <h1 class="featuring-title upcoming">Upcoming events:</h1>
+                </div>
+              </div>
+              
+              <ul class="features upcoming">
+                <li class="row">
+                  <div class="small-3 columns">
+                    <img src="content/a.jpg">
+                  </div>
+                  <div class="small-9 columns">
+                    <h2 class="pbm">Alvin and the chipmunks</h2>
+                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie est ut facilisis convallis. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+                  </div>
+                </li>
+                <li class="row">
+                  <div class="small-3 columns">
+                    <img src="content/a.jpg">
+                  </div>
+                  <div class="small-9 columns">
+                    <h2 class="pbm">Alvin and the chipmunks</h2>
+                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie est ut facilisis convallis. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+                  </div>
+                </li>
+            </ul>
+            </div>
+
+         </div>
+
+        </div>
+      </div>
+
+      <!-- the last tab artist details -->
+      <div class="content tab" id="tab-3">
+        <div class="row">
+        <!-- Big things: column left -->
+         <div class="large-6 columns stretch">
+
+            <div class="row">
+              <div class="event-picture">
+                <img src="content/a.jpg">
+                <div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>80</div>
+              </div>
+            </div>
+            
+            <div class="row ptl">
+              <div class="small-8 small-offset-4 columns">
+                <p class="text"> Suspendisse et consequat turpis. Aliquam tincidunt arcu ac porta commodo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus sit amet gravida ligula. Donec eu varius erat. Curabitur tincidunt tellus nec erat ornare commodo. Duis feugiat felis id quam luctus, fermentum ultricies erat blandit.</p>
+              </div>
+            </div>
+
+            <div class="row ptl">
+              <div class="small-8 small-offset-4 columns">
+                <iframe width="300" height="225" src="http://www.youtube.com/embed/0mtw2bNdCIk?rel=0" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+           
+         </div>
+
+         <!-- Small things: column right -->
+         <div class="large-6 columns rightCol stretch">
+            <div class="mll mrl clearfix">
+              <h1 class="title">John doe and his hipster band</h1>
+              <ul class="details">
+                <li><a href="#"><i class="icon-link pull-left icon-large"></i>hipsterband.com</a></li>
+                <li>
+                  <a href="#"><i class="icon-facebook-sign icon-large"></i></a> <a href="#"><i class="icon-twitter-sign icon-large"></i></a> <a href="#"><i class="icon-youtube-sign icon-large"></i></a>
+                </li>
+              </ul>
+              <div class="row">
+                <div class="small-12 columns">
+                  <h1 class="featuring-title upcoming">Upcoming events:</h1>
+                </div>
+              </div>
+              
+              <ul class="features upcoming">
+                <li class="row">
+                  <div class="small-3 columns">
+                    <img src="content/a.jpg">
+                  </div>
+                  <div class="small-9 columns">
+                    <h2 class="pbm">Alvin and the chipmunks</h2>
+                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie est ut facilisis convallis. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+                  </div>
+                </li>
+                <li class="row">
+                  <div class="small-3 columns">
+                    <img src="content/a.jpg">
+                  </div>
+                  <div class="small-9 columns">
+                    <h2 class="pbm">Alvin and the chipmunks</h2>
+                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer molestie est ut facilisis convallis. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+                  </div>
+                </li>
+            </ul>
+            </div>
+
+         </div>
+
+        </div>
+      </div>
+
+      <div class="footer row">
+         <div class="small-6 columns by-left">
+            &copy; 2013 Half Past Now - All Rights Reserved
+         </div>
+         <div class="small-6 columns by-right">
+            Front End by <a href="http://logangattis.com" target="_blank">Logan Gatis Designs</a>
+         </div>
+      </div>
+
+      <div id="social">
+        <a href="#"><i class="icon-facebook-sign"></i></a>
+        <a href="#"><i class="icon-twitter-sign"></i></a>
+        <a href="#"><i class="icon-google-plus-sign"></i></a>
+        <a href="#"><i class="icon-pinterest-sign"></i></a>
+      </div>
+
+    </div>
+
+    <script src="javascripts/script.js" type="text/javascript"></script>
+
+  </body>
+</html>

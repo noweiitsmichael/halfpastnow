@@ -1,6 +1,25 @@
 Myapp::Application.routes.draw do
   
+  # Below did not work when it was just root :to 'unofficialacl#index', with or without carrot in front of host def.
+  # constraints(:host => /^unofficialacl.com/) do 
+  #      root :to => 'unofficialacl#index'
+  #      # match '/*path', :to => redirect {|params| "http://www.unofficialacl.com/#{params[:path]}"} 
+  # end 
 
+  root :to => 'unofficialacl#index', :constraints => { :domain => "unofficialacl.com" }
+
+  root :to => 'events#new_splash'
+  #root :to => 'unofficialacl#index'
+
+  
+
+  resources :unofficialacl do
+    collection do
+      post :search
+      get :show_event
+      get :show_venue
+    end
+  end
 
   get "mobile/new"
 
@@ -93,8 +112,11 @@ Myapp::Application.routes.draw do
   authenticated :user do
     root :to => 'events#index'
   end
-  
-  root :to => 'events#new_splash'
+
+
+  # map.connect "", :controller => "unofficialacl", :conditions => { :host => "www.unofficialacl.com" }
+
+
 
   # See how all your routes lay out with "rake routes"
 
@@ -113,6 +135,7 @@ Myapp::Application.routes.draw do
   match 'users/friends' => 'users#friends'
   match '/search' => 'events#index'
   match '/sxsw' => 'events#sxsw'
+  match '/unofficialacl' => 'unofficialacl#index'
 
   match '/auth/:provider/callback' => 'authentications#create'
 

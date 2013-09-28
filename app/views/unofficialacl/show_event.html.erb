@@ -1,0 +1,338 @@
+<div class="wrapper row header">
+  <div class="small-12 columns">
+    <nav>
+      <a id="menu-icon"><i class="icon-reorder"></i></a>
+      <ul id="tab-anchors" class="header-navigation">
+        <% unless @event.nil? %>
+        <li id="tab-anchor-1" class="current">
+          <a href="javascript:ShowTab(1);">Event overview</a>
+        </li>
+        <% end %>
+        <% unless @venue.nil? %>
+        <li id="tab-anchor-2">
+          <a href="javascript:ShowTab(2);">Venue details</a>
+        </li>
+        <% end %>
+        <% unless @acts.empty? %>
+        <li id="tab-anchor-3">
+          <a href="javascript:ShowTab(3);">Artist details</a>
+        </li>
+        <% end %>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+
+<% unless @event.nil? %>
+<!-- tab event overview -->
+<div class="content tab" id="tab-1">
+  <div class="row">
+    <!-- Big things: column left -->
+    <div class="large-6 columns stretch">
+
+      <div class="row">
+        <div class="event-picture">
+          <img src="<%= @event.pictures.first ? @event.pictures.first.image_url(:full) : "/assets/placeholder.png" %>" />
+          <% if @event.price && @event.price != 0 %>
+              <div class="sticker pack detail-badge"><div class="sticker-discount"><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 0) : "" %></div><div class="sticker-label"></div></div>
+          <% end %>
+        </div>
+      </div>
+
+      <% unless @event.acts.length == 0 %>
+      <div class="row">
+        <div class="small-9 small-offset-3 columns">
+          <h1 class="featuring-title">Featuring:</h1>
+        </div>
+      </div>
+
+      <ul class="features">
+        <% @event.acts.each do |act| %>
+        <li class="row">
+          <div class="small-3 columns">
+            <img src="<%= act.pictures.first ? act.pictures.first.image_url(:thumb) : "" %>" />
+          </div>
+          <div class="small-9 columns">
+            <h2 class="pbm"><%= act.name %></h2>
+            <% unless act.description.to_s.empty? %><p>  <%= raw(act.description) %> </p> <% end %>
+          </div>
+        </li>
+        <% end %>
+      </ul>
+      <% end %>
+      <% if false %>
+      <div class="row ptl">
+        <div class="large-6 columns">
+          <div class="user-slug">
+            <img src="images/avatars/iurevych.jpg" class="slug-avatar" alt="Sergii Iurevych">
+            <ul class="last-col">
+              <li class="slug-name">Sergii Iurevych</li>
+              <li class="slug-status online">Online</li>
+            </ul>
+          </div>
+        </div>
+        <div class="large-6 columns">
+          <div class="user-slug">
+            <img src="images/avatars/kudinov.jpg" class="slug-avatar" alt="Vladimir Kudinov">
+            <ul class="last-col">
+              <li class="slug-name">Vladimir Kudinov</li>
+              <li class="slug-status away">Away</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row ptl pbl">
+        <div class="large-6 large-offset-6 columns">
+          <div class="starbar clearfix">
+            <div class="star full focus"></div>
+            <div class="star full focus"></div>
+            <div class="star full focus"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="starbar-rating">
+               ? Rating: 175
+            </div>
+          </div>
+        </div>
+      </div>
+      <% end %>
+
+    </div>
+
+    <!-- Small things: column right -->
+    <div class="large-6 columns rightCol stretch">
+      <div class="mll mrl clearfix">
+        <h1 class="title"><%= @event.title %></h1>
+        <ul class="details">
+          <li><%= @event.venue.name %></li>
+          <li><%= @occurrence.start.to_time.strftime("%I:%M%p") %></li>
+        </ul>
+      </div>
+      <div class="mll mrl mbl">
+        <% unless @event.description.to_s.empty? %>
+        <p class="text">
+          <%= raw(@event.description) %>
+        </p>
+        <% end %>
+      </div>
+      <div class="text-center">
+        <% if !@event.ticket_url.blank? %>
+        <a href="<%= @event.ticket_url %>" class="button-huge positive">
+          RESERVE NOW
+          <span class="button-description">I Won't Miss It!</span>
+        </a>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+</div>
+<% end %>
+
+<% unless @venue.nil? %>
+<!-- the next tab venue details  -->
+<div class="content tab" id="tab-2">
+  <div class="row">
+    <!-- Big things: column left -->
+    <div class="large-6 columns stretch">
+
+      <div class="row">
+        <div class="event-picture">
+              <img src="<%= @venue.pictures.first ? @venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
+          <% if false %><div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>?80</div> <% end %>
+        </div>
+      </div>
+
+      <div class="row ptl">
+        <div class="small-8 small-offset-4 columns">
+          <% unless @venue.description.to_s.empty? %>
+          <p> <%= raw(@venue.description) %> </p>
+          <% end %>
+        </div>
+      </div>
+
+      <% if false %>
+      <div class="row ptl">
+        <div class="small-8 small-offset-4 columns">
+          <div class="user-slug">
+            <img src="images/avatars/iurevych.jpg" class="slug-avatar" alt="Sergii Iurevych">
+            <ul class="last-col">
+              <li class="slug-name">Sergii Iurevych</li>
+              <li class="slug-status online">Online</li>
+            </ul>
+          </div>
+        </div>
+        <div class="ptl small-8 small-offset-4 columns">
+          <div class="user-slug">
+            <img src="images/avatars/kudinov.jpg" class="slug-avatar" alt="Vladimir Kudinov">
+            <ul class="last-col">
+              <li class="slug-name">Vladimir Kudinov</li>
+              <li class="slug-status away">Away</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row ptl pbl">
+        <div class="small-8 small-offset-4 columns">
+          <div class="starbar clearfix">
+            <div class="star full focus"></div>
+            <div class="star full focus"></div>
+            <div class="star full focus"></div>
+            <div class="star"></div>
+            <div class="star"></div>
+            <div class="starbar-rating">
+              ?Rating: 175
+            </div>
+          </div>
+        </div>
+      </div>
+      <% end %>
+
+    </div>
+
+    <!-- Small things: column right -->
+    <div class="large-6 columns rightCol stretch">
+      <div class="mll mrl clearfix">
+        <h1 class="title"><%= @event.venue.name %></h1>
+        <ul class="details">
+          <li><i class="icon-map-marker pull-left icon-large mbl"></i> <%= @event.venue.address %><br><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></li>
+          <li><% unless @venue.phonenumber.empty? %><a href="tel:1-800-555-555"><i class="icon-mobile-phone icon-large"></i> <%= @venue.phonenumber %></a><% end %></li>
+        </ul>
+        <div class="row">
+          <div class="small-12 columns">
+            <h1 class="featuring-title upcoming">Upcoming events:</h1>
+          </div>
+        </div>
+
+        <ul class="features upcoming">
+          <% @recurrences.each do |rec| %>
+              <li class="row">
+                <div class="small-3 columns">
+                  <img src="<%= rec.event.pictures.first ? rec.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                </div>
+                <div class="small-9 columns">
+                  <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
+                  <% unless rec.event.description.to_s.empty? %>
+                      <p> <%= raw(rec.event.description) %> </p>
+                  <% end %>
+                </div>
+              </li>
+          <% end %>
+          <% @occurrences.each do |occ| %>
+              <li class="row">
+                <div class="small-3 columns">
+                  <img src="<%= occ.event.pictures.first ? occ.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                </div>
+                <div class="small-9 columns">
+                  <a href="/unofficialacl/show_event?event_id=<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
+                  <% unless occ.event.description.to_s.empty? %>
+                      <p> <%= raw(occ.event.description) %> </p>
+                  <% end %>
+                </div>
+              </li>
+          <% end %>
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<% end %>
+
+<% unless @event.acts.length == 0 %>
+<!-- the last tab artist details -->
+<div class="content tab" id="tab-3">
+  <div class="row">
+    <!-- Big things: column left -->
+    <div class="large-6 columns stretch">
+
+      <% @event.acts.each_with_index do |act,index| %>
+          <% unless (act.fb_picture.blank? && act.pictures.nil?) %>
+      <div class="row">
+        <div class="event-picture">
+          <img src="<%= act.pictures.first ? act.pictures.first.image_url(:full) : "" %>" />
+          <!--<div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>80</div>-->
+        </div>
+      </div>
+          <% end %>
+
+        <% unless act.description.to_s.empty? %>
+        <div class="row ptl">
+        <div class="small-8 small-offset-4 columns">
+          <p class="text"> <%= raw(act.description) %></p>
+        </div>
+
+        </div>
+        <% end %>
+
+          <% unless act.embeds.length == 0 %>
+          <% act.embeds.select { |e| e.primary }.each do |embed| %>
+      <div class="row ptl">
+        <div class="small-8 small-offset-4 columns">
+          <%= raw(embed.source) %>
+          <!--<iframe width="300" height="225" src="http://www.youtube.com/embed/0mtw2bNdCIk?rel=0" frameborder="0" allowfullscreen></iframe>-->
+        </div>
+      </div>
+          <% end %>
+          <% end %>
+      <% end %>
+
+    </div>
+
+    <!-- Small things: column right -->
+    <div class="large-6 columns rightCol stretch">
+      <% @event.acts.each_with_index do |act,index| %>
+      <div class="mll mrl clearfix">
+        <h1 class="title"><%= act.name %></h1>
+        <!--<ul class="details">
+          <li><a href="#"><i class="icon-link pull-left icon-large"></i>hipsterband.com</a></li>
+          <li>
+            <a href="#"><i class="icon-facebook-sign icon-large"></i></a> <a href="#"><i class="icon-twitter-sign icon-large"></i></a> <a href="#"><i class="icon-youtube-sign icon-large"></i></a>
+          </li>
+        </ul>-->
+        <div class="row">
+          <div class="small-12 columns">
+            <h1 class="featuring-title upcoming">Upcoming events:</h1>
+          </div>
+        </div>
+
+        <ul class="features upcoming">
+          <% @a_recurrences.each do |rec| %>
+              <li class="row">
+                <div class="small-3 columns">
+                  <img src="<%= rec.event.pictures.first ? rec.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                </div>
+                <div class="small-9 columns">
+                  <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
+                  <% unless rec.event.description.to_s.empty? %>
+                      <p> <%= raw(rec.event.description) %> </p>
+                  <% end %>
+                </div>
+              </li>
+          <% end %>
+          <% @a_occurrences.each do |occ| %>
+              <li class="row">
+                <div class="small-3 columns">
+                  <img src="<%= occ.event.pictures.first ? occ.event.pictures.first.image_url(:thumb) : "/assets/placeholder.png" %>" />
+                </div>
+                <div class="small-9 columns">
+                  <a href="/unofficialacl/show_event?event_id=<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
+                  <% unless occ.event.description.to_s.empty? %>
+                      <p> <%= raw(occ.event.description) %> </p>
+                  <% end %>
+                </div>
+              </li>
+          <% end %>
+
+        </ul>
+      </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>
+<% end %>
+<!-- end tabs -->
+
