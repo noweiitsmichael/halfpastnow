@@ -732,7 +732,7 @@ a {
   font-weight: 300;
   text-transform: none; }
 .big-event-container .text .event-date, .big-event-container .text-rounded .event-date{
-  font-weight: 600; }
+  font-weight: 400; }
 .big-event-container .text .event-tags span, .big-event-container .text-rounded .event-tags span {
   color: #8b00bf; }
 .big-event-container .text .event-tags span:hover, .big-event-container .text-rounded .event-tags span:hover {
@@ -774,7 +774,7 @@ a {
   font-weight: 300; }
 .small-event-container .text .event-date, .small-event-container .text-rounded .event-date{
   font-size: 16px;
-  font-weight: 600; }
+  font-weight: 400; }
 .small-event-container .text .event-tags span, .small-event-container .text-rounded .event-tags span {
   color: white; }
 
