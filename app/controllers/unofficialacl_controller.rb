@@ -117,6 +117,7 @@ class UnofficialaclController < ApplicationController
   def show_event
     #raise  params[:event_id].to_yaml
     @occurrence = Occurrence.find_by_id(params[:event_id])
+    #raise @occurrence.to_yaml
     unless @occurrence.nil?
       @event = @occurrence.event
       @venue = @occurrence.event.venue

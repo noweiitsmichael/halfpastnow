@@ -30,10 +30,8 @@
                  <a class="event-title" href="/unofficialacl/show_event?event_id=<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 18) %></a>
                  <p class="event-tags">
                    <% if occurrence.event.tags.count > 0 %>
-                     <% occurrence.event.tags.each_with_index  do |tag, index| %>
-                       <span><%= tag.name %></span>
-                       <% if index == 1 %><% break %><% else %>,<% end %>
-                     <% end %>
+                       <% names = occurrence.event.tags.collect {|tag| tag.name} %>
+                       <span><%= names[0..2].join(',') %></span>
                    <% end %>
                  </p>
                </div>
