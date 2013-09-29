@@ -235,7 +235,7 @@
         <h1 class="title"><%= @event.venue.name %></h1>
         <ul class="details">
           <li><i class="icon-map-marker pull-left icon-large mbl"></i> <%= @event.venue.address %><br><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></li>
-          <li><% unless @venue.phonenumber.empty? %><a href="tel:1-800-555-555"><i class="icon-mobile-phone icon-large"></i> <%= @venue.phonenumber %></a><% end %></li>
+          <li><% unless @venue.phonenumber.nil? and @venue.phonenumber.empty? %><a href="tel:1-800-555-555"><i class="icon-mobile-phone icon-large"></i> <%= @venue.phonenumber %></a><% end %></li>
         </ul>
         <div class="row">
           <div class="small-12 columns">
