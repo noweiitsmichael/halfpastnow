@@ -58,6 +58,9 @@
               <%# end %>-->
           <% end %>
         </p>
+        <p class="event-tags">
+          <%= occurrence.start.to_time.strftime("%A, %b %e, %I:%M%p") %>
+        </p>
       </div>
     </div>
   </li>
