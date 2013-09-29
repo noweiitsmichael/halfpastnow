@@ -48,18 +48,18 @@
       </div>
       <div class="text antialiased">
         <a class="event-title" href="unofficialacl/show_event?event_id=<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 50) %></a>
+        <p class="event-tags event-date">
+          <%= occurrence.start.to_time.strftime("%A, %b %e, %l:%M %p") %>
+        </p>
         <p class="event-tags">
           <% if occurrence.event.tags.count > 0 %>
               <% names = occurrence.event.tags.collect {|tag| tag.name} %>
-              <span><%= names[0..2].join(',') %></span>
+              <span><%= names[0..2].join(', ') %></span>
               <!--<%# occurrence.event.tags.each_with_index  do |tag, index| %>
                   <span><%#= tag.name %></span>
                   <%# if index == 1 %><%# break %><%# else %>,<%# end %>
               <%# end %>-->
           <% end %>
-        </p>
-        <p class="event-tags">
-          <%= occurrence.start.to_time.strftime("%A, %b %e, %I:%M%p") %>
         </p>
       </div>
     </div>
