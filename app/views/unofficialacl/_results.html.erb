@@ -27,7 +27,7 @@
                </div>
                <div class="text antialiased">
 
-                 <a class="event-title" href="/unofficialacl/show_event?event_id=<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 18) %></a>
+                 <a class="event-title" href="/unofficialacl/show_event?event_id=<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 50) %></a>
                  <p class="event-tags">
                    <% if occurrence.event.tags.count > 0 %>
                        <% names = occurrence.event.tags.collect {|tag| tag.name} %>
@@ -65,7 +65,7 @@
                    </div>
                    <div class="text antialiased">
 
-                     <a class="event-title" href="/unofficialacl/show_event?event_id=<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 18) %></a>
+                     <a class="event-title" href="/unofficialacl/show_event?event_id=<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 50) %></a>
 
                      <p class="event-tags">
                        <% if occurrence.event.tags.count > 0 %>
