@@ -36,6 +36,9 @@
                      <% end %>
                    <% end %>
                  </p>
+                 <p class="event-tags">
+                    <%= occurrence.start.to_time.strftime("%A, %b %e, %I:%M%p") %>
+                 </p>
                </div>
              </div>
           <% if count == 4 %>
@@ -73,6 +76,10 @@
                            <% if index == 1 %><% break %><% else %>,<% end %>
                          <% end %>
                        <% end %>
+                     </p>
+                         
+                     <p class="event-tags">
+                        <%= occurrence.start.to_time.strftime("%A, %b %e, %I:%M%p") %>
                      </p>
                    </div>
                  </div>

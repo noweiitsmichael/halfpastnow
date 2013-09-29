@@ -144,7 +144,7 @@
         <h1 class="title"><%= @event.title %></h1>
         <ul class="details">
           <li><%= @event.venue.name %></li>
-          <li><%= @occurrence.start.to_time.strftime("%I:%M%p") %></li>
+          <li><%= @occurrence.start.to_time.strftime("%A, %b %e, %I:%M%p") %></li>
         </ul>
       </div>
       <div class="mll mrl mbl">
