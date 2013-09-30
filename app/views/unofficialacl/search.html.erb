@@ -4,13 +4,13 @@
   <div class="content tab search_content" id="tab-1">
     <%= render 'results', locals: {occurrences: @occurrences} %>
   </div>
-  <div class="footer row">
-    <div class="small-6 small-centered columns by-center">
-      <div id="loaderImage" class="mbl"></div>
-      <div id="footer_text">loading more content</div>
-    </div>
-  </div>
 </div>
+ <div class="footer row <%= 'hide' if @occurrences.count < 18 %>">
+   <div class="small-6 small-centered columns by-center">
+     <div id="loaderImage" class="mbl>"></div>
+     <div id="footer_text">loading more content</div>
+   </div>
+ </div>
 
 <%= hidden_field_tag :and_tags, params[:and_tags] %>
 <%= hidden_field_tag :next_page, @occurrences.next_page %>
@@ -57,8 +57,7 @@
             if (next_page < total_pages) {
                 append_data(next_page,and_tags);
             } else{
-                $('#loaderImage').hide();
-                $('#footer_text').hide();
+                $('.footer').hide();
             }
         }
 

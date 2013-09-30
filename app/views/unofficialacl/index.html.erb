@@ -9,7 +9,7 @@
     <div class="small-6 small-centered columns by-center">
       <div id="loaderImage" class="mbl"></div>
       <div id="footer_text">loading more content</div>
-      <div id="footer_text_end" style="visibility: hidden">2013 Unofficial ACL - All Rights Reserved</div>
+      <div id="footer_text_end" class="hide">2013 Unofficial ACL - All Rights Reserved</div>
     </div>
   </div>
 </div>
@@ -35,6 +35,8 @@
 </style>
 
 <script>
+
+
     $(window).scroll(function () {
 
         if ($(this).scrollTop() > 100) {
@@ -60,8 +62,7 @@
             if (next_page < total_pages) {
                 append_data(next_page,and_tags);
             } else{
-                $('#loaderImage').hide();
-                $('#footer_text').hide();
+                $('.footer').hide();
             }
         }
 
@@ -79,4 +80,106 @@
         $("html, body").animate({scrollTop: '0px' }, 1500);
         return false;
     });
+</script>
+
+<script>
+    var geocoder;
+    var map;
+    var markers = [];
+    var tags = {};
+    var channelFilters = {};
+
+//    $(window).load(function() {
+//        if(typeof initialize !== 'undefined')
+//            initialize();
+//    });
+
+function initialize() {
+//console.log("initialize");
+//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
+geocoder = new google.maps.Geocoder();
+
+var styles = [
+{
+"featureType": "road.highway",
+"elementType": "geometry.stroke",
+"stylers": [
+{ "color": "#804580" }
+]
+},{
+"featureType": "road.highway",
+"elementType": "labels.text.stroke",
+"stylers": [
+{ "color": "#d5b5d5" }
+]
+},{
+"featureType": "road.arterial",
+"elementType": "labels.text.stroke",
+"stylers": [
+{ "color": "#f1e6f3" }
+]
+},{
+"elementType": "geometry.fill",
+"stylers": [
+{ "gamma": 1.54 },
+{ "lightness": 12 }
+]
+},{
+"featureType": "road.arterial",
+"elementType": "geometry.fill",
+"stylers": [
+{ "color": "#e0dae0" }
+]
+},{
+"featureType": "road.arterial",
+"elementType": "geometry.stroke",
+"stylers": [
+{ "color": "#b8abb8" }
+]
+},{
+"featureType": "road.highway",
+"elementType": "geometry.fill",
+"stylers": [
+{ "color": "#af96af" }
+]
+},{
+}
+];
+
+var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+var myOptions = {
+zoom: <%= @zoom %>,
+center: latlng,
+mapTypeId: 'map_style',
+disableDefaultUI: true,
+zoomControl: true,
+scrollwheel: false,
+zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 2 },
+backgroundColor: '#FFFFFF'
+};
+
+var styledMap = new google.maps.StyledMapType(styles,
+{name: "Styled Map"});
+
+map = new google.maps.Map($("#map")[0], myOptions);
+
+map.mapTypes.set('map_style', styledMap);
+map.setMapTypeId('map_style');
+
+var locations = [];
+
+$(".row").each(function(index) {
+var latitude = parseFloat($(this).find(".latitude").html());
+var longitude = parseFloat($(this).find(".longitude").html());
+locations.push({lat: latitude, long: longitude});
+});
+
+    console.log(locations);
+
+
+placeMarkers({points: locations});
+
+google.maps.event.addListener(map, 'idle', boundsChanged);
+}
+
 </script>
