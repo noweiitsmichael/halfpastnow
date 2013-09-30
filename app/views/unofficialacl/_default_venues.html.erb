@@ -56,7 +56,7 @@
               <% names = occurrence.event.tags.collect {|tag| tag.name} %>
               <% exclude_tag_names = ["Festival","Music"] %>
               <% names = names - exclude_tag_names %>
-              <span><%= names[0..2].join(',') %></span>
+              <span><%= names[0..2].join(', ') %></span>
           <% end %>
         </p>
       </div>
