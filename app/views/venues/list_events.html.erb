@@ -38,7 +38,7 @@
 		<div class="compact event-element" objectID="<%= event.id %>" id="anchor<%= occ_id %>">
 			<div class="time"><%= event.nextOccurrence.start.to_time.strftime("%b %-d @ %-I:%M%P") %></div>
 			<div class="title"><%= event.title %></div>
-			<a class="live-link" href="/?event_id=<%= occ_id %>" target="_blank">Live Page</a>
+			<a class="live-link" href="/events/show/<%= occ_id %>?fullmode=true" target="_blank">Live Page</a>
 			<div class="description"><%= truncate(strip_tags(event.description), :length => 300)  %></div>
 			<a href="" class="toggler">+</a>
 		</div>

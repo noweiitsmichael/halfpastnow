@@ -1,14 +1,14 @@
 
 
-<li linkto="event" link-id="<%= occurrence.id %>">
+<li link-id="<%= occurrence.id %>"> <!--linkto="event"-->
 		
 		<div class="index <%= ((index + 1) >= 100) ? "over100" : ""%>"><%= index ? (index + 1) : "" %></div>
 		
-		<a href="/?event_id=<%= occurrence.id %>">
+		<a href="/events/show/<%= occurrence.id %>?fullmode=true" target="_default">
 		<div class="title">
 			<%= truncate(occurrence.event.title, :length => 115) %>
 		</div>
-		<a href="/?venue_id=<%= occurrence.event.venue.id %>"><div class="venue" link-id="<%= occurrence.event.venue.id %>" linkto="venue">@ <span class="venue-inner"><%= occurrence.event.venue.name %></span></div></a>
+		<a href="/venues/<%= occurrence.event.venue.id %>?fullmode=true" target="_blank"><div class="venue" link-id="<%= occurrence.event.venue.id %>" >@ <span class="venue-inner"><%= occurrence.event.venue.name %></span></div></a> <!-- linkto="venue" -->
 		<div class="datetime"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></div>
 		<% if occurrence.event.price %>
 			<div class="price"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></div>

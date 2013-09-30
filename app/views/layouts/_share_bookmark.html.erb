@@ -2,7 +2,7 @@
 	var id = "<%= id  %>";
 	var type = "<%= type %>";
 	var root_url = "http://www.halfpastnow.com/";
-	var link = root_url + "?" + type + "_id=" + id;
+	var link = root_url + type + "s/show/" + id + "?fullmode=true";
     var facebook_url = "http://www.halfpastnow.com/" + type + "s/show/" + id + "?fullmode=true";
     var app_id = "475386955806720";
     var redirect = "http://www.halfpastnow.com";
@@ -277,9 +277,9 @@
 	</span>
 <!-- 	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span> -->
 	<% if type == 'event' %>
-	<a href="http://www.halfpastnow.com/?event_id=<%=id%>" title="Add to Calendar" class="addthisevent">
+	<a href="http://www.halfpastnow.com/events/show/<%=id%>?fullmode=true" title="Add to Calendar" class="addthisevent">
 	    <span class="icon icon-calendar cal"></span>
-	    <span class="_url">http://www.halfpastnow.com/?event_id=<%=id%></span>
+	    <span class="_url">http://www.halfpastnow.com/events/show/<%=id%>?fullmode=true</span>
 	    <span class="_start"><%= (occurrence.start.nil?) ? "" : occurrence.start.strftime('%d-%m-%Y %H:%M:%S') %></span>
 	    <span class="_end"><%= (occurrence.end.nil?) ? (occurrence.start.nil?) ? "" : (occurrence.start + 2.hours).strftime('%d-%m-%Y %H:%M:%S') : occurrence.end.strftime('%d-%m-%Y %H:%M:%S') %></span>
 	    <span class="_zonecode">11</span>

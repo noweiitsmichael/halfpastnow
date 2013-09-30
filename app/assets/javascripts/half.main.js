@@ -348,7 +348,7 @@ $(function() {
     var venue = $(this).attr('event-venue');
     var type = "event";
     var root_url = encodeURIComponent(window.location.origin);
-    var link = root_url + "%3F" + type + "_id%3D" + id;
+    var link = root_url + "/events/show/" + id + "?fullmode=true";
     var facebook_url = "http://www.halfpastnow.com/events/show/" + id + "?fullmode=true";
 
     var html_title = title.replace(/[%|&\/#"\\]/g, function(m) {
