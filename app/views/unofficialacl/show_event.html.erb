@@ -92,7 +92,7 @@
             <img src="<%= act.pictures.first ? act.pictures.first.image_url(:thumb) : "" %>" />
           </div>
           <div class="small-9 columns">
-            <h2 class="pbm"><%= act.name %></h2>
+            <h2 class="pbm"><a href="/unofficialacl/show_artist?artist_id=<%= act.id %>"><%= act.name %></a></h2>
             <% unless act.description.to_s.empty? %><p>  <%= strip_tags(act.description) %> </p> <% end %>
           </div>
         </li>
@@ -235,7 +235,7 @@
         <h1 class="title"><%= @event.venue.name %></h1>
         <ul class="details">
           <li><i class="icon-map-marker pull-left icon-large mbl"></i> <%= @event.venue.address %><br><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></li>
-          <li><% unless @venue.phonenumber.nil? and @venue.phonenumber.empty? %><a href="tel:1-800-555-555"><i class="icon-mobile-phone icon-large"></i> <%= @venue.phonenumber %></a><% end %></li>
+          <li><% unless @venue.phonenumber.nil? or @venue.phonenumber.empty? %><a href="tel:1-800-555-555"><i class="icon-mobile-phone icon-large"></i> <%= @venue.phonenumber %></a><% end %></li>
         </ul>
         <div class="row">
           <div class="small-12 columns">

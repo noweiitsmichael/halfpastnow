@@ -10,7 +10,7 @@
 <div id="info-content" class="padded">
 	Thanks for submitting the event! Your event is now live - you can preview your event here:
 	<br><br>
-	<a href="/?event_id=<%= @event.nextOccurrence.id %>">http://www.halfpastnow.com/?event_id=<%= @event.nextOccurrence.id %></a>
+	<a href="/?event_id=<%= @event.nextOccurrence.id %>">http://www.halfpastnow.com/events/show/<%= @event.nextOccurrence.id %>?fullmode=true</a>
 </div>
 
 <% end %>

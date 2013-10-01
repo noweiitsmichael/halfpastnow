@@ -54,14 +54,16 @@
         <p class="event-tags">
           <% if occurrence.event.tags.count > 0 %>
               <% names = occurrence.event.tags.collect {|tag| tag.name} %>
+              <% exclude_tag_names = ["Festival","Music", "SXSW Artist"] %>
+              <% names = names - exclude_tag_names %>
               <span><%= names[0..2].join(', ') %></span>
-              <!--<%# occurrence.event.tags.each_with_index  do |tag, index| %>
-                  <span><%#= tag.name %></span>
-                  <%# if index == 1 %><%# break %><%# else %>,<%# end %>
-              <%# end %>-->
           <% end %>
         </p>
       </div>
+    </div>
+    <div style="display:none;">
+      <div class="latitude"><%= occurrence.event.venue.latitude %></div>
+      <div class="longitude"><%= occurrence.event.venue.longitude %></div>
     </div>
   </li>
   <% end %>

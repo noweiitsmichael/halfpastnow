@@ -37,14 +37,18 @@
           </div>
         </div>
       </div>
-      <div class="large-3 small-4 large-offset-3 columns by-right">
-        <h3 class="ptx">Choose a Category: </h3>
+      <div class="large-3 small-4 large-offset-2 columns by-right">
+        <h3 class="ptx">Choose a Date: </h3>
       </div>
-      <div class="large-3 small-4 columns">
-        <select class="select js-select" name="category_search" onchange= "this.form.submit();" >
+      <div class="large-4 small-4 columns">
+        <select class="select js-select" name="time_search" onchange= "this.form.submit();" >
           <option></option>
-          <option value="Happy Hours">Happy Hours</option>
-          <option value="Live music">Live music</option>
+          <option value="everything">All days</option>
+          <option value="first">ACL First Weekend (Oct 4-6)</option>
+          <option value="unofficial">Unofficial Week (Oct 7-10)</option>
+          <option value="second">ACL Second Weekend (Oct 11-13)</option>
+          <option value="today">Today</option>
+          <option value="tomorrow">Tomorrow</option>
         </select>
       </div>
     </div>
@@ -63,11 +67,10 @@
               <a href="http://www.unofficialacl.com">Unofficial ACL</a>
             </li>          
             <li id="tab-anchor-2" class = <%= (params[:and_tags].include? '247') ? "current" : "" %>>
-              <%#= link_to "Official Late Night Shows", search_unofficialacl_index_path(and_tags: 247), method: :post %>
-              <a rel="nofollow" data-method="post" href="/unofficialacl/search?and_tags=247">Official Late Night Shows</a>
+              <%= link_to "Official Late Night Shows", search_unofficialacl_index_path(tags: "Official Late Night Shows"), method: :post %>
             </li>
             <li  id="tab-anchor-1" class = <%= (params[:and_tags].include? '230') ? "current" : "" %>>
-              <%= link_to "Official ACL", search_unofficialacl_index_path(and_tags: 230), method: :post %>
+              <%= link_to "Official ACL", search_unofficialacl_index_path(tags: "Official ACL"), method: :post %>
             </li>
             <li id="tab-anchor-4" class = <%= (params[:and_tags].include? '15') ? "current" : "" %>>
               <a href="http://unofficialacl.wordpress.com">Local Recommendations</a>
@@ -80,10 +83,10 @@
         <div class="small-navbar-note">Show me events with:</div>
         <div id="small-navbar">
           <ul>
-            <li><%= link_to "Free drinks", search_unofficialacl_index_path(and_tags: 256), method: :post, class: (params[:and_tags].include? '256') ? "active" : "" %></li>
-            <li><%= link_to "party", search_unofficialacl_index_path(and_tags: 253), method: :post, class: (params[:and_tags].include? '253') ? "active" : "" %></li>
-            <li><%= link_to "no cover", search_unofficialacl_index_path(and_tags: 254), method: :post, class: (params[:and_tags].include? '254') ? "active" : "" %></li>
-            <li><%= link_to "RSVP", search_unofficialacl_index_path(and_tags: 255), method: :post, class: (params[:and_tags].include? '255') ? "active" : "" %></li>
+            <li><%= link_to "Free drinks", search_unofficialacl_index_path(tags: "Free drinks"), method: :post, class: (params[:and_tags].include? '256') ? "active" : "" %></li>
+            <li><%= link_to "party", search_unofficialacl_index_path(tags: "party"), method: :post, class: (params[:and_tags].include? '253') ? "active" : "" %></li>
+            <li><%= link_to "no cover", search_unofficialacl_index_path(tags: "no cover"), method: :post, class: (params[:and_tags].include? '254') ? "active" : "" %></li>
+            <li><%= link_to "RSVP", search_unofficialacl_index_path(tags: "RSVP"), method: :post, class: (params[:and_tags].include? '255') ? "active" : "" %></li>
           </ul>
         </div>
       </div>

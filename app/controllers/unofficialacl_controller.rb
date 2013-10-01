@@ -2,6 +2,10 @@ class UnofficialaclController < ApplicationController
 
   def index
 
+    @lat = 30.268093
+    @long = -97.742808
+    @zoom = 11
+
     join_clause = "INNER JOIN events ON occurrences.event_id = events.id
                      INNER JOIN venues ON events.venue_id = venues.id
                      LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
@@ -43,14 +47,14 @@ class UnofficialaclController < ApplicationController
 
   def search
 
-    search_match = tag_include_match = tag_and_match = "TRUE"
+    search_match = occurrence_match = tag_include_match = tag_and_match = "TRUE"
 
     join_clause = "INNER JOIN events ON occurrences.event_id = events.id
                      INNER JOIN venues ON events.venue_id = venues.id
                      LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
                      LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id"
 
-    unless params[:search].to_s.empty? and params[:category_search].to_s.empty?
+    unless params[:search].to_s.empty?# and params[:category_search].to_s.empty?
       search_word = params[:search].to_s + ' ' +params[:category_search].to_s
       #raise search_word.to_yaml
       search = search_word.gsub(/[^0-9a-z ]/i, '').upcase
@@ -64,12 +68,46 @@ class UnofficialaclController < ApplicationController
       search_match = search_match_arr * " AND "
     end
 
+    unless params[:time_search].to_s.empty? or params[:time_search] == "everything"
+       if params[:time_search] == "first"
+         event_start_date = Date.parse('2013-10-04')
+         event_end_date = Date.parse('2013-10-06').advance(:days => 1)
+       elsif params[:time_search] == "unofficial"
+         event_start_date = Date.parse('2013-10-07')
+         event_end_date = Date.parse('2013-10-10').advance(:days => 1)
+       elsif params[:time_search] == "second"
+         event_start_date = Date.parse('2013-10-11')
+         event_end_date = Date.parse('2013-10-13').advance(:days => 1)
+       elsif params[:time_search] == "today"
+         event_start_date = Date.today()
+         event_end_date = Date.today().advance(:days => 1)
+       elsif params[:time_search] == "tomorrow"
+         event_start_date = Date.today().advance(:days => 1)
+         event_end_date = Date.today().advance(:days => 2)
+       end
+
+       start_date_check = "occurrences.start >= '#{event_start_date}'"
+       end_date_check = "occurrences.start <= '#{event_end_date}'"
+       occurrence_match = "#{start_date_check} AND #{end_date_check}"
+    end
+
+
     if(params[:included_tags] && params[:included_tags].is_a?(String))
       params[:included_tags] = params[:included_tags].split(",")
     end
 
     if(params[:and_tags] && params[:and_tags].is_a?(String))
       params[:and_tags] = params[:and_tags].split(",")
+    end
+
+    if params[:tags]
+      params[:and_tags] = "247" if params[:tags] == "Official Late Night Shows"
+      params[:and_tags] = "230" if params[:tags] == "Official ACL"
+      params[:and_tags] = "256" if params[:tags] == "Free drinks"
+       params[:and_tags] = "253" if params[:tags] == "party"
+       params[:and_tags] = "254" if params[:tags] == "no cover"
+       params[:and_tags] = "255" if params[:tags] == "RSVP"
+       params[:and_tags] = params[:and_tags].split(",")
     end
 
     unless(params[:included_tags].to_s.empty?)
@@ -90,7 +128,7 @@ class UnofficialaclController < ApplicationController
                     )"
     end
 
-    where_clause = "#{search_match} AND #{tag_include_match} AND #{tag_and_match}"
+    where_clause = "#{search_match} AND #{occurrence_match} AND #{tag_include_match} AND #{tag_and_match}"
 
     if Time.now.hour < 17
       start_date_where = "'#{(Time.now - 2.hours)}'"
@@ -184,6 +222,30 @@ class UnofficialaclController < ApplicationController
       end
     end
     render layout: "unofficialacl"
+  end
+
+  def show_artist
+    @a_occurrences  = []
+    @a_recurrences = []
+    @act = Act.find_by_id params[:artist_id]
+    act = @act
+    unless act.nil?
+      occs = act.events.collect { |event| event.occurrences.select { |occ| occ.start >= DateTime.now }  }.flatten.sort_by { |occ| occ.start }
+      occs.each do |occ|
+        # check if occurrence is instance of a recurrence
+        if occ.recurrence_id.nil?
+          @a_occurrences << occ
+        else
+          if @a_recurrences.index(occ.recurrence).nil?
+            @a_recurrences << occ.recurrence
+          end
+        end
+      end
+      @a_recurrences.reject! { |c| c.nil? }
+      @a_occurrences.reject! { |c| c.nil? }
+    else
+      redirect_to :controller => :unofficialacl,:action => :index
+    end
   end
 
   def find_all
