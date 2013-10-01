@@ -382,7 +382,9 @@
             $(this).parents('li').remove()
           key_id = $(this).parent().attr('key_id')
           if(key_id != null){
+            <% if user_signed_in? %>
             $.get('/delete_saved_search',{key_id:key_id})
+            <% end %>
           }
         })
         $('.dropdown-menu a').click(function(){
@@ -403,8 +405,11 @@
             })
               $('.icon-ok-sign').on("click",function(){
                 key = $(this).parent().attr('key')
+
+                <% if user_signed_in? %>
                 $(this).hide()
                 $.get('/saved_search',{key:key})
+                <% end %>
             })
             }
 
