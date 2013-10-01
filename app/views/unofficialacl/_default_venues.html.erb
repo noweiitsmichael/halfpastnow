@@ -9,7 +9,7 @@
         <img src="<%= venue.pictures.first ? venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
       </div>
       <ul class="label-container">
-        <li class="label-name">Featured Venue</li>
+        <li class="label-name">FEATURED VENUE</li>
       </ul>
       <div class="text antialiased">
         <a class="event-title" href="unofficialacl/show_venue/<%= venue.id %>"><%= truncate(venue.name, :length => 42) %></a>
@@ -77,31 +77,3 @@
 </div>
 </div>
 
-<style>
-    .label-container {
-        list-style: none outside none;
-        margin-bottom: 0;
-        position: absolute;
-        right: 10px;
-        top: 10px;
-    }
-
-    .label-name {
-        background: -moz-linear-gradient(center top , #604163 5%, #4B334D 100%) repeat scroll 0 0 #604163;
-        background: repeat scroll 0 0 #604163;
-        border: 1px solid #3C283F;
-        border-radius: 6px 6px 6px 6px;
-        box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.2) inset;
-        color: #FFFFFF;
-        display: inline-block;
-        font-size: 9px;
-        font-weight: 300;
-        height: 18px;
-        line-height: 16px;
-        padding: 0 5px;
-        text-align: center;
-        text-decoration: none;
-        text-indent: 0;
-        text-shadow: 0 0 8px #250540;
-    }
-</style>

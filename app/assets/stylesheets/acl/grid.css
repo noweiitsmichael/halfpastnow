@@ -56,6 +56,13 @@ img {
 .antialiased {
   -webkit-font-smoothing: antialiased; }
 
+.panel-details {
+  height: 100% !important;
+}
+
+.stretch {
+  height: 100% !important;
+}
 
 /* Grid HTML Classes */
 .row {
