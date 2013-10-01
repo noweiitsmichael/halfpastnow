@@ -65,10 +65,10 @@
   </div>
 
       <div id="social">
-        <a href="#"><i class="icon-facebook-sign"></i></a>
-        <a href="#"><i class="icon-twitter-sign"></i></a>
-        <a href="#"><i class="icon-google-plus-sign"></i></a>
-        <a href="#"><i class="icon-pinterest-sign"></i></a>
+        <div class="fb-like" data-href="http://www.unofficialacl.com" data-width="100" data-colorscheme="dark" data-layout="button_count" data-show-faces="true" data-send="false"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.unofficialacl.com" data-text="The perfect guide to #official and #unofficial events happening at #ACL!" data-via="halfpastnow" data-count="horizontal" style="width:65px">Tweet</a>
+        <div id="g-plus-footer" class="g-plus" data-action="share" data-annotation="none"></div>
+        <a href="//www.pinterest.com/pin/create/button/" data-pin-do="buttonBookmark" ></a>
       </div>
 
 
@@ -81,7 +81,7 @@
 <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 
  -->
-
+ 
 <script src="/assets/acl/script.js" type="text/javascript"></script>
 
 <script>
@@ -95,5 +95,16 @@
 
 </script>
 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=475386955806720";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<script src="https://apis.google.com/js/plusone.js"></script>
+<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
 </body>
 </html>

@@ -641,7 +641,7 @@ a {
       top: 11px;
       left: 6px; }
       #small-navbar li a:link, #small-navbar li a:visited {
-        padding: 12px 15px 12px 15px;
+        padding: 12px 10px 12px 10px;
         font-size: 14px; } }
 
 .small-navbar-note {
@@ -973,7 +973,7 @@ a.callout {
     #menu-icon {
       display: inline-block;
       margin-left: 46%;
-      margin-bottom: 10px; } }
+      margin-top: -20px; } }
 
 #social {
   position: fixed;
@@ -2616,6 +2616,26 @@ input[type='password'] {
   display: inline-block;
   font-size: 18px;
   font-weight: 300;
+  height: 30px;
+  line-height: 14px;
+  padding: 5px 23px;
+  text-align: center;
+  text-decoration: none;
+  text-indent: 0;
+  text-shadow: 0 0 8px #250540;
+  /*left: 1px;*/
+}
+@media only screen and (max-width: 767px) {
+.label-name {
+  background: -moz-linear-gradient(center top , #604163 5%, #4B334D 100%) repeat scroll 0 0 #604163;
+  background: repeat scroll 0 0 #604163;
+  border: 1px solid #3C283F;
+  border-radius: 1px 1px 1px 1px;
+  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.2) inset;
+  color: #FFFFFF;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 300;
   height: 40px;
   line-height: 14px;
   padding: 14px 23px;
@@ -2624,6 +2644,7 @@ input[type='password'] {
   text-indent: 0;
   text-shadow: 0 0 8px #250540;
   /*left: 1px;*/
+}
 }
 
 .user-slug .slug-avatar {
