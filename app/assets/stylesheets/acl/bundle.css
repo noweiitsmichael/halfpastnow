@@ -644,7 +644,7 @@ a {
   font-size: 10px;
   position: absolute;
   top: -15px;
-  left: 82px; }
+  left: 20px; }
   @media only screen and (max-width: 960px) {
     .small-navbar-note {
       left: 15px; } }
@@ -697,49 +697,44 @@ a {
   overflow: hidden;
   cursor: pointer;
   color: #161419; }
-.big-event-container:hover {
-  color: white; }
-.big-event-container:hover .text, .big-event-container:hover .text-rounded {
-  overflow: visible;
-  white-space: normal; }
-.big-event-container:hover .text .event-tags span, .big-event-container:hover .text-rounded .event-tags span {
-  color: white; }
-.big-event-container .text, .big-event-container .text-rounded {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: block;
-  width: auto;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 15px 20px 20px;
-  margin-bottom: 3.3%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  font-weight: 200;
-  font-size: 36px;
-  text-transform: capitalize; }
-.big-event-container .text .event-title, .big-event-container .text-rounded .event-title {
-  text-decoration: none; 
-  font-size: 1em;
-  font-weight: 300;}
-  @media only screen and (max-width: 767px) {
+  .big-event-container:hover {
+    color: white; }
+    .big-event-container:hover .text, .big-event-container:hover .text-rounded {
+      overflow: visible;
+      white-space: normal; }
+      .big-event-container:hover .text .event-tags span, .big-event-container:hover .text-rounded .event-tags span {
+        color: white; }
+  .big-event-container .text, .big-event-container .text-rounded {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: block;
+    width: auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 15px 20px 20px;
+    margin-bottom: 3.3%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: 100;
+    font-size: 52px;
+    text-transform: capitalize; }
     .big-event-container .text .event-title, .big-event-container .text-rounded .event-title {
-      font-size: 32px; } }
-.big-event-container .text .event-tags, .big-event-container .text-rounded .event-tags {
-  font-size: 20px;
-  font-weight: 300;
-  text-transform: none; }
-.big-event-container .text .event-date, .big-event-container .text-rounded .event-date{
-  font-weight: 400; }
-.big-event-container .text .event-tags span, .big-event-container .text-rounded .event-tags span {
-  color: #8b00bf; }
-.big-event-container .text .event-tags span:hover, .big-event-container .text-rounded .event-tags span:hover {
-  color: white; }
-@media only screen and (max-width: 767px) {
-.big-event-container .text .event-tags, .big-event-container .text-rounded .event-tags {
-  font-size: 18px; } }
+      text-decoration: none; }
+      @media only screen and (max-width: 767px) {
+        .big-event-container .text .event-title, .big-event-container .text-rounded .event-title {
+          font-size: 46px; } }
+    .big-event-container .text .event-tags, .big-event-container .text-rounded .event-tags {
+      font-size: 25px;
+      font-weight: 300; }
+      .big-event-container .text .event-tags span, .big-event-container .text-rounded .event-tags span {
+        color: #8b00bf; }
+        .big-event-container .text .event-tags span:hover, .big-event-container .text-rounded .event-tags span:hover {
+          color: white; }
+      @media only screen and (max-width: 767px) {
+        .big-event-container .text .event-tags, .big-event-container .text-rounded .event-tags {
+          font-size: 20px; } }
 
 .small-event-container {
   position: relative;
@@ -747,36 +742,33 @@ a {
   padding: 100% 0 0 0;
   overflow: hidden;
   cursor: pointer; }
-.small-event-container:hover .text, .small-event-container:hover .text-rounded {
-  overflow: visible;
-  white-space: normal; }
-.small-event-container .text, .small-event-container .text-rounded {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: block;
-  width: auto;
-  background-color: rgba(51, 26, 74, 0.7);
-  color: white;
-  padding: 15px 20px 20px;
-  margin-bottom: 5%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis; }
-.small-event-container .text .event-title, .small-event-container .text-rounded .event-title {
-  font-weight: 100;
-  font-size: 26px;
-  text-transform: capitalize;
-  text-decoration: none; }
-.small-event-container .text .event-tags, .small-event-container .text-rounded .event-tags {
-  font-size: 12px;
-  font-weight: 300; }
-.small-event-container .text .event-date, .small-event-container .text-rounded .event-date{
-  font-size: 16px;
-  font-weight: 400; }
-.small-event-container .text .event-tags span, .small-event-container .text-rounded .event-tags span {
-  color: white; }
+  .small-event-container:hover .text, .small-event-container:hover .text-rounded {
+    overflow: visible;
+    white-space: normal; }
+  .small-event-container .text, .small-event-container .text-rounded {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: block;
+    width: auto;
+    background-color: rgba(51, 26, 74, 0.7);
+    color: white;
+    padding: 15px 20px 20px;
+    margin-bottom: 5%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; }
+    .small-event-container .text .event-title, .small-event-container .text-rounded .event-title {
+      font-weight: 100;
+      font-size: 26px;
+      text-transform: capitalize;
+      text-decoration: none; }
+    .small-event-container .text .event-tags, .small-event-container .text-rounded .event-tags {
+      font-size: 12px;
+      font-weight: 300; }
+      .small-event-container .text .event-tags span, .small-event-container .text-rounded .event-tags span {
+        color: white; }
 
 #sticker {
   width: 100%;
@@ -786,7 +778,7 @@ a.callout {
   white-space: nowrap;
   text-align: center;
   height: 30px;
-  width: 520px;
+  width: 450px;
   font-size: 11px;
   padding-left: 10px;
   padding-right: 10px;
@@ -897,11 +889,10 @@ a.callout {
   width: 480px;
   margin: 0 auto; }
   .event-picture img {
-    max-height: 100%;
-    zoom: 2;
-    width: 480px;
-    height: 320px;
-    /*width: auto; */
+    /*max-height: 100%;*/
+    /*zoom: 2;*/
+    /*width: 480px;*/
+    /*height: 320px;*/
   }
 
 .featuring-title {
@@ -925,7 +916,7 @@ a.callout {
   display: table-cell;
   vertical-align: bottom;
   font-weight: 100;
-  font-size: 52px;
+  font-size: 72px;
   border-bottom: 1px solid #8b00bf;
   text-transform: capitalize;
   height: 320px;

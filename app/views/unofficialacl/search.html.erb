@@ -1,10 +1,8 @@
  <%#= raise "check" %>
-<div class="content">
   <%= render 'row_header', locals: {occurrences: @occurrences} %>
   <div class="content tab search_content" id="tab-1">
     <%= render 'results', locals: {occurrences: @occurrences} %>
   </div>
-</div>
 
 
 <%= hidden_field_tag :and_tags, params[:and_tags] %>

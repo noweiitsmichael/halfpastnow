@@ -251,7 +251,7 @@
                   <% if rec.event.pictures.first %>
                       <img src="<%= rec.event.pictures.first.image_url(:thumb)  %>" alt="Event picture" />
                   <% elsif rec.event.acts.length != 0 && rec.event.acts.first.pictures.first %>
-                      <img src="<%= rec.event.acts.first.pictures.first.image_url(:thumb) %>" alt="occurrence pic"/>
+                      <img src="<%= rec.event.acts.first.pictures.first.image_url(:thumb) %>" alt="Artist pic"/>
                   <% elsif rec.event.venue.pictures.first %>
                       <img src="<%= rec.event.venue.pictures.first.image_url(:thumb) %>" alt="venue pic" />
                   <% else %>
