@@ -1002,6 +1002,9 @@ a.callout {
       width: auto; }
       #social i {
         display: inline-block; } }
+.details-social {
+  float:right;
+}
 
 .button, .button-huge {
   border-radius: 20px;
