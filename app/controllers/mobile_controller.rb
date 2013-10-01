@@ -83,6 +83,9 @@ class MobileController < ApplicationController
         return
       else
         if @user.valid_password?(params[:password])
+          if @user.name.nil?
+            @user.name =""
+          end
           respond_to do |format|
           format.html # index.html.erb
           format.json { render json: {:code=>"1",user:@user } }
