@@ -41,15 +41,20 @@
         <h3 class="ptx">Choose a Date: </h3>
       </div>
       <div class="large-4 small-4 columns">
-        <select class="select js-select" name="time_search" onchange= "this.form.submit();" >
-          <option></option>
-          <option value="everything">All days</option>
-          <option value="first">ACL First Weekend (Oct 4-6)</option>
-          <option value="unofficial">Unofficial Week (Oct 7-10)</option>
-          <option value="second">ACL Second Weekend (Oct 11-13)</option>
-          <option value="today">Today</option>
-          <option value="tomorrow">Tomorrow</option>
-        </select>
+        <%= select_tag "time_search",
+                       options_for_select([['All days', 'everything'], ['ACL First Weekend (Oct 4-6)', 'first'],
+                                           ['Unofficial Week (Oct 7-10)', 'unofficial'], ['ACL Second Weekend (Oct 11-13)', 'second'],
+                                           ['Today', 'today'], ['Tomorrow', 'tomorrow']], params[:time_search]),
+                        { :class => 'select js-select',:onchange => "this.form.submit();" }%>
+        <!--<select class="select js-select" name="time_search" onchange= "this.form.submit();" >-->
+          <!--<option></option>-->
+          <!--<option value="everything">Show me everything</option>-->
+          <!--<option value="first">ACL First Weekend (Oct 4-6)</option>-->
+          <!--<option value="unofficial">Unofficial Week (Oct 7-10)</option>-->
+          <!--<option value="second">ACL Second Weekend (Oct 11-13)</option>-->
+          <!--<option value="today">Today</option>-->
+          <!--<option value="tomorrow">Tomorrow</option>-->
+        <!--</select>-->
       </div>
     </div>
   </div>
@@ -63,7 +68,7 @@
       <div class="large-8 columns">
         <nav>
           <ul id="tab-anchors" class="header-navigation">
-            <li id="tab-anchor-3" class = <%= (params[:and_tags].include? '25') ? "current" : "" %>>
+            <li id="tab-anchor-3" class = <%= (params[:and_tags].include? '232') ? "current" : "" %>>
               <a href="http://www.unofficialacl.com">Unofficial ACL</a>
             </li>          
             <li id="tab-anchor-2" class = <%= (params[:and_tags].include? '247') ? "current" : "" %>>

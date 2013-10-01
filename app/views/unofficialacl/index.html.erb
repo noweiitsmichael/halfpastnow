@@ -5,13 +5,6 @@
   <%= render 'default_venues' %>
   <%#= render 'results', locals: {occurrences: @occurrences} %>
   </div>
-  <div class="footer row">
-    <div class="small-6 small-centered columns by-center">
-      <div id="loaderImage" class="mbl"></div>
-      <div id="footer_text">loading more content</div>
-      <div id="footer_text_end" class="hide">2013 Unofficial ACL - All Rights Reserved</div>
-    </div>
-  </div>
 </div>
 
 
@@ -60,9 +53,12 @@
             }
 
             if (next_page < total_pages) {
+                $('#loaderImage').show();
+                $('#footer_text').show();
                 append_data(next_page,and_tags);
             } else{
-                $('.footer').hide();
+                $('#loaderImage').hide();
+                $('#footer_text').hide();
             }
         }
 

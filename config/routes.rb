@@ -8,8 +8,8 @@ Myapp::Application.routes.draw do
 
   root :to => 'unofficialacl#index', :constraints => { :domain => "unofficialacl.com" }
 
-  root :to => 'events#new_splash'
-  #root :to => 'unofficialacl#index'
+  #root :to => 'events#new_splash'
+  root :to => 'unofficialacl#index'
 
   match "unofficialacl/search" => "unofficialacl#search"
 
@@ -18,6 +18,7 @@ Myapp::Application.routes.draw do
       post :search
       get :show_event
       get :show_venue
+      get :show_artist
     end
   end
 
