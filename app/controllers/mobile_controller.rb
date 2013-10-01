@@ -3441,6 +3441,11 @@ def homeEvents
    
 
     ttttmp = ttmp.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 14)}
+
+    unless(params[:channel_id].to_s.empty?)
+      ttttmp = ttmp.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 2)}
+    end
+
     occurrenceIDs =  ttttmp.collect { |e| e["occurrence_id"].to_i }.uniq
     # ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
     @allOccurrences = Occurrence.includes(:event => :venue).find(occurrenceIDs, :order => order_by)
