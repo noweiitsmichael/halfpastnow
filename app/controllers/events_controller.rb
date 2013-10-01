@@ -289,7 +289,7 @@ def android
 end
 
 def index
-     
+    @saved_search = current_user.saved_searches if user_signed_in?
     # Set default if action is sxsw
     unless(params[:event_id].to_s.empty?)
       redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
@@ -855,6 +855,14 @@ def index
     end
     
   end
-
+  def saved_search
+    current_user.saved_searches.create(:search_key => params[:key]) rescue nil
+    flash[:notice] = "Search is saved successfully"
+    render :nothing => true
+  end
+  def delete_saved_search
+   SavedSearch.find(params[:key_id]).delete
+   render :nothing => true
+  end
   
 end

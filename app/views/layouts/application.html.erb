@@ -123,8 +123,8 @@
             <ul class="nav pull-right">
               <li><a href="#"><i class="icon-right-arrow"></i>Get App</a></li>
               <% if user_signed_in? %>
-
-              <% else %>
+                  <li><%= link_to('logout', destroy_user_session_path, :method => 'delete') %></li>
+            <% else %>
                   <li><a href="#"  linkto="shunt"><i class="icon-right-arrow"></i>Log In</a></li>
                   <li><a href="#"  linkto="shunt"><i class="icon-right-arrow"></i>Join Now</a></li>
               <% end %>

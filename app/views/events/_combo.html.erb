@@ -1,23 +1,3 @@
-<div>
-	<div id="combo_event_list">	
-		<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
-	</div>
-
-	<div id="combo_tag_list">
-		<%# render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => nil } %>
-		<%= render :partial => "tag_list", :locals => { :tagCounts => @tagCounts, :parentTags => @parentTags } %>
-	</div>
-
-	<div id="combo_advanced_tag_list">
-		<%# render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => @parentTags } %>
-		<%= render :partial => "tag_list", :locals => { :tagCounts => @tagCounts, :parentTags => @parentTags } %>
-	</div>
-
-	<div id="combo_andtag_list">
-		<%= render :partial => "andtags_list", :locals => { :tagCounts => @tagCounts } %>
-	</div>
-
-	<div id="combo_total_occurrences">
-		<%= @allOccurrences.size %>
-	</div>
-</div>
+<% occurrences.each_with_index do |occurrence, index| %>
+  <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
+<% end %>

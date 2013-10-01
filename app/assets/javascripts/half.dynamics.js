@@ -500,7 +500,7 @@ $('.sxsw-dates').dropkick({
             if($(this).val().length >= 3){
                 console.log("keyup");
                 typingTimer = setTimeout(doneTyping , doneTypingInterval);
-                console.log(typingTimer)
+                console.log("typing timer is "+typingTimer)
             }
         }
     });
@@ -1029,46 +1029,47 @@ function pullEvents(updateOptions) {
       $('#content .main .inner .events').append(jData.find("#combo_event_list").html());
       infiniteScrolling = false;
     } else {
-      $('#content .main .inner .events').html(jData.find("#combo_event_list").html());
-      console.log("----NUM EVENTS-----");
-      console.log(jData.find("#combo_total_occurrences").html());
-      if (jData.find("#combo_total_occurrences").html().indexOf("1000") > 0) { 
-        $('.filter-summary .num-events').html(jData.find("#combo_total_occurrences").html() + "+");
-      } else {
-        $('.filter-summary .num-events').html(jData.find("#combo_total_occurrences").html());
-      }
-      if(async_reloadTagsList) {
-        $('#header .filter-toggle.tags.ortags .filter-inner').html(jData.find("#combo_tag_list").html());
-        $('#header .filter-toggle.tags.andtags .filter-inner').html(jData.find("#combo_andtag_list").html());
-        $('#header .advancedbar .tags-list').html(jData.find("#combo_advanced_tag_list").html());
-      } else {
-        reloadTagsList = true;
-      }
-    }
-
-    if(visibleTagListID) {
-      $("li[parent-id='" + visibleTagListID + "']").show();
-      //$('.tag-header[tag-id=' + visibleTagListID + '] .toggler').html("&#x25BC;");
-    }
-
-    $('#content .main .inner .events li').each(function(index) {
-      locations.push({lat: $(this).find('.latitude').html(), 
-                     long: $(this).find('.longitude').html()});
-    });
-
-    placeMarkers({points: locations});
-
-    loading('hide');
-
-    updateOptions.showSaveSearchButton = false;
-    updateViewFromFilter(false, updateOptions);
-    
-    // gotta jiggle the handle for position:fixed elements on resize, i think? weird.
-    //var top = $('#map-wrapper').position().top;
-    //$('#map-wrapper').css("top",(top + 1) + "px");
-    
-    if(!async_infiniteScrolling) {
-      $('#body').scrollTop(Math.min($('#body').scrollTop(),$('#header .one').outerHeight()));
+      //$('.tab-content').append("<div id="+ filter["search"] +" class='tab-pane fade'><div class='content main'><div class='container inline'><section class='product-list clearfix events'></section></div></div></div>")
+      $("#related_events .main .inline .events").html(data);
+//      console.log("----NUM EVENTS-----");
+//      console.log(jData.find("#combo_total_occurrences").html());
+//      if (jData.find("#combo_total_occurrences").html().indexOf("1000") > 0) {
+//        $('.filter-summary .num-events').html(jData.find("#combo_total_occurrences").html() + "+");
+//      } else {
+//        $('.filter-summary .num-events').html(jData.find("#combo_total_occurrences").html());
+//      }
+//      if(async_reloadTagsList) {
+//        $('#header .filter-toggle.tags.ortags .filter-inner').html(jData.find("#combo_tag_list").html());
+//        $('#header .filter-toggle.tags.andtags .filter-inner').html(jData.find("#combo_andtag_list").html());
+//        $('#header .advancedbar .tags-list').html(jData.find("#combo_advanced_tag_list").html());
+//      } else {
+//        reloadTagsList = true;
+//      }
+//    }
+//
+//    if(visibleTagListID) {
+//      $("li[parent-id='" + visibleTagListID + "']").show();
+//      //$('.tag-header[tag-id=' + visibleTagListID + '] .toggler').html("&#x25BC;");
+//    }
+//
+//    $('#content .main .inner .events li').each(function(index) {
+//      locations.push({lat: $(this).find('.latitude').html(),
+//                     long: $(this).find('.longitude').html()});
+//    });
+//
+//    placeMarkers({points: locations});
+//
+//    loading('hide');
+//
+//    updateOptions.showSaveSearchButton = false;
+//    updateViewFromFilter(false, updateOptions);
+//
+//    // gotta jiggle the handle for position:fixed elements on resize, i think? weird.
+//    //var top = $('#map-wrapper').position().top;
+//    //$('#map-wrapper').css("top",(top + 1) + "px");
+//
+//    if(!async_infiniteScrolling) {
+//      $('#body').scrollTop(Math.min($('#body').scrollTop(),$('#header .one').outerHeight()));
     }
     checkScroll();
     addthisevent.refresh();
@@ -1080,8 +1081,8 @@ function loading(command) {
   if (command === 'show') {
     pulling = true;
     if(!infiniteScrolling) {
-      var top = $('.main .inner .events').scrollTop();
-      var bottom = $('.main .inner .events').height() - Math.max(0,$('.main .inner .events').height() + $('.main .inner .events').offset().top - $(window).height() - $(window).scrollTop());
+      var top = 100//$('.main .inner .events').scrollTop();
+      var bottom = 200//$('.main .inner .events').height() - Math.max(0,$('.main .inner .events').height() + $('.main .inner .events').offset().top - $(window).height() - $(window).scrollTop());
       var y = (top + bottom) / 2 - 33;
       var x = $('.main .inner .events').width() / 2 - 33;
       $('.main .inner .header, .main .inner .events').css('opacity','.5');

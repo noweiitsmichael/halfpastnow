@@ -31,6 +31,8 @@ class User < ActiveRecord::Base
   has_many :friendships
   has_many :friends, :through => :friendships
 
+  #serch based on key words
+  has_many :saved_searches
   ROLES = %w[admin super_admin]
 
   after_create :send_welcome_email

@@ -113,6 +113,8 @@ Myapp::Application.routes.draw do
   match 'users/friends' => 'users#friends'
   match '/search' => 'events#index'
   match '/sxsw' => 'events#sxsw'
+  match '/saved_search' => 'events#saved_search'
+  match '/delete_saved_search' => 'events#delete_saved_search'
 
   match '/auth/:provider/callback' => 'authentications#create'
 

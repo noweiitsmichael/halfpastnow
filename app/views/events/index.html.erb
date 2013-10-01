@@ -324,19 +324,15 @@
     <div class="container">
       <ul class="nav nav-tabs" id="search-tab">
         <li class=""><a data-toggle="tab" href="#events">Events</a></li>
-
+        <% if user_signed_in? %>
+      <% @saved_search.each do |search| %>
+        <li class=""><a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" key="<%= search[:search_key] %>"><%= search[:search_key] %> <i class='icon-white-pin icon-remove'></i></a></li>
+          <% end %>
+          <% end %>
       </ul>
     </div>
     <div class="tab-content">
-      <div id="fitness" class="tab-pane fade">
-        <div class="container">
-          <div class="content">
-            Fitness
-          </div>
-        </div>
-      </div>
       <div id="events" class="tab-pane fade in active">
-
         <div class="sort-panel">
           <div class="container">
             <a href="#" class="sort-item filter-toggle date"><i class="icon-bottom-arrow"></i>Date</a>
@@ -346,26 +342,15 @@
             <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Area</a>
           </div>
         </div>
-        <div class="content">
-          <div class="container">
+        <div class="content main">
+          <div class="container inline">
             <h2 class="text-info"><%= @allOccurrences.size %> results for</h2>
-            <p class="lead text-info">"happy hour, south congress, 5pm"</p>
-            <section class="product-list clearfix">
+            <p class="lead text-info"></p>
+            <section class="product-list clearfix events">
               <% @occurrences.each_with_index do |occurrence, index| %>
                   <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
               <% end %>
-              <article class="product-item">
-                <figure><a href="#"><img src="assets/new_design/scroller1-img03.gif" alt=""/></a></figure>
-                <div class="name"><a href="#">Austin City Limits Music Festival</a></div>
-                <div class="info clearfix">
-                  <span class="time pull-left">Today @ 5:00pm</span>
-                  <span class="value pull-right">FREE</span>
-                </div>
-                <div class="additional-info">
-                  <span class="place">ACL</span>
-                  <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-                </div>
-              </article>
+
             </section>
           </div>
         </div>
@@ -379,7 +364,15 @@
             <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Area</a>
           </div>
         </div>
-        <div class="content">This is tab content ,it will replace with related events(like events tab) once all the queries properly build up </div>
+        <div class="content main">
+          <div class="container inline">
+            <h2 class="text-info"><span id="number_of_events"></span> results for</h2>
+            <p class="lead text-info"></p>
+            <section class="product-list clearfix events">
+
+            </section>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -387,6 +380,10 @@
     <script>
         $('.icon-remove').on("click",function(){
             $(this).parents('li').remove()
+          key_id = $(this).parent().attr('key_id')
+          if(key_id != null){
+            $.get('/delete_saved_search',{key_id:key_id})
+          }
         })
         $('.dropdown-menu a').click(function(){
             $('#search-tab').append("<li class=''><a data-toggle='tab' href='#events'>"+$(this).text()+" <i class='icon-white-pin icon-remove'></i></a></li>")
@@ -400,9 +397,14 @@
         })
         $(".submit").click(function(){
             if($("#appendedInput").val().length >= 3){
-            $('#search-tab').append("<li class=''><a data-toggle='tab' href='#events'>"+$("#appendedInput").val()+" <i class='icon-white-pin icon-remove'></i></a></li>")
+            $('#search-tab').append("<li class=''><a data-toggle='tab' href='#related_events' key="+$("#appendedInput").val()+">"+$("#appendedInput").val()+" <i class='icon-white-pin icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
             $('.icon-remove').on("click",function(){
                 $(this).parents('li').remove()
+            })
+              $('.icon-ok-sign').on("click",function(){
+                key = $(this).parent().attr('key')
+                $(this).hide()
+                $.get('/saved_search',{key:key})
             })
             }
 
