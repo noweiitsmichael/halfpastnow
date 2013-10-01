@@ -3442,7 +3442,7 @@ def homeEvents
 
     ttttmp = ttmp.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 14)}
 
-    unless(params[:channel_id].to_s.empty?)
+    if(params[:channel_id].to_s.empty?)
       ttttmp = ttmp.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 2)}
     end
 
