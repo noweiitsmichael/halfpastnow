@@ -63,6 +63,10 @@
     <div class="large-6 columns stretch">
 
       <div class="row">
+          <!--<img src="<%#= @event.pictures.first ? @event.pictures.first.image_url(:full) : "/assets/placeholder.png" %>" />-->
+          <% if @event.price && @event.price != 0 %>
+              <div class="sticker pack detail-badge"><div class="sticker-discount"><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 0) : "" %></div><div class="sticker-label"></div></div>
+          <% end %>
         <div class="event-picture">
           <% if @event.pictures.first %>
               <img src="<%= @event.pictures.first.image_url(:large)  %>" alt="Event picture" />
@@ -70,10 +74,6 @@
               <img src="<%= @event.acts.first.pictures.first.image_url(:large) %>" alt="occurrence pic"/>
           <% else %>
               <img src="<%= @event.venue.pictures.first ? @event.venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" alt="venue pic" />
-          <% end %>
-          <!--<img src="<%#= @event.pictures.first ? @event.pictures.first.image_url(:full) : "/assets/placeholder.png" %>" />-->
-          <% if @event.price && @event.price != 0 %>
-              <div class="sticker pack detail-badge"><div class="sticker-discount"><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 0) : "" %></div><div class="sticker-label"></div></div>
           <% end %>
         </div>
       </div>

@@ -887,12 +887,14 @@ a.callout {
 .event-picture {
   height: 320px;
   width: 480px;
-  margin: 0 auto; }
+  margin: 0 auto; 
+  overflow: hidden;
+  position:absolute;}
   .event-picture img {
     /*max-height: 100%;*/
     /*zoom: 2;*/
-    /*width: 480px;*/
-    /*height: 320px;*/
+    width: 100%;
+    height: auto;
   }
 
 .featuring-title {
@@ -2401,6 +2403,7 @@ input[type='password'] {
   color: white;
   position: relative;
   text-align: center;
+  float:left;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15); }
   .sticker.percent {
     background: url("/assets/acl/sticker/percent.png") 0 0 no-repeat;
@@ -2414,7 +2417,10 @@ input[type='password'] {
     font: bold 38px "Roboto", Arial, sans-serif;
     height: 97px;
     padding-top: 14px;
-    width: 97px; }
+    width: 97px; 
+    z-index: 1000;
+    top: 271px;
+    left: 11px;}
   .sticker .sticker-label {
     font: bold 9px "Roboto", Arial, sans-serif;
     display: inline-block;
