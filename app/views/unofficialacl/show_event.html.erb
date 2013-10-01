@@ -62,7 +62,7 @@
     <!-- Big things: column left -->
     <div class="large-6 columns stretch">
 
-      <div class="row">
+      <div class="row main-picture">
           <!--<img src="<%#= @event.pictures.first ? @event.pictures.first.image_url(:full) : "/assets/placeholder.png" %>" />-->
           <% if @event.price && @event.price != 0 %>
               <div class="sticker pack detail-badge"><div class="sticker-discount"><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 0) : "" %></div><div class="sticker-label"></div></div>

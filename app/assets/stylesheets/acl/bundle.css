@@ -897,6 +897,10 @@ a.callout {
     height: auto;
   }
 
+.main-picture {
+  height: 320px;
+}
+
 .featuring-title {
   padding: 20px 0;
   font-weight: 900; }

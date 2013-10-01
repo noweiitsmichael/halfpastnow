@@ -55,7 +55,7 @@
         <div class="large-6 columns stretch">
 
               <% unless (act.fb_picture.blank? && act.pictures.nil?) %>
-                  <div class="row">
+                  <div class="row main-picture">
                     <div class="event-picture">
                       <img src="<%= act.pictures.first ? act.pictures.first.image_url(:full) : "" %>" />
                       <!--<div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>80</div>-->
