@@ -175,7 +175,7 @@
     <!-- Big things: column left -->
     <div class="large-6 columns stretch">
 
-      <div class="row">
+      <div class="row main-picture">
         <div class="event-picture">
           <img src="<%= @venue.pictures.first ? @venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
           <% if false %><div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>?80</div> <% end %>
@@ -306,7 +306,7 @@
 
       <% @event.acts.each_with_index do |act,index| %>
           <% unless (act.fb_picture.blank? && act.pictures.nil?) %>
-      <div class="row">
+      <div class="row main-picture">
         <div class="event-picture">
           <img src="<%= act.pictures.first ? act.pictures.first.image_url(:full) : "" %>" />
           <!--<div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>80</div>-->
