@@ -44,7 +44,7 @@
              <% puts "displayed events = #{displayed_events}"%>
 
 
-          <% if count == 4 %>
+          <% if (count == @occurrences.length - 1) || (count == 4) %>
             </div>
           <% end %>
 
@@ -84,7 +84,7 @@
                    </div>
                  </div>
              </li>
-          <% if count == 18 %>
+          <% if (count == @occurrences.length - 1) || (count == 18) %>
                </ul>
              </div>  <!--End of (5..18) events right -->
             </div> <!--End of Row tag for 19 elements -->

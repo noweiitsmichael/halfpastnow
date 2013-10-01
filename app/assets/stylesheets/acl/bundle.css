@@ -1003,6 +1003,7 @@ a.callout {
       #social i {
         display: inline-block; } }
 .details-social {
+  margin-top:5px;
   float:right;
 }
 
