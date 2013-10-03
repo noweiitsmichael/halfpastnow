@@ -56,15 +56,18 @@ class VenuesController < ApplicationController
   # GET /venues/1
   # GET /venues/1.json
   def show
-    @fullmode = !params[:fullmode].to_s.empty?
-    if(@mobileMode)
-        unless params[:format].to_s.eql? "mobile"
-          redirect_to :action => "android"  
-        else
-          return
-        end
+
+    @fullmode = (!params[:fullmode].to_s.empty?) || (@mobileMode)
+
+    # @fullmode = !params[:fullmode].to_s.empty?
+    # if(@mobileMode)
+    #     unless params[:format].to_s.eql? "mobile"
+    #       redirect_to :action => "android"  
+    #     else
+    #       return
+    #     end
         
-    end
+    # end
     @modeType = "venue"
 
     @venue = Venue.find(params[:id])
@@ -96,6 +99,7 @@ class VenuesController < ApplicationController
     respond_to do |format|
       if @fullmode
         format.html { render :layout => "fullmode" }
+        format.mobile
       else
         format.html { render :layout => "mode" }
       end
