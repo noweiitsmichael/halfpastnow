@@ -1,396 +1,76 @@
-<% content_for :meta do %>
-    <meta class="meta-type"          property="og:type"                 content="website">
-    <meta class="meta-url"           property="og:url"                  content="http://www.halfpastnow.com">
-    <meta class="meta-image"         property="og:image"                content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png">
-    <meta class="meta-title"         property="og:title"                content="half past now | your couch will miss you">
-    <meta class="meta-description"   property="og:description"          content="Find the best events in Austin">
-<% end %>
+<div class="bar-wrapper">
+<!-- <div class="bookmarkbar">
+  <div class="stay-on-target">
+    <span class="stream title">Bookmarks:</span>
+    <span class="stream bookmark selected" bookmark-type="event"><span class="icon icon-bolt"></span>Events</span>
+    <span class="stream bookmark" bookmark-type="venue"><span class="icon icon-home"></span>Venues</span>
+    <span class="stream bookmark" bookmark-type="act"><span class="icon icon-flag"></span>Performers</span>
+    <span class="right filter-toggle filter-action action-streams">
+      <span class="filter-text">
+        <span class="pre-text"><span class="icon icon-reorder"></span>back to streams + filters</span>
+      </span>
+    </span>
+  </div>
+</div> -->
+<div class="doublebar">
+<div class="stay-on-target bullseye-womprats">
+<div class="streambar">
+  <div class="header">
+    <span class="stream title" style="display: inline;">Saved Searches:</span>
+    <!-- <span class="stream selected" channel-id="0">All Events</span> -->
+    <!-- <span class="stream new" linkto='shunt'>+ New Stream</span> -->
+    <span stream-id="18" class="stream " style="display: inline;">Live Music</span>
+    <span stream-id="19" class="stream " style="display: inline;">Happy Hours</span>
+    <span stream-id="417" class="stream " style="display: inline;">RSVPs</span>
+    <span stream-id="424" class="stream " style="display: inline;">None</span>
+    <span stream-id="415" class="stream " style="display: inline;">I have a wristband</span>
+    <span stream-id="414" class="stream " style="display: inline;">I have a badge</span>
+    <span stream-id="416" class="stream " style="display: none;">None/RSVP</span>
+    <span stream-id="4067" class="stream " style="display: none;">Fitness</span><div tabindex="" id="dk_container_stream-select" class="dk_container dk_theme_alegreya" style="display: block;"><a class="dk_toggle" style="width: 98px;"><span class="dk_label">None/RSVP</span></a><div class="dk_options"><ul class="dk_options_inner"><li class="dk_option_current"><a data-dk-dropdown-value="416">None/RSVP</a></li><li class=""><a data-dk-dropdown-value="4067">Fitness</a></li><li class=""><a data-dk-dropdown-value="4068">Shows</a></li><li class=""><a data-dk-dropdown-value="4069">Nightlife</a></li></ul></div></div><select style="position: absolute; top: 0px; right: 0px; display: none;" class="stream selector" name="stream-select"><option value="416">None/RSVP</option><option value="4067">Fitness</option><option value="4068">Shows</option><option value="4069">Nightlife</option></select>
+    <span stream-id="4068" class="stream " style="display: none;">Shows</span>
+    <span stream-id="4069" class="stream " style="display: none;">Nightlife</span>
 
-<% content_for :head do %>
-    <%= javascript_include_tag "half.dynamics" %>
-    <%= javascript_include_tag "smartinfowindow.js" %>
-<% end %>
-
-<% content_for :code do %>
-<%# TODO: put this stuff in the controller eventually %>
-
-    <% 	@now = DateTime.now.change(:hour => 0)
-          @channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
-
-    <script type="text/javascript">
-        //cookie redirect
-
-
-
-        (function ($, document, undefined) {
-
-            var pluses = /\+/g;
-
-            function raw(s) {
-                return s;
-            }
-
-            function decoded(s) {
-                return decodeURIComponent(s.replace(pluses, ' '));
-            }
-
-            var config = $.cookie = function (key, value, options) {
-
-                // write
-                if (value !== undefined) {
-                    options = $.extend({}, config.defaults, options);
-
-                    if (value === null) {
-                        options.expires = -1;
-                    }
-
-                    if (typeof options.expires === 'number') {
-                        var days = options.expires, t = options.expires = new Date();
-                        t.setDate(t.getDate() + days);
-                    }
-
-                    value = config.json ? JSON.stringify(value) : String(value);
-
-                    return (document.cookie = [
-                        encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
-                        options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-                        options.path    ? '; path=' + options.path : '',
-                        options.domain  ? '; domain=' + options.domain : '',
-                        options.secure  ? '; secure' : ''
-                    ].join(''));
-                }
-
-                // read
-                var decode = config.raw ? raw : decoded;
-                var cookies = document.cookie.split('; ');
-                for (var i = 0, l = cookies.length; i < l; i++) {
-                    var parts = cookies[i].split('=');
-                    if (decode(parts.shift()) === key) {
-                        var cookie = decode(parts.join('='));
-                        return config.json ? JSON.parse(cookie) : cookie;
-                    }
-                }
-
-                return null;
-            };
-
-            config.defaults = {};
-
-            $.removeCookie = function (key, options) {
-                if ($.cookie(key) !== null) {
-                    $.cookie(key, null, options);
-                    return true;
-                }
-                return false;
-            };
-
-        })(jQuery, document);
-
-
-
-
-        $(function() {
-            var COOKIE_NAME = 'splash-page';
-            var cookie = $.cookie(COOKIE_NAME);
-            if (cookie == null) {
-                $.cookie(COOKIE_NAME, true, { path: '/', expires: 9001 });
-
-                // ** Adding this check because if a new user is directly linked to a top pick or event, it sucks to be redirected to the splash page.
-                if ((window.location.pathname === "/search") || (window.location.pathname === "/picks") || (window.location.pathname === "/")) {
-                    window.location = "/events/new_splash";
-                }
-            }
-            else {
-            }
-        });
-
-
-        var geocoder;
-        var map;
-        var markers = [];
-        var tags = {};
-        var channelFilters = {};
-
-        var filter = {
-            start_days: <%= params[:start_days].coalesce_to 0 %>,
-            end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
-            start_seconds: <%= params[:start_seconds].coalesce_to "''" %>,
-            end_seconds: <%= params[:end_seconds].coalesce_to "''" %>,
-            day: [0,1,2,3,4,5,6],
-            low_price: <%= params[:low_price].coalesce_to "''" %>,
-            high_price: <%= params[:high_price].coalesce_to "''" %>,
-            included_tags: <%= params[:included_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[]" %>,
-            excluded_tags: <%= params[:excluded_tags] ? "[" + (params[:excluded_tags] * ",") + "]" : "[]" %>,
-            and_tags: <%= params[:and_tags] ? "[" + (params[:and_tags] * ",") + "]" : "[]" %>,
-            lat_min: "",
-            lat_max: "",
-            long_min: "",
-            long_max: "",
-            offset: 0,
-            search: "",
-            sort: <%= params[:sort].coalesce_to 0 %>,
-            name: "<%= params[:name].coalesce_to "" %>",
-            start_date: "",
-            end_date: ""
-        };
-
-        function initialize() {
-            //console.log("initialize");
-            //$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
-            geocoder = new google.maps.Geocoder();
-
-            var styles = [
-                {
-                    "featureType": "road.highway",
-                    "elementType": "geometry.stroke",
-                    "stylers": [
-                        { "color": "#804580" }
-                    ]
-                },{
-                    "featureType": "road.highway",
-                    "elementType": "labels.text.stroke",
-                    "stylers": [
-                        { "color": "#d5b5d5" }
-                    ]
-                },{
-                    "featureType": "road.arterial",
-                    "elementType": "labels.text.stroke",
-                    "stylers": [
-                        { "color": "#f1e6f3" }
-                    ]
-                },{
-                    "elementType": "geometry.fill",
-                    "stylers": [
-                        { "gamma": 1.54 },
-                        { "lightness": 12 }
-                    ]
-                },{
-                    "featureType": "road.arterial",
-                    "elementType": "geometry.fill",
-                    "stylers": [
-                        { "color": "#e0dae0" }
-                    ]
-                },{
-                    "featureType": "road.arterial",
-                    "elementType": "geometry.stroke",
-                    "stylers": [
-                        { "color": "#b8abb8" }
-                    ]
-                },{
-                    "featureType": "road.highway",
-                    "elementType": "geometry.fill",
-                    "stylers": [
-                        { "color": "#af96af" }
-                    ]
-                },{
-                }
-            ];
-
-            var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-            var myOptions = {
-                zoom: <%= @zoom %>,
-                center: latlng,
-                mapTypeId: 'map_style',
-                disableDefaultUI: true,
-                zoomControl: true,
-                scrollwheel: false,
-                zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 2 },
-                backgroundColor: '#FFFFFF'
-            };
-
-            var styledMap = new google.maps.StyledMapType(styles,
-                    {name: "Styled Map"});
-
-            map = new google.maps.Map($("#map")[0], myOptions);
-
-            map.mapTypes.set('map_style', styledMap);
-            map.setMapTypeId('map_style');
-
-            var locations = [];
-
-            $("#content .main .inner .events li").each(function(index) {
-                var latitude = parseFloat($(this).find(".latitude").html());
-                var longitude = parseFloat($(this).find(".longitude").html());
-                locations.push({lat: latitude, long: longitude});
-            });
-
-            placeMarkers({points: locations});
-
-            google.maps.event.addListener(map, 'idle', boundsChanged);
-        }
-
-        function to_i(obj) {
-            return parseInt(obj);
-        }
-
-        $(function() {
-            <% @channels.each do |channel| %>
-            channelFilters[<%= channel.id %>] = {
-                stream_id: <%= channel.id %>,
-                start_days: <%= channel.start_days || 0 %>,
-                end_days: <%= channel.end_days || 0 %>,
-                start_seconds: <%= channel.start_seconds || "''" %>,
-                end_seconds: <%= channel.end_seconds || "''" %>,
-                day: <%= channel.day_of_week ? "'" + channel.day_of_week + "'.split(',').map(to_i)" : "[]" %>,
-                low_price: <%= channel.low_price || "''" %>,
-                high_price: <%= channel.high_price || "''" %>,
-                included_tags: <%= channel.included_tags ? "'" + channel.included_tags + "'.split(',')" : "[]" %>,
-                excluded_tags: <%= channel.excluded_tags ? "'" + channel.excluded_tags + "'.split(',')" : "[]" %>,
-                and_tags: <%= channel.and_tags ? "'" + channel.and_tags + "'.split(',')" : "[]" %>,
-                lat_min: "",
-                lat_max: "",
-                long_min: "",
-                long_max: "",
-                offset: 0,
-                search: "<%= channel.search || "" %>",
-                sort: <%= channel.sort || 0 %>,
-                name: "<%= channel.name || "" %>",
-                start_date: "<%= channel.start_date ? channel.start_date.to_s : "" %>",
-                end_date: "<%= channel.end_date ? channel.end_date.to_s : "" %>"
-            };
-            <% end %>
-
-            channelFilters[0] = {
-                stream_id: "",
-                start_days: 0,
-                end_days: 0,
-                start_seconds: '',
-                end_seconds: '',
-                day: [0,1,2,3,4,5,6],
-                low_price: '',
-                high_price: '',
-                included_tags: [],
-                and_tags: [],
-                excluded_tags: [],
-                lat_min: "",
-                lat_max: "",
-                long_min: "",
-                long_max: "",
-                offset: 0,
-                search: "",
-                name: "",
-                start_date: "",
-                end_date: "",
-                sort: 0 };
-
-            <% @tagCounts.each do |tagCount| %>
-            tags['<%= tagCount[:id] %>'] =
-            { name: "<%= tagCount[:name] %>",
-                parent_id: <%= tagCount[:parent] ? "'#{tagCount[:parent][:id]}'" : 'null' %>,
-                <% children = tagCount[:children].collect { |child| "'#{child[:id]}'" } * ',' %>
-                child_ids: [<%= children %>]
-            }
-            <% end %>
-
-            // var event_id = <%= params[:event_id] || "null" %>;
-            var venue_id = <%= params[:venue_id] || "null" %>;
-            var act_id = <%= params[:act_id] || "null" %>;
-            var modality;
-
-            // if(event_id) {
-            // 	modality = spawn(modalities["event"],{id: event_id});
-            // 	modal(modality);
-            // }
-            if(venue_id) {
-                modality = spawn(modalities["venue"],{id: venue_id});
-                modal(modality);
-            }
-            if(act_id) {
-                modality = spawn(modalities["act"],{id: act_id});
-                modal(modality);
-            }
-
-            $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
-            $('.head-title').tooltip('disable');
-            $('.icon-check').tooltip('disable');
-            $('.icon-check-empty').tooltip('disable');
-
-        });
-
-        $(window).load(function() {
-            var stream_id = "<%= params['channel_id'] %>";
-            if(stream_id !== "") {
-                // $('#header').addClass('selected');
-                $(".streambar .stream[stream-id=" + stream_id + "]").addClass('selected');
-                filter.stream_id = parseInt(stream_id);
-                filter.included_tags = channelFilters[parseInt(stream_id)].included_tags;
-                updateViewFromFilter();
-            }
-        });
-    </script>
-<% end %>
-
-<% content_for :header do %>
-    <%#= render :partial => "layouts/font_select" %>
-
-
-    <div class="bar-wrapper">
-    <!-- <div class="bookmarkbar">
-        <div class="stay-on-target">
-            <span class="stream title">Bookmarks:</span>
-            <span class="stream bookmark selected" bookmark-type="event"><span class="icon icon-bolt"></span>Events</span>
-            <span class="stream bookmark" bookmark-type="venue"><span class="icon icon-home"></span>Venues</span>
-            <span class="stream bookmark" bookmark-type="act"><span class="icon icon-flag"></span>Performers</span>
-            <span class="right filter-toggle filter-action action-streams">
-                <span class="filter-text">
-                    <span class="pre-text"><span class="icon icon-reorder"></span>back to streams + filters</span>
-                </span>
-            </span>
-        </div>
-    </div> -->
-    <div class="doublebar">
-    <div class="stay-on-target bullseye-womprats">
-    <div class="streambar">
-      <div class="header">
-        <span class="stream title">Saved Searches:</span>
-        <% @selectedChannel = params[:channel_id].coalesce_to 0 %>
-        <!-- <span class="stream <%= @selectedChannel == 0 ? "selected" : ""%>" channel-id="0">All Events</span> -->
-        <!-- <span class="stream new" <%= current_user ? "linkto='new-channel-2'" : "linkto='shunt'" %>>+ New Stream</span> -->
-        <% @channels.each do |channel| %>
-            <span class="stream <%= (@selectedChannel.to_i == channel.id) ? "selected" : ""%>" stream-id="<%= channel.id %>"><%= channel.name %></span>
-        <% end %>
-
-        <span class="filter-toggle sort">
+					<span class="filter-toggle sort">
 						<span class="filter-text">
-							<span class="pre-text"><!-- <span class="icon icon-sort"></span> -->Sort By</span>
+							<span class="pre-text"><!-- <span class="icon icon-sort"></span> -->Sort By</span> 
 							<span class="text">
-								<span class="text-inner">Popularity</span>
+								<span class="text-inner">Most Views</span>
 								<span class="icon icon-caret-down"></span>
 							</span>
 						</span>
 						<div class="filter-dropdown">
-                          <div class="filter-inner">
-                            <div class="filter sort">
-                              <div class="filters">
-                                <span class="popularity selected">popularity</span><span class="date">date</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+              <div class="filter-inner">
+                <div class="filter sort">
+                  <div class="filters">
+                    <span class="popularity selected">popularity</span><span class="date">date</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 					</span>
 
-        <!-- <span class="stream bookmark">Bookmarks<span class="icon icon-bookmark"></span></span> -->
-					<span class="filter-toggle filter-action action-save" <%= current_user ? "linkto='new-channel'" : "linkto='shunt'" %>>
+    <!-- <span class="stream bookmark">Bookmarks<span class="icon icon-bookmark"></span></span> -->
+					<span linkto="shunt" class="filter-toggle filter-action action-save" style="">
 						<span class="filter-text">
 							<span class="pre-text"><span class="icon icon-plus-sign"></span>save search</span>
 						</span>
 					</span>
-        <!-- <span class="right filter-toggle filter-action <%= current_user ? "action-bookmarks" : "" %>" <%= current_user ? "" : "linkto='shunt'" %>>
-						<span class="filter-text">
-							<span class="pre-text"><span class="icon icon-bookmark"></span>bookmarks</span>
-						</span>
-					</span> -->
-      </div>
-    </div>
+    <!-- <span class="right filter-toggle filter-action " linkto='shunt'>
+      <span class="filter-text">
+        <span class="pre-text"><span class="icon icon-bookmark"></span>bookmarks</span>
+      </span>
+    </span> -->
+  </div>
+</div>
 
-    <div class="filterbar">
-      <div class="header">
-        <div class="toggle-wrapper">
+<div class="filterbar">
+<div class="header">
+<div class="toggle-wrapper">
 						<span class="filter-toggle search">
 							<span class="filter-text">
 								<span class="pre-text"><span class="icon icon-search"></span></span>
 								<span class="text">
-									<span class="text-inner"><input type="text" class="search-input" /></span>
+									<span class="text-inner"><input type="text" class="search-input"></span>
 								</span>
 							</span>
 						</span>
@@ -403,10 +83,1173 @@
 								</span>
 							</span>
 							<div class="filter-dropdown">
-                              <div class="filter-inner">
-                                <%= render :partial => "tag_list", :locals => { :tagCounts => @tagCounts, :parentTags => @parentTags } %>
-                              </div>
-                            </div>
+              <div class="filter-inner">
+              <div class="tags-display ortags"></div>
+              <ul class="tags-menu ortags parents">
+                <li>
+                  <div tag-id="104" class="tag-header ">
+                    <!-- <span class="exclude icon-ban-circle" tag-id="104" title="don't show events with this tag"></span> -->
+                    <span title="" tag-id="104" class="include icon-check-empty"><span></span></span>
+                    <span class="name">Food/Drink Specials<!-- <em>[129]</em> --></span>
+                    <span class="toggler icon-chevron-right"></span>
+                  </div>
+                </li>
+                <li>
+                  <div tag-id="1" class="tag-header ">
+                    <!-- <span class="exclude icon-ban-circle" tag-id="1" title="don't show events with this tag"></span> -->
+                    <span title="" tag-id="1" class="include icon-check-empty"><span></span></span>
+                    <span class="name">Music<!-- <em>[37]</em> --></span>
+                    <span class="toggler icon-chevron-right"></span>
+                  </div>
+                </li>
+                <li>
+                  <div tag-id="22" class="tag-header ">
+                    <!-- <span class="exclude icon-ban-circle" tag-id="22" title="don't show events with this tag"></span> -->
+                    <span title="" tag-id="22" class="include icon-check-empty"><span></span></span>
+                    <span class="name">Nightlife<!-- <em>[27]</em> --></span>
+                    <span class="toggler icon-chevron-right"></span>
+                  </div>
+                </li>
+                <li>
+                  <div tag-id="6" class="tag-header ">
+                    <!-- <span class="exclude icon-ban-circle" tag-id="6" title="don't show events with this tag"></span> -->
+                    <span title="" tag-id="6" class="include icon-check-empty"><span></span></span>
+                    <span class="name">Learning / Exhibition<!-- <em>[18]</em> --></span>
+                    <span class="toggler icon-chevron-right"></span>
+                  </div>
+                </li>
+                <li>
+                  <div tag-id="12" class="tag-header ">
+                    <!-- <span class="exclude icon-ban-circle" tag-id="12" title="don't show events with this tag"></span> -->
+                    <span title="" tag-id="12" class="include icon-check-empty"><span></span></span>
+                    <span class="name">Performance<!-- <em>[11]</em> --></span>
+                    <span class="toggler icon-chevron-right"></span>
+                  </div>
+                </li>
+                <li>
+                  <div tag-id="25" class="tag-header ">
+                    <!-- <span class="exclude icon-ban-circle" tag-id="25" title="don't show events with this tag"></span> -->
+                    <span title="" tag-id="25" class="include icon-check-empty"><span></span></span>
+                    <span class="name">Festival<!-- <em>[11]</em> --></span>
+                    <span class="toggler icon-chevron-right"></span>
+                  </div>
+                </li>
+                <li>
+                  <div tag-id="252" class="tag-header ">
+                    <!-- <span class="exclude icon-ban-circle" tag-id="252" title="don't show events with this tag"></span> -->
+                    <span title="" tag-id="252" class="include icon-check-empty"><span></span></span>
+                    <span class="name">ACL Credentials<!-- <em>[8]</em> --></span>
+                    <span class="toggler icon-chevron-right"></span>
+                  </div>
+                </li>
+                <li>
+                  <div tag-id="110" class="tag-header ">
+                    <!-- <span class="exclude icon-ban-circle" tag-id="110" title="don't show events with this tag"></span> -->
+                    <span title="" tag-id="110" class="include icon-check-empty"><span></span></span>
+                    <span class="name">Games and Activities<!-- <em>[7]</em> --></span>
+                    <span class="toggler icon-chevron-right"></span>
+                  </div>
+                </li>
+                <li>
+                  <div tag-id="43" class="tag-header ">
+                    <!-- <span class="exclude icon-ban-circle" tag-id="43" title="don't show events with this tag"></span> -->
+                    <span title="" tag-id="43" class="include icon-check-empty"><span></span></span>
+                    <span class="name">Fitness<!-- <em>[6]</em> --></span>
+                    <span class="toggler icon-chevron-right"></span>
+                  </div>
+                </li>
+                <li>
+                  <div tag-id="132" class="tag-header ">
+                    <!-- <span class="exclude icon-ban-circle" tag-id="132" title="don't show events with this tag"></span> -->
+                    <span title="" tag-id="132" class="include icon-check-empty"><span></span></span>
+                    <span class="name">Business and Networking<!-- <em>[2]</em> --></span>
+                    <span class="toggler icon-chevron-right"></span>
+                  </div>
+                </li>
+                <li>
+                  <div tag-id="233" class="tag-header no-results">
+                    <!-- <span class="exclude icon-ban-circle" tag-id="233" title="don't show events with this tag"></span> -->
+                    <span title="" tag-id="233" class="include icon-check-empty"><span></span></span>
+                    <span class="name">UT Campus<!-- <em></em> --></span>
+                    <span class="toggler icon-chevron-right"></span>
+                  </div>
+                </li>
+              </ul>
+              <ul class="tags-menu ortags children">
+              <li parent-id="104">
+                <div tag-id="81" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="81" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="81" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Liquor Special<!-- <em>[94]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="104">
+                <div tag-id="79" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="79" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="79" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Beer Special<!-- <em>[87]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="104">
+                <div tag-id="84" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="84" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="84" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Food Special<!-- <em>[60]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="104">
+                <div tag-id="80" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="80" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="80" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Wine Special<!-- <em>[57]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="104">
+                <div tag-id="105" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="105" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="105" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Happy Hour Activity<!-- <em>[39]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="104">
+                <div tag-id="250" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="250" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="250" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Brunch<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="104">
+                <div tag-id="107" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="107" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="107" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Tastings<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="104">
+                <div tag-id="197" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="197" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="197" class="include icon-check-empty"><span></span></span>
+                  <span class="name">BYOB<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="104">
+                <div tag-id="109" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="109" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="109" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Steak Night<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="104">
+                <div tag-id="108" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="108" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="108" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Farmer's Market<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="104">
+                <div tag-id="106" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="106" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="106" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Pub Crawl<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="195" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="195" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="195" class="include icon-check-empty"><span></span></span>
+                  <span class="name">21 and Up <!-- <em>[22]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="89" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="89" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="89" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Cultural<!-- <em>[9]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="87" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="87" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="87" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Kid Friendly<!-- <em>[8]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="196" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="196" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="196" class="include icon-check-empty"><span></span></span>
+                  <span class="name">18 and Up<!-- <em>[7]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="141" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="141" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="141" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Charity / Non-Profit<!-- <em>[7]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="140" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="140" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="140" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Free Stuff<!-- <em>[7]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="182" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="182" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="182" class="include icon-check-empty"><span></span></span>
+                  <span class="name">RSVP<!-- <em>[4]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="55" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="55" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="55" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Romantic<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="159" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="159" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="159" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Fashion<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="142" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="142" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="142" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Outdoor<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="143" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="143" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="143" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Dress Code<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="246" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="246" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="246" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Aftershow<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="139" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="139" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="139" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Pet Friendly<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="229" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="229" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="229" class="include icon-check-empty"><span></span></span>
+                  <span class="name">camp<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="138">
+                <div tag-id="192" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="192" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="192" class="include icon-check-empty"><span></span></span>
+                  <span class="name">LGBT<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="193" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="193" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="193" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Live music<!-- <em>[25]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="2" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="2" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="2" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Rock<!-- <em>[18]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="161" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="161" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="161" class="include icon-check-empty"><span></span></span>
+                  <span class="name">SXSW Artist<!-- <em>[11]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="40" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="40" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="40" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Blues<!-- <em>[9]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="41" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="41" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="41" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Folk<!-- <em>[7]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="72" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="72" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="72" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Indie<!-- <em>[6]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="231" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="231" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="231" class="include icon-check-empty"><span></span></span>
+                  <span class="name">ACL Artist<!-- <em>[5]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="53" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="53" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="53" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Alternative<!-- <em>[5]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="64" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="64" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="64" class="include icon-check-empty"><span></span></span>
+                  <span class="name">DJ<!-- <em>[5]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="34" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="34" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="34" class="include icon-check-empty"><span></span></span>
+                  <span class="name">R&amp;B/Soul<!-- <em>[5]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="37" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="37" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="37" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Electronic/Dance<!-- <em>[4]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="4" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="4" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="4" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Country<!-- <em>[4]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="35" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="35" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="35" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Pop<!-- <em>[4]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="32" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="32" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="32" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Open Mic<!-- <em>[3]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="93" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="93" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="93" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Hip Hop<!-- <em>[3]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="7" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="7" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="7" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Jazz<!-- <em>[3]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="99" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="99" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="99" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Singer/Songwriter<!-- <em>[3]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="71" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="71" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="71" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Psychedelic<!-- <em>[3]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="36" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="36" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="36" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Latin<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="100" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="100" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="100" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Americana<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="3" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="3" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="3" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Punk<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="73" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="73" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="73" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Funk<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="98" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="98" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="98" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Experimental<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="42" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="42" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="42" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Reggae<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="39" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="39" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="39" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Bluegrass<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="101" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="101" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="101" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Ska<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="102" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="102" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="102" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Gospel/Religious<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="8" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="8" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="8" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Rap<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="82" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="82" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="82" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Cajun<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="33" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="33" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="33" class="include icon-check-empty"><span></span></span>
+                  <span class="name">World<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="9" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="9" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="9" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Metal<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="74" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="74" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="74" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Classical/Instrumentals<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="68" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="68" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="68" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Goth<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="160" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="160" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="160" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Orchestra<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="38" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="38" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="38" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Children's<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="1">
+                <div tag-id="67" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="67" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="67" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Oldies<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="22">
+                <div tag-id="49" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="49" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="49" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Dancing<!-- <em>[5]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="22">
+                <div tag-id="130" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="130" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="130" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Party<!-- <em>[3]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="22">
+                <div tag-id="59" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="59" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="59" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Clubbing<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="22">
+                <div tag-id="129" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="129" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="129" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Electronic Dance<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="22">
+                <div tag-id="128" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="128" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="128" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Country Dancing<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="22">
+                <div tag-id="69" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="69" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="69" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Salsa Dancing<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="22">
+                <div tag-id="131" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="131" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="131" class="include icon-check-empty"><span></span></span>
+                  <span class="name">After-Party<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="6">
+                <div tag-id="30" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="30" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="30" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Museum<!-- <em>[5]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="6">
+                <div tag-id="11" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="11" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="11" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Class<!-- <em>[5]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="6">
+                <div tag-id="118" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="118" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="118" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Workshop<!-- <em>[5]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="6">
+                <div tag-id="29" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="29" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="29" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Art<!-- <em>[4]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="6">
+                <div tag-id="47" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="47" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="47" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Tour<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="6">
+                <div tag-id="90" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="90" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="90" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Photography<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="6">
+                <div tag-id="10" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="10" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="10" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Lecture<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="12">
+                <div tag-id="14" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="14" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="14" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Comedy<!-- <em>[6]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="12">
+                <div tag-id="13" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="13" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="13" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Improv<!-- <em>[4]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="12">
+                <div tag-id="15" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="15" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="15" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Theatre<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="12">
+                <div tag-id="16" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="16" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="16" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Dance<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="12">
+                <div tag-id="17" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="17" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="17" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Film<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="12">
+                <div tag-id="157" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="157" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="157" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Literature<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="12">
+                <div tag-id="65" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="65" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="65" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Poetry<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="25">
+                <div tag-id="232" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="232" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="232" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Unofficial ACL 2013<!-- <em>[8]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="25">
+                <div tag-id="247" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="247" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="247" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Official ACL Late Night Shows<!-- <em>[3]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="25">
+                <div tag-id="230" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="230" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="230" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Austin City Limits 2013<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="25">
+                <div tag-id="249" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="249" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="249" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Austin Film Festival<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="25">
+                <div tag-id="251" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="251" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="251" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Featured ACL<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="252">
+                <div tag-id="255" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="255" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="255" class="include icon-check-empty"><span></span></span>
+                  <span class="name">RSVP<!-- <em>[5]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="252">
+                <div tag-id="256" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="256" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="256" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Free Drinks<!-- <em>[3]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="252">
+                <div tag-id="253" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="253" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="253" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Party<!-- <em>[3]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="252">
+                <div tag-id="254" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="254" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="254" class="include icon-check-empty"><span></span></span>
+                  <span class="name">No Cover<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="110">
+                <div tag-id="23" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="23" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="23" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Trivia<!-- <em>[3]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="110">
+                <div tag-id="31" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="31" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="31" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Karaoke<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="110">
+                <div tag-id="85" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="85" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="85" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Games<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="110">
+                <div tag-id="112" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="112" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="112" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Auction<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="110">
+                <div tag-id="116" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="116" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="116" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Arcade<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="110">
+                <div tag-id="117" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="117" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="117" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Contestant Games<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="110">
+                <div tag-id="111" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="111" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="111" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Tailgate / Game Watching<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="110">
+                <div tag-id="115" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="115" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="115" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Sporting Event<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="110">
+                <div tag-id="114" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="114" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="114" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Table Sports<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="110">
+                <div tag-id="113" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="113" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="113" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Board Games<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="110">
+                <div tag-id="194" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="194" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="194" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Poker<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="43">
+                <div tag-id="124" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="124" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="124" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Yoga<!-- <em>[2]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="43">
+                <div tag-id="120" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="120" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="120" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Biking<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="43">
+                <div tag-id="123" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="123" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="123" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Water Sport<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="43">
+                <div tag-id="126" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="126" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="126" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Team Sports<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="43">
+                <div tag-id="125" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="125" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="125" class="include icon-check-empty"><span></span></span>
+                  <span class="name">CrossFit<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="43">
+                <div tag-id="122" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="122" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="122" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Rock Climbing<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="43">
+                <div tag-id="121" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="121" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="121" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Hiking<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="43">
+                <div tag-id="127" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="127" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="127" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Individual Sports<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="43">
+                <div tag-id="119" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="119" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="119" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Race<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="132">
+                <div tag-id="228" class="tag-header ">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="228" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="228" class="include icon-check-empty"><span></span></span>
+                  <span class="name">speaker<!-- <em>[1]</em> --></span>
+                </div>
+              </li>
+              <li parent-id="132">
+                <div tag-id="137" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="137" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="137" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Alumni<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="132">
+                <div tag-id="18" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="18" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="18" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Meetup<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="132">
+                <div tag-id="135" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="135" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="135" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Marketing<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="132">
+                <div tag-id="134" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="134" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="134" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Tech<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="132">
+                <div tag-id="133" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="133" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="133" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Conference<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="189" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="189" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="189" class="include icon-check-empty"><span></span></span>
+                  <span class="name"> Unofficial SXSW<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="188" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="188" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="188" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Special<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="187" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="187" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="187" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Session<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="184" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="184" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="184" class="include icon-check-empty"><span></span></span>
+                  <span class="name"> Party<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="165" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="165" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="165" class="include icon-check-empty"><span></span></span>
+                  <span class="name"> Free Food<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="166" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="166" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="166" class="include icon-check-empty"><span></span></span>
+                  <span class="name"> Free Drinks<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="167" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="167" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="167" class="include icon-check-empty"><span></span></span>
+                  <span class="name"> No Cover<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="186" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="186" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="186" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Screening<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="185" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="185" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="185" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Showcase<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="181" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="181" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="181" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Keynote<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="174" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="174" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="174" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Gaming Expo<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="173" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="173" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="173" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Interactive Expo<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="172" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="172" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="172" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Film Expo<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="171" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="171" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="171" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Music Expo<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="163">
+                <div tag-id="164" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="164" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="164" class="include icon-check-empty"><span></span></span>
+                  <span class="name">SXSW Artist / Performer<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="175">
+                <div tag-id="191" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="191" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="191" class="include icon-check-empty"><span></span></span>
+                  <span class="name"> RSVP<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="175">
+                <div tag-id="170" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="170" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="170" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Badge Required<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="175">
+                <div tag-id="168" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="168" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="168" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Wristband<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="175">
+                <div tag-id="183" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="183" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="183" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Film Badge<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="175">
+                <div tag-id="179" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="179" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="179" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Music Badge<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="175">
+                <div tag-id="178" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="178" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="178" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Platinum Badge<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="175">
+                <div tag-id="177" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="177" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="177" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Gold Badge<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="175">
+                <div tag-id="176" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="176" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="176" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Interactive Badge<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="233">
+                <div tag-id="248" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="248" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="248" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Greek<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="233">
+                <div tag-id="244" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="244" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="244" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Open to Public<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="233">
+                <div tag-id="243" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="243" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="243" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Giveaways<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="233">
+                <div tag-id="242" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="242" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="242" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Discounts<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="233">
+                <div tag-id="241" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="241" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="241" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Food<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="233">
+                <div tag-id="240" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="240" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="240" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Fitness/Health<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="233">
+                <div tag-id="239" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="239" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="239" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Music<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="233">
+                <div tag-id="238" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="238" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="238" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Film Series<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="233">
+                <div tag-id="237" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="237" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="237" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Speaker Series<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="233">
+                <div tag-id="236" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="236" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="236" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Student ID req.<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="233">
+                <div tag-id="235" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="235" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="235" class="include icon-check-empty"><span></span></span>
+                  <span class="name">Off Campus<!-- <em></em> --></span>
+                </div>
+              </li>
+              <li parent-id="233">
+                <div tag-id="234" class="tag-header no-results">
+                  <!-- <span class="exclude icon-ban-circle" tag-id="234" title="don't show events with this tag"></span> -->
+                  <span title="" tag-id="234" class="include icon-check-empty"><span></span></span>
+                  <span class="name">On Campus<!-- <em></em> --></span>
+                </div>
+              </li>
+              </ul>
+              </div>
+              </div>
 						</span>
 
 						<span class="filter-toggle tags andtags">
@@ -418,10 +1261,117 @@
 								</span>
 							</span>
 							<div class="filter-dropdown">
-                              <div class="filter-inner">
-                                <%= render :partial => "andtags_list", :locals => { :tagCounts => @tagCounts}  %>
-                              </div>
-                            </div>
+                <div class="filter-inner">
+                  <div class="tags-display andtags"></div>
+                  <ul class="tags-menu andtags parents">
+                    <li parent-id="138">
+                      <div tag-id="195" class="tag-header ">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="195" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="195" class="include icon-check-empty"><span></span></span>
+                        <span class="name">21 and Up <!-- <em>[22]</em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="89" class="tag-header ">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="89" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="89" class="include icon-check-empty"><span></span></span>
+                        <span class="name">Cultural<!-- <em>[9]</em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="87" class="tag-header ">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="87" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="87" class="include icon-check-empty"><span></span></span>
+                        <span class="name">Kid Friendly<!-- <em>[8]</em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="196" class="tag-header ">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="196" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="196" class="include icon-check-empty"><span></span></span>
+                        <span class="name">18 and Up<!-- <em>[7]</em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="141" class="tag-header ">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="141" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="141" class="include icon-check-empty"><span></span></span>
+                        <span class="name">Charity / Non-Profit<!-- <em>[7]</em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="140" class="tag-header ">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="140" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="140" class="include icon-check-empty"><span></span></span>
+                        <span class="name">Free Stuff<!-- <em>[7]</em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="182" class="tag-header ">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="182" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="182" class="include icon-check-empty"><span></span></span>
+                        <span class="name">RSVP<!-- <em>[4]</em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="55" class="tag-header ">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="55" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="55" class="include icon-check-empty"><span></span></span>
+                        <span class="name">Romantic<!-- <em>[2]</em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="159" class="tag-header ">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="159" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="159" class="include icon-check-empty"><span></span></span>
+                        <span class="name">Fashion<!-- <em>[2]</em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="142" class="tag-header ">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="142" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="142" class="include icon-check-empty"><span></span></span>
+                        <span class="name">Outdoor<!-- <em>[2]</em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="143" class="tag-header ">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="143" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="143" class="include icon-check-empty"><span></span></span>
+                        <span class="name">Dress Code<!-- <em>[1]</em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="246" class="tag-header ">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="246" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="246" class="include icon-check-empty"><span></span></span>
+                        <span class="name">Aftershow<!-- <em>[1]</em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="139" class="tag-header no-results">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="139" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="139" class="include icon-check-empty"><span></span></span>
+                        <span class="name">Pet Friendly<!-- <em></em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="229" class="tag-header no-results">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="229" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="229" class="include icon-check-empty"><span></span></span>
+                        <span class="name">camp<!-- <em></em> --></span>
+                      </div>
+                    </li>
+                    <li parent-id="138">
+                      <div tag-id="192" class="tag-header no-results">
+                        <!-- <span class="exclude icon-ban-circle" tag-id="192" title="don't show events with this tag"></span> -->
+                        <span title="" tag-id="192" class="include icon-check-empty"><span></span></span>
+                        <span class="name">LGBT<!-- <em></em> --></span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
 						</span>
 
 						<span class="filter-toggle date">
@@ -433,179 +1383,119 @@
 								</span>
 							</span>
 							<div class="filter-dropdown">
-                              <div class="filter-inner">
-                                <div class="filter date">
-                                  <div class="filters">
-                                    <span class="any">any day</span><span class="today selected">today</span><span class="tomorrow">this week</span><span class="custom">custom</span>
-                                  </div>
-                                  <div>
-                                    <div class="custom-select">
-                                      <div class="any time-range"></div>
-                                      <div class="time-range-hashes">
-                                        <div>3 AM</div>
-                                        <div>6 AM</div>
-                                        <div>9 AM</div>
-                                        <div>Noon</div>
-                                        <div>3 PM</div>
-                                        <div>6 PM</div>
-                                        <div>9 PM</div>
-                                      </div>
-                                      <div class="any time-display">any time</div></div>
-                                    <div class="custom-select selected">
-                                      <div class="today time-range"></div>
-                                      <div class="time-range-hashes">
-                                        <div>3 AM</div>
-                                        <div>6 AM</div>
-                                        <div>9 AM</div>
-                                        <div>Noon</div>
-                                        <div>3 PM</div>
-                                        <div>6 PM</div>
-                                        <div>9 PM</div>
-                                      </div>
-                                      <div class="today time-display">any time</div>
-                                    </div>
-                                    <div class="custom-select">
-                                      <div class="day-of-week">
-                                        <% dayOfWeek = Date.today() %>
-                                        <% 7.times do %>
-                                            <div day-of-week="<%= dayOfWeek.to_time.strftime("%w") %>"><div class="day"><%= dayOfWeek.to_time.strftime("%a") %></div><div class="date"><%= dayOfWeek.to_time.strftime("%b %-d") %></div></div>
-                                            <% dayOfWeek = dayOfWeek + 1 %>
-                                        <% end %>
-                                      </div>
-                                      <div class="tomorrow time-range"></div>
-                                      <div class="time-range-hashes">
-                                        <div>3 AM</div>
-                                        <div>6 AM</div>
-                                        <div>9 AM</div>
-                                        <div>Noon</div>
-                                        <div>3 PM</div>
-                                        <div>6 PM</div>
-                                        <div>9 PM</div>
-                                      </div>
-                                      <div class="tomorrow time-display">any time</div>
-                                    </div>
-                                    <div class="custom-select">
-                                      <span class="icon icon-calendar"></span><input type="text" class="custom-start"/> to <span class="icon icon-calendar"></span><input type="text" class="custom-end"/>
-                                      <div class="custom time-range"></div>
-                                      <div class="time-range-hashes">
-                                        <div>3 AM</div>
-                                        <div>6 AM</div>
-                                        <div>9 AM</div>
-                                        <div>Noon</div>
-                                        <div>3 PM</div>
-                                        <div>6 PM</div>
-                                        <div>9 PM</div>
-                                      </div>
-                                      <div class="custom time-display">any time</div>
-                                      <!-- <div class="custom date-range"></div>
-                                      <div class="custom date-display">today</div> -->
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                <div class="filter-inner">
+                  <div class="filter date">
+                    <div class="filters">
+                      <span class="any">any day</span><span class="today selected">today</span><span class="tomorrow">this week</span><span class="custom">custom</span>
+                    </div>
+                    <div>
+                      <div class="custom-select">
+                        <div class="any time-range ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><div class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;"></div><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 100%;"></a></div>
+                        <div class="time-range-hashes">
+                          <div>3 AM</div>
+                          <div>6 AM</div>
+                          <div>9 AM</div>
+                          <div>Noon</div>
+                          <div>3 PM</div>
+                          <div>6 PM</div>
+                          <div>9 PM</div>
+                        </div>
+                        <div class="any time-display">any time</div></div>
+                      <div class="custom-select selected">
+                        <div class="today time-range ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><div class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;"></div><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 100%;"></a></div>
+                        <div class="time-range-hashes">
+                          <div>3 AM</div>
+                          <div>6 AM</div>
+                          <div>9 AM</div>
+                          <div>Noon</div>
+                          <div>3 PM</div>
+                          <div>6 PM</div>
+                          <div>9 PM</div>
+                        </div>
+                        <div class="today time-display"> Any Time</div>
+                      </div>
+                      <div class="custom-select">
+                        <div class="day-of-week">
+                          <div day-of-week="4" class="selected"><div class="day">Thu</div><div class="date">Oct 3</div></div>
+                          <div day-of-week="5" class="selected"><div class="day">Fri</div><div class="date">Oct 4</div></div>
+                          <div day-of-week="6" class="selected"><div class="day">Sat</div><div class="date">Oct 5</div></div>
+                          <div day-of-week="0" class="selected"><div class="day">Sun</div><div class="date">Oct 6</div></div>
+                          <div day-of-week="1" class="selected"><div class="day">Mon</div><div class="date">Oct 7</div></div>
+                          <div day-of-week="2" class="selected"><div class="day">Tue</div><div class="date">Oct 8</div></div>
+                          <div day-of-week="3" class="selected"><div class="day">Wed</div><div class="date">Oct 9</div></div>
+                        </div>
+                        <div class="tomorrow time-range ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><div class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;"></div><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 100%;"></a></div>
+                        <div class="time-range-hashes">
+                          <div>3 AM</div>
+                          <div>6 AM</div>
+                          <div>9 AM</div>
+                          <div>Noon</div>
+                          <div>3 PM</div>
+                          <div>6 PM</div>
+                          <div>9 PM</div>
+                        </div>
+                        <div class="tomorrow time-display">any time</div>
+                      </div>
+                      <div class="custom-select">
+                        <span class="icon icon-calendar"></span><input type="text" class="custom-start hasDatepicker" id="dp1380779817170"> to <span class="icon icon-calendar"></span><input type="text" class="custom-end hasDatepicker" id="dp1380779817171">
+                        <div class="custom time-range ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><div class="ui-slider-range ui-widget-header" style="left: 0%; width: 100%;"></div><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 0%;"></a><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 100%;"></a></div>
+                        <div class="time-range-hashes">
+                          <div>3 AM</div>
+                          <div>6 AM</div>
+                          <div>9 AM</div>
+                          <div>Noon</div>
+                          <div>3 PM</div>
+                          <div>6 PM</div>
+                          <div>9 PM</div>
+                        </div>
+                        <div class="custom time-display">any time</div>
+                        <!-- <div class="custom date-range"></div>
+                        <div class="custom date-display">today</div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 						</span>
 						<span class="filter-toggle price">
 							<span class="filter-text">
-								<span class="pre-text"><!-- <span class="icon icon-credit-card"></span> -->Cost</span>
+								<span class="pre-text"><!-- <span class="icon icon-credit-card"></span> -->Cost</span> 
 								<span class="text">
 									<span class="text-inner">Any Price</span>
 									<span class="icon icon-caret-down"></span>
 								</span>
 							</span>
 							<div class="filter-dropdown">
-                              <div class="filter-inner">
-                                <div class="price-free-button nice-button">Free</div>
-                                <div class="col-2">
-                                  <div class="price-range"></div>
-                                  <div class="price-range-hashes">
-                                    <div>5</div>
-                                    <div>10</div>
-                                    <div>15</div>
-                                    <div>20</div>
-                                    <div>25</div>
-                                    <div>30</div>
-                                    <div>35</div>
-                                    <div>40</div>
-                                    <div>45</div>
-                                  </div>
-                                  <div class="price-display">any price</div>
-                                </div>
-                              </div>
-                            </div>
+                <div class="filter-inner">
+                  <div class="price-free-button nice-button">Free</div>
+                  <div class="col-2">
+                    <div class="price-range ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><div class="ui-slider-range ui-widget-header ui-slider-range-min" style="width: 100%;"></div><a href="#" class="ui-slider-handle ui-state-default ui-corner-all" style="left: 100%;"></a></div>
+                    <div class="price-range-hashes">
+                      <div>5</div>
+                      <div>10</div>
+                      <div>15</div>
+                      <div>20</div>
+                      <div>25</div>
+                      <div>30</div>
+                      <div>35</div>
+                      <div>40</div>
+                      <div>45</div>
+                    </div>
+                    <div class="price-display">Any Price</div>
+                  </div>
+                </div>
+              </div>
 						</span>
 						<span class="filter-toggle filter-action action-clear">
 							<span class="filter-text">
 								<span class="pre-text"><span class="icon icon-remove-sign"></span>clear</span>
 							</span>
 						</span>
-          </span>
-        </div>
-      </div>
-    </div>
 
-    </div>
-    </div>
-    </div>
-    <!-- <div class="expandobar">
-		<div class="subbar">
-			<div class="sort-by">Sorted by <span class="sort selected" sort-type="popularity">popularity</span> / <span class="sort" sort-type="date">date</span></div>
-			<div class="num-occurrences">showing <span class="num-occurrences-count"><%= @allOccurrences.size %></span> events</div>
-		</div>
-		<div class="expandobar-inner">
-			<span>&#9660;</span>show advanced options<span>&#9660;</span>
-		</div>
-	</div> -->
-<% end %>
+</div>
+</div>
+</div>
 
-<% content_for :body do %>
-
-    <div id="content">
-      <% unless @mobileMode %>
-          <div id="map-wrapper">
-            <div id="map"></div>
-            <div class="map-move">
-              <strong>zoom and move around the map to see events</strong><br />
-              redo search based on map move + zoom<input type="checkbox" checked id="unnecessarily-long-id-for-toggling-search-on-map-move-and-zoom"/>
-            </div>
-          </div>
-      <% end %>
-
-      <%= render :partial => "/layouts/footer" %>
-      <div class="main">
-        <% if (@mobileMode) %> </center> <% end %>
-        <div class="inner">
-          <div class="filter-summary">
-            <span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sort-type" style="display:none;">[by popularity/<span class="sort date">date</span>]</span>
-          </div>
-          <ul class="events">
-            <%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
-          </ul>
-          <img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
-        </div>
-        <% if (@mobileMode) %> <center> <% end %>
-        <img id="loading" src="/assets/ajax-loader.gif" />
-      </div>
-      <%#= render :partial => "layouts/grid" %>
-    </div>
-
-    <!-- crazy egg -->
-    <script type="text/javascript">
-        setTimeout(function(){var a=document.createElement("script");
-            var b=document.getElementsByTagName("script")[0];
-            a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0014/9731.js?"+Math.floor(new Date().getTime()/3600000);
-            a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
-    </script>
-
-<% end %>
-<% content_for :overlay do %>
-    <div class="mode">
-      <div class="overlay">
-        <div class="insert-point">
-          <div class="window">
-          </div>
-        </div>
-      </div>
-    </div>
-<% end %>
-
+</div>
+</div>
+</div>

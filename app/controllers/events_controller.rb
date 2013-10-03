@@ -856,9 +856,9 @@ def index
     
   end
   def saved_search
-    current_user.saved_searches.create(:search_key => params[:key]) rescue nil
+    key_id = current_user.saved_searches.create(:search_key => params[:key]).id rescue nil
     flash[:notice] = "Search is saved successfully"
-    render :nothing => true
+    key_id.nil?? (render :nothing => true) : (render :json => {key_id:key_id})
   end
   def delete_saved_search
    SavedSearch.find(params[:key_id]).delete

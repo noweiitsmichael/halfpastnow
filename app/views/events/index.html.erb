@@ -344,7 +344,7 @@
         </div>
         <div class="content main">
           <div class="container inline">
-            <h2 class="text-info"><%= @allOccurrences.size %> results for</h2>
+            <h2 class="text-info"><%= @allOccurrences.size %> results </h2>
             <p class="lead text-info"></p>
             <section class="product-list clearfix events">
               <% @occurrences.each_with_index do |occurrence, index| %>
@@ -366,7 +366,7 @@
         </div>
         <div class="content main">
           <div class="container inline">
-            <h2 class="text-info"><span id="number_of_events"></span> results for</h2>
+            <h2 class="text-info"><span id="number_of_events"></span> results for <span id="search_name"></span></h2>
             <p class="lead text-info"></p>
             <section class="product-list clearfix events">
 
@@ -388,31 +388,62 @@
           }
         })
         $('.dropdown-menu a').click(function(){
-            $('#search-tab').append("<li class=''><a data-toggle='tab' href='#events'>"+$(this).text()+" <i class='icon-white-pin icon-remove'></i></a></li>")
-            $('.icon-remove').on("click",function(){
-                $(this).parents('li').remove()
-            })
-            $.get('search',{},function(data){
+          $(".active").attr('class', '.active');
+          $('#search-tab').append("<li class='active'><a data-toggle='tab' href='#related_events' key="+$(this).text().replace(" ","_")+">"+$(this).text()+" <i class='icon-white-pin icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
+          $('.icon-remove').on("click",function(){
+            $(this).parents('li').remove()
+          })
+          $('#search_name').text($(this).text())
 
 
-            })
+            console.log($(this).text())
+            doneTyping1($(this).text());
+          $('#search-tab a').on("click", function () {
+            console.log($(this).text())
+            doneTyping1($(this).text());
+            $('#search_name').text($(this).text())
+          });
+
         })
-        $(".submit").click(function(){
+        $(".submit").on("click",function(){
+
             if($("#appendedInput").val().length >= 3){
-            $('#search-tab').append("<li class=''><a data-toggle='tab' href='#related_events' key="+$("#appendedInput").val()+">"+$("#appendedInput").val()+" <i class='icon-white-pin icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
+              $(".active").attr('class', '.active');
+            $('#search-tab').append("<li class='active'><a data-toggle='tab' href='#related_events' key="+$("#appendedInput").val()+">"+$("#appendedInput").val()+" <i class='icon-white-pin icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
+              <% if user_signed_in? %>
+              $('.icon-remove').on("click",function(){
+                $(this).parents('li').remove()
+                key_id = $(this).parent().attr('key_id')
+                if(key_id != null){
+                  <% if user_signed_in? %>
+                  $.get('/delete_saved_search',{key_id:key_id})
+                  <% end %>
+                }
+              })
+              <% else %>
             $('.icon-remove').on("click",function(){
                 $(this).parents('li').remove()
+
             })
+              <% end %>
               $('.icon-ok-sign').on("click",function(){
                 key = $(this).parent().attr('key')
-
+                check = $(this).parent()
                 <% if user_signed_in? %>
                 $(this).hide()
-                $.get('/saved_search',{key:key})
+                $.get('/saved_search',{key:key},function(data){
+                  console.log(check)
+                  check.attr('key_id', data["key_id"]);
+
+                })
                 <% end %>
             })
             }
-
+          $('#search-tab a').on("click", function () {
+            console.log("i am here")
+            doneTyping1($(this).text());
+            $('#search_name').text($(this).text())
+          });
         })
     </script>
 
