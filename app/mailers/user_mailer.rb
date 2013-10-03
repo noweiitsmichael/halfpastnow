@@ -52,6 +52,23 @@ class UserMailer < ActionMailer::Base
     mail(:to => @user.email, :subject => "Austin's Best of 2013 by the Austin Chronicle", :from => "Half Past Now <support@halfpastnow.com>")
   end
 
+  def founder_email(user)
+    # puts "sending email..."
+    ActionMailer::Base.smtp_settings = {
+      address: "smtp.gmail.com",
+      port: 587,
+      domain: "halfpastnow.com",
+      authentication: "plain",
+      enable_starttls_auto: true,
+      user_name: "marc@halfpastnow.com",
+      password: "chimeralabs"
+    }
+    @user = user
+
+    @url  = "http://halfpastnow.com/login"
+    mail(:to => @user.email, :subject => "Thank you from the halfpastnow team!", :from => "Half Past Now <marc@halfpastnow.com>")
+  end
+
 
   def self.find_with(id)
     puts "occurrence.rb"
