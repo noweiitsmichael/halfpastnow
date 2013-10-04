@@ -3254,6 +3254,14 @@ def homeEvents
     else
       event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
     end
+
+    # if(params[:channel_id].to_s.empty?)
+    #   event_end_date = Date.today().advance(:days => 2)
+    # else
+    #   event_end_date = Date.today().advance(:days => 14)
+    # end
+
+
     if(!params[:end_date].to_s.empty?)
       event_end_date = Date.parse(params[:end_date]).advance(:days => 1)
     else
@@ -3428,11 +3436,11 @@ def homeEvents
       #puts "**************** Cache FOUND for search query!!! ****************"
     end
     #puts "queryResult 10 "
-    # order_by = "CASE events.views 
-    #                 WHEN 0 THEN 0
-    #                 ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
-    #               END DESC"
-    order_by = "events.views"
+    order_by = "CASE events.views 
+                    WHEN 0 THEN 0
+                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+                  END DESC"
+    # order_by = "events.views"
 
     ttmp = queryResult.uniq{|x| x["occurrence_id"]}
     # ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
