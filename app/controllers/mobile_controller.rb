@@ -3458,10 +3458,10 @@ def homeEvents
       ttttmp = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 2)}
     end
 
-    occurrenceIDs =  ttttmp.collect { |e| e["occurrence_id"].to_i }.uniq
+    occurrenceIDs =  ttttmp.collect { |e| e["occurrence_id"].to_i }
     # ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
     @allOccurrences = Occurrence.includes(:event => :venue).find(occurrenceIDs, :order => order_by)
-    occurrenceIDs =  @allOccurrences.collect { |e| e.id.to_i }.uniq.take(5)
+    occurrenceIDs =  @allOccurrences.collect { |e| e.id.to_i }.take(5)
    
     # today_events = queryResult.select{|e| e["start"].to_datetime < Date.today().advance(:days => 1)}.take(2)
     # tomorrow_events = queryResult.select{|e| e["start"].to_datetime > Date.today().advance(:days => 1)}.take(2)
