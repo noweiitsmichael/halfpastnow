@@ -3443,10 +3443,10 @@ def homeEvents
     size = ttmp.size
    
 
-    ttttmp = ttmp.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 14)}
+    ttttmp = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 14)}
 
     if(params[:channel_id].to_s.empty?)
-      ttttmp = ttmp.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 2)}
+      ttttmp = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 2)}
     end
 
     occurrenceIDs =  ttttmp.collect { |e| e["occurrence_id"].to_i }.uniq
