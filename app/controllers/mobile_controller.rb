@@ -3428,10 +3428,11 @@ def homeEvents
       #puts "**************** Cache FOUND for search query!!! ****************"
     end
     #puts "queryResult 10 "
-    order_by = "CASE events.views 
-                    WHEN 0 THEN 0
-                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
-                  END DESC"
+    # order_by = "CASE events.views 
+    #                 WHEN 0 THEN 0
+    #                 ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+    #               END DESC"
+    order_by = "events.views"
 
     ttmp = queryResult.uniq{|x| x["occurrence_id"]}
     # ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
