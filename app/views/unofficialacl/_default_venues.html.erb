@@ -12,7 +12,7 @@
         <li class="label-name">FEATURED VENUE</li>
       </ul>
       <div class="text antialiased">
-        <a class="event-title" href="unofficialacl/show_venue/<%= venue.id %>"><%= truncate(venue.name, :length => 42) %></a>
+        <a class="event-title" href="/unofficialacl/show_venue/<%= venue.id %>"><%= truncate(venue.name, :length => 42) %></a>
         <p class="event-tags">
           <% puts venue.id %>
           <% if venue.id == 39473 %>
@@ -52,7 +52,7 @@
         <% end %>
       </div>
       <div class="text antialiased">
-        <a class="event-title" href="unofficialacl/show_event?event_id=<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 42) %></a>
+        <a class="event-title" href="/unofficialacl/event/show/<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 42) %></a>
         <p class="event-tags event-date">
           <%= occurrence.start.to_time.strftime("%A, %b %e, %l:%M %p") %>
         </p>
@@ -66,7 +66,7 @@
         </p>
       </div>
     </div>
-    <div style="display:none;">
+    <div class="map_latlang" style="display:none;">
       <div class="latitude"><%= occurrence.event.venue.latitude %></div>
       <div class="longitude"><%= occurrence.event.venue.longitude %></div>
     </div>
