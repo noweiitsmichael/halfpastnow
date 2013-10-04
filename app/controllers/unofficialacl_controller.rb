@@ -22,7 +22,7 @@ class UnofficialaclController < ApplicationController
     query = "SELECT DISTINCT ON (events.id) occurrences.id AS occurrence_id,  events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
               FROM occurrences #{join_clause} WHERE #{where_clause}
               AND tags.id IN (232) AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
-              ORDER BY events.id, occurrences.start LIMIT 500"
+              ORDER BY events.id, occurrences.start,events.id LIMIT 500"
 
     #raise query.to_yaml
 
@@ -141,7 +141,7 @@ class UnofficialaclController < ApplicationController
                 #{join_clause}
               WHERE #{where_clause}
               AND tags.id IN (232,230,247) AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
-              ORDER BY events.id, occurrences.start LIMIT 500"
+              ORDER BY events.id,occurrences.start LIMIT 500"
 
     ids = ActiveRecord::Base.connection.select_all(query)
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq

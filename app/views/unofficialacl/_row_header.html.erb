@@ -41,19 +41,24 @@
         <h3 class="ptx">Choose a Date: </h3>
       </div>
       <div class="large-4 small-4 columns">
-        <select class="select js-select" name="time_search" onchange= "this.form.submit();" >
-          <option></option>
-          <option value="everything">All days</option>
-          <option value="first">ACL First Weekend (Oct 4-6)</option>
-          <option value="unofficial">Unofficial Week (Oct 7-10)</option>
-          <option value="second">ACL Second Weekend (Oct 11-13)</option>
-          <option value="today">Today</option>
-          <option value="tomorrow">Tomorrow</option>
-        </select>
+        <%= select_tag "time_search",
+                       options_for_select([['All days', 'everything'], ['ACL First Weekend (Oct 4-6)', 'first'],
+                                           ['Unofficial Week (Oct 7-10)', 'unofficial'], ['ACL Second Weekend (Oct 11-13)', 'second'],
+                                           ['Today', 'today'], ['Tomorrow', 'tomorrow']], params[:time_search]),
+                        { :class => 'select js-select',:onchange => "this.form.submit();" }%>
+        <!--<select class="select js-select" name="time_search" onchange= "this.form.submit();" >-->
+          <!--<option></option>-->
+          <!--<option value="everything">Show me everything</option>-->
+          <!--<option value="first">ACL First Weekend (Oct 4-6)</option>-->
+          <!--<option value="unofficial">Unofficial Week (Oct 7-10)</option>-->
+          <!--<option value="second">ACL Second Weekend (Oct 11-13)</option>-->
+          <!--<option value="today">Today</option>-->
+          <!--<option value="tomorrow">Tomorrow</option>-->
+        <!--</select>-->
       </div>
     </div>
   </div>
-</div>
+
 <% end %>
 <div class="row" id="map">
   <div id="googleMap"></div>
@@ -62,8 +67,9 @@
     <div class="wrapper row header">
       <div class="large-8 columns">
         <nav>
+          <a id="menu-icon"><i class="icon-reorder"></i></a>
           <ul id="tab-anchors" class="header-navigation">
-            <li id="tab-anchor-3" class = <%= (params[:and_tags].include? '25') ? "current" : "" %>>
+            <li id="tab-anchor-3" class = <%= (params[:and_tags].include? '232') ? "current" : "" %>>
               <a href="http://www.unofficialacl.com">Unofficial ACL</a>
             </li>          
             <li id="tab-anchor-2" class = <%= (params[:and_tags].include? '247') ? "current" : "" %>>
@@ -83,11 +89,12 @@
         <div class="small-navbar-note">Show me events with:</div>
         <div id="small-navbar">
           <ul>
-            <li><%= link_to "Free drinks", search_unofficialacl_index_path(tags: "Free drinks"), method: :post, class: (params[:and_tags].include? '256') ? "active" : "" %></li>
-            <li><%= link_to "party", search_unofficialacl_index_path(tags: "party"), method: :post, class: (params[:and_tags].include? '253') ? "active" : "" %></li>
-            <li><%= link_to "no cover", search_unofficialacl_index_path(tags: "no cover"), method: :post, class: (params[:and_tags].include? '254') ? "active" : "" %></li>
-            <li><%= link_to "RSVP", search_unofficialacl_index_path(tags: "RSVP"), method: :post, class: (params[:and_tags].include? '255') ? "active" : "" %></li>
+            <li class="filter"><%= link_to "Free drinks", search_unofficialacl_index_path(tags: "Free drinks"), method: :post, class: (params[:and_tags].include? '256') ? "active" : "" %></li>
+            <li class="filter"><%= link_to "party", search_unofficialacl_index_path(tags: "party"), method: :post, class: (params[:and_tags].include? '253') ? "active" : "" %></li>
+            <li class="filter"><%= link_to "no cover", search_unofficialacl_index_path(tags: "no cover"), method: :post, class: (params[:and_tags].include? '254') ? "active" : "" %></li>
+            <li class="filter"><%= link_to "RSVP", search_unofficialacl_index_path(tags: "RSVP"), method: :post, class: (params[:and_tags].include? '255') ? "active" : "" %></li>
           </ul>
         </div>
       </div>
     </div>
+</div>

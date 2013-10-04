@@ -8,6 +8,9 @@
       <div class="event-image">
         <img src="<%= venue.pictures.first ? venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
       </div>
+      <ul class="label-container">
+        <li class="label-name">FEATURED VENUE</li>
+      </ul>
       <div class="text antialiased">
         <a class="event-title" href="unofficialacl/show_venue/<%= venue.id %>"><%= truncate(venue.name, :length => 42) %></a>
         <p class="event-tags">
@@ -29,6 +32,8 @@
   <% end %>
 
 </div>
+
+
 
 <!-- Small things: column right -->
 <div class="large-6 columns rightCol ptm stretch">
@@ -71,3 +76,4 @@
 
 </div>
 </div>
+

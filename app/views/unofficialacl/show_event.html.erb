@@ -62,7 +62,11 @@
     <!-- Big things: column left -->
     <div class="large-6 columns stretch">
 
-      <div class="row">
+      <div class="row main-picture">
+          <!--<img src="<%#= @event.pictures.first ? @event.pictures.first.image_url(:full) : "/assets/placeholder.png" %>" />-->
+          <% if @event.price && @event.price != 0 %>
+              <div class="sticker pack detail-badge"><div class="sticker-discount"><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 0) : "" %></div><div class="sticker-label"></div></div>
+          <% end %>
         <div class="event-picture">
           <% if @event.pictures.first %>
               <img src="<%= @event.pictures.first.image_url(:large)  %>" alt="Event picture" />
@@ -71,11 +75,14 @@
           <% else %>
               <img src="<%= @event.venue.pictures.first ? @event.venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" alt="venue pic" />
           <% end %>
-          <!--<img src="<%#= @event.pictures.first ? @event.pictures.first.image_url(:full) : "/assets/placeholder.png" %>" />-->
-          <% if @event.price && @event.price != 0 %>
-              <div class="sticker pack detail-badge"><div class="sticker-discount"><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 0) : "" %></div><div class="sticker-label"></div></div>
-          <% end %>
         </div>
+      </div>
+
+      <div class="details-social">
+        <div class="fb-like" data-href="http://www.unofficialacl.com/unofficial/show_event?event_id=<%=@event.id%>" data-width="100" data-colorscheme="dark" data-layout="button_count" data-show-faces="true" data-send="false"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.unofficialacl.com/unofficial/show_event?event_id=<%=@event.id%>" data-text="<%= truncate(@event.title, length: 58) %> #ACL" data-via="halfpastnow" data-count="none" style="width:65px">Tweet</a>
+        <div id="g-plus-footer" class="g-plus" data-action="share" data-annotation="none"></div>
+        <a href="//www.pinterest.com/pin/create/button/" data-pin-do="buttonBookmark" ></a>
       </div>
 
       <% unless @event.acts.length == 0 %>
@@ -84,6 +91,7 @@
           <h1 class="featuring-title">Featuring:</h1>
         </div>
       </div>
+
 
       <ul class="features">
         <% @event.acts.each do |act| %>
@@ -175,7 +183,7 @@
     <!-- Big things: column left -->
     <div class="large-6 columns stretch">
 
-      <div class="row">
+      <div class="row main-picture">
         <div class="event-picture">
           <img src="<%= @venue.pictures.first ? @venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
           <% if false %><div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>?80</div> <% end %>
@@ -251,7 +259,7 @@
                   <% if rec.event.pictures.first %>
                       <img src="<%= rec.event.pictures.first.image_url(:thumb)  %>" alt="Event picture" />
                   <% elsif rec.event.acts.length != 0 && rec.event.acts.first.pictures.first %>
-                      <img src="<%= rec.event.acts.first.pictures.first.image_url(:thumb) %>" alt="occurrence pic"/>
+                      <img src="<%= rec.event.acts.first.pictures.first.image_url(:thumb) %>" alt="Artist pic"/>
                   <% elsif rec.event.venue.pictures.first %>
                       <img src="<%= rec.event.venue.pictures.first.image_url(:thumb) %>" alt="venue pic" />
                   <% else %>
@@ -306,7 +314,7 @@
 
       <% @event.acts.each_with_index do |act,index| %>
           <% unless (act.fb_picture.blank? && act.pictures.nil?) %>
-      <div class="row">
+      <div class="row main-picture">
         <div class="event-picture">
           <img src="<%= act.pictures.first ? act.pictures.first.image_url(:full) : "" %>" />
           <!--<div class="sticker percent popular-badge"><span class="sticker-label popular">popularity</span>80</div>-->

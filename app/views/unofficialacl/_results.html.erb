@@ -2,9 +2,8 @@
 <!-- tab offical ACL -->
 
 
-
+  <% displayed_events = 0 %>
   <% @occurrences.each_with_index do |occurrence, count| %>
-
 
       <!-- Big things: column left -->
        <% if (0..4).include?(count) %>
@@ -36,13 +35,17 @@
                        <% names = occurrence.event.tags.collect {|tag| tag.name} %>
                        <% exclude_tag_names = ["Festival","Music"] %>
                        <% names = names - exclude_tag_names %>
-                       <span><%= names[0..2].join(',') %></span>
+                       <span><%= names[0..2].join(', ') %></span>
                    <% end %>
                  </p>
                </div>
              </div>
-          <% if count == 4 %>
-            </div> <!--End of (0..4) events left -->
+             <% puts "count = #{count}"%>
+             <% puts "displayed events = #{displayed_events}"%>
+
+
+          <% if (count == @occurrences.length - 1) || (count == 4) %>
+            </div>
           <% end %>
 
         <!-- Small things: column right -->
@@ -81,7 +84,7 @@
                    </div>
                  </div>
              </li>
-          <% if count == 18 %>
+          <% if (count == @occurrences.length - 1) || (count == 18) %>
                </ul>
              </div>  <!--End of (5..18) events right -->
             </div> <!--End of Row tag for 19 elements -->
@@ -91,8 +94,8 @@
              </div>
              -->
           <% end %>
-
        <% end %> <!--End if condition 0..19 -->
+
 
     <div style="display:none;">
       <div class="latitude"><%= occurrence.event.venue.latitude %></div>
@@ -100,6 +103,7 @@
     </div>
 
     <% count = 0 if count == 18 %>
+    <% displayed_events = displayed_events + 1 %>
   <% end %> <!--End of main occurrences loop -->
 
 

@@ -2,6 +2,11 @@
 <html lang="en-US">
 <head>
   <meta charset="UTF-8">
+  <meta property="og:type"                 content="website"/> 
+  <meta property="og:url"                  content="http://www.unofficialacl.com"/> 
+  <meta property="og:image"                content="http://www.unofficial.com/assets/acl/layout/logo-glow.png"/>
+  <meta property="og:title"                content="Unofficial ACL | Your Unofficial ACL events resource"/>
+  <meta property="og:description"          content="Find out about unofficial and official ACL events"/> 
   <meta name="viewport" content="user-scalable=no, width=device-width, minimum-scale=1, maximum-scale=1">
   <title>Unofficial ACL</title>
   <%= stylesheet_link_tag    "acl/grid.css" %>
@@ -12,12 +17,12 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
 
-    <link rel="shortcut icon" href="assets/acl/favicon.ico" >
-    <link rel="icon" sizes="512x512" href="assets/acl/apple-touch-icon-512x512.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="assets/acl/apple-touch-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="assets/acl/apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="assets/acl/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" href="assets/acl/apple-touch-icon.png">
+    <link rel="shortcut icon" href="/assets/acl/favicon.ico" >
+    <link rel="icon" sizes="512x512" href="/assets/acl/apple-touch-icon-512x512.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/acl/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/acl/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/acl/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" href="/assets/acl/apple-touch-icon.png">
 
   <script src="/assets/acl/vendor/jquery-ui-1.8.18.custom.min.js" type="text/javascript"></script>
   <script src="/assets/acl/SCF.ui.js" type="text/javascript"></script>
@@ -50,11 +55,25 @@
 
   <%= yield %>
 
+
+  <div class="footer row">
+    <div class="small-6 small-centered columns by-center">
+      <div id="loaderImage" class="mbl hide"></div>
+      <div id="footer_text" class="hide">loading more content</div>
+    </div>
+    <div class="small-6 by-left">
+      &copy; 2013 UnofficialACL.com - All Rights Reserved
+    </div>
+<!--     <div class="small-6 columns by-right">
+      Front End by <a target="_blank" href="http://logangattis.com">Logan Gatis Designs</a>
+    </div> -->
+  </div>
+
       <div id="social">
-        <a href="#"><i class="icon-facebook-sign"></i></a>
-        <a href="#"><i class="icon-twitter-sign"></i></a>
-        <a href="#"><i class="icon-google-plus-sign"></i></a>
-        <a href="#"><i class="icon-pinterest-sign"></i></a>
+        <div class="fb-like" data-href="http://www.unofficialacl.com" data-width="100" data-colorscheme="dark" data-layout="button_count" data-show-faces="true" data-send="false"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.unofficialacl.com" data-text="The perfect guide to #official and #unofficial events happening at #ACL!" data-via="halfpastnow" data-count="horizontal" style="width:65px">Tweet</a>
+        <div id="g-plus-footer" class="g-plus" data-action="share" data-annotation="none"></div>
+        <a href="//www.pinterest.com/pin/create/button/" data-pin-do="buttonBookmark" ></a>
       </div>
 
 
@@ -64,10 +83,10 @@
 
 <!-- Live Reload 
 
-//<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 
--->
-
+ -->
+ 
 <script src="/assets/acl/script.js" type="text/javascript"></script>
 
 <script>
@@ -81,5 +100,16 @@
 
 </script>
 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=475386955806720";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<script src="https://apis.google.com/js/plusone.js"></script>
+<script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
 </body>
 </html>
