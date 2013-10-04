@@ -90,12 +90,12 @@ map = new google.maps.Map($("#googleMap")[0], myOptions);
             locations.push({lat: latitude, long: longitude});
         });
 
-        console.log(locations);
+        //console.log(locations);
 
 
         placeMarkers({points: locations});
 
-        google.maps.event.addListener(map, 'idle', boundsChanged);
+//        google.maps.event.addListener(map, 'idle', boundsChanged);
     }
 
     function placeMarkers(params) {
@@ -187,6 +187,7 @@ function showPageMarkers() {
     }
 }
 }
+
 
 
 
