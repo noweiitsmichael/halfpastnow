@@ -13,6 +13,7 @@ class ZoomDelta
 end
 
 class EventsController < ApplicationController
+  layout "new_design"
 helper :content
 def splash
   respond_to do |format|

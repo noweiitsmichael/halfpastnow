@@ -1,4 +1,5 @@
 class UnofficialaclController < ApplicationController
+  layout "new_design"
 
   def index
 

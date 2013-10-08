@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  layout "new_design"
   before_filter :authenticate_user!
   # GET /users
   # GET /users.json

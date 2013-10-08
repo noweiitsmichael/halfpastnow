@@ -1,372 +1,504 @@
 <% content_for :meta do %>
-     <meta property="og:type"                 content="website"> 
-     <meta property="og:url"                  content="http://www.halfpastnow.com/picks">
-     <meta property="og:site_name"            content="halfpastnow">
-     <meta property="og:image"                content="">
-     <meta property="og:title"                content="half past now | Events from Trendsetters">
-     <meta property="og:description"          content="The best events in town, handpicked by local trendsetters"> 
+    <meta property="og:type"                 content="website">
+    <meta property="og:url"                  content="http://www.halfpastnow.com/picks">
+    <meta property="og:site_name"            content="halfpastnow">
+    <meta property="og:image"                content="">
+    <meta property="og:title"                content="half past now | Events from Trendsetters">
+    <meta property="og:description"          content="The best events in town, handpicked by local trendsetters">
 <% end %>
 <% content_for :code do %>
-	<script type="text/javascript">
+    <script type="text/javascript">
 
-		$(function() {
+        $(function() {
 
-			$('#list-cat').change(function(){
-				window.location = "/picks/index/"+$(this).val()
-			});
-			$('.follow.button').click(function() {
-  				var $that = $(this);
-				var listID = $that.attr('picklist-id');
-				var url = 'http://halfpastnow.com/picks/find/'+listID
-				console.log('test folling'+url);
+            $('#list-cat').change(function(){
+                window.location = "/picks/index/"+$(this).val()
+            });
+            $('.follow.button').click(function() {
+                var $that = $(this);
+                var listID = $that.attr('picklist-id');
+                var url = 'http://halfpastnow.com/picks/find/'+listID
+                console.log('test folling'+url);
 
-				FB.api(
-				            '/me/halfpastnow:subscribe',
-				            'post',
-				            { toppick: url },
-				            function(response) {
-				        });
-				$.getJSON('/users/followBookmarkList/' + listID, function(data) {
-					if(data.success) {
-						$that.hide();
-						$that.siblings('.unfollow.button').show();
-					} else {
-						console.log(data.error);
-					}
-				});
-			});
+                FB.api(
+                        '/me/halfpastnow:subscribe',
+                        'post',
+                        { toppick: url },
+                        function(response) {
+                        });
+                $.getJSON('/users/followBookmarkList/' + listID, function(data) {
+                    if(data.success) {
+                        $that.hide();
+                        $that.siblings('.unfollow.button').show();
+                    } else {
+                        console.log(data.error);
+                    }
+                });
+            });
 
-			$('.unfollow.button').click(function() {
-				var $that = $(this);
-				var listID = $that.attr('picklist-id');
-				$.getJSON('/users/unfollowBookmarkList/' + listID, function(data) {
-					if(data.success) {
-						$that.hide();
-						$that.siblings('.follow.button').show();
-					} else {
-						console.log(data.error);
-					}
-				});
-			});
+            $('.unfollow.button').click(function() {
+                var $that = $(this);
+                var listID = $that.attr('picklist-id');
+                $.getJSON('/users/unfollowBookmarkList/' + listID, function(data) {
+                    if(data.success) {
+                        $that.hide();
+                        $that.siblings('.follow.button').show();
+                    } else {
+                        console.log(data.error);
+                    }
+                });
+            });
 
-			var event_id = <%= params[:event_id] || "null" %>;
-			var venue_id = <%= params[:venue_id] || "null" %>;
-			var act_id = <%= params[:act_id] || "null" %>;
-			var modality;
+            var event_id = <%= params[:event_id] || "null" %>;
+            var venue_id = <%= params[:venue_id] || "null" %>;
+            var act_id = <%= params[:act_id] || "null" %>;
+            var modality;
 
-			if(event_id) {
-				modality = spawn(modalities["event"],{id: event_id});
-				modal(modality);
-			}
-			if(venue_id) {
-				modality = spawn(modalities["venue"],{id: venue_id});
-				modal(modality);
-			}
-			if(act_id) {
-				modality = spawn(modalities["act"],{id: act_id});
-				modal(modality);   
-			}
-		});
+            if(event_id) {
+                modality = spawn(modalities["event"],{id: event_id});
+                modal(modality);
+            }
+            if(venue_id) {
+                modality = spawn(modalities["venue"],{id: venue_id});
+                modal(modality);
+            }
+            if(act_id) {
+                modality = spawn(modalities["act"],{id: act_id});
+                modal(modality);
+            }
+        });
 
-		var geocoder;
-		var map;
-		var markers = [];
+        var geocoder;
+        var map;
+        var markers = [];
 
-		function initialize() {
-			//console.log("initialize");
-			//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
-			geocoder = new google.maps.Geocoder();
+        function initialize() {
+            //console.log("initialize");
+            //$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
+            geocoder = new google.maps.Geocoder();
 
-			var styles = [
-							  {
-							    "featureType": "road.highway",
-							    "elementType": "geometry.stroke",
-							    "stylers": [
-							      { "color": "#804580" }
-							    ]
-							  },{
-							    "featureType": "road.highway",
-							    "elementType": "labels.text.stroke",
-							    "stylers": [
-							      { "color": "#d5b5d5" }
-							    ]
-							  },{
-							    "featureType": "road.arterial",
-							    "elementType": "labels.text.stroke",
-							    "stylers": [
-							      { "color": "#f1e6f3" }
-							    ]
-							  },{
-							    "elementType": "geometry.fill",
-							    "stylers": [
-							      { "gamma": 1.54 },
-							      { "lightness": 12 }
-							    ]
-							  },{
-							    "featureType": "road.arterial",
-							    "elementType": "geometry.fill",
-							    "stylers": [
-							      { "color": "#e0dae0" }
-							    ]
-							  },{
-							    "featureType": "road.arterial",
-							    "elementType": "geometry.stroke",
-							    "stylers": [
-							      { "color": "#b8abb8" }
-							    ]
-							  },{
-							    "featureType": "road.highway",
-							    "elementType": "geometry.fill",
-							    "stylers": [
-							      { "color": "#af96af" }
-							    ]
-							  },{
-							  }
-							];
+            var styles = [
+                {
+                    "featureType": "road.highway",
+                    "elementType": "geometry.stroke",
+                    "stylers": [
+                        { "color": "#804580" }
+                    ]
+                },{
+                    "featureType": "road.highway",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [
+                        { "color": "#d5b5d5" }
+                    ]
+                },{
+                    "featureType": "road.arterial",
+                    "elementType": "labels.text.stroke",
+                    "stylers": [
+                        { "color": "#f1e6f3" }
+                    ]
+                },{
+                    "elementType": "geometry.fill",
+                    "stylers": [
+                        { "gamma": 1.54 },
+                        { "lightness": 12 }
+                    ]
+                },{
+                    "featureType": "road.arterial",
+                    "elementType": "geometry.fill",
+                    "stylers": [
+                        { "color": "#e0dae0" }
+                    ]
+                },{
+                    "featureType": "road.arterial",
+                    "elementType": "geometry.stroke",
+                    "stylers": [
+                        { "color": "#b8abb8" }
+                    ]
+                },{
+                    "featureType": "road.highway",
+                    "elementType": "geometry.fill",
+                    "stylers": [
+                        { "color": "#af96af" }
+                    ]
+                },{
+                }
+            ];
 
-			var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-			var myOptions = {
-				zoom: <%= @zoom %>,
-				center: latlng,
-				mapTypeId: 'map_style',
-				disableDefaultUI: true,
-				zoomControl: true,
-				scrollwheel: false,
-				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 2 },
-    			backgroundColor: '#FFFFFF'
-			};
+            var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+            var myOptions = {
+                zoom: <%= @zoom %>,
+                center: latlng,
+                mapTypeId: 'map_style',
+                disableDefaultUI: true,
+                zoomControl: true,
+                scrollwheel: false,
+                zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 2 },
+                backgroundColor: '#FFFFFF'
+            };
 
-			var styledMap = new google.maps.StyledMapType(styles,
-    			{name: "Styled Map"});
+            var styledMap = new google.maps.StyledMapType(styles,
+                    {name: "Styled Map"});
 
-			map = new google.maps.Map($("#map")[0], myOptions);
+            map = new google.maps.Map($("#map")[0], myOptions);
 
-			map.mapTypes.set('map_style', styledMap);
-  			map.setMapTypeId('map_style');
+            map.mapTypes.set('map_style', styledMap);
+            map.setMapTypeId('map_style');
 
-			var locations = [];
-			
-			$("#content .main .inner .events li").each(function(index) {
-				var latitude = parseFloat($(this).find(".latitude").html());
-				var longitude = parseFloat($(this).find(".longitude").html());
-				locations.push({lat: latitude, long: longitude});
-			});
-			
-			placeMarkers({points: locations});
+            var locations = [];
 
-			google.maps.event.addListener(map, 'idle', boundsChanged);
-		}
+            $("#content .main .inner .events li").each(function(index) {
+                var latitude = parseFloat($(this).find(".latitude").html());
+                var longitude = parseFloat($(this).find(".longitude").html());
+                locations.push({lat: latitude, long: longitude});
+            });
 
-		function to_i(obj) {
-			return parseInt(obj);
-		}
-		$(function() {
-		          
-			window.fbAsyncInit = function() {
-		        console.log("Loaded FB 222");
-					FB.init({
-					appId      : '475386955806720', // App ID
-					status     : true, // check login status
-					cookie     : true, // enable cookies to allow the server to access the session
-					xfbml      : true  // parse XFBML
-	          	});
-	        };
+            placeMarkers({points: locations});
 
-	        // Load the SDK Asynchronously
-	        (function(d){
-	          var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-	          js = d.createElement('script'); js.id = id; js.async = true;
-	          js.src = "//connect.facebook.net/en_US/all.js";
-	          d.getElementsByTagName('head')[0].appendChild(js);
-	        }(document));// delete below   
+            google.maps.event.addListener(map, 'idle', boundsChanged);
+        }
 
-			$( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
-			$('.head-title').tooltip('disable');
-			$('.icon-check').tooltip('disable');
-			$('.icon-check-empty').tooltip('disable');
+        function to_i(obj) {
+            return parseInt(obj);
+        }
+        $(function() {
 
-			$('.see-more-submit').click(function(){
-				$('.see-more').append('<input type="hidden" id="list_date" name="list_date" value="' + $(this).siblings('.see-more-date').val() + '" />')
-			    $('#see-events-list').submit();
-			    return false;
-			});
-	  	});
+            window.fbAsyncInit = function() {
+                console.log("Loaded FB 222");
+                FB.init({
+                    appId      : '475386955806720', // App ID
+                    status     : true, // check login status
+                    cookie     : true, // enable cookies to allow the server to access the session
+                    xfbml      : true  // parse XFBML
+                });
+            };
 
-	</script>
+            // Load the SDK Asynchronously
+            (function(d){
+                var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+                js = d.createElement('script'); js.id = id; js.async = true;
+                js.src = "//connect.facebook.net/en_US/all.js";
+                d.getElementsByTagName('head')[0].appendChild(js);
+            }(document));// delete below
+
+            $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+            $('.head-title').tooltip('disable');
+            $('.icon-check').tooltip('disable');
+            $('.icon-check-empty').tooltip('disable');
+
+            $('.see-more-submit').click(function(){
+                $('.see-more').append('<input type="hidden" id="list_date" name="list_date" value="' + $(this).siblings('.see-more-date').val() + '" />')
+                $('#see-events-list').submit();
+                return false;
+            });
+        });
+
+    </script>
 <% end %>
 
-<% content_for :header do %>
-	<div class="titlebar">
-		<div class="stay-on-target">
-			<%= render :partial => "title", :locals => { :page_action => params[:action] } %>
-		</div>
-	</div>
-<% end %>
+
 
 <% content_for :body do %>
 
-	<% def insert_day(day, d) %>
-		<div class="picklist list<%= (d % 3 == 2) ? "-left" : "" %> ">
-		<div class="list-cat-label"><%= day.to_time.strftime("%A, %B %-d") %></div>
-		   <% unless (@result.empty?) %>
-			   <% occurrences = @result.select { |b| b if (b["start"].to_date == day) }.select { |b| b if (Occurrence.find(b["id"]).trending_event == true) } %>
-			   <% occurrences = occurrences.first(4)%>
-				<ul class="picklist-events">
-		   		<% unless (occurrences.blank?) %>
-					<% occurrences.each do |occ| %>
-			   			<% unless (occ.nil?) %>
-			   				<% occurrence = Occurrence.find(occ["id"]) %>
-							<li linkto="event" link-id="<%= occ["id"] %>">
-								<img class="picture" src="<%= occ["cover_image_url"] ? occ["cover_image_url"] : "/assets/placeholder.png" %>" />
-								<div class="title"><%= occ["title"] %></div>
-								<div class="venue"><%= occ["name"] %> @ <%= occ["start"].to_time.strftime("%-l:%M%P") %></div>
-								<% picklists = occurrence.event_bookmarks.collect { |b| b.bookmark_list if (b.bookmark_list && b.bookmark_list.featured) }.compact %>
-								<% if picklists.size > 0 %>
-								<div class="picklists">
-									<% picklists.take(3).each_with_index do |pList,index| %>
-										<a href="/picks/find/<%= pList.id %>" onMouseOver="show('.event-tp-comment-<%= pList.id %>-<%= occurrence.id %>')" onMouseOut="hide('.event-tp-comment-<%= pList.id %>-<%=occurrence.id %>')" class="picklist-link"><%= image_tag pList.picture_url(:mini) || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
-										<% first_commented_occurrence = occurrence.event_bookmarks_with_comments(pList.id).first %>
-										<% if first_commented_occurrence %>
-										<% @comment_string = first_commented_occurrence.comment %>
-										<% unless @comment_string.eql?'' %>
-											<div class="event-tp-comment-<%= pList.id %>-<%=occurrence.id %> popup-comment">
-												<%=  @comment_string %>
-											</div>
-										<% end %>
-										<% end %> 
-									<% end %>
-									<em style="position: relative;top: -5px;margin-left: 2px;">on <%= picklists.size %> top picks <%= picklists.size == 1 ? "list" : "lists" %></em>
-								</div>
-								<% end %>
-							</li>
-						<% end %>
-					<% end %>
-					<form id="see-events-list">
-						<li class="see-more">
-							<input type="hidden" class="see-more-date" name="see-more-date" value="<%= day %>" />
-							<a href="" class="see-more-submit">see more </a>
-						</li>
-					</form>
-				<% end %>
-				</ul>
-			<% end %>
-		</div>
-	<% end %>
-	<div id="info-content" class="top-picks">
-		<% unless(@isFollowedLists) %>
-		<div id="list-cat-wrapper">
-			<div class="list-cat-heading">Upcoming Top Pick Events</div>
-			<div class="list-cat-label">The best events in Austin, handpicked by locals and trendsetters. <a href="/picks/trendsetters">Get to know our trendsetters</a></div>
-		</div>
+    <% def insert_day(day, d) %>
+        <!--tabs logic-->
+        <% if d == 0 %>
+            <div class="tab" id="thisweek">
+        <% elsif d == 6 %>
+            <div class="tab" id="nextweek">
+        <% end %>
 
-		<div class="picks-cats">
-			<form id="cat-select">
-			<% unless params[:list_date] %>	
-				<% if params[:cat].nil? %>
-			    	<%= check_box_tag 'cat[]', '1', true %> Live Music
-			    	<%= check_box_tag 'cat[]', '104', true %> Food/Drink
-			    	<%= check_box_tag 'cat[]', '43', true %> Fitness
-			    	<%= check_box_tag 'cat[]', '134', true %> Tech
-			    	<%= check_box_tag 'cat[]', '12', true %> Arts
-			    	<%= check_box_tag 'cat[]', '192', true %> LGBT
-			    	<%= check_box_tag 'cat[]', '87', true %> Kid-friendly
-			    	<%= check_box_tag 'cat[]', '55', true %> Romantic
-			    	<%= check_box_tag 'cat[]', '141', true %> Non-profit
-		    	<% else %>
-					<% if params[:cat].include?("1")%>
-				    	<%= check_box_tag 'cat[]', '1', true %> Live Music
-					<% else %>
-				    	<%= check_box_tag 'cat[]', '1' %> Live Music
-				    <% end %>
+        <!--current day in dark color-->
+        <% if d == 0 %>
+            <div class="current day">  <!-- Begin current day -->
+        <% else %>
+            <div class="day">    <!-- Begin day -->
+        <% end %>
 
-					<% if params[:cat].include?("104")%>
-				    	<%= check_box_tag 'cat[]', '104', true %> Food/Drink
-				    <% else %>
-				    	<%= check_box_tag 'cat[]', '104' %> Food/Drink
-				    <% end %>
+        <div class="grid-container">
+          <div class="grid-10 mobile-grid-100">
+            <div class="date">
+              <% if day.to_time.strftime("%-d") == Date.today.strftime("%-d") %>
+                  <p class="relative-day">today</p>
+              <% elsif day.to_time.strftime("%-d") == (Date.today + 1).strftime("%-d") %>
+                  <p class="relative-day tomorrow">tomorrow</p>
+              <% end %>
 
-					<% if params[:cat].include?("43") %>
-				    	<%= check_box_tag 'cat[]', '43', true %> Fitness
-				    <% else %>
-				    	<%= check_box_tag 'cat[]', '43' %> Fitness
-				    <% end %>
+              <p class="month"><%= day.to_time.strftime("%B") %></p>
+              <p class="datenumber"><%= day.to_time.strftime("%-d") %></p>
+              <p class="weekday"><%= day.to_time.strftime("%A") %></p>
+            </div>
+          </div>
 
-					<% if params[:cat].include?("134")%>
-				    	<%= check_box_tag 'cat[]', '134', true %> Tech
-				    <% else %>
-				    	<%= check_box_tag 'cat[]', '134' %> Tech
-				    <% end %>
+          <% unless (@result.empty?) %>
+              <% occurrences = @result.select { |b| b if (b["start"].to_date == day) }.select { |b| b if (Occurrence.find(b["id"]).trending_event == true) } %>
+              <% occurrences = occurrences.first(4)%>
+              <% unless (occurrences.blank?) %>
+                  <% dd = 1 %>
+                  <% occurrences.each do |occ| %>
+                      <% unless (occ.nil?) %>
+                          <% occurrence = Occurrence.find(occ["id"]) %>
+                          <% if dd == 1 || dd ==2 %>
+                              <div class="grid-35 mobile-grid-100">
+                                <div class="tag-container">
+                                  <p class="order-tag"><%= dd %></p>
+                                </div>
+                                <div class="top-event">
+                                  <a href="#" linkto="event" link-id="<%= occ["id"] %>"><img class="photo" src="<%= occ["cover_image_url"] ? occ["cover_image_url"] : "/assets/placeholder.png" %>"></a>
+                                  <div class="notes">
+                                    <p class="event-name"><a href="#" linkto="event" link-id="<%= occ["id"] %>"><%= occ["title"] %></a></p>
+                                    <p class="event-time"><%= occ["start"].to_time.strftime("%-l:%M%P") %></p>
+                                    <% picklists = occurrence.event_bookmarks.collect { |b| b.bookmark_list if (b.bookmark_list && b.bookmark_list.featured) }.compact %>
+                                    <% if picklists.size > 0 %>
+                                        <p class="event-picks">on <%= picklists.size %> top picks lists:
+                                          <% picklists.take(3).each_with_index do |pList,index| %>
+                                              <a href="/picks/find/<%= pList.id %>" onMouseOver="show('.event-tp-comment-<%= pList.id %>-<%= occurrence.id %>')" onMouseOut="hide('.event-tp-comment-<%= pList.id %>-<%=occurrence.id %>')"><%= image_tag pList.picture_url(:mini) || "/assets/picklist-placeholder.png" %></a>
+                                              <% first_commented_occurrence = occurrence.event_bookmarks_with_comments(pList.id).first %>
+                                              <% if first_commented_occurrence %>
+                                                  <% @comment_string = first_commented_occurrence.comment %>
+                                                  <% unless @comment_string.eql?'' %>
+                                                      <div class="event-tp-comment-<%= pList.id %>-<%=occurrence.id %> popup-comment">
+                                                        <%=  @comment_string %>
+                                                      </div>
+                                                  <% end %>
+                                              <% end %>
+                                          <% end %>
+                                          </p>
+                                    <% end %>
+                                    <ul class="category-container">
+                                      <li><a href="#" class="category">Fitness</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                          <% elsif dd == 3 || dd == 4 %>
+                              <div class="other-event grid-20 mobile-grid-100 grid-parent">
+                                <div class="grid-10 mobile-grid-5"><p class="order-tag"><%= dd %></p></div>
+                                <div class="grid-90 mobile-grid-95"><p class="event-name"><a href="#" linkto="event" link-id="<%= occ["id"] %>"><%= occ["title"] %></a></p></div>
+                                <div class="grid-90 mobile-grid-95 mobile-prefix-5 prefix-10">
+                                  <p class="event-time"><%= occ["start"].to_time.strftime("%-l:%M%P") %></p>
+                                  <div class="categories">
+                                    <ul class="category-container">
+                                      <li><a href="#" class="category">Non-profit</a></li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                          <% end %>
 
-					<% if params[:cat].include?("12") %>
-				    	<%= check_box_tag 'cat[]', '12', true %> Arts
-				    <% else %>
-				    	<%= check_box_tag 'cat[]', '12' %> Arts
-				    <% end %>
+                          <% dd = dd + 1 %>
+                      <% end %>
+                  <% end %>
+                  <div class="grid-20 mobile-grid-100 grid-parent">
+                    <div class="grid-90 mobile-grid-95 mobile-prefix-5 prefix-10">
+                      <a href="#" class="discovery">
+                        <p class="discover-text"><span>DISCOVER</span><br/><span>other exciting events</span></p>
+                        <p class="discover-number"><%= occurrences.size %></p>
+                      </a>
+                    </div>
+                  </div>
+              <% end %>
+          <% end %>
+        </div> <!-- End grid container -->
 
-					<% if params[:cat].include?("192") %>
-				    	<%= check_box_tag 'cat[]', '192', true %> LGBT
-				    <% else %>
-				    	<%= check_box_tag 'cat[]', '192' %> LGBT
-				    <% end %>
+        <!--end of current day in dark color-->
+        <% if d == 0 %>
+            </div> <!-- End current day -->
+        <% else %>
+            </div>  <!-- End day -->
+        <% end %>
 
-					<% if params[:cat].include?("87") %>
-				    	<%= check_box_tag 'cat[]', '87', true %> Kid-friendly
-				    <% else %>
-				    	<%= check_box_tag 'cat[]', '87' %> Kid-friendly
-				    <% end %>
+        <% if d == 5 %>
+            </div> <!-- End thisweek -->
+        <% elsif d == 11 %>
+            </div>  <!-- End nextweek -->
+        <% end %>
 
-					<% if params[:cat].include?("55") %>
-				    	<%= check_box_tag 'cat[]', '55', true %> Romantic
-				    <% else %>
-				    	<%= check_box_tag 'cat[]', '55' %> Romantic
-				    <% end %>
 
-					<% if params[:cat].include?("141") || params[:cat].empty? %>
-				    	<%= check_box_tag 'cat[]', '141', true %> Non-profit
-				    <% else %>
-				    	<%= check_box_tag 'cat[]', '141' %> Non-profit
-				    <% end %>
-				<% end %>
- 
-			    <%= submit_tag("Update Results", :class => "filter nice-button") %>
-			</form>
-			<% end %>
-		</div>
-		<% end %>
-		<% if(@isFollowedLists) %>
-			<div style="font-weight: 700;margin: 9px 0 0 11px;font-size: 16px;">List View | <a href="/picks/followed?events=true">Event View</a></div>
-		<% end %>
-		<% hidden = "style=\"display:none;\"" %>
+    <% end %>
 
-		<% if params[:list_date].nil? %> 
-			<div class='pick-cal'>
-				<% 	(0..6).each do |d| 
-						insert_day(Date.today + d.days, d)
-					end
-				%>
-			</div>
-		<% else %>
 
-			<div id="content" class="pick-content" style="margin-top:8px">
-				<div class="list-day-heading">All Picks for <%= params[:list_date].to_time.strftime("%A, %B %-d") %></div>
-				<div id="map-wrapper" style="margin-top:215px">
-					<div id="map"></div>
-				</div>
-				<div class="main">
-					<div class="inner">
-						<ul class="events">
-							<% puts params %>
-							<% occurrences = @result.select { |b| b if (b["start"].to_date == params[:list_date].to_date) }.collect {|o| Occurrence.find(o["id"])}.sort_by {|o| o.start} %>
-							<%= render :partial => "events/event_list", :locals => { :occurrences => occurrences, :list_date => params[:list_date]} %>
-						</ul>
-						<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
-					</div>
-				</div>
-			</div>
-		<% end %>
 
-	</div>
 
+    <%= render :partial => 'toolbar' %>
+
+    <% if params[:list_date].nil? %>
+        <% 	(0..11).each do |d|
+          insert_day(Date.today + d.days, d)
+        end
+        %>
+    <% end %>
+
+
+
+    <!--Old Code-->
+
+
+    <% def insert1_day(day, d) %>
+        <div class="picklist list<%= (d % 3 == 2) ? "-left" : "" %> ">
+          <div class="list-cat-label"><%= day.to_time.strftime("%A, %B %-d") %></div>
+          <% unless (@result.empty?) %>
+              <% occurrences = @result.select { |b| b if (b["start"].to_date == day) }.select { |b| b if (Occurrence.find(b["id"]).trending_event == true) } %>
+              <% occurrences = occurrences.first(4)%>
+              <ul class="picklist-events">
+                <% unless (occurrences.blank?) %>
+                    <% occurrences.each do |occ| %>
+                        <% unless (occ.nil?) %>
+                            <% occurrence = Occurrence.find(occ["id"]) %>
+                            <li linkto="event" link-id="<%= occ["id"] %>">
+                              <img class="picture" src="<%= occ["cover_image_url"] ? occ["cover_image_url"] : "/assets/placeholder.png" %>" />
+                              <div class="title"><%= occ["title"] %></div>
+                              <div class="venue"><%= occ["name"] %> @ <%= occ["start"].to_time.strftime("%-l:%M%P") %></div>
+                              <% picklists = occurrence.event_bookmarks.collect { |b| b.bookmark_list if (b.bookmark_list && b.bookmark_list.featured) }.compact %>
+                              <% if picklists.size > 0 %>
+                                  <div class="picklists">
+                                    <% picklists.take(3).each_with_index do |pList,index| %>
+                                        <a href="/picks/find/<%= pList.id %>" onMouseOver="show('.event-tp-comment-<%= pList.id %>-<%= occurrence.id %>')" onMouseOut="hide('.event-tp-comment-<%= pList.id %>-<%=occurrence.id %>')" class="picklist-link"><%= image_tag pList.picture_url(:mini) || "/assets/picklist-placeholder.png", :class => "picklist-picture" %></a>
+                                        <% first_commented_occurrence = occurrence.event_bookmarks_with_comments(pList.id).first %>
+                                        <% if first_commented_occurrence %>
+                                            <% @comment_string = first_commented_occurrence.comment %>
+                                            <% unless @comment_string.eql?'' %>
+                                                <div class="event-tp-comment-<%= pList.id %>-<%=occurrence.id %> popup-comment">
+                                                  <%=  @comment_string %>
+                                                </div>
+                                            <% end %>
+                                        <% end %>
+                                    <% end %>
+                                    <em style="position: relative;top: -5px;margin-left: 2px;">on <%= picklists.size %> top picks <%= picklists.size == 1 ? "list" : "lists" %></em>
+                                  </div>
+                              <% end %>
+                            </li>
+                        <% end %>
+                    <% end %>
+                    <form id="see-events-list">
+                      <li class="see-more">
+                        <input type="hidden" class="see-more-date" name="see-more-date" value="<%= day %>" />
+                        <a href="" class="see-more-submit">see more </a>
+                      </li>
+                    </form>
+                <% end %>
+              </ul>
+          <% end %>
+        </div>
+    <% end %>
+
+    <% if false %>
+
+        <div id="info-content" class="top-picks">
+          <% unless(@isFollowedLists) %>
+              <div id="list-cat-wrapper">
+                <div class="list-cat-heading">Upcoming Top Pick Events</div>
+                <div class="list-cat-label">The best events in Austin, handpicked by locals and trendsetters. <a href="/picks/trendsetters">Get to know our trendsetters</a></div>
+              </div>
+
+              <div class="picks-cats">
+                <form id="cat-select">
+                  <% unless params[:list_date] %>
+                      <% if params[:cat].nil? %>
+                          <%= check_box_tag 'cat[]', '1', true %> Live Music
+                          <%= check_box_tag 'cat[]', '104', true %> Food/Drink
+                          <%= check_box_tag 'cat[]', '43', true %> Fitness
+                          <%= check_box_tag 'cat[]', '134', true %> Tech
+                          <%= check_box_tag 'cat[]', '12', true %> Arts
+                          <%= check_box_tag 'cat[]', '192', true %> LGBT
+                          <%= check_box_tag 'cat[]', '87', true %> Kid-friendly
+                          <%= check_box_tag 'cat[]', '55', true %> Romantic
+                          <%= check_box_tag 'cat[]', '141', true %> Non-profit
+                      <% else %>
+                          <% if params[:cat].include?("1")%>
+                              <%= check_box_tag 'cat[]', '1', true %> Live Music
+                          <% else %>
+                              <%= check_box_tag 'cat[]', '1' %> Live Music
+                          <% end %>
+
+                          <% if params[:cat].include?("104")%>
+                              <%= check_box_tag 'cat[]', '104', true %> Food/Drink
+                          <% else %>
+                              <%= check_box_tag 'cat[]', '104' %> Food/Drink
+                          <% end %>
+
+                          <% if params[:cat].include?("43") %>
+                              <%= check_box_tag 'cat[]', '43', true %> Fitness
+                          <% else %>
+                              <%= check_box_tag 'cat[]', '43' %> Fitness
+                          <% end %>
+
+                          <% if params[:cat].include?("134")%>
+                              <%= check_box_tag 'cat[]', '134', true %> Tech
+                          <% else %>
+                              <%= check_box_tag 'cat[]', '134' %> Tech
+                          <% end %>
+
+                          <% if params[:cat].include?("12") %>
+                              <%= check_box_tag 'cat[]', '12', true %> Arts
+                          <% else %>
+                              <%= check_box_tag 'cat[]', '12' %> Arts
+                          <% end %>
+
+                          <% if params[:cat].include?("192") %>
+                              <%= check_box_tag 'cat[]', '192', true %> LGBT
+                          <% else %>
+                              <%= check_box_tag 'cat[]', '192' %> LGBT
+                          <% end %>
+
+                          <% if params[:cat].include?("87") %>
+                              <%= check_box_tag 'cat[]', '87', true %> Kid-friendly
+                          <% else %>
+                              <%= check_box_tag 'cat[]', '87' %> Kid-friendly
+                          <% end %>
+
+                          <% if params[:cat].include?("55") %>
+                              <%= check_box_tag 'cat[]', '55', true %> Romantic
+                          <% else %>
+                              <%= check_box_tag 'cat[]', '55' %> Romantic
+                          <% end %>
+
+                          <% if params[:cat].include?("141") || params[:cat].empty? %>
+                              <%= check_box_tag 'cat[]', '141', true %> Non-profit
+                          <% else %>
+                              <%= check_box_tag 'cat[]', '141' %> Non-profit
+                          <% end %>
+                      <% end %>
+
+                      <%= submit_tag("Update Results", :class => "filter nice-button") %>
+                      </form>
+                  <% end %>
+                  </div>
+          <% end %>
+          <% if(@isFollowedLists) %>
+              <div style="font-weight: 700;margin: 9px 0 0 11px;font-size: 16px;">List View | <a href="/picks/followed?events=true">Event View</a></div>
+          <% end %>
+          <% hidden = "style=\"display:none;\"" %>
+
+          <% if params[:list_date].nil? %>
+              <div class='pick-cal'>
+                <% 	(0..6).each do |d|
+                  insert1_day(Date.today + d.days, d)
+                end
+                %>
+              </div>
+          <% else %>
+
+              <div id="content" class="pick-content" style="margin-top:8px">
+                <div class="list-day-heading">All Picks for <%= params[:list_date].to_time.strftime("%A, %B %-d") %></div>
+                <div id="map-wrapper" style="margin-top:215px">
+                  <div id="map"></div>
+                </div>
+                <div class="main">
+                  <div class="inner">
+                    <ul class="events">
+                      <% puts params %>
+                      <% occurrences = @result.select { |b| b if (b["start"].to_date == params[:list_date].to_date) }.collect {|o| Occurrence.find(o["id"])}.sort_by {|o| o.start} %>
+                      <%= render :partial => "events/event_list", :locals => { :occurrences => occurrences, :list_date => params[:list_date]} %>
+                    </ul>
+                    <img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
+                  </div>
+                </div>
+              </div>
+          <% end %>
+
+        </div>
+
+    <% end %>
 
 
 <% end %>
