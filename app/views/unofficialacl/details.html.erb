@@ -106,9 +106,16 @@
         </div>
       </div>
 
+    <% if params[:type] == 'event' 
+      url = "http://www.unofficial.com/unofficialacl/event/show/" + params[:id]
+     elsif params[:type] == 'venue'
+      url = "http://www.unofficialacl.com/unofficialacl/show_venue/" + @event.venue.id.to_s
+     else
+      url = "http://www.unofficialacl.com/unofficialacl/show_artist/" + @event.acts.first.id.to_s
+     end %>
       <div class="details-social">
-        <div class="fb-like" data-href="http://www.unofficialacl.com/unofficial/details?id=<%=@event.id%>" data-width="100" data-colorscheme="dark" data-layout="button_count" data-show-faces="true" data-send="false"></div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.unofficialacl.com/unofficial/details?id=<%=@event.id%>" data-text="<%= truncate(@event.title, length: 58) %> #ACL" data-via="halfpastnow" data-count="none" style="width:65px">Tweet</a>
+        <div class="fb-like" data-href="<%= url %>" data-width="100" data-colorscheme="dark" data-layout="button_count" data-show-faces="true" data-send="false"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-url="<%= url %>" data-text="<%= truncate(@event.title, length: 58) %> #ACL" data-via="halfpastnow" data-count="none" style="width:65px">Tweet</a>
         <div id="g-plus-footer" class="g-plus" data-action="share" data-annotation="none"></div>
         <a href="//www.pinterest.com/pin/create/button/" data-pin-do="buttonBookmark" ></a>
       </div>
