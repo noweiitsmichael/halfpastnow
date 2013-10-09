@@ -4,7 +4,7 @@
 <% content_for :meta do %>
 
   <% if params[:type] == 'event' %>
-     <meta property="og:type"                 content="event"/> 
+     <meta property="og:type"                 content="halfpastnow:event"/> 
      <meta property="og:url"                  content="http://www.unofficialacl.com/unofficialacl/event/show/<%= params[:id] %>"/>
      <meta property="og:site_name"            content="unofficialacl"/>
      <meta property="og:image"                content="<%=@event.cover_image_url%>"/>
