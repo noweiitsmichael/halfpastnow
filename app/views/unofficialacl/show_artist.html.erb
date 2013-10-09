@@ -118,7 +118,7 @@
                           <% end %>
                         </div>
                         <div class="small-9 columns">
-                          <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
+                          <a href="/unofficialacl/event/show/<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
                           <% unless rec.event.description.to_s.empty? %>
                               <p> <%= strip_tags(rec.event.description) %> </p>
                           <% end %>
@@ -140,7 +140,7 @@
                           <% end %>
                         </div>
                         <div class="small-9 columns">
-                          <a href="/unofficialacl/show_event?event_id=<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
+                          <a href="/unofficialacl/event/show/<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
                           <% unless occ.event.description.to_s.empty? %>
                               <p> <%= strip_tags(occ.event.description) %> </p>
                           <% end %>

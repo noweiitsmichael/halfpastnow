@@ -18,7 +18,7 @@
       </div>
       <div class="large-3 columns ptx">
         <div class="text-rounded dark">
-              <%= text_field_tag :search,"", placeholder: "Search", "tabindex" => "2" %>
+              <%= text_field_tag :search,params[:search], placeholder: "Search", "tabindex" => "2" %>
               <%= submit_tag "",class: "search-button", "tabindex" => "6" %>
         </div>
       </div>
@@ -28,7 +28,7 @@
     <div class="wrapper row">
       <div class="large-3 small-4 columns">
         <div class="ptx prm left"><h3>Map is: </h3></div>
-        <div class="commutator off" id="map-onoff">
+        <div class="commutator on" id="map-onoff">
           <div class="is on">
             On
             <div class="is off">
@@ -73,10 +73,10 @@
               <a href="http://www.unofficialacl.com">Unofficial ACL</a>
             </li>          
             <li id="tab-anchor-2" class = <%= (params[:and_tags].include? '247') ? "current" : "" %>>
-              <%= link_to "Official Late Night Shows", search_unofficialacl_index_path(tags: "Official Late Night Shows"), method: :post %>
+              <%= link_to "Official Late Night Shows", unofficialacl_search_path(tags: "Official Late Night Shows"), method: :post %>
             </li>
             <li  id="tab-anchor-1" class = <%= (params[:and_tags].include? '230') ? "current" : "" %>>
-              <%= link_to "Official ACL", search_unofficialacl_index_path(tags: "Official ACL"), method: :post %>
+              <%= link_to "Official ACL", unofficialacl_search_path(tags: "Official ACL"), method: :post %>
             </li>
             <li id="tab-anchor-4" class = <%= (params[:and_tags].include? '15') ? "current" : "" %>>
               <a href="http://unofficialacl.wordpress.com">Local Recommendations</a>
@@ -89,12 +89,17 @@
         <div class="small-navbar-note">Show me events with:</div>
         <div id="small-navbar">
           <ul>
-            <li class="filter"><%= link_to "Free drinks", search_unofficialacl_index_path(tags: "Free drinks"), method: :post, class: (params[:and_tags].include? '256') ? "active" : "" %></li>
-            <li class="filter"><%= link_to "party", search_unofficialacl_index_path(tags: "party"), method: :post, class: (params[:and_tags].include? '253') ? "active" : "" %></li>
-            <li class="filter"><%= link_to "no cover", search_unofficialacl_index_path(tags: "no cover"), method: :post, class: (params[:and_tags].include? '254') ? "active" : "" %></li>
-            <li class="filter"><%= link_to "RSVP", search_unofficialacl_index_path(tags: "RSVP"), method: :post, class: (params[:and_tags].include? '255') ? "active" : "" %></li>
+            <li class="filter"><%= link_to "Free drinks", unofficialacl_search_path(tags: "Free drinks"), method: :post, class: (params[:and_tags].include? '256') ? "active" : "" %></li>
+            <li class="filter"><%= link_to "party", unofficialacl_search_path(tags: "party"), method: :post, class: (params[:and_tags].include? '253') ? "active" : "" %></li>
+            <li class="filter"><%= link_to "no cover", unofficialacl_search_path(tags: "no cover"), method: :post, class: (params[:and_tags].include? '254') ? "active" : "" %></li>
+            <li class="filter"><%= link_to "RSVP", unofficialacl_search_path(tags: "RSVP"), method: :post, class: (params[:and_tags].include? '255') ? "active" : "" %></li>
           </ul>
         </div>
       </div>
     </div>
 </div>
+
+<style>
+    .select-search{display: none}
+</style>
+
