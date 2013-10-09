@@ -4,21 +4,21 @@
 <% content_for :meta do %>
 
   <% if params[:type] == 'event' %>
-     <meta property="og:type"                 content="unofficialacl:event"/> 
+     <meta property="og:type"                 content="event"/> 
      <meta property="og:url"                  content="http://www.unofficialacl.com/unofficialacl/event/show/<%= params[:id] %>"/>
      <meta property="og:site_name"            content="unofficialacl"/>
      <meta property="og:image"                content="<%=@event.cover_image_url%>"/>
      <meta property="og:title"                content="<%=@event.title%> on unofficialacl.com">
      <meta property="og:description"          content="<%=strip_tags(@event.description)%>"/> 
   <% elsif params[:type] == 'venue' %>
-     <meta property="og:type"                 content="unofficial:venue"/> 
+     <meta property="og:type"                 content="venue"/> 
      <meta property="og:url"                  content="http://www.unofficialacl.com/unofficialacl/show_venue/<%= @venue.id%>"/>
      <meta property="og:site_name"            content="unofficialacl"/>
      <meta property="og:image"                content="<%=@venue.pictures.first ? @venue.pictures.first.image_url(:large) : ""%>"/>
      <meta property="og:title"                content="<%=@venue.name%> on unofficialacl.com">
      <meta property="og:description"          content="<%=strip_tags(@venue.description)%>"/> 
   <% else %>
-     <meta property="og:type"                 content="unofficial:artist"/> 
+     <meta property="og:type"                 content="artist"/> 
      <meta property="og:url"                  content="http://www.unofficialacl.com/unofficialacl/show_artist/<%= @acts.first.id%>"/>
      <meta property="og:site_name"            content="unofficialacl"/>
      <meta property="og:image"                content="<%=@acts.first.pictures.first ? @acts.first.pictures.first.image_url(:large) : ""%>"/>
