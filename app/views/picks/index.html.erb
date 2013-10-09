@@ -205,6 +205,8 @@
             <div class="tab" id="thisweek">
         <% elsif d == 6 %>
             <div class="tab" id="nextweek">
+        <% elsif d == 12 %>
+            <div class="tab" id="nextweekend">
         <% end %>
 
         <!--current day in dark color-->
@@ -311,6 +313,8 @@
             </div> <!-- End thisweek -->
         <% elsif d == 11 %>
             </div>  <!-- End nextweek -->
+        <% elsif d == 17 %>
+            </div>  <!-- End nextweekend -->
         <% end %>
 
 
@@ -320,14 +324,33 @@
 
 
     <%= render :partial => 'toolbar' %>
+    <section class="theevents">
+      <div class="toolbar">
+        <div class="grid-container">
+          <div class="grid-50 mobile-grid-50">
+            <ul class="tabNavigation">
+              <li><a href="#thisweek">This Weekend</a></li>
+              <li><a href="#nextweek">Next Week</a></li>
+              <li><a href="#nextweekend">Next Weekend</a></li>
+            </ul>
+            <!--<p class="icon" id="show-calendar">-->
+              <!--<img class="calendar-image" src="/assets/icon-calendar-image.png" alt="See calendar"/>-->
+            <!--</p>-->
+          </div>
+          <div class="grid-50 mobile-grid-50">
+            <p class="tagline">Check our our upcoming Top Pick events below.</p>
+          </div>
+        </div>
+      </div>
 
     <% if params[:list_date].nil? %>
-        <% 	(0..11).each do |d|
+        <% 	(0..17).each do |d|
           insert_day(Date.today + d.days, d)
         end
         %>
     <% end %>
-
+    </section>
+    <%= render :partial => 'layouts/new_footer' %>
 
 
     <!--Old Code-->
@@ -499,6 +522,12 @@
         </div>
 
     <% end %>
+
+    <style>
+        #header {
+            position: relative;
+        }
+    </style>
 
 
 <% end %>
