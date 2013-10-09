@@ -1,3 +1,11 @@
+<% content_for :meta do %>
+  <meta property="og:type"                 content="website"/> 
+  <meta property="og:url"                  content="http://www.unofficialacl.com"/> 
+  <meta property="og:image"                content="http://www.unofficial.com/assets/acl/layout/logo-glow.png"/>
+  <meta property="og:title"                content="Unofficial ACL | Your Unofficial ACL events resource"/>
+  <meta property="og:description"          content="Find out about unofficial and official ACL events"/> 
+<% end %>
+
 <%# params[:included_tags] = params[:included_tags].present? ? params[:included_tags] : '25'   %>
 <% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : '232'   %>
 
@@ -28,7 +36,7 @@
     <div class="wrapper row">
       <div class="large-3 small-4 columns">
         <div class="ptx prm left"><h3>Map is: </h3></div>
-        <div class="commutator on" id="map-onoff">
+        <div class="commutator <%= (params[:and_tags].include? '247') ? "on" : "off" %>" id="map-onoff">
           <div class="is on">
             On
             <div class="is off">

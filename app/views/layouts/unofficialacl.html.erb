@@ -2,11 +2,9 @@
 <html lang="en-US">
 <head>
   <meta charset="UTF-8">
-  <meta property="og:type"                 content="website"/> 
-  <meta property="og:url"                  content="http://www.unofficialacl.com"/> 
-  <meta property="og:image"                content="http://www.unofficial.com/assets/acl/layout/logo-glow.png"/>
-  <meta property="og:title"                content="Unofficial ACL | Your Unofficial ACL events resource"/>
-  <meta property="og:description"          content="Find out about unofficial and official ACL events"/> 
+
+  <%= yield :meta %>
+
   <meta name="viewport" content="user-scalable=no, width=device-width, minimum-scale=1, maximum-scale=1">
   <title>Unofficial ACL - Best events and venues around Austin</title>
   <%= stylesheet_link_tag    "acl/grid.css" %>

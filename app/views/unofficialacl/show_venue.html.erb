@@ -1,14 +1,23 @@
+
+
 <%# params[:included_tags] = params[:included_tags].present? ? params[:included_tags] : '25'   %>
 <% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : '232'   %>
 
-
+<% content_for :meta do %>
+     <meta property="og:type"                 content="unofficial:venue"/> 
+     <meta property="og:url"                  content="http://www.unofficialacl.com/unofficialacl/show_venue/<%= @venue.id%>"/>
+     <meta property="og:site_name"            content="unofficialacl"/>
+     <meta property="og:image"                content="<%=@venue.pictures.first ? @venue.pictures.first.image_url(:large) : ""%>"/>
+     <meta property="og:title"                content="<%=@venue.name%> on unofficialacl.com">
+     <meta property="og:description"          content="<%=strip_tags(@venue.description)%>"/> 
+<% end %>
     <div id="sticker">
       <div class="pink-banner">
         <div class="wrapper row">
           <div class="large-9 columns">
             <a class="callout" tabindex="1" href="http://www.halfpastnow.com">
               <img src="/assets/acl/layout/hpn-marker.png">
-              <p>Sponsored: See all of Austin's <span class="rotate">Live Music, Happy Hour, Outdoor, Fitness, Business, Tech, Arts, Exhibition</span> events at halfpastnow.com!</p>
+              <p>Sponsored: See all of Austin <span class="rotate">Live Music, Happy Hour, Outdoor, Fitness, Business, Tech, Arts, Exhibition</span> events at halfpastnow.com!</p>
             </a>
 
             <div class="comments">
