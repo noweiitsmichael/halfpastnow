@@ -1,13 +1,18 @@
-<% content_for :header do %>
-	<div class="titlebar">
+<style>
+    #header {
+        position: relative;
+    }
+</style>
+<%# content_for :header do %>
+	<!--<div class="titlebar">
 		<div class="stay-on-target">
-			<span><%= yield :mode_title %></span>
+			<span><%#= yield :mode_title %></span>
 		</div>
-	</div>
-	
-<% end %>
+	</div> -->
+
+<%# end %>
 <% content_for :body do %>
-	<div id="mode-content">
+	<div id="mode-content" style="margin: 185px auto 0;">
 		<div class="mode <%= @modeType %>" style="display:block;">
 			<div class="window" style="z-index:1;padding:12px;margin-top:-52px;margin-left:-12px;">
 				<%= yield :mode_body %>
@@ -15,4 +20,6 @@
 		</div>
 	</div>
 <% end %>
-<%= render :template => 'layouts/application' %>
+
+<%#= render :template => 'layouts/application' %>
+<%= render :template => 'layouts/new_design' %>

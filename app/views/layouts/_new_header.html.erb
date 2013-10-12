@@ -10,7 +10,7 @@
           <p class="menu-tagline">See the best selections from our Trendsetters team</p>
         </div>
         <div>
-          <p><a class="menuitem <%= params[:controller] == "events" && params[:action] != "sxsw" ? "current-page" : "" %>" href="/search">Search</a></p>
+          <p><a class="menuitem <%= params[:controller] == "events" && params[:action] == "index" ? "current-page" : "" %>" href="/search">Search</a></p>
           <p class="menu-tagline">We have Austn's most comprehensive database</p>
         </div>
         <div>

@@ -245,7 +245,8 @@
                                   <p class="order-tag"><%= dd %></p>
                                 </div>
                                 <div class="top-event">
-                                  <a href="#" linkto="event" link-id="<%= occ["id"] %>"><img class="photo" src="<%= occ["cover_image_url"] ? occ["cover_image_url"] : "/assets/placeholder.png" %>"></a>
+                                  <!--<a href="#" linkto="event" link-id="<%#= occ["id"] %>"><img class="photo" src="<%#= occ["cover_image_url"] ? occ["cover_image_url"] : "/assets/placeholder.png" %>"></a>-->
+                                  <a target="_default" href="/events/show/<%= occ["id"] %>?fullmode=true"><img class="photo" src="<%= occ["cover_image_url"] ? occ["cover_image_url"] : "/assets/placeholder.png" %>"></a>
                                   <div class="notes">
                                     <p class="event-name"><a href="#" linkto="event" link-id="<%= occ["id"] %>"><%= occ["title"] %></a></p>
                                     <p class="event-time"><%= occ["start"].to_time.strftime("%-l:%M%P") %></p>
@@ -275,7 +276,7 @@
                           <% elsif dd == 3 || dd == 4 %>
                               <div class="other-event grid-20 mobile-grid-100 grid-parent">
                                 <div class="grid-10 mobile-grid-5"><p class="order-tag"><%= dd %></p></div>
-                                <div class="grid-90 mobile-grid-95"><p class="event-name"><a href="#" linkto="event" link-id="<%= occ["id"] %>"><%= occ["title"] %></a></p></div>
+                                <div class="grid-90 mobile-grid-95"><p class="event-name"><a target="_default" href="/events/show/<%= occ["id"] %>?fullmode=true"><%= occ["title"] %></a></p></div>
                                 <div class="grid-90 mobile-grid-95 mobile-prefix-5 prefix-10">
                                   <p class="event-time"><%= occ["start"].to_time.strftime("%-l:%M%P") %></p>
                                   <div class="categories">
