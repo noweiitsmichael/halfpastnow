@@ -2067,11 +2067,11 @@ def FacebookLogin
                     ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
                   END DESC"
     elsif ( params[:sort].to_i == 1)
-       order_by = "occurrences.start  ASC"
+       order_by = "occurrences.start"
     elsif (params[:sort].to_i == 2) # Distance
        order_by = "ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(0.0174532925*#{longitude}-0.0174532925*venues.longitude)  ) ASC"
     elsif (params[:sort].to_i == 3)
-         order_by = "events.price ASC"
+         order_by = "events.price"
                    
     end
     tmp ="0"
