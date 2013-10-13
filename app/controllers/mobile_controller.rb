@@ -2071,7 +2071,7 @@ def FacebookLogin
     elsif (params[:sort].to_i == 2) # Distance
        order_by = "ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(0.0174532925*#{longitude}-0.0174532925*venues.longitude)  ) ASC"
     elsif (params[:sort].to_i == 3)
-         order_by = "events.price"
+         order_by = "events.price.to_f"
                    
     end
     tmp ="0"
