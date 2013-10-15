@@ -76,6 +76,8 @@ gem 'dalli'
 # Email via mandrill
 gem 'mandrill-api'
 
+gem 'quiet_assets'
+
 # gem 'eventfulapi'
 # gem 'eventbrite-client'
 

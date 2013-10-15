@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  layout "new_design"
+  #layout "new_design"
   before_filter :authenticate_user!
   # GET /users
   # GET /users.json
@@ -113,7 +113,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @bookmark_list=BookmarkList.where(:user_id => @user.id, :main_bookmarks_list => true).first
     @bookmarks = @bookmark_list.all_bookmarked_events.select{|b| (not b.event.nil? ) }
-    
+
     puts @bookmarks
     respond_to do |format|
       format.html # show.html.erb
@@ -163,7 +163,7 @@ class UsersController < ApplicationController
       @venuesList << {'name' => v.name, 'address' => v.address, 'id' => v.id,
                       'num_events' => v.events.select { |oc| oc.nextOccurrence ? (oc.nextOccurrence.start > Time.now) : nil}.sort_by { |event| event.nextOccurrence ? event.nextOccurrence.start : DateTime.new(1970,1,1) }.count,
                       'num_raw_events' => v.raw_venues.collect { |rv| rv.raw_events }.flatten.select{ |re| !(re.deleted || re.submitted) && re.start > Time.now && re.start < 2.months.from_now }.count}
-    end    
+    end
 
     respond_to do |format|
       format.json { render json: @venuesList }
@@ -196,23 +196,23 @@ class UsersController < ApplicationController
     case params[:daterange]
       when "24-hours"
         @usersList.each do |u|
-          @array << [u.firstname + " " + u.lastname, 
+          @array << [u.firstname + " " + u.lastname,
                      Event.find(:all, :conditions => ["(user_id = ?) AND (updated_at > ?)", u.id, 24.hours.ago]).count,
                      Venue.find(:all, :conditions => ["(updated_by = ?) AND (updated_at > ?)", u.id, 24.hours.ago]).count,
                      Act.find(:all, :conditions => ["(updated_by = ?) AND (updated_at > ?)", u.id, 24.hours.ago]).count]
         end
-        
+
       when "yesterday"
         @usersList.each do |u|
-          @array << [u.firstname + " " + u.lastname, 
+          @array << [u.firstname + " " + u.lastname,
                      Event.find(:all, :conditions => {:user_id => u.id, :updated_at => Date.today-1...Date.today}).count,
                      Venue.find(:all, :conditions => {:updated_by => u.id, :updated_at => Date.today-1...Date.today}).count,
                      Act.find(:all, :conditions => {:updated_by => u.id, :updated_at => Date.today-1...Date.today}).count]
         end
 
-      when "this-week" 
+      when "this-week"
         @usersList.each do |u|
-          @array << [u.firstname + " " + u.lastname, 
+          @array << [u.firstname + " " + u.lastname,
                      Event.find(:all, :conditions => {:user_id => u.id, :updated_at => Time.now.beginning_of_week...Date.today+1}).count,
                      Venue.find(:all, :conditions => {:updated_by => u.id, :updated_at => Time.now.beginning_of_week...Date.today+1}).count,
                      Act.find(:all, :conditions => {:updated_by => u.id, :updated_at => Time.now.beginning_of_week...Date.today+1}).count]
@@ -220,7 +220,7 @@ class UsersController < ApplicationController
 
       when "7-days"
         @usersList.each do |u|
-          @array << [u.firstname + " " + u.lastname, 
+          @array << [u.firstname + " " + u.lastname,
                      Event.find(:all, :conditions => ["(user_id = ?) AND (updated_at > ?)", u.id, 168.hours.ago]).count,
                      Venue.find(:all, :conditions => ["(updated_by = ?) AND (updated_at > ?)", u.id, 168.hours.ago]).count,
                      Act.find(:all, :conditions => ["(updated_by = ?) AND (updated_at > ?)", u.id, 168.hours.ago]).count]
@@ -228,7 +228,7 @@ class UsersController < ApplicationController
 
       when "last-week"
         @usersList.each do |u|
-          @array << [u.firstname + " " + u.lastname, 
+          @array << [u.firstname + " " + u.lastname,
                      Event.find(:all, :conditions => {:user_id => u.id, :updated_at => Time.now.prev_week...Time.now.beginning_of_week}).count,
                      Venue.find(:all, :conditions => {:updated_by => u.id, :updated_at => Time.now.prev_week...Time.now.beginning_of_week}).count,
                      Act.find(:all, :conditions => {:updated_by => u.id, :updated_at => Time.now.prev_week...Time.now.beginning_of_week}).count]
@@ -236,7 +236,7 @@ class UsersController < ApplicationController
 
       when "all-time"
         @usersList.each do |u|
-          @array << [u.firstname + " " + u.lastname, 
+          @array << [u.firstname + " " + u.lastname,
                      Event.where(:user_id => u.id).count,
                      Venue.where(:updated_by => u.id).count,
                      Act.where(:updated_by => u.id).count]
@@ -262,7 +262,7 @@ class UsersController < ApplicationController
 
     if current_user.followedLists << list
       render :json => { :success => true }
-    else 
+    else
       render :json => { :success => false, :error => "Unable to follow list." }
     end
   end
@@ -276,7 +276,7 @@ class UsersController < ApplicationController
 
     if current_user.followedLists.delete(list)
       render :json => { :success => true }
-    else 
+    else
       render :json => { :success => false, :error => "Unable to follow list." }
     end
   end
@@ -288,7 +288,7 @@ class UsersController < ApplicationController
       bookmark_list=BookmarkList.where(:user_id => friend.id, :main_bookmarks_list => true).first
       bms = bookmark_list.all_bookmarked_events
       @bookmarks << bms.flatten
-     
+
     }
     @bookmarks = @bookmarks.flatten
     puts "Inside bookmarks"
@@ -296,7 +296,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }
-    end 
+    end
   end
 
   def friends
@@ -306,7 +306,7 @@ class UsersController < ApplicationController
       # puts "FB User !!!!!"
       query ="select uid, name from user where is_app_user = 1 and uid in (SELECT uid2 FROM friend WHERE uid1 = me())"
       begin
-      @facebook ||= Koala::Facebook::API.new(current_user.fb_access_token) 
+      @facebook ||= Koala::Facebook::API.new(current_user.fb_access_token)
       rescue
         redirect_to new_user_registration_url
       end
@@ -315,7 +315,7 @@ class UsersController < ApplicationController
       @myfriends = current_user.friends
       @fs = @myfriends.collect{|f| f.uid.to_s}
       uids = @f.collect{|p| p["uid"].to_s}
-     
+
       # puts ufs
       # puts uids
       ufs = uids - @fs
@@ -325,46 +325,46 @@ class UsersController < ApplicationController
       if urs.size > 0
         urs.each{|ur|
           friendship= current_user.friendships.build(:friend_id => ur.id)
-          friendship.save!  
-        }  
+          friendship.save!
+        }
       end
     end
     @myfriends = current_user.friends
     puts "end inquring"
     respond_to do |format|
       format.html { render action: "friends" }
-      
+
     end
   end
 
   def unsubscribe
-    
+
     e=Email.find_by_email(params[:email])
     unless e.nil?
-      e.destroy 
+      e.destroy
       user =  User.find_by_email(params[:email])
       unless user.nil?
         channel = Channel.find(user.ref.to_i)
         channel.included_tags=""
-        channel.save   
+        channel.save
       end
-     
-     
+
+
     end
-    
-    
+
+
   end
 
   # def friends
   #   puts "Check friends"
   #   @myfriends = []
   #   unless current_user.uid.nil?
-  #     @myfriends = current_user.friends 
+  #     @myfriends = current_user.friends
   #   end
-    
+
   #   respond_to do |format|
   #     format.html { render action: "friends" }
-      
+
   #   end
   # end
 
@@ -382,19 +382,19 @@ class UsersController < ApplicationController
   #     # puts ufs
   #     # puts uids
   #     ufs.each{|uf|
-         
-        
+
+
   #        unless @fs.include? uf
   #         friendship= current_user.friendships.build(:friend_id => uf.id)
-  #         friendship.save!   
+  #         friendship.save!
   #        end
-         
+
   #     }
   #   end
   #   @myfriends = current_user.friends
   #   respond_to do |format|
   #     format.html { render action: "friends" }
-      
+
   #   end
   # end
 
