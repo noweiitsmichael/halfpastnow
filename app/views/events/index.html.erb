@@ -319,27 +319,73 @@
 <% end %>
 <% content_for :body do %>
 
-<section class="search">
+         <span class="filter-toggle date">
+							<span class="filter-text">Today</span>
+							  <div class="filter-dropdown" id="filter-toggle1">
+                <div class="filter-inner">
+                  <div class="filter date">
+                      <div class="custom-select">
+                        <span class="icon icon-calendar"></span><input type="text" class="custom-start"/> to <span class="icon icon-calendar"></span><input type="text" class="custom-end"/>
+                      </div>
+
+                  </div>
+                </div>
+              </div>
+						</span>
+
+
+  <section class="search">
   <div class="tabs">
     <div class="container">
       <ul class="nav nav-tabs" id="search-tab">
         <li class=""><a data-toggle="tab" href="#events">Events</a></li>
         <% if user_signed_in? %>
       <% @saved_search.each do |search| %>
-        <li class=""><a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" key="<%= search[:search_key] %>"><%= search[:search_key] %> <i class='icon-white-pin icon-remove'></i></a></li>
+        <li class=""><a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" key="<%= search[:search_key] %>"><%= search[:search_key] %> <i class='icon-remove'></i></a></li>
           <% end %>
           <% end %>
       </ul>
     </div>
     <div class="tab-content">
       <div id="events" class="tab-pane fade in active">
-        <div class="sort-panel">
+        <div class="sort-panel filter-toggle price date">
           <div class="container">
-            <a href="#" class="sort-item filter-toggle date"><i class="icon-bottom-arrow"></i>Date</a>
+            <a href="#" class="sort-item"><span class="filter-text" id="filter-text1"><i class="icon-bottom-arrow"></i>Date</span></a>
 
             <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Time</a>
-            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Cost</a>
+           <a href="#" class="sort-item"><span class="filter-text" id="filter-text2"><i class="icon-bottom-arrow"></i>Cost</span></a>
+
             <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Area</a>
+          </div>
+          <div class="filter-dropdown" id="filter-toggle2">
+            <div class="filter-inner">
+              <div class="price-free-button nice-button">Free</div>
+              <div class="col-2">
+                <div class="price-range"></div>
+                <div class="price-range-hashes">
+                  <div>5</div>
+                  <div>10</div>
+                  <div>15</div>
+                  <div>20</div>
+                  <div>25</div>
+                  <div>30</div>
+                  <div>35</div>
+                  <div>40</div>
+                  <div>45</div>
+                </div>
+                <div class="price-display">any price</div>
+              </div>
+            </div>
+          </div>
+          <div class="filter-dropdown" id="filter-toggle1">
+            <div class="filter-inner">
+              <div class="filter date">
+                <div class="custom-select">
+                  <span class="icon icon-calendar"></span><input type="text" class="custom-start"/> to <span class="icon icon-calendar"></span><input type="text" class="custom-end"/>
+                </div>
+
+              </div>
+            </div>
           </div>
         </div>
         <div class="content main">
@@ -356,12 +402,32 @@
         </div>
       </div>
       <div id="related_events" class="tab-pane fade">
-        <div class="sort-panel">
+        <div class="sort-panel filter-toggle price">
           <div class="container">
             <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Date</a>
             <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Time</a>
-            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Cost</a>
+            <a href="#" class="sort-item"><span class="filter-text"><i class="icon-bottom-arrow"></i>Cost</span></a>
             <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Area</a>
+          </div>
+          <div class="filter-dropdown">
+            <div class="filter-inner">
+              <div class="price-free-button nice-button">Free</div>
+              <div class="col-2">
+                <div class="price-range"></div>
+                <div class="price-range-hashes">
+                  <div>5</div>
+                  <div>10</div>
+                  <div>15</div>
+                  <div>20</div>
+                  <div>25</div>
+                  <div>30</div>
+                  <div>35</div>
+                  <div>40</div>
+                  <div>45</div>
+                </div>
+                <div class="price-display">any price</div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="content main">
@@ -373,6 +439,7 @@
             </section>
           </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -389,13 +456,11 @@
         })
         $('.dropdown-menu a').click(function(){
           $(".active").attr('class', '.active');
-          $('#search-tab').append("<li class='active'><a data-toggle='tab' href='#related_events' key="+$(this).text().replace(" ","_")+">"+$(this).text()+" <i class='icon-white-pin icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
+          $('#search-tab').append("<li class='active'><a data-toggle='tab' href='#related_events' key="+$(this).text().replace(" ","_")+">"+$(this).text()+" <i class='icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
           $('.icon-remove').on("click",function(){
             $(this).parents('li').remove()
           })
           $('#search_name').text($(this).text())
-
-
             console.log($(this).text())
             doneTyping1($(this).text());
           $('#search-tab a').on("click", function () {
@@ -409,7 +474,7 @@
 
             if($("#appendedInput").val().length >= 3){
               $(".active").attr('class', '.active');
-            $('#search-tab').append("<li class='active'><a data-toggle='tab' href='#related_events' key="+$("#appendedInput").val()+">"+$("#appendedInput").val()+" <i class='icon-white-pin icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
+            $('#search-tab').append("<li class='active'><a data-toggle='tab' href='#related_events' key="+$("#appendedInput").val()+">"+$("#appendedInput").val()+" <i class='icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
               <% if user_signed_in? %>
               $('.icon-remove').on("click",function(){
                 $(this).parents('li').remove()
@@ -423,7 +488,6 @@
               <% else %>
             $('.icon-remove').on("click",function(){
                 $(this).parents('li').remove()
-
             })
               <% end %>
               $('.icon-ok-sign').on("click",function(){
@@ -436,6 +500,10 @@
                   check.attr('key_id', data["key_id"]);
 
                 })
+                window.open(
+                  'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+                  'facebook-share-dialog',
+                  'width=626,height=436');
                 <% end %>
             })
             }
@@ -445,10 +513,20 @@
             $('#search_name').text($(this).text())
           });
         })
+        url = window.location.href
+        if(url.contains('key:')){
+          $(".active").attr('class', '.active');
+
+          key_array = $.trim(decodeURI(url)).split("key:");
+          key_value = key_array[1];
+          $("a:contains("+key_value+")").parent('li').addClass('active').click()
+          doneTyping1(key_value);
+          $('#search_name').text(key_value)
+        }
+        $('.filter-dropdown').hide()
     </script>
 
 <% end %>
-
 
 
 

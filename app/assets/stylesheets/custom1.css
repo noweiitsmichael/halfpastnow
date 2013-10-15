@@ -430,3 +430,9 @@ footer .footer-tap .popover{
 }
 .popover ul li:last-child{border-bottom:none;}
 .popover ul li a{color:#777777;}
+.filter-dropdown {
+  background: none repeat scroll 0 0 #FF0000;
+  left: 30%;
+  position: relative;
+  top: 20px;
+}

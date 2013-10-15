@@ -496,6 +496,7 @@ $(function () {
   //on keyup, start the countdown
 
   $('.search-input').keyup(function () {
+    $(".active").attr('class', '.active');
     if (!timer_is_on) {
       timer_is_on = 1;
       if ($(this).val().length >= 3) {
@@ -518,25 +519,50 @@ $(function () {
 
 
   var slideTime = 0;
-  $('.filter-toggle:not(.search):not(.filter-action) .filter-text').click(function (event) {
-
+  $('.filter-toggle:not(.search):not(.filter-action) #filter-text2').click(function (event) {
     var thisToggle = $(this).parents('.filter-toggle');
-
+    console.log(thisToggle+"---------------->this toggle")
     var otherToggled = thisToggle.siblings('.filter-toggle.selected');
-
-    otherToggled.find('.filter-dropdown').slideUp(slideTime, function () {
+    console.log(otherToggled+"---------------->other toggle")
+    otherToggled.find('#filter-toggle12').slideUp(slideTime, function () {
+      console.log("one")
       otherToggled.removeClass('selected');
     });
-
     if (thisToggle.hasClass('selected')) {
+      console.log("two")
       // $('#header').removeClass('selected');
-      thisToggle.find('.filter-dropdown').slideUp(slideTime, function () {
+      thisToggle.find('#filter-toggle2').slideUp(slideTime, function () {
         thisToggle.removeClass('selected');
       });
     } else {
+      console.log("three")
       // $('#header').addClass('selected');
       thisToggle.addClass('selected');
-      thisToggle.find('.filter-dropdown').slideDown(slideTime);
+      thisToggle.find('#filter-toggle2').slideDown(slideTime);
+    }
+  });
+
+
+  $('.filter-toggle:not(.search):not(.filter-action) #filter-text1').click(function (event) {
+    var thisToggle = $(this).parents('.filter-toggle');
+    console.log(thisToggle+"---------------->this toggle")
+    var otherToggled = thisToggle.siblings('.filter-toggle.selected');
+    console.log(otherToggled+"---------------->other toggle")
+    otherToggled.find('#filter-toggle11').slideUp(slideTime, function () {
+      console.log("one")
+      otherToggled.removeClass('selected');
+    });
+    if (thisToggle.hasClass('selected')) {
+      console.log("two")
+      // $('#header').removeClass('selected');
+      thisToggle.find('#filter-toggle1').slideUp(slideTime, function () {
+        thisToggle.removeClass('selected');
+      });
+    } else {
+      console.log("three")
+      // $('#header').addClass('selected');
+      thisToggle.addClass('selected');
+      thisToggle.find('#filter-toggle1').slideDown(slideTime);
     }
   });
 
@@ -989,6 +1015,8 @@ function doneTyping() {
 function doneTyping1(search) {
   filter.search = search;
   pullEvents({update_search: false});
+
+  window.location.hash = "key:"+search;
 }
 
 var boundsChangedFlag = false;
