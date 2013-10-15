@@ -2213,7 +2213,7 @@ input::-webkit-input-placeholder
 
 .mode .window {
   overflow: hidden;
-  width: 990px; margin: 24px auto; 
+  width: 990px; margin: 24px auto;
   background: white;  position: relative; z-index: 1000;
 }
 
@@ -2222,7 +2222,7 @@ input::-webkit-input-placeholder
   background:white;
 }
 
-.mode .window.lite .field-selector { 
+.mode .window.lite .field-selector {
     float:left;
     clear:left;
     margin-right: 13px;
@@ -2419,19 +2419,19 @@ input::-webkit-input-placeholder
 }
 
 .mode .window .h1under {
-  position: absolute; 
-  border-bottom: 10px solid transparent; 
-  border-top: 10px solid transparent; 
+  position: absolute;
+  border-bottom: 10px solid transparent;
+  border-top: 10px solid transparent;
   top: 50px;
 }
 
 .mode .window .h1under.left {
-  border-right: 15px solid rgb(0, 0, 0); 
-  left: -15px; 
+  border-right: 15px solid rgb(0, 0, 0);
+  left: -15px;
 }
 
 .mode .window .h1under.right {
-  border-left: 15px solid rgb(0, 0, 0); 
+  border-left: 15px solid rgb(0, 0, 0);
   right: -15px;
 }
 
@@ -2618,7 +2618,7 @@ text-decoration: none;
 }
 .mode .window .bookmark-share span.add-tp {
     background-color: #444;
-    
+
     color: white;
     font-size: 16px;
     height: 26px;
@@ -2639,11 +2639,11 @@ text-decoration: none;
 }
 
 .mode .window .bookmark-share .comment-tp {
-    
+
     display:inline-block;
     position:relative;
 }
-.mode .window .bookmark-share .comment-tp .popup-box, 
+.mode .window .bookmark-share .comment-tp .popup-box,
 .mode .window .bookmark-share .comment-tp .popup-box-1 {
     display:none;
     position:absolute;
@@ -2657,7 +2657,7 @@ text-decoration: none;
 .mode .window .bookmark-share .comment-tp .popup-box label {
    font-size: 16px;
    color:white;
-   margin-left:10px; 
+   margin-left:10px;
 }
 .mode .window .bookmark-share .comment-tp .popup-box button {
     margin-right:10px;
@@ -2667,14 +2667,14 @@ text-decoration: none;
 .mode .window .bookmark-share .comment-tp .popup-box-1 label {
    font-size: 16px;
    color:white;
-   margin-left:10px; 
+   margin-left:10px;
 }
 
-.mode .window .bookmark-share .comment-tp .popup-box textarea, 
+.mode .window .bookmark-share .comment-tp .popup-box textarea,
 .mode .window .bookmark-share .comment-tp .popup-box-1 textarea {
    color:white;
    margin-left:10px;
-   width:270px; 
+   width:270px;
    height: 100px;
 }
 
@@ -2708,7 +2708,7 @@ text-decoration: none;
 }
 
 .mode .window .menu {
-  clear:both; 
+  clear:both;
 }
 
 .mode .window .menu .tabs ul {

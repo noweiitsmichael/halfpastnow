@@ -396,6 +396,7 @@ $(function () {
   $('.custom-start, .custom-end').datepicker("setDate", Date.today().toString("MM/dd/yyyy"));
 
   $(".price-range").slider({
+
     range: "min",
     min: 0,
     step: 5,
@@ -403,6 +404,7 @@ $(function () {
     max: MAX_PRICE,
     value: MAX_PRICE,
     slide: function (event, ui) {
+
       filter.low_price = "";
       filter.high_price = (ui.value === MAX_PRICE) ? "" : ui.value;
       updateViewFromFilter(false);
@@ -1066,9 +1068,11 @@ function pullEvents(updateOptions) {
       infiniteScrolling = false;
     } else {
       //$('.tab-content').append("<div id="+ filter["search"] +" class='tab-pane fade'><div class='content main'><div class='container inline'><section class='product-list clearfix events'></section></div></div></div>")
-      //console.log(data)
-
+      console.log(data)
+        $(".total_number").text($(data).length)
       $("#related_events .main .inline .events").html(data);
+      $("#events .main .inline .events").html(data);
+
 //      console.log("----NUM EVENTS-----");
 //      console.log(jData.find("#combo_total_occurrences").html());
 //      if (jData.find("#combo_total_occurrences").html().indexOf("1000") > 0) {

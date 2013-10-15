@@ -319,19 +319,6 @@
 <% end %>
 <% content_for :body do %>
 
-         <span class="filter-toggle date">
-							<span class="filter-text">Today</span>
-							  <div class="filter-dropdown" id="filter-toggle1">
-                <div class="filter-inner">
-                  <div class="filter date">
-                      <div class="custom-select">
-                        <span class="icon icon-calendar"></span><input type="text" class="custom-start"/> to <span class="icon icon-calendar"></span><input type="text" class="custom-end"/>
-                      </div>
-
-                  </div>
-                </div>
-              </div>
-						</span>
 
 
   <section class="search">
@@ -390,7 +377,7 @@
         </div>
         <div class="content main">
           <div class="container inline">
-            <h2 class="text-info"><%= @allOccurrences.size %> results </h2>
+            <h2 class="text-info"><span class="total_number"><%= @allOccurrences.size %> </span>results </h2>
             <p class="lead text-info"></p>
             <section class="product-list clearfix events">
               <% @occurrences.each_with_index do |occurrence, index| %>
@@ -402,14 +389,16 @@
         </div>
       </div>
       <div id="related_events" class="tab-pane fade">
-        <div class="sort-panel filter-toggle price">
+        <div class="sort-panel filter-toggle price date">
           <div class="container">
-            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Date</a>
+            <a href="#" class="sort-item"><span class="filter-text" id="filter-text1"><i class="icon-bottom-arrow"></i>Date</span></a>
+
             <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Time</a>
-            <a href="#" class="sort-item"><span class="filter-text"><i class="icon-bottom-arrow"></i>Cost</span></a>
+            <a href="#" class="sort-item"><span class="filter-text" id="filter-text2"><i class="icon-bottom-arrow"></i>Cost</span></a>
+
             <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Area</a>
           </div>
-          <div class="filter-dropdown">
+          <div class="filter-dropdown" id="filter-toggle2">
             <div class="filter-inner">
               <div class="price-free-button nice-button">Free</div>
               <div class="col-2">
@@ -426,6 +415,16 @@
                   <div>45</div>
                 </div>
                 <div class="price-display">any price</div>
+              </div>
+            </div>
+          </div>
+          <div class="filter-dropdown" id="filter-toggle1">
+            <div class="filter-inner">
+              <div class="filter date">
+                <div class="custom-select">
+                  <span class="icon icon-calendar"></span><input type="text" class="custom-start"/> to <span class="icon icon-calendar"></span><input type="text" class="custom-end"/>
+                </div>
+
               </div>
             </div>
           </div>

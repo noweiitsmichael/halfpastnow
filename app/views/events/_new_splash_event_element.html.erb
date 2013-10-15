@@ -1,5 +1,18 @@
 <article class="slide-item product-item" link-id="<%= occurrence.id %>" linkto="event">
-  <figure><a href="#"><img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>"/></a></figure>
+  <figure><a href="#">
+    <% if occurrence.event.pictures.first %>
+      <img src="<%= occurrence.event.pictures.first.image_url(:full) %>" alt="Event picture" />
+    <% elsif occurrence.event.acts.length != 0 && occurrence.event.acts.first.pictures.first %>
+      <img src="<%= occurrence.event.acts.first.pictures.first.image_url(:full) %>" alt="occurrence pic"/>
+    <% elsif occurrence.event.venue.pictures.first %>
+      <img src="<%= occurrence.event.venue.pictures.first.image_url(:full) %>" alt="venue pic" />
+    <% else %>
+      <img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic" />
+    <% end %>
+
+
+
+  </a></figure>
   <div class="name"><a href="#"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
   <div class="info clearfix">
     <span class="time pull-left"><%= occurrence.start.to_time.strftime("%B %-d @ %-l:%M%P") %></span>

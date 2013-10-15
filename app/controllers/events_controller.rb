@@ -13,45 +13,47 @@ class ZoomDelta
 end
 
 class EventsController < ApplicationController
-helper :content
-def splash
-  respond_to do |format|
-    format.html { render :layout => false }
+  helper :content
+
+  def splash
+    respond_to do |format|
+      format.html { render :layout => false }
+    end
   end
-end
-def filter
-  
-end
 
-def new_splash
-  lat = 30.268093
-  long = -97.742808
-  zoom = 11
+  def filter
 
-  params[:lat_center] = lat
-  params[:long_center] = long
-  params[:zoom] = zoom
-  params[:user_id] = current_user ? current_user.id : nil
-  ids = Occurrence.find_with(params)
-  occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
-  order_by = "occurrences.start"
-  @Occurrences = Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(9)
-
-  respond_to do |format|
-    format.html { render :layout => false }
   end
-end
 
-def new_email
-  respond_to do |format|
-    format.html { render :layout => false }
+  def new_splash
+    lat = 30.268093
+    long = -97.742808
+    zoom = 11
+
+    params[:lat_center] = lat
+    params[:long_center] = long
+    params[:zoom] = zoom
+    params[:user_id] = current_user ? current_user.id : nil
+    ids = Occurrence.find_with(params)
+    occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
+    order_by = "occurrences.start"
+    @Occurrences = Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(9)
+
+    respond_to do |format|
+      format.html { render :layout => false }
+    end
   end
-end
 
-def android
-  puts "Inside android controller !!!!!"
-  
-  @lat = 30.268093
+  def new_email
+    respond_to do |format|
+      format.html { render :layout => false }
+    end
+  end
+
+  def android
+    puts "Inside android controller !!!!!"
+
+    @lat = 30.268093
     @long = -97.742808
     @zoom = 11
 
@@ -61,109 +63,107 @@ def android
 
     params[:user_id] = current_user ? current_user.id : nil
 
-     @message =""
-     puts "Params SSSSSSSXSW : "
-     puts params
+    @message =""
+    puts "Params SSSSSSSXSW : "
+    puts params
     if params[:type].to_s.eql? "sxsw"
-        channel_ms="I have a badge with Free Food, Free Drinks, Party, Unofficial events during SXSW. "
-        if params[:channel_id].to_i == 414
-           channel_ms = "I have a badge "
-        elsif params[:channel_id].to_i.to_i == 415
-             channel_ms = "I have a wristband "
-        elsif params[:channel_id].to_i == 416
-             channel_ms = "I have NO SXSW Credentials "
-        elsif params[:channel_id].to_i == 424
-             channel_ms = "I have nothin' but my cowboy boots on "
-        end
-        # puts channel_ms
-        tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",")
-        # puts "tags - 0"
-        # puts params
-        # puts tag
-        # puts params[:included_tags]
-        tag_ms =""
-        i=0
-        tag.each{ |t|
-          # puts "tags"
-          s = t.to_s
-          # puts s    
-         
-          if s.eql? "166"
-            tag_ms = (i==0) ? "with Free Drinks" : tag_ms.concat(", Free Drinks")
-          elsif s.eql? "165"
-            tag_ms = (i==0) ? "with Free Food" : tag_ms.concat(", Free Food")
-          elsif s.eql? "184"
-            tag_ms = (i==0) ? "with Party" : tag_ms.concat(", Party")
-          elsif s.eql? "167"
-            tag_ms = (i==0) ? "with No Cover" : tag_ms.concat(", No Cover")
-          elsif s.eql? "191"
-            tag_ms = (i==0) ? "with RSVP" : tag_ms.concat(", RSVP")
-          elsif s.eql? "189"
-            tag_ms = (i==0) ? "with Unofficial Events" : tag_ms.concat(", Unofficial Events")
-          end
-          i=i+1
-        }
-        # puts "Tags - combine: "
-        # puts tag_ms
-        time_ms =""
-        if params[:t].to_s.eql? "0"
-          time_ms = " SXSW "
-        elsif params[:t].to_s.eql? "1"
-          time_ms = " Today "
-        else
-          time_ms = (params[:start_date].to_s.eql?"") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))  
-        end
-        
+      channel_ms="I have a badge with Free Food, Free Drinks, Party, Unofficial events during SXSW. "
+      if params[:channel_id].to_i == 414
+        channel_ms = "I have a badge "
+      elsif params[:channel_id].to_i.to_i == 415
+        channel_ms = "I have a wristband "
+      elsif params[:channel_id].to_i == 416
+        channel_ms = "I have NO SXSW Credentials "
+      elsif params[:channel_id].to_i == 424
+        channel_ms = "I have nothin' but my cowboy boots on "
+      end
+      # puts channel_ms
+      tag = (params[:included_tags].to_s.empty?) ? [] : params[:included_tags].split(",")
+      # puts "tags - 0"
+      # puts params
+      # puts tag
+      # puts params[:included_tags]
+      tag_ms =""
+      i=0
+      tag.each { |t|
+        # puts "tags"
+        s = t.to_s
+        # puts s
 
-        
-        
-        sort_ms =""
-        unless params[:sort].to_s.empty?
-          if params[:sort].to_i == 0
-              sort_ms = " and sort by most views"
-          elsif params[:sort].to_i == 1
-              sort_ms = " and sort by date"
-          end    
-        end 
-       
-        @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
+        if s.eql? "166"
+          tag_ms = (i==0) ? "with Free Drinks" : tag_ms.concat(", Free Drinks")
+        elsif s.eql? "165"
+          tag_ms = (i==0) ? "with Free Food" : tag_ms.concat(", Free Food")
+        elsif s.eql? "184"
+          tag_ms = (i==0) ? "with Party" : tag_ms.concat(", Party")
+        elsif s.eql? "167"
+          tag_ms = (i==0) ? "with No Cover" : tag_ms.concat(", No Cover")
+        elsif s.eql? "191"
+          tag_ms = (i==0) ? "with RSVP" : tag_ms.concat(", RSVP")
+        elsif s.eql? "189"
+          tag_ms = (i==0) ? "with Unofficial Events" : tag_ms.concat(", Unofficial Events")
+        end
+        i=i+1
+      }
+      # puts "Tags - combine: "
+      # puts tag_ms
+      time_ms =""
+      if params[:t].to_s.eql? "0"
+        time_ms = " SXSW "
+      elsif params[:t].to_s.eql? "1"
+        time_ms = " Today "
+      else
+        time_ms = (params[:start_date].to_s.eql? "") ? "" : " From ".concat(params[:start_date].to_s.concat(" to ".concat(params[:end_date].to_s)))
+      end
+
+
+      sort_ms =""
+      unless params[:sort].to_s.empty?
+        if params[:sort].to_i == 0
+          sort_ms = " and sort by most views"
+        elsif params[:sort].to_i == 1
+          sort_ms = " and sort by date"
+        end
+      end
+
+      @message = channel_ms.concat(tag_ms).concat(time_ms.concat(sort_ms))
     else
       @message ="Your filter - All categories - No time limit - No cost limit "
       mod = "Your filter - All categories - No time limit - No cost limit "
-      @tag = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].split(",").uniq
+      @tag = (params[:included_tags].to_s.empty?) ? [] : params[:included_tags].split(",").uniq
       @tag=@tag.join(",")
       if @tag.size >0
-        names = Tag.where("ID in (#{@tag})").collect{|t| t.name}.join(",")
-       
+        names = Tag.where("ID in (#{@tag})").collect { |t| t.name }.join(",")
+
         @message = "Your filter - ".concat(names)
       end
 
-      @tag = (params[:and_tags].to_s.empty?) ? [] :  params[:and_tags].split(",").uniq
+      @tag = (params[:and_tags].to_s.empty?) ? [] : params[:and_tags].split(",").uniq
       @tag=@tag.join(",")
       if @tag.size >0
-        names = Tag.where("ID in (#{@tag})").collect{|t| t.name}.join(",")
-        
-        @message = (@message.eql? mod) ? "Your filter - ".concat(names) :  @message.concat(" with ".concat(names))
+        names = Tag.where("ID in (#{@tag})").collect { |t| t.name }.join(",")
+
+        @message = (@message.eql? mod) ? "Your filter - ".concat(names) : @message.concat(" with ".concat(names))
       end
 
-      time = (params[:time].to_s.empty?) ? "" :  params[:time].to_s
+      time = (params[:time].to_s.empty?) ? "" : params[:time].to_s
       unless time.eql? ""
-          @message = (@message.eql? mod) ? "Your filter - during ".concat(time) : @message.concat(" during ".concat(time))
+        @message = (@message.eql? mod) ? "Your filter - during ".concat(time) : @message.concat(" during ".concat(time))
       end
-      cost = (params[:high_price].to_s.empty?) ? "" :  params[:high_price].to_s
+      cost = (params[:high_price].to_s.empty?) ? "" : params[:high_price].to_s
       if cost.eql? "0"
-          @message = (@message.eql? mod) ? "Your filter - with cost Free" : @message.concat(" Free")
-         
+        @message = (@message.eql? mod) ? "Your filter - with cost Free" : @message.concat(" Free")
+
       elsif cost.eql? "10"
-          @message = (@message.eql? mod) ? "Your filter - with cost <$10" : @message.concat(" <$10")
+        @message = (@message.eql? mod) ? "Your filter - with cost <$10" : @message.concat(" <$10")
       elsif cost.eql? "20"
-          @message = (@message.eql? mod) ? "Your filter - with cost <$20" : @message.concat(" <$20")
-         
+        @message = (@message.eql? mod) ? "Your filter - with cost <$20" : @message.concat(" <$20")
+
       elsif cost.eql? "777777777"
-          @message = (@message.eql? mod) ? "Your filter - with No Price limit" : @message.concat(" No Price Limit")
-         
+        @message = (@message.eql? mod) ? "Your filter - with No Price limit" : @message.concat(" No Price Limit")
+
       end
-      
+
       if params[:sort].to_s.eql? "0"
         @message = (@message.eql? mod) ? "Your filter - all events sorted by Most Views" : @message.concat(" Sort by Most Views")
       else
@@ -172,23 +172,21 @@ def android
 
     end
     unless params[:days].to_s.empty?
-          params[:day] = ["0","6"]
+      params[:day] = ["0", "6"]
     end
-    
+
     puts @message
 
     @ids = Occurrence.find_with(params)
-    
 
-    
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
-    
+
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
 
     order_by = "occurrences.start"
-    if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
+    if (params[:sort].to_s.empty? || params[:sort].to_i == 0)
       # order by event score when sorting by popularity
       order_by = "CASE events.views 
                     WHEN 0 THEN 0
@@ -196,23 +194,23 @@ def android
                   END DESC"
     end
     @tags = Tag.includes(:parentTag, :childTags).all
-    @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
+    @parentTags = @tags.select { |tag| tag.parentTag.nil? }
 
     @amount = 20
-    unless(params[:amount].to_s.empty?)
+    unless (params[:amount].to_s.empty?)
       @amount = params[:amount].to_i
     end
 
     @offset = 0
-    unless(params[:offset].to_s.empty?)
+    unless (params[:offset].to_s.empty?)
       @offset = params[:offset].to_i
     end
     @allOccurrences = Occurrence.find(@occurrence_ids)
-    @occurrences = Occurrence.paginate(:page => params[:page], :per_page => 10 ).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
-    
-   
+    @occurrences = Occurrence.paginate(:page => params[:page], :per_page => 10).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+
+
     # puts @occurrences  
-    
+
     # puts @occurrences
     @occurringTags = {}
 
@@ -240,7 +238,7 @@ def android
 
     @allOccurrences.each do |occurrence|
       occurrence.event.tags.each do |tag|
-         @tagCounts[tag.id][:count] += 1
+        @tagCounts[tag.id][:count] += 1
       end
     end
 
@@ -266,65 +264,64 @@ def android
     # Badge
     @badge = params[:access].to_s
     @t = params[:t].to_s
-    @arrayincluded_tags = (params[:included_tags].to_s.empty?) ? [] :  params[:included_tags].to_s.split(",")
+    @arrayincluded_tags = (params[:included_tags].to_s.empty?) ? [] : params[:included_tags].to_s.split(",")
     @arrayincluded_tags=(params[:included_tags].to_s.empty?) ? [] : params[:included_tags].map(&:to_s)
     @s = params[:sort].to_s
 
     # Advance
-    @arrayand_tags = (params[:and_tags].to_s.empty?) ? [] :  params[:and_tags].to_s.split(",")
+    @arrayand_tags = (params[:and_tags].to_s.empty?) ? [] : params[:and_tags].to_s.split(",")
     @arrayand_tags=(params[:and_tags].to_s.empty?) ? [] : params[:and_tags].map(&:to_s)
     @aday=params[:aday].to_s
     @acost = params[:c].to_s
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
-          render :partial => "android_combo", :locals => { :filter => params,:occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset }
-          
+          render :partial => "android_combo", :locals => {:filter => params, :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset}
+
         end
       end
-      format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
-      format.mobile  
+      format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts]}}) }
+      format.mobile
     end
 
-end
+  end
 
-def index
+  def index
     @saved_search = current_user.saved_searches if user_signed_in?
     # Set default if action is sxsw
-    unless(params[:event_id].to_s.empty?)
+    unless (params[:event_id].to_s.empty?)
       redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
     end
 
-    
 
-    unless(params[:venue_id].to_s.empty?)
+    unless (params[:venue_id].to_s.empty?)
       redirect_to :action => "show", :controller => "venues", :id => params[:venue_id].to_i, :fullmode => true
     end
 
-    unless(params[:act_id].to_s.empty?)
+    unless (params[:act_id].to_s.empty?)
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
-    
-    if(@mobileMode)
-        @switch ="advance"
-        unless params[:format].to_s.eql? "mobile"
-          redirect_to :action => "android",  :type => "advance"
-        else
-          return
-        end
-        
+
+    if (@mobileMode)
+      @switch ="advance"
+      unless params[:format].to_s.eql? "mobile"
+        redirect_to :action => "android", :type => "advance"
+      else
+        return
+      end
+
     end
 
     @tags = Tag.includes(:parentTag, :childTags).all
-    @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
+    @parentTags = @tags.select { |tag| tag.parentTag.nil? }
 
     @amount = 20
-    unless(params[:amount].to_s.empty?)
+    unless (params[:amount].to_s.empty?)
       @amount = params[:amount].to_i
     end
 
     @offset = 0
-    unless(params[:offset].to_s.empty?)
+    unless (params[:offset].to_s.empty?)
       @offset = params[:offset].to_i
     end
 
@@ -340,7 +337,7 @@ def index
     #   puts fql
 
     # end
-    
+
     @lat = 30.268093
     @long = -97.742808
     @zoom = 11
@@ -357,14 +354,14 @@ def index
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
 
     order_by = "occurrences.start"
-    if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
+    if (params[:sort].to_s.empty? || params[:sort].to_i == 0)
       # order by event score when sorting by popularity
       order_by = "CASE events.views 
                     WHEN 0 THEN 0
                     ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
                   END DESC"
 
-     ## Testing .. only by views
+      ## Testing .. only by views
       # order_by = "CASE events.views 
       #               WHEN 0 THEN 0
       #               ELSE events.clicks
@@ -403,7 +400,7 @@ def index
 
     @allOccurrences.each do |occurrence|
       occurrence.event.tags.each do |tag|
-         @tagCounts[tag.id][:count] += 1
+        @tagCounts[tag.id][:count] += 1
       end
     end
 
@@ -422,18 +419,18 @@ def index
         SET views = views + 1
         WHERE id IN (#{@venue_ids * ','})")
     end
-    
+
     respond_to do |format|
       format.html do
-        
+
         unless (params[:ajax].to_s.empty?)
-          render :partial => "combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset }
-          
+          render :partial => "combo", :locals => {:occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset}
+
         end
       end
-      format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
+      format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts]}}) }
       format.mobile
-      
+
     end
 
   end
@@ -454,16 +451,15 @@ def index
     @event.clicks += 1
     @event.save
 
-   
 
-    if(current_user)
+    if (current_user)
       bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
       attending = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.bookmark_lists.where(:name => "Attending").first.id).first
-      @bookmarkId = bookmark.nil? ? nil : bookmark.id 
+      @bookmarkId = bookmark.nil? ? nil : bookmark.id
       @attendingId = attending.nil? ? nil : attending.id
       # bookmarkFeaturedList=Bookmark.where(:bookmarked_type => "Occurrence",:bookmark_list_id => current_user.featured_list.id, :bookmarked_id =>@occurrence.id).first
       bookmarkFeaturedList=(!current_user.featured_list.nil?) ? @occurrence.all_event_bookmarks(current_user.featured_list.id).first : nil
-      @bookmarkFeaturedListId = bookmarkFeaturedList.nil? ? nil : bookmarkFeaturedList.id 
+      @bookmarkFeaturedListId = bookmarkFeaturedList.nil? ? nil : bookmarkFeaturedList.id
     else
       @bookmarkId = nil
       @attendingId = nil
@@ -486,12 +482,12 @@ def index
     @url ='http://www.halfpastnow.com/?event_id='+params[:id]
     @url1='http://www.halfpastnow.com/events/show/'+params[:id]+'?fullmode=true'
     @ur = 'https://www.facebook.com/plugins/like.php?href=http://www.halfpastnow.com/mobile/og/'+params[:id]
-    
+
     # http://www.halfpastnow.com/?event_id=15599
     # @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
 
     respond_to do |format|
-      if @fullmode 
+      if @fullmode
         format.html { render :layout => "fullmode" }
         format.mobile
       else
@@ -500,13 +496,13 @@ def index
 
       format.json { render json: @event.to_json(:include => [:occurrences, :venue]) }
       # format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }
-      format.mobile 
+      format.mobile
     end
-     #rescue
-     #  respond_to do |format|
-     #    format.js { render template: "events/error_show" }
-     # # end
-     #  end
+    #rescue
+    #  respond_to do |format|
+    #    format.js { render template: "events/error_show" }
+    # # end
+    #  end
   end
 
   def shunt
@@ -520,7 +516,7 @@ def index
   def new
     @event = Event.new
     #@venues = Venue.all
-    
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @event }
@@ -542,8 +538,8 @@ def index
     # puts params[:end]
     respond_to do |format|
       if @event.save && @occurrence.save
-          @event.completion = @event.completedness
-          @event.save
+        @event.completion = @event.completedness
+        @event.save
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render json: @event, status: :created, location: @event }
       else
@@ -600,7 +596,8 @@ def index
         FROM occurrences, events WHERE occurrences.event_id = events.id AND occurrences.deleted = false AND occurrences.recurrence_id IS NOT NULL
              AND occurrences.start < now() + interval '1 week' AND occurrences.start >= now()"
       @eventsList = ActiveRecord::Base.connection.select_all(eventsQuery)
-    else params[:range] == "twoweeks"
+    else
+      params[:range] == "twoweeks"
       # @eventsList = Event.find(:all).map(&:nextOccurrence.to_proc).reject {|x| x.nil?}.delete_if { |x| x.start > 2.week.from_now}
       eventsQuery = "
         SELECT occurrences.recurrence_id, occurrences.id, events.id AS event_id, events.title, events.completion, events.venue_id, occurrences.start, events.updated_at, events.user_id
@@ -617,7 +614,7 @@ def index
     @eventsList.each do |e|
       unless e["event_id"].nil?
         # @outputList << {'id' => e.id, 'event_id' => e.event.id, 'event_title' => e.event.title,  'event_completedness' => e.event.completedness, 'venue_id' => e.event.venue.id, 'start' => e.start.strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e.event.user_id).exists? ? User.find(e.event.user_id).fullname : "", 'updated_at' => e.event.updated_at.strftime("%m/%d @ %I:%M %p")}
-        @outputList << {'id' => e["id"], 'event_id' => e["event_id"], 'event_title' => e["title"],  'event_completedness' => e["completion"], 'venue_id' => e["venue_id"], 'start' => Time.parse(e["start"]).strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e["user_id"]).exists? ? User.find(e["user_id"]).fullname : "", 'updated_at' => Time.parse(e["updated_at"]).strftime("%m/%d @ %I:%M %p")}
+        @outputList << {'id' => e["id"], 'event_id' => e["event_id"], 'event_title' => e["title"], 'event_completedness' => e["completion"], 'venue_id' => e["venue_id"], 'start' => Time.parse(e["start"]).strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e["user_id"]).exists? ? User.find(e["user_id"]).fullname : "", 'updated_at' => Time.parse(e["updated_at"]).strftime("%m/%d @ %I:%M %p")}
       end
     end
     respond_to do |format|
@@ -645,17 +642,17 @@ def index
     @eventsList.each do |e|
       unless e["event_id"].nil?
         # @outputList << {'id' => e.id, 'event_id' => e.event.id, 'event_title' => e.event.title,  'event_completedness' => e.event.completedness, 'venue_id' => e.event.venue.id, 'start' => e.start.strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e.event.user_id).exists? ? User.find(e.event.user_id).fullname : "", 'updated_at' => e.event.updated_at.strftime("%m/%d @ %I:%M %p")}
-        @outputList << {'id' => e["id"], 'event_id' => e["event_id"], 'event_title' => e["title"],  'event_completedness' => e["completion"], 'venue_id' => e["venue_id"], 'start' => Time.parse(e["start"]).strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e["user_id"]).exists? ? User.find(e["user_id"]).fullname : "", 'owner_id' => e["user_id"], 'updated_at' => Time.parse(e["updated_at"]).strftime("%m/%d @ %I:%M %p")}
+        @outputList << {'id' => e["id"], 'event_id' => e["event_id"], 'event_title' => e["title"], 'event_completedness' => e["completion"], 'venue_id' => e["venue_id"], 'start' => Time.parse(e["start"]).strftime("%m/%d @ %I:%M %p"), 'owner' => User.where(:id => e["user_id"]).exists? ? User.find(e["user_id"]).fullname : "", 'owner_id' => e["user_id"], 'updated_at' => Time.parse(e["updated_at"]).strftime("%m/%d @ %I:%M %p")}
       end
     end
     respond_to do |format|
       format.json { render json: @outputList }
     end
   end
-  
-  
+
+
   def venuesTable
-    venuesQuery =   "
+    venuesQuery = "
       SELECT v2.venue_id, v2.name, v2.address, v2.views, v2.events_count, COALESCE(v1.raw_events_count, 0) AS raw_events_count, v2.assigned_admin, v2.firstname, v2.lastname FROM
         ( SELECT venue_id,venues.name,COUNT(*) AS raw_events_count
           FROM venues,raw_venues,raw_events 
@@ -681,7 +678,7 @@ def index
     @outputList = []
 
     @venuesList.each do |e|
-      @outputList << {'id' => e["venue_id"], 'name' => e["name"], 'address' => e["address"],  'views' => e["views"], 'num_events' => e["events_count"], 'num_raw_events' => e["raw_events_count"], 'firstname' => (e["firstname"] == nil ? "" : e["firstname"]), 'lastname' => (e["lastname"] == nil ? "" : e["lastname"])} #, 'owner' => User.where(:id => e["user_id"]).exists? ? User.find(e["user_id"]).fullname : ""}
+      @outputList << {'id' => e["venue_id"], 'name' => e["name"], 'address' => e["address"], 'views' => e["views"], 'num_events' => e["events_count"], 'num_raw_events' => e["raw_events_count"], 'firstname' => (e["firstname"] == nil ? "" : e["firstname"]), 'lastname' => (e["lastname"] == nil ? "" : e["lastname"])} #, 'owner' => User.where(:id => e["user_id"]).exists? ? User.find(e["user_id"]).fullname : ""}
     end
 
     respond_to do |format|
@@ -700,7 +697,8 @@ def index
           FROM raw_events, raw_venues, venues
           WHERE raw_events.raw_venue_id = raw_venues.id AND raw_venues.venue_id = venues.id AND (raw_events.from = 'eventbrite' OR raw_events.from = 'do512sxsw' OR raw_events.from = 'sched') AND raw_events.deleted IS NOT TRUE AND raw_events.submitted IS NOT TRUE"
       @eventsList = ActiveRecord::Base.connection.select_all(eventsQuery)
-    else params[:range] == "active_sxsw"
+    else
+      params[:range] == "active_sxsw"
       # @eventsList = Event.find(:all).map(&:nextOccurrence.to_proc).reject {|x| x.nil?}.delete_if { |x| x.start > 2.week.from_now}
       eventsQuery = "
         SELECT occurrences.recurrence_id, occurrences.id, events.id AS event_id, events.title, events.completion, events.venue_id, occurrences.start, events.updated_at, events.user_id
@@ -732,37 +730,37 @@ def index
     unless params[:event_id].nil?
       @ur = 'http://www.halfpastnow.com/mobile/og/'+params[:event_id].to_s
     end
-    
-    unless(params[:event_id].to_s.empty?)
+
+    unless (params[:event_id].to_s.empty?)
       redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
     end
 
-    unless(params[:venue_id].to_s.empty?)
+    unless (params[:venue_id].to_s.empty?)
       redirect_to :action => "show", :controller => "venues", :id => params[:venue_id].to_i, :fullmode => true
     end
 
-    unless(params[:act_id].to_s.empty?)
+    unless (params[:act_id].to_s.empty?)
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
-    if(@mobileMode)
-        puts "in SXSW controller & @mobileMode"
-        puts params[:format].to_s
-          @switch ="sxsw"
-       
-          redirect_to :action => "android", :type => "sxsw"
-          return
+    if (@mobileMode)
+      puts "in SXSW controller & @mobileMode"
+      puts params[:format].to_s
+      @switch ="sxsw"
+
+      redirect_to :action => "android", :type => "sxsw"
+      return
 
     end
     @tags = Tag.includes(:parentTag, :childTags).all
-    @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
+    @parentTags = @tags.select { |tag| tag.parentTag.nil? }
 
     @amount = 20
-    unless(params[:amount].to_s.empty?)
+    unless (params[:amount].to_s.empty?)
       @amount = params[:amount].to_i
     end
 
     @offset = 0
-    unless(params[:offset].to_s.empty?)
+    unless (params[:offset].to_s.empty?)
       @offset = params[:offset].to_i
     end
 
@@ -784,7 +782,7 @@ def index
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
 
     order_by = "occurrences.start"
-    if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
+    if (params[:sort].to_s.empty? || params[:sort].to_i == 0)
       # order by event score when sorting by popularity
       order_by = "CASE events.views 
                     WHEN 0 THEN 0
@@ -823,7 +821,7 @@ def index
 
     @allOccurrences.each do |occurrence|
       occurrence.event.tags.each do |tag|
-         @tagCounts[tag.id][:count] += 1
+        @tagCounts[tag.id][:count] += 1
       end
     end
 
@@ -847,22 +845,24 @@ def index
       format.html do
         unless (params[:ajax].to_s.empty?)
           # render :partial => "combo", :locals => { :occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset }
-          render :partial => "combo_sxsw", :locals => { :occurrences => @occurrences, :tagCounts => @tagCounts, :parentTags => @parentTags, :offset => @offset }
+          render :partial => "combo_sxsw", :locals => {:occurrences => @occurrences, :tagCounts => @tagCounts, :parentTags => @parentTags, :offset => @offset}
         end
       end
-      format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts] }}) }
-      format.mobile 
+      format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts]}}) }
+      format.mobile
     end
-    
+
   end
+
   def saved_search
     key_id = current_user.saved_searches.create(:search_key => params[:key]).id rescue nil
     flash[:notice] = "Search is saved successfully"
-    key_id.nil?? (render :nothing => true) : (render :json => {key_id:key_id})
+    key_id.nil? ? (render :nothing => true) : (render :json => {key_id: key_id})
   end
+
   def delete_saved_search
-   SavedSearch.find(params[:key_id]).delete
-   render :nothing => true
+    SavedSearch.find(params[:key_id]).delete
+    render :nothing => true
   end
-  
+
 end

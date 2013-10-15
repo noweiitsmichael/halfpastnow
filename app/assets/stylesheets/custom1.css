@@ -38,7 +38,7 @@ body {
 figure{
 	margin:0;
 	padding:0;
-    height:130px;
+    height:200px;
 }
 
 input, button, select, textarea {
@@ -248,7 +248,7 @@ h2{font-size:345%;}
 .slider .slide-item, .product-list .product-item{
 	margin:0 25px; 
 	width:300px;
-  height:320px;
+  height:350px;
 	position:relative;
 	float:left;
 }
@@ -351,6 +351,7 @@ h2{font-size:345%;}
 .sort-panel{
 	background:#777777;
 	padding:14px 0;
+  height:20px;
 }
 .sort-panel .sort-item{
 	display:inline;
@@ -431,8 +432,13 @@ footer .footer-tap .popover{
 .popover ul li:last-child{border-bottom:none;}
 .popover ul li a{color:#777777;}
 .filter-dropdown {
-  background: none repeat scroll 0 0 #FF0000;
   left: 30%;
   position: relative;
   top: 20px;
+}
+#filter-toggle1{
+  left: 4% !important;
+}
+article figure img {
+  height: 200px;
 }
