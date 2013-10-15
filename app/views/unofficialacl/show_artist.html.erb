@@ -1,6 +1,13 @@
 <%# params[:included_tags] = params[:included_tags].present? ? params[:included_tags] : '25'   %>
 <% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : '232'   %>
-
+<% content_for :meta do %>
+     <meta property="og:type"                 content="halfpastnow:event"/> 
+     <meta property="og:url"                  content="http://www.unofficialacl.com/unofficialacl/show_artist/<%= @act.id%>"/>
+     <meta property="og:site_name"            content="unofficialacl"/>
+     <meta property="og:image"                content="<%=@act.pictures.first ? @act.pictures.first.image_url(:large) : ""%>"/>
+     <meta property="og:title"                content="<%=@act.name%> on unofficialacl.com">
+     <meta property="og:description"          content="<%=strip_tags(@act.description)%>"/> 
+<% end %>
 
 <div id="sticker">
   <div class="pink-banner">
@@ -8,7 +15,7 @@
       <div class="large-9 columns">
         <a class="callout" tabindex="1" href="http://www.halfpastnow.com">
           <img src="/assets/acl/layout/hpn-marker.png">
-          <p>Sponsored: See all of Austin's <span class="rotate">Live Music, Happy Hour, Outdoor, Fitness, Business, Tech, Arts, Exhibition</span> events at halfpastnow.com!</p>
+          <p>Sponsored: See all of Austins <span class="rotate">Live Music, Happy Hour, Outdoor, Fitness, Business, Tech, Arts, Exhibition</span> events at halfpastnow.com!</p>
         </a>
 
         <div class="comments">
@@ -118,7 +125,7 @@
                           <% end %>
                         </div>
                         <div class="small-9 columns">
-                          <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
+                          <a href="/unofficialacl/event/show/<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
                           <% unless rec.event.description.to_s.empty? %>
                               <p> <%= strip_tags(rec.event.description) %> </p>
                           <% end %>
@@ -140,7 +147,7 @@
                           <% end %>
                         </div>
                         <div class="small-9 columns">
-                          <a href="/unofficialacl/show_event?event_id=<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
+                          <a href="/unofficialacl/event/show/<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
                           <% unless occ.event.description.to_s.empty? %>
                               <p> <%= strip_tags(occ.event.description) %> </p>
                           <% end %>

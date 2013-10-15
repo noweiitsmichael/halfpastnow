@@ -1,6 +1,31 @@
-<%# params[:included_tags] = params[:included_tags].present? ? params[:included_tags] : '25'   %>
-<% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : '232'   %>
 
+
+<% params[:type] = params[:type].present? ? params[:type] : 'event'   %>
+<% content_for :meta do %>
+
+  <% if params[:type] == 'event' %>
+     <meta property="og:type"                 content="halfpastnow:event"/> 
+     <meta property="og:url"                  content="http://www.unofficialacl.com/unofficialacl/event/show/<%= params[:id] %>"/>
+     <meta property="og:site_name"            content="unofficialacl"/>
+     <meta property="og:image"                content="<%=@event.cover_image_url%>"/>
+     <meta property="og:title"                content="<%=@event.title%> on unofficialacl.com">
+     <meta property="og:description"          content="<%=strip_tags(@event.description)%>"/> 
+  <% elsif params[:type] == 'venue' %>
+     <meta property="og:type"                 content="venue"/> 
+     <meta property="og:url"                  content="http://www.unofficialacl.com/unofficialacl/show_venue/<%= @venue.id%>"/>
+     <meta property="og:site_name"            content="unofficialacl"/>
+     <meta property="og:image"                content="<%=@venue.pictures.first ? @venue.pictures.first.image_url(:large) : ""%>"/>
+     <meta property="og:title"                content="<%=@venue.name%> on unofficialacl.com">
+     <meta property="og:description"          content="<%=strip_tags(@venue.description)%>"/> 
+  <% else %>
+     <meta property="og:type"                 content="artist"/> 
+     <meta property="og:url"                  content="http://www.unofficialacl.com/unofficialacl/show_artist/<%= @acts.first.id%>"/>
+     <meta property="og:site_name"            content="unofficialacl"/>
+     <meta property="og:image"                content="<%=@acts.first.pictures.first ? @acts.first.pictures.first.image_url(:large) : ""%>"/>
+     <meta property="og:title"                content="<%=@acts.first.name%> on unofficialacl.com">
+     <meta property="og:description"          content="<%=strip_tags(@acts.first.description)%>"/> 
+  <% end %>
+<% end %>
 <%= form_tag "/unofficialacl/search"  do %>
     <div id="sticker">
       <div class="pink-banner">
@@ -35,18 +60,21 @@
       <a id="menu-icon"><i class="icon-reorder"></i></a>
       <ul id="tab-anchors" class="header-navigation">
         <% unless @event.nil? %>
-        <li id="tab-anchor-1" class="current">
-          <a href="javascript:ShowTab(1);">Event overview</a>
+        <li id="tab-anchor-1" class="<%= (params[:type].include? 'event') ? "current" : "" %>">
+          <!--<a href="javascript:ShowTab(1);">Event overview</a>-->
+          <%= link_to "Event overview", unofficialacl_detail_path(type: "event",id: params[:id]) %>
         </li>
         <% end %>
         <% unless @venue.nil? %>
-        <li id="tab-anchor-2">
-          <a href="javascript:ShowTab(2);">Venue details</a>
+        <li id="tab-anchor-2" class="<%= (params[:type].include? 'venue') ? "current" : "" %>">
+          <!--<a href="javascript:ShowTab(2);">Venue details</a>-->
+          <%= link_to "Venue details", unofficialacl_detail_path(type: "venue",id: params[:id]) %>
         </li>
         <% end %>
         <% unless @acts.empty? %>
-        <li id="tab-anchor-3">
-          <a href="javascript:ShowTab(3);">Artist details</a>
+        <li id="tab-anchor-3" class="<%= (params[:type].include? 'artist') ? "current" : "" %>">
+          <!--<a href="javascript:ShowTab(3);">Artist details</a>-->
+          <%= link_to "Artist details", unofficialacl_detail_path(type: "artist",id: params[:id]) %>
         </li>
         <% end %>
       </ul>
@@ -57,7 +85,7 @@
 
 <% unless @event.nil? %>
 <!-- tab event overview -->
-<div class="content tab" id="tab-1">
+<div class="content tab" id="tab-1" style="display: <%= (params[:type].include? 'event') ? "block" : "none" %>;">
   <div class="row">
     <!-- Big things: column left -->
     <div class="large-6 columns stretch">
@@ -78,9 +106,16 @@
         </div>
       </div>
 
+    <% if params[:type] == 'event' 
+      url = "http://www.unofficialacl.com/unofficialacl/event/show/" + params[:id]
+     elsif params[:type] == 'venue'
+      url = "http://www.unofficialacl.com/unofficialacl/show_venue/" + @event.venue.id.to_s
+     else
+      url = "http://www.unofficialacl.com/unofficialacl/show_artist/" + @event.acts.first.id.to_s
+     end %>
       <div class="details-social">
-        <div class="fb-like" data-href="http://www.unofficialacl.com/unofficial/show_event?event_id=<%=@event.id%>" data-width="100" data-colorscheme="dark" data-layout="button_count" data-show-faces="true" data-send="false"></div>
-        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.unofficialacl.com/unofficial/show_event?event_id=<%=@event.id%>" data-text="<%= truncate(@event.title, length: 58) %> #ACL" data-via="halfpastnow" data-count="none" style="width:65px">Tweet</a>
+        <div class="fb-like" data-href="<%= url %>" data-width="100" data-colorscheme="dark" data-layout="button_count" data-show-faces="true" data-send="false"></div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-url="<%= url %>" data-text="<%= truncate(@event.title, length: 58) %> #ACL" data-via="halfpastnow" data-count="none" style="width:65px">Tweet</a>
         <div id="g-plus-footer" class="g-plus" data-action="share" data-annotation="none"></div>
         <a href="//www.pinterest.com/pin/create/button/" data-pin-do="buttonBookmark" ></a>
       </div>
@@ -100,7 +135,7 @@
             <img src="<%= act.pictures.first ? act.pictures.first.image_url(:thumb) : "" %>" />
           </div>
           <div class="small-9 columns">
-            <h2 class="pbm"><a href="/unofficialacl/show_artist?artist_id=<%= act.id %>"><%= act.name %></a></h2>
+            <h2 class="pbm"><a href="/unofficialacl/show_artist/<%= act.id %>"><%= act.name %></a></h2>
             <% unless act.description.to_s.empty? %><p>  <%= strip_tags(act.description) %> </p> <% end %>
           </div>
         </li>
@@ -178,7 +213,7 @@
 
 <% unless @venue.nil? %>
 <!-- the next tab venue details  -->
-<div class="content tab" id="tab-2">
+<div class="content tab" id="tab-2" style="display: <%= (params[:type].include? 'venue') ? "block" : "none" %>;">
   <div class="row">
     <!-- Big things: column left -->
     <div class="large-6 columns stretch">
@@ -267,7 +302,7 @@
                   <% end %>
                 </div>
                 <div class="small-9 columns">
-                  <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
+                  <a href="/unofficialacl/event/show/<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
                   <% unless rec.event.description.to_s.empty? %>
                       <p> <%= strip_tags(rec.event.description) %> </p>
                   <% end %>
@@ -289,7 +324,7 @@
                   <% end %>
                 </div>
                 <div class="small-9 columns">
-                  <a href="/unofficialacl/show_event?event_id=<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
+                  <a href="/unofficialacl/event/show/<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
                   <% unless occ.event.description.to_s.empty? %>
                       <p> <%= strip_tags(occ.event.description) %> </p>
                   <% end %>
@@ -307,7 +342,7 @@
 
 <% unless @event.acts.length == 0 %>
 <!-- the last tab artist details -->
-<div class="content tab" id="tab-3">
+<div class="content tab" id="tab-3" style="display: <%= (params[:type].include? 'artist') ? "block" : "none" %>;">
   <div class="row">
     <!-- Big things: column left -->
     <div class="large-6 columns stretch">
@@ -379,7 +414,7 @@
                   <% end %>
                 </div>
                 <div class="small-9 columns">
-                  <a href="/unofficialacl/show_event?event_id=<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
+                  <a href="/unofficialacl/event/show/<%= rec.occurrences.first.id %>"><h2 class="pbm"><%= rec.event.title %></h2></a>
                   <% unless rec.event.description.to_s.empty? %>
                       <p> <%= strip_tags(rec.event.description) %> </p>
                   <% end %>
@@ -401,7 +436,7 @@
                   <% end %>
                 </div>
                 <div class="small-9 columns">
-                  <a href="/unofficialacl/show_event?event_id=<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
+                  <a href="/unofficialacl/event/show/<%= occ.id %>"><h2 class="pbm"><%= occ.event.title %></h2></a>
                   <% unless occ.event.description.to_s.empty? %>
                       <p> <%= strip_tags(occ.event.description) %> </p>
                   <% end %>
