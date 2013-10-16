@@ -186,7 +186,7 @@
             $('.icon-check-empty').tooltip('disable');
 
             $('.see-more-submit').click(function(){
-                $('.see-more').append('<input type="hidden" id="list_date" name="list_date" value="' + $(this).siblings('.see-more-date').val() + '" />')
+                $('.see-more').append('<input type="hidden" id="end_date" name="end_date" value="' + $(this).siblings('.start_date').val() + '" />')
                 $('#see-events-list').submit();
                 return false;
             });
@@ -306,7 +306,7 @@
                     <div class="grid-90 mobile-grid-95 mobile-prefix-5 prefix-10">
                       <form id="see-events-list" action="/search">
                         <div class="see-more">
-                          <input type="hidden" value="<%= day %>" name="see-more-date" class="see-more-date">
+                          <input type="hidden" value="<%= day %>" name="start_date" class="start_date">
                           <a href="" class="discovery see-more-submit">
                             <p class="discover-text"><span>DISCOVER</span><br/><span>other exciting events</span></p>
                             <p class="discover-number"><%= occurrence_count %></p>
