@@ -5,6 +5,8 @@ class PicksController < ApplicationController
 helper :content
 	def index
 
+    #raise ""
+
 		@lat = 30.268093
 	    @long = -97.742808
 	    @zoom = 11
