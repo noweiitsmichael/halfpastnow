@@ -8,12 +8,12 @@
 <% end %>
 
 <% content_for :mode_title do %>
-	<h1>Performer: <%= @act.name %></h1>
 <% end %>
 
 <% content_for :mode_body do %>
 <%= javascript_include_tag "galleria-1.2.8.min" %>
 	<div class="col-1">
+	<h2>Performer: <%= @act.name %></h2>
 		<ul class="sub-header">
 			<% unless @act.tags.length == 0 %>
 				<li class="tags"><span class="icon icon-tags"></span><%= @act.tags.collect { |tag| tag.name } * " / " %></li>
