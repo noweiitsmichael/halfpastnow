@@ -325,10 +325,10 @@
   <div class="tabs">
     <div class="container">
       <ul class="nav nav-tabs" id="search-tab">
-        <li class=""><a data-toggle="tab" href="#events">Events</a></li>
+        <li class="events_tab"><a data-toggle="tab" href="#events">Events</a></li>
         <% if user_signed_in? %>
       <% @saved_search.each do |search| %>
-        <li class=""><a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" key="<%= search[:search_key] %>"><%= search[:search_key] %> <i class='icon-remove'></i></a></li>
+        <li class="related_events"><a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" key="<%= search[:search_key] %>"><%= search[:search_key] %> <i class='icon-remove'></i></a></li>
           <% end %>
           <% end %>
       </ul>
@@ -377,7 +377,7 @@
         </div>
         <div class="content main">
           <div class="container inline">
-            <h2 class="text-info"><span class="total_number"><%= @allOccurrences.size %> </span>results </h2>
+            <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results </h2>
             <p class="lead text-info"></p>
             <section class="product-list clearfix events">
               <% @occurrences.each_with_index do |occurrence, index| %>
@@ -431,7 +431,7 @@
         </div>
         <div class="content main">
           <div class="container inline">
-            <h2 class="text-info"><span id="number_of_events"></span> results for <span id="search_name"></span></h2>
+            <h2 class="text-info"><span class="total_number">  </span> results for <span id="search_name"></span></h2>
             <p class="lead text-info"></p>
             <section class="product-list clearfix events">
 
@@ -455,7 +455,7 @@
         })
         $('.dropdown-menu a').click(function(){
           $(".active").attr('class', '.active');
-          $('#search-tab').append("<li class='active'><a data-toggle='tab' href='#related_events' key="+$(this).text().replace(" ","_")+">"+$(this).text()+" <i class='icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
+          $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+$(this).text().replace(" ","_")+">"+$(this).text()+" <i class='icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
           $('.icon-remove').on("click",function(){
             $(this).parents('li').remove()
           })
@@ -473,7 +473,7 @@
 
             if($("#appendedInput").val().length >= 3){
               $(".active").attr('class', '.active');
-            $('#search-tab').append("<li class='active'><a data-toggle='tab' href='#related_events' key="+$("#appendedInput").val()+">"+$("#appendedInput").val()+" <i class='icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
+            $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+$("#appendedInput").val()+">"+$("#appendedInput").val()+" <i class='icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
               <% if user_signed_in? %>
               $('.icon-remove').on("click",function(){
                 $(this).parents('li').remove()

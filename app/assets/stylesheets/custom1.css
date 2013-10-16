@@ -441,4 +441,6 @@ footer .footer-tap .popover{
 }
 article figure img {
   height: 200px;
+  overflow: hidden;
+  width: 100%;
 }

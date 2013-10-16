@@ -498,6 +498,7 @@ $(function () {
   //on keyup, start the countdown
 
   $('.search-input').keyup(function () {
+
     $(".active").attr('class', '.active');
     if (!timer_is_on) {
       timer_is_on = 1;
@@ -577,7 +578,7 @@ $(function () {
   });
 
   $('html').click(function () {
-    $('.filter-toggle.selected .filter-text').click();
+    $('#filter-toggle2,#filter-toggle1').hide()
   });
 
   $('.filter-action.action-clear').click(function () {
@@ -1015,8 +1016,9 @@ function doneTyping() {
   pullEvents({update_search: false});
 }
 function doneTyping1(search) {
+
   filter.search = search;
-  pullEvents({update_search: false});
+ pullEvents({update_search: false});
 
   window.location.hash = "key:"+search;
 }
@@ -1038,7 +1040,8 @@ function boundsChanged() {
 
 // this gets called on infinite scroll and on filter changes
 function pullEvents(updateOptions) {
-
+  $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+  $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
   // console.log(filter);
 
   var async_reloadTagsList = reloadTagsList;
@@ -1068,7 +1071,7 @@ function pullEvents(updateOptions) {
       infiniteScrolling = false;
     } else {
       //$('.tab-content').append("<div id="+ filter["search"] +" class='tab-pane fade'><div class='content main'><div class='container inline'><section class='product-list clearfix events'></section></div></div></div>")
-      console.log(data)
+      console.log($(data).length)
         $(".total_number").text($(data).length)
       $("#related_events .main .inline .events").html(data);
       $("#events .main .inline .events").html(data);
