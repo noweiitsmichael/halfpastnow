@@ -209,33 +209,31 @@
             <div class="tab" id="nextweekend">
         <% end %>
 
-        <!--current day in dark color-->
-        <% if d == 0 %>
-            <div class="current day">  <!-- Begin current day -->
-        <% else %>
-            <div class="day">    <!-- Begin day -->
-        <% end %>
-
-        <div class="grid-container">
-          <div class="grid-10 mobile-grid-100">
-            <div class="date">
-              <% if day.to_time.strftime("%-d") == Date.today.strftime("%-d") %>
-                  <p class="relative-day">today</p>
-              <% elsif day.to_time.strftime("%-d") == (Date.today + 1).strftime("%-d") %>
-                  <p class="relative-day tomorrow">tomorrow</p>
+        <% unless (@result.empty?) %>
+            <% occurrences = @result.select { |b| b if (b["start"].to_date == day) }.select { |b| b if (Occurrence.find(b["id"]).trending_event == true) } %>
+            <% occurrence_count = occurrences.size %>
+            <% occurrences = occurrences.first(4)%>
+            <% unless (occurrences.blank?) %>
+              <!--current day in dark color-->
+              <% if d == 0 %>
+                  <div class="current day">  <!-- Begin current day -->
+              <% else %>
+                  <div class="day">    <!-- Begin day -->
               <% end %>
+                <div class="grid-container">
+                  <div class="grid-10 mobile-grid-100">
+                    <div class="picks-date">
+                      <% if day.to_time.strftime("%-d") == Date.today.strftime("%-d") %>
+                          <p class="relative-day">today</p>
+                      <% elsif day.to_time.strftime("%-d") == (Date.today + 1).strftime("%-d") %>
+                          <p class="relative-day tomorrow">tomorrow</p>
+                      <% end %>
 
-              <p class="month"><%= day.to_time.strftime("%B") %></p>
-              <p class="datenumber"><%= day.to_time.strftime("%-d") %></p>
-              <p class="weekday"><%= day.to_time.strftime("%A") %></p>
-            </div>
-          </div>
-
-          <% unless (@result.empty?) %>
-              <% occurrences = @result.select { |b| b if (b["start"].to_date == day) }.select { |b| b if (Occurrence.find(b["id"]).trending_event == true) } %>
-              <% occurrences1 = occurrences %>
-              <% occurrences = occurrences.first(4)%>
-              <% unless (occurrences.blank?) %>
+                      <p class="month"><%= day.to_time.strftime("%B") %></p>
+                      <p class="datenumber"><%= day.to_time.strftime("%-d") %></p>
+                      <p class="weekday"><%= day.to_time.strftime("%A") %></p>
+                    </div>
+                  </div>
                   <% dd = 1 %>
                   <% occurrences.each do |occ| %>
                       <% unless (occ.nil?) %>
@@ -247,7 +245,18 @@
                                 </div>
                                 <div class="top-event">
                                   <!--<a href="#" linkto="event" link-id="<%#= occ["id"] %>"><img class="photo" src="<%#= occ["cover_image_url"] ? occ["cover_image_url"] : "/assets/placeholder.png" %>"></a>-->
-                                  <a href="/events/show/<%= occ['id'] %>?fullmode=true" target="_blank"><img class="photo" src="<%= occ["cover_image_url"] ? occ["cover_image_url"] : "/assets/placeholder.png" %>"></a>
+                                  <a href="/events/show/<%= occ['id'] %>?fullmode=true" target="_blank">
+                                    <% if occurrence.event.pictures.first %>
+                                        <img class="photo" src="<%= occurrence.event.pictures.first.image_url(:full) %>" alt="Event picture" />
+                                    <% elsif occurrence.event.acts.length != 0 && occurrence.event.acts.first.pictures.first %>
+                                        <img class="photo" src="<%= occurrence.event.acts.first.pictures.first.image_url(:full) %>" alt="occurrence pic"/>
+                                    <% elsif occurrence.event.venue.pictures.first %>
+                                        <img class="photo" src="<%= occurrence.event.venue.pictures.first.image_url(:full) %>" alt="venue pic" />
+                                    <% else %>
+                                        <img class="photo" src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic" />
+                                    <% end %>
+                                    <!--<img class="photo" src="<%#= occ["cover_image_url"] ? occ["cover_image_url"] : "/assets/placeholder.png" %>">-->
+                                  </a>
                                   <div class="notes">
                                     <p class="event-name"><a href="/events/show/<%= occ['id'] %>?fullmode=true" target="_blank"><%= occ["title"] %></a></p>
                                     <p class="event-time"><%= occ["start"].to_time.strftime("%-l:%M%P") %></p>
@@ -280,11 +289,11 @@
                                 <div class="grid-90 mobile-grid-95"><p class="event-name"><a href="/events/show/<%= occ['id'] %>?fullmode=true" target="_blank"><%= occ["title"] %></a></p></div>
                                 <div class="grid-90 mobile-grid-95 mobile-prefix-5 prefix-10">
                                   <p class="event-time"><%= occ["start"].to_time.strftime("%-l:%M%P") %></p>
-                                  <div class="categories">
-                                    <ul class="category-container">
-                                      <li><a href="#" class="category"><%= occurrence.event.tags.where('parent_tag_id is NULL').first.name rescue '' %></a></li>
-                                    </ul>
-                                  </div>
+                                  <!--<div class="categories">-->
+                                    <!--<ul class="category-container">-->
+                                      <!--<li><a href="#" class="category"><%#= occurrence.event.tags.where('parent_tag_id is NULL').first.name rescue '' %></a></li>-->
+                                    <!--</ul>-->
+                                  <!--</div>-->
                                 </div>
                               </div>
                           <% end %>
@@ -294,22 +303,29 @@
                   <% end %>
                   <div class="grid-20 mobile-grid-100 grid-parent">
                     <div class="grid-90 mobile-grid-95 mobile-prefix-5 prefix-10">
-                      <a href="#" class="discovery">
-                        <p class="discover-text"><span>DISCOVER</span><br/><span>other exciting events</span></p>
-                        <p class="discover-number"><%= occurrences1.size %></p>
-                      </a>
+                      <form id="see-events-list" action="/picks">
+                        <div class="see-more">
+                          <input type="hidden" value="<%= day %>" name="see-more-date" class="see-more-date">
+                          <a href="" class="discovery see-more-submit">
+                            <p class="discover-text"><span>DISCOVER</span><br/><span>other exciting events</span></p>
+                            <p class="discover-number"><%= occurrence_count %></p>
+                          </a>
+                        </div>
+                      </form>
+
                     </div>
                   </div>
+                </div> <!-- End grid container -->
+                <!--end of current day in dark color-->
+              <% if d == 0 %>
+                  </div> <!-- End current day -->
+              <% else %>
+                  </div>  <!-- End day -->
               <% end %>
-          <% end %>
-        </div> <!-- End grid container -->
-
-        <!--end of current day in dark color-->
-        <% if d == 0 %>
-            </div> <!-- End current day -->
-        <% else %>
-            </div>  <!-- End day -->
+            <% end %>
         <% end %>
+
+
 
         <% if d == 5 %>
             </div> <!-- End thisweek -->
@@ -324,34 +340,50 @@
 
 
 
-
-    <%= render :partial => 'toolbar' %>
-    <section class="theevents">
-      <div class="toolbar">
-        <div class="grid-container">
-          <div class="grid-50 mobile-grid-50">
-            <ul class="tabNavigation">
-              <li><a href="#thisweek">This Weekend</a></li>
-              <li><a href="#nextweek">Next Week</a></li>
-              <li><a href="#nextweekend">Next Weekend</a></li>
-            </ul>
-            <!--<p class="icon" id="show-calendar">-->
-              <!--<img class="calendar-image" src="/assets/icon-calendar-image.png" alt="See calendar"/>-->
-            <!--</p>-->
+    <% if params[:list_date].nil? %>
+        <%= render :partial => 'toolbar' %>
+        <section class="theevents">
+          <div class="toolbar">
+            <div class="grid-container">
+              <div class="grid-50 mobile-grid-50">
+                <ul class="tabNavigation">
+                  <li><a href="#thisweek">This Weekend</a></li>
+                  <li><a href="#nextweek">Next Week</a></li>
+                  <!--<li><a href="#nextweekend">Next Weekend</a></li>-->
+                </ul>
+                <!--<p class="icon" id="show-calendar">-->
+                  <!--<img class="calendar-image" src="/assets/icon-calendar-image.png" alt="See calendar"/>-->
+                <!--</p>-->
+              </div>
+              <div class="grid-50 mobile-grid-50">
+                <p class="tagline">Check our our upcoming Top Pick events below.</p>
+              </div>
+            </div>
           </div>
-          <div class="grid-50 mobile-grid-50">
-            <p class="tagline">Check our our upcoming Top Pick events below.</p>
+
+            <% 	(0..11).each do |d|
+              insert_day(Date.today + d.days, d)
+            end
+            %>
+        </section>
+    <% else %>
+        <div id="content" class="pick-content" style="margin-top:8px">
+          <div class="list-day-heading">All Picks for <%= params[:list_date].to_time.strftime("%A, %B %-d") %></div>
+          <div id="map-wrapper" style="margin-top:158px">
+            <div id="map"></div>
+          </div>
+          <div class="main">
+            <div class="inner">
+              <ul class="events">
+                <% puts params %>
+                <% occurrences = @result.select { |b| b if (b["start"].to_date == params[:list_date].to_date) }.collect {|o| Occurrence.find(o["id"])}.sort_by {|o| o.start} %>
+                <%= render :partial => "events/event_list", :locals => { :occurrences => occurrences, :list_date => params[:list_date]} %>
+              </ul>
+              <img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
+            </div>
           </div>
         </div>
-      </div>
-
-    <% if params[:list_date].nil? %>
-        <% 	(0..17).each do |d|
-          insert_day(Date.today + d.days, d)
-        end
-        %>
     <% end %>
-    </section>
     <%= render :partial => 'layouts/new_footer' %>
 
 

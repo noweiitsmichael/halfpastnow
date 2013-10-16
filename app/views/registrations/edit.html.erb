@@ -507,8 +507,8 @@
         <span style="margin-top: -25px; float: left; display: block; margin-left: 180px;" class="form-success form-indicator icon-ok-sign" ></span>
       <% end %>
       <% email = Email.find_by_email(current_user.email) %>
-      <div class="subscribe button nice-button" style="<%=(email.nil?) ? "" : "display:none;"%>" >Subscribe to Newsletter</div>
-      <div class="unsubscribe button nice-button"  style="<%=(email.nil?) ? "display:none;" : "" %>" >Unsubscribe to Newsletter </div>
+      <!--<div class="subscribe button nice-button" style="<%#=(email.nil?) ? "" : "display:none;"%>" >Subscribe to Newsletter</div>-->
+      <!--<div class="unsubscribe button nice-button"  style="<%#=(email.nil?) ? "display:none;" : "" %>" >Unsubscribe to Newsletter </div>-->
       <br>
       
 
@@ -549,8 +549,10 @@
     </div>
   </div>
     <style>
-        #profile-menu {
-            float: none;
-        }
+        /*html, body {*/
+            /*font-family: Lato,Tahoma,sans-serif;*/
+            /*font-style: normal;*/
+            /*font-weight: 400;*/
+        /*}*/
     </style>
 <% end %>
