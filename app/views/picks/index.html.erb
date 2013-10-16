@@ -395,7 +395,10 @@
         <div class="picklist list<%= (d % 3 == 2) ? "-left" : "" %> ">
           <div class="list-cat-label"><%= day.to_time.strftime("%A, %B %-d") %></div>
           <% unless (@result.empty?) %>
-              <% occurrences = @result.select { |b| b if (b["start"].to_date == day) }.select { |b| b if (Occurrence.find(b["id"]).trending_event == true) } %>
+
+              <% occurrences = @result.select { |b| b if (b["start"].to_date == day) } %>
+              <% occurrence_count = occurrences.size %>
+              <% occurrences = occurrences.select { |b| b if (Occurrence.find(b["id"]).trending_event == true) } %>
               <% occurrences = occurrences.first(4)%>
               <ul class="picklist-events">
                 <% unless (occurrences.blank?) %>

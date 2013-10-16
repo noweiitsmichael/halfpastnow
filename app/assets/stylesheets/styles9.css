@@ -951,6 +951,7 @@ input::-webkit-input-placeholder
 
 .bar-wrapper {
   background: white;
+  margin-top: -8px;
 }
 /*
 .stay-on-target.bullseye-womprats {

@@ -941,13 +941,11 @@
 			var ca = container.parent().find('.tparrows');
 
 			if (bullets==null) {
-				container.append('<div class=".tp-bullets"></div>');
-				var bullets = container.parent().find('.tp-bullets');
+
 			}
 
 			if (ca==null) {
-				container.append('<div class=".tparrows"></div>');
-				var ca = container.parent().find('.tparrows');
+
 			}
 
 
