@@ -129,9 +129,9 @@
 		  offset: 0,
 		  search: "",
 		  sort: <%= params[:sort].coalesce_to 0 %>,
-		  name: "<%= params[:name].coalesce_to "" %>",
-		  start_date: "",
-		  end_date: ""
+		  name: "<%= params[:name].coalesce_to "" %>"
+//		  start_date: "",
+//		  end_date: ""
 		};
 
 		function initialize() {
@@ -596,7 +596,6 @@ var b=document.getElementsByTagName("script")[0];
 a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0014/9731.js?"+Math.floor(new Date().getTime()/3600000);
 a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
 </script>
-
 <% end %>
 <% content_for :overlay do %>
 	<div class="mode">

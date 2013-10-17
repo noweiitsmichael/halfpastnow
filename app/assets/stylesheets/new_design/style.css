@@ -276,9 +276,9 @@ ul.tabNavigation li a.selected,ul.tabNavigation li a:hover {
 }
 
 .icon {
-  display: inline;
-  position: absolute;
-  bottom: 4px;
+  /*display: inline;*/
+  /*position: absolute;*/
+  /*bottom: 4px;*/
 }
 
 .icon a {
