@@ -93,5 +93,8 @@
 <% if recurrence.id.nil? 
 	event.recurrences.delete(recurrence)
    end %>
+<script>
+    $('.occurrence-wrapper').eq(1).find('.delete-occurrence').html(" ")
+</script>
 
 

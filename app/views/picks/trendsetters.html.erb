@@ -147,7 +147,7 @@
 			  	picklist_partial += "</ul>"
 			  end
 
-		      Rails.cache.write("picklist_partial_for_#{picklist.id}", picklist_partial)
+		      Rails.cache.write("picklist_partial_for_#{picklist.id}", picklist_partial, :expires_in => 1.day)
 		      puts "**************** Cache Set for picklist_partial_for_#{picklist.id} ****************"
 		    else
 		      puts "**************** Cache FOUND for picklist_partial_for_#{picklist.id}!!! ****************"
