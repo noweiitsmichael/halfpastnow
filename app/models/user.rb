@@ -34,7 +34,6 @@ class User < ActiveRecord::Base
   ROLES = %w[admin super_admin]
 
   after_create :send_welcome_email
-  after_create :send_contest_entry_email
   after_create :create_default_list
 
 
@@ -228,13 +227,6 @@ class User < ActiveRecord::Base
       UserMailer.welcome_email(self).deliver
     end
   end
-
-   def send_contest_entry_email
-    unless self.email.include?('@halfpastnow.com') && Rails.env != 'test'
-      UserMailer.contest_entry_email(self).deliver
-    end
-  end
-
 
   def create_default_list
     puts "to email list"

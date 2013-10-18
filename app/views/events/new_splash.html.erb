@@ -3,495 +3,233 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="http://www.halfpastnow.com">
-  <meta property="og:image" content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png">
-  <meta property="og:title" content="half past now | your couch will miss you">
-  <meta property="og:description" content="Find the best events in Austin">
-  <meta property="fb:app_id" content="475386955806720"/>
-
+  <meta property="og:type"                 content="website"> 
+  <meta property="og:url"                  content="http://www.halfpastnow.com"> 
+  <meta property="og:image"                content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png">
+  <meta property="og:title"                content="half past now | your couch will miss you">
+  <meta property="og:description"          content="Find the best events in Austin"> 
+  <meta property="fb:app_id" 			   content="475386955806720" />
+  
   <title><%= @pageTitle || "half past now." %></title>
-
+  
   <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic,'>
   <link href='http://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css'>
-  <link rel="shortcut icon" href="/assets/favicon.ico"/>
-
-  <%= javascript_include_tag "application","modernizr-latest","bootstrap","jquery.touchSwipe.min","custom","jquery.carouFredSel-6.2.1-packed" %>
-  <%= stylesheet_link_tag "bootstrap","bootstrap-responsive","custom1","media-queries","jquery-migrate-1.2.1" %>
+  <link rel="shortcut icon" href="/assets/favicon.ico" />
+  
+  <%= javascript_include_tag "application" %>
+  <%= stylesheet_link_tag    "application" %>
   <%= csrf_meta_tags %>
-  <script type="text/javascript">
+	<script type="text/javascript">
 
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-36312888-1']);
-      _gaq.push(['_trackPageview']);
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-36312888-1']);
+	  _gaq.push(['_trackPageview']);
 
-      (function () {
-          var ga = document.createElement('script');
-          ga.type = 'text/javascript';
-          ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0];
-          s.parentNode.insertBefore(ga, s);
-      })();
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
 
-  </script>
+	</script>
 
 </head>
 <body>
-
+	
 <script type="text/javascript">
-    $(function () {
-        var $container = $("#trendsetter-preview"),
-                $tabs = $(".tabs", $container).hide();
+	$(function() {
+		var $container = $("#trendsetter-preview"),
+		    $tabs = $(".tabs", $container).hide();
 
-        $(".ts-icons img", $container).hover(function () {
-            // console.log("do");
-            $tabs.removeClass("active").hide();
-            $(".ts-icons img").css("border-color", "white");
-            $(this).css("border-color", "purple");
-            $tabs.eq($(this).addClass("active").index()).fadeIn(80);
-        }, function () {
-            // console.log("not do");
-        });
-    });
+		$(".ts-icons img", $container).hover(function() {
+			// console.log("do");
+		    $tabs.removeClass("active").hide();
+		    $(".ts-icons img").css("border-color", "white");
+		    $(this).css("border-color", "purple");
+		    $tabs.eq( $(this).addClass("active").index() ).fadeIn(80);
+		}, function() {
+			// console.log("not do");
+		});
+	});
 </script>
-<header class="navbar navbar-fixed-top navbar-inverse">
-  <div class="navbar-inner">
-    <div class="container">
-      <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="pull-left nb-left">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </span>
-        <span class="nb-right pull-right">menu</span>
-      </a>
-      <a class="brand" href="index.html"><img src="assets/new_design/logo.png" alt="Jobhuk - CrowdSourced Hiring"/></a>
-      <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
-      <nav class="nav-collapse collapse">
-        <ul class="nav pull-right">
-          <li><a href="#"><i class="icon-right-arrow"></i>Get App</a></li>
-          <% if user_signed_in? %>
-
-              <% else %>
-              <li><a href="#"  linkto="shunt"><i class="icon-right-arrow"></i>Log In</a></li>
-              <li><a href="#"  linkto="shunt"><i class="icon-right-arrow"></i>Join Now</a></li>
-              <% end %>
-          <li><a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" ><i class="icon-right-arrow"></i>Explorers</a></li>
-
-        </ul>
-      </nav>
-
-      <form action="#" class="navbar-search">
-        <div class="input-append">
-          <input class="span4" id="appendedInput" type="text">
-          <div class="popover bottom">
-            <div class="arrow"></div>
-            <div class="popover-content clearfix">
-              <div class="left">
-                <p>TIP: Search by interest, event, date, cost</p>
-                <p>EX: technology, happy hour, today, free</p>
+  <div id="body">
+    <div id="header">
+      <div class="one">
+        <div>
+          <div class="stay-on-target">
+            <a href="/"><img class="logo" src="/assets/halfpastnow_final_beta-dark-header.png" /></a>
+            <% if false %><% end %>
+            <% if user_signed_in? %>
+              <div class="menu-element right pic">
+                <%= link_to(current_user.firstname + " " + current_user.lastname, edit_user_registration_path) %>
+                <%= link_to image_tag(current_user.profilepic_url(:mini) || "/assets/profile.png", :class => "top-profile-pic"), edit_user_registration_path %>
               </div>
-              <div class="right">
-                <div class="arrow"></div>
-                EVENTS BY CATEGORY
+            <% else %>
+              <div class="menu-element right">
+                  <a href="#" linkto="shunt">Sign Up</a> <span>/</span> <a href="#" linkto="shunt">Login</a>
               </div>
-            </div>
-          </div>
-          <div class="btn-group">
-            <div class="pull-left dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="clearfix">
-                  <div>
-                    <a href="#">Staff Picks</a><br/>
-                    <a href="#">Crowd Favorites</a><br/>
-                    <a href="#">Today's Events</a><br/>
-                    <a href="#">Food &amp; Drinks</a><br/>
-                    <a href="#">Live Shows</a><br/>
-                    <a href="#">Art &amp; Culture</a>
-                  </div>
-                  <div class="divider-vertical pull-left"></div>
-                  <div>
-                    <a href="#">UT Events</a><br/>
-                    <a href="#">For Couples</a><br/>
-                    <a href="#">For Kids</a><br/>
-                    <a href="#">For Families</a><br/>
-                    <a href="#">Freebies</a><br/>
-                    <a href="#">All Activities</a>
-                  </div>
-                </li>
-                <li class="divider"></li>
-                <li><a href="#">About Us</a> | <a href="#">Blog</a> | <a href="#">Privacy</a> | <a href="#">Terms</a> | <a href="#">Feedback</a> | &copy halfpastnow 2013</li>
-              </ul>
-            </div>
-            <input type="submit" class="submit">
+            <% end %>
+
           </div>
         </div>
-      </form>
-    </div>
-  </div>
-</header>
-<div id="myCarousel" class="carousel slide">
-  <ol class="carousel-indicators">
-    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-    <li data-target="#myCarousel" data-slide-to="1"></li>
-    <li data-target="#myCarousel" data-slide-to="2"></li>
-  </ol>
-  <div class="carousel-inner">
-    <div class="item active">
-      <img src="assets/new_design/slide1.gif" alt="">
-      <div class="container">
-        <div class="carousel-caption">
-          <h1>Your couch will miss you</h1>
-          <p class="lead">Discover ATX and send a postcard.</p>
-          <a class="btn btn-large btn-danger" href="#">Download App</a>
-        </div>
       </div>
     </div>
-    <div class="item">
-      <img src="assets/new_design/slide2.gif" alt="">
-      <div class="container">
-        <div class="carousel-caption">
-          <h1>Get in where you fit in</h1>
-          <p class="lead">Activities tailored to your lifestyle.</p>
-          <a class="btn btn-large btn-danger" href="#">Jown Now</a>
-        </div>
-      </div>
+
+    <div id="splash-content">
+		<div id="hero">
+			<div class="hero-writing">
+<!--     <div id="sxsw-banner">
+    	<img src="/assets/sxsw_banner_bg.jpg">
+    </div> -->
+
+<!--     	<a href="/sxsw">
+	    	<div id="sxsw-banner" class="box6">
+	        	<div class="box6_corner_lf"></div>
+	            <div class="box6_corner_rt"></div>
+	        </div>
+	        <div id="sxsw-banner" class="boxbackground">
+	        </div>
+	        <p id="sxsw-banner-text">Filter through <span style="font-size:30px"><span style="color:#ba613b">S</span><span style="color:#26749b">X</span><span style="color:#438758">S</span><span style="color:#888">W</span></span> parties and <span style="font-size:28px">RSVPs</span> <i class="icon-chevron-right" style="font-size: 24px"></i></p>
+    	</a> -->
+				<div class="hero-label">
+					Welcome to <span class="hpn">half past now.</span>
+				</div>
+
+				<div class="hero-text">
+					Discover amazing events and activities.
+				</div>
+
+				<div class="main-action">
+					<a  href="<%= (@mobileMode) ? "/events/android" : "/search" %>"    class="nice-button search-button">
+						<i class="icon-search"></i>
+						Explore Austin
+					</a>
+				</div>
+			</div>
+			<div class="accredit2">
+		    	<a href="http://www.sabrinabeanphotography.com/" target="_blank">Photo: Sabrina{Bean}Photography</a>
+		    </div>
+		</div>
+
+		<div id="splash-actions">
+			<div style="font-style:italic; font-size:30px">
+				Explore events in Austin in one of two ways:
+			</div>
+
+			<div class="left-column">
+					<a href="/picks" class="nice-button calendar-button">
+						<i class="icon-star"></i>
+						Get the best recommendations
+					</a>
+				<div class="action-description">
+					Made by your friends and local trendsetters
+				</div>
+			</div>
+			<div class="right-column">
+					<a  href="<%= (@mobileMode) ? "/events/android" : "/search" %>"    class="nice-button search-button">
+						<i class="icon-search"></i>
+						Use our powerful event filter engine
+					</a>
+				<div class="action-description">
+					Drill down to find exactly what you’re looking for.
+				</div>
+
+			</div>
+		</div>
+
     </div>
-    <div class="item">
-      <img src="assets/new_design/slide3.gif" alt="">
-      <div class="container">
-        <div class="carousel-caption">
-          <h1>Your personal guide to ACL</h1>
-          <p class="lead">Find the bext bands, bars, &amp; backstages.</p>
-          <a class="btn btn-large btn-danger" href="#">All Things ACL</a>
-        </div>
-      </div>
+
+	<div id="splash-content" style="height:620px">
+    		<div id="splash-actions">
+			<div class="left-column">
+				<div class="see-more">
+					<i class="icon-angle-down"></i>
+				</div>
+			<div class="pick-mini-list">
+				Our local trendsetters are the mavens of the community - people and organizations that are in-the-know about Austin and about their passions.<br><br>
+				
+				<div id="trendsetter-preview">
+					<div class="ts-icons">
+						<% BookmarkList.where(:featured => true).sort_by{|a| a.bookmarks.count}.first(10).each_with_index do |b, i| %>
+							<%= image_tag b.picture_url(:thumb) || "/assets/picklist-placeholder.png", :class => "picture", :style => "width:60px; border:3px; border-style:solid; border-color:white" %>
+						<% end %>
+					</div>
+
+					<% BookmarkList.where(:featured => true).sort_by{|a| a.bookmarks.count}.first(10).each_with_index do |b, i| %>
+					  <div style="text-align:left; font-size:16px" class="tabs box14">
+					    <p><%= truncate(b.description, :length => 250, :separator => '.') %></p>
+					    <div class="box14_ribbon"></div>
+					  </div>
+					<% end %>
+
+				</div>
+			</div>
+			</div>
+
+			<div class="right-column">
+				<div class="see-more">
+					<i class="icon-angle-down"></i>
+				</div>
+				<div class="pick-mini-list">
+					Our clean and intuitive event search capability allows you to filter by your preferences, and even save them for future use.
+					<br>
+					<img src="/assets/filter_ss.png" style="margin-top:40px"/>
+				</div>
+			</div>
+		</div>
     </div>
+
+    <div class="splash-signup-bg">
+    	<div class="splash-signup">
+	    	<div class="left-column" style="color:#ddd">
+	    		<h1><span style="font-style:italic"> Start now.</span> Your couch will miss you.</h1>
+	    		Create an account to use everything halfpastnow has to offer:
+	    		<br><br>
+	    		<ul style="margin-left:20px">
+	    			<li>  <i class="icon-bookmark" style="font-size:16px"> </i>  Save your searches for future use</li>
+	    			<li>  <i class="icon-bookmark" style="font-size:16px"> </i>  Get weekly newsletters with personalized recommendations</li>
+	    			<li>  <i class="icon-bookmark" style="font-size:16px"> </i>  See what your friends are doing</li>
+	    		</ul>
+	    		<br>
+	    		Got an iphone? Download our app!<br>
+	    		<a target="_blank" href="https://itunes.apple.com/us/app/halfpastnow/id589530107">
+	    			<img src="/assets/apple_stoer.png" />
+	    		</a>
+	    	</div>
+
+	    	<div class="right-column">
+				<div class="nice-button start-now">
+					<a href="/search" linkto="shunt">Start now!</a>
+					<!-- <a href="#" linkto="shunt">Start now!</a> -->
+				</div>
+	    	</div>
+    	</div>
+    </div>
+    <div class="splash-footer-bg">
+	    <div class="splash-footer">
+			<a href="/info/about">About Us</a> | 
+			<a href="http://blog.halfpastnow.com">Blog</a> | 
+			<a href="/info/privacy">Privacy</a> | 
+			<a href="/info/terms">Terms</a> | 
+		 	&#169; halfpastnow. chimera labs 2013
+
+	    <div class="accredit">
+	    	<a href="http://www.sabrinabeanphotography.com/" target="_blank">Photo: Sabrina{Bean}Photography</a>
+	    </div>
+	    </div>
+	</div>
+
   </div>
-</div>
-<section class="slider-wrap" id="yrhn">
-  <div class="container">
-    <div class="section-title">
-      <h2 class="text-center">You're Halfpast Now</h2>
-      <p class="lead text-center">Check-out events going on today.</p>
-      <a href="#" class="see-all"><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
-    </div>
-    <div class="section-content slider">
-      <div id="slider1">
-        <%= @Occurrences.each do |occurrence| %>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img01.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Lyle Lovett and His Acoustic Group</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$79+</span>
+  <div id="overlays">
+    <div class="mode">
+      <div class="overlay">
+        <div class="insert-point">
+          <div class="window">
           </div>
-          <div class="additional-info">
-            <span class="place">DOWNTOWN</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-       <% end %>
-      </div>
-      <a class="prev" id="slider1_prev" href="#"><span>prev</span></a>
-      <a class="next" id="slider1_next" href="#"><span>next</span></a>
-    </div>
-  </div>
-</section>
-<section class="slider-wrap grey-area" id="fyhp">
-  <div class="container">
-    <div class="section-title">
-      <h2 class="text-center">Find Your Happy Place</h2>
-      <p class="lead text-center">Get your drink on - the cheap. ATX happy hours.</p>
-      <a href="#" class="see-all"><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
-    </div>
-    <div class="section-content slider">
-      <div id="slider2">
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller2-img01.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Blind Pig Pub Industry Night For $5 and up</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$79+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">DOWNTOWN</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller2-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Big BurgerAll You Can Eat at the Bottomless Burger</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller2-img03.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Music, Drinks and Pretty Ladies at the Band Room</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">FREE</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">ACL</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-      </div>
-      <a class="prev" id="slider2_prev" href="#"><span>prev</span></a>
-      <a class="next" id="slider2_next" href="#"><span>next</span></a>
-    </div>
-  </div>
-</section>
-<section class="slider-wrap" id="gud">
-  <div class="container">
-    <div class="section-title">
-      <h2 class="text-center">Get Up &amp; Dance!</h2>
-      <p class="lead text-center">The live music capitol of the world.</p>
-      <a href="#" class="see-all"><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
-    </div>
-    <div class="section-content slider">
-      <div id="slider3">
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img01.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Lyle Lovett and His Acoustic Group</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$79+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">DOWNTOWN</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img03.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Austin City Limits Music Festival</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">FREE</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">ACL</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-      </div>
-      <a class="prev" id="slider3_prev" href="#"><span>prev</span></a>
-      <a class="next" id="slider3_next" href="#"><span>next</span></a>
-    </div>
-  </div>
-</section>
-<section class="slider-wrap grey-area" id="tat">
-  <div class="container">
-    <div class="section-title">
-      <h2 class="text-center">Tried &amp; True</h2>
-      <p class="lead text-center">Halfpastnow staff favorites.</p>
-      <a href="#" class="see-all"><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
-    </div>
-    <div class="section-content slider">
-      <div id="slider4">
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller2-img01.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Blind Pig Pub Industry Night For $5 and up</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$79+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">DOWNTOWN</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller2-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Big BurgerAll You Can Eat at the Bottomless Burger</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller2-img03.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Music, Drinks and Pretty Ladies at the Band Room</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">FREE</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">ACL</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-      </div>
-      <a class="prev" id="slider4_prev" href="#"><span>prev</span></a>
-      <a class="next" id="slider4_next" href="#"><span>next</span></a>
-    </div>
-  </div>
-</section>
-<section class="slider-wrap" id="iffa">
-  <div class="container">
-    <div class="section-title">
-      <h2 class="text-center">It's a Free For All</h2>
-      <p class="lead text-center">No money, no problem.</p>
-      <a href="#" class="see-all"><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
-    </div>
-    <div class="section-content slider">
-      <div id="slider5">
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img01.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Lyle Lovett and His Acoustic Group</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Sept. 3, 2013 @ 6pm</span>
-            <span class="value pull-right">$79+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">DOWNTOWN</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Jan. 24, 2014 @ 7pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img03.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Austin City Limits Music Festival</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Jan. 24, 2014 @ 7pm</span>
-            <span class="value pull-right">FREE</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">ACL</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-      </div>
-      <a class="prev" id="slider5_prev" href="#"><span>prev</span></a>
-      <a class="next" id="slider5_next" href="#"><span>next</span></a>
-    </div>
-  </div>
-</section>
-<footer>
-  <div class="container">
-        	<span class="footer-tap">
-                <span>GO</span>
-                <span class="footer-bar-icon">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </span>
-                <span>UP</span>
-                <div class="popover top in">
-                  <div class="arrow"></div>
-                  <div class="popover-content">
-                    <ul>
-                      <li><a href="#myCarousel">GO TO THE TOP</a></li>
-                      <li><a href="#yrhn">YOU'RE HALFPAST NOW</a></li>
-                      <li><a href="#fyhp">FIND YOUR HAPPY PLACE</a></li>
-                      <li><a href="#gud">GET UP AND DANCE!</a></li>
-                      <li><a href="#tat">TRIED AND TRUE</a></li>
-                      <li><a href="#iffa">IT'S A FREE FOR ALL</a></li>
-                    </ul>
-                  </div>
-                </div>
-            </span>
-  </div>
-</footer>
-<div id="overlays">
-  <div class="mode">
-    <div class="overlay">
-      <div class="insert-point">
-        <div class="window">
         </div>
       </div>
     </div>
   </div>
-</div>
+
 </body>
 </html>

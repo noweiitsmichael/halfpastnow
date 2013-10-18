@@ -24,19 +24,6 @@ def filter
 end
 
 def new_splash
-  lat = 30.268093
-  long = -97.742808
-  zoom = 11
-
-  params[:lat_center] = lat
-  params[:long_center] = long
-  params[:zoom] = zoom
-  params[:user_id] = current_user ? current_user.id : nil
-  ids = Occurrence.find_with(params)
-  occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
-  order_by = "occurrences.start"
-  @Occurrences = Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by)
-
   respond_to do |format|
     format.html { render :layout => false }
   end
@@ -350,6 +337,7 @@ def index
     params[:zoom] = @zoom
 
     params[:user_id] = current_user ? current_user.id : nil
+
     @ids = Occurrence.find_with(params)
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq

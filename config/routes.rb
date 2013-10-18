@@ -27,7 +27,6 @@ Myapp::Application.routes.draw do
   get "info/contact"
   get "info/privacy"
   get "info/terms"
-  get "info/contest_rules"
 
   devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"}
   get "tag/index"
