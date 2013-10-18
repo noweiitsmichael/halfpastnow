@@ -37,6 +37,10 @@
 		  <%= e.label :price %>
 		  <%= e.text_field :price, :class => "price" %>
 		</div>
+        <div class="field">
+          <%= e.label :weight %>
+          <%= e.text_field :weight, :class => "price" %>
+        </div>
 
 		<%= render :partial => "acts", :locals => { :event => @event } %>
 

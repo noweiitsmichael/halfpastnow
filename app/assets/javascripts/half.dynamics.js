@@ -27,7 +27,7 @@ function pushFilterTag(tag_id, tag_type) {
     if(filter.included_tags.indexOf(tag_id) === -1) {
       filter.included_tags.push(tag_id);
     }
-  } else if (tag_type === "and_tags"){
+  } else if (tag_type === "andtags"){
     if(filter.and_tags.indexOf(tag_id) === -1) {
       filter.and_tags.push(tag_id);
     }
@@ -46,7 +46,7 @@ function popFilterTag(tag_id, tag_type) {
     if(filter.included_tags.indexOf(tag_id) != -1) {
       filter.included_tags.splice(filter.included_tags.indexOf(tag_id),1);
     }
-  } else if (tag_type === "and_tags"){
+  } else if (tag_type === "andtags"){
     if(filter.and_tags.indexOf(tag_id) != -1) {
       filter.and_tags.splice(filter.and_tags.indexOf(tag_id),1);
     }
@@ -61,7 +61,7 @@ function inFilterTag(tag_id, tag_type) {
   tag_type = defaultTo(tag_type, "included_tags");
   if (tag_type === "included_tags"){
     return !(typeof filter.included_tags === 'undefined' || filter.included_tags.indexOf(tag_id) === -1);
-  } else if (tag_type === "and_tags"){
+  } else if (tag_type === "andtags"){
     return !(typeof filter.and_tags === 'undefined' || filter.and_tags.indexOf(tag_id) === -1);
   } else {
     return !(typeof filter.excluded_tags === 'undefined' || filter.excluded_tags.indexOf(tag_id) === -1);
@@ -180,6 +180,7 @@ $('.sxsw-dates').dropkick({
     if($(this).hasClass('selected')) {
       popFilterTag(tagID);
     } else {
+
       pushFilterTag(tagID);
     }
 
@@ -497,9 +498,9 @@ $('.sxsw-dates').dropkick({
         if (!timer_is_on) {
             timer_is_on = 1;
             if($(this).val().length >= 3){
-                console.log("keyup");
+                //console.log("keyup");
                 typingTimer = setTimeout(doneTyping , doneTypingInterval);
-                console.log(typingTimer)
+                //console.log(typingTimer)
             }
         }
     });
@@ -507,10 +508,10 @@ $('.sxsw-dates').dropkick({
     //on keydown, clear the countdown
     $('.search-input').keydown(function () {
 
-        console.log("keydown");
+        //console.log("keydown");
         clearTimeout(typingTimer);
         timer_is_on = 0
-        console.log("key down" + typingTimer)
+        //console.log("key down" + typingTimer)
     });
 
   var slideTime = 0;
@@ -979,7 +980,15 @@ function streamSelector() {
 //user is "finished typing," do something
 function doneTyping () {
     filter.search = $('.search-input').val();
+
+    //if they type in a search term, the default "today" term is removed? This should only happen the user has not selected any other filter options
+    if(filter.excluded_tags.length == 0 && filter.included_tags.length == 0 && filter.high_price == ''){
+        filter.end_days = -1;
+    }
+
+
     pullEvents({update_search: false});
+
 }
 
 var boundsChangedFlag = false;

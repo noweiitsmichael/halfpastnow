@@ -88,6 +88,18 @@ gem 'mandrill-api'
 
 gem 'quiet_assets'
 
+gem 'mechanize'
+
+gem 'ri_cal'
+
+gem 'sunspot_rails'
+gem 'progress_bar'
+group :development do
+  gem 'sunspot_solr'
+end
+
+
+
 # gem 'eventfulapi'
 # gem 'eventbrite-client'
 

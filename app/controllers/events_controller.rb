@@ -178,10 +178,11 @@ def android
     order_by = "occurrences.start"
     if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
       # order by event score when sorting by popularity
-      order_by = "CASE events.views 
-                    WHEN 0 THEN 0
-                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
-                  END DESC"
+      #order_by = "CASE events.views
+      #              WHEN 0 THEN 0
+      #              ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+      #            END DESC"
+      order_by = "events.escore"
     end
     @tags = Tag.includes(:parentTag, :childTags).all
     @parentTags = @tags.select{ |tag| tag.parentTag.nil? }
@@ -348,10 +349,12 @@ def index
     order_by = "occurrences.start"
     if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
       # order by event score when sorting by popularity
-      order_by = "CASE events.views 
-                    WHEN 0 THEN 0
-                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
-                  END DESC"
+      #order_by = "CASE events.views
+      #              WHEN 0 THEN 0
+      #              ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+      #            END DESC"
+      ## Testing .. only by score
+      order_by = "events.escore"
 
      ## Testing .. only by views
       # order_by = "CASE events.views 
@@ -775,10 +778,11 @@ def index
     order_by = "occurrences.start"
     if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
       # order by event score when sorting by popularity
-      order_by = "CASE events.views 
-                    WHEN 0 THEN 0
-                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
-                  END DESC"
+      #order_by = "CASE events.views
+      #              WHEN 0 THEN 0
+      #              ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+      #            END DESC"
+      order_by = "events.escore"
     end
 
     @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
