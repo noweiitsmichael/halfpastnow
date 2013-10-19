@@ -1,8 +1,11 @@
 require 'pp'
 
 class PicksController < ApplicationController
+  layout "new_design"
 helper :content
 	def index
+
+    #raise ""
 
 		@lat = 30.268093
 	    @long = -97.742808

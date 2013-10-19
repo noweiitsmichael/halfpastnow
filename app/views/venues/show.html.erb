@@ -7,14 +7,13 @@
      <meta property="og:description"          content="<%=strip_tags(@venue.description)%>"/> 
 <% end %>
 
-<% content_for :mode_title do %>
-	<h1>Venue: <%= @venue.name %></h1>
-<% end %>
+	
 
 
 <% content_for :mode_body do %>
 <%= javascript_include_tag "galleria-1.2.8.min" %>
 	<div class="col-1">
+		<h2><%= @venue.name %></h2>
 		<% unless @venue.description.to_s.empty? %>
 			<div class="description block">
 				<h2>Details</h2>

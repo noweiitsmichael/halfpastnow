@@ -1,6 +1,7 @@
 require 'pp'
 class RegistrationsController < Devise::RegistrationsController
   respond_to :html, :xml, :json
+  #layout "new_design"
   def update
   	# if ( params[:item][:done].to_s == '1') 
   	# 	puts 'Its checked'

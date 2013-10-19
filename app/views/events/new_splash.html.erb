@@ -17,7 +17,38 @@
   <link rel="shortcut icon" href="/assets/favicon.ico" />
   
   <%= javascript_include_tag "application" %>
+
+
+  <!--[if lt IE 9]>
+  <%= javascript_include_tag "new_design/html5" %>
+  <![endif]-->
+
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" />
+  <%= stylesheet_link_tag    "new_design/unsemantic-grid-base" %>
+  <%= stylesheet_link_tag    "new_design/datepicker" %>
+  <%= stylesheet_link_tag    "new_design/style" %>
+  <%= stylesheet_link_tag    "new_design/rs-plugin/css/settings" %>
+
+  <noscript>
+    <%= stylesheet_link_tag    "new_design/unsemantic-grid-mobile" %>
+  </noscript>
+
   <%= stylesheet_link_tag    "application" %>
+
+  <script>
+      var ADAPT_CONFIG = {
+          path: './assets/',
+          dynamic: true,
+          range: [
+              '0 to 767px = new_design/unsemantic-grid-mobile.css',
+              '767px = new_design/unsemantic-grid-desktop.css'
+          ]
+      };
+  </script>
+
+  <%= javascript_include_tag    "new_design/adapt.min" %>
+
+
   <%= csrf_meta_tags %>
 	<script type="text/javascript">
 
@@ -32,6 +63,12 @@
 	  })();
 
 	</script>
+
+  <style>
+      #hero {
+          margin-top: 119px;
+      }
+  </style>
 
 </head>
 <body>
@@ -54,25 +91,26 @@
 </script>
   <div id="body">
     <div id="header">
-      <div class="one">
-        <div>
-          <div class="stay-on-target">
-            <a href="/"><img class="logo" src="/assets/halfpastnow_final_beta-dark-header.png" /></a>
-            <% if false %><% end %>
-            <% if user_signed_in? %>
-              <div class="menu-element right pic">
-                <%= link_to(current_user.firstname + " " + current_user.lastname, edit_user_registration_path) %>
-                <%= link_to image_tag(current_user.profilepic_url(:mini) || "/assets/profile.png", :class => "top-profile-pic"), edit_user_registration_path %>
-              </div>
-            <% else %>
-              <div class="menu-element right">
-                  <a href="#" linkto="shunt">Sign Up</a> <span>/</span> <a href="#" linkto="shunt">Login</a>
-              </div>
-            <% end %>
+      <%= render :partial => "layouts/new_header" %>
+      <!--<div class="one">-->
+        <!--<div>-->
+          <!--<div class="stay-on-target">-->
+            <!--<a href="/"><img class="logo" src="/assets/halfpastnow_final_beta-dark-header.png" /></a>-->
+            <!--<%# if false %><%# end %>-->
+            <!--<%# if user_signed_in? %>-->
+              <!--<div class="menu-element right pic">-->
+                <!--<%#= link_to(current_user.firstname + " " + current_user.lastname, edit_user_registration_path) %>-->
+                <!--<%#= link_to image_tag(current_user.profilepic_url(:mini) || "/assets/profile.png", :class => "top-profile-pic"), edit_user_registration_path %>-->
+              <!--</div>-->
+            <!--<%# else %>-->
+              <!--<div class="menu-element right">-->
+                  <!--<a href="#" linkto="shunt">Sign Up</a> <span>/</span> <a href="#" linkto="shunt">Login</a>-->
+              <!--</div>-->
+            <!--<%# end %>-->
 
-          </div>
-        </div>
-      </div>
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
     </div>
 
     <div id="splash-content">
@@ -205,20 +243,6 @@
 	    	</div>
     	</div>
     </div>
-    <div class="splash-footer-bg">
-	    <div class="splash-footer">
-			<a href="/info/about">About Us</a> | 
-			<a href="http://blog.halfpastnow.com">Blog</a> | 
-			<a href="/info/privacy">Privacy</a> | 
-			<a href="/info/terms">Terms</a> | 
-		 	&#169; halfpastnow. chimera labs 2013
-
-	    <div class="accredit">
-	    	<a href="http://www.sabrinabeanphotography.com/" target="_blank">Photo: Sabrina{Bean}Photography</a>
-	    </div>
-	    </div>
-	</div>
-
   </div>
   <div id="overlays">
     <div class="mode">
@@ -230,6 +254,26 @@
       </div>
     </div>
   </div>
+
+<div class="grid-container">
+  <div class="grid-100 mobile-grid-100 vertical-spacer"></div>
+</div>
+
+
+<footer>
+  <div class="grid-container">
+    <div class="grid-50 mobile-grid-50">
+      <a href="/info/about">About Us</a> | <a href="http://blog.halfpastnow.com">Blog</a> | <a href="/info/privacy">Privacy</a> | <a href="/info/terms">Terms</a>
+    </div>
+    <div class="grid-50 mobile-grid-50 align-right">
+      © halfpastnow. chimera labs 2013
+    </div>
+  </div>
+</footer>
+
+<%= javascript_include_tag "new_design/rs-plugin/js/jquery.themepunch.revolution.min" %>
+<%= javascript_include_tag "new_design/datepicker" %>
+<%= javascript_include_tag "new_design/application" %>
 
 </body>
 </html>

@@ -8,8 +8,9 @@ Myapp::Application.routes.draw do
 
   root :to => 'unofficialacl#index', :constraints => { :domain => "unofficialacl.com" }
 
-  root :to => 'events#new_splash'
-   #root :to => 'unofficialacl#index'
+  #root :to => 'events#new_splash'
+  root :to => 'picks#index'
+  # root :to => 'unofficialacl#index'
 
   match "unofficialacl/search/:tags" => "unofficialacl#search", :as => "unofficialacl_search"
   match "unofficialacl/:type/show/:id" => "unofficialacl#details", :as => "unofficialacl_detail"

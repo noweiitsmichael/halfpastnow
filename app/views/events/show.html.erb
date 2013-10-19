@@ -7,11 +7,11 @@
      <meta property="og:description"          content="<%=strip_tags(@event.description)%>"/> 
 <% end %>
 <% content_for :mode_title do %>
-	<h1>Event: <%= @event.title %></h1>
 <% end %>
 
 <% content_for :mode_body do %>
 	<div class="col-1">
+		<h2><%= @event.title %></h2>
 		<ul class="sub-header">
 			<li class="datetime"><span class="icon icon-time"></span><%= @occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
 			<% if @event.price %>
