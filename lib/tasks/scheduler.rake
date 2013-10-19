@@ -6,13 +6,14 @@ require 'rubygems'
 require 'sanitize'
 require 'carrierwave'
 include REXML
+require 'mechanize'
 
-namespace :test do 
+namespace :test do
 	desc "advance timestamps of events' occurrences"
 	task :advance => :environment do
 		first_occurrence = Occurrence.order("start").first
 		difference_in_days = Date.today - first_occurrence.start.to_date
-		Occurrence.all.each do |occurrence| 
+		Occurrence.all.each do |occurrence|
 			occurrence.start = occurrence.start.advance({:days => difference_in_days})
 			if(occurrence.end)
 				occurrence.end = occurrence.end.advance({:days => difference_in_days})
@@ -22,10 +23,10 @@ namespace :test do
 	end
 end
 
-namespace :test do 
+namespace :test do
 	desc "advance timestamps of events' occurrences"
 	task :backtrack => :environment do
-		Occurrence.all.each do |occurrence| 
+		Occurrence.all.each do |occurrence|
 			occurrence.start = occurrence.start.months_ago(4)
 			if(occurrence.end)
 				occurrence.end = occurrence.end.months_ago(4)
@@ -36,7 +37,7 @@ namespace :test do
 end
 
 
-namespace :m do 
+namespace :m do
 	## Random helper commands
 
 	# # update completedness if it errors out
@@ -48,8 +49,8 @@ namespace :m do
 	task :default_channels => :environment do
 		User.find_each do |u|
 			puts "Adding channels for #{u.firstname}"
-			Channel.default_channels.each do |channel| 
-		        if (channel.name == "Fitness") || (channel.name == "Shows") || (channel.name == "Nightlife") 
+			Channel.default_channels.each do |channel|
+		        if (channel.name == "Fitness") || (channel.name == "Shows") || (channel.name == "Nightlife")
 		          new_channel = channel.dup
 		          new_channel.user_id = u.id
 		          new_channel.default = nil
@@ -137,7 +138,7 @@ namespace :m do
 				if v.nil?
 					puts "****************** No venue found for duplicate #{ven}"
 					next
-				else 
+				else
 					puts "Found for duplicate #{ven}"
 				end
 				puts "...Working on duplicate #{v.name}"
@@ -174,7 +175,7 @@ namespace :m do
 		User.all.each do |u|
 			main_bookmarks_list = BookmarkList.where(:user_id => u.id, :main_bookmarks_list => true)
 			if main_bookmarks_list.empty?
-				new_list = BookmarkList.create(:name => "Bookmarks", :description => "Bookmarks", :public => false, 
+				new_list = BookmarkList.create(:name => "Bookmarks", :description => "Bookmarks", :public => false,
 									:featured => false, :main_bookmarks_list => true, :user_id => u.id)
 				Bookmark.where(:user_id => u.id).each do |b|
 					b.bookmark_list_id = new_list.id
@@ -260,11 +261,11 @@ namespace :m do
 	task :lists => :environment do
 		parent_id = Tag.find_by_name("Streams").id;
 		Tag.where(:parent_tag_id => parent_id).each do |t| # For each tag that currently represents a list
-			
+
 			EventsTags.where(:tag_id => t.id).each do |le| # For each relationship that currently represents Events-List
 				puts "Working on Stream called #{t.name}"
 				if BookmarkList.find_by_name(t.name).nil?
-					new_list = BookmarkList.create(:name => t.name, :description => t.name, :public => true, 
+					new_list = BookmarkList.create(:name => t.name, :description => t.name, :public => true,
 									:featured => true, :main_bookmarks_list => false, :user_id => "17")
 					puts "!!!Created BookmarkList for #{t.name}"
 					listId = new_list.id
@@ -279,7 +280,7 @@ namespace :m do
 
 			ActsTags.where(:tag_id => t.id).each do |le| # For each relationship that currently represents Events-List
 				if BookmarkList.find_by_name(t.name).nil?
-					new_list = BookmarkList.create(:name => t.name, :description => t.name, :public => true, 
+					new_list = BookmarkList.create(:name => t.name, :description => t.name, :public => true,
 									:featured => true, :main_bookmarks_list => false, :user_id => "17")
 					listId = new_list.id
 				else
@@ -291,17 +292,46 @@ namespace :m do
 			end
 
 			if BookmarkList.find_by_name(t.name).nil?
-				BookmarkList.create(:name => t.name, :description => t.name, :public => true, 
+				BookmarkList.create(:name => t.name, :description => t.name, :public => true,
 									:featured => true, :main_bookmarks_list => false, :user_id => "17")
 			end
 		end
 	end
 end
 
-desc "discard old occurrences and create new ones from recurrences"
+
 task :update_occurrences => :environment do
+
+  puts "update_occurrences"
+
+  #if occurrence doesn't have a recurrence, then just delete it
+  recurrence_ids=Recurrence.find(:all).collect(&:id)
+  Occurrence.delete_all(['recurrence_id not in (?) or recurrence_id is NULL',recurrence_ids])
+
+  Occurrence.includes(:recurrence).where(:start => (DateTime.new(1900))..(DateTime.now)).find_each(:batch_size => 5000) do |occurrence|
+    puts occurrence.id
+    if occurrence.recurrence.gen_occurrences(1)
+      occurrence.recurrence.save
+    end
+  end
+
+
+  #the occurrence is the only occurrence of the recurrence, then destroy the recurrence
+  recurrence_ids=Occurrence.find(:all,:select => "recurrence_id",:group => "recurrence_id",:having => "count(id) = 1").collect(&:recurrence_id)
+  Occurrence.delete_all(['recurrence_id in (?)',recurrence_ids])
+  Recurrence.delete_all(['id in (?)',recurrence_ids])
+
+
+end
+
+
+desc "discard old occurrences and create new ones from recurrences"
+task :update_occurrences1 => :environment do
 	puts "update_occurrences"
-	old_occurrences = Occurrence.where(:start => (DateTime.new(1900))..(DateTime.now))
+      month =  ENV["MONTH"].to_i
+	old_occurrences = Occurrence.where("start > ? AND date_part('month',start)=?",DateTime.new(1900),month)
+    puts ENV["MONTH"]
+    puts old_occurrences.count
 	old_occurrences.each do |occurrence|
 		event = occurrence.event
 		puts "occurrence id: " + occurrence.id.to_s
@@ -319,7 +349,7 @@ task :update_occurrences => :environment do
 			end
 		end
 		## Probably never want to delete events either so we always have the data
-		
+
 		# if (event.occurrences.length == 0)
 		# 	event.destroy
 		# end
@@ -337,7 +367,7 @@ end
 
 desc "bind parent tags to events"
 task :bind_parent_tags => :environment do
-	
+
 	Event.all.each do |event|
 		pp event
 		event.tags.each do |tag|
@@ -438,7 +468,7 @@ namespace :api do
 						end
 				else
 					if eb["events"][i]["event"]["venue"]["name"] == ""
-						puts "** Error, no venue name for Eventbrite event #{eb["events"][i]["event"]["id"]} #{eb["events"][i]["event"]["title"]}" 
+						puts "** Error, no venue name for Eventbrite event #{eb["events"][i]["event"]["id"]} #{eb["events"][i]["event"]["title"]}"
 						next
 					end
 					puts "....Found raw venue for #{eb["events"][i]["event"]["venue"]["name"]} by name"
@@ -479,7 +509,7 @@ namespace :api do
 									:raw_venue_id => raw_venue.id
 									)
 					new_events += 1
-					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "RawEvent", 
+					cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "RawEvent",
 							   	   :image => open(new_e["picture"])) rescue nil
 					if cover_i
 						sxsw_event.cover_image = cover_i.id
@@ -503,7 +533,7 @@ namespace :api do
 					# # Create pictures
 					unless new_e["picture"].nil?
 						if Picture.where(:pictureable_type => "Event", :pictureable_id => sxsw_event.id).count <= 2
-							cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event", 
+							cover_i = Picture.create(:pictureable_id => sxsw_event.id, :pictureable_type => "Event",
 									   	   :image => open(new_e["picture"]))
 							sxsw_event.cover_image = cover_i.id
 							sxsw_event.cover_image_url = cover_i.image_url(:cover).to_s
@@ -535,7 +565,7 @@ namespace :api do
 	task :convert_venues => :environment do
 		new_real_venues = 0
 		raw_venues = RawVenue.all
-		raw_venues.each do |raw_venue| 
+		raw_venues.each do |raw_venue|
 			begin
 				if Venue.find(:first, :conditions => [ "lower(name) = ?", raw_venue.name.downcase ]) == nil
 					if Venue.find(:first, :conditions => [ "lower(regexp_replace(address, '[^0-9a-zA-Z ]', '', 'g')) = ?", raw_venue.address.gsub(/[^0-9a-zA-Z ]/, '').downcase ]) == nil
@@ -587,8 +617,8 @@ namespace :api do
 			apiXML = Net::HTTP.get(apiURL)
 			doc = Document.new(apiXML)
 			stream_count = XPath.first( doc, "//stream_count").text
-			
-			offset += stream_count.to_i 
+
+			offset += stream_count.to_i
 			if stream_count == "0"
 				break
 			end
@@ -600,7 +630,7 @@ namespace :api do
 
 				raw_venue = RawVenue.create({
 				    :name => html_ent.decode(item.elements["xCal:x-calconnect-venue"].elements["xCal:adr"].elements["xCal:x-calconnect-venue-name"].text),
-				   	# :description => html_ent.decode(item.elements["description"].text), 
+				   	# :description => html_ent.decode(item.elements["description"].text),
 				   	:url => html_ent.decode(item.elements["xCal:x-calconnect-venue"].elements["xCal:url"] ? item.elements["xCal:x-calconnect-venue"].elements["xCal:url"].text : nil),
 				   	:address => html_ent.decode(item.elements["xCal:x-calconnect-venue"].elements["xCal:adr"].elements["xCal:x-calconnect-street"].text),
 				   	:city => item.elements["xCal:x-calconnect-venue"].elements["xCal:adr"].elements["xCal:x-calconnect-city"].text,
@@ -619,12 +649,13 @@ namespace :api do
 
 	desc "flag all old events as deleted"
 	task :trim_events => :environment do
-		RawEvent.where("start <= ? AND deleted IS NULL",DateTime.now).each do |o|
-			o.deleted = true
-			o.save
-		end
+		#RawEvent.where("start <= ? AND deleted IS NULL",DateTime.now).each do |o|
+		#	o.deleted = true
+		#	o.save
+		#end
+    RawEvent.where("start <= ? AND deleted IS NULL",DateTime.now).update_all(:deleted => true)
 	end
-	 
+
 	desc "pull events from apis"
 	task :get_events, [:until_time]  => [:trim_events, :environment] do |t, args|
 		d_until = args[:until_time] ? DateTime.parse(args[:until_time]) : DateTime.now.advance(:weeks => 4)
@@ -640,8 +671,8 @@ namespace :api do
 			apiXML = Net::HTTP.get(apiURL)
 			doc = Document.new(apiXML)
 			stream_count = XPath.first( doc, "//stream_count").text
-			
-			offset += stream_count.to_i 
+
+			offset += stream_count.to_i
 			if stream_count == "0"
 				break
 			end
@@ -710,7 +741,7 @@ namespace :api do
 			# apiURL = "http://www.do512.com/venue/#{apiURL}?format=xml"
 			puts apiURL
 			# apiXML = Net::HTTP.get(apiURL)
-			# doc = Document.new(apiXML)	
+			# doc = Document.new(apiXML)
 			begin
 				doc = Nokogiri::XML(open(apiURL))
 			rescue => error
@@ -736,7 +767,7 @@ namespace :api do
 				})
 
 				# if item.xpath("image").inner_text
-				# 	cover_i = Picture.create(:pictureable_id => raw_event.id, :pictureable_type => "RawEvent", 
+				# 	cover_i = Picture.create(:pictureable_id => raw_event.id, :pictureable_type => "RawEvent",
 				# 			   	   :image => open(item.xpath("image").inner_text)) rescue nil
 				# 	if cover_i
 				# 		raw_event.cover_image = cover_i.id
@@ -748,6 +779,481 @@ namespace :api do
 			raw_venue.last_visited = DateTime.now
 			raw_venue.save
 		end
-	end
+  end
+
+  task :austin_chronicle_music => :environment do
+    d_until = DateTime.now.advance(:weeks => 4)
+    d_start = DateTime.now
+    d_iter = d_start
+    puts "getting events before " + d_until.to_s
+
+    agent = Mechanize.new
+    events = []
+    event = {}
+
+    while d_iter < d_until
+        d_format_iter = d_iter.strftime("%Y-%m-%d")
+        url = "http://www.austinchronicle.com/calendar/music/#{d_format_iter}/"
+        puts url
+        d_iter = d_iter + 1.day
+
+        page = agent.get(url)
+        page.links_with(:href => %r{/calendar/music/[a-z]} ).each do |link|
+          puts 'Loading %-30s %s' % [link.href, link.text]
+          begin
+            event_page = link.click
+
+            title = event_page.parser.xpath("//*[@id='CenterColumn']/h1").inner_text
+            start = DateTime.parse(event_page.parser.xpath("//*[@id='CenterColumn']/div/h2[1]/b").inner_text) rescue nil
+            venue_name = event_page.parser.xpath("//*[@id='CenterColumn']/div/h2[2]/a").inner_text
+            venue_addr = event_page.parser.xpath("//*[@id='CenterColumn']/div/h2[2]").inner_text
+            venue_addr = venue_addr.sub "#{venue_name}, ",''
+            event_url = event_page.parser.xpath("//*[@id='CenterColumn']/div/h2[3]/a").inner_text
+            description = event_page.parser.xpath("//*[@id='CenterColumn']/div[2]/p").inner_text
+            event_map = event_page.parser.xpath("//*[@id='CenterColumn']/div[3]/script").inner_text
+            latitude = event_map.scan(/-?\d+[.]-?\d+/)[0]
+            longitude = event_map.scan(/-?\d+[.]-?\d+/)[1]
+            raw_id = link.href.scan(/\d+/)[0]#event_page.parser.xpath("//*[@id='shareFacebook']/@rel").text.split(':')[1]
+            venue_id = event_page.parser.xpath("//*[@id='CenterColumn']/div/h2[2]/a/@href").text.split('/')[2]
+
+            event = {:venue_id => venue_id,:venue_name => venue_name,:venue_addr => venue_addr,:raw_id => raw_id,:title => title,:start => start,:url => event_url,:description => description,:latitude => latitude,:longitude => longitude,:event_date => d_iter}
+            #puts "Event Data:\n #{event}"
+            events << event
+          rescue => e
+            $stderr.puts "#{e.class}: #{e.message}"
+          end
+          #break    #test one event
+        end
+      #break       #test day events
+    end
+
+
+    events.each do |event|
+      raw_venue = RawVenue.where(:venue_id => event[:venue_id], :from => "austin_chronicle").first
+      if raw_venue.nil? and !event[:venue_id].nil?
+        begin
+          url = "http://www.austinchronicle.com/locations/#{event[:venue_id]}/"
+          puts "venue url : #{url}"
+          venue_page = agent.get(url)
+          name = venue_page.parser.xpath("//*[@id='CenterColumn']/h1").inner_text
+          address = venue_page.parser.xpath("//*[@id='CenterColumn']//*[@class='body']").inner_text.split("\n")[3].strip
+          city_zip = venue_page.parser.xpath("//*[@id='CenterColumn']//*[@class='body']").inner_text.split("\n")[7].strip
+          #city = city_zip.split[0]
+          zip = city_zip.split[1].split('-')[0] rescue nil
+          phone_list = venue_page.parser.xpath("//*[@id='CenterColumn']//*[@class='body']").inner_text.split("\n")[11].strip.split("/")
+          phone = "(#{phone_list[0]}) #{phone_list[1]}"
+          venue_map = venue_page.parser.xpath("//*[@id='CenterColumn']/div/script").inner_text
+          latitude = venue_map.scan(/-?\d+[.]-?\d+/)[0]
+          longitude = venue_map.scan(/-?\d+[.]-?\d+/)[1]
+          venue_url = venue_page.parser.xpath("//*[@id='CenterColumn']/div[1]/div[2]/a").inner_text
+          description = venue_page.parser.xpath("//*[@id='CenterColumn']/div[1]/div[3]").inner_text.gsub(/\n/," ").strip
+
+          venue = {:name => name, :address => address,:city => 'Austin',:zip => zip,:state_code => 'TX',:phone => phone,:latitude => latitude,:longitude => longitude,:raw_id => event[:raw_id],:from => "austin_chronicle",:venue_id => event[:venue_id],:url =>venue_url}
+          #puts "Venue Data:\n #{venue}"
+          puts "Creating Venue '#{name}'"
+          raw_venue = RawVenue.create(venue)
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+      else
+        puts "Using Venue '#{raw_venue.name}'"
+      end
+
+      raw_event = RawEvent.where(:raw_id => event[:raw_id], :from => "austin_chronicle").first
+
+      if raw_event.nil?
+        puts "Creating Event '#{event[:title]}'"
+        raw_event = RawEvent.create({
+                                        :title => event[:title],
+                                        :description => event[:description],
+                                        :start => event[:start],
+                                        :latitude => event[:latitude],
+                                        :longitude => event[:longitude],
+                                        :venue_name => event[:venue_name],
+                                        :venue_address => event[:venue_addr],
+                                        :venue_city => 'Austin',
+                                        :venue_state => 'Tx',
+                                        :url => event[:event_url],
+                                        :raw_id => event[:raw_id],
+                                        :from => "austin_chronicle",
+                                        :raw_venue_id => (raw_venue ? raw_venue.id : nil)
+                                    })
+      else
+        puts "Event '#{raw_event.title}' exists"
+      end
+    end
+  end
+
+  task :austin_chronicle_art => :environment do
+    d_until = DateTime.now.advance(:weeks => 4)
+    d_start = DateTime.now
+    d_iter = d_start
+    puts "getting events before " + d_until.to_s
+
+    agent = Mechanize.new
+    events = []
+    event = {}
+    venue = {}
+
+    while d_iter < d_until
+      d_format_iter = d_iter.strftime("%Y-%m-%d")
+      url = "http://www.austinchronicle.com/calendar/arts/#{d_format_iter}/"
+      puts url
+      d_iter = d_iter + 1.day
+
+      page = agent.get(url)
+      page.links_with(:href => %r{/calendar/theatre/[a-z]} ).each do |link|
+        puts 'Loading %-30s %s' % [link.href, link.text]
+        begin
+          event_page = link.click
+          venue_id = event_page.parser.xpath("//*[@id='CenterColumn']/h3/a/@href").text.split('/')[2]
+          venue_name = event_page.parser.xpath("//*[@id='CenterColumn']/h3[1]/a").inner_text
+          venue_addr = event_page.parser.xpath("//*[@id='CenterColumn']/h3[1]").inner_text
+          venue_addr = venue_addr.sub "#{venue_name}, ",''
+          raw_id = link.href.scan(/\d+/)[0]
+          title = event_page.parser.xpath("//*[@id='CenterColumn']/h1").inner_text
+          start = DateTime.parse(event_page.parser.xpath("//*[@id='CenterColumn']/h2[1]/b").inner_text) rescue nil
+          event_url = event_page.parser.xpath("//*[@id='CenterColumn']/h3[2]/a[1]").inner_text
+          description = event_page.parser.xpath("//*[@id='CenterColumn']/div").inner_text
+          event_map = event_page.parser.xpath("//*[@id='CenterColumn']/script[2]").inner_text
+          latitude = event_map.scan(/-?\d+[.]-?\d+/)[0]
+          longitude = event_map.scan(/-?\d+[.]-?\d+/)[1]
+
+          event = {:venue_id => venue_id,:venue_name => venue_name,:venue_addr => venue_addr,:raw_id => raw_id,:title => title,:start => start,:url => event_url,:description => description,:latitude => latitude,:longitude => longitude,:event_date => d_iter}
+          #puts "Event Data:\n #{event}"
+          events << event
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+        #break    #test one event
+      end
+      #break       #test day events
+    end
+
+
+    events.each do |event|
+      raw_venue = RawVenue.where(:venue_id => event[:venue_id], :from => "austin_chronicle").first
+      if raw_venue.nil? and !event[:venue_id].nil?
+        begin
+          url = "http://www.austinchronicle.com/locations/#{event[:venue_id]}/"
+          puts "venue url : #{url}"
+          venue_page = agent.get(url)
+          name = venue_page.parser.xpath("//*[@id='CenterColumn']/h1").inner_text
+          address = venue_page.parser.xpath("//*[@id='CenterColumn']//*[@class='body']").inner_text.split("\n")[3].strip
+          city_zip = venue_page.parser.xpath("//*[@id='CenterColumn']//*[@class='body']").inner_text.split("\n")[7].strip
+          #city = city_zip.split[0]
+          zip = city_zip.split[1].split('-')[0] rescue nil
+          phone_list = venue_page.parser.xpath("//*[@id='CenterColumn']//*[@class='body']").inner_text.split("\n")[11].strip.split("/")
+          phone = "(#{phone_list[0]}) #{phone_list[1]}"
+          venue_map = venue_page.parser.xpath("//*[@id='CenterColumn']/div/script").inner_text
+          latitude = venue_map.scan(/-?\d+[.]-?\d+/)[0]
+          longitude = venue_map.scan(/-?\d+[.]-?\d+/)[1]
+          venue_url = venue_page.parser.xpath("//*[@id='CenterColumn']/div[1]/div[2]/a").inner_text
+          description = venue_page.parser.xpath("//*[@id='CenterColumn']/div[1]/div[3]").inner_text.gsub(/\n/," ").strip
+
+          venue = {:name => name, :address => address,:city => 'Austin',:zip => zip,:state_code => 'TX',:phone => phone,:latitude => latitude,:longitude => longitude,:raw_id => event[:raw_id],:from => "austin_chronicle",:venue_id => event[:venue_id],:url =>venue_url}
+          #puts "Venue Data:\n #{venue}"
+          puts "Creating Venue '#{name}'"
+          raw_venue = RawVenue.create(venue)
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+      else
+        puts "Using Venue '#{raw_venue.name}'"
+      end
+
+      raw_event = RawEvent.where(:raw_id => event[:raw_id], :from => "austin_chronicle").first
+
+      if raw_event.nil?
+        puts "Creating Event '#{event[:title]}'"
+        raw_event = RawEvent.create({
+                                        :title => event[:title],
+                                        :description => event[:description],
+                                        :start => event[:start],
+                                        :latitude => event[:latitude],
+                                        :longitude => event[:longitude],
+                                        :venue_name => event[:venue_name],
+                                        :venue_address => event[:venue_addr],
+                                        :venue_city => 'Austin',
+                                        :venue_state => 'Tx',
+                                        :url => event[:event_url],
+                                        :raw_id => event[:raw_id],
+                                        :from => "austin_chronicle",
+                                        :raw_venue_id => (raw_venue ? raw_venue.id : nil)
+                                    })
+      else
+        puts "Event '#{raw_event.title}' exists"
+      end
+    end
+  end
+
+  task :wanderless => :environment do
+    d_until = DateTime.now.advance(:weeks => 4)
+    d_start = DateTime.now
+    d_iter = d_start
+    puts "getting events before " + d_until.to_s
+
+    agent = Mechanize.new
+    events = []
+    event = {}
+    venue = {}
+
+    while d_iter < d_until
+      d_format_iter = d_iter.strftime("%Y-%m-%d")
+      url = "http://www.wanderless.com/events/#{d_format_iter}/"
+      puts url
+      d_iter = d_iter + 1.day
+
+      page = agent.get(url)
+      page.parser.xpath("//*[@id='day-1']/li/a/@href").each do |link|
+
+        url = "http://www.wanderless.com#{link.value}"
+        puts 'Loading %-30s' % [url]
+        begin
+          event_page = agent.get(url)
+          ics = event_page.link_with(:text => 'Add to Calendar')
+          url = "http://www.wanderless.com#{ics.href}"
+          puts url
+
+          component= RiCal.parse(open(url))[0]
+          event = component.events[0]
+
+          puts "#{event.summary} starts at: #{event.dtstart} and ends at #{event.dtend}"
+          venue_name = event.location
+          raw_id = link.value.scan(/\d+/)[0]
+          title = event.summary
+          start = event.dtstart
+          dtend = event.dtend
+          description = event.description
+
+          event = {:venue_name => venue_name,:raw_id => raw_id,:title => title,:start => start,:end => dtend, :description => description,:event_date => d_iter}
+          puts "Event Data:\n #{event}"
+          events << event
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+        #break    #test one event
+      end
+      #break       #test day events
+    end
+
+
+    events.each do |event|
+      raw_venue = RawVenue.where(:name => event[:venue_name], :from => "wanderless").first
+      if raw_venue.nil? and !event[:venue_name].nil?
+        begin
+          name = event[:venue_name]
+
+          venue = {:name => name, :city => 'Austin',:state_code => 'TX',:raw_id => event[:raw_id],:from => "wanderless"}
+          puts "Venue Data:\n #{venue}"
+          puts "Creating Venue '#{name}'"
+          raw_venue = RawVenue.create(venue)
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+      else
+        puts "Using Venue '#{raw_venue.name}'"
+      end
+
+      raw_event = RawEvent.where(:raw_id => event[:raw_id], :from => "wanderless").first
+
+      if raw_event.nil?
+        puts "Creating Event '#{event[:title]}'"
+        raw_event = RawEvent.create({
+                                        :title => event[:title],
+                                        :description => event[:description],
+                                        :start => event[:start],
+                                        :end => event[:end],
+                                        :venue_name => event[:venue_name],
+                                        :venue_city => 'Austin',
+                                        :venue_state => 'Tx',
+                                        :raw_id => event[:raw_id],
+                                        :from => "wanderless",
+                                        :raw_venue_id => (raw_venue ? raw_venue.id : nil)
+                                    })
+      else
+        puts "Event '#{raw_event.title}' exists"
+      end
+    end
+  end
+
+  task :startupdigest => :environment do
+
+    event_count = 0
+    venue_count = 0
+    components = nil
+    events = []
+    venue = {}
+
+    open("https://www.google.com/calendar/ical/startupdigest.com_3b5o5in3jemu3dee12umo9mnu4@group.calendar.google.com/public/basic.ics") do |cal|
+      components = RiCal.parse(cal)
+    end
+
+    components.each do |calendar|
+      calendar.events.each do |event|
+        if event.occurrences(:before => Date.today).empty?
+          begin
+            puts "#{event.summary} starts at: #{event.dtstart} and ends at #{event.dtend}"
+
+            venue_name = event.location
+            raw_id = event.uid
+            title = event.summary
+            start = event.dtstart
+            dtend = event.dtend
+            event_date = event.created
+            description = event.description
+
+            event = {:venue_name => venue_name,:raw_id => raw_id,:title => title,:start => start,:end => dtend, :description => description,:event_date => event_date}
+            events << event
+          rescue => e
+            $stderr.puts "#{e.class}: #{e.message}"
+          end
+        end
+      end
+    end
+
+    events.each do |event|
+      raw_venue = RawVenue.where(:name => event[:venue_name], :from => "startupdigest").first
+      if raw_venue.nil? and !event[:venue_name].nil?
+        begin
+          name = event[:venue_name]
+          venue = {:name => name, :city => 'Austin',:state_code => 'TX',:raw_id => event[:raw_id],:from => "startupdigest"}
+          puts "Creating Venue '#{name}'"
+          raw_venue = RawVenue.create(venue)
+          venue_count = venue_count + 1
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+      else
+        puts "Using Venue '#{raw_venue.name}'"
+      end
+
+      raw_event = RawEvent.where(:raw_id => event[:raw_id], :from => "startupdigest").first
+
+      if raw_event.nil?
+        puts "Creating Event '#{event[:title]}'"
+        raw_event = RawEvent.create({
+                                        :title => event[:title],
+                                        :description => event[:description],
+                                        :start => event[:start],
+                                        :end => event[:end],
+                                        :venue_name => event[:venue_name],
+                                        :venue_city => 'Austin',
+                                        :venue_state => 'Tx',
+                                        :raw_id => event[:raw_id],
+                                        :from => "startupdigest",
+                                        :raw_venue_id => (raw_venue ? raw_venue.id : nil)
+                                    })
+        event_count = event_count + 1
+      else
+        puts "Event '#{raw_event.title}' exists"
+      end
+    end
+
+
+    puts "Total number of events created #{event_count}"
+    puts "Total number of venues created #{venue_count}"
+
+  end
+
+  task :freefuninaustin => :environment do
+
+    event_count = 0
+    venue_count = 0
+    components = nil
+    events = []
+    venue = {}
+
+    open("https://www.google.com/calendar/ical/1lqapbmd7087tsfif7rksefigk@group.calendar.google.com/public/basic.ics") do |cal|
+      components = RiCal.parse(cal)
+    end
+
+
+    components.each do |calendar|
+      calendar.events.each do |event|
+        puts event
+        if event.occurrences(:before => Date.today).empty?
+          begin
+            puts "#{event.summary} starts at: #{event.dtstart} and ends at #{event.dtend}"
+
+            venue_name = event.location
+            raw_id = event.uid
+            title = event.summary
+            start = event.dtstart
+            dtend = event.dtend
+            event_date = event.created
+            description = event.description
+
+            event = {:venue_name => venue_name,:raw_id => raw_id,:title => title,:start => start,:end => dtend, :description => description,:event_date => event_date}
+            events << event
+          rescue => e
+            $stderr.puts "#{e.class}: #{e.message}"
+          end
+        end
+      end
+    end
+
+    events.each do |event|
+      raw_venue = RawVenue.where(:name => event[:venue_name], :from => "freefuninaustin").first
+      if raw_venue.nil? and !event[:venue_name].nil?
+        begin
+          name = event[:venue_name]
+          zip = name.scan(/\d{5}/)[0] rescue ''
+          name.sub(zip,'')
+          name.sub(zip,', Austin, Texas')
+          venue = {:name => name, :city => 'Austin',:state_code => 'TX',:raw_id => event[:raw_id],:zip => zip ,:from => "freefuninaustin"}
+          puts "Creating Venue '#{name}'"
+          raw_venue = RawVenue.create(venue)
+          venue_count = venue_count + 1
+        rescue => e
+          $stderr.puts "#{e.class}: #{e.message}"
+        end
+      else
+        puts "Using Venue '#{raw_venue.name}'"
+      end
+
+      raw_event = RawEvent.where(:raw_id => event[:raw_id], :from => "freefuninaustin").first
+
+      if raw_event.nil?
+        puts "Creating Event '#{event[:title]}'"
+        raw_event = RawEvent.create({
+                                        :title => event[:title],
+                                        :description => event[:description],
+                                        :start => event[:start],
+                                        :end => event[:end],
+                                        :venue_name => event[:venue_name],
+                                        :venue_city => 'Austin',
+                                        :venue_state => 'Tx',
+                                        :raw_id => event[:raw_id],
+                                        :from => "freefuninaustin",
+                                        :raw_venue_id => (raw_venue ? raw_venue.id : nil)
+                                    })
+        event_count = event_count + 1
+      else
+        puts "Event '#{raw_event.title}' exists"
+      end
+    end
+
+
+    puts "Total number of events created #{event_count}"
+    puts "Total number of venues created #{venue_count}"
+
+  end
+
+  task :score_update => :environment do          # Runs every 15min
+    events=Event.where("created_at >= ?",Date.today)
+    events.each do |event|
+      begin
+        event.escore = (event.score * 100).round(4)
+        puts event.escore
+        event.save
+      rescue => e
+        $stderr.puts "#{e.class}: #{e.message}"
+      end
+    end
+    puts "updated #{events.count} event scores"
+  end
+
 end
+
 

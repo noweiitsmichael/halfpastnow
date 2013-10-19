@@ -58,6 +58,16 @@ group :test do
   gem 'turn', '~> 0.8.3', :require => false
 end
 
+  # Testing/BDD
+  gem "rspec-rails",:group => [:development, :test]
+  gem "factory_girl_rails",:group => [:development, :test]
+  gem "email_spec",:group => :test
+  gem "cucumber-rails", :group => :test, :require => false
+  gem "capybara",:git => 'git://github.com/jnicklas/capybara.git',:group => [:development, :test]
+  gem "launchy", :group => :test
+  gem "database_cleaner",:group => [:development, :test]
+
+
 gem "ruby-prof", "~> 0.11.2"
 
 gem 'mobile-fu'
@@ -77,6 +87,18 @@ gem 'dalli'
 gem 'mandrill-api'
 
 gem 'quiet_assets'
+
+gem 'mechanize'
+
+gem 'ri_cal'
+
+gem 'sunspot_rails'
+gem 'progress_bar'
+group :development do
+  gem 'sunspot_solr'
+end
+
+
 
 # gem 'eventfulapi'
 # gem 'eventbrite-client'

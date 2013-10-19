@@ -11,13 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130405221528) do
+ActiveRecord::Schema.define(:version => 20131001090606) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
     t.integer  "event_id"
     t.boolean  "suggested"
     t.text     "fb_picture"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20130405221528) do
     t.string   "pop_source"
     t.float    "completion"
     t.text     "temp_storage"
+    t.integer  "weight",       :default => 1
   end
 
   add_index "acts", ["event_id"], :name => "index_acts_on_event_id"
@@ -164,6 +165,8 @@ ActiveRecord::Schema.define(:version => 20130405221528) do
     t.string   "cover_image_url"
     t.float    "completion"
     t.text     "ticket_url"
+    t.float    "escore",          :default => 0.0
+    t.integer  "weight",          :default => 1
   end
 
   add_index "events", ["clicks"], :name => "index_events_on_clicks"
@@ -314,11 +317,19 @@ ActiveRecord::Schema.define(:version => 20130405221528) do
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
+  create_table "saved_searches", :force => true do |t|
+    t.string   "search_key"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "tags", :force => true do |t|
     t.string   "name"
     t.integer  "parent_tag_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "weight",        :default => 1
   end
 
   add_index "tags", ["parent_tag_id"], :name => "index_tags_on_parent_tag_id"
@@ -395,6 +406,7 @@ ActiveRecord::Schema.define(:version => 20130405221528) do
     t.integer  "updated_by"
     t.float    "completion"
     t.integer  "assigned_admin"
+    t.integer  "weight",         :default => 1
   end
 
 end

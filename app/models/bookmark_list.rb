@@ -10,7 +10,7 @@ class BookmarkList < ActiveRecord::Base
     has_many :bookmarked_acts, :through => :bookmarks, :source => :bookmarked, :source_type => "Act"
 	# Allows you to search for users that bookmarked this artist by calling "act.bookmarked_by"
 	# has_many :followed_by, :through => :bookmarks, :source => :user
-
+  $no_loops = 0
 	mount_uploader :picture, PictureUploader
 	attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   	after_update :crop_picture
@@ -94,7 +94,6 @@ class BookmarkList < ActiveRecord::Base
       b.bookmarked_event
 
     end
-
     return @bookmarked_events.compact
   end
   def first_bookmarked_event
@@ -103,9 +102,7 @@ class BookmarkList < ActiveRecord::Base
       unless b.bookmarked_event.nil?
         return Array(b.bookmarked_event)
       end
-
     end
-
     return @bookmarked_events.compact
   end
 

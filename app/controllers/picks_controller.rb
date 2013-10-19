@@ -184,7 +184,7 @@ helper :content
 		    if (@featuredLists == nil)
 		      # puts "**************** No cache found for trendsetter_featuredLists ****************"
 		      @featuredLists = BookmarkList.where(:featured=>true)
-		    #   Rails.cache.write("trendsetter_featuredLists", @featuredLists)
+		      Rails.cache.write("trendsetter_featuredLists", @featuredLists)
 		    #   puts "**************** Cache Set for trendsetter_featuredLists ****************"
 		    # else
 		    #   puts "**************** Cache FOUND for trendsetter_featuredLists!!! ****************"
