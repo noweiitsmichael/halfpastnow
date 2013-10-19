@@ -3452,16 +3452,12 @@ def homeEvents
     size = ttmp.size
    
 
-   
+    ttttmp = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 14)}
 
     if(params[:channel_id].to_s.empty?)
       ttttmp = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 2)}
-    else if (params[:channel_id].to_i == 3579)
-      ttttmp = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 30)}
-    else if (params[:channel_id].to_i == 264)
-      ttttmp = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 365)}
-    else
-      ttttmp = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 14)}
+     
+    
     end
 
     occurrenceIDs =  ttttmp.collect { |e| e["occurrence_id"].to_i }
