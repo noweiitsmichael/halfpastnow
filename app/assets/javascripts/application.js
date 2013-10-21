@@ -18,3 +18,4 @@
 //= require history.min
 //= require h5utils
 //= require half.main
+//= require jquery.colorbox

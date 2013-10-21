@@ -328,7 +328,7 @@
         <li class="events_tab"><a data-toggle="tab" href="#events">Events</a></li>
         <% if user_signed_in? %>
       <% @saved_search.each do |search| %>
-        <li class="related_events"><a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" key="<%= search[:search_key] %>"><%= search[:search_key] %> <i class='icon-remove'></i></a></li>
+        <li class="related_events"><a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" key="<%= search[:search_key] %>"><%= search[:search_key] %> <i class='icon-cross'></i></a></li>
           <% end %>
           <% end %>
       </ul>
@@ -375,8 +375,9 @@
             </div>
           </div>
         </div>
-        <div class="content main">
+        <div class="content main" style="padding-top:60px">
           <div class="container inline">
+            <img alt="" src="assets/ad.jpg" class="pull-right">
             <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results </h2>
             <p class="lead text-info"></p>
             <section class="product-list clearfix events">
@@ -431,6 +432,7 @@
         </div>
         <div class="content main">
           <div class="container inline">
+            <img alt="" src="assets/ad.jpg" class="pull-right">
             <h2 class="text-info"><span class="total_number">  </span> results for <span id="search_name"></span></h2>
             <p class="lead text-info"></p>
             <section class="product-list clearfix events">
@@ -443,8 +445,17 @@
     </div>
   </div>
 </section>
+  <div style='display:none'>
+    <div id='save_share_content' style='padding:10px; background:#fff;'>
+      <p class="text-center"><h3>Your search is saved successfully</h3></p>
+
+      <p><a id="share" href="#" class='btn btn-primary'>Click Me</a>&nbsp; If you wish to share this search</p>
+
+
+    </div>
+  </div>
     <script>
-        $('.icon-remove').on("click",function(){
+        $('.icon-cross').on("click",function(){
             $(this).parents('li').remove()
           key_id = $(this).parent().attr('key_id')
           if(key_id != null){
@@ -454,9 +465,9 @@
           }
         })
         $('.dropdown-menu a').click(function(){
-          $(".active").attr('class', '.active');
-          $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+$(this).text().replace(" ","_")+">"+$(this).text()+" <i class='icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
-          $('.icon-remove').on("click",function(){
+          $(".active").attr('class', '');
+          $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+$(this).text().replace(" ","_")+">"+$(this).text()+" <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+          $('.icon-cross').on("click",function(){
             $(this).parents('li').remove()
           })
           $('#search_name').text($(this).text())
@@ -472,10 +483,10 @@
         $(".submit").on("click",function(){
 
             if($("#appendedInput").val().length >= 3){
-              $(".active").attr('class', '.active');
-            $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+$("#appendedInput").val()+">"+$("#appendedInput").val()+" <i class='icon-remove'></i><i class='icon-ok-sign'></i></a></li>")
+              $(".active").attr('class', '');
+            $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+$("#appendedInput").val()+">"+$("#appendedInput").val()+" <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
               <% if user_signed_in? %>
-              $('.icon-remove').on("click",function(){
+              $('.icon-cross').on("click",function(){
                 $(this).parents('li').remove()
                 key_id = $(this).parent().attr('key_id')
                 if(key_id != null){
@@ -485,11 +496,11 @@
                 }
               })
               <% else %>
-            $('.icon-remove').on("click",function(){
+            $('.icon-cross').on("click",function(){
                 $(this).parents('li').remove()
             })
               <% end %>
-              $('.icon-ok-sign').on("click",function(){
+              $('.icon-white-pin').on("click",function(){
                 key = $(this).parent().attr('key')
                 check = $(this).parent()
                 <% if user_signed_in? %>
@@ -499,13 +510,17 @@
                   check.attr('key_id', data["key_id"]);
 
                 })
-                window.open(
-                  'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-                  'facebook-share-dialog',
-                  'width=626,height=436');
+                $(this).colorbox({href:"#save_share_content",inline:true, width:"50%",height:"200px"});
+
                 <% end %>
             })
             }
+          $('#share').click(function(){
+            window.open(
+              'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+              'facebook-share-dialog',
+              'width=626,height=436');
+          })
           $('#search-tab a').on("click", function () {
             console.log("i am here")
             doneTyping1($(this).text());
@@ -514,7 +529,7 @@
         })
         url = window.location.href
         if(url.contains('key:')){
-          $(".active").attr('class', '.active');
+          $(".active").attr('class', '');
 
           key_array = $.trim(decodeURI(url)).split("key:");
           key_value = key_array[1];
@@ -522,6 +537,19 @@
           doneTyping1(key_value);
           $('#search_name').text(key_value)
         }
+        $('.events_tab').click(function(){
+          $('#related_events').hide();
+          $('#events').show();
+        })
+        $('.related_events').click(function(){
+          $('#related_events').show();
+          $('#events').hide();
+        })
+        $('#search-tab a').on("click", function () {
+          console.log("i am here")
+          doneTyping1($(this).text());
+          $('#search_name').text($(this).text())
+        });
         $('.filter-dropdown').hide()
     </script>
 

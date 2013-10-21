@@ -383,9 +383,11 @@ class Occurrence < ActiveRecord::Base
       Rails.cache.write(really_long_cache_name, queryResult)
       puts "**************** Cache Set for search Query ****************"
     else
+
       puts "**************** Cache FOUND for search query!!! ****************"
     end
-    # queryResult = ActiveRecord::Base.connection.select_all(query) 
+
+    # queryResult = ActiveRecord::Base.connection.select_all(query)
 
     # @event_ids = queryResult.collect { |e| e["event_id"] }.uniq
     # @str_array = @event_ids.collect{|i| i.to_i}.join(',')
