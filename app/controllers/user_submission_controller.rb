@@ -1,4 +1,5 @@
 class UserSubmissionController < ApplicationController
+layout "new_design"
 helper :content
 
 	def eventCreate1
