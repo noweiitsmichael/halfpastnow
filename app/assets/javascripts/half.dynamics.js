@@ -387,11 +387,13 @@ $(function () {
   $('.custom-start, .custom-end').datepicker({
     minDate: 0,
     onSelect: function () {
+      console.log("it is working fine")
       filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd");
       filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
       updateViewFromFilter();
     }
   });
+
 
   $('.custom-start, .custom-end').datepicker("setDate", Date.today().toString("MM/dd/yyyy"));
 

@@ -6,445 +6,489 @@
   <meta class="meta-description"   property="og:description"          content="Find the best events in Austin">
 <% end %>
 <% content_for :head do %>
-    <%= javascript_include_tag "half.dynamics" %>
-    <%= javascript_include_tag "smartinfowindow.js" %>
+  <%= javascript_include_tag "half.dynamics" %>
+  <%= javascript_include_tag "smartinfowindow.js" %>
 <% end %>
 <% content_for :code do %>
 <%# TODO: put this stuff in the controller eventually %>
 
-    <% 	@now = DateTime.now.change(:hour => 0)
-          @channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
+  <% 	@now = DateTime.now.change(:hour => 0)
+      @channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
 
-    <script type="text/javascript">
-        //cookie redirect
-
-
-
-        (function ($, document, undefined) {
-
-            var pluses = /\+/g;
-
-            function raw(s) {
-                return s;
-            }
-
-            function decoded(s) {
-                return decodeURIComponent(s.replace(pluses, ' '));
-            }
-
-            var config = $.cookie = function (key, value, options) {
-
-                // write
-                if (value !== undefined) {
-                    options = $.extend({}, config.defaults, options);
-
-                    if (value === null) {
-                        options.expires = -1;
-                    }
-
-                    if (typeof options.expires === 'number') {
-                        var days = options.expires, t = options.expires = new Date();
-                        t.setDate(t.getDate() + days);
-                    }
-
-                    value = config.json ? JSON.stringify(value) : String(value);
-
-                    return (document.cookie = [
-                        encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
-                        options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-                        options.path    ? '; path=' + options.path : '',
-                        options.domain  ? '; domain=' + options.domain : '',
-                        options.secure  ? '; secure' : ''
-                    ].join(''));
-                }
-
-                // read
-                var decode = config.raw ? raw : decoded;
-                var cookies = document.cookie.split('; ');
-                for (var i = 0, l = cookies.length; i < l; i++) {
-                    var parts = cookies[i].split('=');
-                    if (decode(parts.shift()) === key) {
-                        var cookie = decode(parts.join('='));
-                        return config.json ? JSON.parse(cookie) : cookie;
-                    }
-                }
-
-                return null;
-            };
-
-            config.defaults = {};
-
-            $.removeCookie = function (key, options) {
-                if ($.cookie(key) !== null) {
-                    $.cookie(key, null, options);
-                    return true;
-                }
-                return false;
-            };
-
-        })(jQuery, document);
+  <script type="text/javascript">
+    //cookie redirect
 
 
 
+    (function ($, document, undefined) {
 
-        $(function() {
-            var COOKIE_NAME = 'splash-page';
-            var cookie = $.cookie(COOKIE_NAME);
-            if (cookie == null) {
-                $.cookie(COOKIE_NAME, true, { path: '/', expires: 9001 });
+      var pluses = /\+/g;
 
-                // ** Adding this check because if a new user is directly linked to a top pick or event, it sucks to be redirected to the splash page.
-                if ((window.location.pathname === "/search") || (window.location.pathname === "/picks") || (window.location.pathname === "/")) {
-                    window.location = "/events/new_splash";
-                }
-            }
-            else {
-            }
-        });
+      function raw(s) {
+        return s;
+      }
 
+      function decoded(s) {
+        return decodeURIComponent(s.replace(pluses, ' '));
+      }
 
-        var geocoder;
-        var map;
-        var markers = [];
-        var tags = {};
-        var channelFilters = {};
+      var config = $.cookie = function (key, value, options) {
 
-        var filter = {
-            start_days: <%= params[:start_days].coalesce_to 0 %>,
-            end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
-            start_seconds: <%= params[:start_seconds].coalesce_to "''" %>,
-            end_seconds: <%= params[:end_seconds].coalesce_to "''" %>,
-            day: [0,1,2,3,4,5,6],
-            low_price: <%= params[:low_price].coalesce_to "''" %>,
-            high_price: <%= params[:high_price].coalesce_to "''" %>,
-            included_tags: <%= params[:included_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[]" %>,
-            excluded_tags: <%= params[:excluded_tags] ? "[" + (params[:excluded_tags] * ",") + "]" : "[]" %>,
-            and_tags: <%= params[:and_tags] ? "[" + (params[:and_tags] * ",") + "]" : "[]" %>,
-            lat_min: "",
-            lat_max: "",
-            long_min: "",
-            long_max: "",
-            offset: 0,
-            search: "",
-            sort: <%= params[:sort].coalesce_to 0 %>,
-            name: "<%= params[:name].coalesce_to "" %>",
-            start_date: "",
-            end_date: ""
-        };
+        // write
+        if (value !== undefined) {
+          options = $.extend({}, config.defaults, options);
 
-        function initialize() {
-            //console.log("initialize");
-            //$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
-            geocoder = new google.maps.Geocoder();
+          if (value === null) {
+            options.expires = -1;
+          }
 
-            var styles = [
-                {
-                    "featureType": "road.highway",
-                    "elementType": "geometry.stroke",
-                    "stylers": [
-                        { "color": "#804580" }
-                    ]
-                },{
-                    "featureType": "road.highway",
-                    "elementType": "labels.text.stroke",
-                    "stylers": [
-                        { "color": "#d5b5d5" }
-                    ]
-                },{
-                    "featureType": "road.arterial",
-                    "elementType": "labels.text.stroke",
-                    "stylers": [
-                        { "color": "#f1e6f3" }
-                    ]
-                },{
-                    "elementType": "geometry.fill",
-                    "stylers": [
-                        { "gamma": 1.54 },
-                        { "lightness": 12 }
-                    ]
-                },{
-                    "featureType": "road.arterial",
-                    "elementType": "geometry.fill",
-                    "stylers": [
-                        { "color": "#e0dae0" }
-                    ]
-                },{
-                    "featureType": "road.arterial",
-                    "elementType": "geometry.stroke",
-                    "stylers": [
-                        { "color": "#b8abb8" }
-                    ]
-                },{
-                    "featureType": "road.highway",
-                    "elementType": "geometry.fill",
-                    "stylers": [
-                        { "color": "#af96af" }
-                    ]
-                },{
-                }
-            ];
+          if (typeof options.expires === 'number') {
+            var days = options.expires, t = options.expires = new Date();
+            t.setDate(t.getDate() + days);
+          }
 
-            var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-            var myOptions = {
-                zoom: <%= @zoom %>,
-                center: latlng,
-                mapTypeId: 'map_style',
-                disableDefaultUI: true,
-                zoomControl: true,
-                scrollwheel: false,
-                zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 2 },
-                backgroundColor: '#FFFFFF'
-            };
+          value = config.json ? JSON.stringify(value) : String(value);
 
-            var styledMap = new google.maps.StyledMapType(styles,
-                    {name: "Styled Map"});
-
-            map = new google.maps.Map($("#map")[0], myOptions);
-
-            map.mapTypes.set('map_style', styledMap);
-            map.setMapTypeId('map_style');
-
-            var locations = [];
-
-            $("#content .main .inner .events li").each(function(index) {
-                var latitude = parseFloat($(this).find(".latitude").html());
-                var longitude = parseFloat($(this).find(".longitude").html());
-                locations.push({lat: latitude, long: longitude});
-            });
-
-            placeMarkers({points: locations});
-
-            google.maps.event.addListener(map, 'idle', boundsChanged);
+          return (document.cookie = [
+            encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
+            options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+            options.path    ? '; path=' + options.path : '',
+            options.domain  ? '; domain=' + options.domain : '',
+            options.secure  ? '; secure' : ''
+          ].join(''));
         }
 
-        function to_i(obj) {
-            return parseInt(obj);
+        // read
+        var decode = config.raw ? raw : decoded;
+        var cookies = document.cookie.split('; ');
+        for (var i = 0, l = cookies.length; i < l; i++) {
+          var parts = cookies[i].split('=');
+          if (decode(parts.shift()) === key) {
+            var cookie = decode(parts.join('='));
+            return config.json ? JSON.parse(cookie) : cookie;
+          }
         }
 
-        $(function() {
-            <% @channels.each do |channel| %>
-            channelFilters[<%= channel.id %>] = {
-                stream_id: <%= channel.id %>,
-                start_days: <%= channel.start_days || 0 %>,
-                end_days: <%= channel.end_days || 0 %>,
-                start_seconds: <%= channel.start_seconds || "''" %>,
-                end_seconds: <%= channel.end_seconds || "''" %>,
-                day: <%= channel.day_of_week ? "'" + channel.day_of_week + "'.split(',').map(to_i)" : "[]" %>,
-                low_price: <%= channel.low_price || "''" %>,
-                high_price: <%= channel.high_price || "''" %>,
-                included_tags: <%= channel.included_tags ? "'" + channel.included_tags + "'.split(',')" : "[]" %>,
-                excluded_tags: <%= channel.excluded_tags ? "'" + channel.excluded_tags + "'.split(',')" : "[]" %>,
-                and_tags: <%= channel.and_tags ? "'" + channel.and_tags + "'.split(',')" : "[]" %>,
-                lat_min: "",
-                lat_max: "",
-                long_min: "",
-                long_max: "",
-                offset: 0,
-                search: "<%= channel.search || "" %>",
-                sort: <%= channel.sort || 0 %>,
-                name: "<%= channel.name || "" %>",
-                start_date: "<%= channel.start_date ? channel.start_date.to_s : "" %>",
-                end_date: "<%= channel.end_date ? channel.end_date.to_s : "" %>"
-            };
-            <% end %>
+        return null;
+      };
 
-            channelFilters[0] = {
-                stream_id: "",
-                start_days: 0,
-                end_days: 0,
-                start_seconds: '',
-                end_seconds: '',
-                day: [0,1,2,3,4,5,6],
-                low_price: '',
-                high_price: '',
-                included_tags: [],
-                and_tags: [],
-                excluded_tags: [],
-                lat_min: "",
-                lat_max: "",
-                long_min: "",
-                long_max: "",
-                offset: 0,
-                search: "",
-                name: "",
-                start_date: "",
-                end_date: "",
-                sort: 0 };
+      config.defaults = {};
 
-            <% @tagCounts.each do |tagCount| %>
-            tags['<%= tagCount[:id] %>'] =
-            { name: "<%= tagCount[:name] %>",
-                parent_id: <%= tagCount[:parent] ? "'#{tagCount[:parent][:id]}'" : 'null' %>,
-                <% children = tagCount[:children].collect { |child| "'#{child[:id]}'" } * ',' %>
-                child_ids: [<%= children %>]
-            }
-            <% end %>
+      $.removeCookie = function (key, options) {
+        if ($.cookie(key) !== null) {
+          $.cookie(key, null, options);
+          return true;
+        }
+        return false;
+      };
 
-            // var event_id = <%= params[:event_id] || "null" %>;
-            var venue_id = <%= params[:venue_id] || "null" %>;
-            var act_id = <%= params[:act_id] || "null" %>;
-            var modality;
+    })(jQuery, document);
 
-            // if(event_id) {
-            // 	modality = spawn(modalities["event"],{id: event_id});
-            // 	modal(modality);
-            // }
-            if(venue_id) {
-                modality = spawn(modalities["venue"],{id: venue_id});
-                modal(modality);
-            }
-            if(act_id) {
-                modality = spawn(modalities["act"],{id: act_id});
-                modal(modality);
-            }
 
-            $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
-            $('.head-title').tooltip('disable');
-            $('.icon-check').tooltip('disable');
-            $('.icon-check-empty').tooltip('disable');
 
-        });
 
-        $(window).load(function() {
-            var stream_id = "<%= params['channel_id'] %>";
-            if(stream_id !== "") {
-                // $('#header').addClass('selected');
-                $(".streambar .stream[stream-id=" + stream_id + "]").addClass('selected');
-                filter.stream_id = parseInt(stream_id);
-                filter.included_tags = channelFilters[parseInt(stream_id)].included_tags;
-                updateViewFromFilter();
-            }
-        });
-    </script>
+    $(function() {
+      var COOKIE_NAME = 'splash-page';
+      var cookie = $.cookie(COOKIE_NAME);
+      if (cookie == null) {
+        $.cookie(COOKIE_NAME, true, { path: '/', expires: 9001 });
+
+        // ** Adding this check because if a new user is directly linked to a top pick or event, it sucks to be redirected to the splash page.
+        if ((window.location.pathname === "/search") || (window.location.pathname === "/picks") || (window.location.pathname === "/")) {
+          window.location = "/events/new_splash";
+        }
+      }
+      else {
+      }
+    });
+
+
+    var geocoder;
+    var map;
+    var markers = [];
+    var tags = {};
+    var channelFilters = {};
+
+    var filter = {
+      start_days: <%= params[:start_days].coalesce_to 0 %>,
+      end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
+      start_seconds: <%= params[:start_seconds].coalesce_to "''" %>,
+      end_seconds: <%= params[:end_seconds].coalesce_to "''" %>,
+      day: [0,1,2,3,4,5,6],
+      low_price: <%= params[:low_price].coalesce_to "''" %>,
+      high_price: <%= params[:high_price].coalesce_to "''" %>,
+      included_tags: <%= params[:included_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[]" %>,
+      excluded_tags: <%= params[:excluded_tags] ? "[" + (params[:excluded_tags] * ",") + "]" : "[]" %>,
+      and_tags: <%= params[:and_tags] ? "[" + (params[:and_tags] * ",") + "]" : "[]" %>,
+      lat_min: "",
+      lat_max: "",
+      long_min: "",
+      long_max: "",
+      offset: 0,
+      search: "",
+      sort: <%= params[:sort].coalesce_to 0 %>,
+      name: "<%= params[:name].coalesce_to "" %>",
+      start_date: "",
+      end_date: ""
+    };
+
+    function initialize() {
+      //console.log("initialize");
+      //$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
+      geocoder = new google.maps.Geocoder();
+
+      var styles = [
+        {
+          "featureType": "road.highway",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            { "color": "#804580" }
+          ]
+        },{
+          "featureType": "road.highway",
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            { "color": "#d5b5d5" }
+          ]
+        },{
+          "featureType": "road.arterial",
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            { "color": "#f1e6f3" }
+          ]
+        },{
+          "elementType": "geometry.fill",
+          "stylers": [
+            { "gamma": 1.54 },
+            { "lightness": 12 }
+          ]
+        },{
+          "featureType": "road.arterial",
+          "elementType": "geometry.fill",
+          "stylers": [
+            { "color": "#e0dae0" }
+          ]
+        },{
+          "featureType": "road.arterial",
+          "elementType": "geometry.stroke",
+          "stylers": [
+            { "color": "#b8abb8" }
+          ]
+        },{
+          "featureType": "road.highway",
+          "elementType": "geometry.fill",
+          "stylers": [
+            { "color": "#af96af" }
+          ]
+        },{
+        }
+      ];
+
+      var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+      var myOptions = {
+        zoom: <%= @zoom %>,
+        center: latlng,
+        mapTypeId: 'map_style',
+        disableDefaultUI: true,
+        zoomControl: true,
+        scrollwheel: false,
+        zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 2 },
+        backgroundColor: '#FFFFFF'
+      };
+
+      var styledMap = new google.maps.StyledMapType(styles,
+        {name: "Styled Map"});
+
+      map = new google.maps.Map($("#map")[0], myOptions);
+
+      map.mapTypes.set('map_style', styledMap);
+      map.setMapTypeId('map_style');
+
+      var locations = [];
+
+      $("#content .main .inner .events li").each(function(index) {
+        var latitude = parseFloat($(this).find(".latitude").html());
+        var longitude = parseFloat($(this).find(".longitude").html());
+        locations.push({lat: latitude, long: longitude});
+      });
+
+      placeMarkers({points: locations});
+
+      google.maps.event.addListener(map, 'idle', boundsChanged);
+    }
+
+    function to_i(obj) {
+      return parseInt(obj);
+    }
+
+    $(function() {
+      <% @channels.each do |channel| %>
+      channelFilters[<%= channel.id %>] = {
+        stream_id: <%= channel.id %>,
+        start_days: <%= channel.start_days || 0 %>,
+        end_days: <%= channel.end_days || 0 %>,
+        start_seconds: <%= channel.start_seconds || "''" %>,
+        end_seconds: <%= channel.end_seconds || "''" %>,
+        day: <%= channel.day_of_week ? "'" + channel.day_of_week + "'.split(',').map(to_i)" : "[]" %>,
+        low_price: <%= channel.low_price || "''" %>,
+        high_price: <%= channel.high_price || "''" %>,
+        included_tags: <%= channel.included_tags ? "'" + channel.included_tags + "'.split(',')" : "[]" %>,
+        excluded_tags: <%= channel.excluded_tags ? "'" + channel.excluded_tags + "'.split(',')" : "[]" %>,
+        and_tags: <%= channel.and_tags ? "'" + channel.and_tags + "'.split(',')" : "[]" %>,
+        lat_min: "",
+        lat_max: "",
+        long_min: "",
+        long_max: "",
+        offset: 0,
+        search: "<%= channel.search || "" %>",
+        sort: <%= channel.sort || 0 %>,
+        name: "<%= channel.name || "" %>",
+        start_date: "<%= channel.start_date ? channel.start_date.to_s : "" %>",
+        end_date: "<%= channel.end_date ? channel.end_date.to_s : "" %>"
+      };
+      <% end %>
+
+      channelFilters[0] = {
+        stream_id: "",
+        start_days: 0,
+        end_days: 0,
+        start_seconds: '',
+        end_seconds: '',
+        day: [0,1,2,3,4,5,6],
+        low_price: '',
+        high_price: '',
+        included_tags: [],
+        and_tags: [],
+        excluded_tags: [],
+        lat_min: "",
+        lat_max: "",
+        long_min: "",
+        long_max: "",
+        offset: 0,
+        search: "",
+        name: "",
+        start_date: "",
+        end_date: "",
+        sort: 0 };
+
+      <% @tagCounts.each do |tagCount| %>
+      tags['<%= tagCount[:id] %>'] =
+      { name: "<%= tagCount[:name] %>",
+        parent_id: <%= tagCount[:parent] ? "'#{tagCount[:parent][:id]}'" : 'null' %>,
+        <% children = tagCount[:children].collect { |child| "'#{child[:id]}'" } * ',' %>
+        child_ids: [<%= children %>]
+      }
+      <% end %>
+
+      // var event_id = <%= params[:event_id] || "null" %>;
+      var venue_id = <%= params[:venue_id] || "null" %>;
+      var act_id = <%= params[:act_id] || "null" %>;
+      var modality;
+
+      // if(event_id) {
+      // 	modality = spawn(modalities["event"],{id: event_id});
+      // 	modal(modality);
+      // }
+      if(venue_id) {
+        modality = spawn(modalities["venue"],{id: venue_id});
+        modal(modality);
+      }
+      if(act_id) {
+        modality = spawn(modalities["act"],{id: act_id});
+        modal(modality);
+      }
+
+      $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+      $('.head-title').tooltip('disable');
+      $('.icon-check').tooltip('disable');
+      $('.icon-check-empty').tooltip('disable');
+
+    });
+
+    $(window).load(function() {
+      var stream_id = "<%= params['channel_id'] %>";
+      if(stream_id !== "") {
+        // $('#header').addClass('selected');
+        $(".streambar .stream[stream-id=" + stream_id + "]").addClass('selected');
+        filter.stream_id = parseInt(stream_id);
+        filter.included_tags = channelFilters[parseInt(stream_id)].included_tags;
+        updateViewFromFilter();
+      }
+    });
+  </script>
 <% end %>
 <% content_for :body do %>
 
 
 
   <section class="search">
-  <div class="tabs">
-    <div class="container">
-      <ul class="nav nav-tabs" id="search-tab">
-        <li class="events_tab"><a data-toggle="tab" href="#events">Events</a></li>
-        <% if user_signed_in? %>
-      <% @saved_search.each do |search| %>
-        <li class="related_events"><a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" key="<%= search[:search_key] %>"><%= search[:search_key] %> <i class='icon-cross'></i></a></li>
+    <div class="tabs">
+      <div class="container">
+        <ul class="nav nav-tabs" id="search-tab">
+          <li class="events_tab"><a data-toggle="tab" href="#events">Events</a></li>
+          <% if user_signed_in? %>
+            <% @saved_search.each do |search| %>
+              <li class="related_events"><a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" key="<%= search[:search_key] %>"><%= search[:search_key] %> <i class='icon-cross'></i></a></li>
+            <% end %>
           <% end %>
-          <% end %>
-      </ul>
-    </div>
-    <div class="tab-content">
-      <div id="events" class="tab-pane fade in active">
-        <div class="sort-panel filter-toggle price date">
-          <div class="container">
-            <a href="#" class="sort-item"><span class="filter-text" id="filter-text1"><i class="icon-bottom-arrow"></i>Date</span></a>
-
-            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Time</a>
-           <a href="#" class="sort-item"><span class="filter-text" id="filter-text2"><i class="icon-bottom-arrow"></i>Cost</span></a>
-
-            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Area</a>
-          </div>
-          <div class="filter-dropdown" id="filter-toggle2">
-            <div class="filter-inner">
-              <div class="price-free-button nice-button">Free</div>
-              <div class="col-2">
-                <div class="price-range"></div>
-                <div class="price-range-hashes">
-                  <div>5</div>
-                  <div>10</div>
-                  <div>15</div>
-                  <div>20</div>
-                  <div>25</div>
-                  <div>30</div>
-                  <div>35</div>
-                  <div>40</div>
-                  <div>45</div>
+        </ul>
+      </div>
+      <div class="tab-content">
+        <div id="events" class="tab-pane fade in active">
+          <div class="sort-panel filter-toggle price date">
+            <div class="container">
+           <span class="sort-item">
+             <a href="#" ><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
+              <div style="display: none;" class="popover bottom">
+                <div class="arrow"></div>
+                <div class="popover-content clearfix">
+                  <label class="ui-input-text" for="from">From</label>
+                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-start" id="from" name="from">
+                  <label class="ui-input-text" for="to">to</label>
+                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-end" id="to" name="to">
                 </div>
-                <div class="price-display">any price</div>
+              </div>
+             </span>
+            <span class="sort-item">
+             <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Time</a>
+              <div style="display: none;" class="popover bottom">
+                <div class="arrow"></div>
+                <div class="popover-content clearfix">
+                  <label for="time" class="ui-input-text">Time</label>
+                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" id="timepicker" value="">
+                </div>
+              </div>
+            </span>
+           <span class="sort-item">
+            <a href="#" class="ui-link"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Cost</span></a>
+            <div style="display: none;" class="popover bottom">
+              <div class="arrow"></div>
+              <div class="popover-content clearfix">
+                <label for="cost" class="ui-input-text cvalue">Less than $50</label>
+                <div class="left">
+                  <span class="option">Free</span>
+                  <span class="option">$5</span>
+                  <span class="option">$10</span>
+                  <span class="option">$20</span>
+                  <span class="option">$30</span>
+                  <span class="option">$40</span>
+                  <span class="option">$50+</span>
+                </div>
+                <div class="right">
+                  <!--<div id="slider-vertical"></div>-->
+
+                  <input type="number" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset ui-slider-input" style="display:none;" min="0" max="50" value="50" step="5" name="slider-step" id="slider-step" sliderorientation="vertical" data-type="range">
+                </div>
+              </div>
+            </div>
+           </span>
+           <span class="sort-item">
+            <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Area</a>
+           </span>
+
+
+            </div>
+            <div class="filter-dropdown" id="filter-toggle2">
+              <div class="filter-inner">
+                <div class="price-free-button nice-button">Free</div>
+                <div class="col-2">
+                  <div class="price-range"></div>
+                  <div class="price-range-hashes">
+                    <div>5</div>
+                    <div>10</div>
+                    <div>15</div>
+                    <div>20</div>
+                    <div>25</div>
+                    <div>30</div>
+                    <div>35</div>
+                    <div>40</div>
+                    <div>45</div>
+                  </div>
+                  <div class="price-display">any price</div>
+                </div>
+              </div>
+            </div>
+            <div class="filter-dropdown" id="filter-toggle1">
+              <div class="filter-inner">
+                <div class="filter date">
+                  <div class="custom-select">
+                    <span class="icon icon-calendar"></span><input type="text" class="custom-start"/> to <span class="icon icon-calendar"></span><input type="text" class="custom-end"/>
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>
-          <div class="filter-dropdown" id="filter-toggle1">
-            <div class="filter-inner">
-              <div class="filter date">
-                <div class="custom-select">
-                  <span class="icon icon-calendar"></span><input type="text" class="custom-start"/> to <span class="icon icon-calendar"></span><input type="text" class="custom-end"/>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="content main" style="padding-top:60px">
-          <div class="container inline">
-            <img alt="" src="assets/ad.jpg" class="pull-right">
-            <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results </h2>
-            <p class="lead text-info"></p>
-            <section class="product-list clearfix events">
-              <% @occurrences.each_with_index do |occurrence, index| %>
+          <div class="content main" style="padding-top:60px">
+            <div class="container inline">
+              <img alt="" src="assets/ad.jpg" class="pull-right">
+              <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results </h2>
+              <p class="lead text-info"></p>
+              <section class="product-list clearfix events">
+                <% @occurrences.each_with_index do |occurrence, index| %>
                   <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
-              <% end %>
+                <% end %>
 
-            </section>
-          </div>
-        </div>
-      </div>
-      <div id="related_events" class="tab-pane fade">
-        <div class="sort-panel filter-toggle price date">
-          <div class="container">
-            <a href="#" class="sort-item"><span class="filter-text" id="filter-text1"><i class="icon-bottom-arrow"></i>Date</span></a>
-
-            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Time</a>
-            <a href="#" class="sort-item"><span class="filter-text" id="filter-text2"><i class="icon-bottom-arrow"></i>Cost</span></a>
-
-            <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Area</a>
-          </div>
-          <div class="filter-dropdown" id="filter-toggle2">
-            <div class="filter-inner">
-              <div class="price-free-button nice-button">Free</div>
-              <div class="col-2">
-                <div class="price-range"></div>
-                <div class="price-range-hashes">
-                  <div>5</div>
-                  <div>10</div>
-                  <div>15</div>
-                  <div>20</div>
-                  <div>25</div>
-                  <div>30</div>
-                  <div>35</div>
-                  <div>40</div>
-                  <div>45</div>
-                </div>
-                <div class="price-display">any price</div>
-              </div>
-            </div>
-          </div>
-          <div class="filter-dropdown" id="filter-toggle1">
-            <div class="filter-inner">
-              <div class="filter date">
-                <div class="custom-select">
-                  <span class="icon icon-calendar"></span><input type="text" class="custom-start"/> to <span class="icon icon-calendar"></span><input type="text" class="custom-end"/>
-                </div>
-
-              </div>
+              </section>
             </div>
           </div>
         </div>
-        <div class="content main">
-          <div class="container inline">
-            <img alt="" src="assets/ad.jpg" class="pull-right">
-            <h2 class="text-info"><span class="total_number">  </span> results for <span id="search_name"></span></h2>
-            <p class="lead text-info"></p>
-            <section class="product-list clearfix events">
+        <div id="related_events" class="tab-pane fade">
+          <div class="sort-panel filter-toggle price date">
+            <div class="container">
+              <a href="#" class="sort-item"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
 
-            </section>
+              <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Time</a>
+              <a href="#" class="sort-item"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Cost</span></a>
+
+              <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Area</a>
+            </div>
+            <div class="filter-dropdown" id="filter-toggle2">
+              <div class="filter-inner">
+                <div class="price-free-button nice-button">Free</div>
+                <div class="col-2">
+                  <div class="price-range"></div>
+                  <div class="price-range-hashes">
+                    <div>5</div>
+                    <div>10</div>
+                    <div>15</div>
+                    <div>20</div>
+                    <div>25</div>
+                    <div>30</div>
+                    <div>35</div>
+                    <div>40</div>
+                    <div>45</div>
+                  </div>
+                  <div class="price-display">any price</div>
+                </div>
+              </div>
+            </div>
+            <div class="filter-dropdown" id="filter-toggle1">
+              <div class="filter-inner">
+                <div class="filter date">
+                  <div class="custom-select">
+                    <span class="icon icon-calendar"></span><input type="text" class="custom-start"/> to <span class="icon icon-calendar"></span><input type="text" class="custom-end"/>
+                  </div>
+
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+          <div class="content main">
+            <div class="container inline">
+              <img alt="" src="assets/ad.jpg" class="pull-right">
+              <h2 class="text-info"><span class="total_number">  </span> results for <span id="search_name"></span></h2>
+              <p class="lead text-info"></p>
+              <section class="product-list clearfix events">
 
+              </section>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
   <div style='display:none'>
     <div id='save_share_content' style='padding:10px; background:#fff;'>
       <p class="text-center"><h3>Your search is saved successfully</h3></p>
@@ -454,9 +498,40 @@
 
     </div>
   </div>
-    <script>
+  <script>
+    $('.icon-cross').on("click",function(){
+      $(this).parents('li').remove()
+      key_id = $(this).parent().attr('key_id')
+      if(key_id != null){
+        <% if user_signed_in? %>
+        $.get('/delete_saved_search',{key_id:key_id})
+        <% end %>
+      }
+    })
+    $('.dropdown-menu a').click(function(){
+      $(".active").attr('class', '');
+      $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+$(this).text().replace(" ","_")+">"+$(this).text()+" <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+      $('.icon-cross').on("click",function(){
+        $(this).parents('li').remove()
+      })
+      $('#search_name').text($(this).text())
+      console.log($(this).text())
+      doneTyping1($(this).text());
+      $('#search-tab a').on("click", function () {
+        console.log($(this).text())
+        doneTyping1($(this).text());
+        $('#search_name').text($(this).text())
+      });
+
+    })
+    $(".submit").on("click",function(){
+
+      if($("#appendedInput").val().length >= 3){
+        $(".active").attr('class', '');
+        $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+$("#appendedInput").val()+">"+$("#appendedInput").val()+" <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+        <% if user_signed_in? %>
         $('.icon-cross').on("click",function(){
-            $(this).parents('li').remove()
+          $(this).parents('li').remove()
           key_id = $(this).parent().attr('key_id')
           if(key_id != null){
             <% if user_signed_in? %>
@@ -464,94 +539,63 @@
             <% end %>
           }
         })
-        $('.dropdown-menu a').click(function(){
-          $(".active").attr('class', '');
-          $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+$(this).text().replace(" ","_")+">"+$(this).text()+" <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
-          $('.icon-cross').on("click",function(){
-            $(this).parents('li').remove()
+        <% else %>
+        $('.icon-cross').on("click",function(){
+          $(this).parents('li').remove()
+        })
+        <% end %>
+        $('.icon-white-pin').on("click",function(){
+          key = $(this).parent().attr('key')
+          check = $(this).parent()
+          <% if user_signed_in? %>
+          $(this).hide()
+          $.get('/saved_search',{key:key},function(data){
+            console.log(check)
+            check.attr('key_id', data["key_id"]);
+
           })
-          $('#search_name').text($(this).text())
-            console.log($(this).text())
-            doneTyping1($(this).text());
-          $('#search-tab a').on("click", function () {
-            console.log($(this).text())
-            doneTyping1($(this).text());
-            $('#search_name').text($(this).text())
-          });
+          $(this).colorbox({href:"#save_share_content",inline:true, width:"50%",height:"200px"});
 
+          <% end %>
         })
-        $(".submit").on("click",function(){
+      }
+      $('#share').click(function(){
+        window.open(
+          'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+          'facebook-share-dialog',
+          'width=626,height=436');
+      })
+      $('#search-tab a').on("click", function () {
+        console.log("i am here")
+        doneTyping1($(this).text());
+        $('#search_name').text($(this).text())
+      });
+    })
+    url = window.location.href
+    if(url.contains('key:')){
+      $(".active").attr('class', '');
 
-            if($("#appendedInput").val().length >= 3){
-              $(".active").attr('class', '');
-            $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+$("#appendedInput").val()+">"+$("#appendedInput").val()+" <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
-              <% if user_signed_in? %>
-              $('.icon-cross').on("click",function(){
-                $(this).parents('li').remove()
-                key_id = $(this).parent().attr('key_id')
-                if(key_id != null){
-                  <% if user_signed_in? %>
-                  $.get('/delete_saved_search',{key_id:key_id})
-                  <% end %>
-                }
-              })
-              <% else %>
-            $('.icon-cross').on("click",function(){
-                $(this).parents('li').remove()
-            })
-              <% end %>
-              $('.icon-white-pin').on("click",function(){
-                key = $(this).parent().attr('key')
-                check = $(this).parent()
-                <% if user_signed_in? %>
-                $(this).hide()
-                $.get('/saved_search',{key:key},function(data){
-                  console.log(check)
-                  check.attr('key_id', data["key_id"]);
-
-                })
-                $(this).colorbox({href:"#save_share_content",inline:true, width:"50%",height:"200px"});
-
-                <% end %>
-            })
-            }
-          $('#share').click(function(){
-            window.open(
-              'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-              'facebook-share-dialog',
-              'width=626,height=436');
-          })
-          $('#search-tab a').on("click", function () {
-            console.log("i am here")
-            doneTyping1($(this).text());
-            $('#search_name').text($(this).text())
-          });
-        })
-        url = window.location.href
-        if(url.contains('key:')){
-          $(".active").attr('class', '');
-
-          key_array = $.trim(decodeURI(url)).split("key:");
-          key_value = key_array[1];
-          $("a:contains("+key_value+")").parent('li').addClass('active').click()
-          doneTyping1(key_value);
-          $('#search_name').text(key_value)
-        }
-        $('.events_tab').click(function(){
-          $('#related_events').hide();
-          $('#events').show();
-        })
-        $('.related_events').click(function(){
-          $('#related_events').show();
-          $('#events').hide();
-        })
-        $('#search-tab a').on("click", function () {
-          console.log("i am here")
-          doneTyping1($(this).text());
-          $('#search_name').text($(this).text())
-        });
-        $('.filter-dropdown').hide()
-    </script>
+      key_array = $.trim(decodeURI(url)).split("key:");
+      key_value = key_array[1];
+      $("a:contains("+key_value+")").parent('li').addClass('active').click()
+      doneTyping1(key_value);
+      $('#search_name').text(key_value)
+    }
+    $('.events_tab').click(function(){
+      $('#related_events').hide();
+      $('#events').show();
+    })
+    $('.related_events').click(function(){
+      $('#related_events').show();
+      $('#events').hide();
+    })
+    $('#search-tab a').on("click", function () {
+      console.log("i am here")
+      doneTyping1($(this).text());
+      $('#search_name').text($(this).text())
+    });
+    $('.filter-dropdown').hide()
+  </script>
 
 <% end %>
 

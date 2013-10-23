@@ -14,6 +14,7 @@ body {
 figure{
 	margin:0;
 	padding:0;
+  height:200px;
 }
 
 input, button, select, textarea {
@@ -46,8 +47,8 @@ h1, h2, h4{color:#4C334E;}
 }
 .text-info{color:#4C334E;}
 
-.icon-white-pin{background:url(../images/icon-white-pin.png) no-repeat 0 0; width:12px; height:19px;}
-.icon-cross{background:url(../images/icon-cross.png) no-repeat 1px 0; width:16px; height:15px;}
+.icon-white-pin{background:url(new_design/icon-white-pin.png) no-repeat 0 0; width:12px; height:19px;}
+.icon-cross{background:url(new_design/icon-cross.png) no-repeat 1px 0; width:16px; height:15px;}
 
 .navbar-inverse .navbar-inner {
     background:#4d344f;
@@ -100,7 +101,7 @@ h1, h2, h4{color:#4C334E;}
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
-	margin:1% 0 0 3%;
+	margin:1% 0 0 8%;
 	position:relative;
 }
 .navbar-search .popover{
@@ -193,7 +194,7 @@ h1, h2, h4{color:#4C334E;}
     display: block;
 }
 .navbar-search .btn-group .submit{
-	background:#ff5753 url(../images/icon-search.gif) no-repeat center center;
+	background:#ff5753 url(new_design/icon-search.gif) no-repeat center center;
 	-webkit-border-radius:0 4px 4px 0;
 	-moz-border-radius:0 4px 4px 0;
 	border-radius:0 4px 4px 0;
@@ -327,7 +328,7 @@ h1, h2, h4{color:#4C334E;}
 	right:0;
 }
 .slider a.prev, .slider a.next {
-	background: url(../images/miscellaneous_sprite.png) no-repeat transparent;
+	background: url(new_design/miscellaneous_sprite.png) no-repeat transparent;
 	width: 43px;
 	height: 42px;
 	display: block;
@@ -461,7 +462,7 @@ h1, h2, h4{color:#4C334E;}
 
 .tab-content {background:#fff;}
 
-.product-list .product-item{margin:0 8% 4% 0; border:solid 1px #fff;}
+.product-list .product-item{margin:0 6% 4% 0; border:solid 1px #fff;}
 .product-list .product-item.featured{}
 
 .ad-contaniner{
@@ -496,7 +497,7 @@ div.ui-slider-vertical, div.ui-slider-verticalInverted {
 label.ui-slider-vertical, label.ui-slider-verticalInverted { display: inline-block;  width: 20%;  margin: 0 2% 0 0; }
 div.ui-slider-vertical, div.ui-slider-verticalInverted { width: 5px; }
 a.ui-slider-handle-vertical, a.ui-slider-handle-verticalInverted { 
-	background:url(../images/slider-handle.png) no-repeat left top;
+	background:url(new_design/slider-handle.png) no-repeat left top;
 	position: absolute; 
 	z-index: 10; 
 	top: 50%; 
@@ -602,13 +603,13 @@ a.ui-slider-handle-vertical, a.ui-slider-handle-verticalInverted {
 .details .event-other-details .nav-tabs > .active > a, .details .event-other-details .nav-tabs > .active > a:hover, .details .event-other-details .nav-tabs > .active > a:focus {background:#E45854;}
 
 .gallery{position:relative;}
-.elastislide-horizontal {position:absolute; width:100%; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; left:0; bottom:0; -webkit-box-shadow:none; -moz-box-shadow:none; box-shadow:none; background:url(../images/black-trans.png) repeat;}
+.elastislide-horizontal {position:absolute; width:100%; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; left:0; bottom:0; -webkit-box-shadow:none; -moz-box-shadow:none; box-shadow:none; background:url(new_design/black-trans.png) repeat;}
 .elastislide-carousel ul li a img{border:none; border-left:5px transparent solid; border-right::5px transparent solid;}
 	
 .event-other-details .ad-contaniner{float:none; width:100%; border:solid 1px #eeeeee; padding:8px; text-align:center; text-transform:uppercase; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box;}
 .event-other-details .ad-contaniner img{margin-bottom:8px;}
 
-#map-container .accordion-heading .accordion-toggle, #neighbourhood-container .accordion-heading .accordion-toggle{background:url(../images/icon-location.png) no-repeat left center; padding-left:35px; padding-bottom:9px;}
+#map-container .accordion-heading .accordion-toggle, #neighbourhood-container .accordion-heading .accordion-toggle{background:url(new_design/icon-location.png) no-repeat left center; padding-left:35px; padding-bottom:9px;}
 
 /* Footer */
 footer{
@@ -665,3 +666,16 @@ footer .footer-tap .popover{
 .popover ul li:last-child{border-bottom:none;}
 .popover ul li a{color:#777777;}
 .popover ul li a:hover, .navbar-search .dropdown-menu div > a:hover{color:#d24743;}
+.filter-dropdown {
+  left: 30%;
+  position: relative;
+  top: 20px;
+}
+#filter-toggle1{
+  left: 4% !important;
+}
+article figure img {
+  height: 200px;
+  overflow: hidden;
+  width: 100%;
+}
