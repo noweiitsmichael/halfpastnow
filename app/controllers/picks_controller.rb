@@ -408,19 +408,21 @@ helper :content
               WHERE TRUE AND occurrences.start >= '#{day}' AND occurrences.start <= '#{day + 1}' AND TRUE AND TRUE AND TRUE AND venues.id = events.venue_id AND venues.latitude >= 30.11684018 AND venues.latitude <= 30.41934582 AND venues.longitude >= -97.84752144 AND venues.longitude <= -97.63809456 AND TRUE AND TRUE AND TRUE AND TRUE AND TRUE AND occurrences.start >= '2013-10-17 13:53:18 +0530' AND occurrences.deleted IS NOT TRUE
               ORDER BY events.id, occurrences.start LIMIT 1000"
 
-    pick_events_count_cache_name = Digest::SHA1.hexdigest("pick_events_count_#{day}")
-    query_result = Rails.cache.read(pick_events_count_cache_name)
-    if query_result.nil?
-
-      puts "$$$$$$$$$$$$$$ No cache found for search query $$$$$$$$$$$$$$"
-      query_result = ActiveRecord::Base.connection.select_all(query)
-      Rails.cache.write(pick_events_count_cache_name, query_result.count)
-      puts "$$$$$$$$$$$$$$ Cache Set for search Query $$$$$$$$$$$$$$"
-    else
-      #raise "aaa".to_yaml
-      puts "$$$$$$$$$$$$$$ Cache FOUND for search query!!! $$$$$$$$$$$$$$"
-    end
-    query_result
+    #pick_events_count_cache_name = Digest::SHA1.hexdigest("pick_events_count_#{day}")
+    #query_result = Rails.cache.read(pick_events_count_cache_name)
+    #if query_result.nil?
+    #
+    #  puts "$$$$$$$$$$$$$$ No cache found for search query $$$$$$$$$$$$$$"
+    #  query_result = ActiveRecord::Base.connection.select_all(query)
+    #  Rails.cache.write(pick_events_count_cache_name, query_result.count)
+    #  puts "$$$$$$$$$$$$$$ Cache Set for search Query $$$$$$$$$$$$$$"
+    #else
+    #  #raise "aaa".to_yaml
+    #  puts "$$$$$$$$$$$$$$ Cache FOUND for search query!!! $$$$$$$$$$$$$$"
+    #end
+    #query_result
+    query_result = ActiveRecord::Base.connection.select_all(query)
+    query_result.count
   end
   helper_method :pick_events_count
 
