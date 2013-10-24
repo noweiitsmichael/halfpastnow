@@ -106,6 +106,15 @@ header .menu-container div p.menu-tagline {
   color: #5e5b5f;
 }
 
+header .add-event {
+  position: absolute;
+  top:0px;
+  right:101px;
+  margin-top:9px;
+  text-decoration:underline;
+  /*margin-right:30px;*/
+}
+
 .login-container {
   position: absolute;
   top: 0px;
@@ -401,8 +410,10 @@ ul.tabNavigation li a.selected,ul.tabNavigation li a:hover {
 }
 
 .top-event a img.photo {
-  min-width: 100%;
-  min-height: 100%;
+  /*min-width: 100%;*/
+  /*min-height: 100%;*/
+  width: 400px;
+  /*height: auto;*/
 }
 
 .category-container {
