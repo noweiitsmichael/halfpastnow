@@ -17,6 +17,7 @@
   <link rel="shortcut icon" href="/assets/favicon.ico"/>
 
   <%= javascript_include_tag "application","all","modernizr-latest","bootstrap","jquery.touchSwipe.min","custom","jquery.carouFredSel-6.2.1-packed" %>
+  <%= javascript_include_tag "half.dynamics" %>
   <%= stylesheet_link_tag "styles10","bootstrap","bootstrap-responsive","custom1","media-queries","jquery-migrate-1.2.1" %>
   <%= csrf_meta_tags %>
   <script type="text/javascript">
@@ -484,6 +485,13 @@
     </div>
   </div>
 </div>
+<script>
+  <% SavedSearch.all.each do |search| %>
+  <%#= raise search.search_key.inspect %>
+  //saved_search_events(<%#= search.search_key %>)
+  <% end %>
+</script>
 
 </body>
+
 </html>

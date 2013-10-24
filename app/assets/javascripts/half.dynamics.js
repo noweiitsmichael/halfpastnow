@@ -1063,7 +1063,8 @@ function pullEvents(updateOptions) {
   if (window.location.href.indexOf("sxsw") > -1) {
     controllerLink = "/events/sxsw?ajax=true"
   }
-  $.get(controllerLink, filter, function (data) {
+  f1={"search":"dance"}
+  $.get(controllerLink, f1, function (data) {
     var locations = [];
 
     var jData = $(data);
@@ -1121,6 +1122,23 @@ function pullEvents(updateOptions) {
     checkScroll();
     addthisevent.refresh();
   });
+}
+function saved_search_events(location){
+
+  console.log(location)
+  var controllerLink = "/events/index?ajax=true"
+  f1={"search":location}
+  $.get(controllerLink, f1, function (data) {
+
+    var locations = [];
+    var jData = $(data);
+    if (false) {
+    } else {
+      $("#slider1").append(data);
+    }
+
+  });
+
 }
 
 var pulling = false;
