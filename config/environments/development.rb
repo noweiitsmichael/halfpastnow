@@ -36,8 +36,10 @@ Myapp::Application.configure do
 
   #config.log_level = :warn
    config.log_level = :debug
-  
-  # Mail options 
+
+  #config.cache_store = :dalli_store
+
+  # Mail options
   ##TODO: Verify this is the correct host
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   config.action_mailer.delivery_method = :smtp

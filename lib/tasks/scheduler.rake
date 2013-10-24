@@ -303,24 +303,29 @@ end
 task :update_occurrences => :environment do
 
   puts "update_occurrences"
-
   #if occurrence doesn't have a recurrence, then just delete it
-  recurrence_ids=Recurrence.find(:all).collect(&:id)
-  Occurrence.delete_all(['recurrence_id not in (?) or recurrence_id is NULL',recurrence_ids])
+  ##recurrence_ids=Recurrence.all.collect(&:id)
+  ##Occurrence.update_all("deleted = #{true}",['recurrence_id not in (?) or recurrence_id is NULL',recurrence_ids])
 
-  Occurrence.includes(:recurrence).where(:start => (DateTime.new(1900))..(DateTime.now)).find_each(:batch_size => 5000) do |occurrence|
+  Occurrence.includes(:recurrence).where("start < ?",DateTime.now).find_each(:batch_size => 5000) do |occurrence|
     puts occurrence.id
-    if occurrence.recurrence.gen_occurrences(1)
-      occurrence.recurrence.save
+    unless occurrence.recurrence.nil?
+      if occurrence.recurrence.gen_occurrences(1)
+        occurrence.recurrence.save
+      else
+        #occurrence.recurrence.delete
+      end
     end
   end
 
+  Occurrence.update_all("deleted = #{true}",['start < ?',DateTime.now])
 
   #the occurrence is the only occurrence of the recurrence, then destroy the recurrence
-  recurrence_ids=Occurrence.find(:all,:select => "recurrence_id",:group => "recurrence_id",:having => "count(id) = 1").collect(&:recurrence_id)
-  Occurrence.delete_all(['recurrence_id in (?)',recurrence_ids])
-  Recurrence.delete_all(['id in (?)',recurrence_ids])
-
+  #recurrence_ids=Occurrence.all(:select => "recurrence_id",:group => "recurrence_id",:having => "count(id) = 1").collect(&:recurrence_id)
+  ##occurrences=Occurrence.where("start < ?",DateTime.now)
+  ##recurrence_ids=occurrences.select("recurrence_id").group("recurrence_id").having("count(id) = 1").collect(&:recurrence_id)
+  #Occurrence.update_all("deleted = #{true}",['recurrence_id in (?)',recurrence_ids])
+  ##Recurrence.delete_all(['id in (?)',recurrence_ids])
 
 end
 

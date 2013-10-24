@@ -145,4 +145,6 @@ class Event < ActiveRecord::Base
     puts "-----Resetting cache....."
     Rails.cache.clear
   end
+
+
 end

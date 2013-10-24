@@ -391,7 +391,7 @@ class Occurrence < ActiveRecord::Base
               WHERE #{where_clause} AND occurrences.start >= #{start_date_where} AND occurrences.deleted IS NOT TRUE
               #{order_by} LIMIT 1000"
 
-    puts query
+    #puts query
     #raise query.to_yaml
     # puts query
     
