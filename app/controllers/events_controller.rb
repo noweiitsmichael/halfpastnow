@@ -38,7 +38,7 @@ class EventsController < ApplicationController
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
     @Occurrences = Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(9)
-
+    @saved_searches = current_user.saved_searches  if user_signed_in?
     respond_to do |format|
       format.html { render :layout => false }
     end

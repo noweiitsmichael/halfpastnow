@@ -1063,8 +1063,8 @@ function pullEvents(updateOptions) {
   if (window.location.href.indexOf("sxsw") > -1) {
     controllerLink = "/events/sxsw?ajax=true"
   }
-  f1={"search":"dance"}
-  $.get(controllerLink, f1, function (data) {
+
+  $.get(controllerLink, filter, function (data) {
     var locations = [];
 
     var jData = $(data);

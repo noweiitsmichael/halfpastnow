@@ -486,9 +486,11 @@
   </div>
 </div>
 <script>
-  <% SavedSearch.all.each do |search| %>
+  <% if user_signed_in? %>
+  <% @saved_searches.each do |search| %>
   <%#= raise search.search_key.inspect %>
   //saved_search_events(<%#= search.search_key %>)
+  <% end %>
   <% end %>
 </script>
 
