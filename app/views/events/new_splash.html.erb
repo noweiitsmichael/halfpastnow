@@ -197,6 +197,9 @@
     </div>
   </div>
 </section>
+<section class="slider-wrap" id="saved_searchs">
+
+</section>
 <section class="slider-wrap grey-area" id="fyhp">
   <div class="container">
     <div class="section-title">
@@ -488,8 +491,8 @@
 <script>
   <% if user_signed_in? %>
   <% @saved_searches.each do |search| %>
-  <%#= raise search.search_key.inspect %>
-  //saved_search_events(<%#= search.search_key %>)
+  console.log("enter")
+  $.get("/saved_searches_index",{key:"<%= search.search_key %>"})
   <% end %>
   <% end %>
 </script>

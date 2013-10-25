@@ -245,7 +245,7 @@
 		
 
 		
-		$('#timepicker').timepicker();
+		//$('#timepicker').timepicker();
 		
 		$(".link").on("click", function(){
 			var target = $(this).attr("data-target");
@@ -257,7 +257,7 @@
 			
 		});
 
-    $('#timepicker').timepicker();
+    //$('#timepicker').timepicker();
 	})
 }(window.jQuery)
 

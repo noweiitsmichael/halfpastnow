@@ -864,5 +864,8 @@ class EventsController < ApplicationController
     SavedSearch.find(params[:key_id]).delete
     render :nothing => true
   end
+  def saved_searches_index
+
+  end
 
 end
