@@ -1124,7 +1124,6 @@ function pullEvents(updateOptions) {
   });
 }
 function saved_search_events(location){
-
   console.log(location)
   var controllerLink = "/events/index?ajax=true"
   f1={"search":location}
@@ -1134,7 +1133,7 @@ function saved_search_events(location){
     var jData = $(data);
     if (false) {
     } else {
-      $("#slider1").append(data);
+      $("#"+location).append(data);
     }
 
   });

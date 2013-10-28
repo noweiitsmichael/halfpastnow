@@ -493,6 +493,7 @@
   <% @saved_searches.each do |search| %>
   console.log("enter")
   $.get("/saved_searches_index",{key:"<%= search.search_key %>"})
+
   <% end %>
   <% end %>
 </script>
