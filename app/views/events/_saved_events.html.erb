@@ -11,15 +11,17 @@
 
 
       </div>
+
       <a class="prev" id="<%= params[:key]%>_prev" href="#"><span>prev</span></a>
       <a class="next" id="<%= params[:key]%>_next" href="#"><span>next</span></a>
+
     </div>
+
   </div>
+
    </section>
 <script>
-  console.log(<%= params[:key] %>)
-
-  saved_search_events("<%= params[:key]%>")
+  $(document).ready(function(){
   $("#<%= params[:key]%>").carouFredSel({
     responsive: true,
     infinite: true,
@@ -47,4 +49,6 @@
     }
   });
 
+  saved_search_events("<%= params[:key]%>")
+  })
 </script>

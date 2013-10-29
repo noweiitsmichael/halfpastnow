@@ -22,18 +22,18 @@
   <%= csrf_meta_tags %>
   <script type="text/javascript">
 
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-36312888-1']);
-      _gaq.push(['_trackPageview']);
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36312888-1']);
+    _gaq.push(['_trackPageview']);
 
-      (function () {
-          var ga = document.createElement('script');
-          ga.type = 'text/javascript';
-          ga.async = true;
-          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-          var s = document.getElementsByTagName('script')[0];
-          s.parentNode.insertBefore(ga, s);
-      })();
+    (function () {
+      var ga = document.createElement('script');
+      ga.type = 'text/javascript';
+      ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+    })();
 
   </script>
 
@@ -41,20 +41,20 @@
 <body>
 
 <script type="text/javascript">
-    $(function () {
-        var $container = $("#trendsetter-preview"),
-                $tabs = $(".tabs", $container).hide();
+  $(function () {
+    var $container = $("#trendsetter-preview"),
+      $tabs = $(".tabs", $container).hide();
 
-        $(".ts-icons img", $container).hover(function () {
-            // console.log("do");
-            $tabs.removeClass("active").hide();
-            $(".ts-icons img").css("border-color", "white");
-            $(this).css("border-color", "purple");
-            $tabs.eq($(this).addClass("active").index()).fadeIn(80);
-        }, function () {
-            // console.log("not do");
-        });
+    $(".ts-icons img", $container).hover(function () {
+      // console.log("do");
+      $tabs.removeClass("active").hide();
+      $(".ts-icons img").css("border-color", "white");
+      $(this).css("border-color", "purple");
+      $tabs.eq($(this).addClass("active").index()).fadeIn(80);
+    }, function () {
+      // console.log("not do");
     });
+  });
 </script>
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
@@ -75,10 +75,10 @@
           <li><a href="#"><i class="icon-right-arrow"></i>Get App</a></li>
           <% if user_signed_in? %>
 
-              <% else %>
-              <li><a href="#"  linkto="shunt"><i class="icon-right-arrow"></i>Log In</a></li>
-              <li><a href="#"  linkto="shunt"><i class="icon-right-arrow"></i>Join Now</a></li>
-              <% end %>
+          <% else %>
+            <li><a href="#"  linkto="shunt"><i class="icon-right-arrow"></i>Log In</a></li>
+            <li><a href="#"  linkto="shunt"><i class="icon-right-arrow"></i>Join Now</a></li>
+          <% end %>
           <li><a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" ><i class="icon-right-arrow"></i>Explorers</a></li>
 
         </ul>
@@ -189,7 +189,7 @@
       <div id="slider1">
 
         <% @Occurrences.each_with_index do |occurrence, index| %>
-            <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
+          <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
         <% end %>
       </div>
       <a class="prev" id="slider1_prev" href="#"><span>prev</span></a>
@@ -492,7 +492,13 @@
   <% if user_signed_in? %>
   <% @saved_searches.each do |search| %>
   console.log("enter")
-  $.get("/saved_searches_index",{key:"<%= search.search_key %>"})
+  $.get("/saved_searches_index",{key:"<%= search.search_key %>"},function(data){
+
+  })
+  $('.submit').click(function(){
+    console.log($('#appendedInput').val())
+    window.location.href = window.location.href+"search?key="+$('#appendedInput').val()
+  })
 
   <% end %>
   <% end %>

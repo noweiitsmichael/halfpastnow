@@ -594,6 +594,21 @@
       doneTyping1($(this).text());
       $('#search_name').text($(this).text())
     });
+    <% if params[:key] %>
+    $(".active").attr('class', '');
+    $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>'><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+    $('.icon-cross').on("click",function(){
+      $(this).parents('li').remove()
+    })
+
+    $('#search-tab a').on("click", function () {
+      console.log($(this).text())
+      doneTyping1($(this).text());
+      $('#search_name').text($(this).text())
+    });
+    doneTyping1("<%= params[:key] %>");
+    $('#search_name').text("<%= params[:key] %>")
+    <% end %>
     $('.filter-dropdown').hide()
   </script>
 
