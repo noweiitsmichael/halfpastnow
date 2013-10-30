@@ -29,6 +29,7 @@
 				}
 			}
 		});
+
 		$("#slider2").carouFredSel({
 			responsive: true,
 			infinite: true,

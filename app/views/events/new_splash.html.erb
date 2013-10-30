@@ -187,7 +187,6 @@
     </div>
     <div class="section-content slider">
       <div id="slider1">
-
         <% @Occurrences.each_with_index do |occurrence, index| %>
           <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
         <% end %>
@@ -197,9 +196,28 @@
     </div>
   </div>
 </section>
-<section class="slider-wrap" id="saved_searchs">
+<% @saved_searches.each do |search| %>
+  <section id="<%= search.search_key%>_section" class="slider-wrap">
+    <div class="container">
+      <div class="section-title">
+        <h2 class="text-center"><%= search.search_key%></h2>
+        <p class="lead text-center">Check-out events going on today.</p>
+        <a href="#" class="see-all"><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
+        <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
+      </div>
+      <div class="section-content slider">
+        <div id="<%= search.search_key%>">
+        </div>
+        <a class="prev" id="<%= search.search_key%>_prev" href="#"><span>prev</span></a>
+        <a class="next" id="<%= search.search_key%>_next" href="#"><span>next</span></a>
+          </div>
+       </div>
+    </section>
+  <script>
+     saved_search_events("<%= search.search_key%>");
+  </script>
 
-</section>
+<% end %>
 <section class="slider-wrap grey-area" id="fyhp">
   <div class="container">
     <div class="section-title">
@@ -489,19 +507,18 @@
   </div>
 </div>
 <script>
-  <% if user_signed_in? %>
+  <% if user_signed_in? and false %>
   <% @saved_searches.each do |search| %>
   console.log("enter")
   $.get("/saved_searches_index",{key:"<%= search.search_key %>"},function(data){
 
   })
+    <% end %>
+  <% end %>
   $('.submit').click(function(){
     console.log($('#appendedInput').val())
     window.location.href = window.location.href+"search?key="+$('#appendedInput').val()
   })
-
-  <% end %>
-  <% end %>
 </script>
 
 </body>

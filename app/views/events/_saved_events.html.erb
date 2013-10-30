@@ -21,34 +21,8 @@
 
    </section>
 <script>
-  $(document).ready(function(){
-  $("#<%= params[:key]%>").carouFredSel({
-    responsive: true,
-    infinite: true,
-    auto:false,
-    prev	: {
-      button	: "#<%= params[:key]%>_prev",
-      key		: "left"
-    },
-    next	: {
-      button	: "#<%= params[:key]%>_next",
-      key		: "right"
-    },
-    swipe: {
-      onMouse: true,
-      onTouch: true
-    },
-    scroll: 1,
-    items: {
-      width: 299,
-      height: 375,	//	optionally resize item-height
-      visible: {
-        min: 1,
-        max: 3
-      }
-    }
-  });
+
 
   saved_search_events("<%= params[:key]%>")
-  })
+
 </script>

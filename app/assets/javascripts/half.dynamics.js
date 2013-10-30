@@ -600,7 +600,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
 
   options = defaultTo(options, {});
   pullEventsFlag = defaultTo(pullEventsFlag, true);
-  //filter.offset = 0;
+  filter.offset = 0;
 
   //if filter.changed, show save search button
   //otherwise, hide save search button
@@ -734,7 +734,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
     $('.tags-display.andtags').append("<span class='tag included' tag-id='" + andtagsDisplayArr[i]["id"] + "'><span class='include icon-check'></span><span class='name'>" + andtagsDisplayArr[i]["name"] + "</span></span>");
   }
 
-  ////////////// DATETIME ////////////// 
+  ////////////// DATETIME //////////////
 
   $('.filter.date .filters span').removeClass('selected');
   $('.filter.date .filters span:nth-child(' + (option_day + 1) + ')').addClass('selected');
@@ -883,7 +883,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
   }
   $('.filter-toggle.sort .text-inner').html(sortStr);
 
-  ////////////// SEARCH ////////////// 
+  ////////////// SEARCH //////////////
 
   if (!(options.update_search === false)) {
     $('.search-input').val(filter.search);
@@ -1128,13 +1128,39 @@ function saved_search_events(location){
   var controllerLink = "/events/index?ajax=true"
   f1={"search":location}
   $.get(controllerLink, f1, function (data) {
-
     var locations = [];
     var jData = $(data);
     if (false) {
     } else {
       $("#"+location).append(data);
+      $("#"+location).carouFredSel({
+        responsive: true,
+        infinite: true,
+        auto:false,
+        prev	: {
+          button	: "#"+location + "_prev",
+          key		: "left"
+        },
+        next	: {
+          button	: "#"+location + "_next",
+          key		: "right"
+        },
+        swipe: {
+          onMouse: true,
+          onTouch: true
+        },
+        scroll: 1,
+        items: {
+          width: 299,
+          height: 375,	//	optionally resize item-height
+          visible: {
+            min: 1,
+            max: 3
+          }
+        }
+      });
     }
+
 
   });
 
