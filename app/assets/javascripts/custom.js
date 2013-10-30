@@ -152,7 +152,18 @@
 				$(this).next(".popover").hide().removeClass("open");
 			}
 		});
-		
-		$(".product-list .product-item:nth-child(3n)").css("margin-right", 0);
+    $(".sort-item a").on("click", function(e){
+
+      e.stopPropagation();
+      $(this).next(".popover").addClass("open").toggle();
+    });
+    $('#timepicker').timepicker();
+    $("html").click(function() {
+      if($(".sort-item .popover").hasClass("open") && !mouseOverActiveElement){
+        console.log('clicked outside active element');
+        $(".sort-item .popover").hide().removeClass("open");
+      }
+    });
+    $(".product-list .product-item:nth-child(3n)").css("margin-right", 0);
 	})
 }(window.jQuery)

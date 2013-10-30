@@ -83,10 +83,6 @@
       };
 
     })(jQuery, document);
-
-
-
-
     $(function() {
       var COOKIE_NAME = 'splash-page';
       var cookie = $.cookie(COOKIE_NAME);
@@ -304,8 +300,7 @@
       $('.icon-check-empty').tooltip('disable');
 
     });
-
-    $(window).load(function() {
+        $(window).load(function() {
       var stream_id = "<%= params['channel_id'] %>";
       if(stream_id !== "") {
         // $('#header').addClass('selected');
@@ -318,9 +313,6 @@
   </script>
 <% end %>
 <% content_for :body do %>
-
-
-
   <section class="search">
     <div class="tabs">
       <div class="container">
@@ -376,17 +368,11 @@
                 </div>
                 <div class="right">
                   <!--<div id="slider-vertical"></div>-->
-
                   <input type="number" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset ui-slider-input" style="display:none;" min="0" max="50" value="50" step="5" name="slider-step" id="slider-step" sliderorientation="vertical" data-type="range">
                 </div>
               </div>
             </div>
            </span>
-           <span class="sort-item">
-            <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Area</a>
-           </span>
-
-
             </div>
             <div class="filter-dropdown" id="filter-toggle2">
               <div class="filter-inner">
@@ -436,12 +422,54 @@
         <div id="related_events" class="tab-pane fade">
           <div class="sort-panel filter-toggle price date">
             <div class="container">
-              <a href="#" class="sort-item"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
+           <span class="sort-item">
+             <a href="#" ><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
+              <div style="display: none;" class="popover bottom">
+                <div class="arrow"></div>
+                <div class="popover-content clearfix">
+                  <label class="ui-input-text" for="from">From</label>
+                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-start" id="from" name="from">
+                  <label class="ui-input-text" for="to">to</label>
+                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-end" id="to" name="to">
+                </div>
+              </div>
+             </span>
+            <span class="sort-item">
+             <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Time</a>
+              <div style="display: none;" class="popover bottom">
+                <div class="arrow"></div>
+                <div class="popover-content clearfix">
+                  <label for="time" class="ui-input-text">Time</label>
+                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" id="timepicker" value="">
+                </div>
+              </div>
+            </span>
+           <span class="sort-item">
+            <a href="#" class="ui-link"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Cost</span></a>
+            <div style="display: none;" class="popover bottom">
+              <div class="arrow"></div>
+              <div class="popover-content clearfix">
+                <label for="cost" class="ui-input-text cvalue">Less than $50</label>
+                <div class="left">
+                  <span class="option">Free</span>
+                  <span class="option">$5</span>
+                  <span class="option">$10</span>
+                  <span class="option">$20</span>
+                  <span class="option">$30</span>
+                  <span class="option">$40</span>
+                  <span class="option">$50+</span>
+                </div>
+                <div class="right">
+                  <!--<div id="slider-vertical"></div>-->
 
-              <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Time</a>
-              <a href="#" class="sort-item"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Cost</span></a>
+                  <input type="number" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset ui-slider-input" style="display:none;" min="0" max="50" value="50" step="5" name="slider-step" id="slider-step" sliderorientation="vertical" data-type="range">
+                </div>
+              </div>
+            </div>
+           </span>
 
-              <a href="#" class="sort-item"><i class="icon-bottom-arrow"></i>Area</a>
+
+
             </div>
             <div class="filter-dropdown" id="filter-toggle2">
               <div class="filter-inner">

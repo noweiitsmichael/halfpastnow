@@ -1124,7 +1124,7 @@ function pullEvents(updateOptions) {
   });
 }
 
-$('#slider2,#slider3,#slider5').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;'>");
+
 function saved_search_events(location){
   console.log(location)
   var controllerLink = "/events/index?ajax=true"
