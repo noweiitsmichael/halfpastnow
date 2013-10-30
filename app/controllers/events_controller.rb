@@ -424,7 +424,7 @@ class EventsController < ApplicationController
       format.html do
 
         unless (params[:ajax].to_s.empty?)
-          render :partial => "combo", :locals => {:occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset}
+          render :partial => "combo", :locals => {:occurrences => @occurrences.take(5), :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset}
 
         end
       end

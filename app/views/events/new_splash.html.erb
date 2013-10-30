@@ -196,6 +196,7 @@
     </div>
   </div>
 </section>
+<% if user_signed_in?  %>
 <% @saved_searches.each do |search| %>
   <section id="<%= search.search_key%>_section" class="slider-wrap">
     <div class="container">
@@ -214,10 +215,12 @@
        </div>
     </section>
   <script>
+    $('#<%= search.search_key%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: auto !important;'>");
      saved_search_events("<%= search.search_key%>");
   </script>
 
 <% end %>
+  <% end %>
 <section class="slider-wrap grey-area" id="fyhp">
   <div class="container">
     <div class="section-title">
@@ -507,14 +510,10 @@
   </div>
 </div>
 <script>
-  <% if user_signed_in? and false %>
-  <% @saved_searches.each do |search| %>
-  console.log("enter")
-  $.get("/saved_searches_index",{key:"<%= search.search_key %>"},function(data){
 
-  })
-    <% end %>
-  <% end %>
+   happy_place_events(19,"slider2");
+   dance_events(16,"slider3");
+   free_events("slider5");
   $('.submit').click(function(){
     console.log($('#appendedInput').val())
     window.location.href = window.location.href+"search?key="+$('#appendedInput').val()

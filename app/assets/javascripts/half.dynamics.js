@@ -1123,6 +1123,8 @@ function pullEvents(updateOptions) {
     addthisevent.refresh();
   });
 }
+
+$('#slider2,#slider3,#slider5').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;'>");
 function saved_search_events(location){
   console.log(location)
   var controllerLink = "/events/index?ajax=true"
@@ -1132,40 +1134,84 @@ function saved_search_events(location){
     var jData = $(data);
     if (false) {
     } else {
-      $("#"+location).append(data);
-      $("#"+location).carouFredSel({
-        responsive: true,
-        infinite: true,
-        auto:false,
-        prev	: {
-          button	: "#"+location + "_prev",
-          key		: "left"
-        },
-        next	: {
-          button	: "#"+location + "_next",
-          key		: "right"
-        },
-        swipe: {
-          onMouse: true,
-          onTouch: true
-        },
-        scroll: 1,
-        items: {
-          width: 299,
-          height: 375,	//	optionally resize item-height
-          visible: {
-            min: 1,
-            max: 3
-          }
-        }
-      });
+      $("#"+location).html(data);
+      slider_arrows(location)
     }
 
 
   });
 
 }
-
+function dance_events(dance_tag,location){
+  console.log(location)
+  var controllerLink = "/events/index?ajax=true"
+  f1={"included_tags":dance_tag}
+  $.get(controllerLink, f1, function (data) {
+    var locations = [];
+    var jData = $(data);
+    if (false) {
+    } else {
+      $("#"+location).html(data);
+      slider_arrows(location)
+    }
+  });
+}
+function happy_place_events(stream_id,location){
+  console.log(location)
+  var controllerLink = "/events/index?ajax=true"
+  f1={"stream_id":stream_id}
+  $.get(controllerLink, f1, function (data) {
+    var locations = [];
+    var jData = $(data);
+    if (false) {
+    } else {
+      $("#"+location).html(data);
+      slider_arrows(location)
+        }
+          });
+    }
+function free_events(location){
+  console.log(location)
+  var controllerLink = "/events/index?ajax=true"
+  f1={"high_price":0}
+  $.get(controllerLink, f1, function (data) {
+    var locations = [];
+    var jData = $(data);
+    if (false) {
+    } else {
+      $("#"+location).html(data);
+      slider_arrows(location)
+    }
+  });
+ }
+function slider_arrows(location){
+  $("#"+location).carouFredSel({
+    responsive: true,
+    infinite: true,
+    auto:false,
+    prev	: {
+      button	: "#"+location + "_prev",
+      key		: "left"
+    },
+    next	: {
+      button	: "#"+location + "_next",
+      key		: "right"
+    },
+    swipe: {
+      onMouse: true,
+      onTouch: true
+    },
+    scroll: 1,
+    items: {
+      width: 299,
+      height: 375,	//	optionally resize item-height
+      visible: {
+        min: 1,
+        max: 3
+      }
+    }
+  });
+}
 var pulling = false;
 function loading(command) {
   if (command === 'show') {

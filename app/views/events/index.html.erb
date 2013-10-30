@@ -606,6 +606,26 @@
       doneTyping1($(this).text());
       $('#search_name').text($(this).text())
     });
+    $('.icon-white-pin').on("click",function(){
+      key = $(this).parent().attr('key')
+      check = $(this).parent()
+      <% if user_signed_in? %>
+      $(this).hide()
+      $.get('/saved_search',{key:key},function(data){
+        console.log(check)
+        check.attr('key_id', data["key_id"]);
+
+      })
+      $('#share').click(function(){
+        window.open(
+          'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+          'facebook-share-dialog',
+          'width=626,height=436');
+      })
+      $(this).colorbox({href:"#save_share_content",inline:true, width:"50%",height:"200px"});
+
+      <% end %>
+    })
     doneTyping1("<%= params[:key] %>");
     $('#search_name').text("<%= params[:key] %>")
     <% end %>
