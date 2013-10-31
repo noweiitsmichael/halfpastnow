@@ -1136,6 +1136,9 @@ function saved_search_events(location){
     } else {
       $("#"+location).html(data);
       slider_arrows(location)
+      if($('#'+location).find('article').length){
+        $('#'+location).append("<article class='slide-item product-item'><a href='/search' class='see-all' ><span class='btn btn-danger'>See More</span><i class='icon-bottom-arrow'></i></a></article>")
+      }
     }
 
 
@@ -1153,6 +1156,9 @@ function dance_events(dance_tag,location){
     } else {
       $("#"+location).html(data);
       slider_arrows(location)
+      if($('#'+location).find('article').length){
+        $('#'+location).append("<article class='slide-item product-item'><a href='/search' class='see-all' ><span class='btn btn-danger'>See More</span><i class='icon-bottom-arrow'></i></a></article>")
+      }
     }
   });
 }
@@ -1167,6 +1173,9 @@ function happy_place_events(stream_id,location){
     } else {
       $("#"+location).html(data);
       slider_arrows(location)
+      if($('#'+location).find('article').length){
+        $('#'+location).append("<article class='slide-item product-item'><a href='/search' class='see-all' ><span class='btn btn-danger'>See More</span><i class='icon-bottom-arrow'></i></a></article>")
+      }
         }
           });
     }
@@ -1181,6 +1190,9 @@ function free_events(location){
     } else {
       $("#"+location).html(data);
       slider_arrows(location)
+      if($('#'+location).find('article').length){
+        $('#'+location).append("<article class='slide-item product-item'><a href='/search' class='see-all' ><span class='btn btn-danger'>See More</span><i class='icon-bottom-arrow'></i></a></article>")
+      }
     }
   });
  }
@@ -1211,6 +1223,7 @@ function slider_arrows(location){
       }
     }
   });
+
 }
 var pulling = false;
 function loading(command) {
