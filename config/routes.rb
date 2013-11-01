@@ -116,6 +116,7 @@ Myapp::Application.routes.draw do
   match '/saved_search' => 'events#saved_search'
   match '/saved_searches_index' => 'events#saved_searches_index'
   match '/delete_saved_search' => 'events#delete_saved_search'
+  match '/details' => 'events#details'
 
   match '/auth/:provider/callback' => 'authentications#create'
 

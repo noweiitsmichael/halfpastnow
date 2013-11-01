@@ -189,28 +189,28 @@
   </div>
 </section>
 <% if user_signed_in?  %>
-<% @saved_searches.each do |search| %>
-  <section id="<%= search.search_key%>_section" class="slider-wrap">
-    <div class="container">
-      <div class="section-title">
-        <h2 class="text-center"><%= search.search_key%></h2>
-        <p class="lead text-center">Check-out events going on today.</p>
-        <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
-      </div>
-      <div class="section-content slider">
-        <div id="<%= search.search_key%>">
+  <% @saved_searches.each do |search| %>
+    <section id="<%= search.search_key%>_section" class="slider-wrap">
+      <div class="container">
+        <div class="section-title">
+          <h2 class="text-center"><%= search.search_key%></h2>
+          <p class="lead text-center">Check-out events going on today.</p>
+          <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
         </div>
-        <a class="prev" id="<%= search.search_key%>_prev" href="#"><span>prev</span></a>
-        <a class="next" id="<%= search.search_key%>_next" href="#"><span>next</span></a>
+        <div class="section-content slider">
+          <div id="<%= search.search_key%>">
           </div>
-       </div>
+          <a class="prev" id="<%= search.search_key%>_prev" href="#"><span>prev</span></a>
+          <a class="next" id="<%= search.search_key%>_next" href="#"><span>next</span></a>
+        </div>
+      </div>
     </section>
-  <script>
-    $('#<%= search.search_key%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: auto !important;'>");
-     saved_search_events("<%= search.search_key%>");
-  </script>
-<% end %>
+    <script>
+      $('#<%= search.search_key%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: auto !important;'>");
+      saved_search_events("<%= search.search_key%>");
+    </script>
   <% end %>
+<% end %>
 <section class="slider-wrap grey-area" id="fyhp">
   <div class="container">
     <div class="section-title">
@@ -505,14 +505,19 @@
 </div>
 <script>
   $('#slider2,#slider3,#slider5').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;'>");
-   happy_place_events(19,"slider2");
-   dance_events(16,"slider3");
-   free_events("slider5");
+  happy_place_events(19,"slider2");
+  dance_events(16,"slider3");
+  free_events("slider5");
   $('.submit').click(function(){
     console.log($('#appendedInput').val())
     window.location.href = window.location.href+"search?key="+$('#appendedInput').val()
   })
+  $('article').click(function(){
+    var event_id = $(this).attr('link-id')
+    console.log(event_id)
+    window.location.href = "http://localhost:4567/details?event_id="+event_id
 
+  })
 </script>
 </body>
 </html>
