@@ -1,277 +1,333 @@
-<script>
-  !function ($) {
-$(function(){
-/*$('#f-carousel').carouFredSel({
-width: '100%',
-items: 3,
-scroll: {
-items: 1,
-duration: 1000,
-pauseDuration: 3000
-},
-prev: '#prev',
-next: '#next',
-pagination: {
-container: '#pager'
+<body>
+<header class="navbar navbar-fixed-top navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container">
+      <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="pull-left nb-left">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </span>
+        <span class="nb-right pull-right">menu</span>
+      </a>
+      <a class="brand" href="index.html"><img src="images/logo.png" alt="Halfpastnow"/></a>
+      <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+      <nav class="nav-collapse collapse">
+        <ul class="nav pull-right">
+          <li><a href="#"><i class="icon-right-arrow"></i>Get App</a></li>
+          <li><a href="#"><i class="icon-right-arrow"></i>Log In</a></li>
+          <li><a href="#"><i class="icon-right-arrow"></i>Join Now</a></li>
+          <li><a href="#"><i class="icon-right-arrow"></i>Explorers</a></li>
+        </ul>
+      </nav>
 
-}
-});*/
-$('#f-carousel').carouFredSel({
-responsive: true,
-prev: '#prev',
-next: '#next',
-scroll: {
-items: 1
-},
-pagination: {
-container: '#pager'
-}
-});
+      <form action="#" class="navbar-search">
+        <div class="input-append">
+          <input class="span4" id="appendedInput" type="text" value="Explore Austin" onClick="if(this.value=='Explore Austin')this.value = ''" onBlur="if(this.value=='')this.value = 'Explore Austin'"/>
+          <div class="popover bottom">
+            <div class="arrow"></div>
+            <div class="popover-content clearfix">
+              <div class="left">
+                <p>TIP: Search by interest, event, date, cost</p>
+                <p>EX: technology, happy hour, today, free</p>
+              </div>
+              <div class="right">
+                <div class="arrow"></div>
+                EVENTS BY CATEGORY
+              </div>
+            </div>
+          </div>
+          <div class="btn-group">
+            <div class="pull-left dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="clearfix">
+                  <div>
+                    <a href="#">Staff Picks</a><br/>
+                    <a href="#">Crowd Favorites</a><br/>
+                    <a href="#">Today's Events</a><br/>
+                    <a href="#">Food &amp; Drinks</a><br/>
+                    <a href="#">Live Shows</a><br/>
+                    <a href="#">Art &amp; Culture</a>
+                  </div>
+                  <div class="divider-vertical pull-left"></div>
+                  <div>
+                    <a href="#">UT Events</a><br/>
+                    <a href="#">For Couples</a><br/>
+                    <a href="#">For Kids</a><br/>
+                    <a href="#">For Families</a><br/>
+                    <a href="#">Freebies</a><br/>
+                    <a href="#">All Activities</a>
+                  </div>
+                </li>
+                <li class="divider"></li>
+                <li><a href="#">About Us</a> | <a href="#">Blog</a> | <a href="#">Privacy</a> | <a href="#">Terms</a> | <a href="#">Feedback</a> | &copy halfpastnow 2013</li>
+              </ul>
+            </div>
+            <input type="submit" class="submit">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</header>
+<section class="search">
+<div class="tabs">
+<div class="container">
+  <ul class="nav nav-tabs" id="search-tab">
+    <li class=""><a data-toggle="tab" href="#fitness">Fitness <i class="icon-cross"></i></a></li>
+    <li class="active"><a data-toggle="tab" href="#happyhour">Happy Hour <i class="icon-white-pin"></i></a></li>
+  </ul>
+</div>
+<div class="tab-content">
+<div id="fitness" class="tab-pane fade">
+  <div class="container">
+    <div class="content">
+      Fitness
+    </div>
+  </div>
+</div>
+<div id="happyhour" class="tab-pane fade in active">
+<div class="sort-panel">
+  <div class="container">
+                            <span class="sort-item">
+                            	<a href="#"><i class="icon-bottom-arrow"></i>Date</a>
+                                <div class="popover bottom">
+                                  <div class="arrow"></div>
+                                  <div class="popover-content clearfix">
+                                    <label for="from">From</label>
+                                    <input type="text" id="from" name="from" />
+                                    <label for="to">to</label>
+                                    <input type="text" id="to" name="to" />
+                                  </div>
+                                </div>
+                            </span>
+                            <span class="sort-item">
+                            	<a href="#"><i class="icon-bottom-arrow"></i>Time</a>
+                                <div class="popover bottom">
+                                  <div class="arrow"></div>
+                                  <div class="popover-content clearfix">
+                                    <label for="time" class="ui-input-text">Time</label>
+                                    <input type="text" id="timepicker" value="">
+                                  </div>
+                                </div>
+                            </span>
+                            <span class="sort-item">
+                            	<a href="#"><i class="icon-bottom-arrow"></i>Cost</a>
+                                <div class="popover bottom">
+                                  <div class="arrow"></div>
+                                  <div class="popover-content clearfix">
+                                    <label for="cost" class="ui-input-text cvalue">Less than $50</label>
+                                    <div class="left">
+                                      <span class="option">Free</span>
+                                      <span class="option">$5</span>
+                                      <span class="option">$10</span>
+                                      <span class="option">$20</span>
+                                      <span class="option">$30</span>
+                                      <span class="option">$40</span>
+                                      <span class="option">$50+</span>
+                                    </div>
+                                    <div class="right">
+                                      <!--<div id="slider-vertical"></div>-->
 
-$("#slider1").carouFredSel({
-responsive: true,
-infinite: true,
-auto:false,
-prev	: {
-button	: "#slider1_prev",
-key		: "left"
-},
-next	: {
-button	: "#slider1_next",
-key		: "right"
-},
-swipe: {
-onMouse: true,
-onTouch: true
-},
-scroll: 1,
-items: {
-width: 299,
-height: 375,	//	optionally resize item-height
-visible: {
-min: 1,
-max: 3
-}
-}
-});
-$("#slider2").carouFredSel({
-responsive: true,
-infinite: true,
-auto:false,
-prev	: {
-button	: "#slider2_prev",
-key		: "left"
-},
-next	: {
-button	: "#slider2_next",
-key		: "right"
-},
-swipe: {
-onMouse: true,
-onTouch: true
-},
-scroll: 1,
-items: {
-width: 299,
-height: 375,	//	optionally resize item-height
-visible: {
-min: 1,
-max: 3
-}
-}
-});
-$("#slider3").carouFredSel({
-responsive: true,
-infinite: true,
-auto:false,
-prev	: {
-button	: "#slider3_prev",
-key		: "left"
-},
-next	: {
-button	: "#slider3_next",
-key		: "right"
-},
-swipe: {
-onMouse: true,
-onTouch: true
-},
-scroll: 1,
-items: {
-width: 299,
-height: 375,	//	optionally resize item-height
-visible: {
-min: 1,
-max: 3
-}
-}
-});
-$("#slider4").carouFredSel({
-responsive: true,
-infinite: true,
-auto:false,
-prev	: {
-button	: "#slider4_prev",
-key		: "left"
-},
-next	: {
-button	: "#slider4_next",
-key		: "right"
-},
-swipe: {
-onMouse: true,
-onTouch: true
-},
-scroll: 1,
-items: {
-width: 299,
-height: 375,	//	optionally resize item-height
-visible: {
-min: 1,
-max: 3
-}
-}
-});
-$("#slider5").carouFredSel({
-responsive: true,
-infinite: true,
-auto:false,
-prev	: {
-button	: "#slider5_prev",
-key		: "left"
-},
-next	: {
-button	: "#slider5_next",
-key		: "right"
-},
-swipe: {
-onMouse: true,
-onTouch: true
-},
-scroll: 1,
-items: {
-width: 299,
-height: 375,	//	optionally resize item-height
-visible: {
-min: 1,
-max: 3
-}
-}
-});
-
-$("#recommended-list").carouFredSel({
-responsive: true,
-swipe: {
-onMouse: true,
-onTouch: true
-},
-infinite: true,
-prev	: {
-button	: "#recommended-list_prev",
-key		: "left"
-},
-next	: {
-button	: "#recommended-list_next",
-key		: "right"
-},
-scroll: 1,
-items: {
-width: 225,
-height: 198,		// optionally resize item-height
-visible: {
-min: 1,
-max: 4
-}
-}
-});
-
-$(".footer-tap").click(function(){
-$(this).find(".popover").toggle();
-});
-
-$('footer .popover a').bind('click',function(event){
-var $anchor = $(this);
-$('html, body').stop().animate({
-scrollTop: ($($anchor.attr('href')).offset().top - 72 )
-
-}, 1500);
-event.preventDefault();
-});
-
-$(".navbar-search #appendedInput").on({
-focus: function(){
-$(this).next(".popover").show().addClass("open");
-},
-blur: function(){
-$(this).next(".popover").hide().removeClass("open");
-}
-});
-
-$(".search .product-list .product-item:nth-child(3n)").css("margin-right", 0);
-
-/*$( "#slider-vertical" ).slider({
-orientation: "vertical",
-range: "min",
-min: 5,
-max: 50,
-step: 8,
-value: 5,
-slide: function( event, ui ) {
-//$( "#amount" ).val( ui.value );
-}
-});*/
-$( "#slider-step" ).bind( "change", function(event, ui) {
-console.log($(this).val());
-$( "label.cvalue" ).text( 'Less Than $' + $(this).val() );
-});
-
-var mouseOverActiveElement = false;
-$(".sort-item a").on("click", function(e){
-e.stopPropagation();
-$(this).next(".popover").addClass("open").toggle();
-});
-$('.open').live('mouseenter', function(){
-mouseOverActiveElement = true;
-}).live('mouseleave', function(){
-mouseOverActiveElement = false;
-});
-
-$("html").click(function() {
-if($(".sort-item .popover").hasClass("open") && !mouseOverActiveElement){
-console.log('clicked outside active element');
-$(".sort-item .popover").hide().removeClass("open");
-}
-});
-
-
-$( "#from" ).datepicker({
-defaultDate: "+1w",
-changeMonth: true,
-numberOfMonths: 1,
-onClose: function( selectedDate ) {
-$( "#to" ).datepicker( "option", "minDate", selectedDate );
-}
-});
-$( "#to" ).datepicker({
-defaultDate: "+1w",
-changeMonth: true,
-numberOfMonths:1,
-onClose: function( selectedDate ) {
-$( "#from" ).datepicker( "option", "maxDate", selectedDate );
-}
-});
-
-$('#timepicker').timepicker();
-
-$(".link").on("click", function(){
-var target = $(this).attr("data-target");
-//console.log(target);
-if(target){
-$('html, body').animate({scrollTop:$("#"+target).offset().top}, 800, 'easeInSine');
-}
-
-
-});
-})
-}(window.jQuery)
-</script>
+                                      <input style="display:none;" type="range" min="0" max="50" value="50" step="5" name="slider-step" id="slider-step" sliderOrientation="vertical"  />
+                                    </div>
+                                  </div>
+                                </div>
+                            </span>
+                            <span class="sort-item">
+                            	<a href="#"><i class="icon-bottom-arrow"></i>Area</a>
+                            </span>
+  </div>
+</div>
+<div class="content">
+  <div class="container">
+    <figure class="ad-contaniner"><img src="images/ad.jpg" alt=""/></figure>
+    <h2 class="text-info">325 results for</h2>
+    <p class="lead text-info">"happy hour, south congress, 5pm"</p>
+    <section class="product-list clearfix">
+      <article class="product-item">
+        <figure><a href="#"><img src="images/scroller1-img01.gif" alt=""/></a></figure>
+        <div class="name"><a href="#">Lyle Lovett and His Acoustic Group</a></div>
+        <div class="info clearfix">
+          <span class="time pull-left">Today @ 5:00pm</span>
+          <span class="value pull-right">$79+</span>
+        </div>
+        <div class="additional-info">
+          <span class="place">DOWNTOWN</span>
+          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
+        </div>
+      </article>
+      <article class="product-item">
+        <figure><a href="#"><img src="images/scroller1-img02.gif" alt=""/></a></figure>
+        <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
+        <div class="info clearfix">
+          <span class="time pull-left">Today @ 5:00pm</span>
+          <span class="value pull-right">$7+</span>
+        </div>
+        <div class="additional-info">
+          <span class="place">PLEASANT VALLEY</span>
+          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
+        </div>
+      </article>
+      <article class="product-item featured">
+        <figure><a href="#"><img src="images/scroller1-img03.gif" alt=""/></a></figure>
+        <div class="name"><a href="#">Austin City Limits Music Festival</a></div>
+        <div class="info clearfix">
+          <span class="time pull-left">Today @ 5:00pm</span>
+          <span class="value pull-right">FREE</span>
+        </div>
+        <div class="additional-info">
+          <span class="place">ACL</span>
+          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
+        </div>
+        <span class="featured-text">Featured Event</span>
+      </article>
+      <article class="product-item">
+        <figure><a href="#"><img src="images/scroller2-img01.gif" alt=""/></a></figure>
+        <div class="name"><a href="#">Blind Pig Pub Industry Night For $5 and up</a></div>
+        <div class="info clearfix">
+          <span class="time pull-left">Today @ 5:00pm</span>
+          <span class="value pull-right">$79+</span>
+        </div>
+        <div class="additional-info">
+          <span class="place">DOWNTOWN</span>
+          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
+        </div>
+      </article>
+      <article class="product-item">
+        <figure><a href="#"><img src="images/scroller2-img02.gif" alt=""/></a></figure>
+        <div class="name"><a href="#">Big BurgerAll You Can Eat at the Bottomless Burger</a></div>
+        <div class="info clearfix">
+          <span class="time pull-left">Today @ 5:00pm</span>
+          <span class="value pull-right">$7+</span>
+        </div>
+        <div class="additional-info">
+          <span class="place">PLEASANT VALLEY</span>
+          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
+        </div>
+      </article>
+      <article class="product-item">
+        <figure><a href="#"><img src="images/scroller2-img03.gif" alt=""/></a></figure>
+        <div class="name"><a href="#">Music, Drinks and Pretty Ladies at the Band Room</a></div>
+        <div class="info clearfix">
+          <span class="time pull-left">Today @ 5:00pm</span>
+          <span class="value pull-right">FREE</span>
+        </div>
+        <div class="additional-info">
+          <span class="place">ACL</span>
+          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
+        </div>
+      </article>
+      <article class="product-item">
+        <figure><a href="#"><img src="images/scroller1-img01.gif" alt=""/></a></figure>
+        <div class="name"><a href="#">Lyle Lovett and His Acoustic Group</a></div>
+        <div class="info clearfix">
+          <span class="time pull-left">Today @ 5:00pm</span>
+          <span class="value pull-right">$79+</span>
+        </div>
+        <div class="additional-info">
+          <span class="place">DOWNTOWN</span>
+          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
+        </div>
+      </article>
+      <article class="product-item">
+        <figure><a href="#"><img src="images/scroller1-img02.gif" alt=""/></a></figure>
+        <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
+        <div class="info clearfix">
+          <span class="time pull-left">Today @ 5:00pm</span>
+          <span class="value pull-right">$7+</span>
+        </div>
+        <div class="additional-info">
+          <span class="place">PLEASANT VALLEY</span>
+          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
+        </div>
+      </article>
+      <article class="product-item">
+        <figure><a href="#"><img src="images/scroller1-img03.gif" alt=""/></a></figure>
+        <div class="name"><a href="#">Austin City Limits Music Festival</a></div>
+        <div class="info clearfix">
+          <span class="time pull-left">Today @ 5:00pm</span>
+          <span class="value pull-right">FREE</span>
+        </div>
+        <div class="additional-info">
+          <span class="place">ACL</span>
+          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
+        </div>
+      </article>
+      <article class="product-item">
+        <figure><a href="#"><img src="images/scroller2-img01.gif" alt=""/></a></figure>
+        <div class="name"><a href="#">Blind Pig Pub Industry Night For $5 and up</a></div>
+        <div class="info clearfix">
+          <span class="time pull-left">Today @ 5:00pm</span>
+          <span class="value pull-right">$79+</span>
+        </div>
+        <div class="additional-info">
+          <span class="place">DOWNTOWN</span>
+          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
+        </div>
+      </article>
+      <article class="product-item">
+        <figure><a href="#"><img src="images/scroller2-img02.gif" alt=""/></a></figure>
+        <div class="name"><a href="#">Big BurgerAll You Can Eat at the Bottomless Burger</a></div>
+        <div class="info clearfix">
+          <span class="time pull-left">Today @ 5:00pm</span>
+          <span class="value pull-right">$7+</span>
+        </div>
+        <div class="additional-info">
+          <span class="place">PLEASANT VALLEY</span>
+          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
+        </div>
+      </article>
+      <article class="product-item">
+        <figure><a href="#"><img src="images/scroller2-img03.gif" alt=""/></a></figure>
+        <div class="name"><a href="#">Music, Drinks and Pretty Ladies at the Band Room</a></div>
+        <div class="info clearfix">
+          <span class="time pull-left">Today @ 5:00pm</span>
+          <span class="value pull-right">FREE</span>
+        </div>
+        <div class="additional-info">
+          <span class="place">ACL</span>
+          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
+        </div>
+      </article>
+    </section>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<footer>
+  <div class="container">
+        	<span class="footer-tap">
+                <span>GO</span>
+                <span class="footer-bar-icon">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </span>
+                <span>UP</span>
+                <div class="popover top in">
+                  <div class="arrow"></div>
+                  <div class="popover-content">
+                    <ul>
+                      <li><a href="#myCarousel">GO TO THE TOP</a></li>
+                      <li><a href="#yrhn">YOU'RE HALFPAST NOW</a></li>
+                      <li><a href="#fyhp">FIND YOUR HAPPY PLACE</a></li>
+                      <li><a href="#gud">GET UP AND DANCE!</a></li>
+                      <li><a href="#tat">TRIED AND TRUE</a></li>
+                      <li><a href="#iffa">IT'S A FREE FOR ALL</a></li>
+                    </ul>
+                  </div>
+                </div>
+            </span>
+  </div>
+</footer>
+</body>
+</html>

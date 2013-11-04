@@ -13,7 +13,7 @@
   <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic,'>
   <link href='http://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css'>
   <link rel="shortcut icon" href="/assets/favicon.ico"/>
-  <%= javascript_include_tag "application","modernizr-latest","bootstrap","jquery-migrate-1.2.1","jquery.ui.timepicker","jquery.touchSwipe.min","jquery.carouFredSel-6.2.1-packed","custom" %>
+  <%= javascript_include_tag "application","jquery-ui","modernizr-latest","bootstrap","jquery-migrate-1.2.1","jquery.ui.timepicker","jquery.carouFredSel-6.2.1-packed","verticalSlider","custom" %>
   <%= javascript_include_tag "half.dynamics" %>
   <%= stylesheet_link_tag "styles10","bootstrap","bootstrap-responsive","custom1","media-queries" %>
   <%= csrf_meta_tags %>
@@ -131,44 +131,48 @@
   </div>
 </header>
 <div class="banner-slider">
-  <div class="caroufredsel_wrapper" style="display: block; text-align: start; float: none;  top: auto; right: auto; bottom: auto; left: auto; z-index: auto; width: 1286px; height: 400px; margin: 0px 0px 10px 25px; overflow: hidden;"><ul id="f-carousel" style="text-align: left; float: none; position: absolute; top: 0px; right: auto; bottom: auto; left: 0px; margin: 0px; width: 11574px; height: 400px; z-index: auto;">
-    <li class="item" style="width: 1286px;">
+  <ul id="f-carousel">
+    <li class="item">
+      <div class="carousel-caption">
+        <h1>Your couch will miss you</h1>
+        <p class="lead">Discover ATX and send a postcard.</p>
+        <a class="btn btn-large btn-danger" href="#">Download App</a>
+      </div>
+      <img src="/assets/images/slide1.gif" alt=""/>
+    </li>
+    <li class="item">
       <div class="container">
         <div class="carousel-caption">
           <h1>Get in where you fit in</h1>
           <p class="lead">Activities tailored to your lifestyle.</p>
-          <a class="btn btn-large btn-danger ui-link" href="#">Jown Now</a>
+          <a class="btn btn-large btn-danger" href="#">Jown Now</a>
         </div>
       </div>
       <img src="/assets/images/slide2.gif" alt="">
-    </li><li class="item" style="width: 1286px;">
-    <div class="container">
-      <div class="carousel-caption">
-        <h1>Your personal guide to ACL</h1>
-        <p class="lead">Find the bext bands, bars, &amp; backstages.</p>
-        <a class="btn btn-large btn-danger ui-link" href="#">All Things ACL</a>
+    </li>
+    <li class="item">
+      <div class="container">
+        <div class="carousel-caption">
+          <h1>Your personal guide to ACL</h1>
+          <p class="lead">Find the bext bands, bars, &amp; backstages.</p>
+          <a class="btn btn-large btn-danger" href="#">All Things ACL</a>
+        </div>
       </div>
-    </div>
-    <img src="/assets/images/slide3.gif" alt="">
-  </li><li class="item" style="width: 1286px;">
-    <div class="carousel-caption">
-      <h1>Your couch will miss you</h1>
-      <p class="lead">Discover ATX and send a postcard.</p>
-      <a class="btn btn-large btn-danger ui-link" href="#">Download App</a>
-    </div>
-    <img src="/assets/images/slide1.gif" alt="">
-  </li><li class="item" style="width: 1286px;">
-    <div class="carousel-caption">
-      <h1>Your couch will miss you</h1>
-      <p class="lead">Discover ATX and send a postcard.</p>
-      <a class="btn btn-large btn-danger ui-link" href="#">Download App</a>
-    </div>
-    <img src="/assets/images/slide1.gif" alt="">
-  </li></ul></div>
-  <a href="#" id="prev" title="Show previous" name="prev" class="ui-link" style="display: inline;"></a>
-  <a href="#" id="next" title="Show next" name="next" class="ui-link" style="display: inline;"></a>
-  <div id="pager" class="" style="display: block;">
-    <a href="#" class=""><span>1</span></a><a href="#" class="selected"><span>2</span></a><a href="#" class=""><span>3</span></a><a href="#" class=""><span>4</span></a></div>
+      <img src="/assets/images/slide3.gif" alt="">
+    </li>
+    <li class="item">
+      <div class="carousel-caption">
+        <h1>Your couch will miss you</h1>
+        <p class="lead">Discover ATX and send a postcard.</p>
+        <a class="btn btn-large btn-danger" href="#">Download App</a>
+      </div>
+      <img src="/assets/images/slide1.gif" alt=""/>
+    </li>
+  </ul>
+  <a href="#" id="prev" title="Show previous" name="prev"></a>
+  <a href="#" id="next" title="Show next" name="next"></a>
+  <div id="pager">
+  </div>
 </div>
 <section class="slider-wrap" id="yrhn">
   <div class="container">
@@ -206,8 +210,8 @@
       </div>
     </section>
     <script>
-      $('#<%= search.search_key%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: auto !important;'>");
-      saved_search_events("<%= search.search_key%>");
+     // $('#<%#= search.search_key%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: auto !important;'>");
+      //saved_search_events("<%#= search.search_key%>");
     </script>
   <% end %>
 <% end %>

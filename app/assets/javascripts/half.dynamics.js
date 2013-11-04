@@ -600,7 +600,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
 
   options = defaultTo(options, {});
   pullEventsFlag = defaultTo(pullEventsFlag, true);
-  filter.offset = 0;
+ // filter.offset = 0;
 
   //if filter.changed, show save search button
   //otherwise, hide save search button
