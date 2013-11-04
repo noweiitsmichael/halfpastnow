@@ -10,6 +10,67 @@
 <%# TODO: put this stuff in the controller eventually %>
 	<% 	@now = DateTime.now.change(:hour => 0)
 		@channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
+<script type="text/javascript">
+	var id = "<%= @bookmarkList.id  %>";
+	var root_url = "http://www.halfpastnow.com/";
+	var link = root_url + "picks/find/" + id;
+    var facebook_url = "http://www.halfpastnow.com/picks/find/" + id;
+    var app_id = "475386955806720";
+    var redirect = "http://www.halfpastnow.com";
+	var bookmarkList_id = "<%= @bookmarkList.id %>";
+	var toggle = false;
+
+	$(function() {
+	    window.fbAsyncInit = function() {
+		        console.log("Loaded FB 2");
+		          FB.init({
+		            appId      : '475386955806720', // App ID
+		            status     : true, // check login status
+		            cookie     : true, // enable cookies to allow the server to access the session
+		            xfbml      : true  // parse XFBML
+		          });
+		        };
+
+		        // Load the SDK Asynchronously
+		        (function(d){
+		          var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+		          js = d.createElement('script'); js.id = id; js.async = true;
+		          js.src = "//connect.facebook.net/en_US/all.js";
+		          d.getElementsByTagName('head')[0].appendChild(js);
+		        }(document));// delete below
+	});
+	
+	
+	$(function() {
+		console.log("Loaded share stuff");
+		
+		$('.bookmark-share').click(function() {
+			console.log("Anything?????");
+		});
+
+		$('.bookmark-share .email').click(function() {
+			var url = 'mailto:?body=' + link;
+	      	window.open(url, '_blank');
+	      	window.focus();
+		});
+		
+		$('.bookmark-share .facebook').click(function() {      
+
+			var url = "http://www.facebook.com/sharer.php?u=" + facebook_url;
+			window.open(url, '_blank');
+			window.focus();
+		});
+		
+		$('.bookmark-share .twitter').click(function() {
+			var title = "<%= @bookmarkList.name   %>";			
+   		    var url = 'http://twitter.com/intent/tweet?text=' + title.replace(/(<([^>]+|)>)/ig,"").replace("&amp;","and").substring(0,50) + ' ' + link + ' @halfpastnow %23discoveraustin';
+      
+			window.open(url, '_blank');
+			window.focus();
+		});
+
+	});
+</script>
 
 	<script type="text/javascript">
 
@@ -66,71 +127,6 @@
 		function to_i(obj) {
 			return parseInt(obj);
 		}
-		$(function() {
-		          
-			window.fbAsyncInit = function() {
-			        console.log("Loaded FB 222");
-			          FB.init({
-			            appId      : '475386955806720', // App ID
-			            status     : true, // check login status
-			            cookie     : true, // enable cookies to allow the server to access the session
-			            xfbml      : true  // parse XFBML
-			          });
-			        };
-
-			        // Load the SDK Asynchronously
-			        (function(d){
-			          var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-			          js = d.createElement('script'); js.id = id; js.async = true;
-			          js.src = "//connect.facebook.net/en_US/all.js";
-			          d.getElementsByTagName('head')[0].appendChild(js);
-			        }(document));// delete below        
-			  	});
-
-		$(function() {
-			$('.follow.button').click(function() {
-			        
-				var $that = $(this);
-				var listID = $that.attr('picklist-id');
-				
-				var url = 'http://www.halfpastnow.com/picks/find/'+listID
-				console.log('test fowlling'+url);
-
-				FB.api(
-				            '/me/halfpastnow:subscribe',
-				            'post',
-				            { toppick: url },
-				            function(response) {
-				            
-				        });
-				$.getJSON('/users/followBookmarkList/' + listID, function(data) {
-					if(data.success) {
-						$that.hide();
-						$that.siblings('.unfollow.button').show();
-					} else {
-						console.log(data.error);
-					}
-				});
-			});
-
-			$('.unfollow.button').click(function() {
-				var $that = $(this);
-				var listID = $that.attr('picklist-id');
-				$.getJSON('/users/unfollowBookmarkList/' + listID, function(data) {
-					if(data.success) {
-						$that.hide();
-						$that.siblings('.follow.button').show();
-					} else {
-						console.log(data.error);
-					}
-				});
-			});
-
-	      $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
-	      $('.head-title').tooltip('disable');
-	      $('.icon-check').tooltip('disable');
-	      $('.icon-check-empty').tooltip('disable');
-		});		
 	</script>
 <% end %>
 
@@ -163,9 +159,14 @@
 								<div class="follow button nice-button" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden if currentUserIsFollowing %> >follow</div>
 								<div class="unfollow button nice-button" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden unless currentUserIsFollowing %> >following</div>
 							<% end %>
-							<div class="description"><%= raw @bookmarkList.description %></div>							
-						</div>
+							<div class="description"><%= raw @bookmarkList.description %></div>
+							<div class="bookmark-share" </div>	
+								<span class="icon icon-facebook-sign facebook" style="font-size:200%; cursor: pointer; cursor:hand;"></span>
+								<span class="icon icon-twitter-sign twitter" style="font-size:200%; cursor: pointer; cursor:hand;"></span>
+							</div>
+						</div>						
 					</div>
+
 				<% end %>
 				<ul class="events">
 					<%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences, :bookmarkList => @bookmarkList } %>
