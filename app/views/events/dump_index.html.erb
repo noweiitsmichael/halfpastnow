@@ -1,333 +1,142 @@
-<body>
-<header class="navbar navbar-fixed-top navbar-inverse">
-  <div class="navbar-inner">
-    <div class="container">
-      <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="pull-left nb-left">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </span>
-        <span class="nb-right pull-right">menu</span>
-      </a>
-      <a class="brand" href="index.html"><img src="images/logo.png" alt="Halfpastnow"/></a>
-      <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
-      <nav class="nav-collapse collapse">
-        <ul class="nav pull-right">
-          <li><a href="#"><i class="icon-right-arrow"></i>Get App</a></li>
-          <li><a href="#"><i class="icon-right-arrow"></i>Log In</a></li>
-          <li><a href="#"><i class="icon-right-arrow"></i>Join Now</a></li>
-          <li><a href="#"><i class="icon-right-arrow"></i>Explorers</a></li>
-        </ul>
-      </nav>
+<% content_for :meta do %>
+  <meta property="og:type"                 content="halfpastnow:event"/>
+  <meta property="og:url"                  content="http://www.halfpastnow.com/events/show/<%= @occurrence.id%>?fullmode=true"/>
+  <meta property="og:site_name"            content="halfpastnow"/>
+  <meta property="og:image"                content="<%=@event.cover_image_url%>"/>
+  <meta property="og:title"                content="<%=@event.title%> at <%=@event.venue.name%> on halfpastnow.com">
+  <meta property="og:description"          content="<%=strip_tags(@event.description)%>"/>
+<% end %>
+<% content_for :mode_title do %>
+  <h1>Event: <%= @event.title %></h1>
+<% end %>
 
-      <form action="#" class="navbar-search">
-        <div class="input-append">
-          <input class="span4" id="appendedInput" type="text" value="Explore Austin" onClick="if(this.value=='Explore Austin')this.value = ''" onBlur="if(this.value=='')this.value = 'Explore Austin'"/>
-          <div class="popover bottom">
-            <div class="arrow"></div>
-            <div class="popover-content clearfix">
-              <div class="left">
-                <p>TIP: Search by interest, event, date, cost</p>
-                <p>EX: technology, happy hour, today, free</p>
-              </div>
-              <div class="right">
-                <div class="arrow"></div>
-                EVENTS BY CATEGORY
-              </div>
-            </div>
-          </div>
-          <div class="btn-group">
-            <div class="pull-left dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li class="clearfix">
-                  <div>
-                    <a href="#">Staff Picks</a><br/>
-                    <a href="#">Crowd Favorites</a><br/>
-                    <a href="#">Today's Events</a><br/>
-                    <a href="#">Food &amp; Drinks</a><br/>
-                    <a href="#">Live Shows</a><br/>
-                    <a href="#">Art &amp; Culture</a>
-                  </div>
-                  <div class="divider-vertical pull-left"></div>
-                  <div>
-                    <a href="#">UT Events</a><br/>
-                    <a href="#">For Couples</a><br/>
-                    <a href="#">For Kids</a><br/>
-                    <a href="#">For Families</a><br/>
-                    <a href="#">Freebies</a><br/>
-                    <a href="#">All Activities</a>
-                  </div>
-                </li>
-                <li class="divider"></li>
-                <li><a href="#">About Us</a> | <a href="#">Blog</a> | <a href="#">Privacy</a> | <a href="#">Terms</a> | <a href="#">Feedback</a> | &copy halfpastnow 2013</li>
-              </ul>
-            </div>
-            <input type="submit" class="submit">
+<% content_for :mode_body do %>
+  <div class="col-1">
+    <ul class="sub-header">
+      <li class="datetime"><span class="icon icon-time"></span><%= @occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
+      <% if @event.price %>
+        <li class="price"><span class="icon icon-credit-card"></span><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 2) : "FREE" %></li>
+      <% end %>
+      <% unless @event.tags.length == 0 %>
+        <li class="tags"><span class="icon icon-tags"></span><%= @event.tags.collect { |tag| tag.name } * " / " %></li>
+      <% end %>
+    </ul>
+    <% unless @event.description.to_s.empty? %>
+      <div class="description block">
+        <h2>Details</h2>
+        <div class="block-inner">
+          <%= raw(@event.description) %>
+        </div>
+      </div>
+    <% end %>
+    <% unless @event.acts.length == 0 %>
+      <div class="featuring block">
+        <h2>Featuring</h2>
+        <div class="block-inner">
+          <% @event.acts.each_with_index do |act,index| %>
+            <% if @fullmode %>
+              <a href="/acts/show/<%= act.id %>?fullmode=true" class="act-name"><%= act.name %></a><%= (index != @event.acts.length - 1) ? ", " : "" %>
+            <% else %>
+              <span link-id="<%= act.id %>" linkto="act" class="act-name"><%= act.name %></span><%= (index != @event.acts.length - 1) ? ", " : "" %>
+            <% end %>
+          <% end %>
+          <div class="embeds">
+            <% @event.acts.each do |act| %>
+              <% act.embeds.select { |e| e.primary }.each do |embed| %>
+                <div class="embed-act-name"><%= act.name %></div>
+                <%= raw(embed.source) %>
+              <% end %>
+            <% end %>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    <% end %>
   </div>
-</header>
-<section class="search">
-<div class="tabs">
-<div class="container">
-  <ul class="nav nav-tabs" id="search-tab">
-    <li class=""><a data-toggle="tab" href="#fitness">Fitness <i class="icon-cross"></i></a></li>
-    <li class="active"><a data-toggle="tab" href="#happyhour">Happy Hour <i class="icon-white-pin"></i></a></li>
-  </ul>
-</div>
-<div class="tab-content">
-<div id="fitness" class="tab-pane fade">
-  <div class="container">
-    <div class="content">
-      Fitness
+  <div class="col-2">
+    <div class="block">
+      <div class="block-inner">
+        <%= render :partial => "layouts/share_bookmark", :locals => { :type => 'event', :id => @occurrence.id, :occurrence => @occurrence, :event => @event, :bookmarkId => @bookmarkId, :attendingId => @attendingId , :fullmode => @fullmode} %>
+      </div>
     </div>
-  </div>
-</div>
-<div id="happyhour" class="tab-pane fade in active">
-<div class="sort-panel">
-  <div class="container">
-                            <span class="sort-item">
-                            	<a href="#"><i class="icon-bottom-arrow"></i>Date</a>
-                                <div class="popover bottom">
-                                  <div class="arrow"></div>
-                                  <div class="popover-content clearfix">
-                                    <label for="from">From</label>
-                                    <input type="text" id="from" name="from" />
-                                    <label for="to">to</label>
-                                    <input type="text" id="to" name="to" />
-                                  </div>
-                                </div>
-                            </span>
-                            <span class="sort-item">
-                            	<a href="#"><i class="icon-bottom-arrow"></i>Time</a>
-                                <div class="popover bottom">
-                                  <div class="arrow"></div>
-                                  <div class="popover-content clearfix">
-                                    <label for="time" class="ui-input-text">Time</label>
-                                    <input type="text" id="timepicker" value="">
-                                  </div>
-                                </div>
-                            </span>
-                            <span class="sort-item">
-                            	<a href="#"><i class="icon-bottom-arrow"></i>Cost</a>
-                                <div class="popover bottom">
-                                  <div class="arrow"></div>
-                                  <div class="popover-content clearfix">
-                                    <label for="cost" class="ui-input-text cvalue">Less than $50</label>
-                                    <div class="left">
-                                      <span class="option">Free</span>
-                                      <span class="option">$5</span>
-                                      <span class="option">$10</span>
-                                      <span class="option">$20</span>
-                                      <span class="option">$30</span>
-                                      <span class="option">$40</span>
-                                      <span class="option">$50+</span>
-                                    </div>
-                                    <div class="right">
-                                      <!--<div id="slider-vertical"></div>-->
+    <div id="getsat-widget-4765"><a href="#" class="gs-replacement-link">Wrong info? RSVP sold out? Tell us!</a></div>
+    <% unless @mobileMode %>
+      <script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
+    <% end %>
+    <script type="text/javascript">
+      if (typeof GSFN !== "undefined") { GSFN.loadWidget(4765,{"containerId":"getsat-widget-4765"}); }
+    </script>
+    <div class="block">
+      <a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&sensor=false"/></a>
+      <div class="block-inner">
+        <div class="website">
+          <h5>More Info:</h5>
+          <div class="block-inner">
+            <a href='<%= @event.event_url %>' target="_blank"><%= @event.event_url %></a>
+          </div>
+        </div>
+        <br>
+        <div class="venue">
+          <h2>Venue</h2>
+          <% if @fullmode %>
+            <a href="/venues/<%= @event.venue.id %>?fullmode=true"><%= @event.venue.name %></a>
+          <% else %>
+            <a linkto="venue" link-id="<%= @event.venue.id %>" href="#"><%= @event.venue.name %></a>
+          <% end %>
+        </div>
+        <div class="address one"><%= @event.venue.address %></div>
+        <% unless @event.venue.city.blank? %>
+          <div class="address two"><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></div>
+        <% end %>
+      </div>
+    </div>
+    <% unless (@event.venue.fb_picture.blank? && @event.fb_picture.blank? && @event.pictures.nil? && @event.acts.nil? )%>
+      <div id="galleria" style="height:358px;width:358px;">
+        <% unless @event.venue.fb_picture.blank?%>
+          <img src="<%=@event.venue.fb_picture%>" data-title="<%= @event.venue.name %>" >
+        <% end %>
+        <% @event.venue.pictures.each do |pic| %>
+          <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @event.venue.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+        <% end %>
 
-                                      <input style="display:none;" type="range" min="0" max="50" value="50" step="5" name="slider-step" id="slider-step" sliderOrientation="vertical"  />
-                                    </div>
-                                  </div>
-                                </div>
-                            </span>
-                            <span class="sort-item">
-                            	<a href="#"><i class="icon-bottom-arrow"></i>Area</a>
-                            </span>
+        <% unless @event.fb_picture.blank?%>
+          <img src="<%=@event.fb_picture%>" data-title="<%= @event.title %>" >
+        <% end %>
+        <% @event.pictures.each do |pic| %>
+          <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @event.title.first(25) %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+        <% end %>
+
+        <% @event.acts.each do |artists| %>
+          <% unless artists.fb_picture.blank?%>
+            <img src="<%= artists.fb_picture %>" data-title="<%= artists.name %>" >
+          <% end %>
+          <% artists.pictures.each do |pic| %>
+            <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= artists.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+          <% end %>
+          <br>
+        <% end %>
+      </div>
+    <% end %>
+    <script type="text/javascript">
+      Galleria.loadTheme('/assets/galleria.classic.min.js');
+      Galleria.run('#galleria');
+    </script>
+
+    <% unless @occurrences.length == 0 && @recurrences.length == 0 %>
+      <div class="calendar block">
+        <h2>Other Times</h2>
+        <div class="block-inner">
+          <%= render :partial => "events/calendar", :locals => { :occurrences => @occurrences, :recurrences => @recurrences, :options => { :datetime_only => true, :fullmode => @fullmode } } %>
+        </div>
+      </div>
+    <% end %>
+    <% if false %>
+      <% if can? :edit, Event %>
+        <div style="text-align:right;padding-top:10px;"><a href="/venues/list_events/<%=@event.venue.id%>#anchor<%=@occurrence.id%>" target="_blank">edit</a> </div>
+      <% end %>
+    <% end %>
+
+    <div style="text-align:right;padding-top:10px;"><a href="/userSubmission/eventEdit1/<%=@event.id%>" target="_blank">edit</a></div>
   </div>
-</div>
-<div class="content">
-  <div class="container">
-    <figure class="ad-contaniner"><img src="images/ad.jpg" alt=""/></figure>
-    <h2 class="text-info">325 results for</h2>
-    <p class="lead text-info">"happy hour, south congress, 5pm"</p>
-    <section class="product-list clearfix">
-      <article class="product-item">
-        <figure><a href="#"><img src="images/scroller1-img01.gif" alt=""/></a></figure>
-        <div class="name"><a href="#">Lyle Lovett and His Acoustic Group</a></div>
-        <div class="info clearfix">
-          <span class="time pull-left">Today @ 5:00pm</span>
-          <span class="value pull-right">$79+</span>
-        </div>
-        <div class="additional-info">
-          <span class="place">DOWNTOWN</span>
-          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
-        </div>
-      </article>
-      <article class="product-item">
-        <figure><a href="#"><img src="images/scroller1-img02.gif" alt=""/></a></figure>
-        <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
-        <div class="info clearfix">
-          <span class="time pull-left">Today @ 5:00pm</span>
-          <span class="value pull-right">$7+</span>
-        </div>
-        <div class="additional-info">
-          <span class="place">PLEASANT VALLEY</span>
-          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
-        </div>
-      </article>
-      <article class="product-item featured">
-        <figure><a href="#"><img src="images/scroller1-img03.gif" alt=""/></a></figure>
-        <div class="name"><a href="#">Austin City Limits Music Festival</a></div>
-        <div class="info clearfix">
-          <span class="time pull-left">Today @ 5:00pm</span>
-          <span class="value pull-right">FREE</span>
-        </div>
-        <div class="additional-info">
-          <span class="place">ACL</span>
-          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
-        </div>
-        <span class="featured-text">Featured Event</span>
-      </article>
-      <article class="product-item">
-        <figure><a href="#"><img src="images/scroller2-img01.gif" alt=""/></a></figure>
-        <div class="name"><a href="#">Blind Pig Pub Industry Night For $5 and up</a></div>
-        <div class="info clearfix">
-          <span class="time pull-left">Today @ 5:00pm</span>
-          <span class="value pull-right">$79+</span>
-        </div>
-        <div class="additional-info">
-          <span class="place">DOWNTOWN</span>
-          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
-        </div>
-      </article>
-      <article class="product-item">
-        <figure><a href="#"><img src="images/scroller2-img02.gif" alt=""/></a></figure>
-        <div class="name"><a href="#">Big BurgerAll You Can Eat at the Bottomless Burger</a></div>
-        <div class="info clearfix">
-          <span class="time pull-left">Today @ 5:00pm</span>
-          <span class="value pull-right">$7+</span>
-        </div>
-        <div class="additional-info">
-          <span class="place">PLEASANT VALLEY</span>
-          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
-        </div>
-      </article>
-      <article class="product-item">
-        <figure><a href="#"><img src="images/scroller2-img03.gif" alt=""/></a></figure>
-        <div class="name"><a href="#">Music, Drinks and Pretty Ladies at the Band Room</a></div>
-        <div class="info clearfix">
-          <span class="time pull-left">Today @ 5:00pm</span>
-          <span class="value pull-right">FREE</span>
-        </div>
-        <div class="additional-info">
-          <span class="place">ACL</span>
-          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
-        </div>
-      </article>
-      <article class="product-item">
-        <figure><a href="#"><img src="images/scroller1-img01.gif" alt=""/></a></figure>
-        <div class="name"><a href="#">Lyle Lovett and His Acoustic Group</a></div>
-        <div class="info clearfix">
-          <span class="time pull-left">Today @ 5:00pm</span>
-          <span class="value pull-right">$79+</span>
-        </div>
-        <div class="additional-info">
-          <span class="place">DOWNTOWN</span>
-          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
-        </div>
-      </article>
-      <article class="product-item">
-        <figure><a href="#"><img src="images/scroller1-img02.gif" alt=""/></a></figure>
-        <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
-        <div class="info clearfix">
-          <span class="time pull-left">Today @ 5:00pm</span>
-          <span class="value pull-right">$7+</span>
-        </div>
-        <div class="additional-info">
-          <span class="place">PLEASANT VALLEY</span>
-          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
-        </div>
-      </article>
-      <article class="product-item">
-        <figure><a href="#"><img src="images/scroller1-img03.gif" alt=""/></a></figure>
-        <div class="name"><a href="#">Austin City Limits Music Festival</a></div>
-        <div class="info clearfix">
-          <span class="time pull-left">Today @ 5:00pm</span>
-          <span class="value pull-right">FREE</span>
-        </div>
-        <div class="additional-info">
-          <span class="place">ACL</span>
-          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
-        </div>
-      </article>
-      <article class="product-item">
-        <figure><a href="#"><img src="images/scroller2-img01.gif" alt=""/></a></figure>
-        <div class="name"><a href="#">Blind Pig Pub Industry Night For $5 and up</a></div>
-        <div class="info clearfix">
-          <span class="time pull-left">Today @ 5:00pm</span>
-          <span class="value pull-right">$79+</span>
-        </div>
-        <div class="additional-info">
-          <span class="place">DOWNTOWN</span>
-          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
-        </div>
-      </article>
-      <article class="product-item">
-        <figure><a href="#"><img src="images/scroller2-img02.gif" alt=""/></a></figure>
-        <div class="name"><a href="#">Big BurgerAll You Can Eat at the Bottomless Burger</a></div>
-        <div class="info clearfix">
-          <span class="time pull-left">Today @ 5:00pm</span>
-          <span class="value pull-right">$7+</span>
-        </div>
-        <div class="additional-info">
-          <span class="place">PLEASANT VALLEY</span>
-          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
-        </div>
-      </article>
-      <article class="product-item">
-        <figure><a href="#"><img src="images/scroller2-img03.gif" alt=""/></a></figure>
-        <div class="name"><a href="#">Music, Drinks and Pretty Ladies at the Band Room</a></div>
-        <div class="info clearfix">
-          <span class="time pull-left">Today @ 5:00pm</span>
-          <span class="value pull-right">FREE</span>
-        </div>
-        <div class="additional-info">
-          <span class="place">ACL</span>
-          <a href="#" class="bookmark"><img src="images/icon-bookmark.png" alt="Bookmark"/></a>
-        </div>
-      </article>
-    </section>
-  </div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<footer>
-  <div class="container">
-        	<span class="footer-tap">
-                <span>GO</span>
-                <span class="footer-bar-icon">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </span>
-                <span>UP</span>
-                <div class="popover top in">
-                  <div class="arrow"></div>
-                  <div class="popover-content">
-                    <ul>
-                      <li><a href="#myCarousel">GO TO THE TOP</a></li>
-                      <li><a href="#yrhn">YOU'RE HALFPAST NOW</a></li>
-                      <li><a href="#fyhp">FIND YOUR HAPPY PLACE</a></li>
-                      <li><a href="#gud">GET UP AND DANCE!</a></li>
-                      <li><a href="#tat">TRIED AND TRUE</a></li>
-                      <li><a href="#iffa">IT'S A FREE FOR ALL</a></li>
-                    </ul>
-                  </div>
-                </div>
-            </span>
-  </div>
-</footer>
-</body>
-</html>
+
+  <div class="clear"></div>
+<% end %>

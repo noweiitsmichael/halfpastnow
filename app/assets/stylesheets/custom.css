@@ -185,7 +185,7 @@ h2{font-size:345%;}
 	-webkit-border-radius:0 4px 4px 0;
 	-moz-border-radius:0 4px 4px 0;
 	border-radius:0 4px 4px 0;
-	text-indent:-999em;	
+	text-indent:-999em;
 	width:50px;
 	height:46px;
 	border:none;
@@ -245,19 +245,19 @@ h2{font-size:345%;}
 	padding:0 60px;
 }
 .slider .slide-item, .product-list .product-item{
-	margin:0 25px; 
+	margin:0 25px;
 	width:300px;
 	position:relative;
 	float:left;
 }
 .slider .slide-item figure, .product-list .product-item figure{margin-bottom:6%;}
 .slider .slide-item .name, .product-list .product-item .name{
-	font-size:152%; 
-	height:54px; 
+	font-size:152%;
+	height:54px;
 	overflow:hidden;
 	margin-bottom:12px;
 	line-height:1.2;
-} 
+}
 .slider .slide-item .name a, .product-list .product-item .name a{color:#4c334d;}
 .slider .slide-item .info, .product-list .product-item .info{
 	padding:10px 0;

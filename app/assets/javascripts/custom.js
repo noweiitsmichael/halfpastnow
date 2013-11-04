@@ -272,5 +272,10 @@
 
 
     });
+    $( "#slider-step" ).bind( "change", function(event, ui) {
+      console.log($(this).val())
+      cost_filter_events($(this).val())
+    });
+
   })
 }(window.jQuery)

@@ -1,142 +1,285 @@
-<% content_for :meta do %>
-     <meta property="og:type"                 content="halfpastnow:event"/> 
-     <meta property="og:url"                  content="http://www.halfpastnow.com/events/show/<%= @occurrence.id%>?fullmode=true"/>
-     <meta property="og:site_name"            content="halfpastnow"/>
-     <meta property="og:image"                content="<%=@event.cover_image_url%>"/>
-     <meta property="og:title"                content="<%=@event.title%> at <%=@event.venue.name%> on halfpastnow.com">
-     <meta property="og:description"          content="<%=strip_tags(@event.description)%>"/> 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Halfpastnow - Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,900,700italic,900italic,700,500italic,500,400italic,300italic,100italic' rel='stylesheet' type='text/css'>
+  <% content_for :meta do %>
+    <meta property="og:type"                 content="halfpastnow:event"/>
+    <meta property="og:url"                  content="http://www.halfpastnow.com/events/show/<%= @occurrence.id%>?fullmode=true"/>
+    <meta property="og:site_name"            content="halfpastnow"/>
+    <meta property="og:image"                content="<%=@event.cover_image_url%>"/>
+    <meta property="og:title"                content="<%=@event.title%> at <%=@event.venue.name%> on halfpastnow.com">
+    <meta property="og:description"          content="<%=strip_tags(@event.description)%>"/>
+  <% end %>
+</head>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "elastislide","details"%>
+  <%= javascript_include_tag "jquery.elastislide" %>
 <% end %>
-<% content_for :mode_title do %>
-	<h1>Event: <%= @event.title %></h1>
-<% end %>
 
-<% content_for :mode_body do %>
-	<div class="col-1">
-		<ul class="sub-header">
-			<li class="datetime"><span class="icon icon-time"></span><%= @occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
-			<% if @event.price %>
-				<li class="price"><span class="icon icon-credit-card"></span><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 2) : "FREE" %></li>
-			<% end %>
-			<% unless @event.tags.length == 0 %>
-				<li class="tags"><span class="icon icon-tags"></span><%= @event.tags.collect { |tag| tag.name } * " / " %></li>
-			<% end %>
-		</ul>
-		<% unless @event.description.to_s.empty? %>
-			<div class="description block">
-				<h2>Details</h2>
-				<div class="block-inner">
-					<%= raw(@event.description) %>
-				</div>
-			</div>
-		<% end %>
-		<% unless @event.acts.length == 0 %>
-			<div class="featuring block">
-				<h2>Featuring</h2>
-				<div class="block-inner">
-					<% @event.acts.each_with_index do |act,index| %>
-						<% if @fullmode %>
-							<a href="/acts/show/<%= act.id %>?fullmode=true" class="act-name"><%= act.name %></a><%= (index != @event.acts.length - 1) ? ", " : "" %>
-						<% else %>
-							<span link-id="<%= act.id %>" linkto="act" class="act-name"><%= act.name %></span><%= (index != @event.acts.length - 1) ? ", " : "" %>
-						<% end %>
-					<% end %>
-					<div class="embeds">
-					<% @event.acts.each do |act| %>
-						<% act.embeds.select { |e| e.primary }.each do |embed| %>
-							<div class="embed-act-name"><%= act.name %></div>
-							<%= raw(embed.source) %>
-						<% end %>
-					<% end %>
-					</div>
-				</div>
-			</div>
-		<% end %>
-	</div>
-	<div class="col-2">
-		<div class="block">
-			<div class="block-inner">
-				<%= render :partial => "layouts/share_bookmark", :locals => { :type => 'event', :id => @occurrence.id, :occurrence => @occurrence, :event => @event, :bookmarkId => @bookmarkId, :attendingId => @attendingId , :fullmode => @fullmode} %>
-			</div>
-		</div>
-		<div id="getsat-widget-4765"><a href="#" class="gs-replacement-link">Wrong info? RSVP sold out? Tell us!</a></div>
-		<% unless @mobileMode %>
-			<script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
-		<% end %>
-		<script type="text/javascript">
-			if (typeof GSFN !== "undefined") { GSFN.loadWidget(4765,{"containerId":"getsat-widget-4765"}); }
-		</script>
-		<div class="block">
-			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&sensor=false"/></a>
-			<div class="block-inner">
-				<div class="website">
-					<h5>More Info:</h5>
-					<div class="block-inner">
-						<a href='<%= @event.event_url %>' target="_blank"><%= @event.event_url %></a>
-					</div>
-				</div>
-				<br>
-				<div class="venue">
-					<h2>Venue</h2>
-					<% if @fullmode %>
-						<a href="/venues/<%= @event.venue.id %>?fullmode=true"><%= @event.venue.name %></a>
-					<% else %>
-						<a linkto="venue" link-id="<%= @event.venue.id %>" href="#"><%= @event.venue.name %></a>
-					<% end %>
-				</div>
-				<div class="address one"><%= @event.venue.address %></div>
-				<% unless @event.venue.city.blank? %>
-				<div class="address two"><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></div>
-				<% end %>
-			</div>
-		</div>
-		<% unless (@event.venue.fb_picture.blank? && @event.fb_picture.blank? && @event.pictures.nil? && @event.acts.nil? )%>
-		<div id="galleria" style="height:358px;width:358px;">
-			<% unless @event.venue.fb_picture.blank?%>
-				<img src="<%=@event.venue.fb_picture%>" data-title="<%= @event.venue.name %>" >
-			<% end %>
-            <% @event.venue.pictures.each do |pic| %>
-			    <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @event.venue.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
-		    <% end %>
+<% content_for :body do %>
 
-		    <% unless @event.fb_picture.blank?%>
-				<img src="<%=@event.fb_picture%>" data-title="<%= @event.title %>" >
-			<% end %>
-		    <% @event.pictures.each do |pic| %>
-				<a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @event.title.first(25) %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
-		    <% end %>
-
-		    <% @event.acts.each do |artists| %>
-			    <% unless artists.fb_picture.blank?%>
-					<img src="<%= artists.fb_picture %>" data-title="<%= artists.name %>" >
-				<% end %>
-		    	<% artists.pictures.each do |pic| %>
-		    		<a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= artists.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
-		    	<% end %>
-		    	<br>
-		    <% end %>
+  <section class="details">
+    <section class="recommend-events">
+      <div class="container">
+        <a class="link" href="#"><i class="icon-left-arrow"></i> back to search results</a>
+        <a class="link" href="#" data-target="recommend-events-wrapper"><i class="icon-bottom-arrow"></i> recommended events</a>
+      </div>
+    </section>
+    <div class="container">
+      <div class="event-main">
+        <h2><%= @event.title %></h2>
+        <div class="row">
+          <div class="price left">
+            <% if @event.price %>
+              <%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 2) : "FREE" %>
+            <% end %>
+          </div>
+          <div class="right">
+            <div class="share">
+              <a href="#"><img src="/assets/images/icon-bookmark-large.png" alt=""/></a>
+              <a href="#"><img src="/assets/images/icon-calendar.png" alt=""/></a>
+              <a href="#"><img src="/assets/images/icon-twitter.png" alt=""/></a>
+              <a href="#"><img src="/assets/images/icon-facebook.png" alt=""/></a>
+            </div>
+          </div>
         </div>
-    	<% end %>
-        <script type="text/javascript">
-            Galleria.loadTheme('/assets/galleria.classic.min.js');
-            Galleria.run('#galleria');
-        </script>
+        <div class="clearfix">
+          <div class="left">
+            <address>
+              <h4>South Congress</h4>
+              Holy Mountain<br/>
+              617 East 7th Street<br/>
+              Austin, TX 78701
+            </address>
+            <h4>Dates &amp; Times</h4>
+            <ul>
+              <li>Everyday, 7:00pm to 11:00pm</li>
+              <li>Tuesday, 6:00pm</li>
+              <li>Friday, Sept. 20, 2013</li>
+            </ul>
+          </div>
+          <div class="right">
 
-		<% unless @occurrences.length == 0 && @recurrences.length == 0 %>
-		<div class="calendar block">
-			<h2>Other Times</h2>
-			<div class="block-inner">
-				<%= render :partial => "events/calendar", :locals => { :occurrences => @occurrences, :recurrences => @recurrences, :options => { :datetime_only => true, :fullmode => @fullmode } } %>
-			</div>
-		</div>
-		<% end %>
-		<% if false %>
-		<% if can? :edit, Event %>
-		<div style="text-align:right;padding-top:10px;"><a href="/venues/list_events/<%=@event.venue.id%>#anchor<%=@occurrence.id%>" target="_blank">edit</a> </div>
-		<% end %>
-		<% end %>
-		
-		<div style="text-align:right;padding-top:10px;"><a href="/userSubmission/eventEdit1/<%=@event.id%>" target="_blank">edit</a></div>
-	</div>
-	
-	<div class="clear"></div>
+            <a href="#" class="btn btn-large btn-danger">I'm Going</a>
+            <a href="#" class="btn btn-large btn-danger">Get Tickets</a>
+          </div>
+        </div>
+        <div class="accordion" id="details-container">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#details-container" href="#details">Details <i class="caret pull-right"></i></a>
+          </div>
+          <div id="details" class="accordion-body collapse in">
+            <div class="accordion-inner">
+              <%= raw(@event.description) %>
+            </div>
+          </div>
+        </div>
+        <div class="accordion" id="tag-container">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#tag-container" href="#tags">Tags <i class="caret pull-right"></i></a>
+          </div>
+          <div id="tags" class="accordion-body collapse in">
+            <div class="accordion-inner">
+              <p><% unless @event.tags.length == 0 %>
+                <%= @event.tags.collect { |tag| tag.name } * "," %></li>
+              <% end %>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="accordion" id="who-container">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#who-container" href="#who">Who's Going <i class="caret pull-right"></i></a>
+          </div>
+          <div id="who" class="accordion-body collapse in">
+            <div class="accordion-inner">
+              <a href="#" class="user"><img src="/assets/images/user-thumb01.png" alt=""/></a>
+              <a href="#" class="user"><img src="/assets/images/user-thumb02.png" alt=""/></a>
+              <a href="#" class="user"><img src="/assets/images/user-thumb01.png" alt=""/></a>
+              <a href="#" class="user"><img src="/assets/images/user-thumb02.png" alt=""/></a>
+              <a href="#" class="user"><img src="/assets/images/user-thumb01.png" alt=""/></a>
+              <a href="#" class="user"><img src="/assets/images/user-thumb02.png" alt=""/></a>
+              <a href="#" class="user"><img src="/assets/images/user-thumb01.png" alt=""/></a>
+              <a href="#" class="user"><img src="/assets/images/user-thumb02.png" alt=""/></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="event-other-details">
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#photos">Photos</a></li>
+          <li class=""><a data-toggle="tab" href="#videos">Videos</a></li>
+          <li class=""><a data-toggle="tab" href="#music">Music</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="photos" class="tab-pane fade in active">
+            <div class="gallery">
+              <!-- Elastislide Carousel -->
+              <ul id="carousel" class="elastislide-list">
+                <li data-preview="/assets/images/large/4.jpg"><a href="#"><img src="/assets/images/small/4.jpg" alt="image04" /></a></li>
+                <li data-preview="/assets/images/large/5.jpg"><a href="#"><img src="/assets/images/small/5.jpg" alt="image05" /></a></li>
+                <li data-preview="/assets/images/large/6.jpg"><a href="#"><img src="/assets/images/small/6.jpg" alt="image06" /></a></li>
+                <li data-preview="/assets/images/large/7.jpg"><a href="#"><img src="/assets/images/small/7.jpg" alt="image07" /></a></li>
+                <li data-preview="/assets/images/large/11.jpg"><a href="#"><img src="/assets/images/small/11.jpg" alt="image11" /></a></li>
+                <li data-preview="/assets/images/large/1.jpg"><a href="#"><img src="/assets/images/small/1.jpg" alt="image01" /></a></li>
+                <li data-preview="/assets/images/large/2.jpg"><a href="#"><img src="/assets/images/small/2.jpg" alt="image02" /></a></li>
+                <li data-preview="/assets/images/large/3.jpg"><a href="#"><img src="/assets/images/small/3.jpg" alt="image03" /></a></li>
+                <li data-preview="/assets/images/large/8.jpg"><a href="#"><img src="/assets/images/small/8.jpg" alt="image08" /></a></li>
+                <li data-preview="/assets/images/large/9.jpg"><a href="#"><img src="/assets/images/small/9.jpg" alt="image09" /></a></li>
+                <li data-preview="/assets/images/large/10.jpg"><a href="#"><img src="/assets/images/small/10.jpg" alt="image10" /></a></li>
+              </ul>
+              <!-- End Elastislide Carousel -->
+
+              <div class="image-preview">
+                <% unless (@event.venue.fb_picture.blank? && @event.fb_picture.blank? && @event.pictures.nil? && @event.acts.nil? )%>
+                  <div id="galleria" style="height:367px;width:550px;">
+                    <% unless @event.venue.fb_picture.blank?%>
+                      <img src="<%=@event.venue.fb_picture%>" data-title="<%= @event.venue.name %>" >
+                    <% end %>
+                    <% @event.venue.pictures.each do |pic| %>
+                      <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @event.venue.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+                    <% end %>
+
+                    <% unless @event.fb_picture.blank?%>
+                      <img src="<%=@event.fb_picture%>" data-title="<%= @event.title %>" >
+                    <% end %>
+                    <% @event.pictures.each do |pic| %>
+                      <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @event.title.first(25) %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+                    <% end %>
+
+                    <% @event.acts.each do |artists| %>
+                      <% unless artists.fb_picture.blank?%>
+                        <img src="<%= artists.fb_picture %>" data-title="<%= artists.name %>" >
+                      <% end %>
+                      <% artists.pictures.each do |pic| %>
+                        <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= artists.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+                      <% end %>
+                      <br>
+                    <% end %>
+                  </div>
+                <% end %>
+                <script type="text/javascript">
+                  Galleria.loadTheme('/assets/galleria.classic.min.js');
+                  Galleria.run('#galleria');
+                </script>
+              </div>
+            </div>
+          </div>
+          <div id="videos" class="tab-pane fade in">
+            Videos
+          </div>
+          <div id="music" class="tab-pane fade in">
+            Music
+          </div>
+        </div>
+        <div class="accordion" id="map-container">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#map-container" href="#map">617 East 7th Street <i class="caret pull-right"></i></a>
+          </div>
+          <div id="map" class="accordion-body collapse in">
+            <div class="accordion-inner">
+              <a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=550x300&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&sensor=false"/></a>
+            </div>
+          </div>
+        </div>
+        <div class="accordion" id="neighbourhood-container">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#neighbourhood-container" href="#neighbourhood">In the Neighbourhood <i class="caret pull-right"></i></a>
+          </div>
+          <div id="neighbourhood" class="accordion-body collapse in">
+            <div class="accordion-inner product-list clearfix">
+              <article class="product-item">
+                <figure><a href="#"><img src="/assets/images/recommended-img01.gif" alt=""/></a></figure>
+                <div class="name"><a href="#">MOD (Feat, Billy Milano), lower Class Brats, Belligerent 86, Two Fist</a></div>
+              </article>
+              <article class="product-item">
+                <figure><a href="#"><img src="/assets/images/recommended-img02.gif" alt=""/></a></figure>
+                <div class="name"><a href="#">MOD (Feat, Billy Milano), lower Class Brats, Belligerent 86, Two Fist</a></div>
+              </article>
+              <article class="product-item">
+                <figure><a href="#"><img src="/assets/images/recommended-img03.gif" alt=""/></a></figure>
+                <div class="name"><a href="#">MOD (Feat, Billy Milano), lower Class Brats, Belligerent 86, Two Fist</a></div>
+              </article>
+              <article class="product-item">
+                <figure><a href="#"><img src="/assets/images/recommended-img04.gif" alt=""/></a></figure>
+                <div class="name"><a href="#">MOD (Feat, Billy Milano), lower Class Brats, Belligerent 86, Two Fist</a></div>
+              </article>
+            </div>
+          </div>
+        </div>
+        <div class="ad-contaniner">
+          <img src="/assets/images/ad02.gif" alt=""/>
+          <span class="muted">Advertisement</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="recommend-events">
+    <div id="recommend-events-wrapper">
+      <div class="content slider">
+        <div id="recommended-list">
+          <article class="slide-item">
+            <figure><a href="#"><img src="/assets/images/recommended-img01.gif" alt=""/></a></figure>
+            <div class="name"><a href="#">MOD (Feat, Billy Milano), lower Class Brats, Belligerent 86, Two Fist</a></div>
+          </article>
+          <article class="slide-item">
+            <figure><a href="#"><img src="/assets/images/recommended-img02.gif" alt=""/></a></figure>
+            <div class="name"><a href="#">MOD (Feat, Billy Milano), lower Class Brats, Belligerent 86, Two Fist</a></div>
+          </article>
+          <article class="slide-item">
+            <figure><a href="#"><img src="/assets/images/recommended-img03.gif" alt=""/></a></figure>
+            <div class="name"><a href="#">MOD (Feat, Billy Milano), lower Class Brats, Belligerent 86, Two Fist</a></div>
+          </article>
+          <article class="slide-item">
+            <figure><a href="#"><img src="/assets/images/recommended-img04.gif" alt=""/></a></figure>
+            <div class="name"><a href="#">MOD (Feat, Billy Milano), lower Class Brats, Belligerent 86, Two Fist</a></div>
+          </article>
+          <article class="slide-item">
+            <figure><a href="#"><img src="/assets/images/recommended-img01.gif" alt=""/></a></figure>
+            <div class="name"><a href="#">MOD (Feat, Billy Milano), lower Class Brats, Belligerent 86, Two Fist</a></div>
+          </article>
+        </div>
+        <a class="prev" id="recommended-list_prev" href="#"><span>prev</span></a>
+        <a class="next" id="recommended-list_next" href="#"><span>next</span></a>
+      </div>
+    </div>
+  </section>
 <% end %>
+
+<script type="text/javascript">
+
+  // example how to integrate with a previewer
+
+  var current = 0,
+    $preview = $( '#preview' ),
+    $carouselEl = $( '#carousel' ),
+    $carouselItems = $carouselEl.children(),
+    carousel = $carouselEl.elastislide( {
+      current : current,
+      minItems : 3,
+      onClick : function( el, pos, evt ) {
+
+        changeImage( el, pos );
+        evt.preventDefault();
+
+      },
+      onReady : function() {
+
+        changeImage( $carouselItems.eq( current ), current );
+
+      }
+    } );
+
+  function changeImage( el, pos ) {
+    $preview.attr( 'src', el.data( 'preview' ) );
+    $carouselItems.removeClass( 'current-img' );
+    el.addClass( 'current-img' );
+    carousel.setCurrent( pos );
+  }
+
+</script>
+</body>
+</html>

@@ -5,8 +5,19 @@
   <title>Halfpastnow - Details</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,900,700italic,900italic,700,500italic,500,400italic,300italic,100italic' rel='stylesheet' type='text/css'>
-
+  <% content_for :meta do %>
+    <meta property="og:type"                 content="halfpastnow:event"/>
+    <meta property="og:url"                  content="http://www.halfpastnow.com/events/show/<%= @occurrence.id%>?fullmode=true"/>
+    <meta property="og:site_name"            content="halfpastnow"/>
+    <meta property="og:image"                content="<%=@event.cover_image_url%>"/>
+    <meta property="og:title"                content="<%=@event.title%> at <%=@event.venue.name%> on halfpastnow.com">
+    <meta property="og:description"          content="<%=strip_tags(@event.description)%>"/>
+  <% end %>
 </head>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "elastislide","details"%>
+  <%= javascript_include_tag "jquery.elastislide" %>
+<% end %>
 
 <% content_for :body do %>
 
@@ -19,7 +30,7 @@
   </section>
   <div class="container">
     <div class="event-main">
-      <h2>MOD featuring Billy Milano, Lower Class Brats, Belligerent 86, Two Fist</h2>
+      <h2><%= @event.title %></h2>
       <div class="row">
         <div class="price left">$75 - $200</div>
         <div class="right">

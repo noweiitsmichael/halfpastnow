@@ -516,10 +516,10 @@
     console.log($('#appendedInput').val())
     window.location.href = window.location.href+"search?key="+$('#appendedInput').val()
   })
-  $('article').click(function(){
-    var event_id = $(this).attr('link-id')
+  $('figure').click(function(){
+    var event_id = $(this).parent('article').attr('link-id')
     console.log(event_id)
-    window.location.href = "http://localhost:4567/details?event_id="+event_id
+    window.location.href = "http://localhost:4567/events/show/"+event_id+"?fullmode=true"
 
   })
 </script>

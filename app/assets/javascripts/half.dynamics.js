@@ -501,7 +501,7 @@ $(function () {
 
   $('.search-input').keyup(function () {
 
-    $(".active").attr('class', '.active');
+    $(".active").attr('class', '');
     if (!timer_is_on) {
       timer_is_on = 1;
       if ($(this).val().length >= 3) {
@@ -1196,6 +1196,23 @@ function free_events(location){
     }
   });
  }
+function cost_filter_events(high_price){
+  console.log(high_price)
+  var controllerLink = "/events/index?ajax=true"
+  f1={"high_price":high_price}
+  $.get(controllerLink, f1, function (data) {
+    var locations = [];
+    var jData = $(data);
+    if (false) {
+    } else {
+      $(".total_number").text($('#'+location).find('article').length)
+      $("#related_events .main .inline .events").html(data);
+      $("#events .main .inline .events").html(data);
+
+
+    }
+  });
+}
 function slider_arrows(location){
   $("#"+location).carouFredSel({
     responsive: true,

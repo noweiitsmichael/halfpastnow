@@ -8,6 +8,7 @@
 <% content_for :head do %>
   <%= javascript_include_tag "half.dynamics" %>
   <%= javascript_include_tag "smartinfowindow.js" %>
+  <%= stylesheet_link_tag "custom1" %>
 <% end %>
 <% content_for :code do %>
 <%# TODO: put this stuff in the controller eventually %>
@@ -576,7 +577,6 @@
     $('#search-tab a').on("click", function () {
       console.log($(this).text())
       doneTyping1($(this).text());
-
       $('#search_name').text($(this).text())
     });
     $('.icon-white-pin').on("click",function(){
@@ -600,9 +600,7 @@
       <% end %>
     })
     doneTyping1("<%= params[:key] %>");
-
     $('#search_name').text("<%= params[:key] %>")
-
     <% end %>
     $('.filter-dropdown').hide()
   </script>
