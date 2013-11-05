@@ -438,6 +438,13 @@ class EventsController < ApplicationController
   # GET /events/1
   # GET /events/1.json
   def show
+
+
+    params[:user_id] = current_user ? current_user.id : nil
+    ids = Occurrence.find_with(params)
+    occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
+    order_by = "occurrences.start"
+    @all_occurrences = Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(9)
     # begin
     puts "Share content"
     @fullmode = (!params[:fullmode].to_s.empty?) || (@mobileMode)
