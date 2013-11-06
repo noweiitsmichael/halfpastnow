@@ -519,7 +519,7 @@
   $('figure').click(function(){
     var event_id = $(this).parent('article').attr('link-id')
     console.log(event_id)
-    window.location.href = "http://localhost:4567/events/show/"+event_id+"?fullmode=true"
+    window.location.href = window.location.origin+"/events/show/"+event_id+"?fullmode=true"
 
   })
 </script>

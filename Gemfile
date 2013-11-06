@@ -13,7 +13,7 @@ gem 'newrelic_rpm'
 # gem 'flying-sphinx',   '0.6.4'
 
 gem 'admin_data', '>= 1.1.16'
-
+gem "geocoder"
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

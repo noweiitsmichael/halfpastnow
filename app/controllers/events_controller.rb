@@ -438,21 +438,26 @@ class EventsController < ApplicationController
   # GET /events/1
   # GET /events/1.json
   def show
-
-
+    @occurrence = Occurrence.find(params[:id])
+    @event = @occurrence.event
+    near_by_venues = @event.venue.nearbys(1)
+    near_by_venue_ids=near_by_venues.nil??  (Venue.near(@event.venue.city,1).map(&:id)):near_by_venues.map(&:id)
     params[:user_id] = current_user ? current_user.id : nil
     ids = Occurrence.find_with(params)
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @all_occurrences = Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(9)
+    @related_occurrences = Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by)
+    event_ids = @related_occurrences.collect { |e| e["event_id"] }.uniq
+    near_by_event_ids = event_ids.select{|e| (near_by_venue_ids.include?(Event.find(e).venue.id) if Event.find(e).venue.id )}
+    @near_by_events=near_by_event_ids.collect{|e| Event.find(e)}.take(8)
+
+    @all_occurrences = @related_occurrences.take(9)
     # begin
     puts "Share content"
     @fullmode = (!params[:fullmode].to_s.empty?) || (@mobileMode)
     @modeType = "event"
 
-    @occurrence = Occurrence.find(params[:id])
 
-    @event = @occurrence.event
     @pageTitle = @event.title + " | half past now."
 
     @event.clicks += 1
