@@ -456,6 +456,7 @@
         </div>
       </div>
       <div id="videos" class="tab-pane fade in">
+        <%#= raise @event.acts.inspect %>
         <% unless @event.acts.length == 0 %>
           <div class="featuring block">
             <h2>Featuring</h2>
@@ -469,12 +470,20 @@
                 <% end %>
               <% end %>
               <div class="embeds">
+
                 <% @event.acts.each do |act| %>
                   <% act.embeds.select { |e| e.primary }.each do |embed| %>
                     <div class="embed-act-name"><%= act.name %></div>
                     <%= raw(embed.source) %>
                   <% end %>
                 <% end %>
+                <script>
+                  $('.embeds').ready(function(){
+
+                    var element = $('.widget_iframe').detach();
+                    $('#music').append(element);
+                  })
+                </script>
               </div>
             </div>
           </div>
