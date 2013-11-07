@@ -449,8 +449,8 @@ class EventsController < ApplicationController
     @related_occurrences = Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by)
     event_ids = @related_occurrences.collect { |e| e["event_id"] }.uniq
     near_by_event_ids = event_ids.select{|e| (near_by_venue_ids.include?(Event.find(e).venue.id) if Event.find(e).venue.id )}
-    @near_by_events=near_by_event_ids.collect{|e| Event.find(e)}.take(8)
-
+    @near_by_occurrences = @related_occurrences.select{|o| (near_by_venue_ids.include?(o.event.venue.id))}.take(4)
+    @near_by_events=near_by_event_ids.collect{|e| Event.find(e)}.take(4)
     @all_occurrences = @related_occurrences.take(9)
     # begin
     puts "Share content"

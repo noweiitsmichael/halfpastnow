@@ -339,6 +339,27 @@
         <a href="#" class="btn btn-large btn-danger">Get Tickets</a>
       </div>
     </div>
+    <div class="accordion" id="performing_artists">
+      <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#details-container" href="#artists">Performing Artists
+          <i class="caret pull-right"></i></a>
+      </div>
+      <div id="artists" class="accordion-body collapse in">
+        <div class="accordion-inner">
+          <% unless @event.acts.length == 0 %>
+            <div class="">
+              <div class="block-inner">
+
+                  <% @event.acts.each_with_index do |act,index| %>
+                  <a href="/acts/show/<%= act.id %>?fullmode=true" class="act-name"><%= act.name %></a><%= (index != @event.acts.length - 1) ? ", " : "" %><br>
+                  <% end %>
+
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
     <div class="accordion" id="details-container">
       <div class="accordion-heading">
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#details-container" href="#details">Details
@@ -423,6 +444,7 @@
           <div class="image-preview">
             <% unless (@event.venue.fb_picture.blank? && @event.fb_picture.blank? && @event.pictures.nil? && @event.acts.nil?) %>
               <div id="galleria" style="height:367px;width:550px;">
+
                 <% unless @event.venue.fb_picture.blank? %>
                   <img src="<%= @event.venue.fb_picture %>" data-title="<%= @event.venue.name %>">
                 <% end %>
@@ -451,12 +473,12 @@
             <script type="text/javascript">
               Galleria.loadTheme('/assets/galleria.classic.min.js');
               Galleria.run('#galleria');
+
             </script>
           </div>
         </div>
       </div>
       <div id="videos" class="tab-pane fade in">
-        <%#= raise @event.acts.inspect %>
         <% unless @event.acts.length == 0 %>
           <div class="featuring block">
             <h2>Featuring</h2>
@@ -473,21 +495,35 @@
 
                 <% @event.acts.each do |act| %>
                   <% act.embeds.select { |e| e.primary }.each do |embed| %>
-                    <div class="embed-act-name"><%= act.name %></div>
+                    <div class="embed-act-name"><%#= act.name %></div>
                     <%= raw(embed.source) %>
                   <% end %>
                 <% end %>
-                <script>
-                  $('.embeds').ready(function(){
 
-                    var element = $('.widget_iframe').detach();
-                    $('#music').append(element);
-                  })
-                </script>
+
               </div>
+              <div id="galleria1" style="height:367px;width:550px;">
+
+
+              </div>
+              <script>
+                $('.embeds').ready(function(){
+
+                  var element = $('.widget_iframe').detach();
+                  $('#music').append(element);
+                  $('#videos iframe').each(function(){
+                    $('#galleria1').append("<a href='http://www.youtube.com/watch?v=nU6z16vEyeE'><span class='video'>Watch this at YouTube</span></a>")
+                    Galleria.loadTheme('/assets/galleria.classic.min.js');
+                    Galleria.run('#galleria1');
+                    console.log($(this).attr('src'))
+                    $(this).hide();
+                  })
+                })
+              </script>
             </div>
           </div>
         <% end %>
+
       </div>
       <div id="music" class="tab-pane fade in">
         Music
@@ -511,25 +547,23 @@
       </div>
       <div id="neighbourhood" class="accordion-body collapse in">
         <div class="accordion-inner product-list clearfix">
-          <% @near_by_events.each do |event| %>
+          <% @near_by_occurrences.each do |occ| %>
           <article class="product-item">
             <figure><a href="#">
-              <% if event.pictures.first %>
-                <img src="<%= event.pictures.first.image_url(:full) %>" alt="Event picture"/>
-              <% elsif event.acts.length != 0 && event.acts.first.pictures.first %>
-                <img src="<%= event.acts.first.pictures.first.image_url(:full) %>" alt="occurrence pic"/>
-              <% elsif event.venue.pictures.first %>
-                <img src="<%= event.venue.pictures.first.image_url(:full) %>" alt="venue pic"/>
+              <% if occ.event.pictures.first %>
+                <img src="<%= occ.event.pictures.first.image_url(:full) %>" alt="Event picture"/>
+              <% elsif occ.event.acts.length != 0 && occ.event.acts.first.pictures.first %>
+                <img src="<%= occ.event.acts.first.pictures.first.image_url(:full) %>" alt="occurrence pic"/>
+              <% elsif occ.event.venue.pictures.first %>
+                <img src="<%= occ.event.venue.pictures.first.image_url(:full) %>" alt="venue pic"/>
               <% else %>
-                <img src="<%= event.cover_image_url ? event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic"/>
+                <img src="<%= occ.event.cover_image_url ? occ.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic"/>
               <% end %>
-
-
             </a>
-
             </figure>
-            <div class="name"><a href="#"><%= event.title %></a>
+            <div class="name"><a href="#"><%= occ.event.title %></a>
             </div>
+            <div><%= occ.start.to_time.strftime("%B %-d @ %-l:%M%P") %></div>
           </article>
          <% end %>
         </div>
