@@ -21,7 +21,11 @@
     </div>
   </div>
 
+<% if user_signed_in? %>  
   <div class="add-event"><a href="/user_submission/eventSearch">Add an Event!</a></div>
+<% else %>
+  <div class="add-event"><a href="#" linkto="shunt">Add an Event!</a></div>
+<% end %>
   <div class="login-container">
     <div>
       <% if user_signed_in? %>
