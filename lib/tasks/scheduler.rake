@@ -300,33 +300,8 @@ namespace :m do
 end
 
 
-task :update_occurrences => :environment do
-
-  puts "update_occurrences"
-
-  #if occurrence doesn't have a recurrence, then just delete it
-  recurrence_ids=Recurrence.find(:all).collect(&:id)
-  Occurrence.delete_all(['recurrence_id not in (?) or recurrence_id is NULL',recurrence_ids])
-
-  Occurrence.includes(:recurrence).where(:start => (DateTime.new(1900))..(DateTime.now)).find_each(:batch_size => 5000) do |occurrence|
-    puts occurrence.id
-    if occurrence.recurrence.gen_occurrences(1)
-      occurrence.recurrence.save
-    end
-  end
-
-
-  #the occurrence is the only occurrence of the recurrence, then destroy the recurrence
-  recurrence_ids=Occurrence.find(:all,:select => "recurrence_id",:group => "recurrence_id",:having => "count(id) = 1").collect(&:recurrence_id)
-  Occurrence.delete_all(['recurrence_id in (?)',recurrence_ids])
-  Recurrence.delete_all(['id in (?)',recurrence_ids])
-
-
-end
-
-
 desc "discard old occurrences and create new ones from recurrences"
-task :update_occurrences1 => :environment do
+task :update_occurrences => :environment do
 	puts "update_occurrences"
       month =  ENV["MONTH"].to_i
 	old_occurrences = Occurrence.where("start > ? AND date_part('month',start)=?",DateTime.new(1900),month)
@@ -354,6 +329,27 @@ task :update_occurrences1 => :environment do
 		# 	event.destroy
 		# end
 	end
+end
+
+# This function was re-written in attempt to get rid of memory allocation errors. however, this function ends up deleting all occurrences of non-recurring events.
+task :update_occurrences_test_BROKEN => :environment do
+
+  puts "update_occurrences"
+  #if occurrence doesn't have a recurrence, then just delete it
+  recurrence_ids=Recurrence.find(:all).collect(&:id)
+  Occurrence.delete_all(['recurrence_id not in (?) or recurrence_id is NULL',recurrence_ids])
+
+  Occurrence.includes(:recurrence).where(:start => (DateTime.new(1900))..(DateTime.now)).find_each(:batch_size => 5000) do |occurrence|
+    puts occurrence.id
+    if occurrence.recurrence.gen_occurrences(1)
+      occurrence.recurrence.save
+    end
+  end
+
+  #the occurrence is the only occurrence of the recurrence, then destroy the recurrence
+  recurrence_ids=Occurrence.find(:all,:select => "recurrence_id",:group => "recurrence_id",:having => "count(id) = 1").collect(&:recurrence_id)
+  Occurrence.delete_all(['recurrence_id in (?)',recurrence_ids])
+  Recurrence.delete_all(['id in (?)',recurrence_ids])
 end
 
 desc "Send weekly_email"
