@@ -497,7 +497,7 @@ class EventsController < ApplicationController
 
     # http://www.halfpastnow.com/?event_id=15599
     # @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
-
+    @attending_friends = current_user.friends.select{|f| f.bookmarks.map(&:bookmarked_id).include?(@occurrence.id)} #rescue nil
     respond_to do |format|
       if @fullmode
         format.html { render :layout => "fullmode" }
@@ -510,6 +510,9 @@ class EventsController < ApplicationController
       # format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }
       format.mobile
     end
+    # raise current_user.friends.map(&:id).inspect
+
+     #raise @attending_friends.inspect
     #rescue
     #  respond_to do |format|
     #    format.js { render template: "events/error_show" }
