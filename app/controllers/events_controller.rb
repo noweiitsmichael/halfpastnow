@@ -497,7 +497,7 @@ class EventsController < ApplicationController
 
     # http://www.halfpastnow.com/?event_id=15599
     # @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
-    @attending_friends = current_user.friends.select{|f| f.bookmarks.map(&:bookmarked_id).include?(@occurrence.id)} #rescue nil
+    @attending_friends = current_user.friends.select{|f| f.bookmarks.map(&:bookmarked_id).include?(@occurrence.id)} rescue nil
     respond_to do |format|
       if @fullmode
         format.html { render :layout => "fullmode" }

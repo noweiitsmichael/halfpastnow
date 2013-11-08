@@ -393,8 +393,10 @@
       </div>
       <div id="who" class="accordion-body collapse in">
         <div class="accordion-inner">
+          <% if user_signed_in? %>
           <% @attending_friends.each do |friend| %>
           <a href="#" class="user"><img src="<%= friend.fb_picture %>"/></a>
+         <% end %>
          <% end %>
         </div>
       </div>
@@ -515,9 +517,11 @@
                    $('#nav_music').hide()
                  }
               var element = $('.widget_iframe').detach();
+              var myspace = $('.my_play').detach();
               $('#music').append(element);
+              $('#music').append(myspace);
               $('#videos iframe').each(function(){
-                $('#galleria1').append("<a href='http://www.youtube.com/watch?v=1RtDLWeAt1g'><span class='video' data-title='checking one'>Watch this at YouTube</span></a>")
+                $('#galleria1').append("<a href='"+$(this).attr('src')+"'><span class='iframe' >Watch this at YouTube</span></a>")
 
                 console.log($(this).attr('src'))
                 $(this).hide();
