@@ -168,6 +168,11 @@
         window.open(url, '_blank');
         window.focus();
       });
+      $('.act-name').click(function(){
+
+        console.log($(this).attr('act_id'))
+        window.location.href = window.location.origin+"/acts/show/"+$(this).attr('act_id')+"?fullmode=true"
+      })
 
       $('.bookmark-share .twitter').click(function () {
         // var url = 'https://twitter.com/intent/tweet?text=' + link;
@@ -263,6 +268,7 @@
       window.open(url, '_blank');
       window.focus();
     }
+
   </script>
 <% end %>
 
@@ -351,7 +357,7 @@
               <div class="block-inner">
 
                   <% @event.acts.each_with_index do |act,index| %>
-                  <a href="/acts/show/<%= act.id %>?fullmode=true" class="act-name"><%= act.name %></a><%= (index != @event.acts.length - 1) ? ", " : "" %><br>
+                  <a href="#" act_id="<%= act.id %>" class="act-name"><%= act.name %></a><%= (index != @event.acts.length - 1) ? ", " : "" %><br>
                   <% end %>
 
               </div>
@@ -411,32 +417,6 @@
     <div class="tab-content">
       <div id="photos" class="tab-pane fade in active">
         <div class="gallery">
-          <!-- Elastislide Carousel -->
-          <ul id="carousel" class="elastislide-list">
-            <li data-preview="/assets/images/large/4.jpg">
-              <a href="#"><img src="/assets/images/small/4.jpg" alt="image04"/></a></li>
-            <li data-preview="/assets/images/large/5.jpg">
-              <a href="#"><img src="/assets/images/small/5.jpg" alt="image05"/></a></li>
-            <li data-preview="/assets/images/large/6.jpg">
-              <a href="#"><img src="/assets/images/small/6.jpg" alt="image06"/></a></li>
-            <li data-preview="/assets/images/large/7.jpg">
-              <a href="#"><img src="/assets/images/small/7.jpg" alt="image07"/></a></li>
-            <li data-preview="/assets/images/large/11.jpg">
-              <a href="#"><img src="/assets/images/small/11.jpg" alt="image11"/></a></li>
-            <li data-preview="/assets/images/large/1.jpg">
-              <a href="#"><img src="/assets/images/small/1.jpg" alt="image01"/></a></li>
-            <li data-preview="/assets/images/large/2.jpg">
-              <a href="#"><img src="/assets/images/small/2.jpg" alt="image02"/></a></li>
-            <li data-preview="/assets/images/large/3.jpg">
-              <a href="#"><img src="/assets/images/small/3.jpg" alt="image03"/></a></li>
-            <li data-preview="/assets/images/large/8.jpg">
-              <a href="#"><img src="/assets/images/small/8.jpg" alt="image08"/></a></li>
-            <li data-preview="/assets/images/large/9.jpg">
-              <a href="#"><img src="/assets/images/small/9.jpg" alt="image09"/></a></li>
-            <li data-preview="/assets/images/large/10.jpg">
-              <a href="#"><img src="/assets/images/small/10.jpg" alt="image10"/></a></li>
-          </ul>
-          <!-- End Elastislide Carousel -->
 
           <div class="image-preview">
             <% unless (@event.venue.fb_picture.blank? && @event.fb_picture.blank? && @event.pictures.nil? && @event.acts.nil?) %>
@@ -530,6 +510,7 @@
             }
             Galleria.loadTheme('/assets/galleria.classic.min.js');
             Galleria.run('#galleria1');
+
           })
 
         </script>
@@ -645,6 +626,7 @@
     el.addClass('current-img');
     carousel.setCurrent(pos);
   }
+
 
 </script>
 
