@@ -310,10 +310,14 @@
     <div class="clearfix">
       <div class="left">
         <address>
-          <h4>South Congress</h4>
-          Holy Mountain<br/>
-          617 East 7th Street<br/>
-          Austin, TX 78701
+          <h4><%= @occurrence.event.venue.name %></h4>
+          <%= @occurrence.event.venue.address %><br>
+          <%= @occurrence.event.venue.city + ", " + @occurrence.event.venue.state + " " + @occurrence.event.venue.zip.to_s %>
+          <% unless @occurrence.event.venue.phonenumber.to_s.empty? && @occurrence.event.venue.url.to_s.empty? %><br />
+            <a href="<%= @occurrence.event.venue.url %>"><%= @occurrence.event.venue.url %></a><br>
+            <%= @occurrence.event.venue.phonenumber %>
+          <% end %>
+
         </address>
         <h4>Dates &amp; Times</h4>
         <ul>
