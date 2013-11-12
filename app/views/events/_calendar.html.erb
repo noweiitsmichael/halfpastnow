@@ -1,69 +1,64 @@
-<% 
-@week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] 
-@ordinal = ["th","st","nd","rd","th","th","th","th","th","th"]
-options = options || { :venue => true, :description => true } 
-def to_ordinal(num)
-	return num.to_s + @ordinal[num%10]
-end
+<%
+   @week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+   @ordinal = ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"]
+   options = options || {:venue => true, :description => true}
+   def to_ordinal(num)
+     return num.to_s + @ordinal[num%10]
+   end
 %>
-<ul class="events">
 <% recurrences.each do |rec| %>
-	<li>
-		<div class="recurrence datetime-wrapper">
-			<div class="recurrence datetime">
-				<span><%= "Every " + ((rec.every_other.nil? || rec.every_other == 0) ? "" : ((rec.every_other == 1) ? "other" : to_ordinal(rec.every_other))) %></span>
-	    		<span><%= (rec.day_of_week && rec.week_of_month) ? to_ordinal(rec.week_of_month) + " " + @week[rec.day_of_week] : (rec.day_of_month ? to_ordinal(rec.day_of_month) : (rec.day_of_week ? @week[rec.day_of_week] : "day")) %></span>
-				<% if rec.end %>
-			    	<span>from <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
-			    	<span>to <%= rec.end.to_time.strftime("%-l:%M%P") %></span>
-			    <% else %>
-			    	<span>at <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
-			    <% end %>
-			</div>
-			<div class="datetime-flag"></div>
-		</div>
-	<% unless options[:datetime_only] %>
-		<div class="details">
-			<% if options[:fullmode] %>
-				<a href="/events/show/<%= rec.occurrences.first.id %>?fullmode=true" class="event-name"><%= rec.event.title %></a>
-			<% else %>
-				<span class="event-name" link-id="<%= rec.occurrences.first.id %>" linkto="event"><%= rec.event.title %></span>
-			<% end %>
-		<% if options[:venue] %>
-			<% if options[:fullmode] %>
-				<a class="venue-name" href="/venues/show/<%= rec.event.venue.id %>?fullmode=true">at <%= rec.event.venue.name %></a>
-			<% else %>
-				<span class="venue-name" link-id="<%= rec.event.venue.id %>" linkto="venue">at <%= rec.event.venue.name %></span>
-			<% end %>
-		<% end %>
-		</div>
-		<div class="description"><span><strong><%= rec.event.price ? ((rec.event.price != 0) ? number_to_currency(rec.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span><%= strip_tags(rec.event.description) %></span></div>
-	<% end %>
-	</li>
+  <article class="product-item">
+    <figure><a href="#">
+      <% if rec.event.pictures.first %>
+        <img src="<%= rec.event.pictures.first.image_url(:full) %>" alt="Event picture"/>
+      <% elsif rec.event.acts.length != 0 && rec.event.acts.first.pictures.first %>
+        <img src="<%= rec.event.acts.first.pictures.first.image_url(:full) %>" alt="rec pic"/>
+      <% elsif rec.event.venue.pictures.first %>
+        <img src="<%= rec.event.venue.pictures.first.image_url(:full) %>" alt="venue pic"/>
+      <% else %>
+        <img src="<%= rec.event.cover_image_url ? rec.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic"/>
+      <% end %>
+    </a></figure>
+    <% unless options[:datetime_only] %>
+      <div class="name"> <a href="/events/show/<%= rec.occurrences.first.id %>?fullmode=true" class=""><%= rec.event.title %></a>
+      </div>
+    <% end %>
+    <div>
+      <span><%= "Every " + ((rec.every_other.nil? || rec.every_other == 0) ? "" : ((rec.every_other == 1) ? "other" : to_ordinal(rec.every_other))) %></span>
+      <span><%= (rec.day_of_week && rec.week_of_month) ? to_ordinal(rec.week_of_month) + " " + @week[rec.day_of_week] : (rec.day_of_month ? to_ordinal(rec.day_of_month) : (rec.day_of_week ? @week[rec.day_of_week] : "day")) %></span>
+      <% if rec.end %>
+        <span>from <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
+        <span>to <%= rec.end.to_time.strftime("%-l:%M%P") %></span>
+      <% else %>
+        <span>at <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
+      <% end %>
+    </div>
+  </article>
 <% end %>
 <% occurrences.each do |occ| %>
-	<li>
-		<div class="datetime-wrapper">
-			<div class="occurrence datetime"><%= occ.start.to_time.strftime("%A, %b %-d @ %-l:%M%P") %></div>
-			<div class="datetime-flag"></div>
-		</div>
-	<% unless options[:datetime_only] %>
-		<div class="details">
-			<% if options[:fullmode] %>
-				<a href="/events/show/<%= occ.id %>?fullmode=true" class="event-name"><%= occ.event.title %></a>
-			<% else %>
-				<span class="event-name" link-id="<%= occ.id %>" linkto="event"><%= occ.event.title %></span>
-			<% end %>
-		<% if options[:venue] %>
-			<% if options[:fullmode] %>
-				<a class="venue-name" href="/venues/show/<%= occ.event.venue.id %>?fullmode=true">at <%= occ.event.venue.name %></a>
-			<% else %>
-				<span class="venue-name" link-id="<%= occ.event.venue.id %>" linkto="venue">at <%= occ.event.venue.name %></span>
-			<% end %>
-		<% end %>
-		</div>
-		<div class="description"><span><strong><%= occ.event.price ? ((occ.event.price != 0) ? number_to_currency(occ.event.price,:unit=>"$").to_s + " " : "FREE ") : "" %></strong></span><span><%= strip_tags(occ.event.description) %></span></div>
-	<% end %>
-	</li>
+  <article class="product-item">
+    <figure><a href="#">
+      <% if occ.event.pictures.first %>
+        <img src="<%= occ.event.pictures.first.image_url(:full) %>" alt="Event picture"/>
+      <% elsif occ.event.acts.length != 0 && occ.event.acts.first.pictures.first %>
+        <img src="<%= occ.event.acts.first.pictures.first.image_url(:full) %>" alt="occ pic"/>
+      <% elsif occ.event.venue.pictures.first %>
+        <img src="<%= occ.event.venue.pictures.first.image_url(:full) %>" alt="venue pic"/>
+      <% else %>
+        <img src="<%= occ.event.cover_image_url ? occ.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic"/>
+      <% end %>
+    </a></figure>
+    <% unless options[:datetime_only] %>
+      <div class="name">
+        <% if options[:fullmode] %>
+          <a href="/events/show/<%= occ.id %>?fullmode=true" class="event-name"><%= occ.event.title %></a>
+        <% else %>
+          <span class="event-name" link-id="<%= occ.id %>" linkto="event"><%= occ.event.title %></span>
+        <% end %>
+    <% end %>
+    </div>
+    <div>
+      <%= occ.start.to_time.strftime("%A, %b %-d @ %-l:%M%P") %>
+    </div>
+  </article>
 <% end %>
-</ul>

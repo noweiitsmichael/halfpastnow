@@ -870,7 +870,9 @@ class EventsController < ApplicationController
   end
 
   def saved_search
-    key_id = current_user.saved_searches.create(:search_key => params[:key]).id rescue nil
+    key = current_user.saved_searches.where(:search_key => params[:key])
+    key_id = key.nil?? current_user.saved_searches.create(:search_key => params[:key]).id : (key.id rescue nil)
+
     flash[:notice] = "Search is saved successfully"
     key_id.nil? ? (render :nothing => true) : (render :json => {key_id: key_id})
   end
@@ -880,6 +882,9 @@ class EventsController < ApplicationController
     render :nothing => true
   end
   def saved_searches_index
+
+  end
+  def login
 
   end
 

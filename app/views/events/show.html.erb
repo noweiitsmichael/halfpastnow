@@ -173,6 +173,11 @@
         console.log($(this).attr('act_id'))
         window.location.href = window.location.origin+"/acts/show/"+$(this).attr('act_id')+"?fullmode=true"
       })
+      $('.venue_link').click(function(){
+        console.log("venue")
+        window.location.href = window.location.origin+"/venues/show/<%= @occurrence.event.venue.id %>?fullmode=true"
+
+      })
 
       $('.bookmark-share .twitter').click(function () {
         // var url = 'https://twitter.com/intent/tweet?text=' + link;
@@ -310,7 +315,7 @@
     <div class="clearfix">
       <div class="left">
         <address>
-          <h4><%= @occurrence.event.venue.name %></h4>
+          <h4><%= link_to @occurrence.event.venue.name,"#",:class => "venue_link" %></h4>
           <%= @occurrence.event.venue.address %><br>
           <%= @occurrence.event.venue.city + ", " + @occurrence.event.venue.state + " " + @occurrence.event.venue.zip.to_s %>
           <% unless @occurrence.event.venue.phonenumber.to_s.empty? && @occurrence.event.venue.url.to_s.empty? %><br />
@@ -525,7 +530,7 @@
     </div>
     <div class="accordion" id="map-container">
       <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#map-container" href="#map">617 East 7th Street
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#map-container" href="#map"><%= @occurrence.event.venue.name %>
           <i class="caret pull-right"></i></a>
       </div>
       <div id="map" class="accordion-body collapse in">

@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,900,700italic,900italic,700,500italic,500,400italic,300italic,100italic' rel='stylesheet' type='text/css'>
   <% content_for :meta do %>
-    <meta property="og:type"                 content="halfpastnow:event"/>
-    <meta property="og:url"                  content="http://www.halfpastnow.com/venues/show/<%= @venue.id%>?fullmode=true"/>
-    <meta property="og:site_name"            content="halfpastnow"/>
-    <meta property="og:image"                content="<%=@venue.pictures.first ? @venue.pictures.first.image_url(:large) : ""%>"/>
-    <meta property="og:title"                content="<%=@venue.name%> on halfpastnow.com">
-    <meta property="og:description"          content="<%=strip_tags(@venue.description)%>"/>
+    <meta property="og:type" content="halfpastnow:event"/>
+    <meta property="og:url" content="http://www.halfpastnow.com/venues/show/<%= @venue.id %>?fullmode=true"/>
+    <meta property="og:site_name" content="halfpastnow"/>
+    <meta property="og:image" content="<%= @venue.pictures.first ? @venue.pictures.first.image_url(:large) : "" %>"/>
+    <meta property="og:title" content="<%= @venue.name %> on halfpastnow.com">
+    <meta property="og:description" content="<%= strip_tags(@venue.description) %>"/>
   <% end %>
 </head>
 <% content_for :head do %>
@@ -168,10 +168,10 @@
         window.open(url, '_blank');
         window.focus();
       });
-      $('.act-name').click(function(){
+      $('.act-name').click(function () {
 
         console.log($(this).attr('act_id'))
-        window.location.href = window.location.origin+"/acts/show/"+$(this).attr('act_id')+"?fullmode=true"
+        window.location.href = window.location.origin + "/acts/show/" + $(this).attr('act_id') + "?fullmode=true"
       })
 
       $('.bookmark-share .twitter').click(function () {
@@ -275,122 +275,127 @@
 <% content_for :body do %>
 
   <section class="details">
-  <section class="recommend-events">
+    <section class="recommend-events">
+      <div class="container">
+        <a class="link" href="#"><i class="icon-left-arrow"></i> back to search results</a>
+        <a class="link" href="#" data-target="recommend-events-wrapper"><i class="icon-bottom-arrow"></i> recommended
+          events</a>
+      </div>
+    </section>
     <div class="container">
-      <a class="link" href="#"><i class="icon-left-arrow"></i> back to search results</a>
-      <a class="link" href="#" data-target="recommend-events-wrapper"><i class="icon-bottom-arrow"></i> recommended
-        events</a>
-    </div>
-  </section>
-  <div class="container">
-  <div class="event-main">
-    <h2>Venue: <%= @venue.name %></h2>
+      <div class="event-main">
+        <h2>Venue: <%= @venue.name %></h2>
 
-    <div class="row">
+        <div class="row">
 
-      <div class="right">
-        <div class="share bookmark-share">
-          <a href="#">
+          <div class="right">
+            <div class="share bookmark-share">
+              <a href="#">
                <span class="nice-button bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
                  <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-large.png") %>
 	            </span>
-          </a>
-          <a href="#">
-            <img src="/assets/images/icon-calendar.png" alt=""/>
-          </a>
-          <a href="#" class="twitter"><img src="/assets/images/icon-twitter.png" alt=""/></a>
-          <a href="#" class="facebook"><img src="/assets/images/icon-facebook.png" alt=""/></a>
+              </a>
+              <a href="#">
+                <img src="/assets/images/icon-calendar.png" alt=""/>
+              </a>
+              <a href="#" class="twitter"><img src="/assets/images/icon-twitter.png" alt=""/></a>
+              <a href="#" class="facebook"><img src="/assets/images/icon-facebook.png" alt=""/></a>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="clearfix">
-      <div class="left">
-        <address>
-          <h4><%= @venue.name %></h4>
-            <%= @venue.address %><br>
-            <%= @venue.city + ", " + @venue.state + " " + @venue.zip.to_s %><br>
-            <% unless @venue.phonenumber.to_s.empty? && @venue.url.to_s.empty? %><br /><% end %>
-           <%= @venue.phonenumber %><br>
-        </address>
-      </div>
-    </div>
-    <div class="accordion" id="details-container">
-      <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#details-container" href="#details">Details
-          <i class="caret pull-right"></i></a>
-      </div>
-      <div id="details" class="accordion-body collapse in">
-        <div class="accordion-inner">
-          <%= raw(@venue.description) %>
+        <div class="clearfix">
+          <div class="left">
+            <address>
+              <h4><%= @venue.name %></h4>
+              <%= @venue.address %>
+              <br>
+              <%= @venue.city + ", " + @venue.state + " " + @venue.zip.to_s %>
+              <br>
+              <% unless @venue.phonenumber.to_s.empty? && @venue.url.to_s.empty? %>
+                <br/>
+              <% end %>
+              <%= @venue.phonenumber %>
+              <br>
+            </address>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <div class="accordion" id="cal-container">
-      <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#cal-container" href="#cal">Calender
-          <i class="caret pull-right"></i></a>
-      </div>
-      <div id="cal" class="accordion-body collapse in">
-        <div class="accordion-inner">
-          <% unless @occurrences.length == 0 && @recurrences.length == 0 %>
-            <%= render :partial => "events/calendar", :locals => { :occurrences => @occurrences, :recurrences => @recurrences, :options => { :venue => false, :fullmode => @fullmode  } } %>
-
-        <% end %>
+        <div class="accordion" id="details-container">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#details-container" href="#details">Details
+              <i class="caret pull-right"></i></a>
+          </div>
+          <div id="details" class="accordion-body collapse in">
+            <div class="accordion-inner">
+              <%= raw(@venue.description) %>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <div class="event-other-details">
-    <ul class="nav nav-tabs">
-      <li class="active"><a data-toggle="tab" href="#photos">Photos</a></li>
 
-    </ul>
-    <div class="tab-content">
-      <div id="photos" class="tab-pane fade in active">
-        <div class="gallery">
 
-          <div class="image-preview">
-            <% unless (@venue.fb_picture.blank? && @venue.pictures.nil?) %>
-              <div id="galleria" style="height:367px;width:550px;">
-                <% unless @venue.fb_picture.blank?%>
-                  <img src="<%= @venue.fb_picture%>" data-title="<%= @venue.name %>" >
-                <% end %>
-                <% @venue.pictures.each do |pic| %>
-                  <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @venue.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
-                <% end %>
-              </div>
-            <% end %>
-            <script type="text/javascript">
-              Galleria.loadTheme('/assets/galleria.classic.min.js');
-              Galleria.run('#galleria');
-
-            </script>
+        <div class="accordion" id="calender-container">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#calender-container" href="#neighbourhood">Calender
+              <i class="caret pull-right"></i></a>
+          </div>
+          <div id="neighbourhood" class="accordion-body collapse in">
+            <div class="accordion-inner product-list clearfix">
+              <% unless @occurrences.length == 0 && @recurrences.length == 0 %>
+                <%= render :partial => "events/calendar", :locals => {:occurrences => @occurrences, :recurrences => @recurrences, :options => {:fullmode => @fullmode, :venue => true}} %>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
+      <div class="event-other-details">
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#photos">Photos</a></li>
+
+        </ul>
+        <div class="tab-content">
+          <div id="photos" class="tab-pane fade in active">
+            <div class="gallery">
+
+              <div class="image-preview">
+                <% unless (@venue.fb_picture.blank? && @venue.pictures.nil?) %>
+                  <div id="galleria" style="height:367px;width:550px;">
+                    <% unless @venue.fb_picture.blank? %>
+                      <img src="<%= @venue.fb_picture %>" data-title="<%= @venue.name %>">
+                    <% end %>
+                    <% @venue.pictures.each do |pic| %>
+                      <a href="<%= pic.image_url(:large).to_s %>"><img src="<%= pic.image_url(:tiny).to_s %>" data-title="<%= @venue.name %>" data-big="<%= pic.image_url(:full).to_s %>"></a>
+                    <% end %>
+                  </div>
+                <% end %>
+                <script type="text/javascript">
+                  Galleria.loadTheme('/assets/galleria.classic.min.js');
+                  Galleria.run('#galleria');
+
+                </script>
+              </div>
+            </div>
+          </div>
 
 
-    </div>
-    <div class="accordion" id="map-container">
-      <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#map-container" href="#map"><%= @venue.name %>
-          <i class="caret pull-right"></i></a>
-      </div>
-      <div id="map" class="accordion-body collapse in">
-        <div class="accordion-inner">
-          <a class="map-link" href="http://maps.google.com/maps?q=<%= @venue.latitude %>,<%= @venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @venue.latitude %>,<%= @venue.longitude %>&sensor=false"/></a>
+        </div>
+        <div class="accordion" id="map-container">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#map-container" href="#map"><%= @venue.name %>
+              <i class="caret pull-right"></i></a>
+          </div>
+          <div id="map" class="accordion-body collapse in">
+            <div class="accordion-inner">
+              <a class="map-link" href="http://maps.google.com/maps?q=<%= @venue.latitude %>,<%= @venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @venue.latitude %>,<%= @venue.longitude %>&sensor=false"/></a>
 
+            </div>
+          </div>
+        </div>
+
+        <div class="ad-contaniner">
+          <img src="/assets/images/ad02.gif" alt=""/>
+          <span class="muted">Advertisement</span>
         </div>
       </div>
     </div>
-
-    <div class="ad-contaniner">
-      <img src="/assets/images/ad02.gif" alt=""/>
-      <span class="muted">Advertisement</span>
-    </div>
-  </div>
-  </div>
   </section>
 
 <% end %>

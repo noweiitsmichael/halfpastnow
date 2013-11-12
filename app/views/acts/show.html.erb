@@ -307,12 +307,7 @@
           617 East 7th Street<br/>
           Austin, TX 78701
         </address>
-        <h4>Dates &amp; Times</h4>
-        <ul>
-          <li>Everyday, 7:00pm to 11:00pm</li>
-          <li>Tuesday, 6:00pm</li>
-          <li>Friday, Sept. 20, 2013</li>
-        </ul>
+
       </div>
 
     </div>
@@ -353,13 +348,14 @@
         </div>
       </div>
     </div>
+
     <div class="accordion" id="calender-container">
       <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#calender-container" href="#calender">Calender
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#calender-container" href="#neighbourhood">Calender
           <i class="caret pull-right"></i></a>
       </div>
-      <div id="calender" class="accordion-body collapse in">
-        <div class="accordion-inner">
+      <div id="neighbourhood" class="accordion-body collapse in">
+        <div class="accordion-inner product-list clearfix">
           <%= render :partial => "events/calendar", :locals => {:occurrences => @occurrences, :recurrences => @recurrences, :options => {:fullmode => @fullmode, :venue => true}} %>
         </div>
         <div style="text-align:right;padding-top:10px;">

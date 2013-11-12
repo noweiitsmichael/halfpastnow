@@ -177,7 +177,7 @@
 <section class="slider-wrap" id="yrhn">
   <div class="container">
     <div class="section-title">
-      <h2 class="text-center">You're Halfpast Now</h2>
+      <h2 class="text-center">It's half past...now!</h2>
       <p class="lead text-center">Check-out events going on today.</p>
       <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
     </div>
@@ -522,6 +522,11 @@
     window.location.href = window.location.origin+"/events/show/"+event_id+"?fullmode=true"
 
   })
+  $('.brand').click(function(){
+  window.location.href = window.location.origin
+
+  })
 </script>
+
 </body>
 </html>
