@@ -887,7 +887,7 @@ class EventsController < ApplicationController
 
   end
   def login
-    unless current_user
+    unless current_user.nil?
       redirect_to cookies[:url]
     end
   end

@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
      true
    end  
    def after_sign_in_path_for(resource)
-     unless current_user
+     unless current_user.nil?
        cookies[:url]
      end
    end
