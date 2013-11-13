@@ -870,8 +870,10 @@ class EventsController < ApplicationController
   end
 
   def saved_search
+
     key = current_user.saved_searches.where(:search_key => params[:key])
-    key_id = key.nil?? current_user.saved_searches.create(:search_key => params[:key]).id : (key.id rescue nil)
+    #raise key.inspect
+    key_id = key.empty?? current_user.saved_searches.create(:search_key => params[:key]).id : (key.id rescue nil)
 
     flash[:notice] = "Search is saved successfully"
     key_id.nil? ? (render :nothing => true) : (render :json => {key_id: key_id})
@@ -885,7 +887,9 @@ class EventsController < ApplicationController
 
   end
   def login
-
+    unless current_user
+      redirect_to cookies[:url]
+    end
   end
 
 end

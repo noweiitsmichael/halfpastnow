@@ -66,9 +66,9 @@
         <ul class="nav pull-right">
           <li><a href="#"><i class="icon-right-arrow"></i>Get App</a></li>
           <% if user_signed_in? %>
-
+              <li><%= link_to('Log Out', destroy_user_session_path, :method => 'delete') %></li>
           <% else %>
-            <li><a href="#"  linkto="shunt"><i class="icon-right-arrow"></i>Log In</a></li>
+            <li><a href="/login" ><i class="icon-right-arrow"></i>Log In</a></li>
             <li><a href="#"  linkto="shunt"><i class="icon-right-arrow"></i>Join Now</a></li>
           <% end %>
           <li><a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" ><i class="icon-right-arrow"></i>Explorers</a></li>
@@ -210,8 +210,8 @@
       </div>
     </section>
     <script>
-     // $('#<%#= search.search_key%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: auto !important;'>");
-      //saved_search_events("<%#= search.search_key%>");
+      $('#<%= search.search_key%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: auto !important;'>");
+      saved_search_events("<%= search.search_key%>");
     </script>
   <% end %>
 <% end %>
@@ -514,7 +514,7 @@
   free_events("slider5");
   $('.submit').click(function(){
     console.log($('#appendedInput').val())
-    window.location.href = window.location.href+"search?key="+$('#appendedInput').val()
+    window.location.href = window.location.origin+"search?key="+$('#appendedInput').val()
   })
   $('figure').click(function(){
     var event_id = $(this).parent('article').attr('link-id')
@@ -527,6 +527,8 @@
 
   })
 </script>
-
+<% unless @page %>
+  <% cookies[:url] = request.url %>
+<% end %>
 </body>
 </html>

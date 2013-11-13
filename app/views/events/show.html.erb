@@ -17,6 +17,14 @@
 <% content_for :head do %>
   <%= stylesheet_link_tag "elastislide", "details" %>
   <%= javascript_include_tag "jquery.elastislide" %>
+  <%
+     @week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+     @ordinal = ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"]
+     options = options || {:venue => true, :description => true}
+     def to_ordinal(num)
+       return num.to_s + @ordinal[num%10]
+     end
+  %>
   <script type="text/javascript">
     var id = "<%= @occurrence.id  %>";
     var type = "event";
@@ -168,14 +176,14 @@
         window.open(url, '_blank');
         window.focus();
       });
-      $('.act-name').click(function(){
+      $('.act-name').click(function () {
 
         console.log($(this).attr('act_id'))
-        window.location.href = window.location.origin+"/acts/show/"+$(this).attr('act_id')+"?fullmode=true"
+        window.location.href = window.location.origin + "/acts/show/" + $(this).attr('act_id') + "?fullmode=true"
       })
-      $('.venue_link').click(function(){
+      $('.venue_link').click(function () {
         console.log("venue")
-        window.location.href = window.location.origin+"/venues/show/<%= @occurrence.event.venue.id %>?fullmode=true"
+        window.location.href = window.location.origin + "/venues/show/<%= @occurrence.event.venue.id %>?fullmode=true"
 
       })
 
@@ -207,6 +215,7 @@
         }
         toggle = !toggle;
       });
+
     });
     function submit_comment() {
       var text = $('.comment-text').val();
@@ -282,7 +291,7 @@
   <section class="details">
   <section class="recommend-events">
     <div class="container">
-      <a class="link" href="#"><i class="icon-left-arrow"></i> back to search results</a>
+      <a class="link" href="/search"><i class="icon-left-arrow"></i> back to search results</a>
       <a class="link" href="#" data-target="recommend-events-wrapper"><i class="icon-bottom-arrow"></i> recommended
         events</a>
     </div>
@@ -315,10 +324,12 @@
     <div class="clearfix">
       <div class="left">
         <address>
-          <h4><%= link_to @occurrence.event.venue.name,"#",:class => "venue_link" %></h4>
-          <%= @occurrence.event.venue.address %><br>
+          <h4><%= link_to @occurrence.event.venue.name, "#", :class => "venue_link" %></h4>
+          <%= @occurrence.event.venue.address %>
+          <br>
           <%= @occurrence.event.venue.city + ", " + @occurrence.event.venue.state + " " + @occurrence.event.venue.zip.to_s %>
-          <% unless @occurrence.event.venue.phonenumber.to_s.empty? && @occurrence.event.venue.url.to_s.empty? %><br />
+          <% unless @occurrence.event.venue.phonenumber.to_s.empty? && @occurrence.event.venue.url.to_s.empty? %>
+            <br/>
             <a href="<%= @occurrence.event.venue.url %>"><%= @occurrence.event.venue.url %></a><br>
             <%= @occurrence.event.venue.phonenumber %>
           <% end %>
@@ -326,15 +337,31 @@
         </address>
         <h4>Dates &amp; Times</h4>
         <ul>
-          <li>Everyday, 7:00pm to 11:00pm</li>
-          <li>Tuesday, 6:00pm</li>
-          <li>Friday, Sept. 20, 2013</li>
+          <% @occurrence.event.recurrences.each do |rec| %>
+            <li><%= "Every " + ((rec.every_other.nil? || rec.every_other == 0) ? "" : ((rec.every_other == 1) ? "other" : to_ordinal(rec.every_other))) %>
+              <%= (rec.day_of_week && rec.week_of_month) ? to_ordinal(rec.week_of_month) + " " + @week[rec.day_of_week] : (rec.day_of_month ? to_ordinal(rec.day_of_month) : (rec.day_of_week ? @week[rec.day_of_week] : "day")) %>
+              <% if rec.end %>
+                <span>, <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
+                <span>to <%= rec.end.to_time.strftime("%-l:%M%P") %></span>
+              <% else %>
+                <span>, <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
+              <% end %>
+            </li>
+          <% end %>
         </ul>
+
       </div>
       <div class="right">
-
-        <!--<a href="#" class="btn btn-large btn-danger">I'm Going</a>-->
-
+        <% unless user_signed_in? %>
+        <a href="#" class="before_login btn btn-large btn-danger">I'm Going</a>
+          <script>
+            $(window).load(function(){
+            $('.before_login').click(function(){
+              window.location.href = window.location.origin+"/login"
+            })
+            })
+          </script>
+          <% else %>
         <input type="hidden" id="event" value="<%= @event %>"/>
         <input type="hidden" id="id" value="<%= @occurrence.id %>"/>
         <% if !@event.ticket_url.blank? %>
@@ -346,17 +373,18 @@
             <a href='<%= @event.ticket_url %>' target='_blank' class='re-rsvp' style="font-size:16px;"><%= @attendingId.nil? ? "" : "Visit Ticketing Site Again" %></a>
           </div>
         <% else %>
-		<span class="btn btn-large btn-danger <%= current_user ? "attending" : "" %> <%= @attendingId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
-			<%= @attendingId.nil? ? "I'm Going!" : "Planning on Attending" %>
-		</span>
-
+          <span class="btn btn-large btn-danger <%= current_user ? "attending" : "" %> <%= @attendingId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
+            <%= @attendingId.nil? ? "I'm Going!" : "Planning on Attending" %>
+          </span>
         <% end %>
+          <% end %>
         <a href="#" class="btn btn-large btn-danger">Get Tickets</a>
       </div>
     </div>
     <div class="accordion" id="performing_artists">
       <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#details-container" href="#artists">Performing Artists
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#details-container" href="#artists">Performing
+          Artists
           <i class="caret pull-right"></i></a>
       </div>
       <div id="artists" class="accordion-body collapse in">
@@ -365,9 +393,10 @@
             <div class="">
               <div class="block-inner">
 
-                  <% @event.acts.each_with_index do |act,index| %>
-                  <a href="#" act_id="<%= act.id %>" class="act-name"><%= act.name %></a><%= (index != @event.acts.length - 1) ? ", " : "" %><br>
-                  <% end %>
+                <% @event.acts.each_with_index do |act, index| %>
+                  <a href="#" act_id="<%= act.id %>" class="act-name"><%= act.name %></a><%= (index != @event.acts.length - 1) ? ", " : "" %>
+                  <br>
+                <% end %>
 
               </div>
             </div>
@@ -409,10 +438,10 @@
       <div id="who" class="accordion-body collapse in">
         <div class="accordion-inner">
           <% if user_signed_in? %>
-          <% @attending_friends.each do |friend| %>
-          <a href="#" class="user"><img src="<%= friend.fb_picture %>"/></a>
-         <% end %>
-         <% end %>
+            <% @attending_friends.each do |friend| %>
+              <a href="#" class="user"><img src="<%= friend.fb_picture %>"/></a>
+            <% end %>
+          <% end %>
         </div>
       </div>
     </div>
@@ -486,7 +515,7 @@
                   <% end %>
                 <% end %>
 
-                            </div>
+              </div>
               <div id="galleria1" style="height:367px;width:550px;">
 
 
@@ -496,21 +525,21 @@
           </div>
         <% end %>
         <script>
-          $('.embeds').ready(function(){
+          $('.embeds').ready(function () {
 
-            console.log("number of embeds:"+$('#videos iframe').length)
-            if($('#videos iframe').length==0){
+            console.log("number of embeds:" + $('#videos iframe').length)
+            if ($('#videos iframe').length == 0) {
               $('#nav_videos,#nav_music').hide()
-            }else{
-                 if($('.widget_iframe').length == 0){
-                   $('#nav_music').hide()
-                 }
+            } else {
+              if ($('.widget_iframe').length == 0) {
+                $('#nav_music').hide()
+              }
               var element = $('.widget_iframe').detach();
               var myspace = $('.my_play').detach();
               $('#music').append(element);
               $('#music').append(myspace);
-              $('#videos iframe').each(function(){
-                $('#galleria1').append("<a href='"+$(this).attr('src')+"'><span class='iframe' >Watch this at YouTube</span></a>")
+              $('#videos iframe').each(function () {
+                $('#galleria1').append("<a href='" + $(this).attr('src') + "'><span class='iframe' >Watch this at YouTube</span></a>")
 
                 console.log($(this).attr('src'))
                 $(this).hide();
@@ -547,24 +576,24 @@
       <div id="neighbourhood" class="accordion-body collapse in">
         <div class="accordion-inner product-list clearfix">
           <% @near_by_occurrences.each do |occ| %>
-          <article class="product-item">
-            <figure><a href="#">
-              <% if occ.event.pictures.first %>
-                <img src="<%= occ.event.pictures.first.image_url(:full) %>" alt="Event picture"/>
-              <% elsif occ.event.acts.length != 0 && occ.event.acts.first.pictures.first %>
-                <img src="<%= occ.event.acts.first.pictures.first.image_url(:full) %>" alt="occurrence pic"/>
-              <% elsif occ.event.venue.pictures.first %>
-                <img src="<%= occ.event.venue.pictures.first.image_url(:full) %>" alt="venue pic"/>
-              <% else %>
-                <img src="<%= occ.event.cover_image_url ? occ.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic"/>
-              <% end %>
-            </a>
-            </figure>
-            <div class="name"><a href="#"><%= occ.event.title %></a>
-            </div>
-            <div><%= occ.start.to_time.strftime("%B %-d @ %-l:%M%P") %></div>
-          </article>
-         <% end %>
+            <article class="product-item" link-id=<%= occ.id %>>
+              <figure><a href="#">
+                <% if occ.event.pictures.first %>
+                  <img src="<%= occ.event.pictures.first.image_url(:full) %>" alt="Event picture"/>
+                <% elsif occ.event.acts.length != 0 && occ.event.acts.first.pictures.first %>
+                  <img src="<%= occ.event.acts.first.pictures.first.image_url(:full) %>" alt="occurrence pic"/>
+                <% elsif occ.event.venue.pictures.first %>
+                  <img src="<%= occ.event.venue.pictures.first.image_url(:full) %>" alt="venue pic"/>
+                <% else %>
+                  <img src="<%= occ.event.cover_image_url ? occ.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic"/>
+                <% end %>
+              </a>
+              </figure>
+              <div class="name"><a href="#"><%= occ.event.title %></a>
+              </div>
+              <div><%= occ.start.to_time.strftime("%B %-d @ %-l:%M%P") %></div>
+            </article>
+          <% end %>
         </div>
       </div>
     </div>
@@ -579,9 +608,9 @@
     <div id="recommend-events-wrapper">
       <div class="content slider">
         <div id="recommended-list">
-          <% @occurrences.empty? ? occurrences=@all_occurrences : occurrences=@occurrence %>
+          <% @occurrences.empty? ? occurrences=@all_occurrences : occurrences= Array[@occurrence] %>
           <% occurrences.each do |occurrence| %>
-            <article class="slide-item">
+            <article class="slide-item" link-id=<%= occurrence.id %>>
               <figure><a href="#">
                 <% if occurrence.event.pictures.first %>
                   <img src="<%= occurrence.event.pictures.first.image_url(:full) %>" alt="Event picture"/>

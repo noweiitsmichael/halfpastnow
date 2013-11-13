@@ -501,15 +501,19 @@ $(function () {
 
   $('.search-input').keyup(function () {
 
-    $(".active").attr('class', '');
+   $(".active").attr('class', '');
     if (!timer_is_on) {
       timer_is_on = 1;
       if ($(this).val().length >= 3) {
+        $(window).load(function(){
+          $('#releated_events').show()
+        })
         console.log("keyup");
         typingTimer = setTimeout(doneTyping, doneTypingInterval);
         console.log("typing timer is " + typingTimer)
       }
     }
+
     $('#search_name').text($(this).val())
   });
 
@@ -1013,7 +1017,7 @@ function streamSelector() {
 
 //user is "finished typing," do something
 function doneTyping() {
-
+  $('#related_events').show()
   filter.search = $('.search-input').val();
   pullEvents({update_search: false});
 }
@@ -1121,6 +1125,13 @@ function pullEvents(updateOptions) {
     }
     checkScroll();
     addthisevent.refresh();
+    $('figure').click(function(){
+      var event_id = $(this).parent('article').attr('link-id')
+      console.log(event_id)
+      window.location.href = window.location.origin+"/events/show/"+event_id+"?fullmode=true"
+
+    })
+
   });
 }
 
@@ -1240,7 +1251,12 @@ function slider_arrows(location){
       }
     }
   });
+  $('figure').click(function(){
+    var event_id = $(this).parent('article').attr('link-id')
+    console.log(event_id)
+    window.location.href = window.location.origin+"/events/show/"+event_id+"?fullmode=true"
 
+  })
 }
 var pulling = false;
 function loading(command) {

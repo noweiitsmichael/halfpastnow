@@ -1,64 +1,77 @@
-<%
-   @week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-   @ordinal = ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"]
-   options = options || {:venue => true, :description => true}
-   def to_ordinal(num)
-     return num.to_s + @ordinal[num%10]
-   end
-%>
-<% recurrences.each do |rec| %>
-  <article class="product-item">
-    <figure><a href="#">
-      <% if rec.event.pictures.first %>
-        <img src="<%= rec.event.pictures.first.image_url(:full) %>" alt="Event picture"/>
-      <% elsif rec.event.acts.length != 0 && rec.event.acts.first.pictures.first %>
-        <img src="<%= rec.event.acts.first.pictures.first.image_url(:full) %>" alt="rec pic"/>
-      <% elsif rec.event.venue.pictures.first %>
-        <img src="<%= rec.event.venue.pictures.first.image_url(:full) %>" alt="venue pic"/>
-      <% else %>
-        <img src="<%= rec.event.cover_image_url ? rec.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic"/>
-      <% end %>
-    </a></figure>
-    <% unless options[:datetime_only] %>
-    <div class="name"> <a href="/events/show/<%= rec.occurrences.first.id %>?fullmode=true" class=""><%= rec.event.title %></a>
-    </div>
-      <% end %>
-    <div>
-      <span><%= "Every " + ((rec.every_other.nil? || rec.every_other == 0) ? "" : ((rec.every_other == 1) ? "other" : to_ordinal(rec.every_other))) %></span>
-      <span><%= (rec.day_of_week && rec.week_of_month) ? to_ordinal(rec.week_of_month) + " " + @week[rec.day_of_week] : (rec.day_of_month ? to_ordinal(rec.day_of_month) : (rec.day_of_week ? @week[rec.day_of_week] : "day")) %></span>
-      <% if rec.end %>
-        <span>from <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
-        <span>to <%= rec.end.to_time.strftime("%-l:%M%P") %></span>
-      <% else %>
-        <span>at <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
-      <% end %>
-    </div>
-  </article>
+<% content_for :title do %>
+  <h1>Sign Up <em style="font-style:normal;">|</em> Log In</h1>
 <% end %>
-<% occurrences.each do |occ| %>
-  <article class="product-item">
-    <figure><a href="#">
-      <% if occ.event.pictures.first %>
-        <img src="<%= occ.event.pictures.first.image_url(:full) %>" alt="Event picture"/>
-      <% elsif occ.event.acts.length != 0 && occ.event.acts.first.pictures.first %>
-        <img src="<%= occ.event.acts.first.pictures.first.image_url(:full) %>" alt="occ pic"/>
-      <% elsif occ.event.venue.pictures.first %>
-        <img src="<%= occ.event.venue.pictures.first.image_url(:full) %>" alt="venue pic"/>
-      <% else %>
-        <img src="<%= occ.event.cover_image_url ? occ.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic"/>
-      <% end %>
-    </a></figure>
-    <% unless options[:datetime_only] %>
-      <div class="name">
-        <% if options[:fullmode] %>
-          <a href="/events/show/<%= occ.id %>?fullmode=true" class="event-name"><%= occ.event.title %></a>
-        <% else %>
-          <span class="event-name" link-id="<%= occ.id %>" linkto="event"><%= occ.event.title %></span>
-        <% end %>
+
+<% content_for :body do %>
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=475386955806720";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+
+  <div style="text-align: center">
+    <br>
+    Login with Facebook to see events friends are bookmarking in the categories you care about
+    <br>
+    <br>
+    <a href="/users/auth/facebook" class="fb-login nice-button facebook-button">
+      <i class="icon-facebook"></i>
+      Connect with Facebook
+    </a>
+  </div>
+
+  <br>
+  <div style="text-align: center"> - or - </div>
+
+  <div class="method signup">
+    <h4>Create an Account via Email</h4>
+
+    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :validate => true) do |f| %>
+      <%= devise_error_messages! %>
+
+      <div><%= f.label :email %>
+        <%= f.email_field :email %></div>
+
+      <div><%= f.label :firstname, "first name" %>
+        <%= f.text_field :firstname %></div>
+
+      <div><%= f.label :lastname, "last name" %>
+        <%= f.text_field :lastname %></div>
+
+      <div><%= f.label :password %>
+        <%= f.password_field :password %></div>
+
+      <div><%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation %></div>
+
+      <div><%= f.submit "Register" %></div>
     <% end %>
+  </div>
+  <div class="method login">
+    <h4>Log In via Email</h4>
+
+    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+      <div><%= f.label :email %>
+        <%= f.email_field :email %></div>
+
+      <div><%= f.label :password %>
+        <%= f.password_field :password %></div>
+
+      <div><%= f.submit "Sign in" %></div>
+    <% end %>
+    <br>
+    <div class="reasons-box">
+      <h5>Help us help you by creating an account! </h5>
+      <br>
+      <ul>
+        <li>-  Choose categories that interest you</li>
+        <li>-  Receive picks based on authentic experts</li>
+        <li>-  Save your searchs for future use</li>
+      </ul>
     </div>
-    <div>
-      <%= occ.start.to_time.strftime("%A, %b %-d @ %-l:%M%P") %>
-    </div>
-  </article>
+
+  </div>
 <% end %>
