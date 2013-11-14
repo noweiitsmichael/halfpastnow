@@ -603,6 +603,13 @@
     $('#search_name').text("<%= params[:key] %>")
     <% end %>
     $('.filter-dropdown').hide()
+    $('figure').click(function(){
+      var event_id = $(this).parent('article').attr('link-id')
+      console.log(event_id)
+      window.location.href = window.location.origin+"/events/show/"+event_id+"?fullmode=true"
+
+    })
+
   </script>
 
 <% end %>

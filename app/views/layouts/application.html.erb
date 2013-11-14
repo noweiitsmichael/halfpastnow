@@ -46,8 +46,8 @@
   <link rel="shortcut icon" href="/assets/favicon.ico" />
   <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,900,700italic,900italic,700,500italic,500,400italic,300italic,100italic">
 
-  <%= stylesheet_link_tag "application","jquery.mobile-1.0a3.min","bootstrap","bootstrap-responsive","media-queries","jquery-ui","jquery.ui.timepicker" %>
-  <%= javascript_include_tag "application","jquery-ui","jquery.mobile-1.1.0","modernizr-latest","bootstrap","jquery.touchSwipe.min","jquery.carouFredSel-6.2.1-packed","jquery-migrate-1.2.1","jquery.ui.timepicker","verticalSlider","custom"%>
+  <%= stylesheet_link_tag "application","bootstrap","bootstrap-responsive","media-queries","jquery-ui","jquery.ui.timepicker" %>
+  <%= javascript_include_tag "application","jquery-ui","modernizr-latest","bootstrap","jquery.touchSwipe.min","jquery.carouFredSel-6.2.1-packed","jquery-migrate-1.2.1","jquery.ui.timepicker","verticalSlider","custom"%>
   <%= csrf_meta_tags %>
 
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
@@ -120,9 +120,9 @@
             <ul class="nav pull-right">
               <li><a href="#"><i class="icon-right-arrow"></i>Get App</a></li>
               <% if user_signed_in? %>
-                  <li><%= link_to('logout', destroy_user_session_path, :method => 'delete') %></li>
+                  <li><%= link_to('Log Out', destroy_user_session_path, :method => 'delete') %></li>
             <% else %>
-                  <li><a href="#"  linkto="shunt"><i class="icon-right-arrow"></i>Log In</a></li>
+                  <li><a href="/login"><i class="icon-right-arrow"></i>Log In</a></li>
                   <li><a href="#"  linkto="shunt"><i class="icon-right-arrow"></i>Join Now</a></li>
               <% end %>
               <li><a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" ><i class="icon-right-arrow"></i>Explorers</a></li>
@@ -234,7 +234,19 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
       ical      : {show:true, text:"iCal Calendar"},
       facebook  : {show:false, text:"Facebook Event"},
       callback  : ""
-  });
+  })
+  $('.submit').click(function(){
+    key = $('#appendedInput').val()
+    url = window.location.origin+"/search?key="+key
+    window.location.href = url
+    return false;
+  })
+  $('figure').click(function(){
+    var event_id = $(this).parent('article').attr('link-id')
+    console.log(event_id)
+    window.location.href = window.location.origin+"/events/show/"+event_id+"?fullmode=true"
+
+  })
 </script>
 <footer>
   <div class="container">
@@ -262,5 +274,9 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
             </span>
   </div>
 </footer>
+<% unless @page %>
+<% cookies[:url] = request.url %>
+  <% end %>
 </body>
+
 </html>

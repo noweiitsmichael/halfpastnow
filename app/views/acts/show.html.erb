@@ -133,7 +133,7 @@
   <section class="details">
   <section class="recommend-events">
     <div class="container">
-      <a class="link" href="#"><i class="icon-left-arrow"></i> back to search results</a>
+      <a class="link" href="/search"><i class="icon-left-arrow"></i> back to search results</a>
       <a class="link" href="#" data-target="recommend-events-wrapper"><i class="icon-bottom-arrow"></i> recommended
         events</a>
     </div>
@@ -269,7 +269,7 @@
 
             $('.bookmark-share .twitter').click(function () {
               // var url = 'https://twitter.com/intent/tweet?text=' + link;
-              var title = "<%= @act.name  %>
+              var title = "<%= @act.name  %>"
 
               var url = 'http://twitter.com/intent/tweet?text=' + title.replace(/(<([^>]+|)>)/ig, "").replace("&amp;", "and").substring(0, 50) + ' ' + link + ' @halfpastnow %23discoveraustin';
 
