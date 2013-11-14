@@ -69,7 +69,7 @@
               <li><%= link_to('Log Out', destroy_user_session_path, :method => 'delete') %></li>
           <% else %>
             <li><a href="/login" ><i class="icon-right-arrow"></i>Log In</a></li>
-            <li><a href="#"  linkto="shunt"><i class="icon-right-arrow"></i>Join Now</a></li>
+            <li><a href="/join_now"><i class="icon-right-arrow"></i>Join Now</a></li>
           <% end %>
           <li><a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" ><i class="icon-right-arrow"></i>Explorers</a></li>
 

@@ -891,5 +891,10 @@ class EventsController < ApplicationController
       redirect_to cookies[:url]
     end
   end
+  def joinnow
+    unless current_user.nil?
+      redirect_to cookies[:url]
+    end
+  end
 
 end

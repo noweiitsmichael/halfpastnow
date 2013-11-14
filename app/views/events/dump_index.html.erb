@@ -1,77 +1,29 @@
-<% content_for :title do %>
-  <h1>Sign Up <em style="font-style:normal;">|</em> Log In</h1>
-<% end %>
-
-<% content_for :body do %>
-  <div id="fb-root"></div>
-  <script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=475386955806720";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
-
-  <div style="text-align: center">
-    <br>
-    Login with Facebook to see events friends are bookmarking in the categories you care about
-    <br>
-    <br>
-    <a href="/users/auth/facebook" class="fb-login nice-button facebook-button">
-      <i class="icon-facebook"></i>
-      Connect with Facebook
-    </a>
+<article class="product-item">
+  <figure><a href="#"><img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>"/></a></figure>
+  <div class="name"><a href="/?event_id=<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
+  <div class="info clearfix">
+    <span class="time pull-left"><%= occurrence.start.to_time.strftime("%A, %B %-d at %-l:%M%P") %></span>
+    <span class="value pull-right">
+      <% if occurrence.event.price %>
+      <%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price, :unit => "$").to_s + " " : "FREE ") : "" %>
+  <% end %>
+     </span>
   </div>
-
-  <br>
-  <div style="text-align: center"> - or - </div>
-
-  <div class="method signup">
-    <h4>Create an Account via Email</h4>
-
-    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :validate => true) do |f| %>
-      <%= devise_error_messages! %>
-
-      <div><%= f.label :email %>
-        <%= f.email_field :email %></div>
-
-      <div><%= f.label :firstname, "first name" %>
-        <%= f.text_field :firstname %></div>
-
-      <div><%= f.label :lastname, "last name" %>
-        <%= f.text_field :lastname %></div>
-
-      <div><%= f.label :password %>
-        <%= f.password_field :password %></div>
-
-      <div><%= f.label :password_confirmation %>
-        <%= f.password_field :password_confirmation %></div>
-
-      <div><%= f.submit "Register" %></div>
-    <% end %>
+  <div class="additional-info">
+    <span class="place">
+      <a href="/?venue_id=<%= occurrence.event.venue.id %>">
+        <span class="venue" link-id="<%= occurrence.event.venue.id %>" linkto="venue">@
+          <span class="venue-inner"><%= occurrence.event.venue.name %></span></span>
+      </a>
+    </span>
+    <%
+       if (current_user)
+         bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
+         bookmarkId = bookmark.nil? ? nil : bookmark.id
+       else
+         bookmarkId = nil
+       end
+    %>
+    <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" <%= current_user ? "" : "linkto='shunt'" %> event-title="<%= occurrence.event.title %>" event-id="<%= occurrence.id %>" event-venue="<%= occurrence.event.venue.name %>" event-id="<%= occurrence.id %>"><img src="/assets/images/icon-bookmark.png" alt="Bookmark"/></a>
   </div>
-  <div class="method login">
-    <h4>Log In via Email</h4>
-
-    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-      <div><%= f.label :email %>
-        <%= f.email_field :email %></div>
-
-      <div><%= f.label :password %>
-        <%= f.password_field :password %></div>
-
-      <div><%= f.submit "Sign in" %></div>
-    <% end %>
-    <br>
-    <div class="reasons-box">
-      <h5>Help us help you by creating an account! </h5>
-      <br>
-      <ul>
-        <li>-  Choose categories that interest you</li>
-        <li>-  Receive picks based on authentic experts</li>
-        <li>-  Save your searchs for future use</li>
-      </ul>
-    </div>
-
-  </div>
-<% end %>
+</article>
