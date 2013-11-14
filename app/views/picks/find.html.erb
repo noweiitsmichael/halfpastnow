@@ -1,177 +1,182 @@
 <% content_for :meta do %>
-     <meta property="og:type"                 content="halfpastnow:toppick"/> 
-     <meta property="og:url"                  content="http://www.halfpastnow.com/picks/find/<%=@bookmarkList.id%>"/>
-     <meta property="og:site_name"            content="halfpastnow"/>
-     <meta property="og:image"                content="<%=@bookmarkList.picture_url%>"/>
-     <meta property="og:title"                content="<%=@bookmarkList.name%>">
-     <meta property="og:description"          content="<%=@bookmarkList.description%>"/> 
+  <meta property="og:type"                 content="halfpastnow:toppick"/>
+  <meta property="og:url"                  content="http://www.halfpastnow.com/picks/find/<%=@bookmarkList.id%>"/>
+  <meta property="og:site_name"            content="halfpastnow"/>
+  <meta property="og:image"                content="<%=@bookmarkList.picture_url%>"/>
+  <meta property="og:title"                content="<%=@bookmarkList.name%>">
+  <meta property="og:description"          content="<%=@bookmarkList.description%>"/>
 <% end %>
 <% content_for :code do %>
 <%# TODO: put this stuff in the controller eventually %>
-	<% 	@now = DateTime.now.change(:hour => 0)
-		@channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
+  <% 	@now = DateTime.now.change(:hour => 0)
+      @channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
 
-	<script type="text/javascript">
+  <script type="text/javascript">
 
-		var geocoder;
-		var map;
-		var markers = [];
+    var geocoder;
+    var map;
+    var markers = [];
 
-		function initialize() {
-			//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
-			geocoder = new google.maps.Geocoder();
+    function initialize() {
+      //$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
+      geocoder = new google.maps.Geocoder();
 
-			var styles = [
-			    {
-			      stylers: [
-			        { saturation: 0 },
-			        { invert_lightness: false },
-			        { gamma: 1 },
-			        { lightness: 0 }
-			      ]
-			    }];
+      var styles = [
+        {
+          stylers: [
+            { saturation: 0 },
+            { invert_lightness: false },
+            { gamma: 1 },
+            { lightness: 0 }
+          ]
+        }];
 
-			var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-			var myOptions = {
-				zoom: <%= @zoom %>,
-				center: latlng,
-				mapTypeId: 'map_style',
-				disableDefaultUI: true,
-				zoomControl: true,
-				scrollwheel: false,
-				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 3 }
-			};
+      var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+      var myOptions = {
+        zoom: <%= @zoom %>,
+        center: latlng,
+        mapTypeId: 'map_style',
+        disableDefaultUI: true,
+        zoomControl: true,
+        scrollwheel: false,
+        zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 3 }
+      };
 
-			var styledMap = new google.maps.StyledMapType(styles,
-    			{name: "Styled Map"});
+      var styledMap = new google.maps.StyledMapType(styles,
+        {name: "Styled Map"});
 
-			map = new google.maps.Map($("#map")[0], myOptions);
+      map = new google.maps.Map($("#map")[0], myOptions);
 
-			map.mapTypes.set('map_style', styledMap);
-  			map.setMapTypeId('map_style');
+      map.mapTypes.set('map_style', styledMap);
+      map.setMapTypeId('map_style');
 
-			var locations = [];
-			
-			$("#content .main .inner .events li").each(function(index) {
-				var latitude = parseFloat($(this).find(".latitude").html());
-				var longitude = parseFloat($(this).find(".longitude").html());
-				locations.push({lat: latitude, long: longitude});
-			});
-			
-			placeMarkers({points: locations});
+      var locations = [];
 
-			//google.maps.event.addListener(map, 'idle', boundsChanged);
-		}
+      $("#content .main .inner .events li").each(function(index) {
+        var latitude = parseFloat($(this).find(".latitude").html());
+        var longitude = parseFloat($(this).find(".longitude").html());
+        locations.push({lat: latitude, long: longitude});
+      });
 
-		function to_i(obj) {
-			return parseInt(obj);
-		}
-		$(function() {
-		          
-			window.fbAsyncInit = function() {
-			        console.log("Loaded FB 222");
-			          FB.init({
-			            appId      : '475386955806720', // App ID
-			            status     : true, // check login status
-			            cookie     : true, // enable cookies to allow the server to access the session
-			            xfbml      : true  // parse XFBML
-			          });
-			        };
+      placeMarkers({points: locations});
 
-			        // Load the SDK Asynchronously
-			        (function(d){
-			          var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-			          js = d.createElement('script'); js.id = id; js.async = true;
-			          js.src = "//connect.facebook.net/en_US/all.js";
-			          d.getElementsByTagName('head')[0].appendChild(js);
-			        }(document));// delete below        
-			  	});
+      //google.maps.event.addListener(map, 'idle', boundsChanged);
+    }
 
-		$(function() {
-			$('.follow.button').click(function() {
-			        
-				var $that = $(this);
-				var listID = $that.attr('picklist-id');
-				
-				var url = 'http://www.halfpastnow.com/picks/find/'+listID
-				console.log('test fowlling'+url);
+    function to_i(obj) {
+      return parseInt(obj);
+    }
+    $(function() {
 
-				FB.api(
-				            '/me/halfpastnow:subscribe',
-				            'post',
-				            { toppick: url },
-				            function(response) {
-				            
-				        });
-				$.getJSON('/users/followBookmarkList/' + listID, function(data) {
-					if(data.success) {
-						$that.hide();
-						$that.siblings('.unfollow.button').show();
-					} else {
-						console.log(data.error);
-					}
-				});
-			});
+      window.fbAsyncInit = function() {
+        console.log("Loaded FB 222");
+        FB.init({
+          appId      : '475386955806720', // App ID
+          status     : true, // check login status
+          cookie     : true, // enable cookies to allow the server to access the session
+          xfbml      : true  // parse XFBML
+        });
+      };
 
-			$('.unfollow.button').click(function() {
-				var $that = $(this);
-				var listID = $that.attr('picklist-id');
-				$.getJSON('/users/unfollowBookmarkList/' + listID, function(data) {
-					if(data.success) {
-						$that.hide();
-						$that.siblings('.follow.button').show();
-					} else {
-						console.log(data.error);
-					}
-				});
-			});
+      // Load the SDK Asynchronously
+      (function(d){
+        var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        d.getElementsByTagName('head')[0].appendChild(js);
+      }(document));// delete below
+    });
 
-	      $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
-	      $('.head-title').tooltip('disable');
-	      $('.icon-check').tooltip('disable');
-	      $('.icon-check-empty').tooltip('disable');
-		});		
-	</script>
+    $(function() {
+      $('.follow').click(function() {
+
+        var $that = $(this);
+        var listID = $that.attr('picklist-id');
+
+        var url = 'http://www.halfpastnow.com/picks/find/'+listID
+        console.log('test fowlling'+url);
+
+        FB.api(
+          '/me/halfpastnow:subscribe',
+          'post',
+          { toppick: url },
+          function(response) {
+
+          });
+        $.getJSON('/users/followBookmarkList/' + listID, function(data) {
+          if(data.success) {
+            $that.hide();
+            $that.siblings('.unfollow').show();
+          } else {
+            console.log(data.error);
+          }
+        });
+      });
+
+      $('.unfollow').click(function() {
+        var $that = $(this);
+        var listID = $that.attr('picklist-id');
+        $.getJSON('/users/unfollowBookmarkList/' + listID, function(data) {
+          if(data.success) {
+            $that.hide();
+            $that.siblings('.follow').show();
+          } else {
+            console.log(data.error);
+          }
+        });
+      });
+
+      $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+      $('.head-title').tooltip('disable');
+      $('.icon-check').tooltip('disable');
+      $('.icon-check-empty').tooltip('disable');
+    });
+  </script>
 <% end %>
 
 <% content_for :header do %>
-	<div class="titlebar">
-		<div class="stay-on-target">
-			<%= render :partial => "title", :locals => { :page_action => params[:action], :bookmark_list_name => @bookmarkList ? @bookmarkList.name : nil } %>
-		</div>
-	</div>
+  <%= stylesheet_link_tag "custom_login" %>
+  <div class="titlebar">
+    <div class="stay-on-target">
+      <%= render :partial => "title", :locals => { :page_action => params[:action], :bookmark_list_name => @bookmarkList ? @bookmarkList.name : nil } %>
+    </div>
+  </div>
+
 <% end %>
 
 <% content_for :body do %>
-	<div id="content" class="pick-content">
-		<div id="map-wrapper">
-			<% if(@isFollowedLists) %>
-				<div style="float: left;position: relative;margin-top: -5px;font-weight: 700;margin-bottom: 11px;font-size: 16px;"><a href="/picks/followed">List View</a> | Event Views</div>
-			<% end %>
-			<div id="map"></div>
-		</div>
-		<div class="main">
-			<div class="inner">
-				<% unless @isMyBookmarksList || @isFollowedLists %>
-				<% currentUserIsFollowing = current_user && current_user.followedLists.exists?(@bookmarkList.id)
-				hidden = "style=\"display:none;\"" %>
-					<div class="picks-info">
-						<%= image_tag @bookmarkList.picture_url(:thumb) || "/assets/picklist-placeholder.png", :class => "picture" %>
-						<div class="picks-details">
-							<div class="title"><%= @bookmarkList.name %></div>
-							<% if current_user %>
-								<div class="follow button nice-button" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden if currentUserIsFollowing %> >follow</div>
-								<div class="unfollow button nice-button" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden unless currentUserIsFollowing %> >following</div>
-							<% end %>
-							<div class="description"><%= raw @bookmarkList.description %></div>							
-						</div>
-					</div>
-				<% end %>
-				<ul class="events">
-					<%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences, :bookmarkList => @bookmarkList } %>
-				</ul>
-				<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
-			</div>
-		</div>
-	</div>
+  <br>
+<section class="profile main-container">
+  <div class="container">
+    <% unless @isMyBookmarksList || @isFollowedLists %>
+      <% currentUserIsFollowing = current_user && current_user.followedLists.exists?(@bookmarkList.id)
+         hidden = "style=\"display:none;\"" %>
+    <article class="profileholder">
+      <figure><a href="#"><%= image_tag @bookmarkList.picture_url(:thumb) || "/assets/picklist-placeholder.png", :class => "img-circle" %></a></figure>
+      <div class="name"><%= @bookmarkList.name %></div>
+      <p><%= raw @bookmarkList.description %></p>
+      <span class="featured-text">
+        <% if current_user %>
+             <a href="#" class="follow btn btn-mid btn-danger" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden if currentUserIsFollowing %> >FOLLOW</a>
+             <a href="#" class="unfollow btn btn-mid btn-danger" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden unless currentUserIsFollowing %> >following</a>
+        <% end %>
+      </span>
+    </article>
+    <% end %>
+    <section class="product-list inner clearfix">
+      <h1>My Top Spots</h1>
+      <%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences, :bookmarkList => @bookmarkList } %>
+    </section>
+  </div>
+</section>
+<style>
+  .product-list figure{
+    width:300px !important;
+    height:201px !important;
+  }
+  .profileholder figure{
+    width:100px !important;
+    height:101px !important;
+  }
+</style>
 <% end %>

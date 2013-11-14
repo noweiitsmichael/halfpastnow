@@ -118,6 +118,7 @@ Myapp::Application.routes.draw do
   match '/delete_saved_search' => 'events#delete_saved_search'
   match '/details' => 'events#details'
   match '/login' => 'events#login'
+  match '/join_now' => 'events#joinnow'
   match '/auth/:provider/callback' => 'authentications#create'
 
   match ':controller(/:action(/:id(.:format)))'
