@@ -297,8 +297,11 @@ height:404px !important;
 	width:300px !important;
 	position:relative;
 	float:left;
-	padding:8px;
+	padding:7px;
 	height:351px;
+}
+.slide-item.product-item.see-more {
+  border-right: 5px solid;
 }
 .product-list .product-item{height:362px;}
 .slider .slide-item figure, .product-list .product-item figure{margin-bottom:14px;}
@@ -316,7 +319,6 @@ height:404px !important;
 }
 .slide-item img{
   width:100%;
-  min-height:100%;
   overflow-y: hidden;
 }
 .slider .slide-item .name a, .product-list .product-item .name a{color:#4c334d;}

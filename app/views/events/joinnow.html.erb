@@ -34,7 +34,7 @@
         </div>
         <div class="span1 inline"><h4>OR</h4></div>
         <div class="span5 inline"><h4>CREATE AN ACCOUNT</h4></div>
-        <div class="left-pan"><a href="#"><img src="assets/fb.jpg" alt=""></a></div>
+        <div class="left-pan"><a href="/users/auth/facebook"><img src="assets/fb.jpg" alt=""></a></div>
         <div class="right-pan">
           <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :validate => true,:html =>{:class => "signup"}) do |f| %>
             <%= devise_error_messages! %>

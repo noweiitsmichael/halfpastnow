@@ -71,7 +71,7 @@
             <li><a href="/login" ><i class="icon-right-arrow"></i>Log In</a></li>
             <li><a href="/join_now"><i class="icon-right-arrow"></i>Join Now</a></li>
           <% end %>
-          <li><a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" ><i class="icon-right-arrow"></i>Explorers</a></li>
+          <li><a href="<%= (@mobileMode) ? "/events/android" : "/explorers/austin" %>" ><i class="icon-right-arrow"></i>Explorers</a></li>
 
         </ul>
       </nav>
@@ -145,7 +145,7 @@
         <div class="carousel-caption">
           <h1>Get in where you fit in</h1>
           <p class="lead">Activities tailored to your lifestyle.</p>
-          <a class="btn btn-large btn-danger" href="#">Jown Now</a>
+          <a class="btn btn-large btn-danger" href="#">Join Now</a>
         </div>
       </div>
       <img src="/assets/images/slide2.gif" alt="">
@@ -510,7 +510,7 @@
 <script>
   $('#slider2,#slider3,#slider5').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;'>");
   happy_place_events(19,"slider2");
-  dance_events(16,"slider3");
+  dance_events(1,"slider3");
   free_events("slider5");
   $('.submit').click(function(){
     console.log($('#appendedInput').val())

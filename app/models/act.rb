@@ -1,4 +1,6 @@
 class Act < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :name,use: :slugged
   has_and_belongs_to_many :events
   has_and_belongs_to_many :tags
   has_many :pictures, :as => :pictureable, :dependent => :destroy

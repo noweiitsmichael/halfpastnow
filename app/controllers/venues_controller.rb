@@ -56,6 +56,7 @@ class VenuesController < ApplicationController
   # GET /venues/1
   # GET /venues/1.json
   def show
+    params[:fullmode]=true
     @fullmode = !params[:fullmode].to_s.empty?
     if(@mobileMode)
         unless params[:format].to_s.eql? "mobile"

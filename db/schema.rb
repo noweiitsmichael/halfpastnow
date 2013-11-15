@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131001090606) do
+ActiveRecord::Schema.define(:version => 20131115123457) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20131001090606) do
     t.string   "pop_source"
     t.float    "completion"
     t.text     "temp_storage"
+    t.string   "slug"
   end
 
   add_index "acts", ["event_id"], :name => "index_acts_on_event_id"
@@ -65,9 +66,11 @@ ActiveRecord::Schema.define(:version => 20131001090606) do
     t.string   "name"
     t.string   "picture_url"
     t.boolean  "main_bookmarks_list"
+    t.string   "slug"
   end
 
   add_index "bookmark_lists", ["featured"], :name => "index_bookmark_lists_on_featured"
+  add_index "bookmark_lists", ["slug"], :name => "index_bookmark_lists_on_slug"
   add_index "bookmark_lists", ["user_id", "main_bookmarks_list"], :name => "index_bookmark_lists_on_user_id_and_main_bookmarks_list"
 
   create_table "bookmark_lists_users", :id => false, :force => true do |t|
@@ -213,10 +216,12 @@ ActiveRecord::Schema.define(:version => 20131001090606) do
     t.integer  "recurrence_id"
     t.integer  "day_of_week"
     t.boolean  "deleted"
+    t.string   "slug"
   end
 
   add_index "occurrences", ["event_id"], :name => "index_occurrences_on_event_id"
   add_index "occurrences", ["recurrence_id"], :name => "index_occurrences_on_recurrence_id"
+  add_index "occurrences", ["slug"], :name => "index_occurrences_on_slug"
   add_index "occurrences", ["start"], :name => "index_occurrences_on_start"
   add_index "occurrences", ["start"], :name => "occurrences_not_deleted_start_index"
 
@@ -402,6 +407,9 @@ ActiveRecord::Schema.define(:version => 20131001090606) do
     t.integer  "updated_by"
     t.float    "completion"
     t.integer  "assigned_admin"
+    t.string   "slug"
   end
+
+  add_index "venues", ["slug"], :name => "index_venues_on_slug"
 
 end

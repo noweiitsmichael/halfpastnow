@@ -125,6 +125,22 @@
       <h2 class="text-center">Meet Our Explorers</h2>
       <p class="lead text-center">They came, they saw, they conqured.</p>
     </div>
+    <% def insert_picklist(picklist,currentUserIsFollowing,hidden) %>
+      <article class="member">
+        <div class="clearfix">
+          <figure class="avater"><a href="#"><%= image_tag picklist.picture_url(:thumb) || "/assets/picklist-placeholder.png",:class => "img-circle",:alt => "image" %></a></figure>
+          <div class="name"><a href="/picks/find/<%= picklist.id %>"><%= picklist.name %></a></div>
+        </div>
+        <p class="description"><%= raw picklist.description.truncate(160) %></p>
+        <div class="member-share">
+          <a href="#" class="follow btn btn-mid btn-danger"  picklist-id="<%= picklist.id %>" <%= raw hidden if currentUserIsFollowing %> >FOLLOW</a>
+          <a href="#" class="unfollow btn btn-mid btn-danger"  picklist-id="<%= picklist.id %>" <%= raw hidden unless currentUserIsFollowing %> >FOLLOWING</a>
+          <a href="/explorers/austin/<%= picklist.slug %>" class="btn btn-mid btn-danger pull-right">PROFILE</a>
+        </div>
+      </article>
+
+
+    <% end %>
     <section class="explorer-list clearfix">
       <% hidden = "style=\"display:none;\"" %>
       <% @featuredLists.each_with_index do |featuredList, index|
@@ -146,22 +162,7 @@
     </section>
   </div>
 </section>
-  <% def insert_picklist(picklist,currentUserIsFollowing,hidden) %>
-    <article class="member">
-      <div class="clearfix">
-        <figure class="avater"><a href="#"><%= image_tag picklist.picture_url(:thumb) || "/assets/picklist-placeholder.png",:class => "img-circle",:alt => "image" %></a></figure>
-        <div class="name"><a href="/picks/find/<%= picklist.id %>"><%= picklist.name %></a></div>
-      </div>
-      <p class="description"><%= raw picklist.description.truncate(160) %></p>
-      <div class="member-share">
-        <a href="#" class="follow btn btn-mid btn-danger"  picklist-id="<%= picklist.id %>" <%= raw hidden if currentUserIsFollowing %> >FOLLOW</a>
-        <a href="#" class="unfollow btn btn-mid btn-danger"  picklist-id="<%= picklist.id %>" <%= raw hidden unless currentUserIsFollowing %> >FOLLOWING</a>
-        <a href="/picks/find/<%= picklist.id %>" class="btn btn-mid btn-danger pull-right">PROFILE</a>
-      </div>
-    </article>
 
-
-  <% end %>
   <style>
     figure.avater{
       width:100px !important;
