@@ -454,6 +454,7 @@ class EventsController < ApplicationController
     @all_occurrences = @related_occurrences.take(9)
     # begin
     puts "Share content"
+    params[:fullmode] = true
     @fullmode = (!params[:fullmode].to_s.empty?) || (@mobileMode)
     @modeType = "event"
 
@@ -499,12 +500,10 @@ class EventsController < ApplicationController
     # @url= 'http://secret-citadel-5147.herokuapp.com/mobile/og/8'
     @attending_friends = current_user.friends.select{|f| f.bookmarks.map(&:bookmarked_id).include?(@occurrence.id)} rescue nil
     respond_to do |format|
-      if @fullmode
+
         format.html { render :layout => "fullmode" }
-        format.mobile
-      else
-        format.html { render :layout => "mode" }
-      end
+
+
 
       format.json { render json: @event.to_json(:include => [:occurrences, :venue]) }
       # format.mobile { render json: @event.to_json(:include => [:occurrences, :venue]) }

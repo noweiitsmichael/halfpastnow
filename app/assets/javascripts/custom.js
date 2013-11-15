@@ -21,7 +21,8 @@
       prev: '#prev',
       next: '#next',
       scroll: {
-        items: 1
+        items: 1,
+        duration : 1000
       },
       pagination: {
         container: '#pager'

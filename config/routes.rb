@@ -120,6 +120,11 @@ Myapp::Application.routes.draw do
   match '/login' => 'events#login'
   match '/join_now' => 'events#joinnow'
   match '/auth/:provider/callback' => 'authentications#create'
-
+  match '/explorers/austin' => 'picks#trendsetters'
+  match '/explorers/austin/:id' => 'picks#find'
+  match 'venues/austin/:id' => 'venues#show'
+  match 'artists/:id' => 'acts#show'
+  #match 'events/austin/:id' => 'events#show'
   match ':controller(/:action(/:id(.:format)))'
+
 end

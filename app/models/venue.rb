@@ -1,4 +1,6 @@
 class Venue < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :name,use: :slugged
   geocoded_by :name
   has_and_belongs_to_many :tags
   has_many :events, :dependent => :destroy

@@ -109,6 +109,8 @@ GEM
       nokogiri (~> 1.5.0)
       ruby-hmac
     formatador (0.2.4)
+    friendly_id (4.0.10.1)
+      activerecord (>= 3.0, < 4.0)
     geocoder (1.1.8)
     gherkin (2.12.1)
       multi_json (~> 1.3)
@@ -284,6 +286,7 @@ DEPENDENCIES
   email_spec
   factory_girl_rails
   fog
+  friendly_id
   geocoder
   htmlentities
   jcrop-rails

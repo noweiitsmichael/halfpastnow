@@ -1,4 +1,6 @@
 class BookmarkList < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :name,use: :slugged
 	has_and_belongs_to_many :followingUsers, :class_name => "User", :join_table => "bookmark_lists_users"
 	belongs_to :user
 	# Bi-directional bookmarks association (find a user's bookmarked performers, and users who have bookmarked this performer)

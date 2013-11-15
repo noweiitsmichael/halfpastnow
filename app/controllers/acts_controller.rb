@@ -5,6 +5,7 @@ class ActsController < ApplicationController
   layout "venues"
 
   def show
+    params[:fullmode]=true
     @fullmode = !params[:fullmode].to_s.empty?
     if(@mobileMode)
         unless params[:format].to_s.eql? "mobile"
