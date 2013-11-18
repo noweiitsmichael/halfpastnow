@@ -30,7 +30,7 @@
     var type = "event";
     var root_url = "http://www.halfpastnow.com/";
     var link = root_url + "?" + type + "_id=" + id;
-    var facebook_url = "http://www.halfpastnow.com/" + type + "s/show/" + id + "?fullmode=true";
+    var facebook_url = "http://www.halfpastnow.com/" + type + "s/show/" + id ;
     var app_id = "475386955806720";
     var redirect = "http://www.halfpastnow.com";
     var bookmark_id = "<%= @bookmarkId.to_s %>";
@@ -176,16 +176,7 @@
         window.open(url, '_blank');
         window.focus();
       });
-      $('.act-name').click(function () {
 
-        console.log($(this).attr('act_id'))
-        window.location.href = window.location.origin + "/artists/" + $(this).attr('act_id')
-      })
-      $('.venue_link').click(function () {
-        console.log("venue")
-        window.location.href = window.location.origin + "/venues/austin/<%= @occurrence.event.venue.slug %>"
-
-      })
 
       $('.bookmark-share .twitter').click(function () {
         // var url = 'https://twitter.com/intent/tweet?text=' + link;
@@ -309,7 +300,7 @@
       <div class="right">
         <div class="share bookmark-share">
           <a href="#">
-               <span class="nice-button bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
+               <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
                  <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-large.png") %>
 	            </span>
           </a>
@@ -324,13 +315,13 @@
     <div class="clearfix">
       <div class="left">
         <address>
-          <h4><%= link_to @occurrence.event.venue.name, "#", :class => "venue_link" %></h4>
+          <h4><%= link_to @occurrence.event.venue.name, "/venues/austin/#{@occurrence.event.venue.slug}",:style => "color:#4C334E; font-size:120%; font-weight:700;", :class => "venue_link " %></h4>
           <%= @occurrence.event.venue.address %>
           <br>
           <%= @occurrence.event.venue.city + ", " + @occurrence.event.venue.state + " " + @occurrence.event.venue.zip.to_s %>
           <% unless @occurrence.event.venue.phonenumber.to_s.empty? && @occurrence.event.venue.url.to_s.empty? %>
             <br/>
-            <a href="<%= @occurrence.event.venue.url %>"><%= @occurrence.event.venue.url %></a><br>
+            <a href="<%= @occurrence.event.venue.url %>" style = "color:#4C334E"><%= @occurrence.event.venue.url %></a><br>
             <%= @occurrence.event.venue.phonenumber %>
           <% end %>
 
@@ -378,7 +369,9 @@
           </span>
         <% end %>
           <% end %>
+        <% if @event.ticket_url %>
         <a href="#" class="btn btn-large btn-danger">Get Tickets</a>
+          <% end %>
       </div>
     </div>
     <div class="accordion" id="performing_artists">
@@ -394,7 +387,7 @@
               <div class="block-inner">
 
                 <% @event.acts.each_with_index do |act, index| %>
-                  <a href="#" act_id="<%= act.slug %>" class="act-name"><%= act.name %></a><%= (index != @event.acts.length - 1) ? ", " : "" %>
+                  <a href="/artists/<%= act.slug %>" act_id="<%= act.slug %>" class="act-name" style = "color:#4C334E"><%= act.name %></a><%= (index != @event.acts.length - 1) ? ", " : "" %>
                   <br>
                 <% end %>
 
@@ -424,12 +417,14 @@
         <div class="accordion-inner">
           <p>
             <% unless @event.tags.length == 0 %>
-              <%= @event.tags.collect { |tag| tag.name } * "," %></li>
+              <%= @event.tags.collect { |tag| tag.name } * ", " %></li>
             <% end %>
           </p>
         </div>
       </div>
     </div>
+    <% if user_signed_in? %>
+      <% unless @attending_friends.empty? %>
     <div class="accordion" id="who-container">
       <div class="accordion-heading">
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#who-container" href="#who">Who's Going
@@ -437,14 +432,16 @@
       </div>
       <div id="who" class="accordion-body collapse in">
         <div class="accordion-inner">
-          <% if user_signed_in? %>
+
             <% @attending_friends.each do |friend| %>
               <a href="#" class="user"><img src="<%= friend.fb_picture %>"/></a>
             <% end %>
-          <% end %>
+
         </div>
       </div>
     </div>
+    <% end %>
+    <% end %>
   </div>
   <div class="event-other-details">
     <ul class="nav nav-tabs">
@@ -539,7 +536,7 @@
               $('#music').append(element);
               $('#music').append(myspace);
               $('#videos iframe').each(function () {
-                $('#galleria1').append("<a href='" + $(this).attr('src') + "'><span class='iframe' >Watch this at YouTube</span></a>")
+                $('#galleria1').append("<a href='" + $(this).attr('src') + "'><span class='iframe' ></span></a>")
 
                 console.log($(this).attr('src'))
                 $(this).hide();
@@ -606,8 +603,8 @@
   </section>
   <section class="recommend-events">
     <div id="recommend-events-wrapper">
-      <div class="content slider">
-        <div id="recommended-list">
+      <div class="content slider" style="height:198px !important;">
+        <div id="recommended-list" >
           <% @occurrences.empty? ? occurrences=@all_occurrences : occurrences= Array[@occurrence] %>
           <% occurrences.each do |occurrence| %>
             <article class="slide-item" link-id=<%= occurrence.id %>>
@@ -667,6 +664,12 @@
 
 
 </script>
+<style>
+
+  #body{
+     overflow: visible !important;
+  }
+</style>
 
 </body>
 </html>

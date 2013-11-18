@@ -244,12 +244,13 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
   $('figure').click(function(){
     var event_id = $(this).parent('article').attr('link-id')
     console.log(event_id)
-    window.location.href = window.location.origin+"/events/show/"+event_id+"?fullmode=true"
+    window.location.href = window.location.origin+"/events/show/"+event_id
 
   })
 </script>
 <footer>
   <div class="container">
+          <% unless @footer %>
         	<span class="footer-tap">
                 <span>GO</span>
                 <span class="footer-bar-icon">
@@ -272,6 +273,7 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
                   </div>
                 </div>
             </span>
+      <% end %>
   </div>
 </footer>
 <% unless @page %>

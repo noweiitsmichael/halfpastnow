@@ -216,12 +216,10 @@ ActiveRecord::Schema.define(:version => 20131115123457) do
     t.integer  "recurrence_id"
     t.integer  "day_of_week"
     t.boolean  "deleted"
-    t.string   "slug"
   end
 
   add_index "occurrences", ["event_id"], :name => "index_occurrences_on_event_id"
   add_index "occurrences", ["recurrence_id"], :name => "index_occurrences_on_recurrence_id"
-  add_index "occurrences", ["slug"], :name => "index_occurrences_on_slug"
   add_index "occurrences", ["start"], :name => "index_occurrences_on_start"
   add_index "occurrences", ["start"], :name => "occurrences_not_deleted_start_index"
 
