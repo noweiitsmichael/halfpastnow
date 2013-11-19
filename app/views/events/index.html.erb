@@ -8,7 +8,7 @@
 <% content_for :head do %>
   <%= javascript_include_tag "half.dynamics" %>
   <%= javascript_include_tag "smartinfowindow.js" %>
-  <%= stylesheet_link_tag "custom1" %>
+  <%= stylesheet_link_tag "jquery.mobile-1.0a3.min","custom1" %>
 <% end %>
 <% content_for :code do %>
 <%# TODO: put this stuff in the controller eventually %>
@@ -324,7 +324,6 @@
               <li class="related_events"><a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" key="<%= search[:search_key] %>"><%= search[:search_key] %> <i class='icon-cross'></i></a></li>
             <% end %>
           <% end %>
-          <li class="new_tab" data-original-title="" title=""><a href="#" data-toggle="tab" data-original-title="" title="">+</a></li>
 
         </ul>
       </div>

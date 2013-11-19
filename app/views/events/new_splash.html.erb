@@ -136,7 +136,7 @@
       <div class="carousel-caption">
         <h1>Your couch will miss you</h1>
         <p class="lead">Discover ATX and send a postcard.</p>
-        <a class="btn btn-large btn-danger" href="#">Download App</a>
+        <a class="btn btn-large btn-danger" href="https://itunes.apple.com/us/app/halfpastnow/id589530107">For iOS</a>&nbsp;&nbsp;<a class="btn btn-large btn-danger" href="https://play.google.com/store/apps/details?id=com.halfpastnow&hl=en">For Android</a>
       </div>
       <img src="/assets/images/slide1.gif" alt=""/>
     </li>
@@ -145,7 +145,7 @@
         <div class="carousel-caption">
           <h1>Get in where you fit in</h1>
           <p class="lead">Activities tailored to your lifestyle.</p>
-          <a class="btn btn-large btn-danger" href="#">Join Now</a>
+          <a class="btn btn-large btn-danger" href="/join_now">Join Now</a>
         </div>
       </div>
       <img src="/assets/images/slide2.gif" alt="">
@@ -352,56 +352,11 @@
 
     </div>
     <div class="section-content slider">
-      <div id="slider4">
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller2-img01.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Blind Pig Pub Industry Night For $5 and up</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$79+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">DOWNTOWN</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller2-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Big BurgerAll You Can Eat at the Bottomless Burger</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller2-img03.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Music, Drinks and Pretty Ladies at the Band Room</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">FREE</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">ACL</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-      </div>
+     <div id='slider4'>
+       <% @austin_occurrences.each_with_index do |occurrence, index| %>
+         <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
+       <% end %>
+     </div>
       <a class="prev" id="slider4_prev" href="#"><span>prev</span></a>
       <a class="next" id="slider4_next" href="#"><span>next</span></a>
     </div>
@@ -519,9 +474,16 @@
   $('figure').click(function(){
     var event_id = $(this).parent('article').attr('link-id')
     console.log(event_id)
-    window.location.href = window.location.origin+"/events/show/"+event_id+"?fullmode=true"
+    window.location.href = window.location.origin+"/events/show/"+event_id
 
   })
+  $('article .name a').click(function(){
+    var event_id = $(this).parents('article').attr('link-id')
+    console.log(event_id)
+    window.location.href = window.location.origin+"/events/show/"+event_id
+
+  })
+
   $('.brand').click(function(){
   window.location.href = window.location.origin
 

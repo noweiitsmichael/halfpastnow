@@ -39,6 +39,7 @@ class EventsController < ApplicationController
     order_by = "occurrences.start"
     @Occurrences = Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(9)
     @saved_searches = current_user.saved_searches  if user_signed_in?
+    @austin_occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.take(9)
     respond_to do |format|
       format.html { render :layout => false }
     end
@@ -290,16 +291,16 @@ class EventsController < ApplicationController
     @saved_search = current_user.saved_searches if user_signed_in?
     # Set default if action is sxsw
     unless (params[:event_id].to_s.empty?)
-      redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
+     # redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
     end
 
 
     unless (params[:venue_id].to_s.empty?)
-      redirect_to :action => "show", :controller => "venues", :id => params[:venue_id].to_i, :fullmode => true
+     # redirect_to :action => "show", :controller => "venues", :id => params[:venue_id].to_i, :fullmode => true
     end
 
     unless (params[:act_id].to_s.empty?)
-      redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
+     # redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
 
     if (@mobileMode)
@@ -438,6 +439,7 @@ class EventsController < ApplicationController
   # GET /events/1
   # GET /events/1.json
   def show
+
     @occurrence = Occurrence.find(params[:id])
     @event = @occurrence.event
     near_by_venues = @event.venue.nearbys(1)

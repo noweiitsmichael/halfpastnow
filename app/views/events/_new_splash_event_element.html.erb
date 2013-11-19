@@ -1,5 +1,5 @@
-<article class="slide-item product-item" link-id="<%= occurrence.id %>" linkto="event">
-  <figure><a href="#">
+<article class="slide-item product-item" link-id="<%= occurrence.id %>">
+  <figure><a href="/events/show/<%= occurrence.event.id %>">
     <% if occurrence.event.pictures.first %>
       <img src="<%= occurrence.event.pictures.first.image_url(:full) %>" alt="Event picture" />
     <% elsif occurrence.event.acts.length != 0 && occurrence.event.acts.first.pictures.first %>
@@ -13,13 +13,13 @@
 
 
   </a></figure>
-  <div class="name"><a href="#"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
+  <div class="name"><a href="/events/show/<%= occurrence.event.id %>"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
   <div class="info clearfix">
     <span class="time pull-left"><%= occurrence.start.to_time.strftime("%B %-d @ %-l:%M%P") %></span>
     <span class="value pull-right"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price, :unit => "$").to_s + " " : "FREE ") : "" %></span>
   </div>
   <div class="additional-info">
-    <span class="place"><%= occurrence.event.venue.name %></span>
+    <span class="place"><%= link_to occurrence.event.venue.name,"/venues/austin/#{occurrence.event.venue.slug}",:style => "color:#4C334D" %></span>
     <%
        if (current_user)
          bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
