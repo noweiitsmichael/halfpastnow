@@ -1,5 +1,7 @@
 require 'pp'
 class Occurrence < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :slug,use: :slugged
   belongs_to :event
   belongs_to :recurrence
   has_many :histories

@@ -245,7 +245,7 @@
     });
 
 
-    $( "#from" ).datepicker({
+    $( ".custom_start" ).datepicker({
       defaultDate: "+1w",
       changeMonth: true,
       numberOfMonths: 1,
@@ -253,7 +253,7 @@
         $( "#to" ).datepicker( "option", "minDate", selectedDate );
       }
     });
-    $( "#to" ).datepicker({
+    $( ".custom_end" ).datepicker({
       defaultDate: "+1w",
       changeMonth: true,
       numberOfMonths:1,
@@ -262,7 +262,7 @@
       }
     });
 
-    $('#timepicker').timepicker();
+    $('.timepicker').timepicker();
 
     $(".link").on("click", function(){
       var target = $(this).attr("data-target");

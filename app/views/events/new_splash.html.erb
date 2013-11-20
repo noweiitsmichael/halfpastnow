@@ -60,7 +60,7 @@
                     </span>
         <span class="nb-right pull-right">menu</span>
       </a>
-      <a class="brand" href="index.html"><img src="assets/new_design/logo.png" alt="Jobhuk - CrowdSourced Hiring"/></a>
+      <a class="brand" href="/"><img src="assets/new_design/logo.png" alt="Jobhuk - CrowdSourced Hiring"/></a>
       <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
       <nav class="nav-collapse collapse">
         <ul class="nav pull-right">
@@ -76,7 +76,7 @@
         </ul>
       </nav>
 
-      <form action="#" class="navbar-search">
+      <form class="navbar-search">
         <div class="input-append">
           <input class="span4" id="appendedInput" type="text">
           <div class="popover bottom">
@@ -467,20 +467,20 @@
   happy_place_events(19,"slider2");
   dance_events(1,"slider3");
   free_events("slider5");
-  $('.submit').click(function(){
-    console.log($('#appendedInput').val())
-    window.location.href = window.location.origin+"search?key="+$('#appendedInput').val()
+  $('.submit').click(function(e){
+    e.preventDefault()
+     window.location.href = window.location.origin+"/search?key="+$('#appendedInput').val()
   })
   $('figure').click(function(){
     var event_id = $(this).parent('article').attr('link-id')
     console.log(event_id)
-    window.location.href = window.location.origin+"/events/show/"+event_id
+    window.location.href = window.location.origin+"/events/austin/"+event_id
 
   })
   $('article .name a').click(function(){
     var event_id = $(this).parents('article').attr('link-id')
     console.log(event_id)
-    window.location.href = window.location.origin+"/events/show/"+event_id
+    window.location.href = window.location.origin+"/events/austin/"+event_id
 
   })
 
@@ -488,9 +488,19 @@
   window.location.href = window.location.origin
 
   })
+  $('#slider1,#slider4').append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
 </script>
 <% unless @page %>
   <% cookies[:url] = request.url %>
 <% end %>
+<style>
+  .see-more a {
+    position: relative;
+    top: 50%;
+  }
+  .see-more {
+    text-align: center;
+  }
+</style>
 </body>
 </html>
