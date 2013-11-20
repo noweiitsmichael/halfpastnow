@@ -9,6 +9,7 @@ gem 'pg'
 gem 'thin'
 gem 'newrelic_rpm'
 gem 'friendly_id'
+gem 'tire'
 # gem 'thinking-sphinx', '2.0.11'
 # gem 'flying-sphinx',   '0.6.4'
 

@@ -1,4 +1,22 @@
 class Event < ActiveRecord::Base
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
+
+  mapping do
+    indexes :id, type: 'integer'
+    indexes :price, type: 'integer'
+    indexes :title, boost: 10
+    indexes :description, boost: 10 #, analyzer: 'snowball'
+    #indexes :published_at, type: 'date'
+  end
+
+  def self.search(params)
+    tire.search(load: true) do
+      query { string params[:query], default_operator: "OR" } if params[:query].present?
+      #filter :range, published_at: {lte: Time.zone.now}
+    end
+
+  end
   belongs_to :venue
   belongs_to :user
   

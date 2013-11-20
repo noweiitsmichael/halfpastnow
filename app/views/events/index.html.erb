@@ -1,24 +1,23 @@
 <% content_for :meta do %>
-  <meta class="meta-type"          property="og:type"                 content="website">
-  <meta class="meta-url"           property="og:url"                  content="http://www.halfpastnow.com">
-  <meta class="meta-image"         property="og:image"                content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png">
-  <meta class="meta-title"         property="og:title"                content="half past now | your couch will miss you">
-  <meta class="meta-description"   property="og:description"          content="Find the best events in Austin">
+  <meta class="meta-type" property="og:type" content="website">
+  <meta class="meta-url" property="og:url" content="http://www.halfpastnow.com">
+  <meta class="meta-image" property="og:image" content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png">
+  <meta class="meta-title" property="og:title" content="half past now | your couch will miss you">
+  <meta class="meta-description" property="og:description" content="Find the best events in Austin">
 <% end %>
 <% content_for :head do %>
   <%= javascript_include_tag "half.dynamics" %>
   <%= javascript_include_tag "smartinfowindow.js" %>
-  <%= stylesheet_link_tag "jquery.mobile-1.0a3.min","custom1" %>
+  <%= stylesheet_link_tag "jquery.mobile-1.0a3.min", "custom1" %>
 <% end %>
 <% content_for :code do %>
 <%# TODO: put this stuff in the controller eventually %>
 
-  <% 	@now = DateTime.now.change(:hour => 0)
-      @channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
+  <% @now = DateTime.now.change(:hour => 0)
+     @channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
 
   <script type="text/javascript">
     //cookie redirect
-
 
 
     (function ($, document, undefined) {
@@ -53,9 +52,9 @@
           return (document.cookie = [
             encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
             options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-            options.path    ? '; path=' + options.path : '',
-            options.domain  ? '; domain=' + options.domain : '',
-            options.secure  ? '; secure' : ''
+            options.path ? '; path=' + options.path : '',
+            options.domain ? '; domain=' + options.domain : '',
+            options.secure ? '; secure' : ''
           ].join(''));
         }
 
@@ -84,7 +83,7 @@
       };
 
     })(jQuery, document);
-    $(function() {
+    $(function () {
       var COOKIE_NAME = 'splash-page';
       var cookie = $.cookie(COOKIE_NAME);
       if (cookie == null) {
@@ -111,7 +110,7 @@
       end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
       start_seconds: <%= params[:start_seconds].coalesce_to "''" %>,
       end_seconds: <%= params[:end_seconds].coalesce_to "''" %>,
-      day: [0,1,2,3,4,5,6],
+      day: [0, 1, 2, 3, 4, 5, 6],
       low_price: <%= params[:low_price].coalesce_to "''" %>,
       high_price: <%= params[:high_price].coalesce_to "''" %>,
       included_tags: <%= params[:included_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[]" %>,
@@ -141,43 +140,50 @@
           "stylers": [
             { "color": "#804580" }
           ]
-        },{
+        },
+        {
           "featureType": "road.highway",
           "elementType": "labels.text.stroke",
           "stylers": [
             { "color": "#d5b5d5" }
           ]
-        },{
+        },
+        {
           "featureType": "road.arterial",
           "elementType": "labels.text.stroke",
           "stylers": [
             { "color": "#f1e6f3" }
           ]
-        },{
+        },
+        {
           "elementType": "geometry.fill",
           "stylers": [
             { "gamma": 1.54 },
             { "lightness": 12 }
           ]
-        },{
+        },
+        {
           "featureType": "road.arterial",
           "elementType": "geometry.fill",
           "stylers": [
             { "color": "#e0dae0" }
           ]
-        },{
+        },
+        {
           "featureType": "road.arterial",
           "elementType": "geometry.stroke",
           "stylers": [
             { "color": "#b8abb8" }
           ]
-        },{
+        },
+        {
           "featureType": "road.highway",
           "elementType": "geometry.fill",
           "stylers": [
             { "color": "#af96af" }
           ]
-        },{
+        },
+        {
         }
       ];
 
@@ -203,7 +209,7 @@
 
       var locations = [];
 
-      $("#content .main .inner .events li").each(function(index) {
+      $("#content .main .inner .events li").each(function (index) {
         var latitude = parseFloat($(this).find(".latitude").html());
         var longitude = parseFloat($(this).find(".longitude").html());
         locations.push({lat: latitude, long: longitude});
@@ -218,7 +224,7 @@
       return parseInt(obj);
     }
 
-    $(function() {
+    $(function () {
       <% @channels.each do |channel| %>
       channelFilters[<%= channel.id %>] = {
         stream_id: <%= channel.id %>,
@@ -251,7 +257,7 @@
         end_days: 0,
         start_seconds: '',
         end_seconds: '',
-        day: [0,1,2,3,4,5,6],
+        day: [0, 1, 2, 3, 4, 5, 6],
         low_price: '',
         high_price: '',
         included_tags: [],
@@ -277,7 +283,8 @@
       }
       <% end %>
 
-      // var event_id = <%= params[:event_id] || "null" %>;
+      // var event_id =
+      <%= params[:event_id] || "null" %>;
       var venue_id = <%= params[:venue_id] || "null" %>;
       var act_id = <%= params[:act_id] || "null" %>;
       var modality;
@@ -286,24 +293,24 @@
       // 	modality = spawn(modalities["event"],{id: event_id});
       // 	modal(modality);
       // }
-      if(venue_id) {
-        modality = spawn(modalities["venue"],{id: venue_id});
+      if (venue_id) {
+        modality = spawn(modalities["venue"], {id: venue_id});
         modal(modality);
       }
-      if(act_id) {
-        modality = spawn(modalities["act"],{id: act_id});
+      if (act_id) {
+        modality = spawn(modalities["act"], {id: act_id});
         modal(modality);
       }
 
-      $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+      $('*').tooltip({ position: { my: "left+15 center", at: "right center" } });
       $('.head-title').tooltip('disable');
       $('.icon-check').tooltip('disable');
       $('.icon-check-empty').tooltip('disable');
 
     });
-        $(window).load(function() {
+    $(window).load(function () {
       var stream_id = "<%= params['channel_id'] %>";
-      if(stream_id !== "") {
+      if (stream_id !== "") {
         // $('#header').addClass('selected');
         $(".streambar .stream[stream-id=" + stream_id + "]").addClass('selected');
         filter.stream_id = parseInt(stream_id);
@@ -321,7 +328,9 @@
           <li class="events_tab"><a data-toggle="tab" href="#events">Events</a></li>
           <% if user_signed_in? %>
             <% @saved_search.each do |search| %>
-              <li class="related_events"><a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" key="<%= search[:search_key] %>"><%= search[:search_key] %> <i class='icon-cross'></i></a></li>
+              <li class="related_events">
+                <a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" key="<%= search[:search_key] %>"><%= search[:search_key] %>
+                  <i class='icon-cross'></i></a></li>
             <% end %>
           <% end %>
 
@@ -332,7 +341,7 @@
           <div class="sort-panel filter-toggle price date">
             <div class="container">
            <span class="sort-item">
-             <a href="#" ><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
+             <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
               <div style="display: none;" class="popover bottom">
                 <div class="arrow"></div>
                 <div class="popover-content clearfix">
@@ -359,6 +368,7 @@
               <div class="arrow"></div>
               <div class="popover-content clearfix">
                 <label for="cost" class="ui-input-text cvalue">Less than $50</label>
+
                 <div class="left">
                   <span class="option">Free</span>
                   <span class="option">$5</span>
@@ -382,11 +392,13 @@
           <div class="content main" style="padding-top:60px">
             <div class="container inline">
               <img alt="" src="assets/ad.jpg" class="pull-right">
+
               <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results </h2>
+
               <p class="lead text-info"></p>
               <section class="product-list clearfix events">
                 <% @occurrences.each_with_index do |occurrence, index| %>
-                  <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
+                  <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
                 <% end %>
 
               </section>
@@ -397,7 +409,7 @@
           <div class="sort-panel filter-toggle price date">
             <div class="container">
            <span class="sort-item">
-             <a href="#" ><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
+             <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
               <div style="display: none;" class="popover bottom">
                 <div class="arrow"></div>
                 <div class="popover-content clearfix">
@@ -424,6 +436,7 @@
               <div class="arrow"></div>
               <div class="popover-content clearfix">
                 <label for="cost" class="ui-input-text cvalue">Less than $50</label>
+
                 <div class="left">
                   <span class="option">Free</span>
                   <span class="option">$5</span>
@@ -443,14 +456,15 @@
            </span>
 
 
-
             </div>
 
           </div>
           <div class="content main">
             <div class="container inline">
               <img alt="" src="assets/ad.jpg" class="pull-right">
+
               <h2 class="text-info"><span class="total_number">  </span> results for <span id="search_name"></span></h2>
+
               <p class="lead text-info"></p>
               <section class="product-list clearfix events">
 
@@ -464,7 +478,9 @@
   </section>
   <div style='display:none'>
     <div id='save_share_content' style='padding:10px; background:#fff;'>
-      <p class="text-center"><h3>Your search is saved successfully</h3></p>
+      <p class="text-center">
+
+      <h3>Your search is saved successfully</h3></p>
 
       <p><a id="share" href="#" class='btn btn-primary'>Click Me</a>&nbsp; If you wish to share this search</p>
 
@@ -472,19 +488,56 @@
     </div>
   </div>
   <script>
-    $('.icon-cross').on("click",function(){
+    $(document).ready(function(){
+    <% if params[:key].present? %>
+    $(".active").attr('class', '');
+    $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>'><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+    $('.icon-cross').on("click", function () {
+      $(this).parents('li').remove()
+    })
+
+    $('#search-tab a').on("click", function () {
+      console.log($(this).text())
+      doneTyping1($(this).text());
+      $('#search_name').text($(this).text())
+    });
+    $('.icon-white-pin').on("click", function () {
+      key = $(this).parent().attr('key')
+      check = $(this).parent()
+      <% if user_signed_in? %>
+      $(this).hide()
+      $.get('/saved_search', {key: key}, function (data) {
+        console.log(check)
+        check.attr('key_id', data["key_id"]);
+
+      })
+      $('#share').click(function () {
+        window.open(
+          'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href),
+          'facebook-share-dialog',
+          'width=626,height=436');
+      })
+      $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
+
+      <% end %>
+    })
+    doneTyping1("<%= params[:key] %>");
+    $('#search_name').text("<%= params[:key] %>")
+    <% end %>
+    })
+    $('.icon-cross').on("click", function () {
       $(this).parents('li').remove()
       key_id = $(this).parent().attr('key_id')
-      if(key_id != null){
+      if (key_id != null) {
         <% if user_signed_in? %>
-        $.get('/delete_saved_search',{key_id:key_id})
+        $.get('/delete_saved_search', {key_id: key_id})
         <% end %>
       }
     })
-    $('.dropdown-menu a').click(function(){
+    $('.dropdown-menu a').click(function () {
       $(".active").attr('class', '');
-      $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+$(this).text().replace(" ","_")+">"+$(this).text()+" <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
-      $('.icon-cross').on("click",function(){
+      $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key=" + $(this).text().replace(" ", "_") + ">" + $(this).text() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+      $('.icon-cross').on("click", function () {
         $(this).parents('li').remove()
       })
       $('#search_name').text($(this).text())
@@ -497,44 +550,44 @@
       });
 
     })
-    $(".submit").on("click",function(){
+    $(".submit").on("click", function () {
 
-      if($("#appendedInput").val().length >= 3){
+      if ($("#appendedInput").val().length >= 3) {
         $(".active").attr('class', '');
-        $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+$("#appendedInput").val()+">"+$("#appendedInput").val()+" <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+        $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key=" + $("#appendedInput").val() + ">" + $("#appendedInput").val() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
         <% if user_signed_in? %>
-        $('.icon-cross').on("click",function(){
+        $('.icon-cross').on("click", function () {
           $(this).parents('li').remove()
           key_id = $(this).parent().attr('key_id')
-          if(key_id != null){
+          if (key_id != null) {
             <% if user_signed_in? %>
-            $.get('/delete_saved_search',{key_id:key_id})
+            $.get('/delete_saved_search', {key_id: key_id})
             <% end %>
           }
         })
         <% else %>
-        $('.icon-cross').on("click",function(){
+        $('.icon-cross').on("click", function () {
           $(this).parents('li').remove()
         })
         <% end %>
-        $('.icon-white-pin').on("click",function(){
+        $('.icon-white-pin').on("click", function () {
           key = $(this).parent().attr('key')
           check = $(this).parent()
           <% if user_signed_in? %>
           $(this).hide()
-          $.get('/saved_search',{key:key},function(data){
+          $.get('/saved_search', {key: key}, function (data) {
             console.log(check)
             check.attr('key_id', data["key_id"]);
 
           })
-          $(this).colorbox({href:"#save_share_content",inline:true, width:"50%",height:"200px"});
+          $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
 
           <% end %>
         })
       }
-      $('#share').click(function(){
+      $('#share').click(function () {
         window.open(
-          'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+          'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href),
           'facebook-share-dialog',
           'width=626,height=436');
       })
@@ -545,20 +598,20 @@
       });
     })
     url = window.location.href
-    if(url.contains('key:')){
+    if (url.contains('key:')) {
       $(".active").attr('class', '');
 
       key_array = $.trim(decodeURI(url)).split("key:");
       key_value = key_array[1];
-      $("a:contains("+key_value+")").parent('li').addClass('active').click()
+      $("a:contains(" + key_value + ")").parent('li').addClass('active').click()
       doneTyping1(key_value);
       $('#search_name').text(key_value)
     }
-    $('.events_tab').click(function(){
+    $('.events_tab').click(function () {
       $('#related_events').hide();
       $('#events').show();
     })
-    $('.related_events').click(function(){
+    $('.related_events').click(function () {
       $('#related_events').show();
       $('#events').hide();
     })
@@ -567,50 +620,14 @@
       doneTyping1($(this).text());
       $('#search_name').text($(this).text())
     });
-    <% if params[:key] %>
 
-    $(".active").attr('class', '');
-    $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>'><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
-    $('.icon-cross').on("click",function(){
-      $(this).parents('li').remove()
-    })
-
-    $('#search-tab a').on("click", function () {
-      console.log($(this).text())
-      doneTyping1($(this).text());
-      $('#search_name').text($(this).text())
-    });
-    $('.icon-white-pin').on("click",function(){
-      key = $(this).parent().attr('key')
-      check = $(this).parent()
-      <% if user_signed_in? %>
-      $(this).hide()
-      $.get('/saved_search',{key:key},function(data){
-        console.log(check)
-        check.attr('key_id', data["key_id"]);
-
-      })
-      $('#share').click(function(){
-        window.open(
-          'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-          'facebook-share-dialog',
-          'width=626,height=436');
-      })
-      $(this).colorbox({href:"#save_share_content",inline:true, width:"50%",height:"200px"});
-
-      <% end %>
-    })
-    doneTyping1("<%= params[:key] %>");
-    $('#search_name').text("<%= params[:key] %>")
-    <% end %>
     $('.filter-dropdown').hide()
-    $('figure').click(function(){
+    $('figure').click(function () {
       var event_id = $(this).parent('article').attr('link-id')
       console.log(event_id)
-      window.location.href = window.location.origin+"/events/show/"+event_id+"?fullmode=true"
+      window.location.href = window.location.origin + "/events/show/" + event_id + "?fullmode=true"
 
     })
-
   </script>
 
 <% end %>
