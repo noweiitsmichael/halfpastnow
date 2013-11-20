@@ -1,5 +1,5 @@
 <article class="slide-item product-item" link-id="<%= occurrence.id %>">
-  <figure><a href="/events/show/<%= occurrence.event.id %>">
+  <figure><a href="/events/austin/<%= occurrence.slug %>">
     <% if occurrence.event.pictures.first %>
       <img src="<%= occurrence.event.pictures.first.image_url(:full) %>" alt="Event picture" />
     <% elsif occurrence.event.acts.length != 0 && occurrence.event.acts.first.pictures.first %>
@@ -13,7 +13,7 @@
 
 
   </a></figure>
-  <div class="name"><a href="/events/show/<%= occurrence.event.id %>"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
+  <div class="name"><a href="/events/austin/<%= occurrence.slug %>"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
   <div class="info clearfix">
     <span class="time pull-left"><%= occurrence.start.to_time.strftime("%B %-d @ %-l:%M%P") %></span>
     <span class="value pull-right"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price, :unit => "$").to_s + " " : "FREE ") : "" %></span>

@@ -304,9 +304,20 @@
                  <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-large.png") %>
 	            </span>
           </a>
-          <a href="#">
-            <img src="/assets/images/icon-calendar.png" alt=""/>
-          </a>
+
+            <a href="http://www.halfpastnow.com/events/show/<%=@event.id%>?fullmode=true" title="Add to Calendar" class="addthisevent">
+              <!--<span class="icon icon-calendar cal"></span>-->
+              <img src="/assets/images/icon-calendar.png" alt=""/>
+              <span class="_url">http://www.halfpastnow.com/events/show/<%=@event.id%>?fullmode=true</span>
+              <span class="_start"><%= (@occurrence.start.nil?) ? "" : @occurrence.start.strftime('%d-%m-%Y %H:%M:%S') %></span>
+              <span class="_end"><%= (@occurrence.end.nil?) ? (@occurrence.start.nil?) ? "" : (@occurrence.start + 2.hours).strftime('%d-%m-%Y %H:%M:%S') : @occurrence.end.strftime('%d-%m-%Y %H:%M:%S') %></span>
+              <span class="_zonecode">11</span>
+              <span class="_summary"><%= @event.title %></span>
+              <span class="_description"><%= (@event.description.nil?) ? '' : truncate(strip_tags(@event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"') %></span>
+              <span class="_location"><%= @event.venue.name %>, <%= @event.venue.address %>, <%= @event.venue.city %>, <%= @event.venue.state %></span>
+              <span class="_date_format">DD/MM/YYYY</span>
+            </a>
+
           <a href="#" class="twitter"><img src="/assets/images/icon-twitter.png" alt=""/></a>
           <a href="#" class="facebook"><img src="/assets/images/icon-facebook.png" alt=""/></a>
         </div>
@@ -665,7 +676,9 @@
 
 </script>
 <style>
-
+  .icon.icon-calendar.cal{
+    display:none;
+  }
   #body{
      overflow: visible !important;
   }

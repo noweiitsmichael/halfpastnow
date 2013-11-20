@@ -20,7 +20,7 @@
       <% end %>
     </a></figure>
     <% unless options[:datetime_only] %>
-      <div class="name"> <a href="/events/show/<%= rec.occurrences.first.id %>?fullmode=true" class=""><%= rec.event.title %></a>
+      <div class="name"> <a href="/events/show/<%= rec.occurrences.first.id %>" class=""><%= truncate(rec.event.title, :length => 115) %></a>
       </div>
     <% end %>
     <div>

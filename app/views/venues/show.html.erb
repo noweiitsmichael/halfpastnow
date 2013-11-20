@@ -291,13 +291,11 @@
           <div class="right">
             <div class="share bookmark-share">
               <a href="#">
-               <span class="nice-button bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
+               <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
                  <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-large.png") %>
 	            </span>
               </a>
-              <a href="#">
-                <img src="/assets/images/icon-calendar.png" alt=""/>
-              </a>
+
               <a href="#" class="twitter"><img src="/assets/images/icon-twitter.png" alt=""/></a>
               <a href="#" class="facebook"><img src="/assets/images/icon-facebook.png" alt=""/></a>
             </div>

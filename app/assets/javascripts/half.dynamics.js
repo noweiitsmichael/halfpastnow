@@ -390,6 +390,8 @@ $(function () {
       console.log("it is working fine")
       filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd");
       filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+      console.log(filter.start_date)
+      console.log(filter.end_date)
       updateViewFromFilter();
     }
   });
@@ -1128,7 +1130,7 @@ function pullEvents(updateOptions) {
     $('figure').click(function(){
       var event_id = $(this).parent('article').attr('link-id')
       console.log(event_id)
-      window.location.href = window.location.origin+"/events/show/"+event_id
+      window.location.href = window.location.origin+"/events/austin/"+event_id
 
     })
 
@@ -1148,7 +1150,7 @@ function saved_search_events(location){
       $("#"+location).html(data);
       slider_arrows(location)
       if($('#'+location).find('article').length){
-        $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-all' ><span class='btn btn-large btn-danger'>See More</span><i class='icon-bottom-arrow'></i></a></article>")
+        $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
       }
     }
 
@@ -1168,7 +1170,7 @@ function dance_events(dance_tag,location){
       $("#"+location).html(data);
       slider_arrows(location)
       if($('#'+location).find('article').length){
-        $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-all' ><span class='btn btn-large btn-danger'>See More</span><i class='icon-bottom-arrow'></i></a></article>")
+        $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
       }
     }
   });
@@ -1185,7 +1187,7 @@ function happy_place_events(stream_id,location){
       $("#"+location).html(data);
       slider_arrows(location)
       if($('#'+location).find('article').length){
-        $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-all' ><span class='btn btn-large btn-danger'>See More</span><i class='icon-bottom-arrow'></i></a></article>")
+        $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
       }
         }
           });
@@ -1202,7 +1204,7 @@ function free_events(location){
       $("#"+location).html(data);
       slider_arrows(location)
       if($('#'+location).find('article').length){
-        $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-all' ><span class='btn btn-large btn-danger'>See More</span><i class='icon-bottom-arrow'></i></a></article>")
+        $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
       }
     }
   });
@@ -1254,7 +1256,7 @@ function slider_arrows(location){
   $('figure').click(function(){
     var event_id = $(this).parent('article').attr('link-id')
     console.log(event_id)
-    window.location.href = window.location.origin+"/events/show/"+event_id
+    window.location.href = window.location.origin+"/events/austin/"+event_id
 
   })
 }
