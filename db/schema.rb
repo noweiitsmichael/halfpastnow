@@ -16,8 +16,8 @@ ActiveRecord::Schema.define(:version => 20131115123457) do
   create_table "acts", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
     t.integer  "event_id"
     t.boolean  "suggested"
     t.text     "fb_picture"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20131115123457) do
     t.string   "pop_source"
     t.float    "completion"
     t.text     "temp_storage"
+    t.integer  "weight",       :default => 1
     t.string   "slug"
   end
 
@@ -167,6 +168,8 @@ ActiveRecord::Schema.define(:version => 20131115123457) do
     t.string   "cover_image_url"
     t.float    "completion"
     t.text     "ticket_url"
+    t.float    "escore",          :default => 0.0
+    t.integer  "weight",          :default => 1
   end
 
   add_index "events", ["clicks"], :name => "index_events_on_clicks"
@@ -216,10 +219,12 @@ ActiveRecord::Schema.define(:version => 20131115123457) do
     t.integer  "recurrence_id"
     t.integer  "day_of_week"
     t.boolean  "deleted"
+    t.string   "slug"
   end
 
   add_index "occurrences", ["event_id"], :name => "index_occurrences_on_event_id"
   add_index "occurrences", ["recurrence_id"], :name => "index_occurrences_on_recurrence_id"
+  add_index "occurrences", ["slug"], :name => "index_occurrences_on_slug"
   add_index "occurrences", ["start"], :name => "index_occurrences_on_start"
   add_index "occurrences", ["start"], :name => "occurrences_not_deleted_start_index"
 
@@ -329,6 +334,7 @@ ActiveRecord::Schema.define(:version => 20131115123457) do
     t.integer  "parent_tag_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "weight",        :default => 1
   end
 
   add_index "tags", ["parent_tag_id"], :name => "index_tags_on_parent_tag_id"
@@ -405,6 +411,7 @@ ActiveRecord::Schema.define(:version => 20131115123457) do
     t.integer  "updated_by"
     t.float    "completion"
     t.integer  "assigned_admin"
+    t.integer  "weight",         :default => 1
     t.string   "slug"
   end
 
