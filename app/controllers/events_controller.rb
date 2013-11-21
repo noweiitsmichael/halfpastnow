@@ -897,5 +897,7 @@ class EventsController < ApplicationController
       redirect_to cookies[:url]
     end
   end
-
+  def search_results
+    @occurrences = Occurrence.search(params).results
+  end
 end

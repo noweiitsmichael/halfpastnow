@@ -177,7 +177,8 @@
                     <li><a href="#">About Us</a> | <a href="#">Blog</a> | <a href="#">Privacy</a> | <a href="#">Terms</a> | <a href="#">Feedback</a> | &copy halfpastnow 2013</li>
                   </ul>
                 </div>
-                <input type="submit" class="submit">
+                <input type="button" class="submit">
+                <%# link_to "submit","#",:class => "submit1" %>
               </div>
             </div>
           </form>
@@ -239,6 +240,13 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
     key = $('#appendedInput').val()
     url = window.location.origin+"/search?key="+key
     window.location.href = url
+    return false;
+  })
+  $('.submit1').click(function(){
+    key = $('#appendedInput').val()
+    $.get("/search_results",{query:key})
+    // url = window.location.origin+"/search?key="+key
+    //window.location.href = url
     return false;
   })
   $('figure').click(function(){

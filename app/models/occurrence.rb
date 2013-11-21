@@ -2,13 +2,52 @@ require 'pp'
 class Occurrence < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug,use: :slugged
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
   belongs_to :event
   belongs_to :recurrence
   has_many :histories
-
+  has_many :acts, :through => :event
+  has_one :venue, :through => :event
+  has_many :tags, :through => :event
   # Bi-directional bookmarks association (find a user's bookmarked events, and users who have bookmarked this event)
   belongs_to :bookmarked, :polymorphic => true
   has_many :bookmarks, :as => :bookmarked, :dependent => :destroy
+
+
+  after_touch() { tire.update_index }
+  mapping do
+    indexes :slug, type: 'string', boost: 10 , analyzer: 'snowball'
+    indexes :events do
+      indexes :id, type: 'integer'
+      indexes :price, type: 'integer'
+      indexes :title, boost: 10
+      indexes :description, boost: 9 , analyzer: 'snowball'
+    indexes :acts do
+      indexes :name, analyzer: 'snowball'
+    end
+    indexes :venue do
+      indexes :name, analyzer: 'snowball'
+      indexes :description, analyzer: 'snowball'
+    end
+    indexes :tags do
+      indexes :name, analyzer: 'snowball'
+    end
+      end
+  end
+
+  def self.search(params)
+    tire.search(load: true) do
+      query { string params[:query], default_operator: "OR" } if params[:query].present?
+      #filter :range, published_at: {lte: Time.zone.now}
+    end
+
+  end
+  def to_indexed_json
+    to_json( include: { acts: { only: [:name] }, venue: { only: [:name,:description]},tags: {only: [:name]} } )
+  end
+
+
   # Allows you to search for users that bookmarked this event by calling "event.bookmarked_by"
   # has_many :bookmarked_by, :through => :bookmarks, :source => :user
 
