@@ -225,7 +225,7 @@
         <% unless (@result.empty?) %>
             <% occurrences = @result.select { |b| b if (b["start"].to_date == day) } %>
             <%# occurrence_count = occurrences.size %>
-            <% occurrences = occurrences.select { |b| b if (Occurrence.find(b["id"]).trending_event == true) } %>
+            <% occurrences = occurrences.select { |b| b if (Occurrence.find(b["id"]).trending_event == true && !b.nil?) } %>
             <% occurrences = occurrences.first(4)%>
             <% unless (occurrences.blank?) %>
               <!--current day in dark color-->
