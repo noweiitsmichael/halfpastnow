@@ -495,7 +495,7 @@ class EventsController < ApplicationController
     end
     # http://secret-citadel-5147.herokuapp.com/events/show/11?fullmode=true
     @url ='http://www.halfpastnow.com/?event_id='+params[:id]
-    @url1='http://www.halfpastnow.com/events/show/'+params[:id]+'?fullmode=true'
+    @url1="http://www.halfpastnow.com/events/austin/#{@occurrence.slug}"
     @ur = 'https://www.facebook.com/plugins/like.php?href=http://www.halfpastnow.com/mobile/og/'+params[:id]
 
     # http://www.halfpastnow.com/?event_id=15599
@@ -897,5 +897,7 @@ class EventsController < ApplicationController
       redirect_to cookies[:url]
     end
   end
-
+  def search_results
+    @occurrences = Occurrence.search(params).results
+  end
 end
