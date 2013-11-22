@@ -243,6 +243,9 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
     window.location.href = url
     return false;
   })
+  $('.dropdown-menu a').click(function(){
+    window.location.href = window.location.origin+"/search?key="+$(this).text()+"&tag_id="+$(this).attr('tag_id')
+  })
   <% end %>
   $('.submit1').click(function(){
     key = $('#appendedInput').val()
@@ -257,9 +260,7 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
     window.location.href = window.location.origin+"/events/austin/"+event_id
 
   })
-  $('.dropdown-menu a').click(function(){
-    window.location.href = window.location.origin+"/search?key="+$(this).text().serialize()+"&tag_id="+$(this).attr('tag_id')
-  })
+
 </script>
 <footer>
   <div class="container">
