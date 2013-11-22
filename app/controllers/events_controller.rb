@@ -420,7 +420,7 @@ class EventsController < ApplicationController
         SET views = views + 1
         WHERE id IN (#{@venue_ids * ','})")
     end
-
+     @location = "search"
     respond_to do |format|
       format.html do
 
@@ -871,13 +871,20 @@ class EventsController < ApplicationController
   end
 
   def saved_search
-
+      #raise params[:tag_id].to_i.inspect
     key = current_user.saved_searches.where(:search_key => params[:key])
-    #raise key.inspect
-    key_id = key.empty?? current_user.saved_searches.create(:search_key => params[:key]).id : (key.id rescue nil)
+    if key.empty?
+      saved_search = current_user.saved_searches.new
+      saved_search.search_key = params[:key]
+      saved_search.tag_id = params[:tag_id]
+      saved_search.save
+      @key_id = saved_search.id
+    else
+      @key_id = (key.id rescue nil)
+    end
 
     flash[:notice] = "Search is saved successfully"
-    key_id.nil? ? (render :nothing => true) : (render :json => {key_id: key_id})
+    @key_id.nil? ? (render :nothing => true) : (render :json => {key_id: @key_id})
   end
 
   def delete_saved_search

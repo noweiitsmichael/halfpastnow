@@ -1081,9 +1081,9 @@ function pullEvents(updateOptions) {
     } else {
       //$('.tab-content').append("<div id="+ filter["search"] +" class='tab-pane fade'><div class='content main'><div class='container inline'><section class='product-list clearfix events'></section></div></div></div>")
       console.log($(data).length)
-        $(".total_number").text($(data).length)
       $("#related_events .main .inline .events").html(data);
       $("#events .main .inline .events").html(data);
+      $(".total_number").text($("#related_events .main .inline .events").find('article').length);
 
 //      console.log("----NUM EVENTS-----");
 //      console.log(jData.find("#combo_total_occurrences").html());
@@ -1137,9 +1137,26 @@ function pullEvents(updateOptions) {
   });
 }
 
+ function tagged_saved_search_events(tag,location){
 
+   var controllerLink = "/events/index?ajax=true"
+
+   $.get(controllerLink, {"included_tags":tag}, function (data) {
+     var locations = [];
+     var jData = $(data);
+     if (false) {
+     } else {
+       $("#"+location).html(data);
+       slider_arrows(location)
+       if($('#'+location).find('article').length){
+         $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
+       }
+     }
+   });
+ }
 function saved_search_events(location){
   console.log(location)
+
   var controllerLink = "/events/index?ajax=true"
   f1={"search":location}
   $.get(controllerLink, f1, function (data) {
@@ -1153,10 +1170,7 @@ function saved_search_events(location){
         $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
       }
     }
-
-
   });
-
 }
 function dance_events(dance_tag,location){
   console.log(location)
@@ -1218,12 +1232,20 @@ function cost_filter_events(high_price){
     var jData = $(data);
     if (false) {
     } else {
-      $(".total_number").text($('#'+location).find('article').length)
+//      $(".total_number").text($('#'+location).find('article').length)
       $("#related_events .main .inline .events").html(data);
       $("#events .main .inline .events").html(data);
 
 
     }
+  });
+}
+function dropdown_search_events(tag){
+  console.log(tag)
+  $.get("/events/index?ajax=true", {"included_tags":tag}, function (data) {
+    $("#related_events .main .inline .events").html(data);
+    $("#events .main .inline .events").html(data);
+    $(".total_number").text($("#related_events .main .inline .events").find('article').length);
   });
 }
 function slider_arrows(location){
@@ -1253,6 +1275,9 @@ function slider_arrows(location){
       }
     }
   });
+
+
+
   $('figure').click(function(){
     var event_id = $(this).parent('article').attr('link-id')
     console.log(event_id)
@@ -1332,7 +1357,15 @@ function checkInfinite() {
 $(function(){
   $('#search-tab a').on("click", function () {
     console.log("i am here")
+    tag_id = parseInt($(this).attr('tag_id'))
+    if(tag_id == 0){
     doneTyping1($(this).text());
-    $('#search_name').text($(this).text())
+    $('#search_name').text($(this).attr('key').replace(/\_/g, " "))
+    }else{
+      dropdown_search_events($(this).attr('tag_id'))
+      $('#search_name').html($(this).attr('key').replace(/\_/g, " "))
+    }
+    $('#related_events').show();
+    $('#events').hide();
   });
 });

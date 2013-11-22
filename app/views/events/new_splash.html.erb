@@ -102,21 +102,21 @@
               <ul class="dropdown-menu">
                 <li class="clearfix">
                   <div>
-                    <a href="#">Staff Picks</a><br/>
-                    <a href="#">Crowd Favorites</a><br/>
-                    <a href="#">Today's Events</a><br/>
-                    <a href="#">Food &amp; Drinks</a><br/>
-                    <a href="#">Live Shows</a><br/>
-                    <a href="#">Art &amp; Culture</a>
+                    <a href="#" tag_id="0">Staff Picks</a><br/>
+                    <a href="#" tag_id="0">Crowd Favorites</a><br/>
+                    <a href="#" tag_id="0">Today's Events</a><br/>
+                    <a href="#" tag_id="104">Food &amp; Drinks</a><br/>
+                    <a href="#" tag_id="1">Live Shows</a><br/>
+                    <a href="#" tag_id="89">Art &amp; Culture</a>
                   </div>
                   <div class="divider-vertical pull-left"></div>
                   <div>
-                    <a href="#">UT Events</a><br/>
-                    <a href="#">For Couples</a><br/>
-                    <a href="#">For Kids</a><br/>
-                    <a href="#">For Families</a><br/>
-                    <a href="#">Freebies</a><br/>
-                    <a href="#">All Activities</a>
+                    <a href="#" tag_id="233">UT Events</a><br/>
+                    <a href="#" tag_id="55">For Couples</a><br/>
+                    <a href="#" tag_id="38">For Kids</a><br/>
+                    <a href="#" tag_id="87">For Families</a><br/>
+                    <a href="#" tag_id="140">Freebies</a><br/>
+                    <a href="#" tag_id="0">All Activities</a>
                   </div>
                 </li>
                 <li class="divider"></li>
@@ -194,24 +194,30 @@
 </section>
 <% if user_signed_in?  %>
   <% @saved_searches.each do |search| %>
-    <section id="<%= search.search_key%>_section" class="slider-wrap">
+    <section id="<%= search.search_key.split("_").first.downcase %>_section" class="slider-wrap">
       <div class="container">
         <div class="section-title">
-          <h2 class="text-center"><%= search.search_key%></h2>
+          <h2 class="text-center"><%= search.search_key.gsub("_"," ")%></h2>
           <p class="lead text-center">Check-out events going on today.</p>
           <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
         </div>
         <div class="section-content slider">
-          <div id="<%= search.search_key%>">
+          <div id="<%= search.search_key.split("_").first.downcase%>">
           </div>
-          <a class="prev" id="<%= search.search_key%>_prev" href="#"><span>prev</span></a>
-          <a class="next" id="<%= search.search_key%>_next" href="#"><span>next</span></a>
+          <a class="prev" id="<%= search.search_key.split("_").first.downcase%>_prev" href="#"><span>prev</span></a>
+          <a class="next" id="<%= search.search_key.split("_").first.downcase%>_next" href="#"><span>next</span></a>
         </div>
       </div>
     </section>
     <script>
-      $('#<%= search.search_key%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: auto !important;'>");
-      saved_search_events("<%= search.search_key%>");
+
+
+      $('#<%= search.search_key.split("_").first.downcase%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: auto !important;'>");
+      <% if search.tag_id.nil? or search.tag_id == 0 %>
+      saved_search_events("<%= search.search_key %>");
+      <% else %>
+      tagged_saved_search_events("<%= search.tag_id %>",'<%= search.search_key.split("_").first.downcase %>');
+      <% end %>
     </script>
   <% end %>
 <% end %>
@@ -488,6 +494,9 @@
   window.location.href = window.location.origin
 
   })
+  $('.dropdown-menu a').click(function(){
+    window.location.href = window.location.origin+"/search?key="+$(this).text()+"&tag_id="+$(this).attr('tag_id')
+  })
   $('#slider1,#slider4').append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
 </script>
 <% unless @page %>
@@ -500,6 +509,10 @@
   }
   .see-more {
     text-align: center;
+  }
+  .slider-wrap {
+    height: 519px;
+    width: 1400px;
   }
 </style>
 </body>

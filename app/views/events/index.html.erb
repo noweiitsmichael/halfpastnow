@@ -329,7 +329,7 @@
           <% if user_signed_in? %>
             <% @saved_search.each do |search| %>
               <li class="related_events">
-                <a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" key="<%= search[:search_key] %>"><%= search[:search_key] %>
+                <a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" tag_id="<%= search.tag_id.nil?? search.tag_id.to_i : search.tag_id.to_i  %>" key="<%= search[:search_key] %>"><%= search[:search_key].gsub("_"," ") %>
                   <i class='icon-cross'></i></a></li>
             <% end %>
           <% end %>
@@ -393,7 +393,7 @@
             <div class="container inline">
               <img alt="" src="assets/ad.jpg" class="pull-right">
 
-              <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results </h2>
+              <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results <span id="search_name1"></span></h2>
 
               <p class="lead text-info"></p>
               <section class="product-list clearfix events">
@@ -488,8 +488,47 @@
     </div>
   </div>
   <script>
+
     $(document).ready(function(){
-    <% if params[:key].present? %>
+
+    <% if params[:key].present? and params[:tag_id].present? %>
+
+      $(".active").attr('class', '');
+      $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>'><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+      $('.icon-cross').on("click", function () {
+        $(this).parents('li').remove()
+      })
+
+      $('#search-tab a').on("click", function () {
+        console.log($(this).text())
+        dropdown_search_events("<%= params[:tag_id] %>")
+        $('#search_name').text($(this).text())
+
+      });
+      $('.icon-white-pin').on("click", function () {
+        key = $(this).parent().attr('key')
+        check = $(this).parent()
+        <% if user_signed_in? %>
+        $(this).hide()
+        $.get('/saved_search', {key: key}, function (data) {
+          console.log(check)
+          check.attr('key_id', data["key_id"]);
+
+        })
+        $('#share').click(function () {
+          window.open(
+            'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href),
+            'facebook-share-dialog',
+            'width=626,height=436');
+        })
+        $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
+
+        <% end %>
+      })
+      $('#search_name,#search_name1').text("<%= params[:key] %>")
+      dropdown_search_events("<%= params[:tag_id] %>")
+      $('#search_name').text("<%= params[:key] %>")
+    <% elsif params[:key].present? %>
     $(".active").attr('class', '');
     $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>'><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
     $('.icon-cross').on("click", function () {
@@ -500,6 +539,7 @@
       console.log($(this).text())
       doneTyping1($(this).text());
       $('#search_name').text($(this).text())
+
     });
     $('.icon-white-pin').on("click", function () {
       key = $(this).parent().attr('key')
@@ -521,6 +561,7 @@
 
       <% end %>
     })
+      $('#search_name,#search_name1').text("<%= params[:key] %>")
     doneTyping1("<%= params[:key] %>");
     $('#search_name').text("<%= params[:key] %>")
     <% end %>
@@ -536,19 +577,39 @@
     })
     $('.dropdown-menu a').click(function () {
       $(".active").attr('class', '');
-      $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key=" + $(this).text().replace(" ", "_") + ">" + $(this).text() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+      $('#search-tab').append("<li class='active related_events dropdown_links'><a data-toggle='tab' href='#related_events' key=" + $(this).text().replace(/\ /g, "_") + " tag_id="+ $(this).attr('tag_id') +">" + $(this).text() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
       $('.icon-cross').on("click", function () {
         $(this).parents('li').remove()
       })
+
       $('#search_name').text($(this).text())
-      console.log($(this).text())
-      doneTyping1($(this).text());
+      console.log("this is tag reference:"+$(this).attr('tag_id'))
+      dropdown_search_events($(this).attr('tag_id'))
+//      doneTyping1($(this).text());
       $('#search-tab a').on("click", function () {
         console.log($(this).text())
-        doneTyping1($(this).text());
+        dropdown_search_events($(this).attr('tag_id'))
+//        doneTyping1($(this).text());
         $('#search_name').text($(this).text())
+        $('#related_events').show();
+        $('#events').hide();
       });
 
+      $('.icon-white-pin').on("click", function () {
+        key = $(this).parent().attr('key')
+        tag_id = $(this).parent().attr('tag_id')
+        check = $(this).parent()
+        <% if user_signed_in? %>
+        $(this).hide()
+        $.get('/saved_search', {key: key,tag_id: tag_id}, function (data) {
+          console.log(check)
+          check.attr('key_id', data["key_id"]);
+
+        })
+        $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
+
+        <% end %>
+      })
     })
     $(".submit").on("click", function () {
 
@@ -572,10 +633,11 @@
         <% end %>
         $('.icon-white-pin').on("click", function () {
           key = $(this).parent().attr('key')
+          tag_id = $(this).parent().attr('tag_id')
           check = $(this).parent()
           <% if user_signed_in? %>
           $(this).hide()
-          $.get('/saved_search', {key: key}, function (data) {
+          $.get('/saved_search', {key: key,tag_id: tag_id}, function (data) {
             console.log(check)
             check.attr('key_id', data["key_id"]);
 
@@ -593,6 +655,7 @@
       })
       $('#search-tab a').on("click", function () {
         console.log("i am here")
+
         doneTyping1($(this).text());
         $('#search_name').text($(this).text())
       });
@@ -617,6 +680,7 @@
     })
     $('#search-tab a').on("click", function () {
       console.log("i am here")
+
       doneTyping1($(this).text());
       $('#search_name').text($(this).text())
     });
