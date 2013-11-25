@@ -1358,9 +1358,17 @@ $(function(){
   $('#search-tab a').on("click", function () {
     console.log("i am here")
     tag_id = parseInt($(this).attr('tag_id'))
-    if(tag_id == 0){
+    tag_type = $(this).attr('tag_type')
+
+    $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+    $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+    $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
+    if(tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")){
     doneTyping1($(this).text());
     $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
+    }else if(tag_id == 0){
+      $.get("/search_results",{tag_id:$(this).attr('tag_id'),tag_type:$(this).attr('tag_type')})
+      $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     }else{
       dropdown_search_events($(this).attr('tag_id'))
       $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))

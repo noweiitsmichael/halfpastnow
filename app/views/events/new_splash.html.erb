@@ -102,9 +102,9 @@
               <ul class="dropdown-menu">
                 <li class="clearfix">
                   <div>
-                    <a href="#" tag_id="0">Staff Picks</a><br/>
-                    <a href="#" tag_id="0">Crowd Favorites</a><br/>
-                    <a href="#" tag_id="0">Today's Events</a><br/>
+                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="staff" catagory="austin">Staff Picks</a><br/>
+                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="crowd">Crowd Favorites</a><br/>
+                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="today">Today's Events</a><br/>
                     <a href="#" tag_id="104">Food &amp; Drinks</a><br/>
                     <a href="#" tag_id="1">Live Shows</a><br/>
                     <a href="#" tag_id="89">Art &amp; Culture</a>
@@ -116,7 +116,7 @@
                     <a href="#" tag_id="38">For Kids</a><br/>
                     <a href="#" tag_id="87">For Families</a><br/>
                     <a href="#" tag_id="140">Freebies</a><br/>
-                    <a href="#" tag_id="0">All Activities</a>
+                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="all">All Activities</a>
                   </div>
                 </li>
                 <li class="divider"></li>
@@ -495,7 +495,14 @@
 
   })
   $('.dropdown-menu a').click(function(){
-    window.location.href = window.location.origin+"/search?key="+$(this).text()+"&tag_id="+$(this).attr('tag_id')
+    tag_id = $(this).attr('tag_id')
+    tag_type = $(this).attr('tag_type')
+    if(tag_id == "0"){
+      window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text())+"&tag_id="+tag_id+"&tag_type="+tag_type
+    }
+    else{
+      window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text())+"&tag_id="+tag_id
+    }
   })
   $('#slider1,#slider4').append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
 </script>

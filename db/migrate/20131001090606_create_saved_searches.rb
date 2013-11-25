@@ -4,7 +4,7 @@ class CreateSavedSearches < ActiveRecord::Migration
       t.string :search_key
       t.integer :tag_id
       t.integer :user_id
-
+      t.string :tag_type
       t.timestamps
     end
   end

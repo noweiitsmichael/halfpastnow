@@ -3,20 +3,12 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta property="fb:app_id" content="475386955806720" />
-
-
-
-
-
-
   <% if @pick %>
     <meta property="og:type" content="halfpastnow:toppick" />
   <% else %>
     <meta property="og:type" content="halfpastnow:event" />
   <% end %>
-
   <%= yield :meta %>
-
   <% if @fullmode %>
     <% if @event && @event.cover_image_url %>
       <meta property="og:image" content="<%= @event.cover_image_url %>" />
@@ -28,42 +20,29 @@
         <meta property="og:image" content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png" />
       <% end %>
   <% end %>
-
-
-
-
   <% if @pick %>
     <meta property="og:type" content="halfpastnow:toppick" />
   <% else %>
     <!-- <meta property="og:type" content="hpnstaging:event" /> -->
   <% end %>
-
-
-
   <title class="head-title"><%= @pageTitle || "half past now." %></title>
-
-
   <link rel="shortcut icon" href="/assets/favicon.ico" />
   <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,900,700italic,900italic,700,500italic,500,400italic,300italic,100italic">
-
   <%= stylesheet_link_tag "application","bootstrap","bootstrap-responsive","media-queries","jquery-ui","jquery.ui.timepicker" %>
   <%= javascript_include_tag "application","jquery-ui","modernizr-latest","bootstrap","jquery.touchSwipe.min","jquery.carouFredSel-6.2.1-packed","jquery-migrate-1.2.1","jquery.ui.timepicker","verticalSlider","custom"%>
   <%= csrf_meta_tags %>
-
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-36312888-1']);
     _gaq.push(['_setDomainName', 'herokuapp.com']);
     _gaq.push(['_trackPageview']);
-
     (function() {
       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
 </script>
-
 <script type="text/javascript">
   $(document).ready(function () {
     console.log(".....ready");
@@ -79,7 +58,6 @@
                 $('ul.profile-menu').slideUp('fast');
             }
           },100);
-
       }),
       $(".profile-menu").mouseenter(function() {
           $("ul.profile-menu").addClass('hover');

@@ -872,12 +872,12 @@ class EventsController < ApplicationController
   end
 
   def saved_search
-      #raise params[:tag_id].to_i.inspect
     key = current_user.saved_searches.where(:search_key => params[:key])
     if key.empty?
       saved_search = current_user.saved_searches.new
       saved_search.search_key = params[:key]
       saved_search.tag_id = params[:tag_id]
+      saved_search.tag_type = params[:tag_type]
       saved_search.save
       @key_id = saved_search.id
     else
@@ -933,8 +933,9 @@ class EventsController < ApplicationController
 
 
     if params[:tag_type] == "crowd"
+      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
 
-   end
+    end
    if params[:tag_type] == "staff"
      @occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
    end
@@ -944,5 +945,10 @@ class EventsController < ApplicationController
      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
 
    end
+    if params[:query].present?
+
+    search_results = Occurrence.search(params)
+    @occurrences = search_results.results
+      end
   end
 end
