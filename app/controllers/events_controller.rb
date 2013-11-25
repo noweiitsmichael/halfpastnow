@@ -421,6 +421,7 @@ class EventsController < ApplicationController
         WHERE id IN (#{@venue_ids * ','})")
     end
      @location = "search"
+    @austin_occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
     respond_to do |format|
       format.html do
 
@@ -905,6 +906,43 @@ class EventsController < ApplicationController
     end
   end
   def search_results
-    @occurrences = Occurrence.search(params).results
+    @lat = 30.268093
+    @long = -97.742808
+    @zoom = 11
+
+    params[:lat_center] = @lat
+    params[:long_center] = @long
+    params[:zoom] = @zoom
+
+    params[:user_id] = current_user ? current_user.id : nil
+    @ids = Occurrence.find_with(params)
+
+    @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
+    @event_ids = @ids.collect { |e| e["event_id"] }.uniq
+    @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
+
+    order_by = "occurrences.start"
+    if (params[:sort].to_s.empty? || params[:sort].to_i == 0)
+      # order by event score when sorting by popularity
+      order_by = "CASE events.views
+                    WHEN 0 THEN 0
+                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+                  END DESC"
+
+    end
+
+
+    if params[:tag_type] == "crowd"
+
+   end
+   if params[:tag_type] == "staff"
+     @occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
+   end
+   if params[:tag_type] == "today"
+   end
+   if params[:tag_type] == "all"
+     @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+
+   end
   end
 end

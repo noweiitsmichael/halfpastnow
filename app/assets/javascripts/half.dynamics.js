@@ -516,7 +516,7 @@ $(function () {
       }
     }
 
-    $('#search_name').text($(this).val())
+    $('#search_name,#search_name1').text($(this).val())
   });
 
   //on keydown, clear the countdown
@@ -1360,10 +1360,10 @@ $(function(){
     tag_id = parseInt($(this).attr('tag_id'))
     if(tag_id == 0){
     doneTyping1($(this).text());
-    $('#search_name').text($(this).attr('key').replace(/\_/g, " "))
+    $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     }else{
       dropdown_search_events($(this).attr('tag_id'))
-      $('#search_name').html($(this).attr('key').replace(/\_/g, " "))
+      $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     }
     $('#related_events').show();
     $('#events').hide();
