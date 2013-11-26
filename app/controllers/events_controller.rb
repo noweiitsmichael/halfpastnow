@@ -872,8 +872,7 @@ class EventsController < ApplicationController
   end
 
   def saved_search
-    raise params.inspect
-    key = current_user.saved_searches.where(:search_key => params[:key])
+    key = current_user.saved_searches.where(:search_key => params[:key].gsub("_"," "))
     if key.empty?
       saved_search = current_user.saved_searches.new
       saved_search.search_key = params[:key]

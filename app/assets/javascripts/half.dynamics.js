@@ -1373,7 +1373,6 @@ function checkInfinite() {
 
 $(function(){
   $('#search-tab a').on("click", function () {
-    alert("hi")
     console.log("i am here")
     tag_id = parseInt($(this).attr('tag_id'))
     tag_type = $(this).attr('tag_type')
