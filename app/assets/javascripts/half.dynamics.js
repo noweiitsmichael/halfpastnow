@@ -1373,7 +1373,7 @@ function checkInfinite() {
 
 $(function(){
   $('#search-tab a').on("click", function () {
-  //  alert("hi")
+    alert("hi")
     console.log("i am here")
     tag_id = parseInt($(this).attr('tag_id'))
     tag_type = $(this).attr('tag_type')
@@ -1391,7 +1391,6 @@ $(function(){
       dropdown_search_events($(this).attr('tag_id'))
       $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     }
-    $('#related_events').show();
-    $('#events').hide();
+
   });
 });
