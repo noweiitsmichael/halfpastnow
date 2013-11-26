@@ -872,6 +872,7 @@ class EventsController < ApplicationController
   end
 
   def saved_search
+    raise params.inspect
     key = current_user.saved_searches.where(:search_key => params[:key])
     if key.empty?
       saved_search = current_user.saved_searches.new
@@ -946,7 +947,6 @@ class EventsController < ApplicationController
 
    end
     if params[:query].present?
-
     search_results = Occurrence.search(params)
     @occurrences = search_results.results
       end

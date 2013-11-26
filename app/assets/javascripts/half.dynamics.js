@@ -505,13 +505,13 @@ $(function () {
 
    $(".active").attr('class', '');
     if (!timer_is_on) {
-      timer_is_on = 1;
+      timer_is_on = 2;
       if ($(this).val().length >= 3) {
         $(window).load(function(){
           $('#releated_events').show()
         })
         console.log("keyup");
-        typingTimer = setTimeout(doneTyping, doneTypingInterval);
+        typingTimer = setTimeout(doneTyping1($(this).val()), doneTypingInterval);
         console.log("typing timer is " + typingTimer)
       }
     }
@@ -1024,9 +1024,8 @@ function doneTyping() {
   pullEvents({update_search: false});
 }
 function doneTyping1(search) {
-
   filter.search = search;
- pullEvents({update_search: false});
+ pullEvents({update_search: false,search: "elastic"});
 
   window.location.hash = "key:"+search;
 }
@@ -1081,6 +1080,7 @@ function pullEvents(updateOptions) {
     } else {
       //$('.tab-content').append("<div id="+ filter["search"] +" class='tab-pane fade'><div class='content main'><div class='container inline'><section class='product-list clearfix events'></section></div></div></div>")
       console.log($(data).length)
+
       $("#related_events .main .inline .events").html(data);
       $("#events .main .inline .events").html(data);
       $(".total_number").text($("#related_events .main .inline .events").find('article').length);
@@ -1135,6 +1135,23 @@ function pullEvents(updateOptions) {
     })
 
   });
+}
+function pullEvents(updateOptions,search) {
+  $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+  $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+   var async_reloadTagsList = reloadTagsList;
+  var async_infiniteScrolling = infiniteScrolling;
+  updateOptions = defaultTo(updateOptions, {});
+  loading('show');
+  var visibleTagListID = $('.tags-menu.ortags.children li:visible').attr('parent-id');
+  var controllerLink = "/events/index?ajax=true"
+  if (window.location.href.indexOf("sxsw") > -1) {
+    controllerLink = "/events/sxsw?ajax=true"
+  }
+  //alert("hi")
+  $.get("/search_results",{query:filter.search})
+
+
 }
 
  function tagged_saved_search_events(tag,location){
@@ -1356,6 +1373,7 @@ function checkInfinite() {
 
 $(function(){
   $('#search-tab a').on("click", function () {
+  //  alert("hi")
     console.log("i am here")
     tag_id = parseInt($(this).attr('tag_id'))
     tag_type = $(this).attr('tag_type')
