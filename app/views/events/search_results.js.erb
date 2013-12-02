@@ -1,0 +1,5 @@
+var results = "<%= escape_javascript render :partial => "search_results" %>"
+$("#related_events .main .inline .events").html("<br>"+results);
+$("#events .main .inline .events").html("<br>"+results)
+$(".total_number").text($("#related_events .main .inline .events").find('article').length);
+

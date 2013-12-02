@@ -324,7 +324,9 @@ ActiveRecord::Schema.define(:version => 20131115123457) do
 
   create_table "saved_searches", :force => true do |t|
     t.string   "search_key"
+    t.integer  "tag_id"
     t.integer  "user_id"
+    t.string   "tag_type"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

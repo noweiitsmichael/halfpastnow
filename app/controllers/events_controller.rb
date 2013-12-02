@@ -420,7 +420,8 @@ class EventsController < ApplicationController
         SET views = views + 1
         WHERE id IN (#{@venue_ids * ','})")
     end
-
+     @location = "search"
+    @austin_occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
     respond_to do |format|
       format.html do
 
@@ -871,13 +872,20 @@ class EventsController < ApplicationController
   end
 
   def saved_search
-
-    key = current_user.saved_searches.where(:search_key => params[:key])
-    #raise key.inspect
-    key_id = key.empty?? current_user.saved_searches.create(:search_key => params[:key]).id : (key.id rescue nil)
+    key = current_user.saved_searches.where(:search_key => params[:key].gsub("_"," "))
+    if key.empty?
+      saved_search = current_user.saved_searches.new
+      saved_search.search_key = params[:key]
+      saved_search.tag_id = params[:tag_id]
+      saved_search.tag_type = params[:tag_type]
+      saved_search.save
+      @key_id = saved_search.id
+    else
+      @key_id = (key.id rescue nil)
+    end
 
     flash[:notice] = "Search is saved successfully"
-    key_id.nil? ? (render :nothing => true) : (render :json => {key_id: key_id})
+    @key_id.nil? ? (render :nothing => true) : (render :json => {key_id: @key_id})
   end
 
   def delete_saved_search
@@ -898,6 +906,48 @@ class EventsController < ApplicationController
     end
   end
   def search_results
-    @occurrences = Occurrence.search(params).results
+    @lat = 30.268093
+    @long = -97.742808
+    @zoom = 11
+
+    params[:lat_center] = @lat
+    params[:long_center] = @long
+    params[:zoom] = @zoom
+
+    params[:user_id] = current_user ? current_user.id : nil
+    @ids = Occurrence.find_with(params)
+
+    @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
+    @event_ids = @ids.collect { |e| e["event_id"] }.uniq
+    @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
+
+    order_by = "occurrences.start"
+    if (params[:sort].to_s.empty? || params[:sort].to_i == 0)
+      # order by event score when sorting by popularity
+      order_by = "CASE events.views
+                    WHEN 0 THEN 0
+                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+                  END DESC"
+
+    end
+
+
+    if params[:tag_type] == "crowd"
+      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+
+    end
+   if params[:tag_type] == "staff"
+     @occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
+   end
+   if params[:tag_type] == "today"
+   end
+   if params[:tag_type] == "all"
+     @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+
+   end
+    if params[:query].present?
+    search_results = Occurrence.search(params)
+    @occurrences = search_results.results
+      end
   end
 end

@@ -3,20 +3,12 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta property="fb:app_id" content="475386955806720" />
-
-
-
-
-
-
   <% if @pick %>
     <meta property="og:type" content="halfpastnow:toppick" />
   <% else %>
     <meta property="og:type" content="halfpastnow:event" />
   <% end %>
-
   <%= yield :meta %>
-
   <% if @fullmode %>
     <% if @event && @event.cover_image_url %>
       <meta property="og:image" content="<%= @event.cover_image_url %>" />
@@ -28,42 +20,29 @@
         <meta property="og:image" content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png" />
       <% end %>
   <% end %>
-
-
-
-
   <% if @pick %>
     <meta property="og:type" content="halfpastnow:toppick" />
   <% else %>
     <!-- <meta property="og:type" content="hpnstaging:event" /> -->
   <% end %>
-
-
-
   <title class="head-title"><%= @pageTitle || "half past now." %></title>
-
-
   <link rel="shortcut icon" href="/assets/favicon.ico" />
   <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,900,700italic,900italic,700,500italic,500,400italic,300italic,100italic">
-
   <%= stylesheet_link_tag "application","bootstrap","bootstrap-responsive","media-queries","jquery-ui","jquery.ui.timepicker" %>
   <%= javascript_include_tag "application","jquery-ui","modernizr-latest","bootstrap","jquery.touchSwipe.min","jquery.carouFredSel-6.2.1-packed","jquery-migrate-1.2.1","jquery.ui.timepicker","verticalSlider","custom"%>
   <%= csrf_meta_tags %>
-
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-36312888-1']);
     _gaq.push(['_setDomainName', 'herokuapp.com']);
     _gaq.push(['_trackPageview']);
-
     (function() {
       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
 </script>
-
 <script type="text/javascript">
   $(document).ready(function () {
     console.log(".....ready");
@@ -79,7 +58,6 @@
                 $('ul.profile-menu').slideUp('fast');
             }
           },100);
-
       }),
       $(".profile-menu").mouseenter(function() {
           $("ul.profile-menu").addClass('hover');
@@ -156,21 +134,21 @@
                   <ul class="dropdown-menu">
                     <li class="clearfix">
                       <div>
-                        <a href="#">Staff Picks</a><br/>
-                        <a href="#">Crowd Favorites</a><br/>
-                        <a href="#">Today's Events</a><br/>
-                        <a href="#">Food &amp; Drinks</a><br/>
-                        <a href="#">Live Shows</a><br/>
-                        <a href="#">Art &amp; Culture</a>
+                        <a href="#" tag_id="0" class="dd_menu_tags" tag_type="staff" catagory="austin">Staff Picks</a><br/>
+                        <a href="#" tag_id="0" class="dd_menu_tags" tag_type="crowd">Crowd Favorites</a><br/>
+                        <a href="#" tag_id="0" class="dd_menu_tags" tag_type="today">Today's Events</a><br/>
+                        <a href="#" tag_id="104">Food &amp; Drinks</a><br/>
+                        <a href="#" tag_id="1">Live Shows</a><br/>
+                        <a href="#" tag_id="89">Art &amp; Culture</a>
                       </div>
                       <div class="divider-vertical pull-left"></div>
                       <div>
-                        <a href="#">UT Events</a><br/>
-                        <a href="#">For Couples</a><br/>
-                        <a href="#">For Kids</a><br/>
-                        <a href="#">For Families</a><br/>
-                        <a href="#">Freebies</a><br/>
-                        <a href="#">All Activities</a>
+                        <a href="#" tag_id="233">UT Events</a><br/>
+                        <a href="#" tag_id="55">For Couples</a><br/>
+                        <a href="#" tag_id="38">For Kids</a><br/>
+                        <a href="#" tag_id="87">For Families</a><br/>
+                        <a href="#" tag_id="140">Freebies</a><br/>
+                        <a href="#" tag_id="0" class="dd_menu_tags" tag_type="all">All Activities</a>
                       </div>
                     </li>
                     <li class="divider"></li>
@@ -236,25 +214,32 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
       facebook  : {show:false, text:"Facebook Event"},
       callback  : ""
   })
+  <% unless @location.present? %>
   $('.submit').click(function(){
     key = $('#appendedInput').val()
     url = window.location.origin+"/search?key="+key
     window.location.href = url
     return false;
   })
-  $('.submit1').click(function(){
-    key = $('#appendedInput').val()
-    $.get("/search_results",{query:key})
-    // url = window.location.origin+"/search?key="+key
-    //window.location.href = url
-    return false;
+  $('.dropdown-menu a').click(function(){
+    tag_id = $(this).attr('tag_id')
+    tag_type = $(this).attr('tag_type')
+    if(tag_id == "0"){
+      window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text())+"&tag_id="+tag_id+"&tag_type="+tag_type
+    }
+    else{
+    window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text())+"&tag_id="+tag_id
+    }
   })
+  <% end %>
+
   $('figure').click(function(){
     var event_id = $(this).parent('article').attr('link-id')
     console.log(event_id)
     window.location.href = window.location.origin+"/events/austin/"+event_id
 
   })
+
 </script>
 <footer>
   <div class="container">
