@@ -395,12 +395,8 @@ $(function () {
       updateViewFromFilter();
     }
   });
-
-
   $('.custom-start, .custom-end').datepicker("setDate", Date.today().toString("MM/dd/yyyy"));
-
   $(".price-range").slider({
-
     range: "min",
     min: 0,
     step: 5,
@@ -507,6 +503,7 @@ $(function () {
     if (!timer_is_on) {
       timer_is_on = 2;
       if ($(this).val().length >= 3) {
+        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
         $(window).load(function(){
           $('#releated_events').show()
         })
@@ -918,7 +915,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
     $('.filter-summary .tags').html("");
   } else {
     $('.filter-summary .tags').html(filterText);
-    $('.filter-summary .tags').show();
+     $('.filter-summary .tags').show();
   }
 
   if (andtagsFilterText === ANY_TAG_TEXT) {
@@ -1149,9 +1146,9 @@ function pullEvents(updateOptions,search) {
     controllerLink = "/events/sxsw?ajax=true"
   }
   //alert("hi")
-  $.get("/search_results",{query:filter.search})
-
-
+  //alert(JSON.stringify(filter))
+  filter.query = filter.search
+$.get("/search_results",filter)
 }
 
  function tagged_saved_search_events(tag,location){

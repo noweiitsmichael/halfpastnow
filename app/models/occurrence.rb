@@ -33,12 +33,14 @@ class Occurrence < ActiveRecord::Base
     indexes :tags do
       indexes :name, analyzer: 'snowball'
     end
+      index
       end
   end
 
   def self.search(params)
     tire.search(load: true) do
-      query { string params[:query], default_operator: "OR" } if params[:query].present?
+      query { string params[:query], default_operator: "OR",match_all: {} } if params[:query].present?
+      #facet('timeline') { range :post_date, { :ranges => [ { to: Date.today+1, from: Date.today-7 }, { to: Date.today+1, from: Date.today-14 }, { to: Date.today+1, from: Date.today-30 } ] } }
       #filter :range, published_at: {lte: Time.zone.now}
     end
 
@@ -403,7 +405,7 @@ class Occurrence < ActiveRecord::Base
                      LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id"
         join_cache_indicator = 5
 
-      where_clause = "#{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{tag_and_match} AND #{low_price_match} AND #{high_price_match}"
+      where_clause = "#{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{tag_and_match} AND #{low_price_match} AND #{high_price_match}"
 
     end
 

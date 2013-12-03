@@ -322,10 +322,11 @@
 <% end %>
 <% content_for :body do %>
   <section class="search">
+
     <div class="tabs">
       <div class="container">
         <ul class="nav nav-tabs" id="search-tab">
-          <li class="events_tab"><a data-toggle="tab" href="#events">Events</a></li>
+          <li class="events_tab"><a data-toggle="tab" tag_type="all" href="#events">Events</a></li>
           <% if user_signed_in? %>
             <% @saved_search.each do |search| %>
               <li class="related_events">
