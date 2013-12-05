@@ -1411,7 +1411,9 @@ $(function(){
     doneTyping1($(this).text());
     $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     }else if(tag_id == 0){
-      $.get("/search_results",{tag_id:$(this).attr('tag_id'),tag_type:$(this).attr('tag_type')})
+      filter.tag_id = tag_id
+      filter.tag_type = tag_type
+      $.get("/search_results",filter)
       $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     }else{
       dropdown_search_events($(this).attr('tag_id'))

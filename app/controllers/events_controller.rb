@@ -919,7 +919,6 @@ class EventsController < ApplicationController
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
     @occurrences =[]
-
     order_by = "occurrences.start"
     if (params[:sort].to_s.empty? || params[:sort].to_i == 0)
       # order by event score when sorting by popularity
