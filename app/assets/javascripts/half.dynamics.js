@@ -392,15 +392,38 @@ $(function () {
       filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
       console.log(filter.start_date)
       console.log(filter.end_date)
-      updateViewFromFilter();
+     // alert($('.active a').text())
+
+        console.log("i am here")
+        tag_id = parseInt($('.active a').attr('tag_id'))
+        tag_type = $('.active a').attr('tag_type')
+         // alert("tag_id"+tag_id+"tag_type"+tag_type)
+        $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+        $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
+        if(tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")){
+         // alert("search key")
+          doneTyping1($('#search-tab .active a').text());
+          $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+        }else if(tag_id == 0){
+         // alert("only tag type")
+          filter.tag_id = tag_id
+          filter.tag_type = tag_type
+          //alert(JSON.stringify(filter))
+          $.get("/search_results",filter)
+          $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+        }else{
+         // alert("only key")
+          dropdown_search_events($(this).attr('tag_id'))
+          $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+        }
+
+
+      //updateViewFromFilter();
     }
   });
-
-
   $('.custom-start, .custom-end').datepicker("setDate", Date.today().toString("MM/dd/yyyy"));
-
   $(".price-range").slider({
-
     range: "min",
     min: 0,
     step: 5,
@@ -507,6 +530,7 @@ $(function () {
     if (!timer_is_on) {
       timer_is_on = 2;
       if ($(this).val().length >= 3) {
+        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
         $(window).load(function(){
           $('#releated_events').show()
         })
@@ -918,7 +942,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
     $('.filter-summary .tags').html("");
   } else {
     $('.filter-summary .tags').html(filterText);
-    $('.filter-summary .tags').show();
+     $('.filter-summary .tags').show();
   }
 
   if (andtagsFilterText === ANY_TAG_TEXT) {
@@ -1025,7 +1049,7 @@ function doneTyping() {
 }
 function doneTyping1(search) {
   filter.search = search;
- pullEvents({update_search: false,search: "elastic"});
+ pullEvents1({update_search: false,search: "elastic"});
 
   window.location.hash = "key:"+search;
 }
@@ -1047,6 +1071,7 @@ function boundsChanged() {
 
 // this gets called on infinite scroll and on filter changes
 function pullEvents(updateOptions) {
+ // alert("pullevents")
   $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
   $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
   // console.log(filter);
@@ -1136,7 +1161,8 @@ function pullEvents(updateOptions) {
 
   });
 }
-function pullEvents(updateOptions,search) {
+function pullEvents1(updateOptions,search) {
+  //alert("pullevents1")
   $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
   $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
    var async_reloadTagsList = reloadTagsList;
@@ -1149,9 +1175,9 @@ function pullEvents(updateOptions,search) {
     controllerLink = "/events/sxsw?ajax=true"
   }
   //alert("hi")
-  $.get("/search_results",{query:filter.search})
-
-
+  //alert(JSON.stringify(filter))
+  filter.query = filter.search
+$.get("/search_results",filter)
 }
 
  function tagged_saved_search_events(tag,location){
@@ -1259,7 +1285,8 @@ function cost_filter_events(high_price){
 }
 function dropdown_search_events(tag){
   console.log(tag)
-  $.get("/events/index?ajax=true", {"included_tags":tag}, function (data) {
+  filter.included_tags = [tag]
+  $.get("/events/index?ajax=true", filter, function (data) {
     $("#related_events .main .inline .events").html(data);
     $("#events .main .inline .events").html(data);
     $(".total_number").text($("#related_events .main .inline .events").find('article').length);
@@ -1384,7 +1411,9 @@ $(function(){
     doneTyping1($(this).text());
     $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     }else if(tag_id == 0){
-      $.get("/search_results",{tag_id:$(this).attr('tag_id'),tag_type:$(this).attr('tag_type')})
+      filter.tag_id = tag_id
+      filter.tag_type = tag_type
+      $.get("/search_results",filter)
       $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     }else{
       dropdown_search_events($(this).attr('tag_id'))

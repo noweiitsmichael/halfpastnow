@@ -207,7 +207,8 @@ class EventsController < ApplicationController
       @offset = params[:offset].to_i
     end
     @allOccurrences = Occurrence.find(@occurrence_ids)
-    @occurrences = Occurrence.paginate(:page => params[:page], :per_page => 10).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+    #@occurrences = Occurrence.paginate(:page => params[:page], :per_page => 10).includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+    @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
 
 
     # puts @occurrences  
@@ -424,15 +425,13 @@ class EventsController < ApplicationController
     @austin_occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
     respond_to do |format|
       format.html do
-
         unless (params[:ajax].to_s.empty?)
-          render :partial => "combo", :locals => {:occurrences => @occurrences.take(5), :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset}
-
+          #raise "number of occurrences: #{@occurrences.count}, occurrences tags: #{@occurringTags.count},parent tags:#{@parentTags.count},offset value:#{@offset}"
+          render :partial => "combo", :locals => {:occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset}
         end
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts]}}) }
       format.mobile
-
     end
 
   end
@@ -469,7 +468,7 @@ class EventsController < ApplicationController
 
 
     if (current_user)
-      bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
+      bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id).first
       attending = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.bookmark_lists.where(:name => "Attending").first.id).first
       @bookmarkId = bookmark.nil? ? nil : bookmark.id
       @attendingId = attending.nil? ? nil : attending.id
@@ -909,18 +908,17 @@ class EventsController < ApplicationController
     @lat = 30.268093
     @long = -97.742808
     @zoom = 11
-
     params[:lat_center] = @lat
     params[:long_center] = @long
     params[:zoom] = @zoom
 
     params[:user_id] = current_user ? current_user.id : nil
     @ids = Occurrence.find_with(params)
-
+    #raise @ids.inspect
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
-
+    @occurrences =[]
     order_by = "occurrences.start"
     if (params[:sort].to_s.empty? || params[:sort].to_i == 0)
       # order by event score when sorting by popularity
@@ -928,26 +926,25 @@ class EventsController < ApplicationController
                     WHEN 0 THEN 0
                     ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
                   END DESC"
-
     end
-
-
     if params[:tag_type] == "crowd"
-      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by).select{|occ| @occurrence_ids.include?(occ.id)}
 
     end
    if params[:tag_type] == "staff"
-     @occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
+     @occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.select{|occ| @occurrence_ids.include?(occ.id)}
    end
    if params[:tag_type] == "today"
    end
    if params[:tag_type] == "all"
-     @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+     @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by).select{|occ| @occurrence_ids.include?(occ.id)}
 
    end
     if params[:query].present?
-    search_results = Occurrence.search(params)
-    @occurrences = search_results.results
-      end
+      #raise @occurrence_ids.inspect
+      search_results = Occurrence.search(params)
+
+      @occurrences = search_results.results#.select{|occ| @occurrence_ids.include?(occ.id)}
+    end
   end
 end

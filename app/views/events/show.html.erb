@@ -70,21 +70,37 @@
     $(function () {
       console.log("Loaded share stuff");
 
-
       // The "bookmark" class won't be here if a user isn't logged in
       $('.bookmark-share .bookmark').click(function () {
         console.log("Fullmode bookmark");
         var that = $(this);
         if (that.hasClass('add')) {
-          var bookmarked_type = "";
-          // var lnk = 'http://www.halfpastnow.com/mobile/og/'+id;
-          var lnk = 'http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %>';
-          console.log("Bookmarks: " + lnk);
-          switch (type) {
-            case "event":
-              (bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
-              FB.api(
-                '/me/halfpastnow:bookmark',
+          $('#bookmark_modal').modal('show')
+        }
+        else if (that.hasClass('remove')) {
+          $.getJSON('/bookmarks/destroy/' + bookmark_id, function (data) {
+            that.addClass('add').removeClass('remove');
+            that.html("<img src='/assets/images/icon-bookmark-large.png'/>");
+          });
+        }
+      });
+
+      // The "bookmark popup"
+      $('.bookmark-share .bookmark_popup').click(function () {
+        console.log("bookmark popup");
+        var bookmarked_type = "";
+        var bookmark_list_id = $('#bookmark_list_collection').val();
+        var bookmarked_comments = $('#bookmark_group_comment').val();
+        // var lnk = 'http://www.halfpastnow.com/mobile/og/'+id;
+        var lnk = 'http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %>';
+        console.log("Bookmarks: " + lnk);
+        console.log("bookmark_list_id : " + bookmark_list_id);
+        console.log("Bookmark comment: " + bookmarked_comments);
+        switch (type) {
+          case "event":
+            (bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
+            FB.api(
+              '/me/halfpastnow:bookmark',
                 'post',
                 { event: lnk },
                 function (response) {
@@ -95,31 +111,28 @@
                   }
                 });
               break;
-            case "venue":
-              bookmarked_type = "Venue";
-              break;
-            case "act":
-              bookmarked_type = "Act";
-              break;
-          }
-          ;
-          $.getJSON('/bookmarks/custom_create', { bookmark: { "type": bookmarked_type, "id": id } }, function (data) {
-            console.log("new bookmark full mode");
-            console.log(data);
-            that.removeClass('add').addClass('remove');
-            that.html("<img src='/assets/images/icon-bookmark-large.png'/>");
-            bookmark_id = data;
-          });
-        }
-        else if (that.hasClass('remove')) {
-          // $.getJSON('/bookmarks/destroy/', { id: bookmark_id }, function(data) {
-          // 	that.addClass('add').removeClass('remove');
-          // });
-          $.getJSON('/bookmarks/destroy/' + bookmark_id, function (data) {
-            that.addClass('add').removeClass('remove');
-            that.html("<img src='/assets/images/icon-bookmark-large.png'/>");
-          });
-        }
+          case "venue":
+            bookmarked_type = "Venue";
+            break;
+          case "act":
+            bookmarked_type = "Act";
+            break;
+        };
+        $.getJSON('/bookmarks/custom_create', { bookmark: { "type": bookmarked_type, "id": id, "bookmark_list_id": bookmark_list_id, "comment": bookmarked_comments } }, function (data) {
+          console.log("new bookmark full mode");
+          console.log(data);
+          bookmark_id = data;
+          $('#bookmark_modal').modal('hide');
+          $('.bookmark-share .bookmark').addClass('remove').removeClass('add');
+          $('.bookmark-share .bookmark').html("<img src='/assets/images/icon-bookmark-remove-large.png'/>");
+        });
+      });
+
+      // adding new bookmark group in popup
+      $('#add_new_bookmark_group_btn').click(function () {
+        var name = $('#new_bookmark_group_field').val();
+        console.log(name);
+        $.get('/bookmarks/create_bookmark_group', { "name": name });
       });
 
       // This "attending" class won't be here if the user isn't logged in
@@ -312,7 +325,7 @@
             <% else %>
           <a href="#">
                <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarkId.nil? ? "add" : "remove" %>" >
-                 <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-large.png") %>
+                 <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-remove-large.png") %>
 	            </span>
           </a>
             <% end %>
@@ -332,6 +345,47 @@
 
           <a href="#" class="twitter"><img src="/assets/images/icon-twitter.png" alt=""/></a>
           <a href="#" class="facebook"><img src="/assets/images/icon-facebook.png" alt=""/></a>
+
+          <!-- Modal -->
+          <div class="modal fade" id="bookmark_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel">Bookmark This Activity</h4>
+                </div>
+                <div class="modal-body">
+                  <!--<h2><%#= @event.title %></h2>-->
+                  <!--<hr>-->
+
+                    <div class="form-group">
+                      <%= label_tag :bookmark_group, class: 'control-label' do %>
+                        <span>Add to Collection:</span>
+                        <span class="pull-right"><%= link_to "Create New",'#', onClick:"$('#new_bookmarklist_block').show();" %></span>
+                      <% end %>
+                      <div class="form-group hide" id="new_bookmarklist_block" style="display:none">
+                        <form class="form-inline">
+                          <%= text_field_tag :new_bookmark_group_field, '', placeholder: "New", style: 'width:65%' %>
+                          <%= link_to "Add", "#", class: 'btn btn-danger', id: "add_new_bookmark_group_btn", style: "margin-bottom:0" %>
+                        </form>
+                      </div>
+                      <% bookmarks_list = current_user.bookmark_lists.map{|bl| [bl.name,bl.id] }%>
+                      <%= select_tag :bookmark_list_collection, options_for_select(bookmarks_list),class: 'input-block-level' %>
+                    </div>
+                    <div class="form-group">
+                      <%= label_tag :bookmark_group_comment, 'Add comments:',class: 'control-label' %>
+                      <%= text_field_tag :bookmark_group_comment, '',class: 'input-block-level', placeholder: "Comments" %>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal" onClick="$('#new_bookmarklist_block').hide();" >Cancel</button>
+                  <button type="button" class="btn btn-danger bookmark_popup ">Bookmark It</button>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div><!-- /.modal -->
+
         </div>
       </div>
     </div>
@@ -684,6 +738,7 @@
     el.addClass('current-img');
     carousel.setCurrent(pos);
   }
+
 
 
 </script>

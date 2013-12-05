@@ -59,10 +59,13 @@ class BookmarksController < ApplicationController
   def custom_create
   	# puts params
 
+    bookmark_list_id = params[:bookmark][:bookmark_list_id]
   	id = params[:bookmark][:id]
   	type = params[:bookmark][:type]
+    comment = params[:bookmark][:comment]
 
-  	unless(Bookmark.where(:bookmarked_type => type, :bookmarked_id => id, :bookmark_list_id => current_user.main_bookmark_list.id).first.nil?)
+  	#unless(Bookmark.where(:bookmarked_type => type, :bookmarked_id => id, :bookmark_list_id => current_user.main_bookmark_list.id).first.nil?)
+    unless(Bookmark.where(:bookmarked_type => type, :bookmarked_id => id, :bookmark_list_id => bookmark_list_id).first.nil?)
   		puts "fail1"
   		respond_to do |format|
   			format.json {
@@ -71,9 +74,13 @@ class BookmarksController < ApplicationController
   		end
   	end
 
-  	@bookmark = current_user.main_bookmark_list.bookmarks.build
-  	@bookmark.bookmarked_id = id
+    bookmark_list = current_user.bookmark_lists.find bookmark_list_id
+    @bookmark = bookmark_list.bookmarks.build
+    #@bookmark = current_user.main_bookmark_list.bookmarks.build
+
+    @bookmark.bookmarked_id = id
   	@bookmark.bookmarked_type = type
+    @bookmark.comment = comment
 
   	# pp @bookmark
 
@@ -87,6 +94,11 @@ class BookmarksController < ApplicationController
 			end
 		}
     end
+  end
+
+  def create_bookmark_group
+    @bookmark_list = current_user.bookmark_lists.create(name: params[:name], main_bookmarks_list: true)
+    #render json: "ok"
   end
 
   

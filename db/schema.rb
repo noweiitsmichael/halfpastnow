@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131115123457) do
+ActiveRecord::Schema.define(:version => 20131127084123) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -53,6 +53,25 @@ ActiveRecord::Schema.define(:version => 20131115123457) do
 
   add_index "acts_tags", ["act_id"], :name => "index_acts_tags_on_act_id"
   add_index "acts_tags", ["tag_id"], :name => "index_acts_tags_on_tag_id"
+
+  create_table "advertisements", :force => true do |t|
+    t.string   "type"
+    t.datetime "start"
+    t.datetime "end"
+    t.integer  "views"
+    t.integer  "clicks"
+    t.string   "image"
+    t.string   "title"
+    t.text     "description"
+    t.integer  "weight"
+    t.string   "placement"
+    t.string   "name"
+    t.string   "advertiser"
+    t.string   "email"
+    t.integer  "phone"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "bookmark_lists", :force => true do |t|
     t.text     "description"
