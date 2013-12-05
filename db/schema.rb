@@ -16,8 +16,8 @@ ActiveRecord::Schema.define(:version => 20131127084123) do
   create_table "acts", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
     t.integer  "event_id"
     t.boolean  "suggested"
     t.text     "fb_picture"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20131127084123) do
     t.string   "pop_source"
     t.float    "completion"
     t.text     "temp_storage"
+    t.integer  "weight",       :default => 1
     t.string   "slug"
   end
 
@@ -186,6 +187,8 @@ ActiveRecord::Schema.define(:version => 20131127084123) do
     t.string   "cover_image_url"
     t.float    "completion"
     t.text     "ticket_url"
+    t.float    "escore",          :default => 0.0
+    t.integer  "weight",          :default => 1
   end
 
   add_index "events", ["clicks"], :name => "index_events_on_clicks"
@@ -352,6 +355,7 @@ ActiveRecord::Schema.define(:version => 20131127084123) do
     t.integer  "parent_tag_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "weight",        :default => 1
   end
 
   add_index "tags", ["parent_tag_id"], :name => "index_tags_on_parent_tag_id"
@@ -428,6 +432,7 @@ ActiveRecord::Schema.define(:version => 20131127084123) do
     t.integer  "updated_by"
     t.float    "completion"
     t.integer  "assigned_admin"
+    t.integer  "weight",         :default => 1
     t.string   "slug"
   end
 

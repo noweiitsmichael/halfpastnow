@@ -39,7 +39,7 @@ class Occurrence < ActiveRecord::Base
 
   def self.search(params)
     tire.search(load: true) do
-      query { string params[:query], default_operator: "OR",match_all: {} } if params[:query].present?
+      query { string params[:query], default_operator: "OR"} if params[:query].present?
       #facet('timeline') { range :post_date, { :ranges => [ { to: Date.today+1, from: Date.today-7 }, { to: Date.today+1, from: Date.today-14 }, { to: Date.today+1, from: Date.today-30 } ] } }
       #filter :range, published_at: {lte: Time.zone.now}
     end

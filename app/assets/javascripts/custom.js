@@ -259,7 +259,9 @@
       numberOfMonths:1,
       onClose: function( selectedDate ) {
         $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+
       }
+
     });
 
     $('.timepicker').timepicker();
