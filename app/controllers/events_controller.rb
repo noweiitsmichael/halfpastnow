@@ -468,7 +468,7 @@ class EventsController < ApplicationController
 
 
     if (current_user)
-      bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
+      bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id).first
       attending = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.bookmark_lists.where(:name => "Attending").first.id).first
       @bookmarkId = bookmark.nil? ? nil : bookmark.id
       @attendingId = attending.nil? ? nil : attending.id
