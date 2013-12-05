@@ -124,6 +124,7 @@
           bookmark_id = data;
           $('#bookmark_modal').modal('hide');
           $('.bookmark-share .bookmark').addClass('remove').removeClass('add');
+          $('.bookmark-share .bookmark').html("<img src='/assets/images/icon-bookmark-remove-large.png'/>");
         });
       });
 
@@ -324,7 +325,7 @@
             <% else %>
           <a href="#">
                <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarkId.nil? ? "add" : "remove" %>" >
-                 <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-large.png") %>
+                 <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-remove-large.png") %>
 	            </span>
           </a>
             <% end %>
