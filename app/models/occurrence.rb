@@ -18,7 +18,6 @@ class Occurrence < ActiveRecord::Base
   after_touch() { tire.update_index }
   mapping do
     indexes :slug, type: 'string', boost: 10 , analyzer: 'snowball'
-    indexes :updated_at, type: 'date'
     indexes :events do
       indexes :id, type: 'integer'
       indexes :price, type: 'integer'
@@ -42,11 +41,10 @@ class Occurrence < ActiveRecord::Base
     tire.search(load: true) do
       query { string params[:query], default_operator: "OR"} if params[:query].present?
       size 100
-      sort { by :updated_at, 'desc' }
+      #sort { by :updated_at, 'desc' }
       #facet('timeline') { range :post_date, { :ranges => [ { to: Date.today+1, from: Date.today-7 }, { to: Date.today+1, from: Date.today-14 }, { to: Date.today+1, from: Date.today-30 } ] } }
       #filter :range, published_at: {lte: Time.zone.now}
     end
-
   end
   def to_indexed_json
     to_json( include: { acts: { only: [:name] }, venue: { only: [:name,:description]},tags: {only: [:name]} } )

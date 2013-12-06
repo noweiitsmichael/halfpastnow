@@ -1285,7 +1285,7 @@ function cost_filter_events(high_price){
 }
 function dropdown_search_events(tag){
   console.log(tag)
-  filter.included_tags = [tag]
+  filter.included_tags = tag
   $.get("/events/index?ajax=true", filter, function (data) {
     $("#related_events .main .inline .events").html(data);
     $("#events .main .inline .events").html(data);
@@ -1408,14 +1408,17 @@ $(function(){
     $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
     $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
     if(tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")){
+      console.log("search key filter")
     doneTyping1($(this).text());
     $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     }else if(tag_id == 0){
+      console.log("tag type filter")
       filter.tag_id = tag_id
       filter.tag_type = tag_type
       $.get("/search_results",filter)
       $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     }else{
+      console.log('tag_id filter')
       dropdown_search_events($(this).attr('tag_id'))
       $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     }

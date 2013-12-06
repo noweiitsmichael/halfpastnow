@@ -372,7 +372,7 @@ class EventsController < ApplicationController
 
     @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
     # puts @allOccurrences
-    @occurrences = @allOccurrences.drop(@offset).take(@amount)
+    @occurrences = @allOccurrences#.drop(@offset).take(@amount)
 
     # generating tag list for occurrences
 
@@ -426,6 +426,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
+
           #raise "number of occurrences: #{@occurrences.count}, occurrences tags: #{@occurringTags.count},parent tags:#{@parentTags.count},offset value:#{@offset}"
           render :partial => "combo", :locals => {:occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset}
         end
@@ -928,16 +929,16 @@ class EventsController < ApplicationController
                   END DESC"
     end
     if params[:tag_type] == "crowd"
-      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by).select{|occ| @occurrence_ids.include?(occ.id)}
+      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
 
     end
    if params[:tag_type] == "staff"
-     @occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.select{|occ| @occurrence_ids.include?(occ.id)}
+     @occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
    end
    if params[:tag_type] == "today"
    end
    if params[:tag_type] == "all"
-     @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by).select{|occ| @occurrence_ids.include?(occ.id)}
+     @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
 
    end
     if params[:query].present?
