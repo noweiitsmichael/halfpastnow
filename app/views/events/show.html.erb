@@ -360,7 +360,7 @@
 
                     <div class="form-group">
                       <%= label_tag :bookmark_group, class: 'control-label' do %>
-                        <span>Add to Collection:</span>
+                        <span>Add to My List:</span>
                         <span class="pull-right"><%= link_to "Create New",'#', onClick:"$('#new_bookmarklist_block').show();" %></span>
                       <% end %>
                       <div class="form-group hide" id="new_bookmarklist_block" style="display:none">
@@ -369,7 +369,7 @@
                           <%= link_to "Add", "#", class: 'btn btn-danger', id: "add_new_bookmark_group_btn", style: "margin-bottom:0" %>
                         </form>
                       </div>
-                      <% bookmarks_list = current_user.bookmark_lists.map{|bl| [bl.name,bl.id] }%>
+                      <% bookmarks_list = current_user ? current_user.bookmark_lists.where("description != ? or description is null", 'Attending').map{|bl| [bl.name,bl.id]} : []%>
                       <%= select_tag :bookmark_list_collection, options_for_select(bookmarks_list),class: 'input-block-level' %>
                     </div>
                     <div class="form-group">
