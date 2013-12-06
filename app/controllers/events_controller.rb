@@ -39,7 +39,7 @@ class EventsController < ApplicationController
     order_by = "occurrences.start"
     @Occurrences = Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(9)
     @saved_searches = current_user.saved_searches  if user_signed_in?
-    @austin_occurrences = []#BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.take(9)
+    @austin_occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.take(9)
     respond_to do |format|
       format.html { render :layout => false }
     end

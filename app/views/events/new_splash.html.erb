@@ -212,7 +212,7 @@
     <script>
 
 
-      $('#<%= search.search_key.split("_").first.downcase%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: auto !important;'>");
+      $('#<%= search.search_key.split("_").first.downcase%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: 100px !important;'>");
       <% if search.tag_id.nil? or search.tag_id == 0 %>
       saved_search_events("<%= search.search_key %>");
       <% else %>
