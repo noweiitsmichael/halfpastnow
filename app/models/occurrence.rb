@@ -50,7 +50,7 @@ class Occurrence < ActiveRecord::Base
     to_json( include: { acts: { only: [:name] }, venue: { only: [:name,:description]},tags: {only: [:name]} } )
   end
 
-
+  index_name BONSAI_INDEX_NAME
   # Allows you to search for users that bookmarked this event by calling "event.bookmarked_by"
   # has_many :bookmarked_by, :through => :bookmarks, :source => :user
 
