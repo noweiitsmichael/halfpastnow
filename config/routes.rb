@@ -1,6 +1,13 @@
 Myapp::Application.routes.draw do
   
-
+  resources :dashboard do
+    collection do
+      get :profile
+      get :settings
+      get :saved_searches
+      get :preferences
+    end
+  end
 
   get "mobile/new"
 
