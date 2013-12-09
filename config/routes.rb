@@ -37,7 +37,9 @@ Myapp::Application.routes.draw do
   get "info/terms"
   get "info/contest_rules"
 
-  devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"}
+  devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"} do
+    get "join_now", :to => "registrations#new"
+  end
   get "tag/index"
 
   # namespace :admin do
@@ -127,7 +129,7 @@ Myapp::Application.routes.draw do
   match '/delete_saved_search' => 'events#delete_saved_search'
   match '/details' => 'events#details'
   match '/login' => 'events#login'
-  match '/join_now' => 'events#joinnow'
+  #match '/join_now' => 'events#joinnow'
   match '/auth/:provider/callback' => 'authentications#create'
   match '/explorers/austin' => 'picks#trendsetters'
   match '/explorers/austin/:id' => 'picks#find'

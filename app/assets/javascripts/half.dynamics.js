@@ -1200,7 +1200,7 @@ $.get("/search_results",filter)
 function saved_search_events(location){
   console.log(location)
 
-  var controllerLink = "/events/index?ajax=true"
+  var controllerLink = "/events/index?ajax=true&root=true"
   f1={"search":location}
   $.get(controllerLink, f1, function (data) {
     var locations = [];
@@ -1217,7 +1217,7 @@ function saved_search_events(location){
 }
 function dance_events(dance_tag,location){
   console.log(location)
-  var controllerLink = "/events/index?ajax=true"
+  var controllerLink = "/events/index?ajax=true&root=true"
   f1={"included_tags":dance_tag}
   $.get(controllerLink, f1, function (data) {
     var locations = [];
@@ -1234,7 +1234,7 @@ function dance_events(dance_tag,location){
 }
 function happy_place_events(stream_id,location){
   console.log(location)
-  var controllerLink = "/events/index?ajax=true"
+  var controllerLink = "/events/index?ajax=true&root=true"
   f1={"stream_id":stream_id}
   $.get(controllerLink, f1, function (data) {
     var locations = [];
@@ -1251,7 +1251,7 @@ function happy_place_events(stream_id,location){
     }
 function free_events(location){
   console.log(location)
-  var controllerLink = "/events/index?ajax=true"
+  var controllerLink = "/events/index?ajax=true&root=true"
   f1={"high_price":0}
   $.get(controllerLink, f1, function (data) {
     var locations = [];
@@ -1268,7 +1268,7 @@ function free_events(location){
  }
 function cost_filter_events(high_price){
   console.log(high_price)
-  var controllerLink = "/events/index?ajax=true"
+  var controllerLink = "/events/index?ajax=true&root=true"
   f1={"high_price":high_price}
   $.get(controllerLink, f1, function (data) {
     var locations = [];
