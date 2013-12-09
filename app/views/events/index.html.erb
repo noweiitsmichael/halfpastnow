@@ -386,6 +386,10 @@
               </div>
             </div>
            </span>
+              <span class="sort-item">
+             <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
+
+            </span>
             </div>
 
 
@@ -455,7 +459,10 @@
               </div>
             </div>
            </span>
+           <span class="sort-item">
+             <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
 
+            </span>
 
             </div>
 
@@ -626,6 +633,7 @@
       }
     })
     $('.dropdown-menu a').click(function () {
+      console.log("dropdown click")
       $(".active").attr('class', '');
       $('#search-tab').append("<li class='active related_events dropdown_links'><a data-toggle='tab' href='#related_events' key=" + $(this).text().replace(/\ /g, "_") + " tag_id="+ $(this).attr('tag_id')+ " tag_type="+ $(this).attr('tag_type') +">" + $(this).text() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
       $('.icon-cross').on("click", function () {
@@ -638,9 +646,13 @@
       $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
       if($(this).attr('tag_id') == "0"){
-        $.get("/search_results",{tag_id:$(this).attr('tag_id'),tag_type:$(this).attr('tag_type')})
+        console.log('tag_type based search')
+        filter.tag_id = $(this).attr('tag_id')
+        filter.tag_type = $(this).attr('tag_type')
+        $.get("/search_results",filter)
       }
       else{
+        console.log("tag_id based search")
       dropdown_search_events($(this).attr('tag_id'))
       }
 //      doneTyping1($(this).text());

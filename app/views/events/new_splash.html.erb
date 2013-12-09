@@ -212,7 +212,7 @@
     <script>
 
 
-      $('#<%= search.search_key.split("_").first.downcase%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: auto !important;'>");
+      $('#<%= search.search_key.split("_").first.downcase%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: 100px !important;'>");
       <% if search.tag_id.nil? or search.tag_id == 0 %>
       saved_search_events("<%= search.search_key %>");
       <% else %>
@@ -469,7 +469,7 @@
   </div>
 </div>
 <script>
-  $('#slider2,#slider3,#slider5').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;'>");
+  $('#slider2,#slider3,#slider5').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative; width:100px !important;'>");
   happy_place_events(19,"slider2");
   dance_events(1,"slider3");
   free_events("slider5");

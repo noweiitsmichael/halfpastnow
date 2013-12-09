@@ -2,7 +2,7 @@ class AddSlugToOccurrences < ActiveRecord::Migration
   def up
     add_column :occurrences, :slug, :string
     add_index :occurrences, :slug
-    update_slug
+    #update_slug
   end
   def down
     remove_column :occurrences, :slug
