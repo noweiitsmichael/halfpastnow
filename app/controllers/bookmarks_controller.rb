@@ -97,7 +97,12 @@ class BookmarksController < ApplicationController
   end
 
   def create_bookmark_group
-    @bookmark_list = current_user.bookmark_lists.create(name: params[:name], main_bookmarks_list: true)
+    @bookmark_list = current_user.bookmark_lists.create(
+                                                        name: params[:name],
+                                                        public: false,
+                                                        featured: false,
+                                                        main_bookmarks_list: false
+                                                        )
     #render json: "ok"
   end
 
