@@ -37,9 +37,9 @@ class EventsController < ApplicationController
     ids = Occurrence.find_with(params)
     occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @occurrences = Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(9)
+    @occurrences =  Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(5)
     @saved_searches = current_user.saved_searches  if user_signed_in?
-    @austin_occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.take(9)
+    @austin_occurrences =  BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.take(5)
     respond_to do |format|
       format.html { render :layout => false }
     end
@@ -426,7 +426,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
-          params[:root]? @occurrences = @occurrences.take(9):@occurrences = @occurrences
+          params[:root]? @occurrences = @occurrences.take(5):@occurrences = @occurrences
           #raise "number of occurrences: #{@occurrences.count}, occurrences tags: #{@occurringTags.count},parent tags:#{@parentTags.count},offset value:#{@offset}"
           render :partial => "combo", :locals => {:occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset}
         end
