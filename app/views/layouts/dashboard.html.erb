@@ -5,6 +5,9 @@
   <meta property="fb:app_id" content="475386955806720"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
+  <!-- custom styles -->
+  <%= stylesheet_link_tag "dashboard" %>
+
   <!-- basic styles -->
   <%= stylesheet_link_tag "ace/bootstrap.min", "ace/font-awesome.min" %>
   <!--[if IE 7]>
@@ -272,12 +275,14 @@
 
 <li class="light-blue">
   <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-    <%= image_tag current_user.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic nav-user-photo", :alt => "#{current_user.firstname}'s Photo" %>
-      <span class="user-info">
-        <small>Welcome,</small>
-        <%= current_user.firstname rescue 'Howdy' %>
-      </span>
-    <i class="icon-caret-down"></i>
+    <% if user_signed_in? %>
+      <%= image_tag current_user.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic nav-user-photo", :alt => "#{current_user.firstname}'s Photo" %>
+        <span class="user-info">
+          <small>Welcome,</small>
+          <%= current_user.firstname rescue 'Howdy' %>
+        </span>
+      <i class="icon-caret-down"></i>
+    <% end %>
   </a>
 
   <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
@@ -297,10 +302,12 @@
     <li class="divider"></li>
 
     <li>
-      <a href="#">
-        <i class="icon-off"></i>
-        Logout
-      </a>
+      <% if user_signed_in? %>
+        <%= link_to destroy_user_session_path, method: :delete do %>
+          <i class="icon-off"></i>
+          <span class="menu-text"> Logout </span>
+        <% end %>
+      <% end %>
     </li>
   </ul>
 </li>
@@ -375,7 +382,7 @@
       </script>
     </div>
 
-    <div class="main-content">
+    <div class="main-content offs">
       <%= yield %>
     </div>
     <!-- /.main-content -->
@@ -395,6 +402,7 @@
       window.jQuery || document.write("<script src='/assets/ace/jquery-1.10.2.min.js'>" + "<" + "/script>");
     </script>
     <![endif]-->
+    <%= javascript_include_tag "jquery_ujs" %>
 
     <script type="text/javascript">
       if ("ontouchend" in document) document.write("<script src='/assets/ace/jquery.mobile.custom.min.js'>" + "<" + "/script>");
