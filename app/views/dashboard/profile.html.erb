@@ -1,0 +1,117 @@
+<div class="breadcrumbs" id="breadcrumbs">
+  <script type="text/javascript">
+    try {
+      ace.settings.check('breadcrumbs', 'fixed')
+    } catch (e) {
+    }
+  </script>
+
+  <ul class="breadcrumb">
+    <li>
+      <%= link_to dashboard_index_path do %>
+        <i class="icon-home home-icon"></i>
+        <span class="menu-text"> Home </span>
+      <% end %>
+    </li>
+    <li class="active">Profile</li>
+  </ul>
+  <!-- .breadcrumb -->
+</div>
+<% unless @user.nil? %>
+  <div class="page-content">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="page-header">
+      <h1><%= @user.firstname rescue 'user' %> Profile</h1>
+    </div>
+    <div class="row">
+      <div id="dashboard-profile">
+        <div class="col-sm-3 center">
+          <!-- Profile picture -->
+        <span class="profile-picture">
+           <%= image_tag @user.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic nav-user-photo", :alt => "#{@user.firstname}'s Photo", style: "display: block;", class: "editable img-responsive editable-click editable-empty", id: 'avatar' %>
+        </span>
+
+          <div class="space-4"></div>
+
+          <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+            <div class="inline position-relative">
+              <span class="white"><%= @user.firstname %>&nbsp;<%= @user.lastname %></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <!-- Profile info -->
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> First Name</div>
+
+              <div class="profile-info-value">
+                <span class="editable editable-click" id="firstname"><%= @user.firstname %></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Last Name</div>
+
+              <div class="profile-info-value">
+                <span class="editable editable-click" id="lastname"><%= @user.lastname %></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Email</div>
+
+              <div class="profile-info-value">
+                <span class="editable editable-click" id="email"><%= @user.email %></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Joined</div>
+
+              <div class="profile-info-value">
+                <span><%= @user.created_at %></span>
+              </div>
+            </div>
+          </div>
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Last Online</div>
+
+              <div class="profile-info-value">
+                <span><%= time_ago_in_words(@user.last_sign_in_at) %> ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <h1 class="text-center text-danger"> Something is Wrong</h1>
+<% end %>
+
+<!-- inline scripts related to this page -->
+
+<script type="text/javascript">
+  jQuery(function($) {
+
+    //editables on first profile page
+    $.fn.editable.defaults.mode = 'inline';
+    $.fn.editableform.loading = "<div class='editableform-loading'><i class='light-blue icon-2x icon-spinner icon-spin'></i></div>";
+    $.fn.editableform.buttons = '<button type="submit" class="btn btn-info editable-submit"><i class="icon-ok icon-white"></i></button>'+
+      '<button type="button" class="btn editable-cancel"><i class="icon-remove"></i></button>';
+
+    //editables
+    $('#firstname').editable({
+      type: 'text',
+      name: 'firstname'
+    });
+  });
+</script>

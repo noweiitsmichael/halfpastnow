@@ -183,7 +183,7 @@
     </div>
     <div class="section-content slider">
       <div id="slider1">
-        <% @Occurrences.each_with_index do |occurrence, index| %>
+        <% @occurrences.each_with_index do |occurrence, index| %>
           <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
         <% end %>
       </div>
@@ -295,54 +295,7 @@
     </div>
     <div class="section-content slider">
       <div id="slider3">
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img01.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Lyle Lovett and His Acoustic Group</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$79+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">DOWNTOWN</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img03.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Austin City Limits Music Festival</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">FREE</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">ACL</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
+
       </div>
       <a class="prev" id="slider3_prev" href="#"><span>prev</span></a>
       <a class="next" id="slider3_next" href="#"><span>next</span></a>

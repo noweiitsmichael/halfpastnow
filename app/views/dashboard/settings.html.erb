@@ -1,0 +1,46 @@
+<div class="breadcrumbs" id="breadcrumbs">
+  <script type="text/javascript">
+    try {
+      ace.settings.check('breadcrumbs', 'fixed')
+    } catch (e) {
+    }
+  </script>
+
+  <ul class="breadcrumb">
+    <li>
+      <%= link_to dashboard_index_path do %>
+        <i class="icon-home home-icon"></i>
+        <span class="menu-text"> Home </span>
+      <% end %>
+    </li>
+    <li class="active">Settings</li>
+  </ul>
+  <!-- .breadcrumb -->
+</div>
+<% unless @user.nil? %>
+  <div class="page-content">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="page-header">
+      <h1><%= @user.firstname rescue 'user' %> Settings</h1>
+    </div>
+    <div class="row">
+      <div class="password">
+      <%= form_for(resource, :as => resource_name, :url => "/users", :html => { :method => :put, :id => "edit_password" }) do |f| %>
+        <div><%= f.label :password %><br />
+          <%= f.password_field :password, :autocomplete => "off" %></div>
+
+        <div><%= f.label :password_confirmation %><br />
+          <%= f.password_field :password_confirmation %></div>
+
+        <div><%= f.label :current_password %> <em>(we need your current password to confirm your changes)</em><br />
+          <%= f.password_field :current_password %></div>
+
+        <div><%= f.submit "Update" %><%= render :partial => "layouts/loading" %></div>
+      <% end %>
+    </div>
+
+    </div>
+  </div>
+<% else %>
+  <h1 class="text-center text-danger"> Something is Wrong</h1>
+<% end %>
