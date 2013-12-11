@@ -33,7 +33,8 @@
 
             <div class="widget-body">
               <div class="widget-main no-padding">
-                <%= form_for(resource, :as => resource_name, :url => "/users", :html => {:method => :put, :id => "edit_password", class: 'form-horizontal'}, remote: true) do |f| %>
+                <div class="password_flash"></div>
+                <%= form_for(resource, :as => resource_name, :url => "/update_password", :html => {:method => :post, :id => "edit_password", class: 'form-horizontal', remote: true}) do |f| %>
                   <div class="space-4"></div>
                   <div class="form-group">
                     <%= f.label :password, class: 'col-sm-4 control-label no-padding-right' %>
