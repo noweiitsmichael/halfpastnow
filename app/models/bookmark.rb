@@ -8,7 +8,6 @@ class Bookmark < ActiveRecord::Base
 		if !Occurrence.exists?(self.bookmarked_id)
 			return nil
 		else
-
 			## Cache Query
 		    o = Rails.cache.read("occurrence_find_#{self.bookmarked_id}")
 		    if (o == nil)
@@ -18,8 +17,6 @@ class Bookmark < ActiveRecord::Base
 		    ## original query:
 			# o = Occurrence.find(self.bookmarked_id)
 	        ## End Cache Query
-
-			
 			if o.start >= Date.today.to_datetime && !o.deleted
 				return o
 			else
@@ -29,8 +26,9 @@ class Bookmark < ActiveRecord::Base
 				else	
 					return nil
 				end
-				
 			end
 		end
-	end
+ end
+
+
 end
