@@ -39,6 +39,7 @@ Myapp::Application.routes.draw do
 
   devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"} do
     get "join_now", :to => "registrations#new"
+    post "/update_password", :to => "registrations#update_password"
   end
   get "tag/index"
 

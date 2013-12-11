@@ -11,7 +11,7 @@ class AddSlugToOccurrences < ActiveRecord::Migration
   def update_slug
     occurrences = Occurrence.all
     occurrences.each do |occ|
-        occ.slug = "#{occ.event.title.truncate(15) rescue ''}-at-#{occ.event.venue.name.truncate(15) rescue ''}"
+        occ.slug = "#{occ.event.title.truncate(20) rescue ''}-at-#{occ.event.venue.name.truncate(20) rescue ''}"
         occ.save
     end
 
