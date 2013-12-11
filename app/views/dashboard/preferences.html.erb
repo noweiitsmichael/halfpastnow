@@ -24,10 +24,7 @@
       <h1>Choose your categories for your personalized email</h1>
     </div>
     <div class="page-body">
-    <div class="row">
       <div class="preferences <%= (params[:email].nil?) ? "" : "selected" %>">
-        <!-- Create a reference channel for current user if it does not exist -->
-
         <% if current_user.ref.nil? %>
           <% c = Channel.new %>
           <!-- Change to approriate tag ids for Production -->
@@ -36,225 +33,110 @@
           <% current_user.ref = c.id.to_s %>
           <% current_user.save %>
           <% email = Email.find_by_email(current_user.email) %>
-          <form name="form" method="post">
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Music").id %>" <%= (email.nil?) ? "" : "checked" %>  onclick="check(document.form.cat)" id="Music">
+          <% fields = [{name: 'Live Music', value: 'Music', image: 'music_beamed_note.png'},
+                       {name: 'Tech', value: 'Tech', image: 'terminal2.png'},
+                       {name: 'Non-Profit', value: 'Charity / Non-Profit', image: 'hand_handshake.png'},
+                       {name: 'Arts', value: 'Art', image: 'palette.png'},
+                       {name: 'Kid Friendly', value: 'Kid Friendly', image: 'teddy_bear.png'},
+                       {name: 'Romantic', value: 'Romantic', image: 'heart.png'},
+                       {name: 'LGBT', value: 'LGBT', image: 'color.png'},
+                       {name: 'Food/Drinks Special', value: 'Food/Drink Specials', image: 'cocktail.png'}
+          ] %>
+          <div class="row">
+            <div class="col-xs-6 col-sm-offset-2">
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover" id="sample-table-1">
+                  <thead>
+                  <tr class="center">
+                    <th>
+                      <label>
+                        <input type="checkbox" class="ace">
+                        <span class="lbl"></span>
+                      </label>
+                    </th>
+                    <th>Name</th>
+                    <th>Image</th>
+                  </tr>
+                  </thead>
 
-              <img class="refimg" border="0" src="/assets/music_beamed_note.png" alt="Live Music"><br>
-              <label class="reflabel" for="Music">Live Music</label>
-
-
+                  <tbody>
+                  <% fields.each do|field| %>
+                    <tr class="center">
+                      <td>
+                        <label>
+                          <input class="refname" type="checkbox" name="cat" value="<%=Tag.find_by_name("#{field[:value]}").id%>"  <%=( email.nil?) ? "checked" : "" %>>
+                        </label>
+                      </td>
+                      <td><%= field[:name] %></td>
+                      <td><%= image_tag field[:image], width: '10%' %></td>
+                    </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
             </div>
-
-
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Fitness").id %>"  <%= (email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="Fitness">
-              <img class="refimg" border="0" src="/assets/weights.png" alt="Fitness"><br>
-              <label class="reflabel" for="Fitness">Fitness</label>
-
-            </div>
-
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Tech").id %>"  <%= (email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)">
-
-              <img class="refimg" border="0" src="/assets/terminal2.png" alt="Tech"><br>
-              <label class="reflabel" for="Tech">Tech</label>
-            </div>
-
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Charity / Non-Profit").id %>"  <%= (email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="Non-Profit">
-              <img class="refimg" border="0" src="/assets/hand_handshake.png" alt="Live Music"><br>
-              <label class="reflabel" for="Non-Profit">Non-Profit</label>
-
-            </div>
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Art").id %>"  <%= (email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="Arts">
-              <img class="refimg" border="0" src="/assets/palette.png" alt="Art"><br>
-              <label class="reflabel" for="Arts">Arts</label>
-
-            </div>
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Kid Friendly").id %>"  <%= (email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="Kid">
-              <img class="refimg" border="0" src="/assets/teddy_bear.png" alt="Kid Friendly"><br>
-              <label class="reflabel" for="Kid">Kid Friendly</label>
-
-            </div>
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Romantic").id %>"  <%= (email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="Romantic">
-              <img class="refimg" border="0" src="/assets/heart.png" alt="Live Music"><br>
-              <label class="reflabel" for="Romantic">Romantic</label>
-
-            </div>
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("LGBT").id %>"  <%= (email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="LGBT">
-              <img class="refimg" border="0" src="/assets/color.png" alt="LGBT"><br>
-              <label class="reflabel" for="LGBT">LGBT</label>
-
-            </div>
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Food/Drink Specials").id %>"  <%= (email.nil?) ? "" : "checked" %> onclick="check(document.form.cat)" id="HH">
-              <img class="refimg" border="0" src="/assets/cocktail.png" alt="HH"><br>
-              <label class="reflabel" for="HH">Food/Drinks Special</label>
-
-            </div>
-          </form>
-
-          <div class="refbtn right nice-button">Update Your Preferences</div>
-          <span style="margin-top: -25px; float: left; display: block; margin-left: 180px;" class="form-success form-indicator icon-ok-sign"></span>
+            <!-- /span -->
+          </div>
         <% else %>
           <% @refincluded_tags = Channel.find(current_user.ref.to_i).included_tags %>
+          <% fields = [{name: 'Live Music', value: 'Music', image: 'music_beamed_note.png'},
+                       {name: 'Tech', value: 'Tech', image: 'terminal2.png'},
+                       {name: 'Non-Profit', value: 'Charity / Non-Profit', image: 'hand_handshake.png'},
+                       {name: 'Arts', value: 'Art', image: 'palette.png'},
+                       {name: 'Kid Friendly', value: 'Kid Friendly', image: 'teddy_bear.png'},
+                       {name: 'Romantic', value: 'Romantic', image: 'heart.png'},
+                       {name: 'LGBT', value: 'LGBT', image: 'color.png'},
+                       {name: 'Food/Drinks Special', value: 'Food/Drink Specials', image: 'cocktail.png'}
+                      ] %>
+          <div class="row">
+            <div class="col-xs-6 col-sm-offset-2">
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover" id="sample-table-1">
+                  <thead>
+                  <tr class="center">
+                      <th class="center">
+                        <label>
+                          <input type="checkbox" class="ace">
+                          <span class="lbl"></span>
+                        </label>
+                      </th>
+                      <th class="center">Name</th>
+                      <th class="center">Image</th>
+                    </tr>
+                  </thead>
 
-          <form name="form" method="post">
-            <div class="reform">
-              <input class="refname" type="checkbox" style="vertical-align:-0.1em;" name="cat" value="<%= Tag.find_by_name("Music").id %>"  <%= (@refincluded_tags.include? Tag.find_by_name("Music").id.to_s) ? "checked" : "" %> onclick="check(document.form.cat)" id="Music">
-
-              <img class="refimg" border="0" src="/assets/music_beamed_note.png" alt="Live Music"><br>
-              <label class="reflabel" for="Music">Live Music</label>
-
+                  <tbody>
+                  <% fields.each do|field| %>
+                    <tr class="center">
+                      <td>
+                        <label>
+                          <input class="ace" type="checkbox" name="cat" value="<%=Tag.find_by_name("#{field[:value]}").id%>"  <%= (@refincluded_tags.include? Tag.find_by_name("#{field[:value]}").id.to_s) ? "checked" : "" %>>
+                          <span class="lbl"></span>
+                        </label>
+                      </td>
+                      <td><%= field[:name] %></td>
+                      <td><%= image_tag field[:image], width: '10%' %></td>
+                    </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
             </div>
-
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Fitness").id %>" <%= (@refincluded_tags.include? Tag.find_by_name("Fitness").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="Fitness">
-              <img class="refimg" border="0" src="/assets/weights.png" alt="Fitness"><br>
-              <label class="reflabel" for="Fitness">Fitness</label>
-
-            </div>
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Tech").id %>" <%= (@refincluded_tags.include? Tag.find_by_name("Tech").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="Tech">
-              <img class="refimg" border="0" src="/assets/terminal2.png" alt="Tech"><br>
-              <label class="reflabel" for="Tech">Tech</label>
-
-            </div>
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Charity / Non-Profit").id %>" <%= (@refincluded_tags.include? Tag.find_by_name("Charity / Non-Profit").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="Non-Profit">
-              <img class="refimg" border="0" src="/assets/hand_handshake.png" alt="Non Profit"><br>
-              <label class="reflabel" for="Non-Profit">Non-Profit</label>
-
-            </div>
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Art").id %>" <%= (@refincluded_tags.include? Tag.find_by_name("Art").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="Arts">
-              <img class="refimg" border="0" src="/assets/palette.png" alt="Art"><br>
-              <label class="reflabel" for="Arts">Arts</label>
-
-            </div>
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Kid Friendly").id %>" <%= (@refincluded_tags.include? Tag.find_by_name("Kid Friendly").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="Kid">
-              <img class="refimg" border="0" src="/assets/teddy_bear.png" alt="Kid Friendly"><br>
-              <label class="reflabel" for="Kid">Kid Friendly</label>
-
-            </div>
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Romantic").id %>" <%= (@refincluded_tags.include? Tag.find_by_name("Romantic").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="Romantic">
-              <img class="refimg" border="0" src="/assets/heart.png" alt="Live Music"><br>
-              <label class="reflabel" for="Romantic">Romantic</label>
-
-            </div>
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("LGBT").id %>" <%= (@refincluded_tags.include? Tag.find_by_name("LGBT").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="LGBT">
-              <img class="refimg" border="0" src="/assets/color.png" alt="LGBT"><br>
-              <label class="reflabel" for="LGBT">LGBT</label>
-
-            </div>
-            <div class="reform">
-              <input class="refname" type="checkbox" name="cat" value="<%= Tag.find_by_name("Food/Drink Specials").id %>" <%= (@refincluded_tags.include? Tag.find_by_name("Food/Drink Specials").id.to_s) ? "checked" : "" %>  onclick="check(document.form.cat)" id="HH">
-              <img class="refimg" border="0" src="/assets/cocktail.png" alt="HH"><br>
-              <label class="reflabel" for="HH">Food/Drinks Special</label>
-
-            </div>
-          </form>
-
-          <div class="refbtn right nice-button">Update Your Preferences</div>
-          <span style="margin-top: -25px; float: left; display: block; margin-left: 180px;" class="form-success form-indicator icon-ok-sign"></span>
+            <!-- /span -->
+          </div>
         <% end %>
-        <% email = Email.find_by_email(current_user.email) %>
-        <div class="subscribe button nice-button" style="<%= (email.nil?) ? "" : "display:none;" %>">Subscribe to
-          Newsletter
+        <div class="row">
+          <div class="center">
+            <button class="btn btn-info">Update Your Preferences</button>
+          </div>
         </div>
-        <div class="unsubscribe button nice-button" style="<%= (email.nil?) ? "display:none;" : "" %>">Unsubscribe to
-          Newsletter
-        </div>
-        <br>
-
-
       </div>
     </div>
-      </div>
   </div>
 <% else %>
   <h1 class="text-center text-danger"> Something is Wrong</h1>
 <% end %>
 
 <!-- inline scripts related to this page -->
-<script type="text/javascript">
-  var jcrop_api;
-
-  $(function () {
-
-    $('.refbtn').click(function () {
-      console.log("Update");
-      $('.preferences .form-success').show();
-
-    });
-
-    $(function () {
-      $('.preferences .form-success').hide();
-      $('.stream').on('click', ' .action.rename', function () {
-        var id = $(this).attr('stream-id');
-        var name = $(this).attr('stream-name');
-        $(this).parent('.uber-title').html("<input type='text' value='" + name + "' stream-id='" + id + "'/><button class='action save' stream-id='" + id + "'>save</button><button class='action cancel' stream-id='" + id + "' stream-name='" + name + "'>cancel</button>");
-        return false;
-      });
-
-      $('.stream').on('click', ' .action.save', function () {
-        var that = $(this);
-        var stream_name = $(this).siblings('input').val();
-        var stream_id = $(this).attr("stream-id");
-        $.get('/channels/rename/' + stream_id, { stream: { name: stream_name } }, function (data) {
-          console.log(data);
-          that.parent('.uber-title').html("<span class='title'>" + stream_name + "</span><a href='' stream-id='" + stream_id + "' stream-name='" + stream_name + "' class='action rename'><span class='icon icon-edit'></span>rename</a>");
-        });
-      });
-
-      $('.stream').on('click', ' .action.cancel', function () {
-        var stream_name = $(this).attr("stream-name");
-        var stream_id = $(this).attr("stream-id");
-        $(this).parent('.uber-title').html("<span class='title'>" + stream_name + "</span><a href='' stream-id='" + stream_id + "' stream-name='" + stream_name + "' class='action rename'><span class='icon icon-edit'></span>rename</a>");
-      });
-
-      $('.stream').on('click', ' .action.delete', function () {
-        if (confirm("Are you sure you want to delete '" + $(this).attr('stream-name') + "'?")) {
-          var stream_id = $(this).attr("stream-id");
-          $.get('/channels/destroy/' + stream_id, function (data) {
-            console.log(data);
-            $('.stream[stream-id=' + stream_id + ']').remove();
-          });
-        }
-        return false;
-      });
-    });
-
-    function check(field) {
-      var str = "";
-      for (i = 0; i < field.length; i++)
-        if (field[i].checked == true) {
-          if (str === "") {
-            str = field[i].value;
-          }
-          else {
-            str = str + "," + field[i].value;
-          }
-          ;
-
-        }
-      $('.preferences .form-success').hide();
-      console.log("Checkebox : " + str);
-      $.get('/channels/updateReg?id=<%=current_user.ref%>' + '&included_tags=' + str, function (data) {
-
-      });
-      $('.subscribe.button').hide();
-      $('.unsubscribe.button').show();
-
-    }
-  });
-</script>
-
