@@ -107,6 +107,19 @@ class BookmarkList < ActiveRecord::Base
     end
     return @bookmarked_events.compact
   end
+  def bookmarked_events_root
+    @bookmarked_events = Bookmark.where(:bookmark_list_id => self.id, :bookmarked_type => "Occurrence")
+    @count = 0
+    results = []
+    @bookmarked_events.each do |b|
+        break if @count == 5
+        unless b.bookmarked_event.nil?
+        @count+=1
+        results.push b.bookmarked_event
+        end
+    end
+   results
+  end
   def first_bookmarked_event
     @bookmarked_events = self.bookmarks.where(:bookmarked_type => "Occurrence")
     @bookmarked_events.collect! do |b|
