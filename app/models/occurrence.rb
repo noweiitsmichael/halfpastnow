@@ -2,8 +2,8 @@ require 'pp'
 class Occurrence < ActiveRecord::Base
   extend FriendlyId
   friendly_id :slug,use: :slugged
-  #include Tire::Model::Search
-  #include Tire::Model::Callbacks
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
   belongs_to :event
   belongs_to :recurrence
   has_many :histories
@@ -15,44 +15,44 @@ class Occurrence < ActiveRecord::Base
   has_many :bookmarks, :as => :bookmarked, :dependent => :destroy
 
 
-  #after_touch() { tire.update_index }
-  #mapping do
-  #  indexes :_id, type: 'integer', index: :not_analyzed,:store => 'yes',boost: 20
-  #  indexes :slug, type: 'string', boost: 10 , analyzer: 'snowball'
-  #  indexes :start, type: 'date', index: :not_analyzed , boost: 100
-  #  indexes :events do
-  #    indexes :_id, type: 'integer', index: :not_analyzed,:store => 'yes'
-  #    indexes :price, type: 'integer'
-  #    indexes :title, boost: 10
-  #    indexes :description, boost: 9 , analyzer: 'snowball'
-  #  indexes :acts do
-  #    indexes :name, analyzer: 'snowball'
-  #  end
-  #  indexes :venue do
-  #    indexes :name, analyzer: 'snowball'
-  #    indexes :description, analyzer: 'snowball'
-  #  end
-  #  indexes :tags do
-  #    indexes :name, analyzer: 'snowball'
-  #  end
-  #    index
-  #    end
-  #end
+  after_touch() { tire.update_index }
+  mapping do
+    indexes :_id, type: 'integer', index: :not_analyzed,:store => 'yes',boost: 20
+    indexes :slug, type: 'string', boost: 10 , analyzer: 'snowball'
+    indexes :start, type: 'date', index: :not_analyzed , boost: 100
+    indexes :events do
+      indexes :_id, type: 'integer', index: :not_analyzed,:store => 'yes'
+      indexes :price, type: 'integer'
+      indexes :title, boost: 10
+      indexes :description, boost: 9 , analyzer: 'snowball'
+    indexes :acts do
+      indexes :name, analyzer: 'snowball'
+    end
+    indexes :venue do
+      indexes :name, analyzer: 'snowball'
+      indexes :description, analyzer: 'snowball'
+    end
+    indexes :tags do
+      indexes :name, analyzer: 'snowball'
+    end
+      index
+      end
+  end
 
-  #def self.search(params)
-  #  tire.search(load: true) do
-  #    query { string params[:query], default_operator: "OR"} if params[:query].present?
-  #    size 100
-  #    #sort { by :updated_at, 'desc' }
-  #    #facet('timeline') { range :post_date, { :ranges => [ { to: Date.today+1, from: Date.today-7 }, { to: Date.today+1, from: Date.today-14 }, { to: Date.today+1, from: Date.today-30 } ] } }
-  #    filter :range, start: {gte: Time.zone.now,lte: Time.zone.now+2.days}
-  #
-  #
-  #  end
-  #end
-  #def to_indexed_json
-  #  to_json( include: { acts: { only: [:name] }, venue: { only: [:name,:description]},tags: {only: [:name]} } )
-  #end
+  def self.search(params)
+    tire.search(load: true) do
+      query { string params[:query], default_operator: "OR"} if params[:query].present?
+      size 100
+      #sort { by :updated_at, 'desc' }
+      #facet('timeline') { range :post_date, { :ranges => [ { to: Date.today+1, from: Date.today-7 }, { to: Date.today+1, from: Date.today-14 }, { to: Date.today+1, from: Date.today-30 } ] } }
+      filter :range, start: {gte: Time.zone.now,lte: Time.zone.now+2.days}
+
+
+    end
+  end
+  def to_indexed_json
+    to_json( include: { acts: { only: [:name] }, venue: { only: [:name,:description]},tags: {only: [:name]} } )
+  end
 
 
   # Allows you to search for users that bookmarked this event by calling "event.bookmarked_by"
