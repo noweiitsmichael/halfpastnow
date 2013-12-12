@@ -11,14 +11,26 @@ class DashboardController < ApplicationController
     @user = current_user rescue nil
   end
 
+  def update_profile
+    current_user.update_attributes(:"#{params[:name]}" => params[:value])
+    render json: 'Updated'
+  end
+
   def settings
     @selected_sidebar_li = 'settings'
     @user = current_user rescue nil
   end
 
-  def saved_searches
-    @selected_sidebar_li = 'saved_searches'
+  def my_list
+    @selected_sidebar_li = 'my_list'
     @user = current_user rescue nil
+    @bookmark_lists = @user.bookmark_lists.order('name')
+  end
+
+  def bookmarks
+    bookmark_list = BookmarkList.find(params[:id])
+    @bookmarks = bookmark_list.bookmarks
+    render layout: false if request.xhr?
   end
 
   def preferences

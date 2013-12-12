@@ -16,7 +16,7 @@
   <div class="name"><a href="/events/austin/<%= occurrence.slug %>"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
   <div class="info clearfix">
     <span class="time pull-left"><%= occurrence.start.to_time.strftime("%B %-d @ %-l:%M%P") %></span>
-    <span class="value pull-right"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price, :unit => "$").to_s + " " : "FREE ") : "" %></span>
+    <span class="value pull-right" price="<%= occurrence.event.price.to_f %>"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price, :unit => "$").to_s + " " : "FREE ") : "FREE" %></span>
   </div>
   <div class="additional-info">
     <span class="place"><%= link_to occurrence.event.venue.name,"/venues/austin/#{occurrence.event.venue.slug}",:style => "color:#4C334D" %></span>
