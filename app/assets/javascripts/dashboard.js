@@ -10,9 +10,24 @@ $(document).ready(function(){
   //editables
   $('#firstname').editable({
     type: 'text',
-    name: 'firstname'
+    pk: 1,
+    url: '/dashboard/update_profile'
+  });
+  $('#lastname').editable({
+    type: 'text',
+    pk: 1,
+    url: '/dashboard/update_profile'
   });
 // Profile Page END
+
+// My List Page
+  $('.my-list > li:first').addClass('active');
+  $('.my-list > li').click(function(){
+    $('.my-list > li').removeClass('active');
+    $(this).addClass('active');
+  });
+// My List Page End
+
 
 // Preferences Page
 

@@ -4,8 +4,10 @@ Myapp::Application.routes.draw do
     collection do
       get :profile
       get :settings
-      get :saved_searches
+      get :my_list
       get :preferences
+      get :bookmarks
+      post :update_profile
     end
   end
 

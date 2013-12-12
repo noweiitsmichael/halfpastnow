@@ -1,0 +1,64 @@
+<div class="breadcrumbs" id="breadcrumbs">
+  <script type="text/javascript">
+    try {
+      ace.settings.check('breadcrumbs', 'fixed')
+    } catch (e) {
+    }
+  </script>
+
+  <ul class="breadcrumb">
+    <li>
+      <%= link_to dashboard_index_path do %>
+        <i class="icon-home home-icon"></i>
+        <span class="menu-text"> Home </span>
+      <% end %>
+    </li>
+    <li class="active">Saved Searches</li>
+  </ul>
+  <!-- .breadcrumb -->
+</div>
+<% unless @user.nil? %>
+  <div class="page-content">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="page-header">
+      <h1>My List</h1>
+    </div>
+    <div class="page-body">
+      <div class="row">
+        <div class="col-sm-3" style="width:20%">
+          <div class="sidebar inner_sidebar" id="sidebar">
+            <script type="text/javascript">
+              try {
+                ace.settings.check('sidebar', 'fixed')
+              } catch (e) {
+              }
+            </script>
+
+            <ul class="nav nav-list my-list">
+                <% @bookmark_lists.each do|bl| %>
+                <li>
+                  <%= link_to bl.name, bookmarks_dashboard_index_path(id: bl.id), remote: true %>
+                </li>
+                <% end %>
+            </ul>
+            <!-- /.nav-list -->
+
+            <script type="text/javascript">
+              try {
+                ace.settings.check('sidebar', 'collapsed')
+              } catch (e) {
+              }
+            </script>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div id="my-list-inner-main-content">
+            <%= render partial: 'bookmarks', locals: {bookmarks: @bookmark_lists.first.bookmarks} %>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <h1 class="text-center text-danger"> Something is Wrong</h1>
+<% end %>
