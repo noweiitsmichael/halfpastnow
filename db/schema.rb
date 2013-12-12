@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131001090606) do
+ActiveRecord::Schema.define(:version => 20131211230326) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(:version => 20131001090606) do
     t.float    "completion"
     t.text     "temp_storage"
     t.integer  "weight",       :default => 1
+    t.string   "slug"
   end
 
   add_index "acts", ["event_id"], :name => "index_acts_on_event_id"
@@ -53,6 +54,25 @@ ActiveRecord::Schema.define(:version => 20131001090606) do
   add_index "acts_tags", ["act_id"], :name => "index_acts_tags_on_act_id"
   add_index "acts_tags", ["tag_id"], :name => "index_acts_tags_on_tag_id"
 
+  create_table "advertisements", :force => true do |t|
+    t.string   "type"
+    t.datetime "start"
+    t.datetime "end"
+    t.integer  "views"
+    t.integer  "clicks"
+    t.string   "image"
+    t.string   "title"
+    t.text     "description"
+    t.integer  "weight"
+    t.string   "placement"
+    t.string   "name"
+    t.string   "advertiser"
+    t.string   "email"
+    t.integer  "phone"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "bookmark_lists", :force => true do |t|
     t.text     "description"
     t.string   "custom_url"
@@ -66,9 +86,11 @@ ActiveRecord::Schema.define(:version => 20131001090606) do
     t.string   "name"
     t.string   "picture_url"
     t.boolean  "main_bookmarks_list"
+    t.string   "slug"
   end
 
   add_index "bookmark_lists", ["featured"], :name => "index_bookmark_lists_on_featured"
+  add_index "bookmark_lists", ["slug"], :name => "index_bookmark_lists_on_slug"
   add_index "bookmark_lists", ["user_id", "main_bookmarks_list"], :name => "index_bookmark_lists_on_user_id_and_main_bookmarks_list"
 
   create_table "bookmark_lists_users", :id => false, :force => true do |t|
@@ -216,10 +238,12 @@ ActiveRecord::Schema.define(:version => 20131001090606) do
     t.integer  "recurrence_id"
     t.integer  "day_of_week"
     t.boolean  "deleted"
+    t.string   "slug"
   end
 
   add_index "occurrences", ["event_id"], :name => "index_occurrences_on_event_id"
   add_index "occurrences", ["recurrence_id"], :name => "index_occurrences_on_recurrence_id"
+  add_index "occurrences", ["slug"], :name => "index_occurrences_on_slug"
   add_index "occurrences", ["start"], :name => "index_occurrences_on_start"
   add_index "occurrences", ["start"], :name => "occurrences_not_deleted_start_index"
 
@@ -407,6 +431,10 @@ ActiveRecord::Schema.define(:version => 20131001090606) do
     t.float    "completion"
     t.integer  "assigned_admin"
     t.integer  "weight",         :default => 1
+    t.string   "slug"
+    t.text     "hours"
   end
+
+  add_index "venues", ["slug"], :name => "index_venues_on_slug"
 
 end
