@@ -19,7 +19,7 @@
 
 
 
-      $("#asc_btn").click(function(){
+      $(".asc_btn").click(function(){
         $(".product-list").jSort({
           sort_by: 'span.value',
           item: '.slide-item',
@@ -29,7 +29,7 @@
         });
       });
 
-      $("#desc_btn").click(function(){
+      $(".desc_btn").click(function(){
         $(".product-list").jSort({
           sort_by: 'span.value',
           item: '.slide-item',
@@ -38,14 +38,14 @@
           attr_name: 'price'
         });
       });
-      $('#desc_btn').hide()
-      $('#asc_btn').click(function(){
-        $('#desc_btn').show();
-        $('#asc_btn').hide();
+      $('.desc_btn').hide()
+      $('.asc_btn').click(function(){
+        $('.desc_btn').show();
+        $('.asc_btn').hide();
       })
-      $('#desc_btn').click(function(){
-        $('#asc_btn').show();
-        $('#desc_btn').hide();
+      $('.desc_btn').click(function(){
+        $('.asc_btn').show();
+        $('.desc_btn').hide();
       })
 
     });
@@ -432,8 +432,8 @@
              <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
                 <div style="display: none;" class="popover bottom">
                   <div class="arrow"></div>
-                  <label class="cost_sort" id="asc_btn"><span class="icon-hand-"></span>COST</label>
-                  <label class="cost_sort" id="desc_btn"><span class="icon-hand-down"></span>COST</label>
+                  <label class="cost_sort asc_btn"><span class="icon-hand-up"></span>COST</label>
+                  <label class="cost_sort desc_btn"><span class="icon-hand-down"></span>COST</label>
                 </div>
 
             </span>
@@ -508,7 +508,11 @@
            </span>
            <span class="sort-item">
              <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
-
+              <div style="display: none;" class="popover bottom">
+                <div class="arrow"></div>
+                <label class="cost_sort asc_btn"><span class="icon-hand-up"></span>COST</label>
+                <label class="cost_sort desc_btn"><span class="icon-hand-down"></span>COST</label>
+              </div>
             </span>
 
             </div>
