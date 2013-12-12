@@ -225,6 +225,7 @@
         <% unless (@result.empty?) %>
             <% occurrences = @result.select { |b| b if (b["start"].to_date == day) } %>
             <%# occurrence_count = occurrences.size %>
+            
             <% occurrences = occurrences.select { |b| b if (Occurrence.exists?(b["id"])&&!Occurrence.find(b["id"]).nil? && Occurrence.find(b["id"]).trending_event == true ) } %>
             <% occurrences = occurrences.first(4)%>
             <% unless (occurrences.blank?) %>
