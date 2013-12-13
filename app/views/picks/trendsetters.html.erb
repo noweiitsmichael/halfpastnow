@@ -128,7 +128,7 @@
     <% def insert_picklist(picklist,currentUserIsFollowing,hidden) %>
       <article class="member">
         <div class="clearfix">
-          <figure class="avater"><a href="#"><%= image_tag picklist.picture_url(:thumb) || "/assets/picklist-placeholder.png",:class => "img-circle",:alt => "image" %></a></figure>
+          <figure class="avater"><a href="/explorers/austin/<%= picklist.slug %>"><%= image_tag picklist.picture_url(:thumb) || "/assets/picklist-placeholder.png",:class => "img-circle",:alt => "image" %></a></figure>
           <div class="name"><a href="/explorers/austin/<%= picklist.slug %>" style="color:#4D344F"><%= picklist.name %></a></div>
         </div>
         <p class="description"><%= raw picklist.description.truncate(160) %></p>

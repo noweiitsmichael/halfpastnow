@@ -23,10 +23,11 @@
   </div>
   <div class="additional-info">
     <span class="place">
-      <a href="/?venue_id=<%= occurrence.event.venue.id %>">
+      <!--<a href="/?venue_id=<%#= occurrence.event.venue.id %>">-->
         <span class="venue" link-id="<%= occurrence.event.venue.id %>" linkto="venue">@
-          <span class="venue-inner"><%= occurrence.event.venue.name %></span></span>
-      </a>
+          <span class="venue-inner"><%= occurrence.event.venue.name %></span>
+        </span>
+      <!--</a>-->
     </span>
     <%
        if (current_user)

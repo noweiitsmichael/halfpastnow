@@ -13,6 +13,7 @@
 
 <% end %>
 <% content_for :body do %>
+
   <% @footer = "no" %>
   <div id="fb-root"></div>
   <% @page = "login" %>
@@ -31,7 +32,7 @@
       </div>
       <div class="clearfix">
         <div class="span5 inline">
-          <h4>LOGIN UP VIA FACEBOOK</h4>
+          <h4>Login with Facebook</h4>
         </div>
         <div class="span1 inline"><h4>OR</h4></div>
         <div class="span5 inline"><h4>LOGIN VIA EMAIL</h4></div>
@@ -43,6 +44,7 @@
             <div class="clr"></div>
             <%= f.submit "Log In",:class => 'btn-danger' %>
          <% end %>
+
         </div>
       </div>
     </div>
