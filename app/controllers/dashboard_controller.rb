@@ -16,6 +16,11 @@ class DashboardController < ApplicationController
     render status: 200, nothing: true
   end
 
+  def update_profile_pic
+    current_user.update_attributes({:profilepic => params[:profilepic]})
+    render status: 200, nothing: true
+  end
+
   def settings
     @selected_sidebar_li = 'settings'
     @user = current_user rescue nil

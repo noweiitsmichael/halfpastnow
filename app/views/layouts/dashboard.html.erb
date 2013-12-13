@@ -53,18 +53,15 @@
 
 <div class="navbar-container" id="navbar-container">
 <div class="navbar-header pull-left">
-  <a href="/" class="navbar-brand">
-    <small>
-      <i class="icon-leaf"></i>
-      HalfPastNow
-    </small>
-  </a><!-- /.brand -->
+  <%= link_to "/", class: "navbar-brand" do %>
+    <%= image_tag '/assets/new_design/logo.png', width: '52%' %>
+  <% end %><!-- /.brand -->
 </div>
 <!-- /.navbar-header -->
 
 <div class="navbar-header pull-right" role="navigation">
 <ul class="nav ace-nav">
-<li class="light-blue">
+<li class="dark-purple">
   <a data-toggle="dropdown" href="#" class="dropdown-toggle">
     <% if user_signed_in? %>
       <%= image_tag current_user.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic nav-user-photo", :alt => "#{current_user.firstname}'s Photo" %>

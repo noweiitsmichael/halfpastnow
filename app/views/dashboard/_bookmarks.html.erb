@@ -1,6 +1,6 @@
 <% if bookmarks.empty? %>
   <div class="well well-lg">
-    <h4 class="blue">There are no Bookmarks in this category</h4>
+    <h4 class="purple">There are no Bookmarks in this category</h4>
   </div>
 <% else %>
   <div class="table-responsive">
@@ -23,21 +23,11 @@
       <table class="table table-striped table-bordered table-hover dataTable" id="sample-table-2" aria-describedby="sample-table-2_info">
         <thead>
         <tr role="row">
-          <th class="center sorting_disabled" role="columnheader" rowspan="1" colspan="1" style="width: 56px;" aria-label="														">
-            <label>
-              <input type="checkbox" class="ace">
-              <span class="lbl"></span>
-            </label>
-          </th>
           <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample-table-2" rowspan="1" colspan="1" style="width: 156px;" aria-label="Domain: activate to sort column ascending">Type</th>
           <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample-table-2" rowspan="1" colspan="1" style="width: 112px;" aria-label="Price: activate to sort column ascending">Comments</th>
           <th class="hidden-480 sorting" role="columnheader" tabindex="0" aria-controls="sample-table-2" rowspan="1" colspan="1" style="width: 123px;" aria-label="Clicks: activate to sort column ascending">
             <i class="icon-time bigger-110 hidden-480"></i>
             Created
-          </th>
-          <th class="sorting" role="columnheader" tabindex="0" aria-controls="sample-table-2" rowspan="1" colspan="1" style="width: 182px;" aria-label="Update: activate to sort column ascending">
-            <i class="icon-time bigger-110 hidden-480"></i>
-            last Update
           </th>
         </tr>
         </thead>
@@ -46,17 +36,9 @@
         <tbody role="alert" aria-live="polite" aria-relevant="all">
         <% bookmarks.each do|bookmark| %>
           <tr class="<%= cycle("odd", "even")%>">
-            <td class="center sorting_1">
-              <label>
-                <input type="checkbox" class="ace">
-                <span class="lbl"></span>
-              </label>
-            </td>
-
-            <td><%= bookmark.bookmarked_type %></td>
+            <td><%= bookmark.bookmarked_type == "Occurrence" ? "Event" : bookmark.bookmarked_type %></td>
             <td><%= bookmark.comment %></td>
             <td><%= bookmark.created_at.to_date %></td>
-            <td><%= time_ago_in_words(bookmark.updated_at) %> ago</td>
           </tr>
         <% end %>
         </tbody>

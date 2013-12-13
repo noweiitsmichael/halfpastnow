@@ -15,7 +15,7 @@
 
           <div class="space-4"></div>
 
-          <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+          <div class="width-80 label label-purple label-xlg arrowed-in arrowed-in-right">
             <div class="inline position-relative">
               <span class="white"><%= @user.firstname %>&nbsp;<%= @user.lastname %></span>
             </div>
@@ -58,7 +58,7 @@
               <div class="profile-info-name"> Joined</div>
 
               <div class="profile-info-value">
-                <span><%= @user.created_at %></span>
+                <span><%= @user.created_at.strftime("%Y - %b - %d") %></span>
               </div>
             </div>
           </div>
