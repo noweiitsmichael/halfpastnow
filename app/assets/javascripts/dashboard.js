@@ -8,14 +8,8 @@ $(document).ready(function(){
     '<button type="button" class="btn editable-cancel"><i class="icon-remove"></i></button>';
 
   //editables
-  $('#firstname').editable({
+  $('#firstname, #lastname').editable({
     type: 'text',
-    pk: 1,
-    url: '/dashboard/update_profile'
-  });
-  $('#lastname').editable({
-    type: 'text',
-    pk: 1,
     url: '/dashboard/update_profile'
   });
 // Profile Page END

@@ -12,8 +12,8 @@ class DashboardController < ApplicationController
   end
 
   def update_profile
-    current_user.update_attributes(:"#{params[:name]}" => params[:value])
-    render json: 'Updated'
+    current_user.update_attributes({params[:name] => params[:value]})
+    render status: 200, nothing: true
   end
 
   def settings
