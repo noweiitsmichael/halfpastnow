@@ -23,6 +23,31 @@
         </div>
         <div class="col-sm-6">
           <!-- Profile info -->
+          <div>
+            <span class="btn btn-app btn-sm btn-light no-hover">
+              <span class="line-height-1 bigger-170 blue"> <%= @user.bookmarked_events.count %> </span>
+
+              <br>
+              <span class="line-height-1 smaller-90"> Events </span>
+            </span>
+
+            <span class="btn btn-app btn-sm btn-purple no-hover">
+              <span class="line-height-1 bigger-170"> <%= @user.bookmarked_venues.count %> </span>
+
+              <br>
+              <span class="line-height-1 smaller-90"> Venues </span>
+            </span>
+
+            <span class="btn btn-app btn-sm btn-pink no-hover">
+              <span class="line-height-1 bigger-170"> <%= @user.bookmarked_acts.count %> </span>
+
+              <br>
+              <span class="line-height-1 smaller-90"> Artists </span>
+            </span>
+          </div>
+
+          <div class="space-4"></div>
+
           <div class="profile-user-info profile-user-info-striped">
             <div class="profile-info-row">
               <div class="profile-info-name"> First Name</div>
