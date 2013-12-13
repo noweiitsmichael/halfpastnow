@@ -29,15 +29,11 @@ class BookmarksController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @bookmark = Bookmark.find(params[:id])
-    
-    respond_to do |format|
-	    if @bookmark.destroy
-	      format.html { redirect_to :back }
-	      format.json { head :no_content }
-	    else 
-	      format.html { redirect_to :back }
-		  format.json { render json: @bookmark.errors, status: :unprocessable_entity }
-		end
+    @bookmark.destroy
+    if request.xhr?
+      render json: 'deleted'
+    else
+      redirect_to :back
     end
   end
 
