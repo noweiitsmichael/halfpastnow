@@ -499,7 +499,10 @@
       <div class="accordion-inner">
         <p>
           <% unless @event.tags.length == 0 %>
-            <%= @event.tags.collect { |tag| tag.name } * ", " %></li>
+            <%#= @event.tags.collect { |tag| raw("#{link_to(tag.name,"#",:tag_id => tag.id)}") } * ", " %>
+            <% @event.tags.each do |tag|%>
+                <%= link_to(tag.name,"#",:tag_id => tag.id,:style => "color:#4C334E;") %><%= "," unless @event.tags.last.id==tag.id %>
+          <% end %>
           <% end %>
         </p>
       </div>
@@ -567,7 +570,10 @@
             <script type="text/javascript">
               Galleria.loadTheme('/assets/galleria.classic.min.js');
               Galleria.run('#galleria');
-
+              $('#tags a').click(function(){
+                tag_id = $(this).attr('tag_id')
+                window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text())+"&tag_id="+tag_id
+              })
             </script>
           </div>
         </div>
@@ -756,6 +762,7 @@
   #body {
     overflow: visible !important;
   }
+
 </style>
 
 </body>
