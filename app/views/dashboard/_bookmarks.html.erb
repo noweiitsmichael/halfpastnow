@@ -45,6 +45,7 @@
   </div>
 </div>
 <br>
+<div class="clearfix"></div>
 <div class="row">
 <% if bookmarks.empty? %>
   <div class="well well-lg col-sm-6 col-sm-offset-1">
@@ -68,19 +69,22 @@
         <% bookmarks.each do |bookmark| %>
           <tr class="<%= cycle("odd", "even") %>">
             <% if bookmark.bookmarked_type == "Occurrence" %>
-              <% path = "/events/austin/#{bookmark.bookmarked.slug}" rescue nil %>
+              <% name =  bookmark.bookmarked.event.title %>
+              <% path = "/events/austin/#{bookmark.bookmarked.slug.nil? ? bookmark.bookmarked.id : bookmark.bookmarked.slug }" rescue nil %>
             <% elsif bookmark.bookmarked_type == "Venue" %>
-              <% path = "/venues/austin/#{bookmark.bookmarked.slug}" rescue nil %>
+              <% name = bookmark.bookmarked.name %>
+              <% path = "/venues/austin/#{bookmark.bookmarked.slug.nil? ? bookmark.bookmarked.id : bookmark.bookmarked.slug}" rescue nil %>
             <% elsif bookmark.bookmarked_type == "Act" %>
-              <% path = "/artists/#{bookmark.bookmarked.slug}" rescue nil %>
+              <% name = bookmark.bookmarked.name %>
+              <% path = "/artists/#{bookmark.bookmarked.slug.nil? ? bookmark.bookmarked.id : bookmark.bookmarked.slug}" rescue nil %>
             <% else %>
               <% path = nil %>
             <% end %>
             <td>
               <% if path.nil? %>
-                <%= bookmark.bookmarked.event.title %>
+                <%= name %>
               <% else %>
-                <%= link_to bookmark.bookmarked.event.title, path, target: :_blank %>
+                <%= link_to name, path, target: :_blank %>
               <% end %>
             </td>
             <td><%= bookmark.bookmarked_type == "Occurrence" ? "Event" : bookmark.bookmarked_type %></td>

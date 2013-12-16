@@ -74,7 +74,7 @@ class VenuesController < ApplicationController
     @venue.clicks += 1
     @venue.save
     if(current_user)
-      bookmark = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => @venue.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
+      bookmark = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => @venue.id).first
       @bookmarkId = bookmark.nil? ? nil : bookmark.id
     else
       @bookmarkId = nil

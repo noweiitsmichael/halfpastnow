@@ -31,7 +31,7 @@ class BookmarksController < ApplicationController
     @bookmark = Bookmark.find(params[:id])
     @bookmark.destroy
     if request.xhr?
-      render json: 'deleted'
+      render json: 200
     else
       redirect_to :back
     end
@@ -70,9 +70,12 @@ class BookmarksController < ApplicationController
   		end
   	end
 
-    bookmark_list = current_user.bookmark_lists.find bookmark_list_id
-    @bookmark = bookmark_list.bookmarks.build
-    #@bookmark = current_user.main_bookmark_list.bookmarks.build
+    if bookmark_list_id
+      bookmark_list = current_user.bookmark_lists.find bookmark_list_id
+      @bookmark = bookmark_list.bookmarks.build
+    else
+      @bookmark = current_user.main_bookmark_list.bookmarks.build
+    end
 
     @bookmark.bookmarked_id = id
   	@bookmark.bookmarked_type = type
