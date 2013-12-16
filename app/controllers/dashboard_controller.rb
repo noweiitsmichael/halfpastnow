@@ -2,10 +2,6 @@ class DashboardController < ApplicationController
   before_filter :authenticate_user!
   layout 'dashboard'
 
-  def index
-    @selected_sidebar_li = 'dashboard'
-  end
-
   def profile
     @selected_sidebar_li = 'profile'
     @user = current_user rescue nil

@@ -24,26 +24,23 @@
         <div class="col-sm-6">
           <!-- Profile info -->
           <div class="profile-user-info">
-            <span class="btn btn-app btn-sm btn-light no-hover">
-              <span class="line-height-1 bigger-170 blue"> <%= @user.bookmarked_events.count %> </span>
-
+            <button class="btn btn-info btn-lg" type="button" style="border-radius: 10px">
+              <span class="line-height-1 bigger-170"> <%= @user.bookmarked_events.count %> </span>
               <br>
-              <span class="line-height-1 smaller-90"> Events </span>
-            </span>
+              <span class="line-height-1 smaller-90"> Bookmarked <br> Events </span>
+            </button>
 
-            <span class="btn btn-app btn-sm btn-purple no-hover">
-              <span class="line-height-1 bigger-170"> <%= @user.bookmarked_venues.count %> </span>
-
+            <button class="btn btn-purple btn-lg" type="button" style="border-radius: 10px">
+              <span class="line-height-1 bigger-170 "> <%= @user.bookmarked_venues.count %> </span>
               <br>
-              <span class="line-height-1 smaller-90"> Venues </span>
-            </span>
+              <span class="line-height-1 smaller-90"> Bookmarked <br> Venues </span>
+            </button>
 
-            <span class="btn btn-app btn-sm btn-pink no-hover">
-              <span class="line-height-1 bigger-170"> <%= @user.bookmarked_acts.count %> </span>
-
+            <button class="btn btn-pink btn-lg" type="button" style="border-radius: 10px">
+              <span class="line-height-1 bigger-170 "> <%= @user.bookmarked_acts.count %> </span>
               <br>
-              <span class="line-height-1 smaller-90"> Artists </span>
-            </span>
+              <span class="line-height-1 smaller-90"> Bookmarked <br> Artists </span>
+            </button>
           </div>
 
           <div class="space-4"></div>

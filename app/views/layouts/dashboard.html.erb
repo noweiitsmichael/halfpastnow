@@ -139,12 +139,6 @@
       </script>
 
       <ul class="nav nav-list">
-        <!--<li class="<%#= @selected_sidebar_li == 'dashboard' ? 'active' : ''%>">-->
-          <!--<%#= link_to dashboard_index_path do %>-->
-            <!--<i class="icon-dashboard"></i>-->
-            <!--<span class="menu-text"> Dashboard </span>-->
-          <!--<%# end %>-->
-        <!--</li>-->
         <li class="<%= @selected_sidebar_li == 'profile' ? 'active' : ''%>">
           <%= link_to profile_dashboard_index_path do %>
             <i class="icon-user"></i>
