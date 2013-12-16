@@ -9,6 +9,8 @@ Myapp::Application.routes.draw do
       get :bookmarks
       post :update_profile
       post :update_profile_pic
+      post :update_bookmark_list
+      post :update_bookmark_list_picture
     end
   end
 

@@ -1,41 +1,39 @@
 <% unless @user.nil? %>
-  <div class="page-content" style="padding: 0">
+  <div class="page-content" style="padding: 1px">
     <!-- PAGE CONTENT BEGINS -->
     <div class="page-header">
       <h1>My List</h1>
     </div>
     <div class="page-body">
-      <div class="row">
-        <div class="col-xs-3" style="width:20%">
-          <div class="sidebar inner_sidebar" id="sidebar">
-            <script type="text/javascript">
-              try {
-                ace.settings.check('sidebar', 'fixed')
-              } catch (e) {
-              }
-            </script>
+      <div class="col-xs-3" style="width:20%">
+        <div class="sidebar inner_sidebar" id="sidebar">
+          <script type="text/javascript">
+            try {
+              ace.settings.check('sidebar', 'fixed')
+            } catch (e) {
+            }
+          </script>
 
-            <ul class="nav nav-list my-list">
-                <% @bookmark_lists.each do|bl| %>
-                <li>
-                  <%= link_to bl.name, bookmarks_dashboard_index_path(id: bl.id), remote: true %>
-                </li>
-                <% end %>
-            </ul>
-            <!-- /.nav-list -->
+          <ul class="nav nav-list my-list">
+            <% @bookmark_lists.each do |bl| %>
+              <li>
+                <%= link_to bl.name, bookmarks_dashboard_index_path(id: bl.id), remote: true %>
+              </li>
+            <% end %>
+          </ul>
+          <!-- /.nav-list -->
 
-            <script type="text/javascript">
-              try {
-                ace.settings.check('sidebar', 'collapsed')
-              } catch (e) {
-              }
-            </script>
-          </div>
+          <script type="text/javascript">
+            try {
+              ace.settings.check('sidebar', 'collapsed')
+            } catch (e) {
+            }
+          </script>
         </div>
-        <div class="col-xs-9">
-          <div id="my-list-inner-main-content">
-            <%= render partial: 'bookmarks', locals: {bookmarks: @bookmark_lists.first.bookmarks} %>
-            </div>
+      </div>
+      <div class="col-xs-9">
+        <div id="my-list-inner-main-content">
+          <%= render partial: 'bookmarks', locals: {bookmark_list: @bookmark_lists.first, bookmarks: @bookmark_lists.first.bookmarks} %>
         </div>
       </div>
     </div>

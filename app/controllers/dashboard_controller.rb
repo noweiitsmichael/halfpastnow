@@ -29,9 +29,21 @@ class DashboardController < ApplicationController
   end
 
   def bookmarks
-    bookmark_list = BookmarkList.find(params[:id])
-    @bookmarks = bookmark_list.bookmarks
+    @bookmark_list = BookmarkList.find(params[:id])
+    @bookmarks = @bookmark_list.bookmarks
     render layout: false if request.xhr?
+  end
+
+  def update_bookmark_list
+    bookmark_list = BookmarkList.find(params[:pk])
+    bookmark_list.update_attributes({params[:name] => params[:value]})
+    render status: 200, nothing: true
+  end
+
+  def update_bookmark_list_picture
+    bookmark_list = BookmarkList.find(params[:id])
+    bookmark_list.update_attributes({picture: params[:picture]})
+    render status: 200, nothing: true
   end
 
   def preferences
