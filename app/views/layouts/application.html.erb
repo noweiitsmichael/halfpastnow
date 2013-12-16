@@ -168,8 +168,7 @@
 
         <form action="#" class="navbar-search">
           <div class="input-append">
-            <input class="span4 search-input" id="appendedInput" type="text">
-
+            <input class="span4 search-input" id="appendedInput" type="text" value="Explore Austin" onClick="if(this.value=='Explore Austin')this.value = ''" onBlur="if(this.value=='')this.value = 'Explore Austin'">
             <div class="popover bottom">
               <div class="arrow"></div>
               <div class="popover-content clearfix">
