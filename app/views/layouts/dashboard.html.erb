@@ -53,18 +53,15 @@
 
 <div class="navbar-container" id="navbar-container">
 <div class="navbar-header pull-left">
-  <a href="/" class="navbar-brand">
-    <small>
-      <i class="icon-leaf"></i>
-      HalfPastNow
-    </small>
-  </a><!-- /.brand -->
+  <%= link_to "/", class: "navbar-brand" do %>
+    <%= image_tag '/assets/new_design/logo.png', width: '52%' %>
+  <% end %><!-- /.brand -->
 </div>
 <!-- /.navbar-header -->
 
 <div class="navbar-header pull-right" role="navigation">
 <ul class="nav ace-nav">
-<li class="light-blue">
+<li class="dark-purple">
   <a data-toggle="dropdown" href="#" class="dropdown-toggle">
     <% if user_signed_in? %>
       <%= image_tag current_user.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic nav-user-photo", :alt => "#{current_user.firstname}'s Photo" %>
@@ -142,12 +139,12 @@
       </script>
 
       <ul class="nav nav-list">
-        <li class="<%= @selected_sidebar_li == 'dashboard' ? 'active' : ''%>">
-          <%= link_to dashboard_index_path do %>
-            <i class="icon-dashboard"></i>
-            <span class="menu-text"> Dashboard </span>
-          <% end %>
-        </li>
+        <!--<li class="<%#= @selected_sidebar_li == 'dashboard' ? 'active' : ''%>">-->
+          <!--<%#= link_to dashboard_index_path do %>-->
+            <!--<i class="icon-dashboard"></i>-->
+            <!--<span class="menu-text"> Dashboard </span>-->
+          <!--<%# end %>-->
+        <!--</li>-->
         <li class="<%= @selected_sidebar_li == 'profile' ? 'active' : ''%>">
           <%= link_to profile_dashboard_index_path do %>
             <i class="icon-user"></i>
@@ -162,13 +159,13 @@
         </li>
         <li class="<%= @selected_sidebar_li == 'my_list' ? 'active' : ''%>">
           <%= link_to my_list_dashboard_index_path do %>
-            <i class="icon-shopping-cart"></i>
-            <span class="menu-text"> My List </span>
+            <i class="icon-th-list"></i>
+            <span class="menu-text"> My Lists </span>
           <% end %>
         </li>
         <li class="<%= @selected_sidebar_li == 'preferences' ? 'active' : ''%>">
           <%= link_to preferences_dashboard_index_path do %>
-            <i class="icon-briefcase"></i>
+            <i class="icon-th"></i>
             <span class="menu-text"> My Preferences </span>
           <% end %>
         </li>

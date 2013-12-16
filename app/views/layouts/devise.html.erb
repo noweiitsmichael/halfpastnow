@@ -1,18 +1,7 @@
-<% content_for :head do %>
-	<%= stylesheet_link_tag "devise" %>
- 	<%= stylesheet_link_tag "jcrop" %>
-<% end %>
-<% content_for :header do %>
-	<div class="titlebar">
-		<div class="stay-on-target">
-			<span><%= yield :title %></span>
-		</div>
-	</div>
-<% end %>
+
+
 <% content_for :body do %>
-	<div id="info-content" class="padded">
-		<%= yield :content %>
-	</div>
+
 <% end %>
 
 <%= render :template => 'layouts/application' %>

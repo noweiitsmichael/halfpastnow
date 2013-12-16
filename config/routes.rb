@@ -8,6 +8,7 @@ Myapp::Application.routes.draw do
       get :preferences
       get :bookmarks
       post :update_profile
+      post :update_profile_pic
     end
   end
 
@@ -41,6 +42,7 @@ Myapp::Application.routes.draw do
 
   devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"} do
     get "join_now", :to => "registrations#new"
+    get "login", :to => "devise/sessions#new"
     post "/update_password", :to => "registrations#update_password"
   end
   get "tag/index"
@@ -131,7 +133,7 @@ Myapp::Application.routes.draw do
   match '/saved_searches_index' => 'events#saved_searches_index'
   match '/delete_saved_search' => 'events#delete_saved_search'
   match '/details' => 'events#details'
-  match '/login' => 'events#login'
+  #match '/login' => 'events#login'
   #match '/join_now' => 'events#joinnow'
   match '/auth/:provider/callback' => 'authentications#create'
   match '/explorers/austin' => 'picks#trendsetters'

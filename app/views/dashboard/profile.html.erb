@@ -1,27 +1,8 @@
-<div class="breadcrumbs" id="breadcrumbs">
-  <script type="text/javascript">
-    try {
-      ace.settings.check('breadcrumbs', 'fixed')
-    } catch (e) {
-    }
-  </script>
-
-  <ul class="breadcrumb">
-    <li>
-      <%= link_to dashboard_index_path do %>
-        <i class="icon-home home-icon"></i>
-        <span class="menu-text"> Home </span>
-      <% end %>
-    </li>
-    <li class="active">Profile</li>
-  </ul>
-  <!-- .breadcrumb -->
-</div>
 <% unless @user.nil? %>
   <div class="page-content">
     <!-- PAGE CONTENT BEGINS -->
     <div class="page-header">
-      <h1><%= @user.firstname rescue 'user' %> Profile</h1>
+      <h1><%= @user.firstname %> Profile</h1>
     </div>
     <div class="page-body">
     <div class="row">
@@ -34,7 +15,7 @@
 
           <div class="space-4"></div>
 
-          <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+          <div class="width-80 label label-purple label-xlg arrowed-in arrowed-in-right">
             <div class="inline position-relative">
               <span class="white"><%= @user.firstname %>&nbsp;<%= @user.lastname %></span>
             </div>
@@ -42,12 +23,37 @@
         </div>
         <div class="col-sm-6">
           <!-- Profile info -->
+          <div class="profile-user-info">
+            <span class="btn btn-app btn-sm btn-light no-hover">
+              <span class="line-height-1 bigger-170 blue"> <%= @user.bookmarked_events.count %> </span>
+
+              <br>
+              <span class="line-height-1 smaller-90"> Events </span>
+            </span>
+
+            <span class="btn btn-app btn-sm btn-purple no-hover">
+              <span class="line-height-1 bigger-170"> <%= @user.bookmarked_venues.count %> </span>
+
+              <br>
+              <span class="line-height-1 smaller-90"> Venues </span>
+            </span>
+
+            <span class="btn btn-app btn-sm btn-pink no-hover">
+              <span class="line-height-1 bigger-170"> <%= @user.bookmarked_acts.count %> </span>
+
+              <br>
+              <span class="line-height-1 smaller-90"> Artists </span>
+            </span>
+          </div>
+
+          <div class="space-4"></div>
+
           <div class="profile-user-info profile-user-info-striped">
             <div class="profile-info-row">
               <div class="profile-info-name"> First Name</div>
 
               <div class="profile-info-value">
-                <a href="#" id="firstname" data-type="text"><%= @user.firstname %></a>
+                <%= link_to @user.firstname,'#', id: "firstname", "data-pk" => @user.id %>
               </div>
             </div>
           </div>
@@ -57,7 +63,7 @@
               <div class="profile-info-name"> Last Name</div>
 
               <div class="profile-info-value">
-                <a href="#" id="lastname" data-type="text"><%= @user.lastname %></a>
+                <%= link_to @user.lastname,'#', id: "lastname", "data-pk" => @user.id %>
               </div>
             </div>
           </div>
@@ -77,7 +83,7 @@
               <div class="profile-info-name"> Joined</div>
 
               <div class="profile-info-value">
-                <span><%= @user.created_at %></span>
+                <span><%= @user.created_at.strftime("%Y - %b - %d") %></span>
               </div>
             </div>
           </div>

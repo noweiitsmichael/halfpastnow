@@ -1108,6 +1108,7 @@ function pullEvents(updateOptions) {
 
       $("#related_events .main .inline .events").html(data);
       $("#events .main .inline .events").html(data);
+
       $(".total_number").text($("#related_events .main .inline .events").find('article').length);
 
 //      console.log("----NUM EVENTS-----");

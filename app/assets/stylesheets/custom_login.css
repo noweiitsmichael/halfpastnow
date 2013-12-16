@@ -805,3 +805,10 @@ border-radius:0px;
 	  padding:7px 10px;
 	  font-size:18px;
 }
+
+#forget_password {
+  bottom: 50px;
+  color: #4C334E;
+  left: 333px;
+  position: relative;
+}
