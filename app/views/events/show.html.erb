@@ -296,9 +296,7 @@
   <section class="details">
   <section class="recommend-events">
     <div class="container">
-      <a class="link" href="/search"><i class="icon-left-arrow"></i> back to search results</a>
-      <a class="link" href="#" data-target="recommend-events-wrapper"><i class="icon-bottom-arrow"></i> recommended
-        events</a>
+
     </div>
   </section>
   <div class="container">
@@ -645,7 +643,8 @@
       </div>
       <div id="map" class="accordion-body collapse in">
         <div class="accordion-inner">
-          <a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=550x300&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&sensor=false"/></a>
+           <% location = CGI::escape("#{@occurrence.event.venue.name},#{@occurrence.event.venue.address},#{@occurrence.event.venue.city},#{@occurrence.event.venue.state},#{@occurrence.event.venue.zip.to_s}") %>
+          <a class="map-link" href="http://maps.google.com/maps?q=<%= location %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=550x300&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&sensor=false"/></a>
         </div>
       </div>
     </div>
@@ -745,6 +744,7 @@
     el.addClass('current-img');
     carousel.setCurrent(pos);
   }
+
 
 
 </script>

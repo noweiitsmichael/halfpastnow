@@ -64,14 +64,69 @@
       <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
       <nav class="nav-collapse collapse">
         <ul class="nav pull-right">
-          <li><a href="#"><i class="icon-right-arrow"></i>Get App</a></li>
+          <li>
+            <a href="<%= (@mobileMode) ? "/events/android" : "/explorers/austin" %>"><i class="icon-right-arrow"></i>Explorers</a>
+          </li>
+
           <% if user_signed_in? %>
-            <li><%= link_to('Log Out', destroy_user_session_path, :method => 'delete') %></li>
+            <li>
+
+              <ul class="nav nav_profile">
+                <li class="dark-purple">
+                  <%= image_tag current_user.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic nav-user-photo", :id =>"profile_pic",:alt => "#{current_user.firstname}'s Photo" %>
+                  <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                    <% if user_signed_in? %>
+                        <span class="user-info">
+                            <small>Welcome,</small>
+                          <%= current_user.firstname rescue 'Howdy' %>
+                        </span>
+                      <i class="icon-caret-down"></i>
+                    <% end %>
+                  </a>
+
+                  <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+
+                    <li>
+                      <%= link_to '/' do %>
+                        <i class="icon-home"></i>
+                        <span class="menu-text"> Home </span>
+                      <% end %>
+                    </li>
+
+                    <li class="divider"></li>
+
+                    <li>
+                      <%= link_to profile_dashboard_index_path do %>
+                        <i class="icon-user"></i>
+                        <span class="menu-text"> Profile </span>
+                      <% end %>
+                    </li>
+                    <li>
+                      <%= link_to settings_dashboard_index_path do %>
+                        <i class="icon-cog"></i>
+                        <span class="menu-text"> Settings </span>
+                      <% end %>
+                    </li>
+
+                    <li class="divider"></li>
+
+                    <li>
+                      <% if user_signed_in? %>
+                        <%= link_to destroy_user_session_path, method: :delete do %>
+                          <i class="icon-off"></i>
+                          <span class="menu-text"> Logout </span>
+                        <% end %>
+                      <% end %>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
           <% else %>
-            <li><a href="/login" ><i class="icon-right-arrow"></i>Log In</a></li>
             <li><a href="/join_now"><i class="icon-right-arrow"></i>Join Now</a></li>
+            <li>&nbsp;</li>
+            <li><a href="/login"><i class="icon-right-arrow"></i>Log In</a></li>
           <% end %>
-          <li><a href="<%= (@mobileMode) ? "/events/android" : "/explorers/austin" %>" ><i class="icon-right-arrow"></i>Explorers</a></li>
 
         </ul>
       </nav>
@@ -417,6 +472,20 @@
   <% cookies[:url] = request.url %>
 <% end %>
 <style>
+  .nav-user-photo {
+    border: 2px solid #FFFFFF;
+    border-radius: 100%;
+    float: left;
+    margin: 0 7px 0 0;
+    max-width: 40px;
+    position: relative;
+  }
+
+  .navbar .nav_profile{
+    padding-top: 0px !important;
+    width: 230px;
+  }
+
   .see-more a {
     position: relative;
     top: 50%;

@@ -2,34 +2,34 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta property="fb:app_id" content="475386955806720" />
+  <meta property="fb:app_id" content="475386955806720"/>
   <% if @pick %>
-    <meta property="og:type" content="halfpastnow:toppick" />
+    <meta property="og:type" content="halfpastnow:toppick"/>
   <% else %>
-    <meta property="og:type" content="halfpastnow:event" />
+    <meta property="og:type" content="halfpastnow:event"/>
   <% end %>
   <%= yield :meta %>
   <% if @fullmode %>
     <% if @event && @event.cover_image_url %>
-      <meta property="og:image" content="<%= @event.cover_image_url %>" />
+      <meta property="og:image" content="<%= @event.cover_image_url %>"/>
     <% end %>
   <% else %>
-     <% if @pick %>
-        <!-- <meta property="og:image" content="<%= @bookmarkList.picture %>" /> -->
-      <% else %>
-        <meta property="og:image" content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png" />
-      <% end %>
+    <% if @pick %>
+      <!-- <meta property="og:image" content="<%= @bookmarkList.picture %>" /> -->
+    <% else %>
+      <meta property="og:image" content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png"/>
+    <% end %>
   <% end %>
   <% if @pick %>
-    <meta property="og:type" content="halfpastnow:toppick" />
+    <meta property="og:type" content="halfpastnow:toppick"/>
   <% else %>
     <!-- <meta property="og:type" content="hpnstaging:event" /> -->
   <% end %>
   <title class="head-title"><%= @pageTitle || "half past now." %></title>
-  <link rel="shortcut icon" href="/assets/favicon.ico" />
+  <link rel="shortcut icon" href="/assets/favicon.ico"/>
   <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,900,700italic,900italic,700,500italic,500,400italic,300italic,100italic">
-  <%= stylesheet_link_tag "application","bootstrap","bootstrap-responsive","media-queries","jquery-ui","jquery.ui.timepicker" %>
-  <%= javascript_include_tag "application","jquery-ui","modernizr-latest","bootstrap","jquery.touchSwipe.min","jquery.carouFredSel-6.2.1-packed","jquery-migrate-1.2.1","jquery.ui.timepicker","custom"%>
+  <%= stylesheet_link_tag "application", "bootstrap", "bootstrap-responsive", "media-queries", "jquery-ui", "jquery.ui.timepicker" %>
+  <%= javascript_include_tag "application", "jquery-ui", "modernizr-latest", "bootstrap", "jquery.touchSwipe.min", "jquery.carouFredSel-6.2.1-packed", "jquery-migrate-1.2.1", "jquery.ui.timepicker", "custom" %>
   <%= csrf_meta_tags %>
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
   <script type="text/javascript">
@@ -37,39 +37,42 @@
     _gaq.push(['_setAccount', 'UA-36312888-1']);
     _gaq.push(['_setDomainName', 'herokuapp.com']);
     _gaq.push(['_trackPageview']);
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    (function () {
+      var ga = document.createElement('script');
+      ga.type = 'text/javascript';
+      ga.async = true;
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
     })();
-</script>
-<script type="text/javascript">
-  $(document).ready(function () {
-    console.log(".....ready");
-      $(".profile-hover").mouseenter(function() {
-          // $(".profile-hover").addClass('hover');
-          $('ul.profile-menu').slideDown('fast');
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      console.log(".....ready");
+      $(".profile-hover").mouseenter(function () {
+        // $(".profile-hover").addClass('hover');
+        $('ul.profile-menu').slideDown('fast');
       }),
-      $(".profile-hover").mouseleave(function() {
+        $(".profile-hover").mouseleave(function () {
           // $(".profile-hover").removeClass('hover');
-          setTimeout(function() {
-            if (!$(".profile-menu").hasClass('hover')){
-                $("ul.profile-menu").removeClass('hover');
-                $('ul.profile-menu').slideUp('fast');
+          setTimeout(function () {
+            if (!$(".profile-menu").hasClass('hover')) {
+              $("ul.profile-menu").removeClass('hover');
+              $('ul.profile-menu').slideUp('fast');
             }
-          },100);
-      }),
-      $(".profile-menu").mouseenter(function() {
+          }, 100);
+        }),
+        $(".profile-menu").mouseenter(function () {
           $("ul.profile-menu").addClass('hover');
           // $('ul.profile-menu').slideDown('fast');
-      }),
-      $(".profile-menu").mouseleave(function () {
-          $("ul.profile-menu").removeClass('hover');
-          $('ul.profile-menu').slideUp('fast');
-        }
-      );
-  });
-</script>
+        }),
+        $(".profile-menu").mouseleave(function () {
+            $("ul.profile-menu").removeClass('hover');
+            $('ul.profile-menu').slideUp('fast');
+          }
+        );
+    });
+  </script>
 
 
   <!-- for cropper -->
@@ -77,173 +80,245 @@
 
 </head>
 <body id="body">
-  <%= yield :code %>
+<%= yield :code %>
 
-  <div id="body">
-    <header class="navbar navbar-fixed-top navbar-inverse">
-      <div class="navbar-inner">
-        <div class="container">
-          <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+<div id="body">
+  <header class="navbar navbar-fixed-top navbar-inverse">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                     <span class="pull-left nb-left">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </span>
-            <span class="nb-right pull-right">menu</span>
-          </a>
-          <%= link_to image_tag("/assets/new_design/logo.png",:alt => 'Halfpastnow logo'),root_url,:class => "brand" %>
-          <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
-          <nav class="nav-collapse collapse">
-            <ul class="nav pull-right">
-              <li><a href="#"><i class="icon-right-arrow"></i>Get App</a></li>
-              <% if user_signed_in? %>
-                  <li><%= link_to('Log Out', destroy_user_session_path, :method => 'delete') %></li>
+          <span class="nb-right pull-right">menu</span>
+        </a>
+        <%= link_to image_tag("/assets/new_design/logo.png", :alt => 'Halfpastnow logo'), root_url, :class => "brand" %>
+        <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+        <nav class="nav-collapse collapse">
+          <ul class="nav pull-right">
+            <li>
+              <a href="<%= (@mobileMode) ? "/events/android" : "/explorers/austin" %>"><i class="icon-right-arrow"></i>Explorers</a>
+            </li>
+
+            <% if user_signed_in? %>
+              <li>
+
+                <ul class="nav nav_profile">
+                  <li class="dark-purple">
+                    <%= image_tag current_user.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic nav-user-photo", :id =>"profile_pic",:alt => "#{current_user.firstname}'s Photo" %>
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                      <% if user_signed_in? %>
+                        <span class="user-info">
+                            <small>Welcome,</small>
+                          <%= current_user.firstname rescue 'Howdy' %>
+                        </span>
+                        <i class="icon-caret-down"></i>
+                      <% end %>
+                    </a>
+
+                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+
+                      <li>
+                        <%= link_to '/' do %>
+                          <i class="icon-home"></i>
+                          <span class="menu-text"> Home </span>
+                        <% end %>
+                      </li>
+
+                      <li class="divider"></li>
+
+                      <li>
+                        <%= link_to profile_dashboard_index_path do %>
+                          <i class="icon-user"></i>
+                          <span class="menu-text"> Profile </span>
+                        <% end %>
+                      </li>
+                      <li>
+                        <%= link_to settings_dashboard_index_path do %>
+                          <i class="icon-cog"></i>
+                          <span class="menu-text"> Settings </span>
+                        <% end %>
+                      </li>
+
+                      <li class="divider"></li>
+
+                      <li>
+                        <% if user_signed_in? %>
+                          <%= link_to destroy_user_session_path, method: :delete do %>
+                            <i class="icon-off"></i>
+                            <span class="menu-text"> Logout </span>
+                          <% end %>
+                        <% end %>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
             <% else %>
-                  <li><a href="/login"><i class="icon-right-arrow"></i>Log In</a></li>
-                  <li><a href="/join_now"><i class="icon-right-arrow"></i>Join Now</a></li>
-              <% end %>
-              <li><a href="<%= (@mobileMode) ? "/events/android" : "/explorers/austin" %>" ><i class="icon-right-arrow"></i>Explorers</a></li>
+              <li><a href="/join_now"><i class="icon-right-arrow"></i>Join Now</a></li>
+              <li>&nbsp;</li>
+              <li><a href="/login"><i class="icon-right-arrow"></i>Log In</a></li>
+            <% end %>
 
-            </ul>
-          </nav>
+          </ul>
+        </nav>
 
-          <form action="#" class="navbar-search">
-            <div class="input-append">
-              <input class="span4 search-input" id="appendedInput" type="text">
-              <div class="popover bottom">
-                <div class="arrow"></div>
-                <div class="popover-content clearfix">
-                  <div class="left">
-                    <p>TIP: Search by interest, event, date, cost</p>
-                    <p>EX: technology, happy hour, today, free</p>
-                  </div>
-                  <div class="right">
-                    <div class="arrow"></div>
-                    EVENTS BY CATEGORY
-                  </div>
+        <form action="#" class="navbar-search">
+          <div class="input-append">
+            <input class="span4 search-input" id="appendedInput" type="text">
+
+            <div class="popover bottom">
+              <div class="arrow"></div>
+              <div class="popover-content clearfix">
+                <div class="left">
+                  <p>TIP: Search by interest, event, date, cost</p>
+
+                  <p>EX: technology, happy hour, today, free</p>
                 </div>
-              </div>
-              <div class="btn-group">
-                <div class="pull-left dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li class="clearfix">
-                      <div>
-                        <a href="#" tag_id="0" class="dd_menu_tags" tag_type="staff" catagory="austin">Staff Picks</a><br/>
-                        <a href="#" tag_id="0" class="dd_menu_tags" tag_type="crowd">Crowd Favorites</a><br/>
-                        <a href="#" tag_id="0" class="dd_menu_tags" tag_type="today">Today's Events</a><br/>
-                        <a href="#" tag_id="104">Food &amp; Drinks</a><br/>
-                        <a href="#" tag_id="1">Live Shows</a><br/>
-                        <a href="#" tag_id="89">Art &amp; Culture</a>
-                      </div>
-                      <div class="divider-vertical pull-left"></div>
-                      <div>
-                        <a href="#" tag_id="233">UT Events</a><br/>
-                        <a href="#" tag_id="55">For Couples</a><br/>
-                        <a href="#" tag_id="38">For Kids</a><br/>
-                        <a href="#" tag_id="87">For Families</a><br/>
-                        <a href="#" tag_id="140">Freebies</a><br/>
-                        <a href="#" tag_id="0" class="dd_menu_tags" tag_type="all">All Activities</a>
-                      </div>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href="#">About Us</a> | <a href="#">Blog</a> | <a href="#">Privacy</a> | <a href="#">Terms</a> | <a href="#">Feedback</a> | &copy halfpastnow 2013</li>
-                  </ul>
+                <div class="right">
+                  <div class="arrow"></div>
+                  EVENTS BY CATEGORY
                 </div>
-                <input type="button" class="submit">
-                <%# link_to "submit","#",:class => "submit1" %>
               </div>
             </div>
-          </form>
-        </div>
-      </div>
-      <%= yield :header%>
-    </header>
-    <%= yield :body %>
-  </div>
-  <div id="overlays">
-    <div class="mode">
-      <div class="overlay">
-        <div class="insert-point">
-          <div class="window">
+            <div class="btn-group">
+              <div class="pull-left dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li class="clearfix">
+                    <div>
+                      <a href="#" tag_id="0" class="dd_menu_tags" tag_type="staff" catagory="austin">Staff
+                        Picks</a><br/>
+                      <a href="#" tag_id="0" class="dd_menu_tags" tag_type="crowd">Crowd Favorites</a><br/>
+                      <a href="#" tag_id="0" class="dd_menu_tags" tag_type="today">Today's Events</a><br/>
+                      <a href="#" tag_id="104">Food &amp; Drinks</a><br/>
+                      <a href="#" tag_id="1">Live Shows</a><br/>
+                      <a href="#" tag_id="89">Art &amp; Culture</a>
+                    </div>
+                    <div class="divider-vertical pull-left"></div>
+                    <div>
+                      <a href="#" tag_id="233">UT Events</a><br/>
+                      <a href="#" tag_id="55">For Couples</a><br/>
+                      <a href="#" tag_id="38">For Kids</a><br/>
+                      <a href="#" tag_id="87">For Families</a><br/>
+                      <a href="#" tag_id="140">Freebies</a><br/>
+                      <a href="#" tag_id="0" class="dd_menu_tags" tag_type="all">All Activities</a>
+                    </div>
+                  </li>
+                  <li class="divider"></li>
+                  <li><a href="#">About Us</a> | <a href="#">Blog</a> | <a href="#">Privacy</a> | <a href="#">Terms</a>
+                    | <a href="#">Feedback</a> | &copy halfpastnow 2013
+                  </li>
+                </ul>
+              </div>
+              <% if @location.present? %>
+                <input type="button" class="submit">
+              <% else %>
+                <input type="submit" class="submit">
+
+              <% end %>
+              <%# link_to "submit","#",:class => "submit1" %>
+            </div>
           </div>
+        </form>
+      </div>
+    </div>
+    <%= yield :header %>
+  </header>
+  <%= yield :body %>
+</div>
+<div id="overlays">
+  <div class="mode">
+    <div class="overlay">
+      <div class="insert-point">
+        <div class="window">
         </div>
       </div>
     </div>
   </div>
+</div>
 <div id="getsat-widget-2414"></div>
 <% unless @mobileMode %>
   <script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
 <% end %>
 
 <script type="text/javascript">
-if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-widget-2414"}); }
-  window.fbAsyncInit = function() {
-              console.log("Loaded FB 2 outside");
-                FB.init({
-                  appId      : '475386955806720', // App ID
-                  status     : true, // check login status
-                  cookie     : true, // enable cookies to allow the server to access the session
-                  xfbml      : true  // parse XFBML
-                });
-              };
-              // Load the SDK Asynchronously
-              (function(d){
-                var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-                js = d.createElement('script'); js.id = id; js.async = true;
-                js.src = "//connect.facebook.net/en_US/all.js";
-                d.getElementsByTagName('head')[0].appendChild(js);
-              }(document));// delete below
+  if (typeof GSFN !== "undefined") {
+    GSFN.loadWidget(2414, {"containerId": "getsat-widget-2414"});
+  }
+  window.fbAsyncInit = function () {
+    console.log("Loaded FB 2 outside");
+    FB.init({
+      appId: '475386955806720', // App ID
+      status: true, // check login status
+      cookie: true, // enable cookies to allow the server to access the session
+      xfbml: true  // parse XFBML
+    });
+  };
+  // Load the SDK Asynchronously
+  (function (d) {
+    var js, id = 'facebook-jssdk';
+    if (d.getElementById(id)) {
+      return;
+    }
+    js = d.createElement('script');
+    js.id = id;
+    js.async = true;
+    js.src = "//connect.facebook.net/en_US/all.js";
+    d.getElementsByTagName('head')[0].appendChild(js);
+  }(document));// delete below
 </script>
 <script type="text/javascript" src="http://js.addthisevent.com/atemay.js"></script>
 <script type="text/javascript">
   addthisevent.settings({
-      license   : "ac3hy61svzxtsqddkmut",
-      mouse     : false,
-      css       : false,
-      outlook   : {show:true, text:"Outlook Calendar"},
-      google    : {show:true, text:"Google Calendar"},
-      yahoo     : {show:false, text:"Yahoo Calendar"},
-      hotmail   : {show:true, text:"Hotmail Calendar"},
-      ical      : {show:true, text:"iCal Calendar"},
-      facebook  : {show:false, text:"Facebook Event"},
-      callback  : ""
+    license: "ac3hy61svzxtsqddkmut",
+    mouse: false,
+    css: false,
+    outlook: {show: true, text: "Outlook Calendar"},
+    google: {show: true, text: "Google Calendar"},
+    yahoo: {show: false, text: "Yahoo Calendar"},
+    hotmail: {show: true, text: "Hotmail Calendar"},
+    ical: {show: true, text: "iCal Calendar"},
+    facebook: {show: false, text: "Facebook Event"},
+    callback: ""
   })
   <% unless @location.present? %>
-  $('.submit').click(function(){
+  $('.submit').click(function () {
     key = $('#appendedInput').val()
-    url = window.location.origin+"/search?key="+key
+    url = window.location.origin + "/search?key=" + key
     window.location.href = url
     return false;
   })
-  $('.dropdown-menu a').click(function(){
+  $('.dropdown-menu a').click(function () {
     tag_id = $(this).attr('tag_id')
     tag_type = $(this).attr('tag_type')
-    if(tag_id == "0"){
-      window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text())+"&tag_id="+tag_id+"&tag_type="+tag_type
+    if (tag_id == "0") {
+      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent($(this).text()) + "&tag_id=" + tag_id + "&tag_type=" + tag_type
     }
-    else{
-    window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text())+"&tag_id="+tag_id
+    else {
+      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent($(this).text()) + "&tag_id=" + tag_id
     }
   })
   <% end %>
 
-  $('figure').click(function(){
+  $('figure').click(function () {
     var event_id = $(this).parent('article').attr('link-id')
     console.log(event_id)
-    window.location.href = window.location.origin+"/events/austin/"+event_id
+    window.location.href = window.location.origin + "/events/austin/" + event_id
 
   })
 
 </script>
 <footer>
   <div class="container">
-          <% unless @footer %>
+    <% unless @footer %>
         	<span class="footer-tap">
                 <span>GO</span>
                 <span class="footer-bar-icon">
@@ -266,12 +341,27 @@ if (typeof GSFN !== "undefined") { GSFN.loadWidget(2414,{"containerId":"getsat-w
                   </div>
                 </div>
             </span>
-      <% end %>
+    <% end %>
   </div>
 </footer>
 <% unless @page %>
-<% cookies[:url] = request.url %>
-  <% end %>
+  <% cookies[:url] = request.url %>
+<% end %>
+<style>
+  .nav-user-photo {
+    border: 2px solid #FFFFFF;
+    border-radius: 100%;
+    float: left;
+    margin: 0 7px 0 0;
+    max-width: 40px;
+    position: relative;
+  }
+
+  .navbar .nav_profile{
+    padding-top: 0px !important;
+    width: 230px;
+  }
+</style>
 </body>
 
 </html>
