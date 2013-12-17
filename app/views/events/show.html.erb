@@ -33,11 +33,11 @@
     var facebook_url = "http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %>";
     var app_id = "475386955806720";
     var redirect = "http://www.halfpastnow.com";
-    var bookmark_id = "<%= @bookmarkId.to_s %>";
+   // var bookmark_id = "<%#= @bookmarkId.to_s %>";
     var attending_id = "<%= @attendingId.to_s %>";
     var bookmarkList_id = "<%= @occurrence.id %>";
     var toggle = false;
-    console.log(id + ' ' + bookmark_id)
+    //console.log(id + ' ' + bookmark_id)
     $(function () {
 
 
@@ -75,13 +75,12 @@
         console.log("Fullmode bookmark");
         var that = $(this);
         if (that.hasClass('add')) {
+          $('#bookmark_list_collection').prop('selectedIndex', -1);
           $('#bookmark_modal').modal('show')
         }
-        else if (that.hasClass('remove')) {
-          $.getJSON('/bookmarks/destroy/' + bookmark_id, function (data) {
-            that.addClass('add').removeClass('remove');
-            that.html("<img src='/assets/images/icon-bookmark-large.png'/>");
-          });
+        else if (that.hasClass('add-more')) {
+          $('#bookmark_list_collection').prop('selectedIndex', -1);
+          $('#bookmark_modal').modal('show');
         }
       });
 
@@ -93,9 +92,6 @@
         var bookmarked_comments = $('#bookmark_group_comment').val();
         // var lnk = 'http://www.halfpastnow.com/mobile/og/'+id;
         var lnk = 'http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %>';
-        console.log("Bookmarks: " + lnk);
-        console.log("bookmark_list_id : " + bookmark_list_id);
-        console.log("Bookmark comment: " + bookmarked_comments);
         switch (type) {
           case "event":
             (bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
@@ -120,19 +116,16 @@
         }
         ;
         $.getJSON('/bookmarks/custom_create', { bookmark: { "type": bookmarked_type, "id": id, "bookmark_list_id": bookmark_list_id, "comment": bookmarked_comments } }, function (data) {
-          console.log("new bookmark full mode");
-          console.log(data);
-          bookmark_id = data;
           $('#bookmark_modal').modal('hide');
-          $('.bookmark-share .bookmark').addClass('remove').removeClass('add');
-          $('.bookmark-share .bookmark').html("<img src='/assets/images/icon-bookmark-remove-large.png'/>");
+          $("select#bookmark_list_collection option[value= "+ data +"]").hide();
+          $('.bookmark-share .bookmark').addClass('add-more').removeClass('add');
+          $('.bookmark-share .bookmark').html("<img src='/assets/images/icon-bookmark-add-more-large.png'/>");
         });
       });
 
       // adding new bookmark group in popup
       $('#add_new_bookmark_group_btn').click(function () {
         var name = $('#new_bookmark_group_field').val();
-        console.log(name);
         $.get('/bookmarks/create_bookmark_group', { "name": name });
       });
 
@@ -229,7 +222,7 @@
       toggle = !toggle;
       that.removeClass('add').addClass('remove');
       $.getJSON('/bookmarks/add_to_featuredlist', { bookmark: { "type": "Occurrence", "id": <%= @occurrence.id  %>, "comment": text } }, function (data) {
-        bookmark_id = data;
+        //bookmark_id = data;
       });
 
       $(".comment-text-1").val(text);
@@ -249,7 +242,7 @@
       var text = $('.comment-text-1').val();
       console.log("Edit comment" + text);
       $.getJSON('/bookmarks/update_comment', { bookmark: { "type": "Occurrence", "id": bookmarkList_id, "comment": text } }, function (data) {
-        bookmark_id = data;
+        //bookmark_id = data;
 
       });
     }
@@ -324,8 +317,8 @@
             </script>
             <% else %>
           <a href="#">
-               <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarkId.nil? ? "add" : "remove" %>">
-                 <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-remove-large.png") %>
+               <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarks.empty? ? "add" : "add-more" %>">
+                 <%= @bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
 	            </span>
           </a>
             <% end %>
@@ -370,7 +363,7 @@
                       <%= link_to "Add", "#", class: 'btn btn-danger', id: "add_new_bookmark_group_btn", style: "margin-bottom:0" %>
                     </form>
                   </div>
-                  <% bookmarks_list = current_user ? current_user.bookmark_lists.where("description != ? or description is null", 'Attending').map { |bl| [bl.name, bl.id] } : [] %>
+                  <% bookmarks_list = current_user ? current_user.bookmark_lists.where("(description <> 'Attending' or description is null) and bookmark_lists.id not in (?)", @bookmark_lists_ids).collect { |bl| [bl.name, bl.id] } : [] %>
                   <%= select_tag :bookmark_list_collection, options_for_select(bookmarks_list), class: 'input-block-level' %>
                 </div>
                 <div class="form-group">

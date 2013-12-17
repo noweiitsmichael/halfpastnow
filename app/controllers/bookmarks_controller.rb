@@ -86,7 +86,7 @@ class BookmarksController < ApplicationController
   	respond_to do |format|
   		format.json {
 			if @bookmark.save!
-	      		render json: @bookmark.id
+	      		render json: bookmark_list_id ? bookmark_list_id : @bookmark.id
 			else 
 				puts "fail2"
 				render json: @bookmark.errors, status: :unprocessable_entity
