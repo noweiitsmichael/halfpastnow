@@ -7,6 +7,7 @@
    end
 %>
 <% recurrences.each do |rec| %>
+  <% unless rec.nil? %>
   <article class="product-item" link-id=<%= rec.occurrences.first.id %>>
     <figure><a href="#">
       <% if rec.event.pictures.first %>
@@ -34,6 +35,7 @@
       <% end %>
     </div>
   </article>
+<% end %>
 <% end %>
 <% occurrences.each do |occ| %>
   <article class="product-item" link-id=<%=occ.id%>>

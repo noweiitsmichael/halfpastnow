@@ -133,9 +133,7 @@
   <section class="details">
   <section class="recommend-events">
     <div class="container">
-      <a class="link" href="/search"><i class="icon-left-arrow"></i> back to search results</a>
-      <a class="link" href="#" data-target="recommend-events-wrapper"><i class="icon-bottom-arrow"></i> recommended
-        events</a>
+
     </div>
   </section>
   <div class="container">
@@ -145,14 +143,23 @@
 
       <div class="right">
         <div class="share bookmark-share">
-          <a href="#">
-               <span class="nice-button bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
+          <% unless user_signed_in? %>
+            <%= image_tag("images/icon-bookmark-large.png", :class => "before_login") %> &nbsp;
+            <script>
+              $(window).load(function () {
+                $('.before_login').click(function () {
+                  window.location.href = window.location.origin + "/login"
+                })
+              })
+            </script>
+          <% else %>
+            <a href="#">
+               <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarkId.nil? ? "add" : "remove" %>">
                  <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-remove-large.png") %>
 	            </span>
-          </a>
-          <a href="#">
-            <img src="/assets/images/icon-calendar.png" alt=""/>
-          </a>
+            </a>
+          <% end %>
+
           <a href="#" class="twitter"><img src="/assets/images/icon-twitter.png" alt=""/></a>
           <a href="#" class="facebook"><img src="/assets/images/icon-facebook.png" alt=""/></a>
         </div>

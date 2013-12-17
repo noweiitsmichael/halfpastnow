@@ -306,7 +306,6 @@
       <div class="share bookmark-share">
           <span onmouseover='$(this).tooltip()' data-toggle="tooltip" title="Bookmark">
           <% unless user_signed_in? %>
-
            <%= image_tag("images/icon-bookmark-large.png", :class => "before_login") %> &nbsp;
             <script>
               $(window).load(function () {
@@ -323,6 +322,7 @@
           </a>
             <% end %>
              </span>
+        &nbsp;&nbsp;
         <a href="http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %>" title="Add to Calendar" class="addthisevent">
           <!--<span class="icon icon-calendar cal"></span>-->
           <img src="/assets/images/icon-calendar.png" onmouseover='$(this).tooltip()' data-toggle="tooltip" title="Calender" alt=""/>

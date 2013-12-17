@@ -299,12 +299,22 @@
 
           <div class="right">
             <div class="share bookmark-share">
-              <a href="#">
-                 <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarks.empty? ? "add" : "add-more"%>" <%= current_user ? "" : "linkto='shunt'" %>>
-                 <%= @bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
-	            </span>
-              </a>
-
+              <% unless user_signed_in? %>
+                <%= image_tag("images/icon-bookmark-large.png", :class => "before_login") %> &nbsp;
+                <script>
+                  $(window).load(function () {
+                    $('.before_login').click(function () {
+                      window.location.href = window.location.origin + "/login"
+                    })
+                  })
+                </script>
+              <% else %>
+                <a href="#">
+                  <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarks.empty? ? "add" : "add-more"%>" <%= current_user ? "" : "linkto='shunt'" %>>
+                    <%= @bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
+	                </span>
+                </a>
+              <% end %>
               <a href="#" class="twitter"><img src="/assets/images/icon-twitter.png" alt=""/></a>
               <a href="#" class="facebook"><img src="/assets/images/icon-facebook.png" alt=""/></a>
               <!-- Modal -->
