@@ -91,7 +91,8 @@
         switch (type) {
           case "event":
             (bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
-            if(auto_share){
+            if(auto_share == "true"){
+              console.log("inside:" + auto_share);
               FB.api(
                 '/me/halfpastnow:bookmark',
                 'post',

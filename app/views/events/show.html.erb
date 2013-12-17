@@ -38,6 +38,7 @@
     var bookmarkList_id = "<%= @occurrence.id %>";
     var auto_share = "<%= current_user ? current_user.auto_share : false %>";
     var toggle = false;
+
     //console.log(id + ' ' + bookmark_id)
     $(function () {
       window.fbAsyncInit = function () {
@@ -94,7 +95,8 @@
         switch (type) {
           case "event":
             (bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
-            if(auto_share){
+            if(auto_share == "true"){
+              console.log("inside:" + auto_share);
               FB.api(
                 '/me/halfpastnow:bookmark',
                 'post',

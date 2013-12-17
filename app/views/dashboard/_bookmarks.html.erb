@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="list_details col-sm-6 col-sm-offset-1">
+  <div class="list_details col-sm-7 col-sm-offset-1">
     <div class="profile-user-info profile-user-info-striped">
       <div class="profile-info-row">
         <div class="profile-info-name"> Image </div>
@@ -21,9 +21,9 @@
         <% end %>
         <div class="profile-info-value">
           <% if bookmark_list.name == "Attending" || bookmark_list.name == "Bookmarks"%>
-            <span><%= image_tag image, :alt => "#{bookmark_list.name} Picture", style: "width: 50%;" %></span>
+            <span><%= image_tag image, :alt => "#{bookmark_list.name} Picture", style: "width: 35%;" %></span>
           <% else %>
-            <%= image_tag image, :alt => "#{bookmark_list.name} Picture", style: "display: block;width: 50%;", class: "editable img-responsive editable-click editable-empty", id: 'bookmark_list_picture', "data-id" => bookmark_list.id %>
+            <%= image_tag image, :alt => "#{bookmark_list.name} Picture", style: "display: block;width: 35%;", class: "editable img-responsive editable-click editable-empty", id: 'bookmark_list_picture', "data-id" => bookmark_list.id %>
           <% end %>
         </div>
       </div>
@@ -61,9 +61,9 @@
 <br>
 <div class="clearfix"></div>
 <div class="row">
-  <div class="well well-lg col-sm-4 col-sm-offset-2">
+  <div class="well well-lg col-sm-5 col-sm-offset-2 center">
     <% if bookmarks.empty? %>
-      <h4 class="purple">There are no Bookmarks in this list.</h4>
+      <h4 class="purple">No Bookmarks in this list.</h4>
     <% else %>
       <%= link_to "View Bookmarks List", "/explorers/austin/#{bookmark_list.slug}", class: 'btn btn-lg btn-purple', target: :_blank %>
     <% end %>
