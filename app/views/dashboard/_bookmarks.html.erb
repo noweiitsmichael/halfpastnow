@@ -2,6 +2,35 @@
   <div class="list_details col-sm-6 col-sm-offset-1">
     <div class="profile-user-info profile-user-info-striped">
       <div class="profile-info-row">
+        <div class="profile-info-name"> Image </div>
+        <% if bookmark_list.picture.present? %>
+          <% image = bookmark_list.picture %>
+        <% elsif bookmark_list.bookmarks.empty? %>
+          <% image = "/assets/profile.png" %>
+        <% else %>
+          <% bookmark = bookmark_list.bookmarks.first %>
+          <% if bookmark.bookmarked_type == "Occurrence" %>
+            <% image =  bookmark.bookmarked.event.pictures.first.image_url(:thumb) rescue "/assets/profile.png" %>
+          <% elsif bookmark.bookmarked_type == "Venue" %>
+            <% image =  bookmark.bookmarked.pictures.first.image_url(:thumb) rescue "/assets/profile.png" %>
+          <% elsif bookmark.bookmarked_type == "Act" %>
+            <% image =  bookmark.bookmarked.pictures.first.image_url(:thumb) rescue "/assets/profile.png" %>
+          <% else %>
+            <% image = "/assets/profile.png" %>
+          <% end %>
+        <% end %>
+        <div class="profile-info-value">
+          <% if bookmark_list.name == "Attending" || bookmark_list.name == "Bookmarks"%>
+            <span><%= image_tag image, :alt => "#{bookmark_list.name} Picture", style: "width: 50%;" %></span>
+          <% else %>
+            <%= image_tag image, :alt => "#{bookmark_list.name} Picture", style: "display: block;width: 50%;", class: "editable img-responsive editable-click editable-empty", id: 'bookmark_list_picture', "data-id" => bookmark_list.id %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-user-info profile-user-info-striped">
+      <div class="profile-info-row">
         <div class="profile-info-name"> Name </div>
 
         <div class="profile-info-value">
@@ -27,21 +56,6 @@
         </div>
       </div>
     </div>
-
-    <div class="profile-user-info profile-user-info-striped">
-      <div class="profile-info-row">
-        <div class="profile-info-name"> Image </div>
-
-        <div class="profile-info-value">
-          <% if bookmark_list.name == "Attending" || bookmark_list.name == "Bookmarks"%>
-            <span><%= image_tag bookmark_list.picture.present? ? bookmark_list.picture.thumb :  "/assets/profile.png", :alt => "#{bookmark_list.name} Picture" %></span>
-          <% else %>
-            <%= image_tag bookmark_list.picture.present? ? bookmark_list.picture.thumb :  "/assets/profile.png", :alt => "#{bookmark_list.name} Picture", style: "display: block;", class: "editable img-responsive editable-click editable-empty", id: 'bookmark_list_picture', "data-id" => bookmark_list.id %>
-          <% end %>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 <br>
