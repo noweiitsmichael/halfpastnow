@@ -65,7 +65,7 @@
       <nav class="nav-collapse collapse">
         <ul class="nav pull-right">
           <li>
-            <a href="<%= (@mobileMode) ? "/events/android" : "/explorers/austin" %>"><i class="icon-right-arrow"></i>Explorers</a>
+            <a href="<%= (@mobileMode) ? "/events/android" : "/explorers/austin" %>"  class="nav_links"><i class="icon-right-arrow"></i>Explorers</a>
           </li>
 
           <% if user_signed_in? %>
@@ -76,7 +76,7 @@
                   <%= image_tag current_user.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic nav-user-photo", :id =>"profile_pic",:alt => "#{current_user.firstname}'s Photo" %>
                   <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                     <% if user_signed_in? %>
-                        <span class="user-info">
+                        <span class="user-info nav_links">
                             <small>Welcome,</small>
                           <%= current_user.firstname rescue 'Howdy' %>
                         </span>
@@ -84,32 +84,21 @@
                     <% end %>
                   </a>
 
-                  <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-
-                    <li>
-                      <%= link_to '/' do %>
-                        <i class="icon-home"></i>
-                        <span class="menu-text"> Home </span>
-                      <% end %>
-                    </li>
-
-                    <li class="divider"></li>
-
+                  <ul class="user-menu dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                     <li>
                       <%= link_to profile_dashboard_index_path do %>
                         <i class="icon-user"></i>
                         <span class="menu-text"> Profile </span>
                       <% end %>
                     </li>
+                    <li class="divider"></li>
                     <li>
                       <%= link_to settings_dashboard_index_path do %>
                         <i class="icon-cog"></i>
                         <span class="menu-text"> Settings </span>
                       <% end %>
                     </li>
-
                     <li class="divider"></li>
-
                     <li>
                       <% if user_signed_in? %>
                         <%= link_to destroy_user_session_path, method: :delete do %>
@@ -123,9 +112,9 @@
               </ul>
             </li>
           <% else %>
-            <li><a href="/join_now"><i class="icon-right-arrow"></i>Join Now</a></li>
+            <li><a href="/join_now" class="nav_links"><i class="icon-right-arrow"></i>Join Now</a></li>
             <li>&nbsp;</li>
-            <li><a href="/login"><i class="icon-right-arrow"></i>Log In</a></li>
+            <li><a href="/login" class="nav_links"><i class="icon-right-arrow"></i>Log In</a></li>
           <% end %>
 
         </ul>
@@ -341,54 +330,7 @@
     </div>
     <div class="section-content slider">
       <div id="slider5">
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img01.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Lyle Lovett and His Acoustic Group</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Sept. 3, 2013 @ 6pm</span>
-            <span class="value pull-right">$79+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">DOWNTOWN</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Jan. 24, 2014 @ 7pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img03.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Austin City Limits Music Festival</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Jan. 24, 2014 @ 7pm</span>
-            <span class="value pull-right">FREE</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">ACL</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
-        <article class="slide-item">
-          <figure><a href="#"><img src="assets/new_design/scroller1-img02.gif" alt=""/></a></figure>
-          <div class="name"><a href="#">Midnight Pizza Special at Mr. Tramps Sports Pub &amp; Cafe</a></div>
-          <div class="info clearfix">
-            <span class="time pull-left">Today @ 5:00pm</span>
-            <span class="value pull-right">$7+</span>
-          </div>
-          <div class="additional-info">
-            <span class="place">PLEASANT VALLEY</span>
-            <a href="#" class="bookmark"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-          </div>
-        </article>
+
       </div>
       <a class="prev" id="slider5_prev" href="#"><span>prev</span></a>
       <a class="next" id="slider5_next" href="#"><span>next</span></a>
@@ -468,6 +410,9 @@
     }
   })
   $('#slider1,#slider4').append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
+    $('.before_login').click(function () {
+      window.location.href = window.location.origin + "/login"
+    })
 </script>
 <% unless @page %>
   <% cookies[:url] = request.url %>
@@ -494,7 +439,19 @@
   .see-more {
     text-align: center;
   }
-
+  .nav.pull-right .nav_links {
+    font-size: 140%;
+  }
+  .navbar .nav {
+    padding-top: 10px;
+    width: 280px;
+  }
+  <% if user_signed_in? %>
+  .nav.pull-right a:first-child {
+    position: relative;
+    top: 7px;
+  }
+  <% end %>
 </style>
 </body>
 </html>

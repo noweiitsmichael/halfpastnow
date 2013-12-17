@@ -29,7 +29,7 @@
        end
     %>
 
-      <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" <%= current_user ? "" : "linkto='shunt'" %> event-title="<%= occurrence.event.title %>" event-id="<%= occurrence.id %>" event-venue="<%= occurrence.event.venue.name %>" event-id="<%= occurrence.id %>"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
+      <a href="#" class="bookmark <%= current_user ? "bookmark" : "before_login" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>"  event-title="<%= occurrence.event.title %>" event-id="<%= occurrence.id %>" event-venue="<%= occurrence.event.venue.name %>" event-id="<%= occurrence.id %>"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
 
 
   </div>

@@ -1195,6 +1195,9 @@ $.get("/search_results",filter)
        if($('#'+location).find('article').length){
          $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
        }
+       $('.before_login').click(function () {
+         window.location.href = window.location.origin + "/login"
+       })
      }
    });
  }
@@ -1213,8 +1216,12 @@ function saved_search_events(location){
       if($('#'+location).find('article').length){
         $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
       }
+      $('.before_login').click(function () {
+        window.location.href = window.location.origin + "/login"
+      })
     }
   });
+
 }
 function dance_events(dance_tag,location){
   console.log(location)
@@ -1230,8 +1237,12 @@ function dance_events(dance_tag,location){
       if($('#'+location).find('article').length){
         $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
       }
+      $('.before_login').click(function () {
+        window.location.href = window.location.origin + "/login"
+      })
     }
   });
+
 }
 function happy_place_events(stream_id,location){
   console.log(location)
@@ -1247,8 +1258,12 @@ function happy_place_events(stream_id,location){
       if($('#'+location).find('article').length){
         $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
       }
+      $('.before_login').click(function () {
+        window.location.href = window.location.origin + "/login"
+      })
         }
           });
+
     }
 function free_events(location){
   console.log(location)
@@ -1264,8 +1279,12 @@ function free_events(location){
       if($('#'+location).find('article').length){
         $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
       }
+      $('.before_login').click(function () {
+        window.location.href = window.location.origin + "/login"
+      })
     }
   });
+
  }
 function cost_filter_events(high_price){
   console.log(high_price)
