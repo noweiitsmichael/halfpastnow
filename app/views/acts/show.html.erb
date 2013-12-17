@@ -147,7 +147,7 @@
         <div class="share bookmark-share">
           <a href="#">
                <span class="nice-button bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
-                 <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-large.png") %>
+                 <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-remove-large.png") %>
 	            </span>
           </a>
           <a href="#">
@@ -197,7 +197,7 @@
                   console.log("new bookmark full mode");
                   console.log(data);
                   that.removeClass('add').addClass('remove');
-                  that.html("<img src='/assets/images/icon-bookmark-large.png'/>");
+                  that.html("<img src='/assets/images/icon-bookmark-remove-large.png'/>");
                   bookmark_id = data;
                 });
               }

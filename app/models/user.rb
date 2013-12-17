@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   attr_accessible :firstname, :lastname, :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :fb_access_token
-  attr_accessible :profilepic, :remote_profilepic_url, :crop_x, :crop_y, :crop_w, :crop_h
+  attr_accessible :profilepic, :remote_profilepic_url, :crop_x, :crop_y, :crop_w, :crop_h, :auto_share
   mount_uploader :profilepic, ProfilepicUploader
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   after_update :crop_profilepic

@@ -348,10 +348,14 @@ class UsersController < ApplicationController
         channel.save   
       end
      
-     
     end
     
     
+  end
+
+  def change_share_status
+    current_user.update_attributes(auto_share: !current_user.auto_share)
+    render json: 200
   end
 
   # def friends
