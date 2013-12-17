@@ -36,11 +36,10 @@
    // var bookmark_id = "<%#= @bookmarkId.to_s %>";
     var attending_id = "<%= @attendingId.to_s %>";
     var bookmarkList_id = "<%= @occurrence.id %>";
+    var auto_share = "<%= current_user ? current_user.auto_share : false %>";
     var toggle = false;
     //console.log(id + ' ' + bookmark_id)
     $(function () {
-
-
       window.fbAsyncInit = function () {
         console.log("Loaded FB 2");
         FB.init({
@@ -95,17 +94,19 @@
         switch (type) {
           case "event":
             (bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
-            FB.api(
-              '/me/halfpastnow:bookmark',
-              'post',
-              { event: lnk },
-              function (response) {
-                if (!response || response.error) {
-                  // alert('Error occured'+response);
-                } else {
-                  // alert('Post event was successful! Action ID: ' + response.id);
-                }
-              });
+            if(auto_share){
+              FB.api(
+                '/me/halfpastnow:bookmark',
+                'post',
+                { event: lnk },
+                function (response) {
+                  if (!response || response.error) {
+                    // alert('Error occured'+response);
+                  } else {
+                    // alert('Post event was successful! Action ID: ' + response.id);
+                  }
+                });
+            }
             break;
           case "venue":
             bookmarked_type = "Venue";
