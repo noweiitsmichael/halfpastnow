@@ -6,7 +6,7 @@
   <meta class="meta-description"   property="og:description"          content="Find the best events in Austin">
 <% end %>
 <% content_for :head do %>
-
+  <% @page = "login" %>
   <%= stylesheet_link_tag "custom_login" %>
 <% end %>
 <% content_for :code do %>
@@ -37,6 +37,7 @@
       position: relative;
     }
   </style>
+
 <% end %>
 
 

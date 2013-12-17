@@ -10,15 +10,10 @@
   <script src="/assets/ga.js" async="" type="text/javascript"></script>
   <script type="text/javascript" language="javascript" src="/assets/jquery_003.js"></script>
   <%= javascript_include_tag "half.dynamics" %>
-  <%= javascript_include_tag "smartinfowindow.js","verticalSlider"%>
-  <%= stylesheet_link_tag "jquery.mobile-1.0a3.min", "custom1" %>
-
-
+  <%= javascript_include_tag "smartinfowindow.js"%>
+  <%= stylesheet_link_tag  "custom1" %>
   <script type="text/javascript" language="javascript">
     $("document").ready(function(){
-
-
-
       $(".asc_btn").click(function(){
         $(".product-list").jSort({
           sort_by: 'span.value',
@@ -464,12 +459,7 @@
              <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
               <div style="display: none;" class="popover bottom">
                 <div class="arrow"></div>
-                <div class="popover-content clearfix">
-                  <label class="ui-input-text" for="from">From</label>
-                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-start" id="from" name="from">
-                  <label class="ui-input-text" for="to">to</label>
-                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-end" id="to" name="to">
-                </div>
+
               </div>
              </span>
             <span class="sort-item">

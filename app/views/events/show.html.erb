@@ -671,7 +671,7 @@
                 <% end %>
               </a>
               </figure>
-              <div class="name"><a href="#"><%= occ.event.title %></a>
+              <div class="name"><a href="/events/austin/<%= occ.slug.nil?? occ.id : occ.slug  %>"><%= occ.event.title %></a>
               </div>
               <div><%= occ.start.to_time.strftime("%B %-d @ %-l:%M%P") %></div>
             </article>

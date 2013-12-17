@@ -384,45 +384,79 @@ $(function () {
     updateViewFromFilter();
   });
 
-  $('.custom-start, .custom-end').datepicker({
-    minDate: 0,
+
+  $( ".custom-start" ).datepicker({
+    defaultDate: "+1w",
+    changeMonth: true,
+    numberOfMonths: 1,
     onSelect: function () {
-      console.log("it is working fine")
-      filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd");
+      filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd")+ " "+$('.timepicker').val();
       filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
-      console.log(filter.start_date)
-      console.log(filter.end_date)
-     // alert($('.active a').text())
+      tag_id = parseInt($('.active a').attr('tag_id'))
+      tag_type = $('.active a').attr('tag_type')
+      $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+      $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+      $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
+      if(tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")){
+        // alert("search key")
+        doneTyping1($('#search-tab .active a').text());
+        $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+      }else if(tag_id == 0){
+        // alert("only tag type")
+        filter.tag_id = tag_id
+        filter.tag_type = tag_type
+        //alert(JSON.stringify(filter))
+        $.get("/search_results",filter)
+        $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+      }else{
+        // alert("only key")
+        dropdown_search_events($(this).attr('tag_id'))
+        $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+      }
 
-        console.log("i am here")
-        tag_id = parseInt($('.active a').attr('tag_id'))
-        tag_type = $('.active a').attr('tag_type')
-         // alert("tag_id"+tag_id+"tag_type"+tag_type)
-        $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
-        if(tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")){
-         // alert("search key")
-          doneTyping1($('#search-tab .active a').text());
-          $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
-        }else if(tag_id == 0){
-         // alert("only tag type")
-          filter.tag_id = tag_id
-          filter.tag_type = tag_type
-          //alert(JSON.stringify(filter))
-          $.get("/search_results",filter)
-          $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
-        }else{
-         // alert("only key")
-          dropdown_search_events($(this).attr('tag_id'))
-          $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
-        }
-
-
-      //updateViewFromFilter();
+    },
+    onClose: function( selectedDate ) {
+      $( ".custom-end" ).datepicker( "option", "minDate", selectedDate );
     }
   });
-  $('.custom-start, .custom-end').datepicker("setDate", Date.today().toString("MM/dd/yyyy"));
+  $( ".custom-end" ).datepicker({
+    defaultDate: "+1w",
+    changeMonth: true,
+    numberOfMonths:1,
+
+    onSelect: function () {
+      filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd");
+      filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+      tag_id = parseInt($('.active a').attr('tag_id'))
+      tag_type = $('.active a').attr('tag_type')
+      $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+      $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+      $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
+      if(tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")){
+        // alert("search key")
+        doneTyping1($('#search-tab .active a').text());
+        $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+      }else if(tag_id == 0){
+        // alert("only tag type")
+        filter.tag_id = tag_id
+        filter.tag_type = tag_type
+        //alert(JSON.stringify(filter))
+        $.get("/search_results",filter)
+        $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+      }else{
+        // alert("only key")
+        dropdown_search_events($(this).attr('tag_id'))
+        $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+      }
+
+    },
+    onClose: function( selectedDate ) {
+      $( ".custom-start" ).datepicker( "option", "maxDate", selectedDate );
+
+    }
+
+  });
+  $( ".custom-start,.custom-end" ).datepicker("setDate", Date.today().toString("MM/dd/yyyy"))
   $(".price-range").slider({
     range: "min",
     min: 0,
@@ -1289,8 +1323,11 @@ function free_events(location){
 function cost_filter_events(high_price){
   console.log(high_price)
   var controllerLink = "/events/index?ajax=true&root=true"
-  f1={"high_price":high_price}
-  $.get(controllerLink, f1, function (data) {
+  $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+  $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+  $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
+  filter={"high_price":high_price}
+  $.get(controllerLink, filter, function (data) {
     var locations = [];
     var jData = $(data);
     if (false) {
@@ -1298,7 +1335,7 @@ function cost_filter_events(high_price){
 //      $(".total_number").text($('#'+location).find('article').length)
       $("#related_events .main .inline .events").html(data);
       $("#events .main .inline .events").html(data);
-
+      $(".total_number").text($("#related_events .main .inline .events").find('article').length);
 
     }
   });

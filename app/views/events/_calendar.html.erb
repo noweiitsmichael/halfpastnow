@@ -51,7 +51,7 @@
       <% end %>
     </a></figure>
     <% unless options[:datetime_only] %>
-      <div class="name">
+      <div class="name" style="height:45px;">
         <% if options[:fullmode] %>
           <a href="/events/show/<%= occ.id %>?fullmode=true" class="event-name"><%= occ.event.title %></a>
         <% else %>
