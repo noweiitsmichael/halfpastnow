@@ -61,60 +61,13 @@
 <br>
 <div class="clearfix"></div>
 <div class="row">
-<% if bookmarks.empty? %>
-  <div class="well well-lg col-sm-6 col-sm-offset-1">
-    <h4 class="purple">There are no Bookmarks in this category.</h4>
+  <div class="well well-lg col-sm-4 col-sm-offset-2">
+    <% if bookmarks.empty? %>
+      <h4 class="purple">There are no Bookmarks in this category.</h4>
+    <% else %>
+      <%= link_to "View Bookmarks List", "/explorers/austin/#{bookmark_list.slug}", class: 'btn btn-lg btn-purple', target: :_blank %>
+    <% end %>
   </div>
-<% else %>
-  <div class="table-responsive">
-    <div role="grid" class="dataTables_wrapper" id="sample-table-2_wrapper">
-      <table class="table table-striped table-bordered table-hover dataTable" id="sample-table-2" aria-describedby="sample-table-2_info">
-        <thead>
-        <tr role="row">
-          <th>Name</th>
-          <th>Type</th>
-          <th>Comments</th>
-          <th><i class="icon-time bigger-110 hidden-480"></i> Created</th>
-          <th></th>
-        </tr>
-        </thead>
-
-        <tbody role="alert" aria-live="polite" aria-relevant="all">
-        <% bookmarks.each do |bookmark| %>
-          <tr class="<%= cycle("odd", "even") %>">
-            <% if bookmark.bookmarked_type == "Occurrence" %>
-              <% name =  bookmark.bookmarked.event.title %>
-              <% path = "/events/austin/#{bookmark.bookmarked.slug.nil? ? bookmark.bookmarked.id : bookmark.bookmarked.slug }" rescue nil %>
-            <% elsif bookmark.bookmarked_type == "Venue" %>
-              <% name = bookmark.bookmarked.name %>
-              <% path = "/venues/austin/#{bookmark.bookmarked.slug.nil? ? bookmark.bookmarked.id : bookmark.bookmarked.slug}" rescue nil %>
-            <% elsif bookmark.bookmarked_type == "Act" %>
-              <% name = bookmark.bookmarked.name %>
-              <% path = "/artists/#{bookmark.bookmarked.slug.nil? ? bookmark.bookmarked.id : bookmark.bookmarked.slug}" rescue nil %>
-            <% else %>
-              <% path = nil %>
-            <% end %>
-            <td>
-              <% if path.nil? %>
-                <%= name %>
-              <% else %>
-                <%= link_to name, path, target: :_blank %>
-              <% end %>
-            </td>
-            <td><%= bookmark.bookmarked_type == "Occurrence" ? "Event" : bookmark.bookmarked_type %></td>
-            <td><%= bookmark.comment %></td>
-            <td><%= bookmark.created_at.to_date %></td>
-            <td><%= link_to bookmark_path(id: bookmark.id), method: :delete, remote: true, onClick: "$(this).parents('tr').hide()" do %>
-                <i class="icon-trash"> Delete</i>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-<% end %>
 </div>
 
 <script>
