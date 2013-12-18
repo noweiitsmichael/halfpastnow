@@ -14,35 +14,40 @@
   <%= stylesheet_link_tag  "custom1" %>
   <script type="text/javascript" language="javascript">
     $("document").ready(function(){
+      $('.desc_btn').hide();
       $(".asc_btn").click(function(){
+        var sort_on = $(this).data('sort_on');
+        var sort_by = $(this).data('sort_by');
+        console.log(sort_on);
+        console.log(sort_by);
         $(".product-list").jSort({
-          sort_by: 'span.value',
+          sort_by: sort_by,
           item: '.slide-item',
           order: 'asc',
           sort_by_attr: true,
-          attr_name: 'price'
+          attr_name: sort_on
         });
+
+        $('.' + $(this).data('type') + '.desc_btn').show();
+        $('.' + $(this).data('type') + '.asc_btn').hide();
       });
 
       $(".desc_btn").click(function(){
+        var sort_on = $(this).data('sort_on');
+        var sort_by = $(this).data('sort_by');
+        var sort_on = $(this).data('sort_on') ;
+        var sort_by = $(this).data('sort_by');
         $(".product-list").jSort({
-          sort_by: 'span.value',
+          sort_by: sort_by,
           item: '.slide-item',
           order: 'desc',
           sort_by_attr: true,
-          attr_name: 'price'
+          attr_name: sort_on
         });
-      });
-      $('.desc_btn').hide()
-      $('.asc_btn').click(function(){
-        $('.desc_btn').show();
-        $('.asc_btn').hide();
-      })
-      $('.desc_btn').click(function(){
-        $('.asc_btn').show();
-        $('.desc_btn').hide();
-      })
 
+        $('.' + $(this).data('type') + '.asc_btn').show();
+        $('.' + $(this).data('type') + '.desc_btn').hide();
+      });
     });
   </script>
 <% end %>
@@ -425,8 +430,11 @@
              <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
                 <div style="display: none;" class="popover bottom">
                   <div class="arrow"></div>
-                  <label class="cost_sort asc_btn"><span class="icon-hand-up"></span>COST</label>
-                  <label class="cost_sort desc_btn"><span class="icon-hand-down"></span>COST</label>
+                  <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
+                  <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
+                  <br>
+                  <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
+                  <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
                 </div>
 
             </span>
@@ -498,8 +506,11 @@
              <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
               <div style="display: none;" class="popover bottom">
                 <div class="arrow"></div>
-                <label class="cost_sort asc_btn"><span class="icon-hand-up"></span>COST</label>
-                <label class="cost_sort desc_btn"><span class="icon-hand-down"></span>COST</label>
+                <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
+                <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
+                <br>
+                <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
+                <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
               </div>
             </span>
 
@@ -813,7 +824,7 @@
 
   </script>
    <style>
-     .cost_sort {
+     .cost_sort, .time_sort {
        color: #777777;
        display: inline;
        font-size: 16px;

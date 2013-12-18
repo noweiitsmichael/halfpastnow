@@ -11,12 +11,10 @@
    $.fn.jSort = function(options){
 	   
 	var options = $.extend({
-		sort_by: 'span.value',
 		item: '.slide-item',
 		order: 'asc', //desc
 		is_num: true,
-		sort_by_attr: false,
-		attr_name: 'price'
+		sort_by_attr: false
 	},options);
 
 	return this.each(function() {            
