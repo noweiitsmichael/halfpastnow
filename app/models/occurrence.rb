@@ -17,8 +17,7 @@ class Occurrence < ActiveRecord::Base
 
   after_touch() { tire.update_index }
   mapping do
-    indexes :_id, type: 'integer', index: :not_analyzed,:store => 'yes',boost: 20
-    indexes :slug, type: 'string', boost: 10 , analyzer: 'snowball'
+    indexes :_event_id, type: 'integer', index: :not_analyzed,:store => 'yes',boost: 100
     indexes :start, type: 'date', index: :not_analyzed , boost: 100
     indexes :events do
       indexes :_id, type: 'integer', index: :not_analyzed,:store => 'yes'
@@ -43,9 +42,10 @@ class Occurrence < ActiveRecord::Base
     tire.search(load: true) do
       query { string params[:query], default_operator: "OR"} if params[:query].present?
       size 100
-      #sort { by :updated_at, 'desc' }
-      #facet('timeline') { range :post_date, { :ranges => [ { to: Date.today+1, from: Date.today-7 }, { to: Date.today+1, from: Date.today-14 }, { to: Date.today+1, from: Date.today-30 } ] } }
-      filter :range, start: {gte: Time.zone.now,lte: Time.zone.now+2.days}
+      #sort { by :start, 'dsc' }
+
+      facet('timeline') { range :start, { :ranges => [ { to: DateTime.new(2020,1,1), from: Time.now } ] } }
+      #filter :range, start: {gte: Time.zone.now,lte: Time.zone.now+2.days}
 
 
     end
@@ -268,7 +268,7 @@ class Occurrence < ActiveRecord::Base
       event_start_date = event_end_date = nil
       if(!params[:start_date].to_s.empty?)
         event_start_date = DateTime.parse(params[:start_date])
-       # raise event_start_date.inspect
+        raise event_start_date.inspect
       else
         event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
       end

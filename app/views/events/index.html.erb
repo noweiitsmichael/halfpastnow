@@ -140,7 +140,6 @@
     var markers = [];
     var tags = {};
     var channelFilters = {};
-
     var filter = {
       start_days: <%= params[:start_days].coalesce_to 0 %>,
       end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
@@ -259,7 +258,6 @@
     function to_i(obj) {
       return parseInt(obj);
     }
-
     $(function () {
       <% @channels.each do |channel| %>
       channelFilters[<%= channel.id %>] = {

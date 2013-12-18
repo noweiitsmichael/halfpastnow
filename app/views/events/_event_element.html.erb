@@ -37,6 +37,16 @@
          bookmarkId = nil
        end
     %>
-    <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" <%= current_user ? "" : "linkto='shunt'" %> event-title="<%= occurrence.event.title %>" event-id="<%= occurrence.id %>" event-venue="<%= occurrence.event.venue.name %>" event-id="<%= occurrence.id %>"><img src="/assets/images/icon-bookmark.png" alt="Bookmark"/></a>
+    <% unless user_signed_in? %>
+      <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" event-title="<%= occurrence.event.title %>" event-id="<%= occurrence.id %>" event-venue="<%= occurrence.event.venue.name %>" event-id="<%= occurrence.id %>"><img src="/assets/images/icon-bookmark.png" class="before_login" alt="Bookmark"/></a>
+
+      <script>
+          $('.before_login').click(function () {
+            window.location.href = window.location.origin + "/login"
+          })
+      </script>
+    <% else %>
+      <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" event-title="<%= occurrence.event.title %>" event-id="<%= occurrence.id %>" event-venue="<%= occurrence.event.venue.name %>" event-id="<%= occurrence.id %>"><img src="/assets/images/icon-bookmark.png" alt="Bookmark"/></a>
+    <% end %>
   </div>
 </article>
