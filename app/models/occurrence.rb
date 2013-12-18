@@ -20,7 +20,6 @@ class Occurrence < ActiveRecord::Base
     indexes :_event_id, type: 'integer', index: :not_analyzed,:store => 'yes',boost: 100
     indexes :start, type: 'date', index: :not_analyzed , boost: 100
     indexes :events do
-      indexes :_id, type: 'integer', index: :not_analyzed,:store => 'yes'
       indexes :price, type: 'integer'
       indexes :title, boost: 10
       indexes :description, boost: 9 , analyzer: 'snowball'
@@ -40,12 +39,22 @@ class Occurrence < ActiveRecord::Base
 
   def self.search(params)
     tire.search(load: true) do
-      query { string params[:query], default_operator: "OR"} if params[:query].present?
-      size 100
-      #sort { by :start, 'dsc' }
+      query { string params[:query], default_operator: "OR",match_all: { } } if params[:query].present?
+      size 600
+      sort { by :start, "asc" }
 
-      facet('timeline') { range :start, { :ranges => [ { to: DateTime.new(2020,1,1), from: Time.now } ] } }
-      #filter :range, start: {gte: Time.zone.now,lte: Time.zone.now+2.days}
+      #facet('timeline') { range :start, { :ranges => [ { to: DateTime.new(2020,1,1), from: Time.now } ] } }
+      filter :range, start: {gte: Time.zone.now,lte: DateTime.new(2020,1,1)}
+
+
+    end
+  end
+  def self.search_on_date(params)
+    tire.search(load: true) do
+      query { string params[:query], default_operator: "OR",match_all: { } }
+      size 600
+      sort { by :start, "asc" }
+      filter :range, start: {gte: (DateTime.parse(params[:start_date]).in_time_zone rescue Date.today()),lte: (DateTime.parse(params[:end_date]).in_time_zone rescue Date.today().next_week)}
 
 
     end
@@ -247,17 +256,17 @@ class Occurrence < ActiveRecord::Base
       end
     else
       # search
-      unless(params[:search].to_s.empty?)
-        search = params[:search].gsub(/[^0-9a-z ]/i, '').upcase
-        searches = search.split(' ')
-        
-        search_match_arr = []
-        searches.each do |word|
-          search_match_arr.push("(upper(venues.name) LIKE '%#{word}%' OR upper(events.description) LIKE '%#{word}%' OR upper(events.title) LIKE '%#{word}%')")
-        end
-
-        search_match = search_match_arr * " AND "
-      end
+      #unless(params[:search].to_s.empty?)
+      #  search = params[:search].gsub(/[^0-9a-z ]/i, '').upcase
+      #  searches = search.split(' ')
+      #
+      #  search_match_arr = []
+      #  searches.each do |word|
+      #    search_match_arr.push("(upper(venues.name) LIKE '%#{word}%' OR upper(events.description) LIKE '%#{word}%' OR upper(events.title) LIKE '%#{word}%')")
+      #  end
+      #
+      #  search_match = search_match_arr * " AND "
+      #end
 
 
       # date/time
