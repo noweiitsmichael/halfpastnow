@@ -38,6 +38,9 @@
         <div class="span5 inline"><h4>LOGIN VIA EMAIL</h4></div>
         <div class="left-pan"><a href="/users/auth/facebook"><img src="/assets/fb.jpg" alt=""></a></div>
         <div class="right-pan">
+          <% if  flash[:alert] %>
+          <div class="alert alert-error"><%= flash[:alert] %> </div>
+            <% end %>
           <%= form_for(resource, :as => resource_name, :url => session_path(resource_name),html: { class: "signup"}) do |f| %>
 
             <%= f.email_field :email,:placeholder => "EMAIL" %>
@@ -54,6 +57,7 @@
     </div>
   </section>
 <% end %>
+
 
 
 

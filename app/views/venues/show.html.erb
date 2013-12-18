@@ -25,11 +25,12 @@
     var facebook_url = "http://www.halfpastnow.com/" + type + "s/show/" + id + "?fullmode=true";
     var app_id = "475386955806720";
     var redirect = "http://www.halfpastnow.com";
-    var bookmark_id = "<%= @bookmarkId.to_s %>";
+    //var bookmark_id = "<#%= @bookmarkId.to_s %>";
     var attending_id = "<%= @attendingId.to_s %>";
     var bookmarkList_id = id;
+    var auto_share = "<%= current_user ? current_user.auto_share : false %>";
     var toggle = false;
-    console.log(id + ' ' + bookmark_id)
+   // console.log(id + ' ' + bookmark_id)
     $(function () {
 
 
@@ -62,19 +63,36 @@
     $(function () {
       console.log("Loaded share stuff");
 
-
       // The "bookmark" class won't be here if a user isn't logged in
       $('.bookmark-share .bookmark').click(function () {
         console.log("Fullmode bookmark");
         var that = $(this);
         if (that.hasClass('add')) {
-          var bookmarked_type = "";
-          // var lnk = 'http://www.halfpastnow.com/mobile/og/'+id;
-          var lnk = 'http://www.halfpastnow.com/events/show/' + id + '?fullmode=true';
-          console.log("Bookmarks: " + lnk);
-          switch (type) {
-            case "event":
-              (bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
+          $('#bookmark_list_collection').prop('selectedIndex', -1);
+          $('#bookmark_modal').modal('show')
+        }
+        else if (that.hasClass('add-more')) {
+          $('#bookmark_list_collection').prop('selectedIndex', -1);
+          $('#bookmark_modal').modal('show');
+        }
+      });
+
+      // The "bookmark popup"
+      $('.bookmark-share .bookmark_popup').click(function () {
+        console.log("bookmark popup");
+        var bookmarked_type = "";
+        var bookmark_list_id = $('#bookmark_list_collection').val();
+        var bookmarked_comments = $('#bookmark_group_comment').val();
+        // var lnk = 'http://www.halfpastnow.com/mobile/og/'+id;
+        var lnk = 'http://www.halfpastnow.com/events/show/' + id + '?fullmode=true';
+        console.log("Bookmarks: " + lnk);
+        console.log("bookmark_list_id : " + bookmark_list_id);
+        console.log("Bookmark comment: " + bookmarked_comments);
+        switch (type) {
+          case "event":
+            (bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
+            if(auto_share == "true"){
+              console.log("inside:" + auto_share);
               FB.api(
                 '/me/halfpastnow:bookmark',
                 'post',
@@ -86,32 +104,29 @@
                     // alert('Post event was successful! Action ID: ' + response.id);
                   }
                 });
-              break;
-            case "venue":
-              bookmarked_type = "Venue";
-              break;
-            case "act":
-              bookmarked_type = "Act";
-              break;
-          }
-          ;
-          $.getJSON('/bookmarks/custom_create', { bookmark: { "type": bookmarked_type, "id": id } }, function (data) {
-            console.log("new bookmark full mode");
-            console.log(data);
-            that.removeClass('add').addClass('remove');
-            that.html("<img src='/assets/images/icon-bookmark-large.png'/>");
-            bookmark_id = data;
-          });
+            }
+            break;
+          case "venue":
+            bookmarked_type = "Venue";
+            break;
+          case "act":
+            bookmarked_type = "Act";
+            break;
         }
-        else if (that.hasClass('remove')) {
-          // $.getJSON('/bookmarks/destroy/', { id: bookmark_id }, function(data) {
-          // 	that.addClass('add').removeClass('remove');
-          // });
-          $.getJSON('/bookmarks/destroy/' + bookmark_id, function (data) {
-            that.addClass('add').removeClass('remove');
-            that.html("<img src='/assets/images/icon-bookmark-large.png'/>");
-          });
-        }
+        ;
+        $.getJSON('/bookmarks/custom_create', { bookmark: { "type": bookmarked_type, "id": id, "bookmark_list_id": bookmark_list_id, "comment": bookmarked_comments } }, function (data) {
+          $('#bookmark_modal').modal('hide');
+          $("select#bookmark_list_collection option[value= "+ data +"]").hide();
+          $('.bookmark-share .bookmark').addClass('add-more').removeClass('add');
+          $('.bookmark-share .bookmark').html("<img src='/assets/images/icon-bookmark-add-more-large.png'/>");
+        });
+      });
+
+      // adding new bookmark group in popup
+      $('#add_new_bookmark_group_btn').click(function () {
+        var name = $('#new_bookmark_group_field').val();
+        console.log(name);
+        $.get('/bookmarks/create_bookmark_group', { "name": name });
       });
 
       // This "attending" class won't be here if the user isn't logged in
@@ -210,7 +225,7 @@
       toggle = !toggle;
       that.removeClass('add').addClass('remove');
       $.getJSON('/bookmarks/add_to_featuredlist', { bookmark: { "type": "Occurrence", "id": <%= @venue.id  %>, "comment": text } }, function (data) {
-        bookmark_id = data;
+      //  bookmark_id = data;
       });
 
       $(".comment-text-1").val(text);
@@ -230,7 +245,7 @@
       var text = $('.comment-text-1').val();
       console.log("Edit comment" + text);
       $.getJSON('/bookmarks/update_comment', { bookmark: { "type": "Occurrence", "id": bookmarkList_id, "comment": text } }, function (data) {
-        bookmark_id = data;
+      //  bookmark_id = data;
 
       });
     }
@@ -277,9 +292,7 @@
   <section class="details">
     <section class="recommend-events">
       <div class="container">
-        <a class="link" href="/search"><i class="icon-left-arrow"></i> back to search results</a>
-        <a class="link" href="#" data-target="recommend-events-wrapper"><i class="icon-bottom-arrow"></i> recommended
-          events</a>
+
       </div>
     </section>
     <div class="container">
@@ -290,14 +303,66 @@
 
           <div class="right">
             <div class="share bookmark-share">
-              <a href="#">
-               <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
-                 <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-large.png") %>
-	            </span>
-              </a>
-
+              <% unless user_signed_in? %>
+                <%= image_tag("images/icon-bookmark-large.png", :class => "before_login") %> &nbsp;
+                <script>
+                  $(window).load(function () {
+                    $('.before_login').click(function () {
+                      window.location.href = window.location.origin + "/login"
+                    })
+                  })
+                </script>
+              <% else %>
+                <a href="#">
+                  <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarks.empty? ? "add" : "add-more"%>" <%= current_user ? "" : "linkto='shunt'" %>>
+                    <%= @bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
+	                </span>
+                </a>
+              <% end %>
               <a href="#" class="twitter"><img src="/assets/images/icon-twitter.png" alt=""/></a>
               <a href="#" class="facebook"><img src="/assets/images/icon-facebook.png" alt=""/></a>
+              <!-- Modal -->
+              <div class="modal fade hide" id="bookmark_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myModalLabel">Bookmark This Activity</h4>
+                    </div>
+                    <div class="modal-body">
+                      <!--<h2><%#= @event.title %></h2>-->
+                      <!--<hr>-->
+
+                      <div class="form-group">
+                        <%= label_tag :bookmark_group, class: 'control-label' do %>
+                          <span>Add to My List:</span>
+                          <span class="pull-right"><%= link_to "Create New", '#', onClick: "$('#new_bookmarklist_block').show();" %></span>
+                        <% end %>
+                        <div class="form-group hide" id="new_bookmarklist_block" style="display:none">
+                          <form class="form-inline">
+                            <%= text_field_tag :new_bookmark_group_field, '', placeholder: "New", style: 'width:65%' %>
+                            <%= link_to "Add", "#", class: 'btn btn-danger', id: "add_new_bookmark_group_btn", style: "margin-bottom:0" %>
+                          </form>
+                        </div>
+                        <% bookmarks_list = current_user ? current_user.bookmark_lists.where("(description <> 'Attending' or description is null) and bookmark_lists.id not in (?)", @bookmark_lists_ids).collect { |bl| [bl.name, bl.id] } : [] %>
+                        <%= select_tag :bookmark_list_collection, options_for_select(bookmarks_list), class: 'input-block-level' %>
+                      </div>
+                      <div class="form-group">
+                        <%= label_tag :bookmark_group_comment, 'Add comments:', class: 'control-label' %>
+                        <%= text_field_tag :bookmark_group_comment, '', class: 'input-block-level', placeholder: "Comments" %>
+                      </div>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal" onClick="$('#new_bookmarklist_block').hide();">Cancel</button>
+                      <button type="button" class="btn btn-danger bookmark_popup ">Bookmark It</button>
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+              <!-- /.modal -->
             </div>
           </div>
         </div>
@@ -382,7 +447,9 @@
           </div>
           <div id="map" class="accordion-body collapse in">
             <div class="accordion-inner">
-              <a class="map-link" href="http://maps.google.com/maps?q=<%= @venue.latitude %>,<%= @venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=550x300&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @venue.latitude %>,<%= @venue.longitude %>&sensor=false"/></a>
+              <% location = CGI::escape("#{@venue.name},#{@venue.address},#{@venue.city},#{@venue.state},#{@venue.zip.to_s}") %>
+
+              <a class="map-link" href="http://maps.google.com/maps?q=<%= location %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=550x300&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @venue.latitude %>,<%= @venue.longitude %>&sensor=false"/></a>
 
             </div>
           </div>

@@ -9,6 +9,8 @@ Myapp::Application.routes.draw do
       get :bookmarks
       post :update_profile
       post :update_profile_pic
+      post :update_bookmark_list
+      post :update_bookmark_list_picture
     end
   end
 
@@ -126,6 +128,7 @@ Myapp::Application.routes.draw do
   match 'feedbacks' => 'feedbacks#index'
   match 'users' => 'users#index', :as => "user"
   match 'users/friends' => 'users#friends'
+  match 'users/change_share_status' => 'users#change_share_status'
   match '/search' => 'events#index'
   match '/sxsw' => 'events#sxsw'
   match '/saved_search' => 'events#saved_search'

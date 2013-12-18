@@ -30,17 +30,17 @@
     var type = "event";
     var root_url = "http://www.halfpastnow.com/";
     var link = root_url + "?" + type + "_id=" + id;
-    var facebook_url = "http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %>" ;
+    var facebook_url = "http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %>";
     var app_id = "475386955806720";
     var redirect = "http://www.halfpastnow.com";
-    var bookmark_id = "<%= @bookmarkId.to_s %>";
+   // var bookmark_id = "<%#= @bookmarkId.to_s %>";
     var attending_id = "<%= @attendingId.to_s %>";
     var bookmarkList_id = "<%= @occurrence.id %>";
+    var auto_share = "<%= current_user ? current_user.auto_share : false %>";
     var toggle = false;
-    console.log(id + ' ' + bookmark_id)
+
+    //console.log(id + ' ' + bookmark_id)
     $(function () {
-
-
       window.fbAsyncInit = function () {
         console.log("Loaded FB 2");
         FB.init({
@@ -75,13 +75,12 @@
         console.log("Fullmode bookmark");
         var that = $(this);
         if (that.hasClass('add')) {
+          $('#bookmark_list_collection').prop('selectedIndex', -1);
           $('#bookmark_modal').modal('show')
         }
-        else if (that.hasClass('remove')) {
-          $.getJSON('/bookmarks/destroy/' + bookmark_id, function (data) {
-            that.addClass('add').removeClass('remove');
-            that.html("<img src='/assets/images/icon-bookmark-large.png'/>");
-          });
+        else if (that.hasClass('add-more')) {
+          $('#bookmark_list_collection').prop('selectedIndex', -1);
+          $('#bookmark_modal').modal('show');
         }
       });
 
@@ -93,14 +92,13 @@
         var bookmarked_comments = $('#bookmark_group_comment').val();
         // var lnk = 'http://www.halfpastnow.com/mobile/og/'+id;
         var lnk = 'http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %>';
-        console.log("Bookmarks: " + lnk);
-        console.log("bookmark_list_id : " + bookmark_list_id);
-        console.log("Bookmark comment: " + bookmarked_comments);
         switch (type) {
           case "event":
             (bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
-            FB.api(
-              '/me/halfpastnow:bookmark',
+            if(auto_share == "true"){
+              console.log("inside:" + auto_share);
+              FB.api(
+                '/me/halfpastnow:bookmark',
                 'post',
                 { event: lnk },
                 function (response) {
@@ -110,28 +108,27 @@
                     // alert('Post event was successful! Action ID: ' + response.id);
                   }
                 });
-              break;
+            }
+            break;
           case "venue":
             bookmarked_type = "Venue";
             break;
           case "act":
             bookmarked_type = "Act";
             break;
-        };
+        }
+        ;
         $.getJSON('/bookmarks/custom_create', { bookmark: { "type": bookmarked_type, "id": id, "bookmark_list_id": bookmark_list_id, "comment": bookmarked_comments } }, function (data) {
-          console.log("new bookmark full mode");
-          console.log(data);
-          bookmark_id = data;
           $('#bookmark_modal').modal('hide');
-          $('.bookmark-share .bookmark').addClass('remove').removeClass('add');
-          $('.bookmark-share .bookmark').html("<img src='/assets/images/icon-bookmark-remove-large.png'/>");
+          $("select#bookmark_list_collection option[value= "+ data +"]").hide();
+          $('.bookmark-share .bookmark').addClass('add-more').removeClass('add');
+          $('.bookmark-share .bookmark').html("<img src='/assets/images/icon-bookmark-add-more-large.png'/>");
         });
       });
 
       // adding new bookmark group in popup
       $('#add_new_bookmark_group_btn').click(function () {
         var name = $('#new_bookmark_group_field').val();
-        console.log(name);
         $.get('/bookmarks/create_bookmark_group', { "name": name });
       });
 
@@ -228,7 +225,7 @@
       toggle = !toggle;
       that.removeClass('add').addClass('remove');
       $.getJSON('/bookmarks/add_to_featuredlist', { bookmark: { "type": "Occurrence", "id": <%= @occurrence.id  %>, "comment": text } }, function (data) {
-        bookmark_id = data;
+        //bookmark_id = data;
       });
 
       $(".comment-text-1").val(text);
@@ -248,7 +245,7 @@
       var text = $('.comment-text-1').val();
       console.log("Edit comment" + text);
       $.getJSON('/bookmarks/update_comment', { bookmark: { "type": "Occurrence", "id": bookmarkList_id, "comment": text } }, function (data) {
-        bookmark_id = data;
+        //bookmark_id = data;
 
       });
     }
@@ -295,143 +292,145 @@
   <section class="details">
   <section class="recommend-events">
     <div class="container">
-      <a class="link" href="/search"><i class="icon-left-arrow"></i> back to search results</a>
-      <a class="link" href="#" data-target="recommend-events-wrapper"><i class="icon-bottom-arrow"></i> recommended
-        events</a>
+
     </div>
   </section>
   <div class="container">
   <div class="event-main">
-    <h2><%= @event.title %></h2>
+  <h2><%= @event.title %></h2>
 
-    <div class="row">
-      <div class="price left">
-        <% if @event.price %>
-          <%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 2) : "FREE" %>
-        <% end %>
-      </div>
-      <div class="right">
-        <div class="share bookmark-share">
+  <div class="row">
+    <div class="price left">
+      <% if @event.price %>
+        <%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 2) : "FREE" %>
+      <% end %>
+    </div>
+    <div class="right">
+      <div class="share bookmark-share">
           <span onmouseover='$(this).tooltip()' data-toggle="tooltip" title="Bookmark">
           <% unless user_signed_in? %>
-
-           <%= image_tag("images/icon-bookmark-large.png",:class => "before_login") %> &nbsp;
+           <%= image_tag("images/icon-bookmark-large.png", :class => "before_login") %> &nbsp;
             <script>
-              $(window).load(function(){
-                $('.before_login').click(function(){
-                  window.location.href = window.location.origin+"/login"
+              $(window).load(function () {
+                $('.before_login').click(function () {
+                  window.location.href = window.location.origin + "/login"
                 })
               })
             </script>
             <% else %>
           <a href="#">
-               <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarkId.nil? ? "add" : "remove" %>" >
-                 <%= @bookmarkId.nil? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-remove-large.png") %>
+               <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarks.empty? ? "add" : "add-more" %>">
+                 <%= @bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
 	            </span>
           </a>
             <% end %>
              </span>
-            <a href="http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %>" title="Add to Calendar" class="addthisevent">
-              <!--<span class="icon icon-calendar cal"></span>-->
-              <img src="/assets/images/icon-calendar.png" onmouseover='$(this).tooltip()' data-toggle="tooltip" title="Calender" alt=""/>
-              <span class="_url">http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %></span>
-              <span class="_start"><%= (@occurrence.start.nil?) ? "" : @occurrence.start.strftime('%d-%m-%Y %H:%M:%S') %></span>
-              <span class="_end"><%= (@occurrence.end.nil?) ? (@occurrence.start.nil?) ? "" : (@occurrence.start + 2.hours).strftime('%d-%m-%Y %H:%M:%S') : @occurrence.end.strftime('%d-%m-%Y %H:%M:%S') %></span>
-              <span class="_zonecode">11</span>
-              <span class="_summary"><%= @event.title %></span>
-              <span class="_description"><%= (@event.description.nil?) ? '' : truncate(strip_tags(@event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"') %></span>
-              <span class="_location"><%= @event.venue.name %>, <%= @event.venue.address %>, <%= @event.venue.city %>, <%= @event.venue.state %></span>
-              <span class="_date_format">DD/MM/YYYY</span>
-            </a>
+        &nbsp;&nbsp;
+        <a href="http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %>" title="Add to Calendar" class="addthisevent">
+          <!--<span class="icon icon-calendar cal"></span>-->
+          <img src="/assets/images/icon-calendar.png" onmouseover='$(this).tooltip()' data-toggle="tooltip" title="Calender" alt=""/>
+          <span class="_url">http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %></span>
+          <span class="_start"><%= (@occurrence.start.nil?) ? "" : @occurrence.start.strftime('%d-%m-%Y %H:%M:%S') %></span>
+          <span class="_end"><%= (@occurrence.end.nil?) ? (@occurrence.start.nil?) ? "" : (@occurrence.start + 2.hours).strftime('%d-%m-%Y %H:%M:%S') : @occurrence.end.strftime('%d-%m-%Y %H:%M:%S') %></span>
+          <span class="_zonecode">11</span>
+          <span class="_summary"><%= @event.title %></span>
+          <span class="_description"><%= (@event.description.nil?) ? '' : truncate(strip_tags(@event.description), :length => 300, :separator => ' ').gsub(/\"/, '\"') %></span>
+          <span class="_location"><%= @event.venue.name %>, <%= @event.venue.address %>, <%= @event.venue.city %>
+            , <%= @event.venue.state %></span>
+          <span class="_date_format">DD/MM/YYYY</span>
+        </a>
           <span onmouseover='$(this).tooltip()' data-toggle="tooltip" title="Invite Friends">
           <a href="#" class="twitter"><img src="/assets/images/icon-twitter.png" alt=""/></a>
           <a href="#" class="facebook"><img src="/assets/images/icon-facebook.png" alt=""/></a>
            </span>
-          <!-- Modal -->
-          <div class="modal fade hide" id="bookmark_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title" id="myModalLabel">Bookmark This Activity</h4>
-                </div>
-                <div class="modal-body">
-                  <!--<h2><%#= @event.title %></h2>-->
-                  <!--<hr>-->
+        <!-- Modal -->
+        <div class="modal fade hide" id="bookmark_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Bookmark This Activity</h4>
+              </div>
+              <div class="modal-body">
+                <!--<h2><%#= @event.title %></h2>-->
+                <!--<hr>-->
 
-                    <div class="form-group">
-                      <%= label_tag :bookmark_group, class: 'control-label' do %>
-                        <span>Add to My List:</span>
-                        <span class="pull-right"><%= link_to "Create New",'#', onClick:"$('#new_bookmarklist_block').show();" %></span>
-                      <% end %>
-                      <div class="form-group hide" id="new_bookmarklist_block" style="display:none">
-                        <form class="form-inline">
-                          <%= text_field_tag :new_bookmark_group_field, '', placeholder: "New", style: 'width:65%' %>
-                          <%= link_to "Add", "#", class: 'btn btn-danger', id: "add_new_bookmark_group_btn", style: "margin-bottom:0" %>
-                        </form>
-                      </div>
-                      <% bookmarks_list = current_user ? current_user.bookmark_lists.where("description != ? or description is null", 'Attending').map{|bl| [bl.name,bl.id]} : []%>
-                      <%= select_tag :bookmark_list_collection, options_for_select(bookmarks_list),class: 'input-block-level' %>
-                    </div>
-                    <div class="form-group">
-                      <%= label_tag :bookmark_group_comment, 'Add comments:',class: 'control-label' %>
-                      <%= text_field_tag :bookmark_group_comment, '',class: 'input-block-level', placeholder: "Comments" %>
-                    </div>
-
+                <div class="form-group">
+                  <%= label_tag :bookmark_group, class: 'control-label' do %>
+                    <span>Add to My List:</span>
+                    <span class="pull-right"><%= link_to "Create New", '#', onClick: "$('#new_bookmarklist_block').show();" %></span>
+                  <% end %>
+                  <div class="form-group hide" id="new_bookmarklist_block" style="display:none">
+                    <form class="form-inline">
+                      <%= text_field_tag :new_bookmark_group_field, '', placeholder: "New", style: 'width:65%' %>
+                      <%= link_to "Add", "#", class: 'btn btn-danger', id: "add_new_bookmark_group_btn", style: "margin-bottom:0" %>
+                    </form>
+                  </div>
+                  <% bookmarks_list = current_user ? current_user.bookmark_lists.where("(description <> 'Attending' or description is null) and bookmark_lists.id not in (?)", @bookmark_lists_ids).collect { |bl| [bl.name, bl.id] } : [] %>
+                  <%= select_tag :bookmark_list_collection, options_for_select(bookmarks_list), class: 'input-block-level' %>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal" onClick="$('#new_bookmarklist_block').hide();" >Cancel</button>
-                  <button type="button" class="btn btn-danger bookmark_popup ">Bookmark It</button>
+                <div class="form-group">
+                  <%= label_tag :bookmark_group_comment, 'Add comments:', class: 'control-label' %>
+                  <%= text_field_tag :bookmark_group_comment, '', class: 'input-block-level', placeholder: "Comments" %>
                 </div>
-              </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-          </div><!-- /.modal -->
 
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onClick="$('#new_bookmarklist_block').hide();">Cancel</button>
+                <button type="button" class="btn btn-danger bookmark_popup ">Bookmark It</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
         </div>
+        <!-- /.modal -->
+
       </div>
     </div>
-    <div class="clearfix">
-      <div class="left">
-        <address>
-          <h4><%= link_to @occurrence.event.venue.name, "/venues/austin/#{@occurrence.event.venue.slug}",:style => "color:#4C334E; font-size:120%; font-weight:700;", :class => "venue_link " %></h4>
-          <%= @occurrence.event.venue.address %>
-          <br>
-          <%= @occurrence.event.venue.city + ", " + @occurrence.event.venue.state + " " + @occurrence.event.venue.zip.to_s %>
-          <% unless @occurrence.event.venue.phonenumber.to_s.empty? && @occurrence.event.venue.url.to_s.empty? %>
-            <br/>
-            <a href="<%= @occurrence.event.venue.url %>" style = "color:#4C334E"><%= @occurrence.event.venue.url %></a><br>
-            <%= @occurrence.event.venue.phonenumber %>
-          <% end %>
+  </div>
+  <div class="clearfix">
+    <div class="left">
+      <address>
+        <h4><%= link_to @occurrence.event.venue.name, "/venues/austin/#{@occurrence.event.venue.slug}", :style => "color:#4C334E; font-size:120%; font-weight:700;", :class => "venue_link " %></h4>
+        <%= @occurrence.event.venue.address %>
+        <br>
+        <%= @occurrence.event.venue.city + ", " + @occurrence.event.venue.state + " " + @occurrence.event.venue.zip.to_s %>
+        <% unless @occurrence.event.venue.phonenumber.to_s.empty? && @occurrence.event.venue.url.to_s.empty? %>
+          <br/>
+          <a href="<%= @occurrence.event.venue.url %>" style="color:#4C334E"><%= @occurrence.event.venue.url %></a><br>
+          <%= @occurrence.event.venue.phonenumber %>
+        <% end %>
 
-        </address>
-        <h4>Dates &amp; Times</h4>
-        <ul>
-          <% @occurrence.event.recurrences.each do |rec| %>
-            <li><%= "Every " + ((rec.every_other.nil? || rec.every_other == 0) ? "" : ((rec.every_other == 1) ? "other" : to_ordinal(rec.every_other))) %>
-              <%= (rec.day_of_week && rec.week_of_month) ? to_ordinal(rec.week_of_month) + " " + @week[rec.day_of_week] : (rec.day_of_month ? to_ordinal(rec.day_of_month) : (rec.day_of_week ? @week[rec.day_of_week] : "day")) %>
-              <% if rec.end %>
-                <span>, <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
-                <span>to <%= rec.end.to_time.strftime("%-l:%M%P") %></span>
-              <% else %>
-                <span>, <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
+      </address>
+      <h4>Dates &amp; Times</h4>
+      <ul>
+        <% @occurrence.event.recurrences.each do |rec| %>
+          <li><%= "Every " + ((rec.every_other.nil? || rec.every_other == 0) ? "" : ((rec.every_other == 1) ? "other" : to_ordinal(rec.every_other))) %>
+            <%= (rec.day_of_week && rec.week_of_month) ? to_ordinal(rec.week_of_month) + " " + @week[rec.day_of_week] : (rec.day_of_month ? to_ordinal(rec.day_of_month) : (rec.day_of_week ? @week[rec.day_of_week] : "day")) %>
+            <% if rec.end %>
+              <span>, <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
+              <span>to <%= rec.end.to_time.strftime("%-l:%M%P") %></span>
+            <% else %>
+              <span>, <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
 
-      </div>
-      <div class="right">
-        <% unless user_signed_in? %>
+    </div>
+    <div class="right">
+      <% unless user_signed_in? %>
         <a href="#" class="before_login btn btn-large btn-danger">I'm Going</a>
-          <script>
-            $(window).load(function(){
+        <script>
+          $(window).load(function () {
 
-            $('.before_login').click(function(){
-              window.location.href = window.location.origin+"/login"
+            $('.before_login').click(function () {
+              window.location.href = window.location.origin + "/login"
             })
-            })
-          </script>
-          <% else %>
+          })
+        </script>
+      <% else %>
         <input type="hidden" id="event" value="<%= @event %>"/>
         <input type="hidden" id="id" value="<%= @occurrence.id %>"/>
         <% if !@event.ticket_url.blank? %>
@@ -447,80 +446,83 @@
             <%= @attendingId.nil? ? "I'm Going!" : "Planning on Attending" %>
           </span>
         <% end %>
-          <% end %>
-        <% if @event.ticket_url %>
+      <% end %>
+      <% if @event.ticket_url %>
         <a href="#" class="btn btn-large btn-danger">Get Tickets</a>
-          <% end %>
-      </div>
+      <% end %>
     </div>
-    <div class="accordion" id="performing_artists">
-      <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#details-container" href="#artists">Performing
-          Artists
-          <i class="caret pull-right"></i></a>
-      </div>
-      <div id="artists" class="accordion-body collapse in">
-        <div class="accordion-inner">
-          <% unless @event.acts.length == 0 %>
-            <div class="">
-              <div class="block-inner">
+  </div>
+  <div class="accordion" id="performing_artists">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#details-container" href="#artists">Performing
+        Artists
+        <i class="caret pull-right"></i></a>
+    </div>
+    <div id="artists" class="accordion-body collapse in">
+      <div class="accordion-inner">
+        <% unless @event.acts.length == 0 %>
+          <div class="">
+            <div class="block-inner">
 
-                <% @event.acts.each_with_index do |act, index| %>
-                  <a href="/artists/<%= act.slug %>" act_id="<%= act.slug %>" class="act-name" style = "color:#4C334E"><%= act.name %></a><%= (index != @event.acts.length - 1) ? ", " : "" %>
-                  <br>
-                <% end %>
+              <% @event.acts.each_with_index do |act, index| %>
+                <a href="/artists/<%= act.slug %>" act_id="<%= act.slug %>" class="act-name" style="color:#4C334E"><%= act.name %></a><%= (index != @event.acts.length - 1) ? ", " : "" %>
+                <br>
+              <% end %>
 
-              </div>
             </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="accordion" id="details-container">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#details-container" href="#details">Details
+        <i class="caret pull-right"></i></a>
+    </div>
+    <div id="details" class="accordion-body collapse in">
+      <div class="accordion-inner">
+        <%= raw(@event.description) %>
+      </div>
+    </div>
+  </div>
+  <div class="accordion" id="tag-container">
+    <div class="accordion-heading">
+      <a class="accordion-toggle" data-toggle="collapse" data-parent="#tag-container" href="#tags">Tags
+        <i class="caret pull-right"></i></a>
+    </div>
+    <div id="tags" class="accordion-body collapse in">
+      <div class="accordion-inner">
+        <p>
+          <% unless @event.tags.length == 0 %>
+            <%#= @event.tags.collect { |tag| raw("#{link_to(tag.name,"#",:tag_id => tag.id)}") } * ", " %>
+            <% @event.tags.each do |tag|%>
+                <%= link_to(tag.name,"#",:tag_id => tag.id,:style => "color:#4C334E;") %><%= "," unless @event.tags.last.id==tag.id %>
           <% end %>
-        </div>
+          <% end %>
+        </p>
       </div>
     </div>
-    <div class="accordion" id="details-container">
-      <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#details-container" href="#details">Details
-          <i class="caret pull-right"></i></a>
-      </div>
-      <div id="details" class="accordion-body collapse in">
-        <div class="accordion-inner">
-          <%= raw(@event.description) %>
+  </div>
+  <% if user_signed_in? %>
+    <% unless @attending_friends.empty? %>
+      <div class="accordion" id="who-container">
+        <div class="accordion-heading">
+          <a class="accordion-toggle" data-toggle="collapse" data-parent="#who-container" href="#who">Who's Going
+            <i class="caret pull-right"></i></a>
         </div>
-      </div>
-    </div>
-    <div class="accordion" id="tag-container">
-      <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#tag-container" href="#tags">Tags
-          <i class="caret pull-right"></i></a>
-      </div>
-      <div id="tags" class="accordion-body collapse in">
-        <div class="accordion-inner">
-          <p>
-            <% unless @event.tags.length == 0 %>
-              <%= @event.tags.collect { |tag| tag.name } * ", " %></li>
-            <% end %>
-          </p>
-        </div>
-      </div>
-    </div>
-    <% if user_signed_in? %>
-      <% unless @attending_friends.empty? %>
-    <div class="accordion" id="who-container">
-      <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-parent="#who-container" href="#who">Who's Going
-          <i class="caret pull-right"></i></a>
-      </div>
-      <div id="who" class="accordion-body collapse in">
-        <div class="accordion-inner">
+        <div id="who" class="accordion-body collapse in">
+          <div class="accordion-inner">
 
             <% @attending_friends.each do |friend| %>
               <a href="#" class="user"><img src="<%= friend.fb_picture %>"/></a>
             <% end %>
 
+          </div>
         </div>
       </div>
-    </div>
     <% end %>
-    <% end %>
+  <% end %>
   </div>
   <div class="event-other-details">
     <ul class="nav nav-tabs">
@@ -564,7 +566,10 @@
             <script type="text/javascript">
               Galleria.loadTheme('/assets/galleria.classic.min.js');
               Galleria.run('#galleria');
-
+              $('#tags a').click(function(){
+                tag_id = $(this).attr('tag_id')
+                window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text())+"&tag_id="+tag_id
+              })
             </script>
           </div>
         </div>
@@ -640,7 +645,8 @@
       </div>
       <div id="map" class="accordion-body collapse in">
         <div class="accordion-inner">
-          <a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=550x300&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&sensor=false"/></a>
+           <% location = CGI::escape("#{@occurrence.event.venue.name},#{@occurrence.event.venue.address},#{@occurrence.event.venue.city},#{@occurrence.event.venue.state},#{@occurrence.event.venue.zip.to_s}") %>
+          <a class="map-link" href="http://maps.google.com/maps?q=<%= location %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=550x300&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&sensor=false"/></a>
         </div>
       </div>
     </div>
@@ -665,7 +671,7 @@
                 <% end %>
               </a>
               </figure>
-              <div class="name"><a href="#"><%= occ.event.title %></a>
+              <div class="name"><a href="/events/austin/<%= occ.slug.nil?? occ.id : occ.slug  %>"><%= occ.event.title %></a>
               </div>
               <div><%= occ.start.to_time.strftime("%B %-d @ %-l:%M%P") %></div>
             </article>
@@ -683,7 +689,7 @@
   <section class="recommend-events">
     <div id="recommend-events-wrapper">
       <div class="content slider" style="height:198px !important;">
-        <div id="recommended-list" >
+        <div id="recommended-list">
           <% @occurrences.empty? ? occurrences=@all_occurrences : occurrences= Array[@occurrence] %>
           <% occurrences.each do |occurrence| %>
             <article class="slide-item" link-id=<%= occurrence.id %>>
@@ -745,12 +751,14 @@
 
 </script>
 <style>
-  .icon.icon-calendar.cal{
-    display:none;
+  .icon.icon-calendar.cal {
+    display: none;
   }
-  #body{
-     overflow: visible !important;
+
+  #body {
+    overflow: visible !important;
   }
+
 </style>
 
 </body>

@@ -1,19 +1,21 @@
-<% content_for :title do %>Log In<% end %>
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,900,700italic,900italic,700,500italic,500,400italic,300italic,100italic' rel='stylesheet' type='text/css'>
+<link href="css/jquery.mobile-1.0a3.min.css" type="text/css" rel="stylesheet" />
+<link href="css/bootstrap.css" type="text/css" rel="stylesheet"/>
+<link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet"/>
+<link href="css/jquery-ui.css" type="text/css" rel="stylesheet"/>
+<link href="css/jquery.ui.timepicker.css" type="text/css" rel="stylesheet"/>
+<link href="css/custom.css" type="text/css" rel="stylesheet"/>
+<link href="css/media-queries.css" type="text/css" rel="stylesheet"/>
 
-<% content_for :content do %>
-  <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-    <div><%= f.label :email %><br />
-      <%= f.email_field :email %></div>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/jquery-migrate-1.2.1.js"></script>
+<script src="js/jquery.mobile-1.1.0.js"></script>
+<script src="js/jquery.ui.timepicker.js"></script>
+<script src="js/modernizr-latest.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
+<script src="js/jquery.touchSwipe.min.js"></script>
 
-    <div><%= f.label :password %><br />
-      <%= f.password_field :password %></div>
-
-    <% if devise_mapping.rememberable? -%>
-      <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
-    <% end -%>
-
-    <div><%= f.submit "Login" %></div>
-    <!--<div><%= link_to "Sign in with facebook", user_omniauth_authorize_path(:facebook) %>	-->
-  <% end %>
-  <%= render "links" %>
-<% end %>
+<script src="js/verticalSlider.js"></script>
+<script src="js/custom.js"></script>

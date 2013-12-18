@@ -1251,7 +1251,7 @@ blockquote, blockquote.pull-right {
   margin: 0;
   padding-left: 0;
   padding-right: 0;
-  min-height: 45px;
+  min-height: 90px;
   position: relative;
   background: #4D344F
 }
@@ -1292,8 +1292,9 @@ blockquote, blockquote.pull-right {
 }
 
 .navbar-container {
-  padding-left: 10px;
-  padding-right: 20px
+  /*padding-left: 10px;*/
+  /*padding-right: 20px;*/
+  padding: 10px 20px 10px 10px;
 }
 
 .navbar-container.container {
@@ -1303,7 +1304,7 @@ blockquote, blockquote.pull-right {
 
 .ace-nav {
   height: 100%;
-  margin: 0 !important
+  margin: 13px 0 !important
 }
 
 .ace-nav > li {
@@ -1353,7 +1354,7 @@ blockquote, blockquote.pull-right {
 }
 
 .ace-nav > li.open > a {
-  background-color: #2c5976 !important
+  background-color: #4D344F !important
 }
 
 .ace-nav > li.open > a {

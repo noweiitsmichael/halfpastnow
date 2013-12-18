@@ -245,26 +245,36 @@
     });
 
 
-    $( ".custom_start" ).datepicker({
-      defaultDate: "+1w",
-      changeMonth: true,
-      numberOfMonths: 1,
-      onClose: function( selectedDate ) {
-        $( "#to" ).datepicker( "option", "minDate", selectedDate );
-      }
-    });
-    $( ".custom_end" ).datepicker({
-      defaultDate: "+1w",
-      changeMonth: true,
-      numberOfMonths:1,
-      onClose: function( selectedDate ) {
-        $( "#from" ).datepicker( "option", "maxDate", selectedDate );
 
-      }
-
-    });
 
     $('.timepicker').timepicker();
+    $('.timepicker').change(function(){
+        filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd")+ " "+$(this).val();
+        filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+        tag_id = parseInt($('.active a').attr('tag_id'))
+        tag_type = $('.active a').attr('tag_type')
+        $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+        $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
+        if(tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")){
+          // alert("search key")
+          doneTyping1($('#search-tab .active a').text());
+          $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+        }else if(tag_id == 0){
+          // alert("only tag type")
+          filter.tag_id = tag_id
+          filter.tag_type = tag_type
+          //alert(JSON.stringify(filter))
+          $.get("/search_results",filter)
+          $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+        }else{
+          // alert("only key")
+          dropdown_search_events($(this).attr('tag_id'))
+          $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+        }
+
+
+    })
 
     $(".link").on("click", function(){
       var target = $(this).attr("data-target");

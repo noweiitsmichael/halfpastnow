@@ -7,6 +7,7 @@
    end
 %>
 <% recurrences.each do |rec| %>
+  <% unless rec.nil? %>
   <article class="product-item" link-id=<%= rec.occurrences.first.id %>>
     <figure><a href="#">
       <% if rec.event.pictures.first %>
@@ -35,6 +36,7 @@
     </div>
   </article>
 <% end %>
+<% end %>
 <% occurrences.each do |occ| %>
   <article class="product-item" link-id=<%=occ.id%>>
     <figure><a href="#">
@@ -49,7 +51,7 @@
       <% end %>
     </a></figure>
     <% unless options[:datetime_only] %>
-      <div class="name">
+      <div class="name" style="height:45px;">
         <% if options[:fullmode] %>
           <a href="/events/show/<%= occ.id %>?fullmode=true" class="event-name"><%= occ.event.title %></a>
         <% else %>

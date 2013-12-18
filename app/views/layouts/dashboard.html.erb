@@ -54,7 +54,7 @@
 <div class="navbar-container" id="navbar-container">
 <div class="navbar-header pull-left">
   <%= link_to "/", class: "navbar-brand" do %>
-    <%= image_tag '/assets/new_design/logo.png', width: '52%' %>
+    <%= image_tag '/assets/new_design/logo.png' %>
   <% end %><!-- /.brand -->
 </div>
 <!-- /.navbar-header -->
@@ -139,12 +139,6 @@
       </script>
 
       <ul class="nav nav-list">
-        <!--<li class="<%#= @selected_sidebar_li == 'dashboard' ? 'active' : ''%>">-->
-          <!--<%#= link_to dashboard_index_path do %>-->
-            <!--<i class="icon-dashboard"></i>-->
-            <!--<span class="menu-text"> Dashboard </span>-->
-          <!--<%# end %>-->
-        <!--</li>-->
         <li class="<%= @selected_sidebar_li == 'profile' ? 'active' : ''%>">
           <%= link_to profile_dashboard_index_path do %>
             <i class="icon-user"></i>

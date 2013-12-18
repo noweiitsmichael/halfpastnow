@@ -267,13 +267,14 @@ class Occurrence < ActiveRecord::Base
 
       event_start_date = event_end_date = nil
       if(!params[:start_date].to_s.empty?)
-        event_start_date = Date.parse(params[:start_date])
+        event_start_date = DateTime.parse(params[:start_date])
+       # raise event_start_date.inspect
       else
         event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
       end
       if(!params[:end_date].to_s.empty?)
         puts "not empty"
-        event_end_date = Date.parse(params[:end_date]).advance(:days => 1)
+        event_end_date = DateTime.parse(params[:end_date]).advance(:days => 1)
       else
         puts "empty"
         event_end_date = Date.today().advance(:days => (params[:end_days].to_s.empty? ? 1 : (params[:end_days].to_i == -1) ? 365000 : params[:end_days].to_i + 1))
