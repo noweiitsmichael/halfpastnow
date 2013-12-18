@@ -303,6 +303,7 @@
 
           <div class="right">
             <div class="share bookmark-share">
+              <span onmouseover='$(this).tooltip()' data-toggle="tooltip" title="Bookmark">
               <% unless user_signed_in? %>
                 <%= image_tag("images/icon-bookmark-large.png", :class => "before_login") %> &nbsp;
                 <script>
@@ -319,8 +320,11 @@
 	                </span>
                 </a>
               <% end %>
-              <a href="#" class="twitter"><img src="/assets/images/icon-twitter.png" alt=""/></a>
-              <a href="#" class="facebook"><img src="/assets/images/icon-facebook.png" alt=""/></a>
+                </span>
+              <span onmouseover='$(this).tooltip()' data-toggle="tooltip" title="Invite Friends">
+                <a href="#" class="twitter"><img src="/assets/images/icon-twitter.png" alt=""/></a>
+                <a href="#" class="facebook"><img src="/assets/images/icon-facebook.png" alt=""/></a>
+              </span>
               <!-- Modal -->
               <div class="modal fade hide" id="bookmark_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
