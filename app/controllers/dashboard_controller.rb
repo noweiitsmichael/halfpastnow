@@ -30,7 +30,7 @@ class DashboardController < ApplicationController
 
   def bookmarks
     @bookmark_list = BookmarkList.find(params[:id])
-    @bookmarks = @bookmark_list.bookmarks
+    @bookmarks = @bookmark_list.bookmarks.order('created_at ' 'desc')
     render layout: false if request.xhr?
   end
 

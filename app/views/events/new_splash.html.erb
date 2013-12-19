@@ -127,14 +127,38 @@
           <div class="popover bottom">
             <div class="arrow"></div>
             <div class="popover-content clearfix">
-              <div class="left">
-                <p>TIP: Search by interest, event, date, cost</p>
-                <p>EX: technology, happy hour, today, free</p>
-              </div>
-              <div class="right">
-                <div class="arrow"></div>
-                EVENTS BY CATEGORY
-              </div>
+
+              <p>TIP: Search by interest, event, date, cost</p>
+
+              <p style="color:#4D344F; font-weight:bold;">Or, browse some popular catagories:</p>
+              <table class="dropdown-menu1">
+                <tr>
+                  <td> <a href="#" tag_id="0" class="dd_menu_tags" tag_type="staff" catagory="austin">Staff
+                    Picks</a><br/>
+                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="crowd">Crowd Favorites</a><br/>
+                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="today">Today's Events</a><br/>
+                    <a href="#" tag_id="104">Food &amp; Drinks</a><br/>
+                    <a href="#" tag_id="1">Live Shows</a><br/>
+                    <a href="#" tag_id="89">Art &amp; Culture</a></td>
+                  <td><a href="#" tag_id="233">UT Events</a><br/>
+                    <a href="#" tag_id="55">For Couples</a><br/>
+                    <a href="#" tag_id="38">For Kids</a><br/>
+                    <a href="#" tag_id="87">For Families</a><br/>
+                    <a href="#" tag_id="140">Freebies</a><br/>
+                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="all">All Activities</a></td>
+                </tr>
+              </table>
+              <style>
+                .dropdown-menu1{
+                  width:100%;
+                }
+                .dropdown-menu1 a{
+                  color:#777777;
+                  font-weight:bold;
+                }
+              </style>
+
+
             </div>
           </div>
           <div class="btn-group">
@@ -225,7 +249,7 @@
     <div class="section-title">
       <h2 class="text-center">It's half past...now!</h2>
       <p class="lead text-center">Check-out events going on today.</p>
-      <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
+      <a href="#"  class="see-all" ><span tag_type="all" tag_id="0" tag_title="It's halfpastnow"  class="btn btn-danger see_all_links">See All</span><i class="icon-bottom-arrow"></i></a>
     </div>
     <div class="section-content slider">
       <div id="slider1">
@@ -272,7 +296,7 @@
     <div class="section-title">
       <h2 class="text-center">Find Your Happy Place</h2>
       <p class="lead text-center">Get your drink on - the cheap. ATX happy hours.</p>
-      <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
+      <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span  tag_id="19" tag_title="Happy Place"  class="btn btn-danger see_all_links">See All</span><i class="icon-bottom-arrow"></i></a>
 
     </div>
     <div class="section-content slider">
@@ -289,7 +313,7 @@
     <div class="section-title">
       <h2 class="text-center">Get Up &amp; Dance!</h2>
       <p class="lead text-center">The live music capitol of the world.</p>
-      <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
+      <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span  tag_id="1" tag_title="get up and dance"  class="btn btn-danger see_all_links">See All</span><i class="icon-bottom-arrow"></i></a>
 
     </div>
     <div class="section-content slider">
@@ -399,7 +423,8 @@
     window.location.href = window.location.origin
 
   })
-  $('.dropdown-menu a').click(function(){
+  $('.dropdown-menu a,.dropdown-menu1 a').click(function(){
+    console.log('working')
     tag_id = $(this).attr('tag_id')
     tag_type = $(this).attr('tag_type')
     if(tag_id == "0"){
@@ -407,6 +432,18 @@
     }
     else{
       window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text())+"&tag_id="+tag_id
+    }
+  })
+
+  $('.see_all_links').click(function(){
+    tag_id = $(this).attr('tag_id')
+    tag_type = $(this).attr('tag_type')
+    tag_title = $(this).attr('tag_title')
+    if(tag_id == "0"){
+      window.location.href = window.location.origin+"/search?key="+encodeURIComponent(tag_title)+"&tag_id="+tag_id+"&tag_type="+tag_type
+    }
+    else{
+      window.location.href = window.location.origin+"/search?key="+encodeURIComponent(tag_title)+"&tag_id="+tag_id
     }
   })
   $('#slider1,#slider4').append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")

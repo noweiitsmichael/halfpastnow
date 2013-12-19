@@ -14,35 +14,40 @@
   <%= stylesheet_link_tag  "custom1" %>
   <script type="text/javascript" language="javascript">
     $("document").ready(function(){
+      $('.desc_btn').hide();
       $(".asc_btn").click(function(){
+        var sort_on = $(this).data('sort_on');
+        var sort_by = $(this).data('sort_by');
+        console.log(sort_on);
+        console.log(sort_by);
         $(".product-list").jSort({
-          sort_by: 'span.value',
+          sort_by: sort_by,
           item: '.slide-item',
           order: 'asc',
           sort_by_attr: true,
-          attr_name: 'price'
+          attr_name: sort_on
         });
+
+        $('.' + $(this).data('type') + '.desc_btn').show();
+        $('.' + $(this).data('type') + '.asc_btn').hide();
       });
 
       $(".desc_btn").click(function(){
+        var sort_on = $(this).data('sort_on');
+        var sort_by = $(this).data('sort_by');
+        var sort_on = $(this).data('sort_on') ;
+        var sort_by = $(this).data('sort_by');
         $(".product-list").jSort({
-          sort_by: 'span.value',
+          sort_by: sort_by,
           item: '.slide-item',
           order: 'desc',
           sort_by_attr: true,
-          attr_name: 'price'
+          attr_name: sort_on
         });
-      });
-      $('.desc_btn').hide()
-      $('.asc_btn').click(function(){
-        $('.desc_btn').show();
-        $('.asc_btn').hide();
-      })
-      $('.desc_btn').click(function(){
-        $('.asc_btn').show();
-        $('.desc_btn').hide();
-      })
 
+        $('.' + $(this).data('type') + '.asc_btn').show();
+        $('.' + $(this).data('type') + '.desc_btn').hide();
+      });
     });
   </script>
 <% end %>
@@ -140,7 +145,6 @@
     var markers = [];
     var tags = {};
     var channelFilters = {};
-
     var filter = {
       start_days: <%= params[:start_days].coalesce_to 0 %>,
       end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
@@ -259,7 +263,6 @@
     function to_i(obj) {
       return parseInt(obj);
     }
-
     $(function () {
       <% @channels.each do |channel| %>
       channelFilters[<%= channel.id %>] = {
@@ -362,7 +365,7 @@
     <div class="tabs">
       <div class="container">
         <ul class="nav nav-tabs" id="search-tab">
-          <li class="events_tab"><a data-toggle="tab" tag_type="all" href="#events">Events</a></li>
+          <li class="events_tab active"><a data-toggle="tab" tag_id="0" tag_type="all" href="#events">Events</a></li>
           <% if user_signed_in? %>
             <% @saved_search.each do |search| %>
               <li class="related_events">
@@ -427,8 +430,11 @@
              <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
                 <div style="display: none;" class="popover bottom">
                   <div class="arrow"></div>
-                  <label class="cost_sort asc_btn"><span class="icon-hand-up"></span>COST</label>
-                  <label class="cost_sort desc_btn"><span class="icon-hand-down"></span>COST</label>
+                  <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
+                  <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
+                  <br>
+                  <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
+                  <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
                 </div>
 
             </span>
@@ -500,8 +506,11 @@
              <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
               <div style="display: none;" class="popover bottom">
                 <div class="arrow"></div>
-                <label class="cost_sort asc_btn"><span class="icon-hand-up"></span>COST</label>
-                <label class="cost_sort desc_btn"><span class="icon-hand-down"></span>COST</label>
+                <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
+                <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
+                <br>
+                <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
+                <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
               </div>
             </span>
 
@@ -673,7 +682,7 @@
         <% end %>
       }
     })
-    $('.dropdown-menu a').click(function () {
+    $('.dropdown-menu a,.dropdown-menu1 a').click(function () {
       console.log("dropdown click")
       $(".active").attr('class', '');
       $('#search-tab').append("<li class='active related_events dropdown_links'><a data-toggle='tab' href='#related_events' key=" + $(this).text().replace(/\ /g, "_") + " tag_id="+ $(this).attr('tag_id')+ " tag_type="+ $(this).attr('tag_type') +">" + $(this).text() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
@@ -776,11 +785,14 @@
       })
       $('#search-tab a').on("click", function () {
         console.log("i am here")
+        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
 
         doneTyping1($(this).text());
         $('#search_name,#search_name1').html($(this).text())
       });
+      $('.active a').click()
     })
+
     url = window.location.href
     if (url.contains('key:')) {
       $(".active").attr('class', '');
@@ -815,7 +827,7 @@
 
   </script>
    <style>
-     .cost_sort {
+     .cost_sort, .time_sort {
        color: #777777;
        display: inline;
        font-size: 16px;

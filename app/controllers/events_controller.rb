@@ -920,7 +920,7 @@ class EventsController < ApplicationController
 
     params[:user_id] = current_user ? current_user.id : nil
     @ids = Occurrence.find_with(params)
-    #raise @ids.inspect
+
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
@@ -947,10 +947,16 @@ class EventsController < ApplicationController
 
    end
     if params[:query].present?
-      #raise @occurrence_ids.inspect
-      search_results = Occurrence.search(params)
+      if params[:start_date] == "" and params[:end_date] == ""
+        @occurrences = Occurrence.search(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
+      else
+        @occurrences = Occurrence.search_on_date(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
 
-      @occurrences = search_results.results#.select{|occ| @occurrence_ids.include?(occ.id)}
+      end
+      @occurrences = @occurrences.select{ |o| DateTime.parse("#{o.start}")>DateTime.now()}.sort_by { |o| o.start }.uniq{|o| o.event_id}
+
+      #@occurrences = @occurrences.uniq{|o| o.event_id}.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
+
     end
   end
 end

@@ -15,7 +15,7 @@
   </a></figure>
   <div class="name"><a href="/events/austin/<%= occurrence.slug %>"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
   <div class="info clearfix">
-    <span class="time pull-left"><%= occurrence.start.to_time.strftime("%B %-d @ %-l:%M%P") %></span>
+    <span class="time pull-left" time="<%= occurrence.start.to_i %>"><%= occurrence.start.to_time.strftime("%B %-d @ %-l:%M%P") %></span>
     <span class="value pull-right" price="<%= occurrence.event.price.to_f %>"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price, :unit => "$").to_s + " " : "FREE ") : "FREE" %></span>
   </div>
   <div class="additional-info">

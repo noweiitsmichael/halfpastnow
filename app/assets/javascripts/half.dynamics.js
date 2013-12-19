@@ -385,78 +385,121 @@ $(function () {
   });
 
 
-  $( ".custom-start" ).datepicker({
+  $(".custom-start").datepicker({
     defaultDate: "+1w",
     changeMonth: true,
     numberOfMonths: 1,
     onSelect: function () {
-      filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd")+ " "+$('.timepicker').val();
+      filter.low_price = "";
+      filter.high_price = ($('#slider-step').val() === MAX_PRICE) ? "" : $('#slider-step').val();
+      filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
       filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+      if($('.custom-start').datepicker("getDate") > $('.custom-end').datepicker("getDate")){
+        filter.end_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd")
+      }
       tag_id = parseInt($('.active a').attr('tag_id'))
       tag_type = $('.active a').attr('tag_type')
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
-      if(tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")){
+      if (tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")) {
         // alert("search key")
         doneTyping1($('#search-tab .active a').text());
         $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
-      }else if(tag_id == 0){
+      } else if (tag_id == 0) {
         // alert("only tag type")
         filter.tag_id = tag_id
         filter.tag_type = tag_type
         //alert(JSON.stringify(filter))
-        $.get("/search_results",filter)
+        $.get("/search_results", filter)
         $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
-      }else{
+      } else {
         // alert("only key")
         dropdown_search_events($(this).attr('tag_id'))
         $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
       }
 
     },
-    onClose: function( selectedDate ) {
-      $( ".custom-end" ).datepicker( "option", "minDate", selectedDate );
+    onClose: function (selectedDate) {
+      $(".custom-end").datepicker("option", "minDate", selectedDate);
+
     }
   });
-  $( ".custom-end" ).datepicker({
+  $(".custom-end").datepicker({
     defaultDate: "+1w",
     changeMonth: true,
-    numberOfMonths:1,
+    numberOfMonths: 1,
 
     onSelect: function () {
-      filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd");
+      filter.low_price = "";
+      filter.high_price = ($('#slider-step').val() === MAX_PRICE) ? "" : $('#slider-step').val();
+      filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+
       filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
       tag_id = parseInt($('.active a').attr('tag_id'))
       tag_type = $('.active a').attr('tag_type')
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
-      if(tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")){
+      if (tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")) {
         // alert("search key")
         doneTyping1($('#search-tab .active a').text());
         $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
-      }else if(tag_id == 0){
+      } else if (tag_id == 0) {
         // alert("only tag type")
         filter.tag_id = tag_id
         filter.tag_type = tag_type
         //alert(JSON.stringify(filter))
-        $.get("/search_results",filter)
+        $.get("/search_results", filter)
         $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
-      }else{
+      } else {
         // alert("only key")
         dropdown_search_events($(this).attr('tag_id'))
         $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
       }
 
     },
-    onClose: function( selectedDate ) {
-      $( ".custom-start" ).datepicker( "option", "maxDate", selectedDate );
+    onClose: function (selectedDate) {
+      $(".custom-start").datepicker("option", "maxDate", selectedDate);
 
     }
 
   });
-  $( ".custom-start,.custom-end" ).datepicker("setDate", Date.today().toString("MM/dd/yyyy"))
+
+  $(".custom-start,.custom-end").datepicker("setDate", Date.today().toString("MM/dd/yyyy"))
+  $( "#slider-step" ).bind( "change", function(event, ui) {
+    console.log($(this).val());
+    $( "label.cvalue" ).text( 'Less Than $' + $(this).val() );
+    filter.low_price = "";
+    filter.high_price = ($(this).val() === MAX_PRICE) ? "" : $(this).val();
+    filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+
+    filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+    tag_id = parseInt($('.active a').attr('tag_id'))
+    tag_type = $('.active a').attr('tag_type')
+    $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+    $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+    $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
+    if (tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")) {
+      // alert("search key")
+      doneTyping1($('#search-tab .active a').text());
+      $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+    } else if (tag_id == 0) {
+      // alert("only tag type")
+      filter.tag_id = tag_id
+      filter.tag_type = tag_type
+      //alert(JSON.stringify(filter))
+      $.get("/search_results", filter)
+      $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+    } else {
+      // alert("only key")
+      dropdown_search_events($(this).attr('tag_id'))
+      $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+    }
+
+  });
+
+
   $(".price-range").slider({
     range: "min",
     min: 0,
@@ -560,21 +603,7 @@ $(function () {
 
   $('.search-input').keyup(function () {
 
-   $(".active").attr('class', '');
-    if (!timer_is_on) {
-      timer_is_on = 2;
-      if ($(this).val().length >= 3) {
-        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
-        $(window).load(function(){
-          $('#releated_events').show()
-        })
-        console.log("keyup");
-        typingTimer = setTimeout(doneTyping1($(this).val()), doneTypingInterval);
-        console.log("typing timer is " + typingTimer)
-      }
-    }
 
-    $('#search_name,#search_name1').text($(this).val())
   });
 
   //on keydown, clear the countdown
@@ -590,9 +619,9 @@ $(function () {
   var slideTime = 0;
   $('.filter-toggle:not(.search):not(.filter-action) #filter-text2').click(function (event) {
     var thisToggle = $(this).parents('.filter-toggle');
-    console.log(thisToggle+"---------------->this toggle")
+    console.log(thisToggle + "---------------->this toggle")
     var otherToggled = thisToggle.siblings('.filter-toggle.selected');
-    console.log(otherToggled+"---------------->other toggle")
+    console.log(otherToggled + "---------------->other toggle")
     otherToggled.find('#filter-toggle12').slideUp(slideTime, function () {
       console.log("one")
       otherToggled.removeClass('selected');
@@ -614,9 +643,9 @@ $(function () {
 
   $('.filter-toggle:not(.search):not(.filter-action) #filter-text1').click(function (event) {
     var thisToggle = $(this).parents('.filter-toggle');
-    console.log(thisToggle+"---------------->this toggle")
+    console.log(thisToggle + "---------------->this toggle")
     var otherToggled = thisToggle.siblings('.filter-toggle.selected');
-    console.log(otherToggled+"---------------->other toggle")
+    console.log(otherToggled + "---------------->other toggle")
     otherToggled.find('#filter-toggle11').slideUp(slideTime, function () {
       console.log("one")
       otherToggled.removeClass('selected');
@@ -664,7 +693,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
 
   options = defaultTo(options, {});
   pullEventsFlag = defaultTo(pullEventsFlag, true);
- // filter.offset = 0;
+  // filter.offset = 0;
 
   //if filter.changed, show save search button
   //otherwise, hide save search button
@@ -900,7 +929,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
   $('.filter-toggle.date .text-inner').html(titleStr);
 
   ////////////// PRICE //////////////
-
+0
   var low_price = (filter.low_price === "") ? 0 : filter.low_price;
   var high_price = (filter.high_price === "") ? MAX_PRICE : filter.high_price;
 
@@ -976,7 +1005,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
     $('.filter-summary .tags').html("");
   } else {
     $('.filter-summary .tags').html(filterText);
-     $('.filter-summary .tags').show();
+    $('.filter-summary .tags').show();
   }
 
   if (andtagsFilterText === ANY_TAG_TEXT) {
@@ -1083,9 +1112,9 @@ function doneTyping() {
 }
 function doneTyping1(search) {
   filter.search = search;
- pullEvents1({update_search: false,search: "elastic"});
+  pullEvents1({update_search: false, search: "elastic"});
 
-  window.location.hash = "key:"+search;
+  window.location.hash = "key:" + search;
 }
 
 var boundsChangedFlag = false;
@@ -1105,7 +1134,7 @@ function boundsChanged() {
 
 // this gets called on infinite scroll and on filter changes
 function pullEvents(updateOptions) {
- // alert("pullevents")
+  // alert("pullevents")
   $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
   $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
   // console.log(filter);
@@ -1187,20 +1216,20 @@ function pullEvents(updateOptions) {
     }
     checkScroll();
     addthisevent.refresh();
-    $('figure').click(function(){
+    $('figure').click(function () {
       var event_id = $(this).parent('article').attr('link-id')
       console.log(event_id)
-      window.location.href = window.location.origin+"/events/austin/"+event_id
+      window.location.href = window.location.origin + "/events/austin/" + event_id
 
     })
 
   });
 }
-function pullEvents1(updateOptions,search) {
+function pullEvents1(updateOptions, search) {
   //alert("pullevents1")
   $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
   $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-   var async_reloadTagsList = reloadTagsList;
+  var async_reloadTagsList = reloadTagsList;
   var async_infiniteScrolling = infiniteScrolling;
   updateOptions = defaultTo(updateOptions, {});
   loading('show');
@@ -1212,43 +1241,43 @@ function pullEvents1(updateOptions,search) {
   //alert("hi")
   //alert(JSON.stringify(filter))
   filter.query = filter.search
-$.get("/search_results",filter)
+  $.get("/search_results", filter)
 }
 
- function tagged_saved_search_events(tag,location){
+function tagged_saved_search_events(tag, location) {
 
-   var controllerLink = "/events/index?ajax=true"
+  var controllerLink = "/events/index?ajax=true"
 
-   $.get(controllerLink, {"included_tags":tag}, function (data) {
-     var locations = [];
-     var jData = $(data);
-     if (false) {
-     } else {
-       $("#"+location).html(data);
-       slider_arrows(location)
-       if($('#'+location).find('article').length){
-         $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
-       }
-       $('.before_login').click(function () {
-         window.location.href = window.location.origin + "/login"
-       })
-     }
-   });
- }
-function saved_search_events(location){
+  $.get(controllerLink, {"included_tags": tag}, function (data) {
+    var locations = [];
+    var jData = $(data);
+    if (false) {
+    } else {
+      $("#" + location).html(data);
+      slider_arrows(location)
+      if ($('#' + location).find('article').length) {
+        $('#' + location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
+      }
+      $('.before_login').click(function () {
+        window.location.href = window.location.origin + "/login"
+      })
+    }
+  });
+}
+function saved_search_events(location) {
   console.log(location)
 
   var controllerLink = "/events/index?ajax=true&root=true"
-  f1={"search":location}
+  f1 = {"search": location}
   $.get(controllerLink, f1, function (data) {
     var locations = [];
     var jData = $(data);
     if (false) {
     } else {
-      $("#"+location).html(data);
+      $("#" + location).html(data);
       slider_arrows(location)
-      if($('#'+location).find('article').length){
-        $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
+      if ($('#' + location).find('article').length) {
+        $('#' + location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
       }
       $('.before_login').click(function () {
         window.location.href = window.location.origin + "/login"
@@ -1257,19 +1286,19 @@ function saved_search_events(location){
   });
 
 }
-function dance_events(dance_tag,location){
+function dance_events(dance_tag, location) {
   console.log(location)
   var controllerLink = "/events/index?ajax=true&root=true"
-  f1={"included_tags":dance_tag}
+  f1 = {"included_tags": dance_tag}
   $.get(controllerLink, f1, function (data) {
     var locations = [];
     var jData = $(data);
     if (false) {
     } else {
-      $("#"+location).html(data);
+      $("#" + location).html(data);
       slider_arrows(location)
-      if($('#'+location).find('article').length){
-        $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
+      if ($('#' + location).find('article').length) {
+        $('#' + location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
       }
       $('.before_login').click(function () {
         window.location.href = window.location.origin + "/login"
@@ -1278,40 +1307,19 @@ function dance_events(dance_tag,location){
   });
 
 }
-function happy_place_events(stream_id,location){
+function happy_place_events(stream_id, location) {
   console.log(location)
   var controllerLink = "/events/index?ajax=true&root=true"
-  f1={"stream_id":stream_id}
+  f1 = {"stream_id": stream_id}
   $.get(controllerLink, f1, function (data) {
     var locations = [];
     var jData = $(data);
     if (false) {
     } else {
-      $("#"+location).html(data);
+      $("#" + location).html(data);
       slider_arrows(location)
-      if($('#'+location).find('article').length){
-        $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
-      }
-      $('.before_login').click(function () {
-        window.location.href = window.location.origin + "/login"
-      })
-        }
-          });
-
-    }
-function free_events(location){
-  console.log(location)
-  var controllerLink = "/events/index?ajax=true&root=true"
-  f1={"high_price":0}
-  $.get(controllerLink, f1, function (data) {
-    var locations = [];
-    var jData = $(data);
-    if (false) {
-    } else {
-      $("#"+location).html(data);
-      slider_arrows(location)
-      if($('#'+location).find('article').length){
-        $('#'+location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
+      if ($('#' + location).find('article').length) {
+        $('#' + location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
       }
       $('.before_login').click(function () {
         window.location.href = window.location.origin + "/login"
@@ -1319,14 +1327,35 @@ function free_events(location){
     }
   });
 
- }
-function cost_filter_events(high_price){
+}
+function free_events(location) {
+  console.log(location)
+  var controllerLink = "/events/index?ajax=true&root=true"
+  f1 = {"high_price": 0}
+  $.get(controllerLink, f1, function (data) {
+    var locations = [];
+    var jData = $(data);
+    if (false) {
+    } else {
+      $("#" + location).html(data);
+      slider_arrows(location)
+      if ($('#' + location).find('article').length) {
+        $('#' + location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
+      }
+      $('.before_login').click(function () {
+        window.location.href = window.location.origin + "/login"
+      })
+    }
+  });
+
+}
+function cost_filter_events(high_price) {
   console.log(high_price)
   var controllerLink = "/events/index?ajax=true&root=true"
   $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
   $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
   $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
-  filter={"high_price":high_price}
+  filter.high_price = high_price
   $.get(controllerLink, filter, function (data) {
     var locations = [];
     var jData = $(data);
@@ -1340,7 +1369,7 @@ function cost_filter_events(high_price){
     }
   });
 }
-function dropdown_search_events(tag){
+function dropdown_search_events(tag) {
   console.log(tag)
   filter.included_tags = tag
   $.get("/events/index?ajax=true", filter, function (data) {
@@ -1349,18 +1378,18 @@ function dropdown_search_events(tag){
     $(".total_number").text($("#related_events .main .inline .events").find('article').length);
   });
 }
-function slider_arrows(location){
-  $("#"+location).carouFredSel({
+function slider_arrows(location) {
+  $("#" + location).carouFredSel({
     responsive: true,
     infinite: true,
-    auto:false,
-    prev	: {
-      button	: "#"+location + "_prev",
-      key		: "left"
+    auto: false,
+    prev: {
+      button: "#" + location + "_prev",
+      key: "left"
     },
-    next	: {
-      button	: "#"+location + "_next",
-      key		: "right"
+    next: {
+      button: "#" + location + "_next",
+      key: "right"
     },
     swipe: {
       onMouse: true,
@@ -1378,11 +1407,10 @@ function slider_arrows(location){
   });
 
 
-
-  $('figure').click(function(){
+  $('figure').click(function () {
     var event_id = $(this).parent('article').attr('link-id')
     console.log(event_id)
-    window.location.href = window.location.origin+"/events/austin/"+event_id
+    window.location.href = window.location.origin + "/events/austin/" + event_id
 
   })
 }
@@ -1455,7 +1483,7 @@ function checkInfinite() {
   }
 }
 
-$(function(){
+$(function () {
   $('#search-tab a').on("click", function () {
     console.log("i am here")
     tag_id = parseInt($(this).attr('tag_id'))
@@ -1464,17 +1492,18 @@ $(function(){
     $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
     $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
     $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
-    if(tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")){
+    if (tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")) {
       console.log("search key filter")
-    doneTyping1($(this).text());
-    $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
-    }else if(tag_id == 0){
+
+      doneTyping1($(this).text());
+      $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
+    } else if (tag_id == 0) {
       console.log("tag type filter")
       filter.tag_id = tag_id
       filter.tag_type = tag_type
-      $.get("/search_results",filter)
+      $.get("/search_results", filter)
       $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
-    }else{
+    } else {
       console.log('tag_id filter')
       dropdown_search_events($(this).attr('tag_id'))
       $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))

@@ -221,10 +221,7 @@
      //$( "#amount" ).val( ui.value );
      }
      });*/
-    $( "#slider-step" ).bind( "change", function(event, ui) {
-      console.log($(this).val());
-      $( "label.cvalue" ).text( 'Less Than $' + $(this).val() );
-    });
+
 
     var mouseOverActiveElement = false;
     $(".sort-item a").on("click", function(e){
@@ -247,8 +244,13 @@
 
 
 
-    $('.timepicker').timepicker();
+    $('.timepicker').timepicker({
+      showPeriod: true,
+      showLeadingZero: true
+    });
     $('.timepicker').change(function(){
+      filter.low_price = "";
+      filter.high_price = ($('#slider-step').val() === MAX_PRICE) ? "" : $('#slider-step').val();
         filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd")+ " "+$(this).val();
         filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
         tag_id = parseInt($('.active a').attr('tag_id'))
@@ -285,10 +287,7 @@
 
 
     });
-    $( "#slider-step" ).bind( "change", function(event, ui) {
-      console.log($(this).val())
-      cost_filter_events($(this).val())
-    });
+
 
   })
 }(window.jQuery)
