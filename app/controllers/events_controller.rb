@@ -911,7 +911,6 @@ class EventsController < ApplicationController
     end
   end
   def search_results
-
     @lat = 30.268093
     @long = -97.742808
     @zoom = 11
@@ -948,7 +947,12 @@ class EventsController < ApplicationController
 
    end
     if params[:query].present?
-      @occurrences = Occurrence.search_on_date(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
+      if params[:start_date] == "" and params[:end_date] == ""
+        @occurrences = Occurrence.search(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
+      else
+        @occurrences = Occurrence.search_on_date(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
+
+      end
       @occurrences = @occurrences.select{ |o| DateTime.parse("#{o.start}")>DateTime.now()}.sort_by { |o| o.start }.uniq{|o| o.event_id}
 
       #@occurrences = @occurrences.uniq{|o| o.event_id}.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }

@@ -365,7 +365,7 @@
     <div class="tabs">
       <div class="container">
         <ul class="nav nav-tabs" id="search-tab">
-          <li class="events_tab"><a data-toggle="tab" tag_type="all" href="#events">Events</a></li>
+          <li class="events_tab active"><a data-toggle="tab" tag_id="0" tag_type="all" href="#events">Events</a></li>
           <% if user_signed_in? %>
             <% @saved_search.each do |search| %>
               <li class="related_events">
@@ -682,7 +682,7 @@
         <% end %>
       }
     })
-    $('.dropdown-menu a').click(function () {
+    $('.dropdown-menu a,.dropdown-menu1 a').click(function () {
       console.log("dropdown click")
       $(".active").attr('class', '');
       $('#search-tab').append("<li class='active related_events dropdown_links'><a data-toggle='tab' href='#related_events' key=" + $(this).text().replace(/\ /g, "_") + " tag_id="+ $(this).attr('tag_id')+ " tag_type="+ $(this).attr('tag_type') +">" + $(this).text() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
@@ -785,11 +785,14 @@
       })
       $('#search-tab a').on("click", function () {
         console.log("i am here")
+        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
 
         doneTyping1($(this).text());
         $('#search_name,#search_name1').html($(this).text())
       });
+      $('.active a').click()
     })
+
     url = window.location.href
     if (url.contains('key:')) {
       $(".active").attr('class', '');

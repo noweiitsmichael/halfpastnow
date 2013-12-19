@@ -603,21 +603,7 @@ $(function () {
 
   $('.search-input').keyup(function () {
 
-    $(".active").attr('class', '');
-    if (!timer_is_on) {
-      timer_is_on = 2;
-      if ($(this).val().length >= 3) {
-        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
-        $(window).load(function () {
-          $('#releated_events').show()
-        })
-        console.log("keyup");
-        typingTimer = setTimeout(doneTyping1($(this).val()), doneTypingInterval);
-        console.log("typing timer is " + typingTimer)
-      }
-    }
 
-    $('#search_name,#search_name1').text($(this).val())
   });
 
   //on keydown, clear the countdown

@@ -175,15 +175,38 @@
             <div class="popover bottom">
               <div class="arrow"></div>
               <div class="popover-content clearfix">
-                <div class="left">
+
                   <p>TIP: Search by interest, event, date, cost</p>
 
-                  <p>EX: technology, happy hour, today, free</p>
-                </div>
-                <div class="right">
-                  <div class="arrow"></div>
-                  EVENTS BY CATEGORY
-                </div>
+                  <p style="color:#4D344F; font-weight:bold;">Or, browse some popular catagories:</p>
+                  <table class="dropdown-menu1">
+                    <tr>
+                      <td> <a href="#" tag_id="0" class="dd_menu_tags" tag_type="staff" catagory="austin">Staff
+                        Picks</a><br/>
+                        <a href="#" tag_id="0" class="dd_menu_tags" tag_type="crowd">Crowd Favorites</a><br/>
+                        <a href="#" tag_id="0" class="dd_menu_tags" tag_type="today">Today's Events</a><br/>
+                        <a href="#" tag_id="104">Food &amp; Drinks</a><br/>
+                        <a href="#" tag_id="1">Live Shows</a><br/>
+                        <a href="#" tag_id="89">Art &amp; Culture</a></td>
+                      <td><a href="#" tag_id="233">UT Events</a><br/>
+                        <a href="#" tag_id="55">For Couples</a><br/>
+                        <a href="#" tag_id="38">For Kids</a><br/>
+                        <a href="#" tag_id="87">For Families</a><br/>
+                        <a href="#" tag_id="140">Freebies</a><br/>
+                        <a href="#" tag_id="0" class="dd_menu_tags" tag_type="all">All Activities</a></td>
+                    </tr>
+                  </table>
+                  <style>
+                    .dropdown-menu1{
+                      width:100%;
+                    }
+                    .dropdown-menu1 a{
+                      color:#777777;
+                      font-weight:bold;
+                    }
+                  </style>
+
+
               </div>
             </div>
             <div class="btn-group">
@@ -298,7 +321,7 @@
     window.location.href = url
     return false;
   })
-  $('.dropdown-menu a').click(function () {
+  $('.dropdown-menu a,.dropdown-menu1 a').click(function () {
     tag_id = $(this).attr('tag_id')
     tag_type = $(this).attr('tag_type')
     if (tag_id == "0") {
