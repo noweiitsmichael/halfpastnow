@@ -949,8 +949,10 @@ class EventsController < ApplicationController
    end
     if params[:query].present?
       @occurrences = Occurrence.search_on_date(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
+      @occurrences = @occurrences.select{ |o| DateTime.parse("#{o.start}")>DateTime.now()}.sort_by { |o| o.start }.uniq{|o| o.event_id}
 
-        @occurrences = @occurrences.uniq{|o| o.event_id}.sort_by { |o| o.start }
+      #@occurrences = @occurrences.uniq{|o| o.event_id}.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
+
     end
   end
 end

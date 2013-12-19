@@ -40,7 +40,7 @@ class Occurrence < ActiveRecord::Base
   def self.search(params)
     tire.search(load: true) do
       query { string params[:query], default_operator: "OR",match_all: { } } if params[:query].present?
-      size 600
+      size 1000
       sort { by :start, "asc" }
 
       #facet('timeline') { range :start, { :ranges => [ { to: DateTime.new(2020,1,1), from: Time.now } ] } }
@@ -51,10 +51,10 @@ class Occurrence < ActiveRecord::Base
   end
   def self.search_on_date(params)
     tire.search(load: true) do
-      query { string params[:query], default_operator: "OR",match_all: { } }
-      size 600
-      sort { by :start, "asc" }
-      filter :range, start: {gte: (DateTime.parse(params[:start_date]).in_time_zone rescue Date.today()),lte: (DateTime.parse(params[:end_date]).in_time_zone rescue Date.today().next_week)}
+      query { string params[:query], default_operator: "OR" }
+      size 10000
+      sort { by :start, "desc" }
+      filter :range, start: {gte: (DateTime.parse(params[:start_date]).in_time_zone rescue Time.zone.now),lte: (DateTime.parse(params[:end_date]).in_time_zone rescue Time.zone.now+1.month)}
 
 
     end
