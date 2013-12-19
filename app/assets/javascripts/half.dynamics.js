@@ -394,6 +394,9 @@ $(function () {
       filter.high_price = ($('#slider-step').val() === MAX_PRICE) ? "" : $('#slider-step').val();
       filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
       filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+      if($('.custom-start').datepicker("getDate") > $('.custom-end').datepicker("getDate")){
+        filter.end_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd")
+      }
       tag_id = parseInt($('.active a').attr('tag_id'))
       tag_type = $('.active a').attr('tag_type')
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
@@ -419,6 +422,7 @@ $(function () {
     },
     onClose: function (selectedDate) {
       $(".custom-end").datepicker("option", "minDate", selectedDate);
+
     }
   });
   $(".custom-end").datepicker({
@@ -461,8 +465,8 @@ $(function () {
     }
 
   });
-  $(".custom-start,.custom-end").datepicker("setDate", Date.today().toString("MM/dd/yyyy"))
 
+  $(".custom-start,.custom-end").datepicker("setDate", Date.today().toString("MM/dd/yyyy"))
   $( "#slider-step" ).bind( "change", function(event, ui) {
     console.log($(this).val());
     $( "label.cvalue" ).text( 'Less Than $' + $(this).val() );
