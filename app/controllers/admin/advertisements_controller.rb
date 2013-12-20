@@ -12,7 +12,7 @@ class Admin::AdvertisementsController < ApplicationController
     @advertisement = current_user.advertisements.build(params[:advertisement])
     #raise @advertisement.inspect
     respond_to do |format|
-      if @advertisement.save!
+      if @advertisement.save
         format.html { redirect_to admin_dashboard_index_path, notice: 'Advertisement was successfully created.' }
         format.json { render json: @advertisement, status: :created }
       else
