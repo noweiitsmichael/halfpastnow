@@ -1,5 +1,13 @@
 $(document).ready(function () {
 
+  // common
+  $('.has_date_picker').datepicker({
+    changeMonth: true,
+    changeYear: true,
+    minDate: 0
+  });
+
+
 // Profile Page
   //editables on first profile page
   $.fn.editable.defaults.mode = 'inline';

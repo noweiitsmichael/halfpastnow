@@ -203,8 +203,8 @@
       focus: function(){
         $(this).next(".popover").show().addClass("open");
       },
-      blur: function(){
-        $(this).next(".popover").hide().removeClass("open");
+      manual: function(){
+       // $(this).next(".popover").hide().removeClass("open");
       }
     });
 

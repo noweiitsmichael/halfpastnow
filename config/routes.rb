@@ -1,4 +1,14 @@
 Myapp::Application.routes.draw do
+
+  namespace :admin do
+    resources :dashboard
+    resources :advertisements do
+      collection do
+        post :update_ads_details
+        post :update_ads_pic
+      end
+    end
+  end
   
   resources :dashboard do
     collection do
