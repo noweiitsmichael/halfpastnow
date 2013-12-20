@@ -139,6 +139,14 @@
       </script>
 
       <ul class="nav nav-list">
+        <% if current_user and current_user.is_admin? %>
+          <li class="<%= @selected_sidebar_li == 'ads' ? 'active' : ''%>">
+            <%= link_to admin_dashboard_index_path do %>
+              <i class="icon-briefcase"></i>
+              <span class="menu-text"> Ads </span>
+            <% end %>
+          </li>
+        <% end %>
         <li class="<%= @selected_sidebar_li == 'profile' ? 'active' : ''%>">
           <%= link_to profile_dashboard_index_path do %>
             <i class="icon-user"></i>
@@ -229,6 +237,7 @@
 
     <!-- inline scripts related to this page -->
     <%= javascript_include_tag "dashboard" %>
+    <%= yield :footer_js %>
   </div>
 </div>
 
