@@ -148,6 +148,19 @@
                     <a href="#" tag_id="0" class="dd_menu_tags" tag_type="all">All Activities</a></td>
                 </tr>
               </table>
+              <script>
+              $('.dropdown-menu1 a').click(function(){
+              console.log('working')
+              tag_id = $(this).attr('tag_id')
+              tag_type = $(this).attr('tag_type')
+              if(tag_id == "0"){
+              window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text())+"&tag_id="+tag_id+"&tag_type="+tag_type
+              }
+              else{
+              window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text())+"&tag_id="+tag_id
+              }
+              })
+                </script>
               <style>
                 .dropdown-menu1{
                   width:100%;
