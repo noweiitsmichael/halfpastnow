@@ -4,7 +4,7 @@ class Admin::DashboardController < ApplicationController
 
   def index
     @selected_sidebar_li = 'ads'
-    @advertisements = current_user.advertisements.all
+    @advertisements = current_user.advertisements.order('created_at ' 'desc').paginate(:page => params[:page] || 1, :per_page => 10)
     @user = current_user rescue nil
   end
 end

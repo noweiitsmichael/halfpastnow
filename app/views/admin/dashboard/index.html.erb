@@ -10,21 +10,6 @@
     <div class="page-body">
       <div class="table-responsive">
         <div role="grid" class="dataTables_wrapper" id="sample-table-2_wrapper">
-          <div class="row" style="height: 60px !important;">
-            <div class="col-sm-6">
-              <div id="sample-table-2_length" class="dataTables_length"><label>Display
-                <select name="sample-table-2_length" size="1" aria-controls="sample-table-2">
-                  <option value="10" selected="selected">10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select> records</label></div>
-            </div>
-            <div class="col-sm-6">
-              <div class="dataTables_filter" id="sample-table-2_filter">
-                <label>Search: <input type="text" aria-controls="sample-table-2"></label></div>
-            </div>
-          </div>
           <table class="table table-striped table-bordered table-hover dataTable" id="sample-table-2" aria-describedby="sample-table-2_info">
             <thead>
             <tr role="row">
@@ -53,19 +38,8 @@
             </tbody>
           </table>
           <div class="row">
-            <div class="col-sm-6">
-              <div class="dataTables_info" id="sample-table-2_info">Showing 1 to 10 of 23 entries</div>
-            </div>
-            <div class="col-sm-6">
-              <div class="dataTables_paginate paging_bootstrap">
-                <ul class="pagination">
-                  <li class="prev disabled"><a href="#"><i class="icon-double-angle-left"></i></a></li>
-                  <li class="active"><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li class="next"><a href="#"><i class="icon-double-angle-right"></i></a></li>
-                </ul>
-              </div>
+            <div class="dataTables_paginate paging_bootstrap center">
+              <%= will_paginate @advertisements, renderer: BootstrapPagination::Rails %>
             </div>
           </div>
         </div>

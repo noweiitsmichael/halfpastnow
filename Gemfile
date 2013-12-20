@@ -77,6 +77,7 @@ gem 'delayed_job_active_record'
 
 gem 'therubyracer'
 gem 'will_paginate'
+gem 'will_paginate-bootstrap'
 gem 'oink' #memory logging
 # gem "librato-metrics" #logging/error reporting to Liberato add-on
 
