@@ -33,7 +33,12 @@ class User < ActiveRecord::Base
 
   #serch based on key words
   has_many :saved_searches
+
+  #serch based on key words
+  has_many :advertisements
+
   ROLES = %w[admin super_admin]
+
 
   after_create :send_welcome_email
   after_create :send_contest_entry_email
@@ -100,6 +105,9 @@ class User < ActiveRecord::Base
     end
   end
 
+  def is_admin?
+    return self.role == "admin"
+  end
 
   def self.new(attributes = nil, options = {})
     user = super
