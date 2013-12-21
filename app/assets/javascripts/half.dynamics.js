@@ -1398,7 +1398,12 @@ function cost_filter_events(high_price) {
 }
 function dropdown_search_events(tag) {
   console.log(tag)
-  filter.included_tags = tag
+  if(tag == "89"){
+  filter.included_tags = "6,"+ tag
+  }else{
+    filter.included_tags = tag
+
+  }
   $.get("/events/index?ajax=true", filter, function (data) {
     $("#related_events .main .inline .events").html(data);
     $("#events .main .inline .events").html(data);

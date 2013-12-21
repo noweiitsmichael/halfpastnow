@@ -919,8 +919,13 @@ class EventsController < ApplicationController
     params[:zoom] = @zoom
 
     params[:user_id] = current_user ? current_user.id : nil
+    if params[:tag_type] == "today"
+      params[:start_date] = "#{Date.today().to_s(:db)}"
+      params[:end_date] = "#{(Date.today()).to_s(:db)}"
+    else
     params[:start_date] = "#{DateTime.now().to_s(:db)}" if (params[:start_date] == "" or !params[:start_date].present?)
     params[:end_date] = "#{(DateTime.now()+1.year).to_s(:db)}" if (params[:end_date] == "" or !params[:end_date].present?)
+    end
     @ids = Occurrence.find_with(params)
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
@@ -943,6 +948,7 @@ class EventsController < ApplicationController
      @occurrences = BookmarkList.find(2370).all_bookmarked_events
    end
    if params[:tag_type] == "today"
+     @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
    end
    if params[:tag_type] == "all"
      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
