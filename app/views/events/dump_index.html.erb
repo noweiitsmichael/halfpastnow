@@ -1,21 +1,66 @@
-<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,900,700italic,900italic,700,500italic,500,400italic,300italic,100italic' rel='stylesheet' type='text/css'>
-<link href="css/jquery.mobile-1.0a3.min.css" type="text/css" rel="stylesheet" />
-<link href="css/bootstrap.css" type="text/css" rel="stylesheet"/>
-<link href="css/bootstrap-responsive.css" type="text/css" rel="stylesheet"/>
-<link href="css/jquery-ui.css" type="text/css" rel="stylesheet"/>
-<link href="css/jquery.ui.timepicker.css" type="text/css" rel="stylesheet"/>
-<link href="css/custom.css" type="text/css" rel="stylesheet"/>
-<link href="css/media-queries.css" type="text/css" rel="stylesheet"/>
 
-<script src="js/jquery-1.10.2.js"></script>
-<script src="js/jquery-ui.js"></script>
-<script src="js/jquery-migrate-1.2.1.js"></script>
-<script src="js/jquery.mobile-1.1.0.js"></script>
-<script src="js/jquery.ui.timepicker.js"></script>
-<script src="js/modernizr-latest.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/jquery.carouFredSel-6.2.1-packed.js"></script>
-<script src="js/jquery.touchSwipe.min.js"></script>
 
-<script src="js/verticalSlider.js"></script>
-<script src="js/custom.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$('.timepicker').timepicker({
+showPeriod: true,
+showLeadingZero: true
+});
+$('.timepicker').change(function(){
+filter.low_price = "";
+filter.high_price = ($('#slider-step').val() === MAX_PRICE) ? "" : $('#slider-step').val();
+filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd")+ " "+$(this).val();
+filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+tag_id = parseInt($('.active a').attr('tag_id'))
+tag_type = $('.active a').attr('tag_type')
+$("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+$("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+$(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
+if(tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")){
+// alert("search key")
+doneTyping1($('#search-tab .active a').text());
+$('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+}else if(tag_id == 0){
+// alert("only tag type")
+filter.tag_id = tag_id
+filter.tag_type = tag_type
+//alert(JSON.stringify(filter))
+$.get("/search_results",filter)
+$('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+}else{
+// alert("only key")
+dropdown_search_events($(this).attr('tag_id'))
+$('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+}
+
+
+})
