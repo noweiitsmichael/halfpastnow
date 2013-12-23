@@ -155,5 +155,5 @@ Myapp::Application.routes.draw do
   match 'artists/:id' => 'acts#show'
   match 'events/austin/:id' => 'events#show'
   match ':controller(/:action(/:id(.:format)))'
-
+  match '/events/bookmark_popup' => "events#bookmark_popup", as: "event_bookmark_popup"
 end

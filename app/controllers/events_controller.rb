@@ -962,4 +962,15 @@ class EventsController < ApplicationController
     @occurrences = @occurrences.select{ |o| o.start > Time.now }.uniq{|o| o.event_id}.sort_by { |o| o.start }
 
   end
+
+  def bookmark_popup
+    @occurrence = Occurrence.find(params[:id])
+    @event = @occurrence.event
+    @bookmarks = []
+    if (current_user)
+      @bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id)
+      @bookmark_lists_ids = @bookmarks.empty? ? [0] : @bookmarks.collect(&:bookmark_list_id)
+    end
+
+  end
 end
