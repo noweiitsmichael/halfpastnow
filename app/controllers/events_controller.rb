@@ -39,6 +39,7 @@ class EventsController < ApplicationController
     order_by = "occurrences.start"
 
     @occurrences =  Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(5)
+    @featured_ads = Advertisement.where(placement: 'home_page').order('weight').first
 
     @saved_searches = current_user.saved_searches  if user_signed_in?
     @austin_occurrences =  BookmarkList.find(2370).bookmarked_events_root.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.take(5)
@@ -962,6 +963,17 @@ class EventsController < ApplicationController
       end
 
     @occurrences = @occurrences.select{ |o| o.start > Time.now }.uniq{|o| o.event_id}.sort_by { |o| o.start }
+
+  end
+
+  def bookmark_popup
+    @occurrence = Occurrence.find(params[:id])
+    @event = @occurrence.event
+    @bookmarks = []
+    if (current_user)
+      @bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id)
+      @bookmark_lists_ids = @bookmarks.empty? ? [0] : @bookmarks.collect(&:bookmark_list_id)
+    end
 
   end
 end

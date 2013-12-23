@@ -176,5 +176,15 @@ $(document).ready(function () {
     })
   } catch (e) {
   }
+
+  $('#adv_start_date').on('change', function(){
+    var date = new Date($(this).val());
+    $('#advertisement_start').val($.format.date(date, "dd-MM-yyyy"))
+  });
+
+  $('#adv_end_date').on('change', function(){
+    var date = new Date($(this).val());
+    $('#advertisement_end').val($.format.date(date, "dd-MM-yyyy"))
+  });
   //ads end
 });

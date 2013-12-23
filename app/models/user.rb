@@ -106,7 +106,7 @@ class User < ActiveRecord::Base
   end
 
   def is_admin?
-    return self.role == "admin"
+    return self.role == "admin" || "super_admin"
   end
 
   def self.new(attributes = nil, options = {})

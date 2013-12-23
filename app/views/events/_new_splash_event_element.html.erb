@@ -1,4 +1,4 @@
-<article class="slide-item product-item" link-id="<%= occurrence.id %>">
+<article class="slide-item product-item" link-id="<%= occurrence.id %>" style="margin: 0 18px">
   <figure><a href="/events/austin/<%= occurrence.slug %>">
     <% if occurrence.event.pictures.first %>
       <img src="<%= occurrence.event.pictures.first.image_url(:full) %>" alt="Event picture" />
@@ -19,18 +19,19 @@
     <span class="value pull-right" price="<%= occurrence.event.price.to_f %>"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price, :unit => "$").to_s + " " : "FREE ") : "FREE" %></span>
   </div>
   <div class="additional-info">
-    <span class="place"><%= link_to occurrence.event.venue.name,"/venues/austin/#{occurrence.event.venue.slug}",:style => "color:#4C334D" %></span>
+    <span class="place">
+      <%= link_to occurrence.event.venue.name,"/venues/austin/#{occurrence.event.venue.slug}",:style => "color:#4C334D" %></span>
+
+    <% bookmarks = [] %>
     <%
        if (current_user)
-         bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
-         bookmarkId = bookmark.nil? ? nil : bookmark.id
-       else
-         bookmarkId = nil
+         bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id)
        end
     %>
 
-      <a href="#" class="bookmark <%= current_user ? "bookmark" : "before_login" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>"  event-title="<%= occurrence.event.title %>" event-id="<%= occurrence.id %>" event-venue="<%= occurrence.event.venue.name %>" event-id="<%= occurrence.id %>"><img src="assets/new_design/icon-bookmark.png" alt="Bookmark"/></a>
-
-
+    <%= link_to event_bookmark_popup_path(id: occurrence.id), class: "bookmark #{current_user ? 'bookmark_' + occurrence.id.to_s : 'before_login'}", remote: true do %>
+      <%= bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
+    <% end %>
   </div>
 </article>
+

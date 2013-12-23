@@ -10,7 +10,7 @@ class CreateAdvertisements < ActiveRecord::Migration
       t.integer :phone
       t.string :advertiser
       t.string :image
-      t.integer :weight
+      t.integer :weight, default: 1
       t.string :placement
       t.datetime :start
       t.datetime :end
