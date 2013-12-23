@@ -17,21 +17,21 @@ class Occurrence < ActiveRecord::Base
 
   after_touch() { tire.update_index }
   mapping do
-    indexes :_event_id, type: 'integer', index: :not_analyzed,:store => 'yes',boost: 100
+    indexes :_event_id, type: 'integer', index: :not_analyzed,:store => 'yes',boost: 1000
     indexes :start, type: 'date', index: :not_analyzed , boost: 100
     indexes :events do
-      indexes :price, type: 'integer'
-      indexes :title, boost: 10
-      indexes :description, boost: 9 , analyzer: 'snowball'
+      indexes :price, type: 'integer',boost: 100
+      indexes :title, analyzer: 'snowball', boost: 1000
+      indexes :description, analyzer: 'snowball', boost: 200
     indexes :acts do
-      indexes :name, analyzer: 'snowball'
+      indexes :name, analyzer: 'snowball',boost: 90
     end
     indexes :venue do
-      indexes :name, analyzer: 'snowball'
+      indexes :name, analyzer: 'snowball',boost: 100
       indexes :description, analyzer: 'snowball'
     end
     indexes :tags do
-      indexes :name, analyzer: 'snowball'
+      indexes :name, analyzer: 'snowball',boost: 90
     end
       index
       end
@@ -44,17 +44,17 @@ class Occurrence < ActiveRecord::Base
       sort { by :start, "asc" }
 
       #facet('timeline') { range :start, { :ranges => [ { to: DateTime.new(2020,1,1), from: Time.now } ] } }
-      filter :range, start: {gte: Time.zone.now,lte: DateTime.new(2020,1,1)}
+      filter :range, start: {gte: Time.zone.now,lte: Time.zone.now+1.year}
 
 
     end
   end
   def self.search_on_date(params)
     tire.search(load: true) do
-      query { string params[:query], default_operator: "OR" }
+      query { string params[:query], default_operator: "OR"  } if params[:query].present?
       size 1000
       sort { by :start, "asc" }
-      filter :range, start: {gte: (DateTime.parse(params[:start_date]).in_time_zone rescue Time.zone.now),lte: (DateTime.parse(params[:end_date]).in_time_zone rescue Time.zone.now+3.months)}
+      filter :range, start: {gte: (DateTime.parse(params[:start_date]).in_time_zone rescue Time.zone.now),lte: (DateTime.parse(params[:end_date]).in_time_zone rescue Time.zone.now+1.year)}
 
 
     end

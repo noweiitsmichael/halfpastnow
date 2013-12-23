@@ -207,7 +207,7 @@ h1, h2, h4{color:#4C334E;}
 }
 .banner-slider .caroufredsel_wrapper {
   margin: 0 auto !important;
-height:404px !important;
+height:304px !important;
 }
 .banner-slider .item {
   display: block;
@@ -226,7 +226,7 @@ height:404px !important;
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
   color: #FFFFFF;
   text-align: center;
-  top: 19%;
+  top: 5%;
 }
 .carousel-caption h1 {
   color: #FFFFFF;

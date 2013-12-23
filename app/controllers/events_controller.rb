@@ -919,6 +919,13 @@ class EventsController < ApplicationController
     params[:zoom] = @zoom
 
     params[:user_id] = current_user ? current_user.id : nil
+    if params[:tag_type] == "today"
+      params[:start_date] = "#{Date.today().to_s(:db)}"
+      params[:end_date] = "#{(Date.today()).to_s(:db)}"
+    else
+    params[:start_date] = "#{DateTime.now().to_s(:db)}" if (params[:start_date] == "" or !params[:start_date].present?)
+    params[:end_date] = "#{(DateTime.now()+1.year).to_s(:db)}" if (params[:end_date] == "" or !params[:end_date].present?)
+    end
     @ids = Occurrence.find_with(params)
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
@@ -938,25 +945,20 @@ class EventsController < ApplicationController
 
     end
    if params[:tag_type] == "staff"
-     @occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
+     @occurrences = BookmarkList.find(2370).all_bookmarked_events
    end
    if params[:tag_type] == "today"
+     @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
    end
    if params[:tag_type] == "all"
      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
 
    end
     if params[:query].present?
-      if params[:start_date] == "" and params[:end_date] == ""
-        @occurrences = Occurrence.search(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
-      else
         @occurrences = Occurrence.search_on_date(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
-
       end
-      @occurrences = @occurrences.select{ |o| DateTime.parse("#{o.start}")>DateTime.now()}.sort_by { |o| o.start }.uniq{|o| o.event_id}
 
-      #@occurrences = @occurrences.uniq{|o| o.event_id}.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
+    @occurrences = @occurrences.select{ |o| o.start > Time.now }.uniq{|o| o.event_id}.sort_by { |o| o.start }
 
-    end
   end
 end
