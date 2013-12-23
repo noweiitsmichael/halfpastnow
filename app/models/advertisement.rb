@@ -9,5 +9,6 @@ class Advertisement < ActiveRecord::Base
   validates :image, :weight, :placement, :start,:end , presence: true
 
   ADV_TYPES = [["Featured Venue","featured_venue"],["Featured Event","featured_event"],["Featured Artist","featured_artist"],["Advertisement","advertisement"]]
+  ADV_PLACEMENTS = [["Home Page","home_page"],["Search Results","search_results"],["Event Details","event_details"],["Venue Details","venue_details"],["Artist Details","artist_details"]]
   ADV_WEIGHTS = [1,2,3,4,5,6,7,8,9,10]
 end

@@ -64,14 +64,14 @@ ActiveRecord::Schema.define(:version => 20131219103903) do
     t.integer  "phone"
     t.string   "advertiser"
     t.string   "image"
-    t.integer  "weight"
+    t.integer  "weight",      :default => 1
     t.string   "placement"
     t.datetime "start"
     t.datetime "end"
     t.integer  "views"
     t.integer  "clicks"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   create_table "bookmark_lists", :force => true do |t|
