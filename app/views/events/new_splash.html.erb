@@ -305,7 +305,11 @@
     <div class="section-content slider">
       <div id="slider1">
         <% @occurrences.each_with_index do |occurrence, index| %>
-          <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
+          <% if index == 2 %>
+            <%= render :partial => "events/ads", :locals => { :featured_ads => @featured_ads } %>
+          <% else %>
+            <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
+          <% end %>
         <% end %>
       </div>
       <a class="prev" id="slider1_prev" href="#"><span>prev</span></a>

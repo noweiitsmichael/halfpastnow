@@ -1,4 +1,4 @@
-<article class="slide-item product-item" link-id="<%= occurrence.id %>">
+<article class="slide-item product-item" link-id="<%= occurrence.id %>" style="margin: 0 18px">
   <figure><a href="/events/austin/<%= occurrence.slug %>">
     <% if occurrence.event.pictures.first %>
       <img src="<%= occurrence.event.pictures.first.image_url(:full) %>" alt="Event picture" />
