@@ -68,7 +68,7 @@
     <%= f.label :placement, class: 'col-sm-3 control-label no-padding-right' %>
 
     <div class="col-sm-9">
-      <%= f.select :placement, Advertisement::ADV_PLACEMENTS,{ include_blank: true}, class: 'col-xs-10 col-sm-5' %>
+      <%= f.select :placement, [],{ include_blank: true}, class: 'col-xs-10 col-sm-5' %>
     </div>
   </div>
 
@@ -115,4 +115,8 @@
     </div>
   </div>
 
+<% end %>
+
+<%= javascript_tag do %>
+  var placement_options = <%= (Advertisement::ADV_PLACEMENTS).to_json.html_safe %>
 <% end %>

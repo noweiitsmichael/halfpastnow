@@ -187,4 +187,16 @@ $(document).ready(function () {
     $('#advertisement_end').val($.format.date(date, "dd-MM-yyyy"))
   });
   //ads end
+
+  $('select#advertisement_adv_type').on('change', function(){
+   var sel_option = $(this).val().split('_')[0];
+    $("#advertisement_placement").html($("<option>",{}));
+    $.each(placement_options[sel_option],function(index, value){
+      $("#advertisement_placement").append($("<option>",{
+        value: value.toString().split(',')[1],
+        text: value.toString().split(',')[0]
+      }));
+    });
+
+  });
 });
