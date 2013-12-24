@@ -5,6 +5,9 @@
 
     <div class="col-sm-9">
       <%= f.select :adv_type, Advertisement::ADV_TYPES,{ include_blank: true}, class: 'col-xs-10 col-sm-5' %>
+      <span class="help-inline col-xs-12 col-sm-7">
+        <span class="middle type_help_txt">Image dimensions are <span class="label label-lg label-purple arrowed img_dimensions"></span></span>
+      </span>
     </div>
   </div>
 

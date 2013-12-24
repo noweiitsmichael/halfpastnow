@@ -17,6 +17,9 @@ class ActsController < ApplicationController
     end
     @modeType = "act"
 
+    #ads
+    @advertisement = Advertisement.where(:placement => 'details').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
+
     @act = Act.find(params[:id])
     @pageTitle = @act.name + " | half past now."
     if(current_user)

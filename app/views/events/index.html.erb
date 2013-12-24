@@ -444,7 +444,13 @@
           </div>
           <div class="content main" style="padding-top:60px">
             <div class="container inline">
-              <img alt="" src="assets/ad.jpg" class="pull-right">
+              <% if @advertisement.present? %>
+                <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank, class: "pull-right" do %>
+                  <%= image_tag @advertisement.image.cover, alt: "Advertisement" %>
+                <% end %>
+              <% else %>
+                <img alt="" src="assets/ad.jpg" class="pull-right">
+              <% end %>
 
               <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results for <span id="search_name1">all events</span></h2>
 
@@ -799,7 +805,8 @@
       });
       $('.active a').click()
     })
-    $('.navbar-search').submit(function() {
+    $('.navbar-search').submit(function(e) {
+      e.preventDefault();
 
       if ($("#appendedInput").val().length >= 3) {
         var search_key = $("#appendedInput").val().replace(/\ /g, "_")
