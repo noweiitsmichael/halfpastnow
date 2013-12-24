@@ -16,6 +16,7 @@ class CreateAdvertisements < ActiveRecord::Migration
       t.datetime :end
       t.integer :views
       t.integer :clicks
+      t.string :target_url
 
       t.timestamps
     end

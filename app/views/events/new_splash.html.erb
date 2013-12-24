@@ -80,11 +80,12 @@
                             <small>Welcome,</small>
                           <%= current_user.firstname rescue 'Howdy' %>
                         </span>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <i class="icon-caret-down"></i>
                     <% end %>
                   </a>
 
-                  <ul class="user-menu dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                  <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close"  style="border-radius: 0px !important;right: 140px !important;">
                     <li>
                       <%= link_to profile_dashboard_index_path do %>
                         <i class="icon-user"></i>
@@ -446,6 +447,13 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade hide" id="bookmark_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>
+<!-- /.modal -->
+
 <script>
   $('#slider2,#slider3,#slider5').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative; width:100px !important;'>");
   happy_place_events(19,"slider2");
@@ -538,6 +546,7 @@
     top: 7px;
   }
   <% end %>
+
 </style>
 </body>
 </html>
