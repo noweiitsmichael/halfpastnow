@@ -176,5 +176,27 @@ $(document).ready(function () {
     })
   } catch (e) {
   }
+
+  $('#adv_start_date').on('change', function(){
+    var date = new Date($(this).val());
+    $('#advertisement_start').val($.format.date(date, "dd-MM-yyyy"))
+  });
+
+  $('#adv_end_date').on('change', function(){
+    var date = new Date($(this).val());
+    $('#advertisement_end').val($.format.date(date, "dd-MM-yyyy"))
+  });
   //ads end
+
+  $('select#advertisement_adv_type').on('change', function(){
+   var sel_option = $(this).val().split('_')[0];
+    $("#advertisement_placement").html($("<option>",{}));
+    $.each(placement_options[sel_option],function(index, value){
+      $("#advertisement_placement").append($("<option>",{
+        value: value.toString().split(',')[1],
+        text: value.toString().split(',')[0]
+      }));
+    });
+
+  });
 });

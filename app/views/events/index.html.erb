@@ -545,6 +545,12 @@
 
     </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade hide" id="bookmark_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+  </div>
+  <!-- /.modal -->
   <script>
 
     $(document).ready(function(){
@@ -742,6 +748,58 @@
 
     })
     $(".submit").on("click", function () {
+
+      if ($("#appendedInput").val().length >= 3) {
+        var search_key = $("#appendedInput").val().replace(/\ /g, "_")
+        $(".active").attr('class', '');
+        $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+search_key+">" + $("#appendedInput").val() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+        <% if user_signed_in? %>
+        $('.icon-cross').on("click", function () {
+          $(this).parents('li').remove()
+          key_id = $(this).parent().attr('key_id')
+          if (key_id != null) {
+            <% if user_signed_in? %>
+            $.get('/delete_saved_search', {key_id: key_id})
+            <% end %>
+          }
+        })
+        <% else %>
+        $('.icon-cross').on("click", function () {
+          $(this).parents('li').remove()
+        })
+        <% end %>
+        $('.icon-white-pin').on("click", function () {
+          key = $(this).parent().attr('key')
+          tag_id = $(this).parent().attr('tag_id')
+          check = $(this).parent()
+          <% if user_signed_in? %>
+          $(this).hide()
+          $.get('/saved_search', {key: key,tag_id: tag_id}, function (data) {
+            console.log(check)
+            check.attr('key_id', data["key_id"]);
+
+          })
+          $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
+
+          <% end %>
+        })
+      }
+      $('#share').click(function () {
+        window.open(
+          'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href),
+          'facebook-share-dialog',
+          'width=626,height=436');
+      })
+      $('#search-tab a').on("click", function () {
+        console.log("i am here")
+        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
+
+        doneTyping2($(this).text());
+        $('#search_name,#search_name1').html($(this).text())
+      });
+      $('.active a').click()
+    })
+    $('.navbar-search').submit(function() {
 
       if ($("#appendedInput").val().length >= 3) {
         var search_key = $("#appendedInput").val().replace(/\ /g, "_")

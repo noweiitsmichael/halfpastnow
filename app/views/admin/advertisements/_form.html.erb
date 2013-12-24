@@ -1,7 +1,7 @@
 <%= form_for @advertisement, url: "/admin/advertisements", html: {class: 'form-horizontal', role: 'form'} do |f| %>
 
   <div class="form-group">
-    <%= f.label :adv_type, class: 'col-sm-3 control-label no-padding-right' %>
+    <%= f.label :adv_type, 'Type', class: 'col-sm-3 control-label no-padding-right' %>
 
     <div class="col-sm-9">
       <%= f.select :adv_type, Advertisement::ADV_TYPES,{ include_blank: true}, class: 'col-xs-10 col-sm-5' %>
@@ -68,7 +68,7 @@
     <%= f.label :placement, class: 'col-sm-3 control-label no-padding-right' %>
 
     <div class="col-sm-9">
-      <%= f.select :placement, Advertisement::ADV_PLACEMENTS,{ include_blank: true}, class: 'col-xs-10 col-sm-5' %>
+      <%= f.select :placement, [],{ include_blank: true}, class: 'col-xs-10 col-sm-5' %>
     </div>
   </div>
 
@@ -76,7 +76,8 @@
     <%= f.label :start,"Start Date", class: 'col-sm-3 control-label no-padding-right' %>
 
     <div class="col-sm-9">
-      <%= f.text_field :start, class: 'col-xs-10 col-sm-5 has_date_picker' %>
+      <%= text_field_tag :start_date_display_field,'', class: 'col-xs-10 col-sm-5 has_date_picker', id: 'adv_start_date' %>
+      <%= f.hidden_field :start, class: 'col-xs-10 col-sm-5' %>
     </div>
   </div>
 
@@ -84,7 +85,16 @@
     <%= f.label :end, "End Date", class: 'col-sm-3 control-label no-padding-right' %>
 
     <div class="col-sm-9">
-      <%= f.text_field :end, class: 'col-xs-10 col-sm-5 has_date_picker' %>
+      <%= text_field_tag :end_date_display_field,'', class: 'col-xs-10 col-sm-5 has_date_picker', id: 'adv_end_date' %>
+      <%= f.hidden_field :end, class: 'col-xs-10 col-sm-5' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :target_url, class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9">
+      <%= f.text_field :target_url, class: 'col-xs-10 col-sm-5' %>
     </div>
   </div>
 
@@ -105,4 +115,8 @@
     </div>
   </div>
 
+<% end %>
+
+<%= javascript_tag do %>
+  var placement_options = <%= (Advertisement::ADV_PLACEMENTS).to_json.html_safe %>
 <% end %>
