@@ -70,9 +70,9 @@ ActiveRecord::Schema.define(:version => 20131223064642) do
     t.datetime "end"
     t.integer  "views"
     t.integer  "clicks"
+    t.string   "target_url"
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
-    t.string   "target_url"
   end
 
   create_table "bookmark_lists", :force => true do |t|
