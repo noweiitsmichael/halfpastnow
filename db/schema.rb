@@ -344,9 +344,7 @@ ActiveRecord::Schema.define(:version => 20131219103903) do
 
   create_table "saved_searches", :force => true do |t|
     t.string   "search_key"
-    t.integer  "tag_id"
     t.integer  "user_id"
-    t.string   "tag_type"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -436,6 +434,7 @@ ActiveRecord::Schema.define(:version => 20131219103903) do
     t.integer  "assigned_admin"
     t.integer  "weight",         :default => 1
     t.string   "slug"
+    t.text     "hours"
   end
 
   add_index "venues", ["slug"], :name => "index_venues_on_slug"
