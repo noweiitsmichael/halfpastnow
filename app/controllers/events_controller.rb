@@ -430,6 +430,9 @@ class EventsController < ApplicationController
       format.html do
         unless (params[:ajax].to_s.empty?)
 
+          if params[:type].present? and params[:type] == 'ads'
+            @featured_ads = Advertisement.where(placement: 'home_page').order('weight').first
+          end
           params[:root]? @occurrences = @occurrences.take(5):@occurrences = @occurrences
 
           #raise "number of occurrences: #{@occurrences.count}, occurrences tags: #{@occurringTags.count},parent tags:#{@parentTags.count},offset value:#{@offset}"

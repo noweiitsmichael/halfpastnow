@@ -1,3 +1,13 @@
-<% occurrences.each_with_index do |occurrence, index| %>
-  <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
+<% if params[:type].present? and params[:type] == 'ads' %>
+  <% occurrences.each_with_index do |occurrence, index| %>
+    <% if index == 0 and !@featured_ads.nil? %>
+      <%= render :partial => "events/ads", :locals => { :featured_ads => @featured_ads } %>
+    <% else %>
+      <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
+    <% end %>
+  <% end %>
+<% else %>
+  <% occurrences.each_with_index do |occurrence, index| %>
+    <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
+  <% end %>
 <% end %>
