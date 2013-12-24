@@ -300,8 +300,8 @@
     <div class="section-content slider">
       <div id="slider1">
         <% @occurrences.each_with_index do |occurrence, index| %>
-          <% if index == 2 and !@featured_ads.nil? %>
-            <%= render :partial => "events/ads", :locals => { :featured_ads => @featured_ads } %>
+          <% if index == 2 and !@advertisement.nil? %>
+            <%= render :partial => "events/ads", :locals => { :advertisement => @advertisement } %>
           <% else %>
             <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
           <% end %>
