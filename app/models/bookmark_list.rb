@@ -18,9 +18,9 @@ class BookmarkList < ActiveRecord::Base
   	after_update :crop_picture
    after_create :update_slug
 
-  def to_param
-    [slug,"by", self.user.firstname, self.user.lastname].join("-")
-  end
+  #def to_param
+  #  [slug,"by", self.user.firstname, self.user.lastname].join("-")
+  #end
 
   def update_slug
     self.update_attributes(slug: self.to_param)
