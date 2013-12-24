@@ -1337,7 +1337,7 @@ function dance_events(dance_tag, location) {
 function happy_place_events(stream_id, location) {
   console.log(location)
   var controllerLink = "/events/index?ajax=true&root=true"
-  f1 = {"stream_id": stream_id}
+  f1 = {"stream_id": stream_id, 'type': 'ads'}
   $.get(controllerLink, f1, function (data) {
     var locations = [];
     var jData = $(data);

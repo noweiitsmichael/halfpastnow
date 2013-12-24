@@ -8,7 +8,7 @@ class Advertisement < ActiveRecord::Base
   validates :adv_type, :title, :description,:name,:advertiser, presence: true
   validates :image, :weight, :placement, :start,:end , presence: true
 
-  ADV_TYPES = [["Featured Venue","featured_venue"],["Featured Event","featured_event"],["Featured Artist","featured_artist"],["Advertisement - Banner","banner_ads"],["Advertisement - Details","details_ads"]]
+  ADV_TYPES = {"Featured Venue" => "featured_venue","Featured Event" => "featured_event", "Featured Artist" =>"featured_artist", "Advertisement - Banner" => "banner_ads", "Advertisement - Details" =>"details_ads"}
   ADV_PLACEMENTS = {
                      :featured => [["Home Page","home_page"],["Search Results","search_results"]],
                      :banner => [["Search Results","search_results"]],
