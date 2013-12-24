@@ -80,11 +80,12 @@
                             <small>Welcome,</small>
                           <%= current_user.firstname rescue 'Howdy' %>
                         </span>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <i class="icon-caret-down"></i>
                     <% end %>
                   </a>
 
-                  <ul class="user-menu dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                  <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close"  style="border-radius: 0px !important;right: 140px !important;">
                     <li>
                       <%= link_to profile_dashboard_index_path do %>
                         <i class="icon-user"></i>
@@ -545,6 +546,7 @@
     top: 7px;
   }
   <% end %>
+
 </style>
 </body>
 </html>
