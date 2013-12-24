@@ -799,7 +799,8 @@
       });
       $('.active a').click()
     })
-    $('.navbar-search').submit(function() {
+    $('.navbar-search').submit(function(e) {
+      e.preventDefault();
 
       if ($("#appendedInput").val().length >= 3) {
         var search_key = $("#appendedInput").val().replace(/\ /g, "_")
