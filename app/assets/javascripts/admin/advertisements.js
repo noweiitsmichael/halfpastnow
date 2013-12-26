@@ -187,9 +187,21 @@ $(document).ready(function () {
     $('#advertisement_end').val($.format.date(date, "dd-MM-yyyy"))
   });
   //ads end
-
-  $('select#advertisement_adv_type').on('change', function(){
+   $('span.type_help_txt').hide();
+   $('select#advertisement_adv_type').on('change', function(){
    var sel_option = $(this).val().split('_')[0];
+    //dimensions
+    if(sel_option == 'banner'){
+      $('span.type_help_txt').show();
+      $('span.img_dimensions').text("550 x 100")
+    }else if(sel_option == 'details'){
+      $('span.type_help_txt').show();
+      $('span.img_dimensions').text("540 x 400")
+    }else{
+      $('span.type_help_txt').hide();
+    }
+
+    // placement
     $("#advertisement_placement").html($("<option>",{}));
     $.each(placement_options[sel_option],function(index, value){
       $("#advertisement_placement").append($("<option>",{

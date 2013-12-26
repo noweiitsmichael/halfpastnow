@@ -1,11 +1,11 @@
 <article class="slide-item featured" style="margin: 0 18px">
   <figure>
-    <%= link_to featured_ads.target_url.present? ? featured_ads.target_url : '#', class: 'ui-link', target: :_blank do %>
-      <%= image_tag featured_ads.image.full %>
+    <%= link_to advertisement.target_url.present? ? advertisement.target_url : '#', class: 'ui-link', target: :_blank do %>
+      <%= image_tag advertisement.image.full %>
     <% end %>
   </figure>
   <div class="name">
-    <%= link_to featured_ads.title,featured_ads.target_url.present? ? featured_ads.target_url : '#', class: 'ui-link'%>
+    <%= link_to advertisement.title,advertisement.target_url.present? ? advertisement.target_url : '#', class: 'ui-link'%>
   </div>
   <div class="info clearfix">
     <span class="time pull-left"></span>
@@ -15,5 +15,5 @@
     <span class="place"></span>
     <a class="bookmark ui-link" href="#"><img alt="Bookmark" src="images/icon-bookmark.png"></a>
   </div>
-  <span class="featured-text"><%= featured_ads.adv_type.titleize %></span>
+  <span class="featured-text"><%= advertisement.adv_type.titleize %></span>
 </article>

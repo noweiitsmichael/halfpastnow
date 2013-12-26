@@ -39,7 +39,7 @@ class EventsController < ApplicationController
     order_by = "occurrences.start"
 
     @occurrences =  Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(5)
-    @featured_ads = Advertisement.where(placement: 'home_page').order('weight').first
+    @advertisement = Advertisement.where(:placement => 'home_page').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
 
     @saved_searches = current_user.saved_searches  if user_signed_in?
     @austin_occurrences =  BookmarkList.find(2370).bookmarked_events_root.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.take(5)
@@ -293,6 +293,10 @@ class EventsController < ApplicationController
 
   def index
     @saved_search = current_user.saved_searches if user_signed_in?
+
+    #ads
+    @advertisement = Advertisement.where(:placement => 'search_results').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
+
     # Set default if action is sxsw
     unless (params[:event_id].to_s.empty?)
      # redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
@@ -431,7 +435,7 @@ class EventsController < ApplicationController
         unless (params[:ajax].to_s.empty?)
 
           if params[:type].present? and params[:type] == 'ads'
-            @featured_ads = Advertisement.where(placement: 'home_page').order('weight').first
+            @advertisement = Advertisement.where(:placement => 'home_page').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
           end
           params[:root]? @occurrences = @occurrences.take(5):@occurrences = @occurrences
 
@@ -474,6 +478,9 @@ class EventsController < ApplicationController
 
     @event.clicks += 1
     @event.save
+
+    #ads
+    @advertisement = Advertisement.where(:placement => 'details').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
 
 
     if (current_user)
