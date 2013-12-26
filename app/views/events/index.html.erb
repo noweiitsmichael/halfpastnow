@@ -426,41 +426,46 @@
               </div>
             </div>
            </span>
-              <span class="sort-item">
-             <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
-                <div style="display: none;" class="popover bottom">
-                  <div class="arrow"></div>
-                  <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
-                  <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
-                  <br>
-                  <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
-                  <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
-                </div>
-
-            </span>
-            </div>
-
+             <span class="sort-item">
+               <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
+               <div style="display: none;" class="popover bottom">
+                 <div class="arrow"></div>
+                 <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
+                 <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
+                 <br>
+                 <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
+                 <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
+               </div>
+             </span>
+          </div>
 
           </div>
           <div class="content main" style="padding-top:60px">
             <div class="container inline">
-              <% if @advertisement.present? %>
-                <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank, class: "pull-right" do %>
-                  <%= image_tag @advertisement.image.full, alt: "Advertisement" %>
-                <% end %>
-              <% else %>
-                <img alt="" src="assets/ad.jpg" class="pull-right">
-              <% end %>
+              <div class="container head">
+                <div class="pull-left">
+                  <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results for <span id="search_name1">all events</span></h2>
+                </div>
+                <div class="pull-right" style="max-height: 100px !important;overflow: hidden !important;">
+                  <% if @advertisement.present? %>
+                    <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank, class: "pull-right" do %>
+                      <%#= image_tag @advertisement.image.full, alt: "Advertisement" %>
+                      <%= image_tag "http://hpn-pictures.s3.amazonaws.com/uploads/advertisement/image/1/full_Attitude-Quote-54.jpg" %>
+                    <% end %>
+                  <% else %>
+                    <img alt="" src="assets/ad.jpg" class="pull-right">
+                  <% end %>
+                </div>
+              </div>
+              </div>
+              <div class="container body">
+                <section class="product-list clearfix events">
+                  <% @occurrences.each_with_index do |occurrence, index| %>
+                    <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+                  <% end %>
 
-              <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results for <span id="search_name1">all events</span></h2>
-
-              <p class="lead text-info"></p>
-              <section class="product-list clearfix events">
-                <% @occurrences.each_with_index do |occurrence, index| %>
-                  <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
-                <% end %>
-
-              </section>
+                </section>
+              </div>
             </div>
           </div>
         </div>
