@@ -3,6 +3,7 @@ class Venue < ActiveRecord::Base
   friendly_id :name,use: :slugged
   geocoded_by :name
   has_and_belongs_to_many :tags
+  has_and_belongs_to_many :neighborhoods
   has_many :events, :dependent => :destroy
   has_many :raw_venues
   has_many :pictures, :as => :pictureable, :dependent => :destroy
