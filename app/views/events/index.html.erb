@@ -10,12 +10,12 @@
   <script src="/assets/ga.js" async="" type="text/javascript"></script>
   <script type="text/javascript" language="javascript" src="/assets/jquery_003.js"></script>
   <%= javascript_include_tag "half.dynamics" %>
-  <%= javascript_include_tag "smartinfowindow.js"%>
-  <%= stylesheet_link_tag  "custom1" %>
+  <%= javascript_include_tag "smartinfowindow.js" %>
+  <%= stylesheet_link_tag "custom1" %>
   <script type="text/javascript" language="javascript">
-    $("document").ready(function(){
+    $("document").ready(function () {
       $('.desc_btn').hide();
-      $(".asc_btn").click(function(){
+      $(".asc_btn").click(function () {
         var sort_on = $(this).data('sort_on');
         var sort_by = $(this).data('sort_by');
         console.log(sort_on);
@@ -32,10 +32,10 @@
         $('.' + $(this).data('type') + '.asc_btn').hide();
       });
 
-      $(".desc_btn").click(function(){
+      $(".desc_btn").click(function () {
         var sort_on = $(this).data('sort_on');
         var sort_by = $(this).data('sort_by');
-        var sort_on = $(this).data('sort_on') ;
+        var sort_on = $(this).data('sort_on');
         var sort_by = $(this).data('sort_by');
         $(".product-list").jSort({
           sort_by: sort_by,
@@ -322,7 +322,7 @@
       }
       <% end %>
 
-      // var event_id =
+        // var event_id =
       <%= params[:event_id] || "null" %>;
       var venue_id = <%= params[:venue_id] || "null" %>;
       var act_id = <%= params[:act_id] || "null" %>;
@@ -369,7 +369,7 @@
           <% if user_signed_in? %>
             <% @saved_search.each do |search| %>
               <li class="related_events">
-                <a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" tag_type = "<%= search.tag_type.nil?? "nil" : search.tag_type %>" tag_id="<%= search.tag_id.nil?? search.tag_id.to_i : search.tag_id.to_i  %>" key="<%= search[:search_key] %>"><%= search[:search_key].gsub("_"," ") %>
+                <a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" tag_type="<%= search.tag_type.nil? ? "nil" : search.tag_type %>" tag_id="<%= search.tag_id.nil? ? search.tag_id.to_i : search.tag_id.to_i %>" key="<%= search[:search_key] %>"><%= search[:search_key].gsub("_", " ") %>
                   <i class='icon-cross'></i></a></li>
             <% end %>
           <% end %>
@@ -383,13 +383,17 @@
             <div class="container">
            <span class="sort-item">
              <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
-              <div style="display: none;" class="popover bottom">
+              <div style="width: 340px !important;" class="popover bottom">
                 <div class="arrow"></div>
                 <div class="popover-content clearfix">
-                  <label class="ui-input-text" for="from">From</label>
-                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-start" id="from" name="from">
-                  <label class="ui-input-text" for="to">to</label>
-                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-end" id="to" name="to">
+                  <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="today">Today</a>
+                  <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="tomorrow">Tomorrow</a>
+                  <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="weekend">weekend</a>
+
+                  <label class="ui-input-text" for="from" style="margin-top:25px;">or custom</label>
+                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-start" id="from" name="from" style="width:115px;float:left;">
+                  <label class="ui-input-text" for="to" style="float: left; text-transform: none; font-size: 120%; margin-right: 11px; margin-left: 11px;">to</label>
+                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-end" id="to" name="to" style="width:115px;">
                 </div>
               </div>
              </span>
@@ -426,41 +430,52 @@
               </div>
             </div>
            </span>
-              <span class="sort-item">
-             <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
-                <div style="display: none;" class="popover bottom">
-                  <div class="arrow"></div>
-                  <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
-                  <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
-                  <br>
-                  <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
-                  <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
-                </div>
-
-            </span>
-            </div>
-
+             <span class="sort-item">
+               <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
+               <div style="display: none;" class="popover bottom">
+                 <div class="arrow"></div>
+                 <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
+                 <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
+                 <br>
+                 <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
+                 <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
+               </div>
+             </span>
+          </div>
 
           </div>
           <div class="content main" style="padding-top:60px">
             <div class="container inline">
-              <% if @advertisement.present? %>
-                <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank, class: "pull-right" do %>
-                  <%= image_tag @advertisement.image.cover, alt: "Advertisement" %>
-                <% end %>
-              <% else %>
-                <img alt="" src="assets/ad.jpg" class="pull-right">
-              <% end %>
 
-              <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results for <span id="search_name1">all events</span></h2>
+              <div class="container head">
+                <div class="pull-left">
+                  <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results for <span id="search_name1">all events</span></h2>
+                  <div>
+                    <span class="text-info"><b>Date:&nbsp;&nbsp;</b><span id="date"></span></span><br>
+                    <span class="text-info"><b>Time:&nbsp;&nbsp;</b><span id="time"></span></span> <br>
+                    <span class="text-info"><b>Cost:&nbsp;&nbsp;</b><span id="cost"></span></span>
+                  </div>
+                </div>
+                <div class="pull-right" style="max-height: 100px !important;overflow: hidden !important;">
+                  <% if @advertisement.present? %>
+                    <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank, class: "pull-right" do %>
+                      <%= image_tag @advertisement.image.full, alt: "Advertisement" %>
+                    <% end %>
+                  <% else %>
+                    <img alt="" src="assets/ad.jpg" class="pull-right">
+                  <% end %>
+                </div>
+              </div>
+              </div>
+              <div class="container body">
+                <section class="product-list clearfix events">
+                  <% @occurrences.each_with_index do |occurrence, index| %>
+                    <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+                  <% end %>
 
-              <p class="lead text-info"></p>
-              <section class="product-list clearfix events">
-                <% @occurrences.each_with_index do |occurrence, index| %>
-                  <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
-                <% end %>
 
-              </section>
+                </section>
+              </div>
             </div>
           </div>
         </div>
@@ -469,9 +484,18 @@
             <div class="container">
            <span class="sort-item">
              <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
-              <div style="display: none;" class="popover bottom">
+              <div style="width: 340px !important;" class="popover bottom">
                 <div class="arrow"></div>
+                <div class="popover-content clearfix">
+                  <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="today">Today</a>
+                  <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="tomorrow">Tomorrow</a>
+                  <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="weekend">weekend</a>
 
+                  <label class="ui-input-text" for="from" style="margin-top:25px;">or custom</label>
+                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-start" id="from" name="from" style="width:115px;float:left;">
+                  <label class="ui-input-text" for="to" style="float: left; text-transform: none; font-size: 120%; margin-right: 11px; margin-left: 11px;">to</label>
+                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-end" id="to" name="to" style="width:115px;">
+                </div>
               </div>
              </span>
             <span class="sort-item">
@@ -553,15 +577,15 @@
   </div>
 
   <!-- Modal -->
-  <div class="modal fade hide" id="bookmark_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal fade hide" id="bookmark_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index:11 !important;top:20% !important;">
 
   </div>
   <!-- /.modal -->
   <script>
 
-    $(document).ready(function(){
+    $(document).ready(function () {
 
-    <% if params[:key].present? and params[:tag_id].present? and params[:tag_type].present? %>
+      <% if params[:key].present? and params[:tag_id].present? and params[:tag_type].present? %>
       $(".active").attr('class', '');
       $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>' tag_type='<%= params[:tag_type] %>' tag_id='<%= params[:tag_id] %>'><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
       $('.icon-cross').on("click", function () {
@@ -573,7 +597,7 @@
         $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
         $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        $.get("/search_results",{tag_id:"<%= params[:tag_id] %>",tag_type:"<%= params[:tag_type] %>"})
+        $.get("/search_results", {tag_id: "<%= params[:tag_id] %>", tag_type: "<%= params[:tag_type] %>"})
         $('#search_name,#search_name1').html($(this).text())
 
       });
@@ -601,9 +625,9 @@
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-      $.get("/search_results",{tag_id:"<%= params[:tag_id] %>",tag_type:"<%= params[:tag_type] %>"})
+      $.get("/search_results", {tag_id: "<%= params[:tag_id] %>", tag_type: "<%= params[:tag_type] %>"})
       $('#search_name,#search_name1').html("<%= params[:key] %>")
-    <% elsif params[:key].present? and params[:tag_id].present? %>
+      <% elsif params[:key].present? and params[:tag_id].present? %>
 
       $(".active").attr('class', '');
       $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>' tag_id='<%= params[:tag_id] %>'><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
@@ -645,44 +669,44 @@
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
       dropdown_search_events("<%= params[:tag_id] %>")
       $('#search_name,#search_name1').html("<%= params[:key] %>")
-    <% elsif params[:key].present? %>
-    $(".active").attr('class', '');
+      <% elsif params[:key].present? %>
+      $(".active").attr('class', '');
       $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>' ><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
       $('.icon-cross').on("click", function () {
-      $(this).parents('li').remove()
-    })
+        $(this).parents('li').remove()
+      })
 
-    $('#search-tab a').on("click", function () {
-      console.log($(this).text())
-      doneTyping1($(this).text());
-      $('#search_name,#search_name1').html($(this).text())
+      $('#search-tab a').on("click", function () {
+        console.log($(this).text())
+        doneTyping1($(this).text());
+        $('#search_name,#search_name1').html($(this).text())
 //      $('#related_events').show();
 //      $('#events').hide();
-    });
-    $('.icon-white-pin').on("click", function () {
-      key = $(this).parent().attr('key')
-      check = $(this).parent()
-      <% if user_signed_in? %>
-      $(this).hide()
-      $.get('/saved_search', {key: key}, function (data) {
-        console.log(check)
-        check.attr('key_id', data["key_id"]);
+      });
+      $('.icon-white-pin').on("click", function () {
+        key = $(this).parent().attr('key')
+        check = $(this).parent()
+        <% if user_signed_in? %>
+        $(this).hide()
+        $.get('/saved_search', {key: key}, function (data) {
+          console.log(check)
+          check.attr('key_id', data["key_id"]);
 
-      })
-      $('#share').click(function () {
-        window.open(
-          'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href),
-          'facebook-share-dialog',
-          'width=626,height=436');
-      })
-      $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
+        })
+        $('#share').click(function () {
+          window.open(
+            'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href),
+            'facebook-share-dialog',
+            'width=626,height=436');
+        })
+        $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
 
-      <% end %>
-    })
+        <% end %>
+      })
       $('#search_name,#search_name1').text("<%= params[:key] %>")
-    doneTyping1("<%= params[:key] %>");
-    $('#search_name,#search_name1').html("<%= params[:key] %>")
-    <% end %>
+      doneTyping1("<%= params[:key] %>");
+      $('#search_name,#search_name1').html("<%= params[:key] %>")
+      <% end %>
     })
     $('.icon-cross').on("click", function () {
       $(this).parents('li').click()
@@ -694,28 +718,28 @@
         <% end %>
       }
     })
-    $('.dropdown-menu1 a').click(function () {
+    $('.dropdown-menu1 a,.popover_dates').click(function () {
       console.log("dropdown click")
       $(".active").attr('class', '');
-      $('#search-tab').append("<li class='active related_events dropdown_links'><a data-toggle='tab' href='#related_events' key=" + $(this).text().replace(/\ /g, "_") + " tag_id="+ $(this).attr('tag_id')+ " tag_type="+ $(this).attr('tag_type') +">" + $(this).text() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+      $('#search-tab').append("<li class='active related_events dropdown_links'><a data-toggle='tab' href='#related_events' key=" + $(this).text().replace(/\ /g, "_") + " tag_id=" + $(this).attr('tag_id') + " tag_type=" + $(this).attr('tag_type') + ">" + $(this).text() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
       $('.icon-cross').on("click", function () {
         $(this).parents('li').remove()
       })
 
       $('#search_name,#search_name1').html($(this).text())
-      console.log("this is tag reference:"+$(this).attr('tag_id'))
+      console.log("this is tag reference:" + $(this).attr('tag_id'))
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-      if($(this).attr('tag_id') == "0"){
+      if ($(this).attr('tag_id') == "0") {
         console.log('tag_type based search')
         filter.tag_id = $(this).attr('tag_id')
         filter.tag_type = $(this).attr('tag_type')
-        $.get("/search_results",filter)
+        $.get("/search_results", filter)
       }
-      else{
+      else {
         console.log("tag_id based search")
-      dropdown_search_events($(this).attr('tag_id'))
+        dropdown_search_events($(this).attr('tag_id'))
       }
 //      doneTyping1($(this).text());
       $('#search-tab a').on("click", function () {
@@ -723,11 +747,11 @@
         $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
         $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-        if($(this).attr('tag_id') == "0"){
-          $.get("/search_results",{tag_id:$(this).attr('tag_id'),tag_type:$(this).attr('tag_type')})
+        if ($(this).attr('tag_id') == "0") {
+          $.get("/search_results", {tag_id: $(this).attr('tag_id'), tag_type: $(this).attr('tag_type')})
         }
-        else{
-        dropdown_search_events($(this).attr('tag_id'))
+        else {
+          dropdown_search_events($(this).attr('tag_id'))
         }
 //        doneTyping1($(this).text());
         $('#search_name,#search_name1').html($(this).text())
@@ -741,7 +765,7 @@
         check = $(this).parent()
         <% if user_signed_in? %>
         $(this).hide()
-        $.get('/saved_search', {key: key,tag_id: tag_id,tag_type: tag_type}, function (data) {
+        $.get('/saved_search', {key: key, tag_id: tag_id, tag_type: tag_type}, function (data) {
           console.log(check)
           check.attr('key_id', data["key_id"]);
 
@@ -758,7 +782,7 @@
       if ($("#appendedInput").val().length >= 3) {
         var search_key = $("#appendedInput").val().replace(/\ /g, "_")
         $(".active").attr('class', '');
-        $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+search_key+">" + $("#appendedInput").val() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+        $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key=" + search_key + ">" + $("#appendedInput").val() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
         <% if user_signed_in? %>
         $('.icon-cross').on("click", function () {
           $(this).parents('li').remove()
@@ -780,7 +804,7 @@
           check = $(this).parent()
           <% if user_signed_in? %>
           $(this).hide()
-          $.get('/saved_search', {key: key,tag_id: tag_id}, function (data) {
+          $.get('/saved_search', {key: key, tag_id: tag_id}, function (data) {
             console.log(check)
             check.attr('key_id', data["key_id"]);
 
@@ -805,13 +829,13 @@
       });
       $('.active a').click()
     })
-    $('.navbar-search').submit(function(e) {
+    $('.navbar-search').submit(function (e) {
       e.preventDefault();
 
       if ($("#appendedInput").val().length >= 3) {
         var search_key = $("#appendedInput").val().replace(/\ /g, "_")
         $(".active").attr('class', '');
-        $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key="+search_key+">" + $("#appendedInput").val() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+        $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key=" + search_key + ">" + $("#appendedInput").val() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
         <% if user_signed_in? %>
         $('.icon-cross').on("click", function () {
           $(this).parents('li').remove()
@@ -833,7 +857,7 @@
           check = $(this).parent()
           <% if user_signed_in? %>
           $(this).hide()
-          $.get('/saved_search', {key: key,tag_id: tag_id}, function (data) {
+          $.get('/saved_search', {key: key, tag_id: tag_id}, function (data) {
             console.log(check)
             check.attr('key_id', data["key_id"]);
 
@@ -893,19 +917,24 @@
     <%if (params[:tag_id].present? or params[:tag_type].present? or params[:key].present?) %>
 
     <% end %>
-  </script>
-   <style>
-     .cost_sort, .time_sort {
-       color: #777777;
-       display: inline;
-       font-size: 16px;
-       font-weight: bold;
-       left: 18%;
-       position: relative;
-       cursor: pointer;
-     }
 
-   </style>
+  </script>
+  <style>
+    .cost_sort, .time_sort {
+      color: #777777;
+      display: inline;
+      font-size: 16px;
+      font-weight: bold;
+      left: 18%;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .popover_dates {
+      margin-left: 10px;
+    }
+
+  </style>
 <% end %>
 
 

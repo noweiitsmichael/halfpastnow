@@ -936,6 +936,12 @@ class EventsController < ApplicationController
     elsif params[:tag_type] == "crowd"
       params[:start_date] = "#{Date.today().to_s(:db)}"
       params[:end_date] = "#{(Date.today()+1.month).to_s(:db)}"
+    elsif params[:tag_type] == "tomorrow"
+      params[:start_date] = "#{Date.tomorrow.to_s(:db)}"
+      params[:end_date] = "#{(Date.tomorrow).to_s(:db)}"
+    elsif params[:tag_type] == "weekend"
+      params[:start_date] = "#{(Date.today.end_of_week).to_s(:db)}"
+      params[:end_date] = "#{Date.today.end_of_week.to_s(:db)}"
     else
     params[:start_date] = "#{DateTime.now().to_s(:db)}" if (params[:start_date] == "" or !params[:start_date].present?)
     params[:end_date] = "#{(DateTime.now()+1.year).to_s(:db)}" if (params[:end_date] == "" or !params[:end_date].present?)
@@ -961,13 +967,13 @@ class EventsController < ApplicationController
    if params[:tag_type] == "staff"
      @occurrences = BookmarkList.find(2370).all_bookmarked_events
    end
-   if params[:tag_type] == "today"
+   if params[:tag_type] == "today" or params[:tag_type] == "tomorrow" or params[:tag_type] == "weekend"
      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0) }
    end
    if params[:tag_type] == "all"
      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
-
    end
+
     if params[:query].present?
         @occurrences = Occurrence.search_on_date(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
       end
