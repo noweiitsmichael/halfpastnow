@@ -55,24 +55,22 @@ ActiveRecord::Schema.define(:version => 20131226110629) do
   add_index "acts_tags", ["tag_id"], :name => "index_acts_tags_on_tag_id"
 
   create_table "advertisements", :force => true do |t|
-    t.integer  "user_id"
-    t.string   "adv_type"
-    t.string   "title"
-    t.text     "description"
-    t.string   "name"
-    t.string   "email"
-    t.integer  "phone"
-    t.string   "advertiser"
-    t.string   "image"
-    t.integer  "weight",      :default => 1
-    t.string   "placement"
+    t.string   "type"
     t.datetime "start"
     t.datetime "end"
     t.integer  "views"
     t.integer  "clicks"
-    t.string   "target_url"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.string   "image"
+    t.string   "title"
+    t.text     "description"
+    t.integer  "weight"
+    t.string   "placement"
+    t.string   "name"
+    t.string   "advertiser"
+    t.string   "email"
+    t.integer  "phone"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "bookmark_lists", :force => true do |t|
@@ -454,6 +452,7 @@ ActiveRecord::Schema.define(:version => 20131226110629) do
     t.integer  "assigned_admin"
     t.integer  "weight",         :default => 1
     t.string   "slug"
+    t.text     "hours"
   end
 
   add_index "venues", ["slug"], :name => "index_venues_on_slug"

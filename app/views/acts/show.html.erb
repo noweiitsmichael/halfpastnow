@@ -18,11 +18,11 @@
   <%= stylesheet_link_tag "elastislide", "details" %>
   <%= javascript_include_tag "jquery.elastislide" %>
   <script type="text/javascript">
-    var id = "<%= @act.id  %>";
+    var id = "<%= @act.slug  %>";
     var type = "act";
     var root_url = "http://www.halfpastnow.com/";
     var link = root_url + "?" + type + "_id=" + id;
-    var facebook_url = "http://www.halfpastnow.com/" + type + "s/show/" + id + "?fullmode=true";
+    var facebook_url = "http://www.halfpastnow.com/" + type + "s/show/" + id ;
     var app_id = "475386955806720";
     var redirect = "http://www.halfpastnow.com";
     var bookmark_id = "<%= @bookmarkId.to_s %>";
@@ -469,7 +469,11 @@
   </div>
   </div>
   </section>
-
+  <% if user_signed_in?  %>
+    <% if current_user.role == "admin" or current_user.role == "super_admin" %>
+      <div style="text-align:center;padding-top:10px;"><a href="/admin/artists#anchor<%=@act.id%>" target="_blank">edit</a> </div>
+    <% end %>
+  <% end %>
 <% end %>
 
 <script type="text/javascript">
