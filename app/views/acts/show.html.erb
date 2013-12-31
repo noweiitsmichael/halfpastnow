@@ -19,6 +19,7 @@
   <%= javascript_include_tag "jquery.elastislide" %>
   <script type="text/javascript">
     var id = "<%= @act.slug  %>";
+    var act_id = "<%= @act.id  %>";
     var type = "act";
     var root_url = "http://www.halfpastnow.com/";
     var link = root_url + "?" + type + "_id=" + id;
@@ -203,7 +204,7 @@
                   break;
               }
               ;
-              $.getJSON('/bookmarks/custom_create', { bookmark: { "type": bookmarked_type, "id": id } }, function (data) {
+              $.getJSON('/bookmarks/custom_create', { bookmark: { "type": bookmarked_type, "id": act_id } }, function (data) {
                 console.log("new bookmark full mode");
                 console.log(data);
                 that.removeClass('add').addClass('remove');
