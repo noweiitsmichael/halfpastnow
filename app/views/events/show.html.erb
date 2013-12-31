@@ -9,7 +9,15 @@
     <meta property="og:type" content="halfpastnow:event"/>
     <meta property="og:url" content="http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %>"/>
     <meta property="og:site_name" content="halfpastnow"/>
-    <meta property="og:image" content="<%= @event.cover_image_url %>"/>
+
+    <% if @event.pictures.first %>
+      <meta property="og:image" content="<%= @event.pictures.first.image_url(:full) %>"/>
+    <% elsif @event.acts.length != 0 && @event.acts.first.pictures.first %>
+      <meta property="og:image" content="<%= @event.acts.first.pictures.first.image_url(:full) %>"/>
+    <% elsif @event.venue.pictures.first %>
+      <meta property="og:image" content="<%= @event.venue.pictures.first.image_url(:full) %>"/>
+    <% end %>
+
     <meta property="og:title" content="<%= @event.title %> at <%= @event.venue.name %> on halfpastnow.com">
     <meta property="og:description" content="<%= strip_tags(@event.description) %>"/>
   <% end %>
