@@ -7,13 +7,10 @@
   <div class="name">
     <%= link_to advertisement.title,advertisement.target_url.present? ? advertisement.target_url : '#', class: 'ui-link'%>
   </div>
-  <div class="info clearfix">
-    <span class="time pull-left"></span>
-    <span class="value pull-right"></span>
+  <div>
+    <span class="time pull-left"><%= advertisement.description.truncate(130) %></span>
   </div>
-  <div class="additional-info">
-    <span class="place"></span>
-    <a class="bookmark ui-link" href="#"><img alt="Bookmark" src="images/icon-bookmark.png"></a>
+  <div>
+    <span class="featured-text"><%= advertisement.adv_type.titleize %></span>
   </div>
-  <span class="featured-text"><%= advertisement.adv_type.titleize %></span>
 </article>
