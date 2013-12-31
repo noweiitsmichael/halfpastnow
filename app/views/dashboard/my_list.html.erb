@@ -16,7 +16,7 @@
 
           <ul class="nav nav-list my-list">
             <% @bookmark_lists.each do |bl| %>
-              <li>
+              <li class="<%= bl.name %>">
                 <%= link_to bl.name, bookmarks_dashboard_index_path(id: bl.id), remote: true %>
               </li>
             <% end %>
