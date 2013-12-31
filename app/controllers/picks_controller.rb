@@ -351,7 +351,8 @@ helper :content
 	    @zoom = 11
 	    @url = 'http://www.halfpastnow.com/picks/find/'+params[:id]
 		@occurrences = @bookmarkList.all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
-	end
+    @bookmarkList_venues = @bookmarkList.bookmarks.collect{|k| k.bookmarked_id if k.bookmarked_type="Venue"}.collect{|k| (Venue.find k) rescue nil}.compact
+  end
 
 	def sxsw
 		@events = EventsTags.where(:tag_id => 1).collect {|t| Event.find(t.event_id) }
