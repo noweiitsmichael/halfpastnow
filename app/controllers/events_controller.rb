@@ -40,7 +40,7 @@ class EventsController < ApplicationController
 
     @occurrences =  Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(5)
     @advertisement = Advertisement.where(:placement => 'home_page').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
-    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1))
+    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
 
     @saved_searches = current_user.saved_searches  if user_signed_in?
     @austin_occurrences =  BookmarkList.find(2370).bookmarked_events_root.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.take(5)
@@ -297,7 +297,7 @@ class EventsController < ApplicationController
 
     #ads
     @advertisement = Advertisement.where(:placement => 'search_results').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
-    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1))
+    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
 
     # Set default if action is sxsw
     unless (params[:event_id].to_s.empty?)
@@ -438,7 +438,7 @@ class EventsController < ApplicationController
 
           if params[:type].present? and params[:type] == 'ads'
             @advertisement = Advertisement.where(:placement => 'home_page').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
-            @advertisement.update_attributes(views: (@advertisement.views.to_i + 1))
+            @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
           end
           params[:root]? @occurrences = @occurrences.take(5):@occurrences = @occurrences
 
@@ -484,7 +484,7 @@ class EventsController < ApplicationController
 
     #ads
     @advertisement = Advertisement.where(:placement => 'details').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
-    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1))
+    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
 
 
     if (current_user)
