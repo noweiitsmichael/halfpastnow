@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(:version => 20131226110629) do
     t.text     "description"
     t.string   "name"
     t.string   "email"
-    t.integer  "phone"
+    t.string   "phone"
     t.string   "advertiser"
     t.string   "image"
     t.integer  "weight",      :default => 1

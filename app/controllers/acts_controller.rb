@@ -19,6 +19,7 @@ class ActsController < ApplicationController
 
     #ads
     @advertisement = Advertisement.where(:placement => 'details').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
+    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1))
 
     @act = Act.find(params[:id])
     @pageTitle = @act.name + " | half past now."

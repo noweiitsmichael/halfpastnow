@@ -1350,6 +1350,14 @@ function happy_place_events(stream_id, location) {
     if (false) {
     } else {
       $("#" + location).html(data);
+      // advertisements
+      $('.ad-details').on('click',function(){
+        var id = $(this).data('id');
+        var name = $(this).data('prop');
+        var value = $(this).data('value');
+        $.post('/admin/advertisements/update_ads_details',{pk: id, name: name, value: value })
+      });
+
       slider_arrows(location)
       if ($('#' + location).find('article').length) {
         $('#' + location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")

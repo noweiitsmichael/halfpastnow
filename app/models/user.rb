@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
 
 
   after_create :send_welcome_email
-  after_create :send_contest_entry_email
+  #after_create :send_contest_entry_email
   after_create :create_default_list
 
 

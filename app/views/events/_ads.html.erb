@@ -1,11 +1,11 @@
-<article class="slide-item featured" style="margin: 0 18px">
+<article class="slide-item featured ad-details" data-id = "<%= advertisement.id %>" data-prop = "clicks" data-value = "<%= advertisement.clicks.to_i + 1 %>" style="margin: 0 18px">
   <div>
     <%= link_to advertisement.target_url.present? ? advertisement.target_url : '#', class: 'ui-link', target: :_blank do %>
       <%= image_tag advertisement.image.full %>
     <% end %>
   </div>
   <div class="name">
-    <%= link_to advertisement.title,advertisement.target_url.present? ? advertisement.target_url : '#', class: 'ui-link'%>
+    <%= link_to advertisement.title,advertisement.target_url.present? ? advertisement.target_url : '#', class: 'ui-link', target: :_blank%>
   </div>
   <div>
     <span class="time pull-left"><%= advertisement.description.truncate(130) %></span>

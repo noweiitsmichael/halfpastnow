@@ -132,6 +132,16 @@
 
           <div class="profile-user-info profile-user-info-striped">
             <div class="profile-info-row">
+              <div class="profile-info-name"> Target URL</div>
+
+              <div class="profile-info-value">
+                <%= link_to @advertisement.target_url,'#', id: "advertisement-target", "data-pk" => @advertisement.id %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
               <div class="profile-info-name"> Views</div>
 
               <div class="profile-info-value">

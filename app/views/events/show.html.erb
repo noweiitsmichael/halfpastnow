@@ -41,6 +41,7 @@
 
     //console.log(id + ' ' + bookmark_id)
     $(function () {
+
       window.fbAsyncInit = function () {
         console.log("Loaded FB 2");
         FB.init({
@@ -66,6 +67,15 @@
 
     });
 
+    // advertisements
+    $(function () {
+      $('.ad-contaniner .ad-details').on('click',function(){
+        var id = $(this).data('id');
+        var name = $(this).data('prop');
+        var value = $(this).data('value');
+        $.post('/admin/advertisements/update_ads_details',{pk: id, name: name, value: value })
+      });
+    });
 
     $(function () {
       console.log("Loaded share stuff");
@@ -681,9 +691,11 @@
     </div>
     <div class="ad-contaniner">
       <% if @advertisement.present? %>
-        <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank do %>
-          <%= image_tag @advertisement.image.full, alt: "Advertisement" %>
-        <% end %>
+        <div class="ad-details" data-id = "<%= @advertisement.id %>" data-prop = "clicks" data-value = "<%= @advertisement.clicks.to_i + 1 %>">
+          <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank do %>
+            <%= image_tag @advertisement.image.full, alt: "Advertisement" %>
+          <% end %>
+        </div>
       <% else %>
         <img src="/assets/images/ad02.gif" alt=""/>
       <% end %>
