@@ -170,8 +170,20 @@
     <% end %>
     <section class="product-list inner clearfix">
       <h1>My Top Spots</h1>
-      <%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences, :bookmarkList => @bookmarkList } %>
-      <%#= render :partial => "events/event_list",:locals => { :occurrences => [],:venues_lists => @bookmarkList_venues} %>
+      <% @occurrences.size <=0 or @bookmarkList_venues.size <= 0? results = nil : results = 1 %>
+      <%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences, :venues_lists => [],:bookmarkList => @bookmarkList } %>
+      <%= render :partial => "events/event_list",:locals => { :occurrences => [],:venues_lists => @bookmarkList_venues} %>
+       <% if results.nil? %>
+        <li class="no-results">
+          <h3>There aren't any events going on in this area matching your filters.</h3>
+          Suggestions:
+          <ul class="no-results-suggestions">
+            <li>Try zooming out on the map.</li>
+            <li>Try a different location on the map.</li>
+            <li><a href="/">Clear out</a> your current filters.</li>
+          </ul>
+        </li>
+      <% end %>
     </section>
   </div>
 </section>

@@ -423,7 +423,7 @@ $(function () {
     },
     onClose: function (selectedDate) {
       $(".custom-end").datepicker("option", "minDate", selectedDate);
-      $("#date").html($('.custom-start').val()+" to "+$('.custom-end').val())
+      $(".date_search").html($('.custom-start').val()+" to "+$('.custom-end').val())
 
     }
   });
@@ -463,18 +463,18 @@ $(function () {
     },
     onClose: function (selectedDate) {
       $(".custom-start").datepicker("option", "maxDate", selectedDate);
-      $("#date").html($('.custom-start').val()+" to "+$('.custom-end').val())
+      $(".date_search").html($('.custom-start').val()+" to "+$('.custom-end').val())
     }
 
   });
 
   $(".custom-start,.custom-end").datepicker("setDate", Date.today().toString("MM/dd/yyyy"))
 
-  $("#date").html($('.custom-start').val()+" to "+$('.custom-end').val())
+  $(".date_search").html($('.custom-start').val()+" to "+$('.custom-end').val())
 
   $( "#slider-step" ).bind( "change", function(event, ui) {
     console.log($(this).val());
-    $('#cost').html(' under $'+$(this).val())
+    $('.cost_search').html(' under $'+$(this).val())
     $( "label.cvalue" ).text( 'Less Than $' + $(this).val() );
     filter.low_price = "";
     filter.high_price = ($(this).val() === MAX_PRICE) ? "" : $(this).val();
@@ -514,7 +514,7 @@ $(function () {
     max: MAX_PRICE,
     value: MAX_PRICE,
     slide: function (event, ui) {
-      $('#cost').html("under" + ui.value)
+      $('.cost_search').html("under" + ui.value)
       filter.low_price = "";
       filter.high_price = (ui.value === MAX_PRICE) ? "" : ui.value;
       updateViewFromFilter(false);

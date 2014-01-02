@@ -251,7 +251,8 @@
       showLeadingZero: true
     });
     $('.timepicker').change(function(){
-      $("#time").html("&nbsp;after "+$('.timepicker').val())
+      $('.timepicker').val($(this).val())
+      $(".time_search").html("&nbsp;after "+$('.timepicker').val())
       filter.low_price = "";
       filter.high_price = ($('#slider-step').val() === MAX_PRICE) ? "" : $('#slider-step').val();
       filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd")+ " "+$(this).val();

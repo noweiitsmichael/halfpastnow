@@ -1,0 +1,34 @@
+<article class="product-item" link-id="<%= venue_list.id %>">
+  <figure><a href="#">
+    <!--<img src="<%#= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>"/>-->
+   <% if venue_list.pictures.first %>
+      <img src="<%= venue_list.pictures.first.image_url(:full) %>" alt="venue pic" />
+    <% end %>
+
+  </a></figure>
+  <div class="name info" style="min-height: 20px;max-height: 54px;"><a href="/venues/austin/<%= venue_list.slug %>"><%= truncate(venue_list.name, :length => 115) %></a></div>
+
+  <div class="additional-info" style="margin-top: -12px">
+
+
+    <%
+       if (current_user)
+         bookmark = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => venue_list.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
+         bookmarkId = bookmark.nil? ? nil : bookmark.id
+       else
+         bookmarkId = nil
+       end
+    %>
+    <% unless user_signed_in? %>
+      <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" event-title="<%= occurrence.event.title %>"><img src="/assets/images/icon-bookmark.png" class="before_login" alt="Bookmark"/></a>
+
+      <script>
+        $('.before_login').click(function () {
+          window.location.href = window.location.origin + "/login"
+        })
+      </script>
+    <% else %>
+      <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>"  event-venue="<%= venue_list.name %>"><img src="/assets/images/icon-bookmark.png" alt="Bookmark"/></a>
+    <% end %>
+  </div>
+</article>
