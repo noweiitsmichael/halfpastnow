@@ -736,7 +736,18 @@
       }
     })
     $('.popover_dates').click(function(){
-
+      if($(this).attr('tag_type')=='today'){
+      $('.custom-start').val("<%= Time.now.strftime('%m/%d/%Y') %>")
+      $('.custom-end').val("<%= Time.now.strftime('%m/%d/%Y') %>")
+      }
+      if($(this).attr('tag_type')=='tomorrow'){
+        $('.custom-start').val("<%= (Time.now+1.day).strftime('%m/%d/%Y') %>")
+        $('.custom-end').val("<%= (Time.now+1.day).strftime('%m/%d/%Y') %>")
+      }
+      if($(this).attr('tag_type')=='weekend'){
+        $('.custom-start').val("<%= (Time.now.next_week-1.day).strftime('%m/%d/%Y') %>")
+        $('.custom-end').val("<%= (Time.now.next_week).strftime('%m/%d/%Y') %>")
+      }
     })
     $('.dropdown-menu1 a,.popover_dates').click(function () {
       console.log("dropdown click")
