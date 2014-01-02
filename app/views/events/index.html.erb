@@ -464,7 +464,7 @@
                     <span class="text-info"><b>Cost:&nbsp;&nbsp;</b><span id="cost"></span></span>
                   </div>
                 </div>
-                <div class="pull-right" style="max-height: 100px !important;overflow: hidden !important;">
+                <div class="pull-right" style="max-height: 100px !important;max-width: 550px !important;overflow: hidden !important;">
                   <% if @advertisement.present? %>
                     <div class="ad-details" data-id = "<%= @advertisement.id %>" data-prop = "clicks" data-value = "<%= @advertisement.clicks.to_i + 1 %>">
                       <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank, class: "pull-right" do %>
@@ -480,9 +480,12 @@
               <div class="container body">
                 <section class="product-list clearfix events">
                   <% @occurrences.each_with_index do |occurrence, index| %>
-                    <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+                    <% if index == 2 and !@advertisement.nil? %>
+                      <%= render :partial => "events/search_ads", :locals => { :advertisement => @advertisement } %>
+                    <% else %>
+                      <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+                    <% end %>
                   <% end %>
-
 
                 </section>
               </div>

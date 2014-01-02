@@ -69,7 +69,7 @@ class VenuesController < ApplicationController
     @modeType = "venue"
 
     #ads
-    @advertisement = Advertisement.where(:placement => 'details').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
+    @advertisement = Advertisement.where(:placement => 'details').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
     @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
 
     @venue = Venue.find(params[:id])

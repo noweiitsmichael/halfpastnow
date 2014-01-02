@@ -39,7 +39,7 @@ class EventsController < ApplicationController
     order_by = "occurrences.start"
 
     @occurrences =  Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(5)
-    @advertisement = Advertisement.where(:placement => 'home_page').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
+    @advertisement = Advertisement.where(:placement => ['home_page', 'home_search_pages'] ).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
     @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
 
     @saved_searches = current_user.saved_searches  if user_signed_in?
@@ -296,7 +296,7 @@ class EventsController < ApplicationController
     @saved_search = current_user.saved_searches if user_signed_in?
 
     #ads
-    @advertisement = Advertisement.where(:placement => 'search_results').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
+    @advertisement = Advertisement.where(:placement => ['search_results', 'home_search_pages']).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
     @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
 
     # Set default if action is sxsw
@@ -437,7 +437,7 @@ class EventsController < ApplicationController
         unless (params[:ajax].to_s.empty?)
 
           if params[:type].present? and params[:type] == 'ads'
-            @advertisement = Advertisement.where(:placement => 'home_page').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
+            @advertisement = Advertisement.where(:placement => 'home_page').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
             @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
           end
           params[:root]? @occurrences = @occurrences.take(5):@occurrences = @occurrences
@@ -483,7 +483,7 @@ class EventsController < ApplicationController
     @event.save
 
     #ads
-    @advertisement = Advertisement.where(:placement => 'details').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight').first
+    @advertisement = Advertisement.where(:placement => 'details').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
     @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
 
 

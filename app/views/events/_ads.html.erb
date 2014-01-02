@@ -4,11 +4,11 @@
       <%= image_tag advertisement.image.full %>
     <% end %>
   </div>
-  <div class="name">
+  <div class="name" style="margin-bottom: 2px !important;">
     <%= link_to advertisement.title,advertisement.target_url.present? ? advertisement.target_url : '#', class: 'ui-link', target: :_blank%>
   </div>
   <div>
-    <span class="time pull-left"><%= advertisement.description.truncate(130) %></span>
+    <span class="time pull-left"><%= advertisement.description.truncate(80) %></span>
   </div>
   <div>
     <span class="featured-text"><%= advertisement.adv_type.titleize %></span>

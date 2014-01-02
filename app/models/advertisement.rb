@@ -10,9 +10,9 @@ class Advertisement < ActiveRecord::Base
 
   ADV_TYPES = {"Featured Venue" => "featured_venue","Featured Event" => "featured_event", "Featured Artist" =>"featured_artist", "Advertisement - Banner" => "banner_ads", "Advertisement - Details" =>"details_ads"}
   ADV_PLACEMENTS = {
-                     :featured => [["Home Page","home_page"],["Search Results","search_results"]],
+                     :featured => [["Home Page","home_page"],["Search Results","search_results"],["Both", "home_search_pages"]],
                      :banner => [["Search Results","search_results"]],
-                     :details => [["Home Page","home_page"],["Search Results","search_results"],["Details","details"]]
+                     :details => [["Details","details"]]
                    }
   ADV_WEIGHTS = [1,2,3,4,5,6,7,8,9,10]
 end
