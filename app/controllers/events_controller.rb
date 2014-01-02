@@ -296,9 +296,11 @@ class EventsController < ApplicationController
     @saved_search = current_user.saved_searches if user_signed_in?
 
     #ads
-    @advertisement = Advertisement.where(:placement => ['search_results', 'home_search_pages']).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
-    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
+    @advertisement = Advertisement.where(:adv_type => ["featured_venue", "featured_event", "featured_artist"]).where(:placement => ['search_results', 'home_search_pages']).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
+    @banner_advertisement = Advertisement.where(:adv_type => ["banner_ads"]).where(:placement => Advertisement::ADV_PLACEMENTS[:banner].map{|a| a.last}).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
 
+    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
+    @banner_advertisement.update_attributes(views: (@banner_advertisement.views.to_i + 1)) unless @banner_advertisement.nil?
     # Set default if action is sxsw
     unless (params[:event_id].to_s.empty?)
      # redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true

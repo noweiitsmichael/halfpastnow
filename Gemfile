@@ -88,6 +88,9 @@ gem 'dalli'
 # Email via mandrill
 gem 'mandrill-api'
 
+#yelp
+gem 'yelpster'
+
 # gem 'eventfulapi'
 # gem 'eventbrite-client'
 

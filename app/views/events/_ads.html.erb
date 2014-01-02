@@ -8,7 +8,7 @@
     <%= link_to advertisement.title,advertisement.target_url.present? ? advertisement.target_url : '#', class: 'ui-link', target: :_blank%>
   </div>
   <div>
-    <span class="time pull-left"><%= advertisement.description.truncate(80) %></span>
+    <span class="pull-left"><%= advertisement.description.truncate(80) %></span>
   </div>
   <div>
     <span class="featured-text"><%= advertisement.adv_type.titleize %></span>

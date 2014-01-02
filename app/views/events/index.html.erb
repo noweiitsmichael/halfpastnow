@@ -468,10 +468,10 @@
               </div>
             </div>
             <div class="pull-right" style="max-height: 100px !important;max-width: 550px !important;overflow: hidden !important;">
-              <% if @advertisement.present? %>
-                <div class="ad-details" data-id="<%= @advertisement.id %>" data-prop="clicks" data-value="<%= @advertisement.clicks.to_i + 1 %>">
-                  <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank, class: "pull-right" do %>
-                    <%= image_tag @advertisement.image.full, alt: "Advertisement" %>
+              <% if @banner_advertisement.present? %>
+                <div class="ad-details" data-id="<%= @banner_advertisement.id %>" data-prop="clicks" data-value="<%= @banner_advertisement.clicks.to_i + 1 %>">
+                  <%= link_to @banner_advertisement.target_url.present? ? @banner_advertisement.target_url : '#', target: :_blank, class: "pull-right" do %>
+                    <%= image_tag @banner_advertisement.image.full, alt: "Advertisement" %>
                   <% end %>
                 </div>
               <% else %>
@@ -483,9 +483,12 @@
 
           <section class="product-list clearfix events">
             <% @occurrences.each_with_index do |occurrence, index| %>
-              <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
-            <% end %>
-
+                    <% if index == 2 and !@advertisement.nil? %>
+                      <%= render :partial => "events/search_ads", :locals => { :advertisement => @advertisement } %>
+                    <% else %>
+                      <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+                    <% end %>
+                  <% end %>
 
           </section>
         </div>
@@ -939,6 +942,7 @@
     });
 
     $('.filter-dropdown').hide()
+
     $('figure').click(function () {
       var event_id = $(this).parent('article').attr('link-id')
       console.log(event_id)
@@ -948,6 +952,7 @@
     <%if (params[:tag_id].present? or params[:tag_type].present? or params[:key].present?) %>
 
     <% end %>
+
 
   </script>
   <style>
