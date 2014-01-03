@@ -4,3 +4,6 @@ $("#related_events .main .inline .events").html("<br>"+results);
 $("#events .main .inline .events").html("<br>"+results)
 $(".total_number").text($("#related_events .main .inline .events").find('article').length);
 
+$('.neighborhood_link').on("click", function () {
+  $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+});

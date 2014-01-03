@@ -56,6 +56,11 @@
         var value = $(this).data('value');
         $.post('/admin/advertisements/update_ads_details', {pk: id, name: name, value: value })
       });
+
+      $('.neighborhood_link').on("click", function () {
+        $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+      });
+
     });
   </script>
 <% end %>
@@ -558,8 +563,9 @@
                 <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
                 <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
               </div>
-            </span>
-
+           </span>
+          <span>aaa</span>
+           <div>xxx</div>
         </div>
 
       </div>
@@ -952,7 +958,6 @@
     <%if (params[:tag_id].present? or params[:tag_type].present? or params[:key].present?) %>
 
     <% end %>
-
 
   </script>
   <style>

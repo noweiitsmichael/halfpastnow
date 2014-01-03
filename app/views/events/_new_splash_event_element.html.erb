@@ -23,7 +23,10 @@
       <%= link_to occurrence.venue.name.truncate(35),"/venues/austin/#{occurrence.event.venue.slug}",:style => "color:#4C334D" %>
     </div>
     <div class="place">
-      <%= occurrence.venue.neighborhoods.first.name.truncate(35) rescue '' %>
+      <% neighborhood = occurrence.venue.neighborhoods.first %>
+      <% if neighborhood %>
+        <%= link_to (occurrence.venue.neighborhoods.first.name.truncate(35)),search_results_path(tag_type: 'neighborhood', neighborhood_id: neighborhood.id),  remote: true , :style => "color:#4C334D", class: 'neighborhood_link'  %>
+      <% end %>
     </div>
 
 
@@ -39,4 +42,3 @@
     <% end %>
   </div>
 </article>
-

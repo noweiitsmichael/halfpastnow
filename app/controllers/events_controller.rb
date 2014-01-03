@@ -984,16 +984,24 @@ class EventsController < ApplicationController
      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
    end
 
+   if params[:tag_type] == "neighborhood" and params[:neighborhood_id].present?
+     neighborhood = Neighborhood.find params[:neighborhood_id]
+     @occurrences = neighborhood.occurrences.order(order_by)#.page(1).per_page(21)
+   end
+
+
     if params[:query].present?
         @occurrences = Occurrence.search_on_date(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
     end
 
     @occurrences = @occurrences.select{ |o| o.start > Time.now }.uniq{|o| o.event_id}.sort_by { |o| o.start }
+
     @occurrences.each do |occurrence|
       # neighborhoods
       v = occurrence.venue
       fetch_neighborhoods(v.latitude,v.longitude,v.id) if v.neighborhoods.empty?
     end
+
   end
 
   def bookmark_popup
