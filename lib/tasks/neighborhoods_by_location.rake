@@ -14,7 +14,7 @@ namespace :neighborhoods do
       results.each do |result|
         begin
           nh_name = result['neighborhoods'].first['name']
-          neighborhood = Neighborhood.find_by_name(nh_name)
+          neighborhood = Neighborhood.find_by_name_and_n_id(nh_name,result['id'])
           unless neighborhood
             Neighborhood.create(
                                 name: nh_name,
@@ -30,6 +30,9 @@ namespace :neighborhoods do
           end
         rescue Exception => e
           puts "error: #{e}"
+          puts "result-neighborhoods: #{result['neighborhoods']}"
+          Rails.logger.info "error: #{e}"
+          Rails.logger.info "result-neighborhoods: #{result['neighborhoods']}"
           next
         end
       end

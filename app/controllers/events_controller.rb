@@ -1,7 +1,7 @@
 require 'pp'
 require 'open-uri'
 require 'json'
-
+include Yelp::V1::Review::Request
 # brittle as hell, because these have to change if we change the map size, and also if we change locales from Austin.
 class ZoomDelta
   HighLatitude = 0.037808182 / 2
@@ -293,6 +293,7 @@ class EventsController < ApplicationController
   end
 
   def index
+
     @saved_search = current_user.saved_searches if user_signed_in?
 
     #ads
@@ -415,6 +416,9 @@ class EventsController < ApplicationController
       occurrence.event.tags.each do |tag|
         @tagCounts[tag.id][:count] += 1
       end
+      # neighborhoods
+      v = occurrence.venue
+      fetch_neighborhoods(v.latitude,v.longitude,v.id) if v.neighborhoods.empty?
     end
 
     @parentTags.each do |parentTag|
@@ -982,10 +986,14 @@ class EventsController < ApplicationController
 
     if params[:query].present?
         @occurrences = Occurrence.search_on_date(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
-      end
+    end
 
     @occurrences = @occurrences.select{ |o| o.start > Time.now }.uniq{|o| o.event_id}.sort_by { |o| o.start }
-
+    @occurrences.each do |occurrence|
+      # neighborhoods
+      v = occurrence.venue
+      fetch_neighborhoods(v.latitude,v.longitude,v.id) if v.neighborhoods.empty?
+    end
   end
 
   def bookmark_popup
@@ -997,5 +1005,47 @@ class EventsController < ApplicationController
       @bookmark_lists_ids = @bookmarks.empty? ? [0] : @bookmarks.collect(&:bookmark_list_id)
     end
 
+  end
+
+  private
+
+  def fetch_neighborhoods(lat,long,venue_id)
+    client = Yelp::Client.new
+    request = GeoPoint.new(
+      :latitude => lat,
+      :longitude => long)
+    response = client.search(request)
+    results = response['businesses']
+    begin
+      result = results.first
+      nh_name = result['neighborhoods'].first['name']
+      @neighborhood = Neighborhood.find_by_name_and_n_id(nh_name,result['id'])
+      unless @neighborhood
+        nh_options = {
+          name: nh_name,
+          n_id: result['id'],
+          city: result['city'],
+          state:  result['state'],
+          state_code: result['state_code'],
+          country: result['country'],
+          country_code: result['country_code'],
+          url: result['url']
+        }
+        @neighborhood = Neighborhood.new(nh_options)
+        @neighborhood.save()
+        puts "neighborhood: #{nh_name} done!"
+      end
+      venue = Venue.find(venue_id)
+      venue.neighborhoods << @neighborhood
+      venue.save()
+    rescue Exception => e
+      Rails.logger.info "error: #{e}"
+      Rails.logger.info "result-neighborhoods: #{result['neighborhoods']}"
+    end
+
+    #neighborhoods = []
+    #result.each do|result|
+    #  neighborhoods << result['neighborhoods'].first.name rescue next
+    #end
   end
 end

@@ -9,7 +9,9 @@
   <div class="name info" style="min-height: 20px;max-height: 54px;"><a href="/venues/austin/<%= venue_list.slug %>"><%= truncate(venue_list.name, :length => 115) %></a></div>
 
   <div class="additional-info" style="margin-top: -12px">
-
+    <div class="place">
+      <%= venue_list.neighborhoods.first.name.truncate(35) rescue '' %>
+    </div>
 
     <%
        if (current_user)
