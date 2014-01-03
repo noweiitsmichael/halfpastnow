@@ -2,6 +2,7 @@ require 'pp'
 require 'open-uri'
 require 'json'
 include Yelp::V1::Review::Request
+require 'will_paginate/array'
 # brittle as hell, because these have to change if we change the map size, and also if we change locales from Austin.
 class ZoomDelta
   HighLatitude = 0.037808182 / 2
@@ -293,7 +294,6 @@ class EventsController < ApplicationController
   end
 
   def index
-
     @saved_search = current_user.saved_searches if user_signed_in?
 
     #ads
@@ -383,8 +383,7 @@ class EventsController < ApplicationController
     end
 
     @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
-    # puts @allOccurrences
-    @occurrences = @allOccurrences#.drop(@offset).take(@amount)
+    @occurrences = @allOccurrences.paginate(:page => params[:page], :per_page => 21)
 
     # generating tag list for occurrences
 
@@ -417,10 +416,19 @@ class EventsController < ApplicationController
         @tagCounts[tag.id][:count] += 1
       end
       # neighborhoods
-      v = occurrence.venue
-      fetch_neighborhoods(v.latitude,v.longitude,v.id) if v.neighborhoods.empty?
+      #v = occurrence.venue
+      #fetch_neighborhoods(v.latitude,v.longitude,v.id) if v.neighborhoods.empty?
     end
-
+    if VenueNeighbourhoodFetch.last.nil?
+      @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
+      neighbourhood_fetch
+    elsif  VenueNeighbourhoodFetch.last.start_date != Date.today
+      @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
+      neighbourhood_fetch
+    elsif VenueNeighbourhoodFetch.last.start_date == Date.today
+      @venue_neighbourhood = VenueNeighbourhoodFetch.where(:start_date => Date.today).first
+      neighbourhood_fetch
+    end
     @parentTags.each do |parentTag|
       @tagCounts[parentTag.id][:children] = @tagCounts[parentTag.id][:children].sort_by { |tagCount| tagCount[:count] }.reverse
     end
@@ -454,6 +462,7 @@ class EventsController < ApplicationController
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts]}}) }
       format.mobile
+      format.js
     end
 
   end
@@ -994,16 +1003,31 @@ class EventsController < ApplicationController
         @occurrences = Occurrence.search_on_date(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
     end
 
-    @occurrences = @occurrences.select{ |o| o.start > Time.now }.uniq{|o| o.event_id}.sort_by { |o| o.start }
-
-    @occurrences.each do |occurrence|
-      # neighborhoods
-      v = occurrence.venue
-      fetch_neighborhoods(v.latitude,v.longitude,v.id) if v.neighborhoods.empty?
-    end
-
+    @allOccurrences = @occurrences.select{ |o| o.start > Time.now }.uniq{|o| o.event_id}.sort_by { |o| o.start }
+    @occurrences = @allOccurrences.paginate(:page => params[:page], :per_page => 21)
+    if VenueNeighbourhoodFetch.last.nil?
+      @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
+      neighbourhood_fetch
+    elsif  VenueNeighbourhoodFetch.last.start_date != Date.today
+      @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
+      neighbourhood_fetch
+    elsif VenueNeighbourhoodFetch.last.start_date == Date.today
+      @venue_neighbourhood = VenueNeighbourhoodFetch.where(:start_date => Date.today).first
+      neighbourhood_fetch
+     end
   end
+  def neighbourhood_fetch
+    @occurrences.each do |occurrence|
 
+      v = occurrence.venue
+      if v.neighborhoods.empty?
+        @venue_neighbourhood.count +=1
+        @venue_neighbourhood.save
+      fetch_neighborhoods(v.latitude,v.longitude,v.id)
+    end
+   break if @venue_neighbourhood.count == 100
+    end
+  end
   def bookmark_popup
     @occurrence = Occurrence.find(params[:id])
     @event = @occurrence.event

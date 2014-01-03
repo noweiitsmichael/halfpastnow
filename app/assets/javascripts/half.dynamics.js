@@ -471,7 +471,7 @@ $(function () {
   $(".custom-start,.custom-end").datepicker("setDate", Date.today().toString("MM/dd/yyyy"))
 
   $(".date_search").html($('.custom-start').val()+" to "+$('.custom-end').val())
-
+  $('.flickr_pagination a').attr('data-remote', 'true');
   $( "#slider-step" ).bind( "change", function(event, ui) {
     console.log($(this).val());
     $('.cost_search').html(' under $'+$(this).val())
@@ -1184,7 +1184,7 @@ function pullEvents(updateOptions) {
       $("#related_events .main .inline .events").html(data);
       $("#events .main .inline .events").html(data);
 
-      $(".total_number").text($("#related_events .main .inline .events").find('article').length);
+//      $(".total_number").text($("#related_events .main .inline .events").find('article').length);
 
 //      console.log("----NUM EVENTS-----");
 //      console.log(jData.find("#combo_total_occurrences").html());
@@ -1405,7 +1405,7 @@ function cost_filter_events(high_price) {
 //      $(".total_number").text($('#'+location).find('article').length)
       $("#related_events .main .inline .events").html(data);
       $("#events .main .inline .events").html(data);
-      $(".total_number").text($("#related_events .main .inline .events").find('article').length);
+//      $(".total_number").text($("#related_events .main .inline .events").find('article').length);
 
     }
   });
@@ -1421,7 +1421,7 @@ function dropdown_search_events(tag) {
   $.get("/events/index?ajax=true", filter, function (data) {
     $("#related_events .main .inline .events").html(data);
     $("#events .main .inline .events").html(data);
-    $(".total_number").text($("#related_events .main .inline .events").find('article').length);
+//    $(".total_number").text($("#related_events .main .inline .events").find('article').length);
   });
 }
 function slider_arrows(location) {
