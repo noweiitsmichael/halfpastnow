@@ -29,24 +29,23 @@
         </span>
       <!--</a>-->
     </span>
+    <% bookmarks = [] %>
     <%
        if (current_user)
-         bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
-         bookmarkId = bookmark.nil? ? nil : bookmark.id
-       else
-         bookmarkId = nil
+         bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id)
        end
     %>
-    <% unless user_signed_in? %>
-      <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" event-title="<%= occurrence.event.title %>" event-id="<%= occurrence.id %>" event-venue="<%= occurrence.event.venue.name %>" event-id="<%= occurrence.id %>"><img src="/assets/images/icon-bookmark.png" class="before_login" alt="Bookmark"/></a>
 
-      <script>
-          $('.before_login').click(function () {
-            window.location.href = window.location.origin + "/login"
-          })
-      </script>
-    <% else %>
-      <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" event-title="<%= occurrence.event.title %>" event-id="<%= occurrence.id %>" event-venue="<%= occurrence.event.venue.name %>" event-id="<%= occurrence.id %>"><img src="/assets/images/icon-bookmark.png" alt="Bookmark"/></a>
+    <%= link_to event_bookmark_popup_path(id: occurrence.id), class: "bookmark #{current_user ? 'bookmark_' + occurrence.id.to_s : 'before_login'}", remote: true do %>
+      <%= bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
     <% end %>
+
   </div>
 </article>
+
+<script>
+
+  $('.before_login').click(function () {
+    window.location.href = window.location.origin + "/login"
+  })
+</script>
