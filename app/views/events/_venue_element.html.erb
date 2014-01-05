@@ -13,24 +13,23 @@
       <%= venue_list.neighborhoods.first.name.truncate(35) rescue '' %>
     </div>
 
+    <% bookmarks = [] %>
     <%
        if (current_user)
-         bookmark = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => venue_list.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
-         bookmarkId = bookmark.nil? ? nil : bookmark.id
-       else
-         bookmarkId = nil
+         bookmarks = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => venue_list.id)
        end
     %>
-    <% unless user_signed_in? %>
-      <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>"><img src="/assets/images/icon-bookmark.png" class="before_login" alt="Bookmark"/></a>
 
-      <script>
-        $('.before_login').click(function () {
-          window.location.href = window.location.origin + "/login"
-        })
-      </script>
-    <% else %>
-      <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>"  event-venue="<%= venue_list.name %>"><img src="/assets/images/icon-bookmark.png" alt="Bookmark"/></a>
+    <%= link_to venue_bookmark_popup_path(id: venue_list.id), class: "bookmark #{current_user ? 'bookmark_' + venue_list.id.to_s : 'before_login'}", remote: true, metgod: :post do %>
+      <%= bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
     <% end %>
+
   </div>
 </article>
+
+<script>
+
+  $('.before_login').click(function () {
+    window.location.href = window.location.origin + "/login"
+  })
+</script>

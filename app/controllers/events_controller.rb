@@ -1028,6 +1028,7 @@ class EventsController < ApplicationController
     end
   end
   def bookmark_popup
+    #raise params.inspect
     @occurrence = Occurrence.find(params[:id])
     @event = @occurrence.event
     @bookmarks = []
@@ -1037,6 +1038,16 @@ class EventsController < ApplicationController
     end
 
   end
+
+  def venue_bookmark_popup
+    @venue = Venue.find(params[:id])
+    @bookmarks = []
+    if (current_user)
+      @bookmarks = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => @venue.id)
+      @bookmark_lists_ids = @bookmarks.empty? ? [0] : @bookmarks.collect(&:bookmark_list_id)
+    end
+  end
+
 
   private
 
