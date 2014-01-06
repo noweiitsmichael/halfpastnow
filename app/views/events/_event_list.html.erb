@@ -13,7 +13,7 @@
   <% end %>
 <% if venues_lists.size > 0 %>
   <% venues_lists.each do |venue| %>
-    <%= render :partial => "events/venue_element", :locals => { :venue_list => venue } %>
+    <%= render :partial => "events/venue_element", :locals => { :venue_list => venue, :bookmarkList => (defined? bookmarkList) ? bookmarkList : nil } %>
   <% end %>
   <% end %>
 

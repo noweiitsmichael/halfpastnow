@@ -162,17 +162,24 @@
              <a href="#" class="unfollow btn btn-mid btn-danger" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden unless currentUserIsFollowing %> >following</a>
           &nbsp;&nbsp;
         <% end %>
-        <a href="http://twitter.com/intent/tweet?url=http://www.halfpastnow.com/explorers/austin/<%= @bookmarkList.slug %>&text=Austin events @halfpastnow" target="_blank" title="Share on Twitter" class="tips" data-placement="top"><img src="/assets/images/icon-twitter.png" alt=""/></a>
-         &nbsp;&nbsp;
+        <% if Rails.env == "production" %>
+          <% client = Bitly.client %>
+          <% url = client.shorten("http://www.halfpastnow.com/explorers/austin/#{@bookmarkList.slug}")  %>
+          <a href="http://twitter.com/intent/tweet?url=<%= url.short_url%>&text=Austin events @halfpastnow" target="_blank" title="Share on Twitter" class="tips" data-placement="top"><img src="/assets/images/icon-twitter.png" alt=""/></a>
+        <% else %>
+          <a href="http://twitter.com/intent/tweet?url=http://www.halfpastnow.com/explorers/austin/<%= @bookmarkList.slug %>&text=Austin events @halfpastnow" target="_blank" title="Share on Twitter" class="tips" data-placement="top"><img src="/assets/images/icon-twitter.png" alt=""/></a>
+        <% end %>
+           &nbsp;&nbsp;
+
         <a href="https://www.facebook.com/sharer/sharer.php?u=http://www.halfpastnow.com/explorers/austin/<%= @bookmarkList.slug %>" target="_blank" title="Share on Facebook" data-toggle="tooltip" class="tips" data-placement="top"><img src="/assets/images/icon-facebook.png" alt=""/></a>
       </span>
     </article>
     <% end %>
     <section class="product-list inner clearfix">
       <h1>My Top Spots</h1>
-      <% @occurrences.size <=0 or @bookmarkList_venues.size <= 0? results = nil : results = 1 %>
+      <% (@occurrences.size <=0 and @bookmarkList_venues.size <= 0) ? results = nil : results = 1 %>
       <%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences, :venues_lists => [],:bookmarkList => @bookmarkList } %>
-      <%= render :partial => "events/event_list",:locals => { :occurrences => [],:venues_lists => @bookmarkList_venues} %>
+      <%= render :partial => "events/event_list",:locals => { :occurrences => [],:venues_lists => @bookmarkList_venues,:bookmarkList => @bookmarkList } %>
        <% if results.nil? %>
         <li class="no-results">
           <h3>There aren't any events going on in this area matching your filters.</h3>

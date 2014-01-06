@@ -25,6 +25,13 @@
     <% end %>
 
   </div>
+  <div class="place">
+    <% bookmark = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => venue_list.id, :bookmark_list_id => bookmarkList.id).first %>
+
+    <% if bookmark %>
+      <%= bookmark.comment.truncate(80) %>
+    <% end %>
+  </div>
 </article>
 
 <script>
