@@ -92,14 +92,14 @@
                         <span class="menu-text"> Profile </span>
                       <% end %>
                     </li>
-                    <li class="divider"></li>
+                    <li class="divider" style="margin: 1px 1px; !important"></li>
                     <li>
                       <%= link_to settings_dashboard_index_path do %>
                         <i class="icon-cog"></i>
                         <span class="menu-text"> Settings </span>
                       <% end %>
                     </li>
-                    <li class="divider"></li>
+                    <li class="divider" style="margin: 1px 1px; !important"></li>
                     <li>
                       <% if user_signed_in? %>
                         <%= link_to destroy_user_session_path, method: :delete do %>
@@ -544,7 +544,6 @@
   <% if user_signed_in? %>
   .nav.pull-right a:first-child {
     position: relative;
-    top: 7px;
   }
   <% end %>
 
