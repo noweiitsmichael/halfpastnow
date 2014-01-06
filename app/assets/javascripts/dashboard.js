@@ -192,7 +192,8 @@ $(document).ready(function () {
 // Profile Page END
 
 // My List Page
-  $('.my-list > li:first').addClass('active');
+  //$('.my-list > li:first').addClass('active');
+  $('.my-list > li.Bookmarks').addClass('active');
   $('.my-list > li').click(function () {
     $('.my-list > li').removeClass('active');
     $(this).addClass('active');

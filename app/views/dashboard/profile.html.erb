@@ -24,23 +24,23 @@
         <div class="col-sm-6">
           <!-- Profile info -->
           <div class="profile-user-info">
-            <button class="btn btn-info btn-lg" type="button" style="border-radius: 10px">
+            <%= link_to my_list_dashboard_index_path, class: "btn btn-info btn-lg", style: "border-radius: 10px" do %>
               <span class="line-height-1 bigger-170"> <%= @user.bookmarked_events.count %> </span>
               <br>
               <span class="line-height-1 smaller-90"> Bookmarked <br> Events </span>
-            </button>
+            <% end %>
 
-            <button class="btn btn-purple btn-lg" type="button" style="border-radius: 10px">
+            <%= link_to my_list_dashboard_index_path, class: "btn btn-purple btn-lg", style: "border-radius: 10px" do %>
               <span class="line-height-1 bigger-170 "> <%= @user.bookmarked_venues.count %> </span>
               <br>
               <span class="line-height-1 smaller-90"> Bookmarked <br> Venues </span>
-            </button>
+            <% end %>
 
-            <button class="btn btn-pink btn-lg" type="button" style="border-radius: 10px">
+            <%= link_to my_list_dashboard_index_path, class: "btn btn-pink btn-lg", style: "border-radius: 10px" do %>
               <span class="line-height-1 bigger-170 "> <%= @user.bookmarked_acts.count %> </span>
               <br>
               <span class="line-height-1 smaller-90"> Bookmarked <br> Artists </span>
-            </button>
+            <% end %>
           </div>
 
           <div class="space-4"></div>

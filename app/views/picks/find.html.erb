@@ -162,18 +162,43 @@
              <a href="#" class="unfollow btn btn-mid btn-danger" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden unless currentUserIsFollowing %> >following</a>
           &nbsp;&nbsp;
         <% end %>
-        <a href="http://twitter.com/intent/tweet?url=http://www.halfpastnow.com/explorers/austin/<%= @bookmarkList.slug %>&text=Austin events @halfpastnow" target="_blank" title="Share on Twitter" class="tips" data-placement="top"><img src="/assets/images/icon-twitter.png" alt=""/></a>
-         &nbsp;&nbsp;
+        <% if false #Rails.env == "production" %>
+          <% client = Bitly.client %>
+          <% url = client.shorten("http://www.halfpastnow.com/explorers/austin/#{@bookmarkList.slug}")  %>
+          <a href="http://twitter.com/intent/tweet?url=<%= url.short_url%>&text=Austin events @halfpastnow" target="_blank" title="Share on Twitter" class="tips" data-placement="top"><img src="/assets/images/icon-twitter.png" alt=""/></a>
+        <% else %>
+          <a href="http://twitter.com/intent/tweet?url=http://www.halfpastnow.com/explorers/austin/<%= @bookmarkList.slug %>&text=Austin events @halfpastnow" target="_blank" title="Share on Twitter" class="tips" data-placement="top"><img src="/assets/images/icon-twitter.png" alt=""/></a>
+        <% end %>
+           &nbsp;&nbsp;
+
         <a href="https://www.facebook.com/sharer/sharer.php?u=http://www.halfpastnow.com/explorers/austin/<%= @bookmarkList.slug %>" target="_blank" title="Share on Facebook" data-toggle="tooltip" class="tips" data-placement="top"><img src="/assets/images/icon-facebook.png" alt=""/></a>
       </span>
     </article>
     <% end %>
     <section class="product-list inner clearfix">
       <h1>My Top Spots</h1>
-      <%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences, :bookmarkList => @bookmarkList } %>
+      <% (@occurrences.size <=0 and @bookmarkList_venues.size <= 0) ? results = nil : results = 1 %>
+      <%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences, :venues_lists => [],:bookmarkList => @bookmarkList } %>
+      <%= render :partial => "events/event_list",:locals => { :occurrences => [],:venues_lists => @bookmarkList_venues,:bookmarkList => @bookmarkList } %>
+       <% if results.nil? %>
+        <li class="no-results">
+          <h3>There aren't any events going on in this area matching your filters.</h3>
+          Suggestions:
+          <ul class="no-results-suggestions">
+            <li>Try zooming out on the map.</li>
+            <li>Try a different location on the map.</li>
+            <li><a href="/">Clear out</a> your current filters.</li>
+          </ul>
+        </li>
+      <% end %>
     </section>
   </div>
 </section>
+  <!-- Modal -->
+  <div class="modal fade hide" id="bookmark_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+  </div>
+  <!-- /.modal -->
 <style>
   .product-list figure{
     width:300px !important;

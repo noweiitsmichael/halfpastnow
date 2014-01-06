@@ -423,7 +423,7 @@ $(function () {
     },
     onClose: function (selectedDate) {
       $(".custom-end").datepicker("option", "minDate", selectedDate);
-      $("#date").html($('.custom-start').val()+" to "+$('.custom-end').val())
+      $(".date_search").html($('.custom-start').val()+" to "+$('.custom-end').val())
 
     }
   });
@@ -463,18 +463,18 @@ $(function () {
     },
     onClose: function (selectedDate) {
       $(".custom-start").datepicker("option", "maxDate", selectedDate);
-      $("#date").html($('.custom-start').val()+" to "+$('.custom-end').val())
+      $(".date_search").html($('.custom-start').val()+" to "+$('.custom-end').val())
     }
 
   });
 
   $(".custom-start,.custom-end").datepicker("setDate", Date.today().toString("MM/dd/yyyy"))
 
-  $("#date").html($('.custom-start').val()+" to "+$('.custom-end').val())
-
+  $(".date_search").html($('.custom-start').val()+" to "+$('.custom-end').val())
+  $('.flickr_pagination a').attr('data-remote', 'true');
   $( "#slider-step" ).bind( "change", function(event, ui) {
     console.log($(this).val());
-    $('#cost').html(' under $'+$(this).val())
+    $('.cost_search').html(' under $'+$(this).val())
     $( "label.cvalue" ).text( 'Less Than $' + $(this).val() );
     filter.low_price = "";
     filter.high_price = ($(this).val() === MAX_PRICE) ? "" : $(this).val();
@@ -514,7 +514,7 @@ $(function () {
     max: MAX_PRICE,
     value: MAX_PRICE,
     slide: function (event, ui) {
-      $('#cost').html("under" + ui.value)
+      $('.cost_search').html("under" + ui.value)
       filter.low_price = "";
       filter.high_price = (ui.value === MAX_PRICE) ? "" : ui.value;
       updateViewFromFilter(false);
@@ -1112,7 +1112,8 @@ function streamSelector() {
 
 //user is "finished typing," do something
 function doneTyping() {
-  $('#related_events').show()
+  $('#events').show()
+  $('#related_events').hide()
   filter.search = $('.search-input').val();
   pullEvents({update_search: false});
 }
@@ -1184,7 +1185,7 @@ function pullEvents(updateOptions) {
       $("#related_events .main .inline .events").html(data);
       $("#events .main .inline .events").html(data);
 
-      $(".total_number").text($("#related_events .main .inline .events").find('article').length);
+//      $(".total_number").text($("#related_events .main .inline .events").find('article').length);
 
 //      console.log("----NUM EVENTS-----");
 //      console.log(jData.find("#combo_total_occurrences").html());
@@ -1350,6 +1351,14 @@ function happy_place_events(stream_id, location) {
     if (false) {
     } else {
       $("#" + location).html(data);
+      // advertisements
+      $('.ad-details').on('click',function(){
+        var id = $(this).data('id');
+        var name = $(this).data('prop');
+        var value = $(this).data('value');
+        $.post('/admin/advertisements/update_ads_details',{pk: id, name: name, value: value })
+      });
+
       slider_arrows(location)
       if ($('#' + location).find('article').length) {
         $('#' + location).append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
@@ -1397,7 +1406,7 @@ function cost_filter_events(high_price) {
 //      $(".total_number").text($('#'+location).find('article').length)
       $("#related_events .main .inline .events").html(data);
       $("#events .main .inline .events").html(data);
-      $(".total_number").text($("#related_events .main .inline .events").find('article').length);
+//      $(".total_number").text($("#related_events .main .inline .events").find('article').length);
 
     }
   });
@@ -1408,12 +1417,11 @@ function dropdown_search_events(tag) {
   filter.included_tags = "6,"+ tag
   }else{
     filter.included_tags = tag
-
   }
   $.get("/events/index?ajax=true", filter, function (data) {
     $("#related_events .main .inline .events").html(data);
     $("#events .main .inline .events").html(data);
-    $(".total_number").text($("#related_events .main .inline .events").find('article').length);
+//    $(".total_number").text($("#related_events .main .inline .events").find('article').length);
   });
 }
 function slider_arrows(location) {
@@ -1546,6 +1554,7 @@ $(function () {
       dropdown_search_events($(this).attr('tag_id'))
       $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     }
-
+    $('#events').show()
+    $('#related_events').hide()
   });
 });

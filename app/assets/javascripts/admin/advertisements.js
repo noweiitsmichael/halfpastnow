@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
   // ads start
-  $('#advertisement-adv_type, #advertisement-name,#advertisement-title, #advertisement-description,#advertisement-advertiser, #advertisement-email, #advertisement-phone, #advertisement-weight, #advertisement-placement, #advertisement-start, #advertisement-end').editable({
+  $('#advertisement-adv_type, #advertisement-name,#advertisement-title, #advertisement-description,#advertisement-advertiser, #advertisement-email, #advertisement-phone, #advertisement-weight, #advertisement-placement, #advertisement-start, #advertisement-end, #advertisement-target').editable({
     type: 'text',
     url: '/admin/advertisements/update_ads_details'
   });

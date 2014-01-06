@@ -12,8 +12,14 @@
   <%= javascript_include_tag "half.dynamics" %>
   <%= javascript_include_tag "smartinfowindow.js" %>
   <%= stylesheet_link_tag "custom1" %>
+  <% @location_page = "serach" %>
   <script type="text/javascript" language="javascript">
     $("document").ready(function () {
+      $('.flickr_pagination a').click(function () {
+        $("#related_events .main .inline .events,#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+      })
+      $('.flickr_pagination a').attr('data-remote', 'true');
+      $(".total_number").text("<%= @allOccurrences.count %>");
       $('.desc_btn').hide();
       $(".asc_btn").click(function () {
         var sort_on = $(this).data('sort_on');
@@ -48,6 +54,19 @@
         $('.' + $(this).data('type') + '.asc_btn').show();
         $('.' + $(this).data('type') + '.desc_btn').hide();
       });
+
+      // advertisements
+      $('.ad-details').on('click', function () {
+        var id = $(this).data('id');
+        var name = $(this).data('prop');
+        var value = $(this).data('value');
+        $.post('/admin/advertisements/update_ads_details', {pk: id, name: name, value: value })
+      });
+
+      $('.neighborhood_link').on("click", function () {
+        $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+      });
+
     });
   </script>
 <% end %>
@@ -360,27 +379,28 @@
   </script>
 <% end %>
 <% content_for :body do %>
+
   <section class="search">
 
-    <div class="tabs">
+  <div class="tabs">
+  <div class="container">
+    <ul class="nav nav-tabs" id="search-tab">
+      <li class="events_tab active"><a data-toggle="tab" tag_id="0" tag_type="all" href="#events">Events</a></li>
+      <% if user_signed_in? %>
+        <% @saved_search.each do |search| %>
+          <li class="related_events">
+            <a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" tag_type="<%= search.tag_type.nil? ? "nil" : search.tag_type %>" tag_id="<%= search.tag_id.nil? ? search.tag_id.to_i : search.tag_id.to_i %>" key="<%= search[:search_key] %>"><%= search[:search_key].gsub("_", " ") %>
+              <i class='icon-cross'></i></a></li>
+        <% end %>
+      <% end %>
+
+    </ul>
+  </div>
+
+  <div class="tab-content">
+  <div id="events" class="tab-pane fade in active">
+    <div class="sort-panel filter-toggle price date">
       <div class="container">
-        <ul class="nav nav-tabs" id="search-tab">
-          <li class="events_tab active"><a data-toggle="tab" tag_id="0" tag_type="all" href="#events">Events</a></li>
-          <% if user_signed_in? %>
-            <% @saved_search.each do |search| %>
-              <li class="related_events">
-                <a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" tag_type="<%= search.tag_type.nil? ? "nil" : search.tag_type %>" tag_id="<%= search.tag_id.nil? ? search.tag_id.to_i : search.tag_id.to_i %>" key="<%= search[:search_key] %>"><%= search[:search_key].gsub("_", " ") %>
-                  <i class='icon-cross'></i></a></li>
-            <% end %>
-          <% end %>
-
-        </ul>
-      </div>
-
-      <div class="tab-content">
-        <div id="events" class="tab-pane fade in active">
-          <div class="sort-panel filter-toggle price date">
-            <div class="container">
            <span class="sort-item">
              <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
               <div style="width: 340px !important;" class="popover bottom">
@@ -441,47 +461,57 @@
                  <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
                </div>
              </span>
-          </div>
-
-          </div>
-          <div class="content main" style="padding-top:60px">
-            <div class="container inline">
-
-              <div class="container head">
-                <div class="pull-left">
-                  <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results for <span id="search_name1">all events</span></h2>
-                  <div>
-                    <span class="text-info"><b>Date:&nbsp;&nbsp;</b><span id="date"></span></span><br>
-                    <span class="text-info"><b>Time:&nbsp;&nbsp;</b><span id="time"></span></span> <br>
-                    <span class="text-info"><b>Cost:&nbsp;&nbsp;</b><span id="cost"></span></span>
-                  </div>
-                </div>
-                <div class="pull-right" style="max-height: 100px !important;overflow: hidden !important;">
-                  <% if @advertisement.present? %>
-                    <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank, class: "pull-right" do %>
-                      <%= image_tag @advertisement.image.full, alt: "Advertisement" %>
-                    <% end %>
-                  <% else %>
-                    <img alt="" src="assets/ad.jpg" class="pull-right">
-                  <% end %>
-                </div>
-              </div>
-              </div>
-              <div class="container body">
-                <section class="product-list clearfix events">
-                  <% @occurrences.each_with_index do |occurrence, index| %>
-                    <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
-                  <% end %>
+      </div>
 
 
-                </section>
-              </div>
+    </div>
+    <div class="content main" style="padding-top:60px">
+      <div class="container inline">
+
+        <div class="container head">
+          <div class="pull-left">
+            <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results for
+              <span id="search_name1">all events</span></h2>
+
+            <div>
+              <span class="text-info"><b>Date:&nbsp;&nbsp;</b><span class="date_search"></span></span><br>
+              <span class="text-info"><b>Time:&nbsp;&nbsp;</b><span class="time_search"></span></span> <br>
+              <span class="text-info"><b>Cost:&nbsp;&nbsp;</b><span class="cost_search"></span></span>
             </div>
           </div>
+          <div class="pull-right" style="max-height: 100px !important;max-width: 550px !important;overflow: hidden !important;">
+            <% if @banner_advertisement.present? %>
+              <div class="ad-details" data-id="<%= @banner_advertisement.id %>" data-prop="clicks" data-value="<%= @banner_advertisement.clicks.to_i + 1 %>">
+                <%= link_to @banner_advertisement.target_url.present? ? @banner_advertisement.target_url : '#', target: :_blank, class: "pull-right" do %>
+                  <%= image_tag @banner_advertisement.image.full, alt: "Advertisement" %>
+                <% end %>
+              </div>
+            <% else %>
+              <img alt="" src="assets/ad.jpg" class="pull-right">
+            <% end %>
+
+          </div>
         </div>
-        <div id="related_events" class="tab-pane fade">
-          <div class="sort-panel filter-toggle price date">
-            <div class="container">
+
+        <section class="product-list clearfix events">
+          <%= will_paginate @occurrences, previous_label: h("<"), next_label: h(">"), class: "flickr_pagination" %>
+
+          <% @occurrences.each_with_index do |occurrence, index| %>
+            <% if index == 2 and !@advertisement.nil? %>
+              <%= render :partial => "events/search_ads", :locals => {:advertisement => @advertisement} %>
+            <% else %>
+              <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+            <% end %>
+          <% end %>
+
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="related_events" class="tab-pane fade">
+    <div class="sort-panel filter-toggle price date">
+      <div class="container">
            <span class="sort-item">
              <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
               <div style="width: 340px !important;" class="popover bottom">
@@ -542,27 +572,34 @@
                 <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
                 <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
               </div>
-            </span>
+           </span>
+        <span>aaa</span>
 
-            </div>
+        <div>xxx</div>
+      </div>
 
-          </div>
-          <div class="content main">
-            <div class="container inline">
-              <img alt="" src="assets/ad.jpg" class="pull-right">
+    </div>
+    <div class="content main">
+      <div class="container inline">
+        <img alt="" src="assets/ad.jpg" class="pull-right">
 
-              <h2 class="text-info"><span class="total_number">  </span> results for <span id="search_name"></span></h2>
+        <h2 class="text-info"><span class="total_number">  </span> results for <span id="search_name"></span></h2>
 
-              <p class="lead text-info"></p>
-              <section class="product-list clearfix events">
-
-              </section>
-            </div>
-          </div>
-
+        <div>
+          <span class="text-info"><b>Date:&nbsp;&nbsp;</b><span class="date_search"></span></span><br>
+          <span class="text-info"><b>Time:&nbsp;&nbsp;</b><span class="time_search"></span></span> <br>
+          <span class="text-info"><b>Cost:&nbsp;&nbsp;</b><span class="cost_search"></span></span>
         </div>
+        <p class="lead text-info"></p>
+        <section class="product-list clearfix events">
+
+        </section>
       </div>
     </div>
+
+  </div>
+  </div>
+  </div>
   </section>
   <div style='display:none'>
     <div id='save_share_content' style='padding:10px; background:#fff;'>
@@ -584,7 +621,9 @@
   <script>
 
     $(document).ready(function () {
-
+      $('.custom-start').val("<%= (Time.now).strftime('%m/%d/%Y') %>")
+      $('.custom-end').val("<%= (Time.now+14.days).strftime('%m/%d/%Y') %>")
+      $(".date_search").html($('.custom-start').val() + " to " + $('.custom-end').val())
       <% if params[:key].present? and params[:tag_id].present? and params[:tag_type].present? %>
       $(".active").attr('class', '');
       $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>' tag_type='<%= params[:tag_type] %>' tag_id='<%= params[:tag_id] %>'><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
@@ -599,7 +638,8 @@
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
         $.get("/search_results", {tag_id: "<%= params[:tag_id] %>", tag_type: "<%= params[:tag_type] %>"})
         $('#search_name,#search_name1').html($(this).text())
-
+        $('#events').show()
+        $('#related_events').hide()
       });
       $('.icon-white-pin').on("click", function () {
         key = $(this).parent().attr('key')
@@ -628,7 +668,7 @@
       $.get("/search_results", {tag_id: "<%= params[:tag_id] %>", tag_type: "<%= params[:tag_type] %>"})
       $('#search_name,#search_name1').html("<%= params[:key] %>")
       <% elsif params[:key].present? and params[:tag_id].present? %>
-
+      <% @location_page = "serach" %>
       $(".active").attr('class', '');
       $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>' tag_id='<%= params[:tag_id] %>'><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
       $('.icon-cross').on("click", function () {
@@ -639,9 +679,17 @@
         console.log($(this).text())
         $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+        if (filter.start_date.length == 0) {
+          filter.start_date = "<%= Date.today %>"
+        }
+        if (filter.end_date.length == 0) {
+          filter.end_date = "<%= Date.today+14.days %>"
+        }
+
         dropdown_search_events("<%= params[:tag_id] %>")
         $('#search_name,#search_name1').html($(this).text())
-
+        $('#events').show()
+        $('#related_events').hide()
       });
       $('.icon-white-pin').on("click", function () {
         key = $(this).parent().attr('key')
@@ -667,21 +715,28 @@
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
+      if (filter.start_date.length == 0) {
+        filter.start_date = "<%= Date.today %>"
+      }
+      if (filter.end_date.length == 0) {
+        filter.end_date = "<%= Date.today+14.days %>"
+      }
       dropdown_search_events("<%= params[:tag_id] %>")
       $('#search_name,#search_name1').html("<%= params[:key] %>")
       <% elsif params[:key].present? %>
+      <% @location_page = "serach" %>
+
       $(".active").attr('class', '');
       $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>' ><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
       $('.icon-cross').on("click", function () {
         $(this).parents('li').remove()
       })
-
       $('#search-tab a').on("click", function () {
         console.log($(this).text())
         doneTyping1($(this).text());
         $('#search_name,#search_name1').html($(this).text())
-//      $('#related_events').show();
-//      $('#events').hide();
+        $('#events').show()
+        $('#related_events').hide()
       });
       $('.icon-white-pin').on("click", function () {
         key = $(this).parent().attr('key')
@@ -691,7 +746,6 @@
         $.get('/saved_search', {key: key}, function (data) {
           console.log(check)
           check.attr('key_id', data["key_id"]);
-
         })
         $('#share').click(function () {
           window.open(
@@ -700,7 +754,6 @@
             'width=626,height=436');
         })
         $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
-
         <% end %>
       })
       $('#search_name,#search_name1').text("<%= params[:key] %>")
@@ -718,6 +771,34 @@
         <% end %>
       }
     })
+    $('.popover_dates').click(function () {
+      if ($(this).attr('tag_type') == 'today') {
+
+        $('.custom-start').val("<%= Time.now.strftime('%m/%d/%Y') %>")
+        $('.custom-end').val("<%= Time.now.strftime('%m/%d/%Y') %>")
+        console.log('today')
+        console.log($('.custom-start').val())
+        console.log($('.custom-end').val())
+      }
+      if ($(this).attr('tag_type') == 'tomorrow') {
+        $('.custom-start').val("<%= (Time.now+1.day).strftime('%m/%d/%Y') %>")
+        $('.custom-end').val("<%= (Time.now+1.day).strftime('%m/%d/%Y') %>")
+        console.log('tomorrow')
+        console.log($('.custom-start').val())
+        console.log($('.custom-end').val())
+      }
+      if ($(this).attr('tag_type') == 'weekend') {
+        $('.custom-start').val("<%= (Time.now.next_week-3.day).strftime('%m/%d/%Y') %>")
+        $('.custom-end').val("<%= (Time.now.next_week-1.day).strftime('%m/%d/%Y') %>")
+        console.log('weekend')
+        console.log($('.custom-start').val())
+        console.log($('.custom-end').val())
+      }
+      $(".date_search").html($('.custom-start').val() + " to " + $('.custom-end').val())
+    })
+    $('.popover_dates:visible,.popover_dates:hidden').click(function () {
+      $(".date_search").html($('.custom-start').val() + " to " + $('.custom-end').val())
+    })
     $('.dropdown-menu1 a,.popover_dates').click(function () {
       console.log("dropdown click")
       $(".active").attr('class', '');
@@ -725,7 +806,6 @@
       $('.icon-cross').on("click", function () {
         $(this).parents('li').remove()
       })
-
       $('#search_name,#search_name1').html($(this).text())
       console.log("this is tag reference:" + $(this).attr('tag_id'))
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
@@ -739,6 +819,12 @@
       }
       else {
         console.log("tag_id based search")
+        if (filter.start_date.length == 0) {
+          filter.start_date = "<%= Date.today %>"
+        }
+        if (filter.end_date.length == 0) {
+          filter.end_date = "<%= Date.today+14.days %>"
+        }
         dropdown_search_events($(this).attr('tag_id'))
       }
 //      doneTyping1($(this).text());
@@ -751,13 +837,19 @@
           $.get("/search_results", {tag_id: $(this).attr('tag_id'), tag_type: $(this).attr('tag_type')})
         }
         else {
+          if (filter.start_date.length == 0) {
+            filter.start_date = "<%= Date.today %>"
+          }
+          if (filter.end_date.length == 0) {
+            filter.end_date = "<%= Date.today+14.days %>"
+          }
           dropdown_search_events($(this).attr('tag_id'))
         }
 //        doneTyping1($(this).text());
         $('#search_name,#search_name1').html($(this).text())
-
+        $('#events').show()
+        $('#related_events').hide()
       });
-
       $('.icon-white-pin').on("click", function () {
         key = $(this).parent().attr('key')
         tag_id = $(this).parent().attr('tag_id')
@@ -775,10 +867,8 @@
         <% end %>
       })
       $(".navbar-search #appendedInput").next(".popover").hide().removeClass("open");
-
     })
     $(".submit").on("click", function () {
-
       if ($("#appendedInput").val().length >= 3) {
         var search_key = $("#appendedInput").val().replace(/\ /g, "_")
         $(".active").attr('class', '');
@@ -807,7 +897,6 @@
           $.get('/saved_search', {key: key, tag_id: tag_id}, function (data) {
             console.log(check)
             check.attr('key_id', data["key_id"]);
-
           })
           $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
 
@@ -826,12 +915,17 @@
 
         doneTyping2($(this).text());
         $('#search_name,#search_name1').html($(this).text())
+        $('#events').show()
+        $('#related_events').hide()
       });
       $('.active a').click()
+      $('#events').show()
+      $('#related_events').hide()
+      $('.popover').hide()
     })
     $('.navbar-search').submit(function (e) {
       e.preventDefault();
-
+      $('.popover').hide()
       if ($("#appendedInput").val().length >= 3) {
         var search_key = $("#appendedInput").val().replace(/\ /g, "_")
         $(".active").attr('class', '');
@@ -879,14 +973,16 @@
 
         doneTyping2($(this).text());
         $('#search_name,#search_name1').html($(this).text())
+        $('#events').show()
+        $('#related_events').hide()
       });
       $('.active a').click()
+      $('#events').show()
+      $('#related_events').hide()
     })
-
     url = window.location.href
     if (url.contains('key:')) {
       $(".active").attr('class', '');
-
       key_array = $.trim(decodeURI(url)).split("key:");
       key_value = key_array[1];
       $("a:contains(" + key_value + ")").parent('li').addClass('active').click()
@@ -898,26 +994,24 @@
       $('#events').show();
     })
     $('.related_events').click(function () {
-      $('#related_events').show();
-      $('#events').hide();
+      $('#related_events').hide();
+      $('#events').show();
     })
     $('#search-tab a').on("click", function () {
       console.log("i am here")
       doneTyping1($(this).text());
       $('#search_name,#search_name1').text($(this).text())
+      $('#events').show()
+      $('#related_events').hide()
     });
-
     $('.filter-dropdown').hide()
     $('figure').click(function () {
       var event_id = $(this).parent('article').attr('link-id')
       console.log(event_id)
       window.location.href = window.location.origin + "/events/show/" + event_id + "?fullmode=true"
-
     })
     <%if (params[:tag_id].present? or params[:tag_type].present? or params[:key].present?) %>
-
     <% end %>
-
   </script>
   <style>
     .cost_sort, .time_sort {
@@ -933,7 +1027,6 @@
     .popover_dates {
       margin-left: 10px;
     }
-
   </style>
 <% end %>
 

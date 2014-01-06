@@ -77,6 +77,7 @@ gem 'delayed_job_active_record'
 
 gem 'therubyracer'
 gem 'will_paginate'
+gem 'ajax_pagination'
 gem 'will_paginate-bootstrap'
 gem 'oink' #memory logging
 # gem "librato-metrics" #logging/error reporting to Liberato add-on
@@ -87,6 +88,12 @@ gem 'dalli'
 
 # Email via mandrill
 gem 'mandrill-api'
+
+#bitly
+gem 'bitly'
+
+#yelp
+gem 'yelpster'
 
 # gem 'eventfulapi'
 # gem 'eventbrite-client'

@@ -1,16 +1,17 @@
-<article class="slide-item featured ad-details" data-id = "<%= advertisement.id %>" data-prop = "clicks" data-value = "<%= advertisement.clicks.to_i + 1 %>" style="margin: 0 18px">
-  <div>
+<article class="product-item featured ad-details" data-id = "<%= advertisement.id %>" data-prop = "clicks" data-value = "<%= advertisement.clicks.to_i + 1 %>" style="margin: 0 18px">
+  <div><a href="#" class="ui-link">
     <%= link_to advertisement.target_url.present? ? advertisement.target_url : '#', class: 'ui-link', target: :_blank do %>
       <%= image_tag advertisement.image.full %>
     <% end %>
+  </a>
   </div>
-  <div class="name" style="margin-bottom: 2px !important;">
+  <div class="name" style="margin-bottom: 2px !important;height: 40px !important;">
     <%= link_to advertisement.title,advertisement.target_url.present? ? advertisement.target_url : '#', class: 'ui-link', target: :_blank%>
   </div>
-  <div>
+  <div class="clearfix">
     <span class="pull-left"><%= advertisement.description.truncate(80) %></span>
   </div>
   <div>
-    <span class="featured-text"><%= advertisement.adv_type.titleize %></span>
+    <span class="featured-text">Featured Event</span>
   </div>
 </article>

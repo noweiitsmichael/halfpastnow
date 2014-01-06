@@ -1,7 +1,6 @@
 <% offset = offset || 0 %>
 
 <% if occurrences.size > 0 %>
-
 	<% if @mobileMode %>
 		<% occurrences.each_with_index do |occurrence, index| %>
 		<%= render :partial => "events/android_event_element", :locals => { :occurrence => occurrence, :index => index + offset, :bookmarkList => (defined? bookmarkList) ? bookmarkList : nil } %>
@@ -11,18 +10,13 @@
 		<%= render :partial => "events/event_element", :locals => { :occurrence => occurrence, :index => index + offset, :bookmarkList => (defined? bookmarkList) ? bookmarkList : nil } %>
 		<% end %>
 	<% end %>
-	
-<% else %>
-	<li class="no-results">
-		<h3>There aren't any events going on in this area matching your filters.</h3>
-		Suggestions:
-		<ul class="no-results-suggestions">
-			<li>Try zooming out on the map.</li>
-			<li>Try a different location on the map.</li>
-			<li><a href="/">Clear out</a> your current filters.</li>
-		</ul>
-	</li>
-<% end %>
+  <% end %>
+<% if venues_lists.size > 0 %>
+  <% venues_lists.each do |venue| %>
+    <%= render :partial => "events/venue_element", :locals => { :venue_list => venue, :bookmarkList => (defined? bookmarkList) ? bookmarkList : nil } %>
+  <% end %>
+  <% end %>
+
 <style>
   .product-item img {
     overflow-y: hidden;

@@ -92,14 +92,14 @@
                         <span class="menu-text"> Profile </span>
                       <% end %>
                     </li>
-                    <li class="divider"></li>
+                    <li class="divider" style="margin: 1px 1px; !important"></li>
                     <li>
                       <%= link_to settings_dashboard_index_path do %>
                         <i class="icon-cog"></i>
                         <span class="menu-text"> Settings </span>
                       <% end %>
                     </li>
-                    <li class="divider"></li>
+                    <li class="divider" style="margin: 1px 1px; !important"></li>
                     <li>
                       <% if user_signed_in? %>
                         <%= link_to destroy_user_session_path, method: :delete do %>
@@ -255,16 +255,7 @@
       </div>
       <img src="/assets/images/slide1.jpg" alt=""/>
     </li>
-    <li class="item">
-      <div class="container">
-        <div class="carousel-caption">
-          <h1>Find where to go, on the go.</h1>
-          <p class="lead">Activities tailored to your lifestyle.</p>
-          <a class="btn btn-large btn-danger" style="width:100px !important" href="https://itunes.apple.com/us/app/halfpastnow/id589530107">For iOS</a>&nbsp;&nbsp;<a class="btn btn-large btn-danger" style="width:100px !important" href="https://play.google.com/store/apps/details?id=com.halfpastnow&hl=en">For Android</a>
-        </div>
-      </div>
-      <img src="/assets/images/slide2.gif" alt="">
-    </li>
+
     <li class="item">
       <div class="container">
         <div class="carousel-caption">
@@ -282,6 +273,16 @@
         <a class="btn btn-large btn-danger" href="/explorers/austin/trending-in-austin">Trending in Austin</a>
       </div>
       <img src="/assets/images/slide4.gif" alt=""/>
+    </li>
+    <li class="item">
+      <div class="container">
+        <div class="carousel-caption">
+          <h1>Find where to go, on the go.</h1>
+          <p class="lead">Activities tailored to your lifestyle.</p>
+          <a class="btn btn-large btn-danger" style="width:100px !important" href="https://itunes.apple.com/us/app/halfpastnow/id589530107">For iOS</a>&nbsp;&nbsp;<a class="btn btn-large btn-danger" style="width:100px !important" href="https://play.google.com/store/apps/details?id=com.halfpastnow&hl=en">For Android</a>
+        </div>
+      </div>
+      <img src="/assets/images/slide2.gif" alt="">
     </li>
   </ul>
   <a href="#" id="prev" title="Show previous" name="prev"></a>
@@ -543,7 +544,6 @@
   <% if user_signed_in? %>
   .nav.pull-right a:first-child {
     position: relative;
-    top: 7px;
   }
   <% end %>
 

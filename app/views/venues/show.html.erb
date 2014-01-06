@@ -18,11 +18,11 @@
   <%= stylesheet_link_tag "elastislide", "details" %>
   <%= javascript_include_tag "jquery.elastislide" %>
   <script type="text/javascript">
-    var id = "<%= @venue.id  %>";
+    var id = "<%= @venue.slug  %>";
     var type = "venue";
     var root_url = "http://www.halfpastnow.com/";
     var link = root_url + "?" + type + "_id=" + id;
-    var facebook_url = "http://www.halfpastnow.com/" + type + "s/show/" + id + "?fullmode=true";
+    var facebook_url = "http://www.halfpastnow.com/" + type + "s/show/" + id ;
     var app_id = "475386955806720";
     var redirect = "http://www.halfpastnow.com";
     //var bookmark_id = "<#%= @bookmarkId.to_s %>";
@@ -59,6 +59,15 @@
 
     });
 
+    // advertisements
+    $(function () {
+      $('.ad-contaniner .ad-details').on('click',function(){
+        var id = $(this).data('id');
+        var name = $(this).data('prop');
+        var value = $(this).data('value');
+        $.post('/admin/advertisements/update_ads_details',{pk: id, name: name, value: value })
+      });
+    });
 
     $(function () {
       console.log("Loaded share stuff");
@@ -384,6 +393,10 @@
               <%= @venue.phonenumber %>
               <br>
             </address>
+            <h4>Dates &amp; Times</h4>
+            <ul>
+              <%= raw @venue.hours %>
+            </ul>
           </div>
         </div>
         <div class="accordion" id="details-container">
@@ -461,9 +474,11 @@
 
         <div class="ad-contaniner">
           <% if @advertisement.present? %>
-            <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank do %>
-              <%= image_tag @advertisement.image.full, alt: "Advertisement" %>
-            <% end %>
+            <div class="ad-details" data-id = "<%= @advertisement.id %>" data-prop = "clicks" data-value = "<%= @advertisement.clicks.to_i + 1 %>">
+              <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank do %>
+                <%= image_tag @advertisement.image.full, alt: "Advertisement" %>
+              <% end %>
+            </div>
           <% else %>
             <img src="/assets/images/ad02.gif" alt=""/>
           <% end %>
@@ -473,7 +488,11 @@
       </div>
     </div>
   </section>
-
+  <% if user_signed_in?  %>
+    <% if current_user.role == "admin" or current_user.role == "super_admin" %>
+      <div style="text-align:center;padding-top:10px;"><a href="/venues/edit/<%=@venue.id%>" target="_blank">edit</a> </div>
+    <% end %>
+  <% end %>
 <% end %>
 
 <script type="text/javascript">

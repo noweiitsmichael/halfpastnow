@@ -19,6 +19,7 @@
               <th><i class="icon-time bigger-110 hidden-480"></i> Start</th>
               <th><i class="icon-time bigger-110 hidden-480"></i> End</th>
               <th>Views</th>
+              <th>Clicks</th>
               <th>Image</th>
             </tr>
             </thead>
@@ -31,7 +32,8 @@
                 <td><%= adv.advertiser %></td>
                 <td><%= adv.start.to_date.strftime("%m-%d-%Y") %></td>
                 <td><%= adv.end.to_date.strftime("%m-%d-%Y") %></td>
-                <td><%= adv.views %></td>
+                <td><%= adv.views.to_i %></td>
+                <td><%= adv.clicks.to_i %></td>
                 <td><%= image_tag adv.image.tiny %></td>
               </tr>
             <% end %>

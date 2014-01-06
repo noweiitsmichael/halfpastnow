@@ -13,14 +13,22 @@
 
 
   </a></figure>
-  <div class="name"><a href="/events/austin/<%= occurrence.slug %>"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
+  <div class="name"><a href="/events/austin/<%= occurrence.slug %>" target="_blank"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
   <div class="info clearfix">
     <span class="time pull-left" time="<%= occurrence.start.to_i %>"><%= occurrence.start.to_time.strftime("%B %-d @ %-l:%M%P") %></span>
     <span class="value pull-right" price="<%= occurrence.event.price.to_f %>"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price, :unit => "$").to_s + " " : "FREE ") : "FREE" %></span>
   </div>
   <div class="additional-info">
-    <span class="place">
-      <%= link_to occurrence.event.venue.name,"/venues/austin/#{occurrence.event.venue.slug}",:style => "color:#4C334D" %></span>
+    <div class="place">
+      <%= link_to occurrence.venue.name.truncate(35),"/venues/austin/#{occurrence.event.venue.slug}",:style => "color:#4C334D" %>
+    </div>
+    <div class="place">
+      <% neighborhood = occurrence.venue.neighborhoods.first %>
+      <% if neighborhood %>
+        <%= link_to (occurrence.venue.neighborhoods.first.name.truncate(35)),search_results_path(tag_type: 'neighborhood', neighborhood_id: neighborhood.id),  remote: true , :style => "color:#4C334D", class: 'neighborhood_link'  %>
+      <% end %>
+    </div>
+
 
     <% bookmarks = [] %>
     <%
@@ -34,4 +42,3 @@
     <% end %>
   </div>
 </article>
-

@@ -38,7 +38,10 @@ helper :content
 	    @event.update_attributes!(params[:event])
 	    @event.completion = @event.completedness
 	    @event.save!
-
+      @event.occurrences.each do |occ|
+      occ.slug = "#{occ.event.title.truncate(20)}-at-#{occ.event.venue.name.truncate(20)}" rescue "#{occ.id}"
+      occ.save
+    end
 	    redirect_to :action => :eventEdit2, :id => @event.id
 	end
 

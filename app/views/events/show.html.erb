@@ -9,7 +9,15 @@
     <meta property="og:type" content="halfpastnow:event"/>
     <meta property="og:url" content="http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %>"/>
     <meta property="og:site_name" content="halfpastnow"/>
-    <meta property="og:image" content="<%= @event.cover_image_url %>"/>
+
+    <% if @event.pictures.first %>
+      <meta property="og:image" content="<%= @event.pictures.first.image_url(:full) %>"/>
+    <% elsif @event.acts.length != 0 && @event.acts.first.pictures.first %>
+      <meta property="og:image" content="<%= @event.acts.first.pictures.first.image_url(:full) %>"/>
+    <% elsif @event.venue.pictures.first %>
+      <meta property="og:image" content="<%= @event.venue.pictures.first.image_url(:full) %>"/>
+    <% end %>
+
     <meta property="og:title" content="<%= @event.title %> at <%= @event.venue.name %> on halfpastnow.com">
     <meta property="og:description" content="<%= strip_tags(@event.description) %>"/>
   <% end %>
@@ -41,6 +49,7 @@
 
     //console.log(id + ' ' + bookmark_id)
     $(function () {
+
       window.fbAsyncInit = function () {
         console.log("Loaded FB 2");
         FB.init({
@@ -66,6 +75,15 @@
 
     });
 
+    // advertisements
+    $(function () {
+      $('.ad-contaniner .ad-details').on('click',function(){
+        var id = $(this).data('id');
+        var name = $(this).data('prop');
+        var value = $(this).data('value');
+        $.post('/admin/advertisements/update_ads_details',{pk: id, name: name, value: value })
+      });
+    });
 
     $(function () {
       console.log("Loaded share stuff");
@@ -416,6 +434,13 @@
             <% end %>
           </li>
         <% end %>
+        <% if @occurrence.event.recurrences.empty? %>
+          <li>
+            <%= @occurrence.start.to_date.strftime("%a, %d/%b/%Y")  rescue nil %>
+            <span>, <%= @occurrence.start.to_time.strftime("%-l:%M%P") rescue nil %></span>
+            <span><%= "to #{@occurrence.end.to_time.strftime("%-l:%M%P")}" rescue nil %></span>
+          </li>
+        <% end %>
       </ul>
 
     </div>
@@ -681,9 +706,11 @@
     </div>
     <div class="ad-contaniner">
       <% if @advertisement.present? %>
-        <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank do %>
-          <%= image_tag @advertisement.image.full, alt: "Advertisement" %>
-        <% end %>
+        <div class="ad-details" data-id = "<%= @advertisement.id %>" data-prop = "clicks" data-value = "<%= @advertisement.clicks.to_i + 1 %>">
+          <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank do %>
+            <%= image_tag @advertisement.image.full, alt: "Advertisement" %>
+          <% end %>
+        </div>
       <% else %>
         <img src="/assets/images/ad02.gif" alt=""/>
       <% end %>
@@ -693,6 +720,11 @@
   </div>
   </div>
   </section>
+  <% if user_signed_in?  %>
+   <% if current_user.role == "admin" or current_user.role == "super_admin" %>
+  <div style="text-align:center;padding-top:10px;"><a href="/userSubmission/eventEdit1/<%=@event.id%>" target="_blank">edit</a></div>
+  <% end %>
+  <% end %>
   <section class="recommend-events">
     <div id="recommend-events-wrapper">
       <div class="content slider" style="height:198px !important;">
