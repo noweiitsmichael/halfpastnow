@@ -21,17 +21,17 @@ class Occurrence < ActiveRecord::Base
     indexes :start, type: 'date', index: :not_analyzed , boost: 100
     indexes :events do
       indexes :price, type: 'integer',boost: 100
-      indexes :title, analyzer: 'snowball', boost: 1000
-      indexes :description, analyzer: 'snowball', boost: 200
+      indexes :title, analyzer: 'snowball', boost: 700
+      indexes :description, boost: 200
     indexes :acts do
-      indexes :name, analyzer: 'snowball',boost: 90
+      indexes :name ,boost: 800
     end
     indexes :venue do
-      indexes :name, analyzer: 'snowball',boost: 100
-      indexes :description, analyzer: 'snowball'
+      indexes :name ,boost: 800
+      indexes :description, boost: 200
     end
     indexes :tags do
-      indexes :name, analyzer: 'snowball',boost: 90
+      indexes :name, analyzer: 'snowball',boost: 1000
     end
       index
       end

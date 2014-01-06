@@ -434,6 +434,13 @@
             <% end %>
           </li>
         <% end %>
+        <% if @occurrence.event.recurrences.empty? %>
+          <li>
+            <%= @occurrence.start.to_date.strftime("%a, %d/%b/%Y")  rescue nil %>
+            <span>, <%= @occurrence.start.to_time.strftime("%-l:%M%P") rescue nil %></span>
+            <span><%= "to #{@occurrence.end.to_time.strftime("%-l:%M%P")}" rescue nil %></span>
+          </li>
+        <% end %>
       </ul>
 
     </div>
