@@ -74,7 +74,7 @@
   <% end %>
 <% end %>
 <br><br>
-<div class="venue-link"><a href="/?venue_id=<%=@venue.id%>" target="_blank">Live Page</a></div>
+<div class="venue-link"><a href="/venues/austin/<%=@venue.slug%>" target="_blank">Live Page</a></div>
 
 <%= form_for @venue, :url => @venue.id ? "/venues/update/" + @venue.id.to_s : "/venues/create", :html => { :id => "venue_settings", :multipart => true } do |f| %>
    <div class="main settings">
