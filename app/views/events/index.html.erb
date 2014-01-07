@@ -636,7 +636,13 @@
         $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
         $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        $.get("/search_results", {tag_id: "<%= params[:tag_id] %>", tag_type: "<%= params[:tag_type] %>"})
+        filter.tag_id = "<%= params[:tag_id] %>"
+        filter.tag_type = "<%= params[:tag_type] %>"
+        filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+        filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+        console.log("search1")
+        console.log(JSON.stringify(filter))
+        $.get("/search_results", filter)
         $('#search_name,#search_name1').html($(this).text())
         $('#events').show()
         $('#related_events').hide()
@@ -665,7 +671,13 @@
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-      $.get("/search_results", {tag_id: "<%= params[:tag_id] %>", tag_type: "<%= params[:tag_type] %>"})
+      filter.tag_id = "<%= params[:tag_id] %>"
+      filter.tag_type = "<%= params[:tag_type] %>"
+      filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+      filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+      console.log("search2")
+      console.log(JSON.stringify(filter))
+      $.get("/search_results", filter)
       $('#search_name,#search_name1').html("<%= params[:key] %>")
       <% elsif params[:key].present? and params[:tag_id].present? %>
       <% @location_page = "serach" %>
@@ -799,11 +811,12 @@
         console.log($('.custom-end').val())
       }
       $(".date_search").html($('.custom-start').val() + " to " + $('.custom-end').val())
+      $('.active a').click()
     })
     $('.popover_dates:visible,.popover_dates:hidden').click(function () {
       $(".date_search").html($('.custom-start').val() + " to " + $('.custom-end').val())
     })
-    $('.dropdown-menu1 a,.popover_dates').click(function () {
+    $('.dropdown-menu1 a').click(function () {
       console.log("dropdown click")
       $(".active").attr('class', '');
       $('#search-tab').append("<li class='active related_events dropdown_links'><a data-toggle='tab' href='#related_events' key=" + $(this).text().replace(/\ /g, "_") + " tag_id=" + $(this).attr('tag_id') + " tag_type=" + $(this).attr('tag_type') + ">" + $(this).text() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
@@ -819,6 +832,10 @@
         console.log('tag_type based search')
         filter.tag_id = $(this).attr('tag_id')
         filter.tag_type = $(this).attr('tag_type')
+        filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+        filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+        console.log("search3")
+        console.log(JSON.stringify(filter))
         $.get("/search_results", filter)
       }
       else {
@@ -840,7 +857,13 @@
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
         $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
         if ($(this).attr('tag_id') == "0") {
-          $.get("/search_results", {tag_id: $(this).attr('tag_id'), tag_type: $(this).attr('tag_type')})
+          filter.tag_id = $(this).attr('tag_id')
+          filter.tag_type = $(this).attr('tag_type')
+          filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+          filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+          console.log("search4")
+          console.log(JSON.stringify(filter))
+          $.get("/search_results", filter)
         }
         else {
 

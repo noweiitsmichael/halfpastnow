@@ -229,7 +229,7 @@ $(function () {
         // console.log(filter.included_tags);
         popFilterTag(tagID);
         // console.log(filter.included_tags);
-      } else {  // otherwise just remove the tag from included_tags 
+      } else {  // otherwise just remove the tag from included_tags
         popFilterTag(tagID);
       }
       // if this isn't selected
@@ -709,7 +709,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
   } else if (options.showSaveSearchButton !== false) {
     $('.filter-action.action-save').show();
   }
-
+  filter ={}
   option_day = 0;
   if (filter.start_date !== "" || filter.end_date !== "") {
     option_day = O_CUSTOM;
@@ -1054,7 +1054,7 @@ function streamSelector() {
     // console.log("[" + index + "] " + $(this).text() + ":");
     // console.log("width: " + $(this).outerWidth(true));
     // console.log("sumWidth: " + sumWidth);
-    // console.log("parentwidth: " + parentWidth);   
+    // console.log("parentwidth: " + parentWidth);
     // console.log("");
 
     if (sumWidth > parentWidth && overflowIndex === 0) {
@@ -1078,7 +1078,7 @@ function streamSelector() {
       // console.log($(this).text() + ":");
       // console.log("width: " + $(this).outerWidth());
       // console.log("sumWidth: " + sumWidth);
-      // console.log("parentwidth: " + parentWidth);   
+      // console.log("parentwidth: " + parentWidth);
       // console.log("");
       if (index >= overflowIndex || (sumWidth + maxWidth + 24 > parentWidth)) {
         streamSelect.append("<option value='" + $(this).attr("stream-id") + "'>" + $(this).text() + "</option>");
@@ -1169,7 +1169,11 @@ function pullEvents(updateOptions) {
   if (window.location.href.indexOf("sxsw") > -1) {
     controllerLink = "/events/sxsw?ajax=true"
   }
+  filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+  filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
 
+  console.log("pullEvents")
+  console.log(JSON.stringify(filter))
   $.get(controllerLink, filter, function (data) {
     var locations = [];
 
@@ -1254,6 +1258,10 @@ function pullEvents1(updateOptions, search) {
   //alert("hi")
   //alert(JSON.stringify(filter))
   filter.query = filter.search
+  filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+  filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+
+  console.log("pullEvents1")
   console.log(JSON.stringify(filter))
   $.get("/search_results", filter)
 }
@@ -1272,10 +1280,14 @@ function pullEvents2(updateOptions, search) {
   }
   //alert("hi")
   //alert(JSON.stringify(filter))
-  f={}
-  f.query = filter.search
-  console.log(JSON.stringify(f))
-  $.get("/search_results", f)
+
+  filter.query = filter.search
+  filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+  filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+  console.log("pullEvents2")
+  console.log(JSON.stringify(filter))
+
+  $.get("/search_results", filter)
 }
 
 function tagged_saved_search_events(tag, location) {
@@ -1303,6 +1315,7 @@ function saved_search_events(location) {
 
   var controllerLink = "/events/index?ajax=true&root=true"
   f1 = {"search": location}
+
   $.get(controllerLink, f1, function (data) {
     var locations = [];
     var jData = $(data);
@@ -1398,6 +1411,8 @@ function cost_filter_events(high_price) {
   $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
   $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
   filter.high_price = high_price
+  console.log("cost_filter_events")
+  console.log(JSON.stringify(filter))
   $.get(controllerLink, filter, function (data) {
     var locations = [];
     var jData = $(data);
@@ -1412,12 +1427,17 @@ function cost_filter_events(high_price) {
   });
 }
 function dropdown_search_events(tag) {
+
   console.log(tag)
   if(tag == "89"){
   filter.included_tags = "6,"+ tag
   }else{
     filter.included_tags = tag
   }
+  filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+  filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+  console.log("dropdown_search_events")
+   console.log(JSON.stringify(filter))
   $.get("/events/index?ajax=true", filter, function (data) {
     $("#related_events .main .inline .events").html(data);
     $("#events .main .inline .events").html(data);
@@ -1500,7 +1520,7 @@ function checkInfinite() {
     //console.log("pull em");
     //check if there are any more possible events to pull
     // if so, pull em.
-    // var uagent = navigator.userAgent.toLowerCase(); 
+    // var uagent = navigator.userAgent.toLowerCase();
     // var device = '';
     // if (uagent.search("iphone") > -1)
     //        device = 'iphone';
@@ -1547,6 +1567,8 @@ $(function () {
       console.log("tag type filter")
       filter.tag_id = tag_id
       filter.tag_type = tag_type
+      filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+      filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
       $.get("/search_results", filter)
       $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     } else {

@@ -968,7 +968,7 @@ class EventsController < ApplicationController
     params[:start_date] = "#{DateTime.now().to_s(:db)}" if (params[:start_date] == "" or !params[:start_date].present?)
     params[:end_date] = "#{(DateTime.now()+14.days).to_s(:db)}" if (params[:end_date] == "" or !params[:end_date].present?)
     end
-   # raise params.inspect
+    #raise params.inspect
     @ids = Occurrence.find_with(params)
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
