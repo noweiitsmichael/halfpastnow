@@ -16,7 +16,7 @@
     <% bookmarks = [] %>
     <%
        if (current_user)
-         bookmarks = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => venue_list.id)
+         bookmarks = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => venue_list.id, :bookmark_list_id => current_user.bookmark_lists.collect(&:id))
        end
     %>
 

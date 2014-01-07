@@ -505,7 +505,7 @@ class EventsController < ApplicationController
 
 
     if (current_user)
-      @bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id)
+      @bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.bookmark_lists.collect(&:id))
       attending = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.bookmark_lists.where(:name => "Attending").first.id).first
       @bookmark_lists_ids = @bookmarks.empty? ? [0] : @bookmarks.collect(&:bookmark_list_id)
       #@bookmarks = bookmarks.empty? ? [] : bookmark.id
@@ -1037,7 +1037,7 @@ class EventsController < ApplicationController
     @event = @occurrence.event
     @bookmarks = []
     if (current_user)
-      @bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id)
+      @bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.bookmark_lists.collect(&:id))
       @bookmark_lists_ids = @bookmarks.empty? ? [0] : @bookmarks.collect(&:bookmark_list_id)
     end
 
@@ -1047,7 +1047,7 @@ class EventsController < ApplicationController
     @venue = Venue.find(params[:id])
     @bookmarks = []
     if (current_user)
-      @bookmarks = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => @venue.id)
+      @bookmarks = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => @venue.id, :bookmark_list_id => current_user.bookmark_lists.collect(&:id))
       @bookmark_lists_ids = @bookmarks.empty? ? [0] : @bookmarks.collect(&:bookmark_list_id)
     end
   end

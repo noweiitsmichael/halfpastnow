@@ -461,6 +461,16 @@
                  <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
                </div>
              </span>
+             <span class="sort-item">
+             <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Neighborhood</a>
+              <div style="display: none;" class="popover bottom">
+                <div class="arrow"></div>
+                <div class="popover-content clearfix">
+                  <label for="time" class="ui-input-text">Choose</label>
+                  <%= select_tag "neighborhood_names", options_from_collection_for_select(Neighborhood.all, "id", "name"), class: 'neighborhood_names_list', style:"opacity: 1 !important;" , :include_blank => true%>
+                </div>
+              </div>
+            </span>
       </div>
 
 
@@ -1043,9 +1053,15 @@
     })
     <%if (params[:tag_id].present? or params[:tag_type].present? or params[:key].present?) %>
     <% end %>
+
+  $("select#neighborhood_names").on('change', function(){
+    var id = $(this).val();
+    $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+    $.post('/search_results',{neighborhood_id: id, tag_type: 'neighborhood'});
+  });
   </script>
   <style>
-    .cost_sort, .time_sort {
+    .cost_sort, .time_sort, .neighborhood_names_list {
       color: #777777;
       display: inline;
       font-size: 16px;
@@ -1057,6 +1073,10 @@
 
     .popover_dates {
       margin-left: 10px;
+    }
+
+    .modal-backdrop.fade.in{
+      z-index: 10 !important;
     }
   </style>
 <% end %>
