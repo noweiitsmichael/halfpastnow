@@ -303,7 +303,6 @@ class EventsController < ApplicationController
     @banner_advertisement = Advertisement.where(:adv_type => ["banner_ads"]).where(:placement => Advertisement::ADV_PLACEMENTS[:banner].map{|a| a.last}).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
 
     unless params[:root]
-      raise params.inspect
       @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
       @banner_advertisement.update_attributes(views: (@banner_advertisement.views.to_i + 1)) unless @banner_advertisement.nil?
     end
