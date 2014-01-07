@@ -302,8 +302,11 @@ class EventsController < ApplicationController
     @advertisement = Advertisement.where(:adv_type => ["featured_venue", "featured_event", "featured_artist"]).where(:placement => ['search_results', 'home_search_pages']).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
     @banner_advertisement = Advertisement.where(:adv_type => ["banner_ads"]).where(:placement => Advertisement::ADV_PLACEMENTS[:banner].map{|a| a.last}).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
 
-    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
-    @banner_advertisement.update_attributes(views: (@banner_advertisement.views.to_i + 1)) unless @banner_advertisement.nil?
+    unless params[:root]
+      raise params.inspect
+      @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
+      @banner_advertisement.update_attributes(views: (@banner_advertisement.views.to_i + 1)) unless @banner_advertisement.nil?
+    end
     # Set default if action is sxsw
     unless (params[:event_id].to_s.empty?)
      # redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
@@ -452,11 +455,7 @@ class EventsController < ApplicationController
       format.html do
         unless (params[:ajax].to_s.empty?)
 
-          if params[:type].present? and params[:type] == 'ads'
-            @advertisement = Advertisement.where(:placement => 'home_page').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
-            @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
-          end
-          params[:root]? @occurrences = @occurrences.take(5):@occurrences = @occurrences
+        params[:root]? @occurrences = @occurrences.take(5):@occurrences = @occurrences
 
           @root_page = params[:root]? params[:root]:nil
           #raise "number of occurrences: #{@occurrences.count}, occurrences tags: #{@occurringTags.count},parent tags:#{@parentTags.count},offset value:#{@offset}"
