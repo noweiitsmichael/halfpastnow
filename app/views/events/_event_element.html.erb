@@ -44,8 +44,8 @@
     <div class="place">
       <% bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => bookmarkList.id).first %>
 
-      <% if bookmark %>
-        <%= bookmark.comment.truncate(80) %>
+      <% if bookmark and !bookmark.comment.nil? %>
+        <%= bookmark.comment.truncate(200) rescue ''%>
       <% end %>
     </div>
 
