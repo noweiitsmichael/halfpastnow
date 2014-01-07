@@ -89,9 +89,6 @@ gem 'dalli'
 # Email via mandrill
 gem 'mandrill-api'
 
-#bitly
-gem 'bitly'
-
 #yelp
 gem 'yelpster'
 

@@ -294,14 +294,18 @@ class EventsController < ApplicationController
   end
 
   def index
+    params[:start_date] = "#{Date.today().to_s(:db)}" if (params[:start_date] == "" or !params[:start_date].present?)
+    params[:end_date] = "#{(Date.today()+14.days).to_s(:db)}" if (params[:end_date] == "" or !params[:end_date].present?)
     @saved_search = current_user.saved_searches if user_signed_in?
 
     #ads
     @advertisement = Advertisement.where(:adv_type => ["featured_venue", "featured_event", "featured_artist"]).where(:placement => ['search_results', 'home_search_pages']).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
     @banner_advertisement = Advertisement.where(:adv_type => ["banner_ads"]).where(:placement => Advertisement::ADV_PLACEMENTS[:banner].map{|a| a.last}).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
 
-    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
-    @banner_advertisement.update_attributes(views: (@banner_advertisement.views.to_i + 1)) unless @banner_advertisement.nil?
+    unless params[:root]
+      @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
+      @banner_advertisement.update_attributes(views: (@banner_advertisement.views.to_i + 1)) unless @banner_advertisement.nil?
+    end
     # Set default if action is sxsw
     unless (params[:event_id].to_s.empty?)
      # redirect_to :action => "show", :id => params[:event_id].to_i, :fullmode => true
@@ -450,14 +454,12 @@ class EventsController < ApplicationController
       format.html do
         unless (params[:ajax].to_s.empty?)
 
-          if params[:type].present? and params[:type] == 'ads'
-            @advertisement = Advertisement.where(:placement => 'home_page').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
-            @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
-          end
-          params[:root]? @occurrences = @occurrences.take(5):@occurrences = @occurrences
-          root_page = params[:root]? params[:root]:nil
+        params[:root]? @occurrences = @occurrences.take(5):@occurrences = @occurrences
+
+          @root_page = params[:root]? params[:root]:nil
           #raise "number of occurrences: #{@occurrences.count}, occurrences tags: #{@occurringTags.count},parent tags:#{@parentTags.count},offset value:#{@offset}"
-          render :partial => "combo", :locals => {:occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset,:root_page => root_page}
+          render :partial => "combo", :locals => {:occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset,:root_page => @root_page}
+
         end
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts]}}) }
@@ -503,7 +505,7 @@ class EventsController < ApplicationController
 
 
     if (current_user)
-      @bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id)
+      @bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.bookmark_lists.collect(&:id))
       attending = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.bookmark_lists.where(:name => "Attending").first.id).first
       @bookmark_lists_ids = @bookmarks.empty? ? [0] : @bookmarks.collect(&:bookmark_list_id)
       #@bookmarks = bookmarks.empty? ? [] : bookmark.id
@@ -952,8 +954,10 @@ class EventsController < ApplicationController
       params[:start_date] = "#{Date.today().to_s(:db)}"
       params[:end_date] = "#{(Date.today()).to_s(:db)}"
     elsif params[:tag_type] == "crowd"
+
       params[:start_date] = "#{Date.today().to_s(:db)}" if (params[:start_date] == "" or !params[:start_date].present?)
       params[:end_date] = "#{(Date.today()+14.days).to_s(:db)}" if (params[:end_date] == "" or !params[:end_date].present?)
+
     elsif params[:tag_type] == "tomorrow"
       params[:start_date] = "#{(Date.today+1.day).to_s(:db)}"
       params[:end_date] = "#{(Date.today+1.day).to_s(:db)}"
@@ -964,7 +968,7 @@ class EventsController < ApplicationController
     params[:start_date] = "#{DateTime.now().to_s(:db)}" if (params[:start_date] == "" or !params[:start_date].present?)
     params[:end_date] = "#{(DateTime.now()+14.days).to_s(:db)}" if (params[:end_date] == "" or !params[:end_date].present?)
     end
-   # raise params.inspect
+    #raise params.inspect
     @ids = Occurrence.find_with(params)
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
@@ -1033,7 +1037,7 @@ class EventsController < ApplicationController
     @event = @occurrence.event
     @bookmarks = []
     if (current_user)
-      @bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id)
+      @bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => @occurrence.id, :bookmark_list_id => current_user.bookmark_lists.collect(&:id))
       @bookmark_lists_ids = @bookmarks.empty? ? [0] : @bookmarks.collect(&:bookmark_list_id)
     end
 
@@ -1043,7 +1047,7 @@ class EventsController < ApplicationController
     @venue = Venue.find(params[:id])
     @bookmarks = []
     if (current_user)
-      @bookmarks = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => @venue.id)
+      @bookmarks = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => @venue.id, :bookmark_list_id => current_user.bookmark_lists.collect(&:id))
       @bookmark_lists_ids = @bookmarks.empty? ? [0] : @bookmarks.collect(&:bookmark_list_id)
     end
   end

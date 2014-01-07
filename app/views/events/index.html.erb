@@ -461,6 +461,16 @@
                  <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
                </div>
              </span>
+             <span class="sort-item">
+             <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Neighborhood</a>
+              <div style="display: none;" class="popover bottom">
+                <div class="arrow"></div>
+                <div class="popover-content clearfix">
+                  <label for="time" class="ui-input-text">Choose</label>
+                  <%= select_tag "neighborhood_names", options_from_collection_for_select(Neighborhood.all, "id", "name"), class: 'neighborhood_names_list', style:"opacity: 1 !important;" , :include_blank => true%>
+                </div>
+              </div>
+            </span>
       </div>
 
 
@@ -636,7 +646,13 @@
         $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
         $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        $.get("/search_results", {tag_id: "<%= params[:tag_id] %>", tag_type: "<%= params[:tag_type] %>"})
+        filter.tag_id = "<%= params[:tag_id] %>"
+        filter.tag_type = "<%= params[:tag_type] %>"
+        filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+        filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+        console.log("search1")
+        console.log(JSON.stringify(filter))
+        $.get("/search_results", filter)
         $('#search_name,#search_name1').html($(this).text())
         $('#events').show()
         $('#related_events').hide()
@@ -665,7 +681,13 @@
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-      $.get("/search_results", {tag_id: "<%= params[:tag_id] %>", tag_type: "<%= params[:tag_type] %>"})
+      filter.tag_id = "<%= params[:tag_id] %>"
+      filter.tag_type = "<%= params[:tag_type] %>"
+      filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+      filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+      console.log("search2")
+      console.log(JSON.stringify(filter))
+      $.get("/search_results", filter)
       $('#search_name,#search_name1').html("<%= params[:key] %>")
       <% elsif params[:key].present? and params[:tag_id].present? %>
       <% @location_page = "serach" %>
@@ -679,12 +701,14 @@
         console.log($(this).text())
         $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        if (filter.start_date.length == 0) {
-          filter.start_date = "<%= Date.today %>"
-        }
-        if (filter.end_date.length == 0) {
-          filter.end_date = "<%= Date.today+14.days %>"
-        }
+
+//        if (filter.start_date.length == 0) {
+//          filter.start_date = "<%#= Date.today %>"
+//        }
+//        if (filter.end_date.length == 0) {
+//          filter.end_date = "<%#= Date.today+14.days %>"
+//        }
+
 
         dropdown_search_events("<%= params[:tag_id] %>")
         $('#search_name,#search_name1').html($(this).text())
@@ -715,12 +739,14 @@
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-      if (filter.start_date.length == 0) {
-        filter.start_date = "<%= Date.today %>"
-      }
-      if (filter.end_date.length == 0) {
-        filter.end_date = "<%= Date.today+14.days %>"
-      }
+
+//      if (filter.start_date.length == 0) {
+//        filter.start_date = "<%#= Date.today %>"
+//      }
+//      if (filter.end_date.length == 0) {
+//        filter.end_date = "<%#= Date.today+14.days %>"
+//      }
+
       dropdown_search_events("<%= params[:tag_id] %>")
       $('#search_name,#search_name1').html("<%= params[:key] %>")
       <% elsif params[:key].present? %>
@@ -795,11 +821,12 @@
         console.log($('.custom-end').val())
       }
       $(".date_search").html($('.custom-start').val() + " to " + $('.custom-end').val())
+      $('.active a').click()
     })
     $('.popover_dates:visible,.popover_dates:hidden').click(function () {
       $(".date_search").html($('.custom-start').val() + " to " + $('.custom-end').val())
     })
-    $('.dropdown-menu1 a,.popover_dates').click(function () {
+    $('.dropdown-menu1 a').click(function () {
       console.log("dropdown click")
       $(".active").attr('class', '');
       $('#search-tab').append("<li class='active related_events dropdown_links'><a data-toggle='tab' href='#related_events' key=" + $(this).text().replace(/\ /g, "_") + " tag_id=" + $(this).attr('tag_id') + " tag_type=" + $(this).attr('tag_type') + ">" + $(this).text() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
@@ -815,16 +842,22 @@
         console.log('tag_type based search')
         filter.tag_id = $(this).attr('tag_id')
         filter.tag_type = $(this).attr('tag_type')
+        filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+        filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+        console.log("search3")
+        console.log(JSON.stringify(filter))
         $.get("/search_results", filter)
       }
       else {
         console.log("tag_id based search")
-        if (filter.start_date.length == 0) {
-          filter.start_date = "<%= Date.today %>"
-        }
-        if (filter.end_date.length == 0) {
-          filter.end_date = "<%= Date.today+14.days %>"
-        }
+
+//        if (filter.start_date.length == 0) {
+//          filter.start_date = "<%#= Date.today %>"
+//        }
+//        if (filter.end_date.length == 0) {
+//          filter.end_date = "<%#= Date.today+14.days %>"
+//        }
+
         dropdown_search_events($(this).attr('tag_id'))
       }
 //      doneTyping1($(this).text());
@@ -834,15 +867,23 @@
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
         $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
         if ($(this).attr('tag_id') == "0") {
-          $.get("/search_results", {tag_id: $(this).attr('tag_id'), tag_type: $(this).attr('tag_type')})
+          filter.tag_id = $(this).attr('tag_id')
+          filter.tag_type = $(this).attr('tag_type')
+          filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+          filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+          console.log("search4")
+          console.log(JSON.stringify(filter))
+          $.get("/search_results", filter)
         }
         else {
-          if (filter.start_date.length == 0) {
-            filter.start_date = "<%= Date.today %>"
-          }
-          if (filter.end_date.length == 0) {
-            filter.end_date = "<%= Date.today+14.days %>"
-          }
+
+//          if (filter.start_date.length == 0) {
+//            filter.start_date = "<%#= Date.today %>"
+//          }
+//          if (filter.end_date.length == 0) {
+//            filter.end_date = "<%#= Date.today+14.days %>"
+//          }
+
           dropdown_search_events($(this).attr('tag_id'))
         }
 //        doneTyping1($(this).text());
@@ -1012,9 +1053,15 @@
     })
     <%if (params[:tag_id].present? or params[:tag_type].present? or params[:key].present?) %>
     <% end %>
+
+  $("select#neighborhood_names").on('change', function(){
+    var id = $(this).val();
+    $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+    $.post('/search_results',{neighborhood_id: id, tag_type: 'neighborhood'});
+  });
   </script>
   <style>
-    .cost_sort, .time_sort {
+    .cost_sort, .time_sort, .neighborhood_names_list {
       color: #777777;
       display: inline;
       font-size: 16px;
@@ -1026,6 +1073,10 @@
 
     .popover_dates {
       margin-left: 10px;
+    }
+
+    .modal-backdrop.fade.in{
+      z-index: 10 !important;
     }
   </style>
 <% end %>

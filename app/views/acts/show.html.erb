@@ -19,11 +19,12 @@
   <%= javascript_include_tag "jquery.elastislide" %>
   <script type="text/javascript">
     var id = "<%= @act.slug  %>";
+    var slug =  "<%= @act.slug  %>"
     var act_id = "<%= @act.id  %>";
     var type = "act";
     var root_url = "http://www.halfpastnow.com/";
-    var link = root_url + "?" + type + "_id=" + id;
-    var facebook_url = "http://www.halfpastnow.com/" + type + "s/show/" + id ;
+    var link = root_url + 'events/austin/' + slug
+    var facebook_url = root_url + 'events/austin/' + slug
     var app_id = "475386955806720";
     var redirect = "http://www.halfpastnow.com";
     var bookmark_id = "<%= @bookmarkId.to_s %>";

@@ -35,10 +35,11 @@
   %>
   <script type="text/javascript">
     var id = "<%= @occurrence.id  %>";
+    var slug =  "<%= @occurrence.slug  %>"
     var type = "event";
     var root_url = "http://www.halfpastnow.com/";
-    var link = root_url + "?" + type + "_id=" + id;
-    var facebook_url = "http://www.halfpastnow.com/events/austin/<%= @occurrence.slug %>";
+    var link = root_url + 'events/austin/' + slug
+    var facebook_url = root_url + 'events/austin/' + slug
     var app_id = "475386955806720";
     var redirect = "http://www.halfpastnow.com";
    // var bookmark_id = "<%#= @bookmarkId.to_s %>";
@@ -436,9 +437,11 @@
         <% end %>
         <% if @occurrence.event.recurrences.empty? %>
           <li>
+
             <%= @occurrence.start.to_date.strftime("%a, %d/%b/%Y")  rescue nil %>
             <span>, <%= @occurrence.start.to_time.strftime("%-l:%M%P") rescue nil %></span>
             <span><%= "to #{@occurrence.end.to_time.strftime("%-l:%M%P")}" rescue nil %></span>
+
           </li>
         <% end %>
       </ul>

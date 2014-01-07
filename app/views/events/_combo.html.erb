@@ -6,7 +6,7 @@
   $(".total_number").text("<%= @allOccurrences.count %>");
 
 </script>
-<%= (will_paginate @occurrences, previous_label: h("<"), next_label: h(">"),class: "flickr_pagination") if root_page.nil?%>
+<%= (will_paginate @occurrences, previous_label: h("<"), next_label: h(">"),class: "flickr_pagination") if @root_page.nil?%>
 
 <% if params[:type].present? and params[:type] == 'ads' %>
   <% @occurrences.each_with_index do |occurrence, index| %>
