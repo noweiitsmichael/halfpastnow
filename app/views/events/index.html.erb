@@ -754,17 +754,34 @@
     })
     $('.popover_dates').click(function(){
       if($(this).attr('tag_type')=='today'){
+
       $('.custom-start').val("<%= Time.now.strftime('%m/%d/%Y') %>")
       $('.custom-end').val("<%= Time.now.strftime('%m/%d/%Y') %>")
+        console.log('today')
+        console.log($('.custom-start').val())
+        console.log($('.custom-end').val())
       }
       if($(this).attr('tag_type')=='tomorrow'){
         $('.custom-start').val("<%= (Time.now+1.day).strftime('%m/%d/%Y') %>")
         $('.custom-end').val("<%= (Time.now+1.day).strftime('%m/%d/%Y') %>")
+        console.log('tomorrow')
+        console.log($('.custom-start').val())
+        console.log($('.custom-end').val())
       }
       if($(this).attr('tag_type')=='weekend'){
         $('.custom-start').val("<%= (Time.now.next_week-1.day).strftime('%m/%d/%Y') %>")
-        $('.custom-end').val("<%= (Time.now.next_week).strftime('%m/%d/%Y') %>")
+        $('.custom-end').val("<%= (Time.now.next_week-1.day).strftime('%m/%d/%Y') %>")
+        console.log('weekend')
+        console.log($('.custom-start').val())
+        console.log($('.custom-end').val())
+
       }
+      $(".date_search").html($('.custom-start').val()+" to "+$('.custom-end').val())
+
+    })
+    $('.popover_dates:visible,.popover_dates:hidden').click(function(){
+
+      $(".date_search").html($('.custom-start').val()+" to "+$('.custom-end').val())
     })
     $('.dropdown-menu1 a,.popover_dates').click(function () {
       console.log("dropdown click")

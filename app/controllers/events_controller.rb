@@ -947,7 +947,6 @@ class EventsController < ApplicationController
     params[:lat_center] = @lat
     params[:long_center] = @long
     params[:zoom] = @zoom
-
     params[:user_id] = current_user ? current_user.id : nil
     if params[:tag_type] == "today"
       params[:start_date] = "#{Date.today().to_s(:db)}"
@@ -956,8 +955,8 @@ class EventsController < ApplicationController
       params[:start_date] = "#{Date.today().to_s(:db)}"
       params[:end_date] = "#{(Date.today()+1.month).to_s(:db)}"
     elsif params[:tag_type] == "tomorrow"
-      params[:start_date] = "#{Date.tomorrow.to_s(:db)}"
-      params[:end_date] = "#{(Date.tomorrow).to_s(:db)}"
+      params[:start_date] = "#{(Date.today+1.day).to_s(:db)}"
+      params[:end_date] = "#{(Date.today+1.day).to_s(:db)}"
     elsif params[:tag_type] == "weekend"
       params[:start_date] = "#{(Date.today.end_of_week).to_s(:db)}"
       params[:end_date] = "#{Date.today.end_of_week.to_s(:db)}"

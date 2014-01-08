@@ -22,7 +22,7 @@
        end
     %>
     <% unless user_signed_in? %>
-      <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>" event-title="<%= occurrence.event.title %>"><img src="/assets/images/icon-bookmark.png" class="before_login" alt="Bookmark"/></a>
+      <a href="#" class="bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId ? "remove" : "add" %>" bookmark-id="<%= bookmarkId %>"><img src="/assets/images/icon-bookmark.png" class="before_login" alt="Bookmark"/></a>
 
       <script>
         $('.before_login').click(function () {
