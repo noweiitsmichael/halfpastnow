@@ -401,76 +401,78 @@
   <div id="events" class="tab-pane fade in active">
     <div class="sort-panel filter-toggle price date">
       <div class="container">
-           <span class="sort-item">
-             <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
-              <div style="width: 340px !important;" class="popover bottom">
-                <div class="arrow"></div>
-                <div class="popover-content clearfix">
-                  <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="today">Today</a>
-                  <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="tomorrow">Tomorrow</a>
-                  <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="weekend">weekend</a>
-
-                  <label class="ui-input-text" for="from" style="margin-top:25px;">or custom</label>
-                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-start" id="from" name="from" style="width:115px;float:left;">
-                  <label class="ui-input-text" for="to" style="float: left; text-transform: none; font-size: 120%; margin-right: 11px; margin-left: 11px;">to</label>
-                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-end" id="to" name="to" style="width:115px;">
-                </div>
-              </div>
-             </span>
-            <span class="sort-item">
-             <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Time</a>
-              <div style="display: none;" class="popover bottom">
-                <div class="arrow"></div>
-                <div class="popover-content clearfix">
-                  <label for="time" class="ui-input-text">After</label>
-                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset timepicker" value="">
-                </div>
-              </div>
-            </span>
-           <span class="sort-item">
-            <a href="#" class="ui-link"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Cost</span></a>
-            <div style="display: none;" class="popover bottom">
-              <div class="arrow"></div>
+        <span class="sort-item">
+          <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
+          <div style="width: 340px !important;" class="popover bottom">
+            <div class="arrow"></div>
               <div class="popover-content clearfix">
-                <label for="cost" class="ui-input-text cvalue">Less than $50</label>
+              <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="today">Today</a>
+              <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="tomorrow">Tomorrow</a>
+              <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="weekend">weekend</a>
 
-                <div class="left">
-                  <span class="option">Free</span>
-                  <span class="option">$5</span>
-                  <span class="option">$10</span>
-                  <span class="option">$20</span>
-                  <span class="option">$30</span>
-                  <span class="option">$40</span>
-                  <span class="option">$50+</span>
-                </div>
-                <div class="right">
-                  <!--<div id="slider-vertical"></div>-->
-                  <input type="number" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset ui-slider-input" style="display:none;" min="0" max="50" value="50" step="5" name="slider-step" id="slider-step" sliderorientation="vertical" data-type="range">
-                </div>
+              <label class="ui-input-text" for="from" style="margin-top:25px;">or custom</label>
+              <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-start" id="from" name="from" style="width:115px;float:left;">
+              <label class="ui-input-text" for="to" style="float: left; text-transform: none; font-size: 120%; margin-right: 11px; margin-left: 11px;">to</label>
+              <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-end" id="to" name="to" style="width:115px;">
+            </div>
+          </div>
+        </span>
+        <span class="sort-item">
+          <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Time</a>
+          <div style="display: none;" class="popover bottom">
+            <div class="arrow"></div>
+            <div class="popover-content clearfix">
+              <label for="time" class="ui-input-text">After</label>
+              <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset timepicker" value="">
+            </div>
+          </div>
+        </span>
+        <span class="sort-item">
+          <a href="#" class="ui-link"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Cost</span></a>
+          <div style="display: none;" class="popover bottom">
+            <div class="arrow"></div>
+            <div class="popover-content clearfix">
+              <label for="cost" class="ui-input-text cvalue">Less than $50</label>
+              <div class="left">
+                <span class="option">Free</span>
+                <span class="option">$5</span>
+                <span class="option">$10</span>
+                <span class="option">$20</span>
+                <span class="option">$30</span>
+                <span class="option">$40</span>
+                <span class="option">$50+</span>
+              </div>
+              <div class="right">
+                <!--<div id="slider-vertical"></div>-->
+                <input type="number" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset ui-slider-input" style="display:none;" min="0" max="50" value="50" step="5" name="slider-step" id="slider-step" sliderorientation="vertical" data-type="range">
               </div>
             </div>
-           </span>
-             <span class="sort-item">
-               <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
-               <div style="display: none;" class="popover bottom">
-                 <div class="arrow"></div>
-                 <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
-                 <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
-                 <br>
-                 <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
-                 <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
-               </div>
-             </span>
-             <span class="sort-item">
-             <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Neighborhood</a>
-              <div style="display: none;" class="popover bottom">
-                <div class="arrow"></div>
-                <div class="popover-content clearfix">
-                  <label for="time" class="ui-input-text">Choose</label>
-                  <%= select_tag "neighborhood_names", options_from_collection_for_select(Neighborhood.all, "id", "name"), class: 'neighborhood_names_list', style:"opacity: 1 !important;" , :include_blank => true%>
-                </div>
-              </div>
-            </span>
+          </div>
+        </span>
+        <span class="sort-item">
+          <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
+          <div style="display: none;" class="popover bottom">
+            <div class="arrow"></div>
+            <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
+            <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
+            <br>
+            <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
+            <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
+          </div>
+        </span>
+        <span class="sort-item">
+          <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Neighborhood</a>
+         <div style="display: none;width: 300px;" class="popover bottom">
+            <div class="arrow"></div>
+           <div style="max-height: 200px;overflow-y:auto">
+              <ul class="neighborhood_names_list">
+                <% Neighborhood.all.each do |nh| %>
+                  <li data-id="<%= nh.id %>"><%= nh.name %></li>
+                <% end %>
+              </ul>
+          </div>
+         </div>
+        </span>
       </div>
 
 
@@ -522,70 +524,79 @@
   <div id="related_events" class="tab-pane fade">
     <div class="sort-panel filter-toggle price date">
       <div class="container">
-           <span class="sort-item">
-             <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
-              <div style="width: 340px !important;" class="popover bottom">
-                <div class="arrow"></div>
-                <div class="popover-content clearfix">
-                  <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="today">Today</a>
-                  <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="tomorrow">Tomorrow</a>
-                  <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="weekend">weekend</a>
+        <span class="sort-item">
+          <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
+          <div style="width: 340px !important;" class="popover bottom">
+            <div class="arrow"></div>
+            <div class="popover-content clearfix">
+              <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="today">Today</a>
+              <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="tomorrow">Tomorrow</a>
+              <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="weekend">weekend</a>
 
-                  <label class="ui-input-text" for="from" style="margin-top:25px;">or custom</label>
-                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-start" id="from" name="from" style="width:115px;float:left;">
-                  <label class="ui-input-text" for="to" style="float: left; text-transform: none; font-size: 120%; margin-right: 11px; margin-left: 11px;">to</label>
-                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-end" id="to" name="to" style="width:115px;">
-                </div>
+              <label class="ui-input-text" for="from" style="margin-top:25px;">or custom</label>
+              <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-start" id="from" name="from" style="width:115px;float:left;">
+              <label class="ui-input-text" for="to" style="float: left; text-transform: none; font-size: 120%; margin-right: 11px; margin-left: 11px;">to</label>
+              <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-end" id="to" name="to" style="width:115px;">
+            </div>
+          </div>
+        </span>
+        <span class="sort-item">
+          <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Time</a>
+          <div style="display: none;" class="popover bottom">
+            <div class="arrow"></div>
+            <div class="popover-content clearfix">
+              <label for="time" class="ui-input-text">After</label>
+              <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset timepicker" value="">
+            </div>
+          </div>
+        </span>
+        <span class="sort-item">
+          <a href="#" class="ui-link"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Cost</span></a>
+          <div style="display: none;" class="popover bottom">
+            <div class="arrow"></div>
+            <div class="popover-content clearfix">
+              <label for="cost" class="ui-input-text cvalue">Less than $50</label>
+              <div class="left">
+                <span class="option">Free</span>
+                <span class="option">$5</span>
+                <span class="option">$10</span>
+                <span class="option">$20</span>
+                <span class="option">$30</span>
+                <span class="option">$40</span>
+                <span class="option">$50+</span>
               </div>
-             </span>
-            <span class="sort-item">
-             <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Time</a>
-              <div style="display: none;" class="popover bottom">
-                <div class="arrow"></div>
-                <div class="popover-content clearfix">
-                  <label for="time" class="ui-input-text">After</label>
-                  <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset timepicker" value="">
-                </div>
-              </div>
-            </span>
-           <span class="sort-item">
-            <a href="#" class="ui-link"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Cost</span></a>
-            <div style="display: none;" class="popover bottom">
-              <div class="arrow"></div>
-              <div class="popover-content clearfix">
-                <label for="cost" class="ui-input-text cvalue">Less than $50</label>
+              <div class="right">
+                <!--<div id="slider-vertical"></div>-->
 
-                <div class="left">
-                  <span class="option">Free</span>
-                  <span class="option">$5</span>
-                  <span class="option">$10</span>
-                  <span class="option">$20</span>
-                  <span class="option">$30</span>
-                  <span class="option">$40</span>
-                  <span class="option">$50+</span>
-                </div>
-                <div class="right">
-                  <!--<div id="slider-vertical"></div>-->
-
-                  <input type="number" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset ui-slider-input" style="display:none;" min="0" max="50" value="50" step="5" name="slider-step" id="slider-step" sliderorientation="vertical" data-type="range">
-                </div>
+                <input type="number" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset ui-slider-input" style="display:none;" min="0" max="50" value="50" step="5" name="slider-step" id="slider-step" sliderorientation="vertical" data-type="range">
               </div>
             </div>
-           </span>
-           <span class="sort-item">
-             <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
-              <div style="display: none;" class="popover bottom">
-                <div class="arrow"></div>
-                <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
-                <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
-                <br>
-                <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
-                <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
-              </div>
-           </span>
-        <span>aaa</span>
-
-        <div>xxx</div>
+          </div>
+        </span>
+        <span class="sort-item">
+          <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
+          <div style="display: none;" class="popover bottom">
+            <div class="arrow"></div>
+            <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
+            <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
+            <br>
+            <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
+            <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
+          </div>
+        </span>
+        <span class="sort-item">
+          <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Neighborhood</a>
+          <div style="display: none;width: 300px;" class="popover bottom">
+            <div class="arrow"></div>
+            <div style="max-height: 200px;overflow-y:auto">
+              <ul class="neighborhood_names_list">
+                <% Neighborhood.all.each do |nh| %>
+                  <li data-id="<%= nh.id %>"><%= nh.name %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </span>
       </div>
 
     </div>
@@ -702,14 +713,6 @@
         $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
 
-//        if (filter.start_date.length == 0) {
-//          filter.start_date = "<%#= Date.today %>"
-//        }
-//        if (filter.end_date.length == 0) {
-//          filter.end_date = "<%#= Date.today+14.days %>"
-//        }
-
-
         dropdown_search_events("<%= params[:tag_id] %>")
         $('#search_name,#search_name1').html($(this).text())
         $('#events').show()
@@ -739,13 +742,6 @@
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-
-//      if (filter.start_date.length == 0) {
-//        filter.start_date = "<%#= Date.today %>"
-//      }
-//      if (filter.end_date.length == 0) {
-//        filter.end_date = "<%#= Date.today+14.days %>"
-//      }
 
       dropdown_search_events("<%= params[:tag_id] %>")
       $('#search_name,#search_name1').html("<%= params[:key] %>")
@@ -786,6 +782,15 @@
       doneTyping1("<%= params[:key] %>");
       $('#search_name,#search_name1').html("<%= params[:key] %>")
       <% end %>
+
+      //neighborhood
+      $("ul.neighborhood_names_list li").on('click', function () {
+        $("ul.neighborhood_names_list li").removeClass('active');
+        $(this).addClass('active');
+        var id = $(this).data('id');
+        $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+        $.post('/search_results', {neighborhood_id: id, tag_type: 'neighborhood'});
+      });
     })
     $('.icon-cross').on("click", function () {
       $(this).parents('li').click()
@@ -851,12 +856,6 @@
       else {
         console.log("tag_id based search")
 
-//        if (filter.start_date.length == 0) {
-//          filter.start_date = "<%#= Date.today %>"
-//        }
-//        if (filter.end_date.length == 0) {
-//          filter.end_date = "<%#= Date.today+14.days %>"
-//        }
 
         dropdown_search_events($(this).attr('tag_id'))
       }
@@ -877,12 +876,6 @@
         }
         else {
 
-//          if (filter.start_date.length == 0) {
-//            filter.start_date = "<%#= Date.today %>"
-//          }
-//          if (filter.end_date.length == 0) {
-//            filter.end_date = "<%#= Date.today+14.days %>"
-//          }
 
           dropdown_search_events($(this).attr('tag_id'))
         }
@@ -1053,15 +1046,9 @@
     })
     <%if (params[:tag_id].present? or params[:tag_type].present? or params[:key].present?) %>
     <% end %>
-
-  $("select#neighborhood_names").on('change', function(){
-    var id = $(this).val();
-    $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-    $.post('/search_results',{neighborhood_id: id, tag_type: 'neighborhood'});
-  });
   </script>
   <style>
-    .cost_sort, .time_sort, .neighborhood_names_list {
+    .cost_sort, .time_sort{
       color: #777777;
       display: inline;
       font-size: 16px;
@@ -1071,11 +1058,28 @@
       cursor: pointer;
     }
 
+    .neighborhood_names_list {
+      color: #777777;
+      display: inline;
+      font-size: 15px;
+      font-weight: bold;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .popover ul li{
+      padding: 2px 0;
+    }
+
+    .popover ul li.active{
+      background-color: #B0C4DE;
+    }
+
     .popover_dates {
       margin-left: 10px;
     }
 
-    .modal-backdrop.fade.in{
+    .modal-backdrop.fade.in {
       z-index: 10 !important;
     }
   </style>
