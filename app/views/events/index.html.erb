@@ -785,8 +785,8 @@
 
       //neighborhood
       $("ul.neighborhood_names_list li").on('click', function () {
-        $("ul.neighborhood_names_list li").removeClass('active');
-        $(this).addClass('active');
+        $("ul.neighborhood_names_list li").removeClass('selected');
+        $(this).addClass('selected');
         var id = $(this).data('id');
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
         $.post('/search_results', {neighborhood_id: id, tag_type: 'neighborhood'});
@@ -1059,7 +1059,7 @@
     }
 
     .neighborhood_names_list {
-      color: #777777;
+      color: #4D344F;
       display: inline;
       font-size: 15px;
       font-weight: bold;
@@ -1071,8 +1071,9 @@
       padding: 2px 0;
     }
 
-    .popover ul li.active{
-      background-color: #B0C4DE;
+    .popover ul li.selected{
+      background-color: #777777;
+      color: #ffffff;
     }
 
     .popover_dates {

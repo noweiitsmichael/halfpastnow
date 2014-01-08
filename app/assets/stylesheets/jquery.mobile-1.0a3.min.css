@@ -936,11 +936,11 @@ to {
 	opacity: 0
 }
 }
-.fade.in {
-	opacity: 1;
-	z-index: 10;
-	-webkit-animation-name: fadein
-}
+/*.fade.in {*/
+	/*opacity: 1;*/
+	/*z-index: 10;*/
+	/*-webkit-animation-name: fadein*/
+/*}*/
 .fade.out {
 	z-index: 0;
 	-webkit-animation-name: fadeout

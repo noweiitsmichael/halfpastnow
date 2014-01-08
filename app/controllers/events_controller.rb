@@ -1021,14 +1021,14 @@ class EventsController < ApplicationController
   end
   def neighbourhood_fetch
     @occurrences.each do |occurrence|
-
+      break if @venue_neighbourhood.count == 100
       v = occurrence.venue
       if v.neighborhoods.empty?
         @venue_neighbourhood.count +=1
         @venue_neighbourhood.save
-      fetch_neighborhoods(v.latitude,v.longitude,v.id)
-    end
-   break if @venue_neighbourhood.count == 100
+        fetch_neighborhoods(v.latitude,v.longitude,v.id)
+      end
+
     end
   end
   def bookmark_popup
