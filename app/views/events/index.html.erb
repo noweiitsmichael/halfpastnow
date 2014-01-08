@@ -642,6 +642,23 @@
   <script>
 
     $(document).ready(function () {
+      // sort by time and cost
+      filter.order_time = 1
+      filter.order_cost = 1
+      $('.cost_sort').click(function(){
+        filter.cost_sort = "cost"
+        filter.time_sort = ""
+        filter.order_cost = filter.order_cost*-1
+        console.log(JSON.stringify(filter))
+        $('.active a').click()
+      })
+      $('.time_sort').click(function(){
+        filter.time_sort = "time"
+        filter.cost_sort = ""
+        filter.order_time = filter.order_time*-1
+        console.log(JSON.stringify(filter))
+        $('.active a').click()
+      })
       $('.custom-start').val("<%= (Time.now).strftime('%m/%d/%Y') %>")
       $('.custom-end').val("<%= (Time.now+14.days).strftime('%m/%d/%Y') %>")
       $(".date_search").html($('.custom-start').val() + " to " + $('.custom-end').val())
@@ -789,8 +806,14 @@
         $(this).addClass('selected');
         var id = $(this).data('id');
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        $.post('/search_results', {neighborhood_id: id, tag_type: 'neighborhood'});
+        filter.neighborhood_id = id
+        filter.filter_type = 'neighborhood'
+        filter.tag_type = $('.active a').attr('tag_type')
+        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
+
+        $.get('/search_results', filter);
       });
+
     })
     $('.icon-cross').on("click", function () {
       $(this).parents('li').click()

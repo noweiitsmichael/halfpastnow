@@ -387,7 +387,23 @@ class EventsController < ApplicationController
     end
 
     @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
-    @occurrences = @allOccurrences.paginate(:page => params[:page], :per_page => 21)
+    if params[:filter_type] == "neighborhood" and params[:neighborhood_id].present?
+      neighborhood = Neighborhood.find params[:neighborhood_id]
+      p neighborhood
+      @occurrences = neighborhood.occurrences.select{|k| @allOccurrences.map(&:id).include?(k.id)}#.page(1).per_page(21)
+    end
+    if params[:cost_sort] == "cost"
+      @occurrences = @allOccurrences.sort_by { |o| params[:order_cost].to_i*o.event.price.to_f }.paginate(:page => params[:page], :per_page => 21)
+    elsif params[:time_sort] == "time"
+      if params[:order_time] == "1"
+        @occurrences = @allOccurrences.sort_by{|o| o.start}.paginate(:page => params[:page], :per_page => 21)
+      elsif params[:order_time] == "-1"
+        @occurrences = @allOccurrences.sort_by{|o| o.start}.reverse!
+        @occurrences = @occurrences.paginate(:page => params[:page], :per_page => 21)
+      end
+    else
+      @occurrences = @allOccurrences.paginate(:page => params[:page], :per_page => 21)
+    end
 
     # generating tag list for occurrences
 
@@ -996,18 +1012,28 @@ class EventsController < ApplicationController
      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
    end
 
-   if params[:tag_type] == "neighborhood" and params[:neighborhood_id].present?
-     neighborhood = Neighborhood.find params[:neighborhood_id]
-     @occurrences = neighborhood.occurrences.order(order_by)#.page(1).per_page(21)
-   end
-
-
     if params[:query].present?
         @occurrences = Occurrence.search_on_date(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
     end
+    if params[:filter_type] == "neighborhood" and params[:neighborhood_id].present?
+      neighborhood = Neighborhood.find params[:neighborhood_id]
+      p neighborhood
+      @occurrences = neighborhood.occurrences.select{|k| @occurrences.map(&:id).include?(k.id)}#.page(1).per_page(21)
+    end
 
     @allOccurrences = @occurrences.select{ |o| o.start > Time.now }.uniq{|o| o.event_id}.sort_by { |o| o.start }
-    @occurrences = @allOccurrences.paginate(:page => params[:page], :per_page => 21)
+    if params[:cost_sort] == "cost"
+    @occurrences = @allOccurrences.sort_by { |o| params[:order_cost].to_i*o.event.price.to_f }.paginate(:page => params[:page], :per_page => 21)
+    elsif params[:time_sort] == "time"
+      if params[:order_time] == "1"
+      @occurrences = @allOccurrences.sort_by{|o| o.start}.paginate(:page => params[:page], :per_page => 21)
+      elsif params[:order_time] == "-1"
+        @occurrences = @allOccurrences.sort_by{|o| o.start}.reverse!
+        @occurrences = @occurrences.paginate(:page => params[:page], :per_page => 21)
+      end
+    else
+      @occurrences = @allOccurrences.paginate(:page => params[:page], :per_page => 21)
+    end
     if VenueNeighbourhoodFetch.last.nil?
       @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
       neighbourhood_fetch

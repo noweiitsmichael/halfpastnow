@@ -328,7 +328,13 @@ task :update_occurrences => :environment do
 		# end
 	end
 end
-
+task :update_occurrences_slug => :environment do
+  occurrences = Occurrence.where(:slug => nil)
+  occurrences.each do |occ|
+    occ.slug = "#{occ.event.title.truncate(40)}-at-#{occ.event.venue.name.truncate(40)}" rescue "#{occ.id}"
+    occ.save
+  end
+end
 desc "Send weekly_email"
 task :send_emails => :environment do
 	puts "send_emails"
