@@ -47,7 +47,7 @@ $(document).ready(function () {
 
         //and a few extra ones here
         name: 'profilepic',//put the field name here as well, will be used inside the custom plugin
-        max_size: 330000,//~300Kb
+        //max_size: 330000,//~300Kb
         on_error: function (code) {//on_error function will be called when the selected file has a problem
           if (last_gritter) $.gritter.remove(last_gritter);
           if (code == 1) {//file format error
@@ -221,7 +221,7 @@ $(document).ready(function () {
 
       //and a few extra ones here
       name: 'picture',//put the field name here as well, will be used inside the custom plugin
-      max_size: 330000,//~300Kb
+      //max_size: 330000,//~300Kb
       on_error: function (code) {//on_error function will be called when the selected file has a problem
         if (last_gritter) $.gritter.remove(last_gritter);
         if (code == 1) {//file format error

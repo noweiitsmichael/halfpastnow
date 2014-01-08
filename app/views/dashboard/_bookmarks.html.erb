@@ -51,7 +51,7 @@
           <% if bookmark_list.name == "Attending" || bookmark_list.name == "Bookmarks"%>
             <span><%= bookmark_list.description %></span>
           <% else %>
-            <%= link_to bookmark_list.description,'#', id: "description", "data-pk" => bookmark_list.id %>
+            <%= link_to bookmark_list.description.html_safe,'#', id: "description", "data-pk" => bookmark_list.id, "data-type" => 'textarea' %>
           <% end %>
         </div>
       </div>
@@ -149,7 +149,7 @@
 
       //and a few extra ones here
       name: 'picture',//put the field name here as well, will be used inside the custom plugin
-      max_size: 330000,//~300Kb
+      //max_size: 330000,//~300Kb
       on_error: function (code) {//on_error function will be called when the selected file has a problem
         if (last_gritter) $.gritter.remove(last_gritter);
         if (code == 1) {//file format error
