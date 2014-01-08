@@ -63,10 +63,6 @@
         $.post('/admin/advertisements/update_ads_details', {pk: id, name: name, value: value })
       });
 
-      $('.neighborhood_link').on("click", function () {
-        $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-      });
-
     });
   </script>
 <% end %>

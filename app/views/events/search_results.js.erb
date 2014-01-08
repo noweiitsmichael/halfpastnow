@@ -5,6 +5,3 @@ $("#events .main .inline .events").html("<br>"+results)
 //$(".total_number").text($("#related_events .main .inline .events").find('article').length);
 $(".total_number").text("<%= @allOccurrences.count %>");
 
-$('.neighborhood_link').on("click", function () {
-  $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-});

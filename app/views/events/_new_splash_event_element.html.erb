@@ -25,7 +25,7 @@
     <div class="place">
       <% neighborhood = occurrence.venue.neighborhoods.first %>
       <% if neighborhood %>
-        <%= link_to (occurrence.venue.neighborhoods.first.name.truncate(35)),search_results_path(tag_type: 'neighborhood', neighborhood_id: neighborhood.id),  remote: true , :style => "color:#4C334D", class: 'neighborhood_link'  %>
+        <%= occurrence.venue.neighborhoods.first.name.truncate(35) %>
       <% end %>
     </div>
 
