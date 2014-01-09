@@ -1000,6 +1000,8 @@ class EventsController < ApplicationController
     @ids = Occurrence.find_with(params)
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
+    p "occurrence ids :"
+    p @occurrence_ids
     @event_ids = @ids.collect { |e| e["event_id"] }.uniq
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
     @occurrences =[]
@@ -1023,7 +1025,8 @@ class EventsController < ApplicationController
    if params[:tag_type] == "all"
      @occurrences = Occurrence.includes(:event => :tags).where(:id => @occurrence_ids, :order => order_by)
    end
-
+   p "params:"
+    p params
     if params[:query].present?
         @occurrences = Occurrence.search_on_date(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
     end
@@ -1032,7 +1035,8 @@ class EventsController < ApplicationController
       p neighborhood
       @occurrences = neighborhood.occurrences.select{|k| @occurrences.map(&:id).include?(k.id)}#.page(1).per_page(21)
     end
-
+    p "occurrences after fitering"
+    p @occurrences
     @allOccurrences = @occurrences.select{ |o| o.start > Time.now }.uniq{|o| o.event_id}.sort_by { |o| o.start }
     if params[:cost_sort] == "cost"
     @occurrences = @allOccurrences.sort_by { |o| params[:order_cost].to_i*o.event.price.to_f }.paginate(:page => params[:page], :per_page => 21)
