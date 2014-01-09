@@ -319,7 +319,7 @@ height:304px !important;
   width: 100%;
   overflow-y: hidden;
 }
-.slide-item img{
+.slide-item img, .product-item img{
   width:100%;
   overflow-y: hidden;
   /*new css*/
