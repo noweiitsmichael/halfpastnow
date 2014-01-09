@@ -1000,16 +1000,16 @@ class EventsController < ApplicationController
                   END DESC"
     end
     if params[:tag_type] == "crowd"
-      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0) }
+      @occurrences = Occurrence.includes(:event => :tags).where(:id => @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0) }
     end
    if params[:tag_type] == "staff"
      @occurrences = BookmarkList.find(2370).all_bookmarked_events.select{|k| @occurrence_ids.include?(k.id)}
    end
    if params[:tag_type] == "today" or params[:tag_type] == "tomorrow" or params[:tag_type] == "weekend"
-     @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0) }
+     @occurrences = Occurrence.includes(:event => :tags).where(:id => @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0) }
    end
    if params[:tag_type] == "all"
-     @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
+     @occurrences = Occurrence.includes(:event => :tags).where(:id => @occurrence_ids, :order => order_by)
    end
 
     if params[:query].present?
