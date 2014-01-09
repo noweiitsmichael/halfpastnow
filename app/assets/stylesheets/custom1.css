@@ -11,7 +11,7 @@ body {
 	padding-top:111px;
 }
 
-figure{
+figure, .adv-figure {
 	margin:0;
 	padding:0;
 }
@@ -304,7 +304,7 @@ height:304px !important;
   border-right: 5px solid;
 }
 .product-list .product-item{height:362px;}
-.slider .slide-item figure, .product-list .product-item figure{margin-bottom:14px;}
+.slider .slide-item figure,.slider .adv-figure, .product-list .product-item figure, .product-list .adv-figure{margin-bottom:14px;}
 .slider .slide-item .name, .product-list .product-item .name{
 	font-size:152%;
 	height:54px;
@@ -312,7 +312,7 @@ height:304px !important;
 	margin-bottom:12px;
 	line-height:1.2;
 }
-.slide-item figure {
+.slide-item figure, .adv-figure {
   height: 200px !important;
   width: 100%;
   overflow-y: hidden;
