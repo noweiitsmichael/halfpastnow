@@ -1013,7 +1013,8 @@ class EventsController < ApplicationController
    if params[:tag_type] == "all"
      @occurrences = Occurrence.includes(:event => :tags).where(:id => @occurrence_ids, :order => order_by)
    end
-
+   p "params:"
+    p params
     if params[:query].present?
         @occurrences = Occurrence.search_on_date(params).results#.select{ |o| (o.start >= (DateTime.parse("#{params[:start_date]}") rescue Date.today() )) and (o.start <= (DateTime.parse("#{params[:end_date]}") rescue Date.today()))  }.sort_by { |o| o.start }
     end
