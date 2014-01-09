@@ -14,6 +14,8 @@ body {
 figure, .adv-figure {
 	margin:0;
 	padding:0;
+  /*new css*/
+  position: relative
 }
 
 input, button, select, textarea {
@@ -320,6 +322,13 @@ height:304px !important;
 .slide-item img{
   width:100%;
   overflow-y: hidden;
+  /*new css*/
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 .slider .slide-item .name a, .product-list .product-item .name a{color:#4c334d;}
 .slider .slide-item .info, .product-list .product-item .info{
