@@ -448,8 +448,7 @@ class EventsController < ApplicationController
         @tagCounts[tag.id][:count] += 1
       end
       # neighborhoods
-      #v = occurrence.venue
-      #fetch_neighborhoods(v.latitude,v.longitude,v.id) if v.neighborhoods.empty?
+      @all_neighborhoods = Neighborhood.all.sort_by{|k| k.name}
     end
     if VenueNeighbourhoodFetch.last.nil?
       @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
@@ -1023,7 +1022,7 @@ class EventsController < ApplicationController
      @occurrences = Occurrence.includes(:event => :tags).where(:id => @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0) }
    end
    if params[:tag_type] == "all"
-     @occurrences = Occurrence.includes(:event => :tags).where(:id => @occurrence_ids, :order => order_by)
+     @occurrences = Occurrence.includes(:event => :tags).where(:id => @occurrence_ids)
    end
    p "params:"
     p params
@@ -1032,7 +1031,6 @@ class EventsController < ApplicationController
     end
     if params[:filter_type] == "neighborhood" and params[:neighborhood_id].present?
       neighborhood = Neighborhood.find params[:neighborhood_id]
-      p neighborhood
       @occurrences = neighborhood.occurrences.select{|k| @occurrences.map(&:id).include?(k.id)}#.page(1).per_page(21)
     end
     p "occurrences after fitering"
