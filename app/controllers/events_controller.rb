@@ -294,6 +294,8 @@ class EventsController < ApplicationController
   end
 
   def index
+    params[:start_date] = "#{Date.today().to_s(:db)}" if (params[:start_date] == "" or !params[:start_date].present?)
+    params[:end_date] = "#{(Date.today()+14.days).to_s(:db)}" if (params[:end_date] == "" or !params[:end_date].present?)
     @saved_search = current_user.saved_searches if user_signed_in?
 
     #ads
@@ -455,9 +457,11 @@ class EventsController < ApplicationController
             @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
           end
           params[:root]? @occurrences = @occurrences.take(5):@occurrences = @occurrences
-          root_page = params[:root]? params[:root]:nil
+
+          @root_page = params[:root]? params[:root]:nil
           #raise "number of occurrences: #{@occurrences.count}, occurrences tags: #{@occurringTags.count},parent tags:#{@parentTags.count},offset value:#{@offset}"
-          render :partial => "combo", :locals => {:occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset,:root_page => root_page}
+          render :partial => "combo", :locals => {:occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset,:root_page => @root_page}
+
         end
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts]}}) }
@@ -952,8 +956,10 @@ class EventsController < ApplicationController
       params[:start_date] = "#{Date.today().to_s(:db)}"
       params[:end_date] = "#{(Date.today()).to_s(:db)}"
     elsif params[:tag_type] == "crowd"
+
       params[:start_date] = "#{Date.today().to_s(:db)}" if (params[:start_date] == "" or !params[:start_date].present?)
       params[:end_date] = "#{(Date.today()+14.days).to_s(:db)}" if (params[:end_date] == "" or !params[:end_date].present?)
+
     elsif params[:tag_type] == "tomorrow"
       params[:start_date] = "#{(Date.today+1.day).to_s(:db)}"
       params[:end_date] = "#{(Date.today+1.day).to_s(:db)}"

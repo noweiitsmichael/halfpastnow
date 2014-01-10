@@ -679,12 +679,14 @@
         console.log($(this).text())
         $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        if (filter.start_date.length == 0) {
-          filter.start_date = "<%= Date.today %>"
-        }
-        if (filter.end_date.length == 0) {
-          filter.end_date = "<%= Date.today+14.days %>"
-        }
+
+//        if (filter.start_date.length == 0) {
+//          filter.start_date = "<%#= Date.today %>"
+//        }
+//        if (filter.end_date.length == 0) {
+//          filter.end_date = "<%#= Date.today+14.days %>"
+//        }
+
 
         dropdown_search_events("<%= params[:tag_id] %>")
         $('#search_name,#search_name1').html($(this).text())
@@ -715,12 +717,14 @@
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-      if (filter.start_date.length == 0) {
-        filter.start_date = "<%= Date.today %>"
-      }
-      if (filter.end_date.length == 0) {
-        filter.end_date = "<%= Date.today+14.days %>"
-      }
+
+//      if (filter.start_date.length == 0) {
+//        filter.start_date = "<%#= Date.today %>"
+//      }
+//      if (filter.end_date.length == 0) {
+//        filter.end_date = "<%#= Date.today+14.days %>"
+//      }
+
       dropdown_search_events("<%= params[:tag_id] %>")
       $('#search_name,#search_name1').html("<%= params[:key] %>")
       <% elsif params[:key].present? %>
@@ -819,12 +823,14 @@
       }
       else {
         console.log("tag_id based search")
-        if (filter.start_date.length == 0) {
-          filter.start_date = "<%= Date.today %>"
-        }
-        if (filter.end_date.length == 0) {
-          filter.end_date = "<%= Date.today+14.days %>"
-        }
+
+//        if (filter.start_date.length == 0) {
+//          filter.start_date = "<%#= Date.today %>"
+//        }
+//        if (filter.end_date.length == 0) {
+//          filter.end_date = "<%#= Date.today+14.days %>"
+//        }
+
         dropdown_search_events($(this).attr('tag_id'))
       }
 //      doneTyping1($(this).text());
@@ -837,12 +843,14 @@
           $.get("/search_results", {tag_id: $(this).attr('tag_id'), tag_type: $(this).attr('tag_type')})
         }
         else {
-          if (filter.start_date.length == 0) {
-            filter.start_date = "<%= Date.today %>"
-          }
-          if (filter.end_date.length == 0) {
-            filter.end_date = "<%= Date.today+14.days %>"
-          }
+
+//          if (filter.start_date.length == 0) {
+//            filter.start_date = "<%#= Date.today %>"
+//          }
+//          if (filter.end_date.length == 0) {
+//            filter.end_date = "<%#= Date.today+14.days %>"
+//          }
+
           dropdown_search_events($(this).attr('tag_id'))
         }
 //        doneTyping1($(this).text());
