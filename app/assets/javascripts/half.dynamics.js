@@ -1112,7 +1112,8 @@ function streamSelector() {
 
 //user is "finished typing," do something
 function doneTyping() {
-  $('#related_events').show()
+  $('#events').show()
+  $('#related_events').hide()
   filter.search = $('.search-input').val();
   pullEvents({update_search: false});
 }
@@ -1416,7 +1417,6 @@ function dropdown_search_events(tag) {
   filter.included_tags = "6,"+ tag
   }else{
     filter.included_tags = tag
-
   }
   $.get("/events/index?ajax=true", filter, function (data) {
     $("#related_events .main .inline .events").html(data);
@@ -1554,6 +1554,7 @@ $(function () {
       dropdown_search_events($(this).attr('tag_id'))
       $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
     }
-
+    $('#events').show()
+    $('#related_events').hide()
   });
 });

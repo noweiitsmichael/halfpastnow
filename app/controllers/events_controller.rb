@@ -455,9 +455,9 @@ class EventsController < ApplicationController
             @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
           end
           params[:root]? @occurrences = @occurrences.take(5):@occurrences = @occurrences
-
+          root_page = params[:root]? params[:root]:nil
           #raise "number of occurrences: #{@occurrences.count}, occurrences tags: #{@occurringTags.count},parent tags:#{@parentTags.count},offset value:#{@offset}"
-          render :partial => "combo", :locals => {:occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset}
+          render :partial => "combo", :locals => {:occurrences => @occurrences, :occurringTags => @occurringTags, :parentTags => @parentTags, :offset => @offset,:root_page => root_page}
         end
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts]}}) }
@@ -952,18 +952,19 @@ class EventsController < ApplicationController
       params[:start_date] = "#{Date.today().to_s(:db)}"
       params[:end_date] = "#{(Date.today()).to_s(:db)}"
     elsif params[:tag_type] == "crowd"
-      params[:start_date] = "#{Date.today().to_s(:db)}"
-      params[:end_date] = "#{(Date.today()+1.month).to_s(:db)}"
+      params[:start_date] = "#{Date.today().to_s(:db)}" if (params[:start_date] == "" or !params[:start_date].present?)
+      params[:end_date] = "#{(Date.today()+14.days).to_s(:db)}" if (params[:end_date] == "" or !params[:end_date].present?)
     elsif params[:tag_type] == "tomorrow"
       params[:start_date] = "#{(Date.today+1.day).to_s(:db)}"
       params[:end_date] = "#{(Date.today+1.day).to_s(:db)}"
     elsif params[:tag_type] == "weekend"
-      params[:start_date] = "#{(Date.today.end_of_week).to_s(:db)}"
+      params[:start_date] = "#{(Date.today.end_of_week-2.days).to_s(:db)}"
       params[:end_date] = "#{Date.today.end_of_week.to_s(:db)}"
     else
     params[:start_date] = "#{DateTime.now().to_s(:db)}" if (params[:start_date] == "" or !params[:start_date].present?)
-    params[:end_date] = "#{(DateTime.now()+1.year).to_s(:db)}" if (params[:end_date] == "" or !params[:end_date].present?)
+    params[:end_date] = "#{(DateTime.now()+14.days).to_s(:db)}" if (params[:end_date] == "" or !params[:end_date].present?)
     end
+   # raise params.inspect
     @ids = Occurrence.find_with(params)
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
@@ -978,12 +979,11 @@ class EventsController < ApplicationController
                     ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
                   END DESC"
     end
-
     if params[:tag_type] == "crowd"
       @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0) }
     end
    if params[:tag_type] == "staff"
-     @occurrences = BookmarkList.find(2370).all_bookmarked_events
+     @occurrences = BookmarkList.find(2370).all_bookmarked_events.select{|k| @occurrence_ids.include?(k.id)}
    end
    if params[:tag_type] == "today" or params[:tag_type] == "tomorrow" or params[:tag_type] == "weekend"
      @occurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0) }
