@@ -459,14 +459,14 @@
         </span>
         <span class="sort-item">
           <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Neighborhood</a>
-         <div style="display: none;width: 370px;" class="popover bottom">
+         <div style="display: none;width: 400px;" class="popover bottom">
            <div class="arrow"></div>
            <div style="max-height: 200px;overflow-y:auto">
              <table class="neighborhood_names_list table-bordered table-condensed">
                <% @all_neighborhoods.each_slice(2) do |nhs| %>
                  <tr>
                    <% nhs.each do|nh|%>
-                     <td data-id="<%= nh.id %>"><%= nh.name %></td>
+                     <td width="180px" data-id="<%= nh.id %>"><%= nh.name %></td>
                    <% end %>
                  </tr>
                <% end %>
