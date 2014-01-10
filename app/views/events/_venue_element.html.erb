@@ -1,5 +1,5 @@
 <article class="product-item" link-id="<%= venue_list.id %>">
-  <figure><a href="#">
+  <figure><a href="/venues/austin/<%= venue_list.slug %>">
     <!--<img src="<%#= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>"/>-->
    <% if venue_list.pictures.first %>
       <img src="<%= venue_list.pictures.first.image_url(:full) %>" alt="venue pic" />
