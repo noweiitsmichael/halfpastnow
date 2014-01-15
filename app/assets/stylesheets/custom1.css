@@ -14,6 +14,8 @@ body {
 figure, .adv-figure {
 	margin:0;
 	padding:0;
+  /*new css*/
+  position: relative
 }
 
 input, button, select, textarea {
@@ -317,10 +319,21 @@ height:304px !important;
   width: 100%;
   overflow-y: hidden;
 }
-.slide-item img{
+.slide-item img, .product-item img{
   width:100%;
   overflow-y: hidden;
 }
+
+figure img, .adv-figure img{
+  /*new css*/
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
 .slider .slide-item .name a, .product-list .product-item .name a{color:#4c334d;}
 .slider .slide-item .info, .product-list .product-item .info{
 	padding:10px 0;

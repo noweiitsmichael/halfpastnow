@@ -45,6 +45,18 @@ class EventsController < ApplicationController
 
     @saved_searches = current_user.saved_searches  if user_signed_in?
     @austin_occurrences =  BookmarkList.find(2370).bookmarked_events_root.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.take(5)
+
+    if VenueNeighbourhoodFetch.last.nil?
+      @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
+      neighbourhood_fetch
+    elsif  VenueNeighbourhoodFetch.last.start_date != Date.today
+      @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
+      neighbourhood_fetch
+    elsif VenueNeighbourhoodFetch.last.start_date == Date.today
+      @venue_neighbourhood = VenueNeighbourhoodFetch.where(:start_date => Date.today).first
+      neighbourhood_fetch
+    end
+
     respond_to do |format|
       format.html { render :layout => false }
     end
@@ -436,8 +448,7 @@ class EventsController < ApplicationController
         @tagCounts[tag.id][:count] += 1
       end
       # neighborhoods
-      #v = occurrence.venue
-      #fetch_neighborhoods(v.latitude,v.longitude,v.id) if v.neighborhoods.empty?
+      @all_neighborhoods = Neighborhood.all.sort_by{|k| k.name}
     end
     if VenueNeighbourhoodFetch.last.nil?
       @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
@@ -1020,7 +1031,6 @@ class EventsController < ApplicationController
     end
     if params[:filter_type] == "neighborhood" and params[:neighborhood_id].present?
       neighborhood = Neighborhood.find params[:neighborhood_id]
-      p neighborhood
       @occurrences = neighborhood.occurrences.select{|k| @occurrences.map(&:id).include?(k.id)}#.page(1).per_page(21)
     end
     p "occurrences after fitering"

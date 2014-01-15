@@ -168,7 +168,7 @@
     </article>
     <% end %>
     <section class="product-list inner clearfix">
-      <h1>My Top Spots</h1>
+      <h1><%= @bookmarkList.name %></h1>
       <% (@occurrences.size <=0 and @bookmarkList_venues.size <= 0) ? results = nil : results = 1 %>
       <%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences, :venues_lists => [],:bookmarkList => @bookmarkList } %>
       <%= render :partial => "events/event_list",:locals => { :occurrences => [],:venues_lists => @bookmarkList_venues,:bookmarkList => @bookmarkList } %>

@@ -401,7 +401,7 @@
           <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
           <div style="width: 340px !important;" class="popover bottom">
             <div class="arrow"></div>
-              <div class="popover-content clearfix">
+            <div class="popover-content clearfix">
               <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="today">Today</a>
               <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="tomorrow">Tomorrow</a>
               <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="weekend">weekend</a>
@@ -429,6 +429,7 @@
             <div class="arrow"></div>
             <div class="popover-content clearfix">
               <label for="cost" class="ui-input-text cvalue">Less than $50</label>
+
               <div class="left">
                 <span class="option">Free</span>
                 <span class="option">$5</span>
@@ -458,15 +459,19 @@
         </span>
         <span class="sort-item">
           <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Neighborhood</a>
-         <div style="display: none;width: 300px;" class="popover bottom">
-            <div class="arrow"></div>
+         <div style="display: none;width: 400px;" class="popover bottom">
+           <div class="arrow"></div>
            <div style="max-height: 200px;overflow-y:auto">
-              <ul class="neighborhood_names_list">
-                <% Neighborhood.all.each do |nh| %>
-                  <li data-id="<%= nh.id %>"><%= nh.name %></li>
-                <% end %>
-              </ul>
-          </div>
+             <table class="neighborhood_names_list table-bordered table-condensed">
+               <% @all_neighborhoods.each_slice(2) do |nhs| %>
+                 <tr>
+                   <% nhs.each do|nh|%>
+                     <td width="180px" data-id="<%= nh.id %>"><%= nh.name %></td>
+                   <% end %>
+                 </tr>
+               <% end %>
+             </table>
+           </div>
          </div>
         </span>
       </div>
@@ -552,6 +557,7 @@
             <div class="arrow"></div>
             <div class="popover-content clearfix">
               <label for="cost" class="ui-input-text cvalue">Less than $50</label>
+
               <div class="left">
                 <span class="option">Free</span>
                 <span class="option">$5</span>
@@ -582,14 +588,18 @@
         </span>
         <span class="sort-item">
           <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Neighborhood</a>
-          <div style="display: none;width: 300px;" class="popover bottom">
+          <div style="display: none;width: 370px;" class="popover bottom">
             <div class="arrow"></div>
             <div style="max-height: 200px;overflow-y:auto">
-              <ul class="neighborhood_names_list">
-                <% Neighborhood.all.each do |nh| %>
-                  <li data-id="<%= nh.id %>"><%= nh.name %></li>
+              <table class="neighborhood_names_list table-bordered table-condensed">
+                <% @all_neighborhoods.each_slice(2) do |nhs| %>
+                  <tr>
+                    <% nhs.each do|nh|%>
+                      <td data-id="<%= nh.id %>"><%= nh.name %></td>
+                    <% end %>
+                  </tr>
                 <% end %>
-              </ul>
+              </table>
             </div>
           </div>
         </span>
@@ -641,17 +651,17 @@
       // sort by time and cost
       filter.order_time = 1
       filter.order_cost = 1
-      $('.cost_sort').click(function(){
+      $('.cost_sort').click(function () {
         filter.cost_sort = "cost"
         filter.time_sort = ""
-        filter.order_cost = filter.order_cost*-1
+        filter.order_cost = filter.order_cost * -1
         console.log(JSON.stringify(filter))
         $('.active a').click()
       })
-      $('.time_sort').click(function(){
+      $('.time_sort').click(function () {
         filter.time_sort = "time"
         filter.cost_sort = ""
-        filter.order_time = filter.order_time*-1
+        filter.order_time = filter.order_time * -1
         console.log(JSON.stringify(filter))
         $('.active a').click()
       })
@@ -767,8 +777,8 @@
       <% end %>
 
       //neighborhood
-      $("ul.neighborhood_names_list li").on('click', function () {
-        $("ul.neighborhood_names_list li").removeClass('selected');
+      $("table.neighborhood_names_list td").on('click', function () {
+        $("table.neighborhood_names_list td").removeClass('selected');
         $(this).addClass('selected');
         var id = $(this).data('id');
         $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
@@ -994,7 +1004,7 @@
     <% end %>
   </script>
   <style>
-    .cost_sort, .time_sort{
+    .cost_sort, .time_sort {
       color: #777777;
       display: inline;
       font-size: 16px;
@@ -1011,13 +1021,15 @@
       font-weight: bold;
       position: relative;
       cursor: pointer;
+      float: left;
+      padding:6px;
     }
 
-    .popover ul li{
+    .popover ul li {
       padding: 2px 0;
     }
 
-    .popover ul li.selected{
+    table td.selected {
       background-color: #777777;
       color: #ffffff;
     }
