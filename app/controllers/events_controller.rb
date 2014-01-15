@@ -1011,7 +1011,7 @@ class EventsController < ApplicationController
      @occurrences = Occurrence.includes(:event => :tags).where(:id => @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0) }
    end
    if params[:tag_type] == "all"
-     @occurrences = Occurrence.includes(:event => :tags).where(:id => @occurrence_ids, :order => order_by)
+     @occurrences = Occurrence.includes(:event => :tags).where(:id => @occurrence_ids)
    end
    p "params:"
     p params
@@ -1025,7 +1025,7 @@ class EventsController < ApplicationController
     end
     p "occurrences after fitering"
     p @occurrences
-    @allOccurrences = @occurrences.select{ |o| o.start > Time.now }.uniq{|o| o.event_id}.sort_by { |o| o.start }
+    @allOccurrences = @occurrences.select{ |o| o.start > Time.now }.uniq{|o| o.event_id}
     if params[:cost_sort] == "cost"
     @occurrences = @allOccurrences.sort_by { |o| params[:order_cost].to_i*o.event.price.to_f }.paginate(:page => params[:page], :per_page => 21)
     elsif params[:time_sort] == "time"
@@ -1119,9 +1119,9 @@ class EventsController < ApplicationController
       Rails.logger.info "result-neighborhoods: #{result['neighborhoods']}"
     end
 
-    #neighborhoods = []
-    #result.each do|result|
-    #  neighborhoods << result['neighborhoods'].first.name rescue next
-    #end
+    neighborhoods = []
+    result.each do|result|
+      neighborhoods << result['neighborhoods'].first.name rescue next
+    end
   end
 end

@@ -1282,6 +1282,10 @@ function pullEvents2(updateOptions, search) {
   //alert(JSON.stringify(filter))
 
   filter.query = filter.search
+  filter.tag_id = "0"
+  filter.included_tags = []
+  filter.tag_type=null
+  console.log(JSON.stringify(filter))
   filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
   filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
   console.log("pullEvents2")
@@ -1434,6 +1438,9 @@ function dropdown_search_events(tag) {
   }else{
     filter.included_tags = tag
   }
+  filter.tag_id = filter.included_tags
+  filter.tag_type = null
+  filter.query = null
   filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
   filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
   console.log("dropdown_search_events")
@@ -1549,34 +1556,36 @@ function checkInfinite() {
   }
 }
 
-$(function () {
-  $('#search-tab a').on("click", function () {
-    console.log("i am here")
-    tag_id = parseInt($(this).attr('tag_id'))
-    tag_type = $(this).attr('tag_type')
+console.log($('#search-tab a'));
+$(document).delegate('#search-tab a', 'click', function(){
 
-    $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-    $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-    $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
-    if (tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")) {
-      console.log("search key filter")
+  console.log("i am here")
+  tag_id = $(this).attr('tag_id')
+  tag_type = $(this).attr('tag_type')
+   console.log("tag Id value is " +tag_id)
+  $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+  $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+  $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
+  if (tag_id == undefined && (tag_type == null || tag_type == undefined)) {
+    console.log("search key filter")
 
-      doneTyping1($(this).text());
-      $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
-    } else if (tag_id == 0) {
-      console.log("tag type filter")
-      filter.tag_id = tag_id
-      filter.tag_type = tag_type
-      filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
-      filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
-      $.get("/search_results", filter)
-      $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
-    } else {
-      console.log('tag_id filter')
-      dropdown_search_events($(this).attr('tag_id'))
-      $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
-    }
-    $('#events').show()
-    $('#related_events').hide()
-  });
+    doneTyping2($(this).text());
+    $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
+  } else if (tag_id == "0"&& (tag_type != null || tag_type != undefined)){
+    console.log("tag type filter")
+    filter.tag_id = "0"
+    filter.included_tags = []
+    filter.tag_type = $(this).attr('tag_type')
+    filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
+    filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+    filter.query = null
+    $.get("/search_results", filter)
+    $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
+  } else {
+    console.log('tag_id filter')
+    dropdown_search_events($(this).attr('tag_id'))
+    $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
+  }
+  $('#events').show()
+  $('#related_events').hide()
 });

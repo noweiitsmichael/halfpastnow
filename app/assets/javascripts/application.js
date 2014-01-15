@@ -7,7 +7,6 @@
 //= require jquery
 //= require jquery-migrate-1.1.1
 //= require jquery_ujs
-//= require jquery-ui-1.10.0.custom.min
 //= require jquery.Jcrop.min
 //= require underscore
 //= require viewport

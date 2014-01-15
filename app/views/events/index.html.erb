@@ -665,22 +665,7 @@
         $(this).parents('li').remove()
       })
 
-      $('#search-tab a').on("click", function () {
-        console.log($(this).text())
-        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
-        $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        filter.tag_id = "<%= params[:tag_id] %>"
-        filter.tag_type = "<%= params[:tag_type] %>"
-        filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
-        filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
-        console.log("search1")
-        console.log(JSON.stringify(filter))
-        $.get("/search_results", filter)
-        $('#search_name,#search_name1').html($(this).text())
-        $('#events').show()
-        $('#related_events').hide()
-      });
+
       $('.icon-white-pin').on("click", function () {
         key = $(this).parent().attr('key')
         check = $(this).parent()
@@ -721,16 +706,7 @@
         $(this).parents('li').remove()
       })
 
-      $('#search-tab a').on("click", function () {
-        console.log($(this).text())
-        $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
 
-        dropdown_search_events("<%= params[:tag_id] %>")
-        $('#search_name,#search_name1').html($(this).text())
-        $('#events').show()
-        $('#related_events').hide()
-      });
       $('.icon-white-pin').on("click", function () {
         key = $(this).parent().attr('key')
         check = $(this).parent()
@@ -766,13 +742,7 @@
       $('.icon-cross').on("click", function () {
         $(this).parents('li').remove()
       })
-      $('#search-tab a').on("click", function () {
-        console.log($(this).text())
-        doneTyping1($(this).text());
-        $('#search_name,#search_name1').html($(this).text())
-        $('#events').show()
-        $('#related_events').hide()
-      });
+
       $('.icon-white-pin').on("click", function () {
         key = $(this).parent().attr('key')
         check = $(this).parent()
@@ -864,10 +834,12 @@
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
       if ($(this).attr('tag_id') == "0") {
         console.log('tag_type based search')
-        filter.tag_id = $(this).attr('tag_id')
+        filter.tag_id = "0"
+        filter.included_tags = []
         filter.tag_type = $(this).attr('tag_type')
         filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
         filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+        filter.query = null
         console.log("search3")
         console.log(JSON.stringify(filter))
         $.get("/search_results", filter)
@@ -879,30 +851,7 @@
         dropdown_search_events($(this).attr('tag_id'))
       }
 //      doneTyping1($(this).text());
-      $('#search-tab a').on("click", function () {
-        console.log($(this).text())
-        $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-        if ($(this).attr('tag_id') == "0") {
-          filter.tag_id = $(this).attr('tag_id')
-          filter.tag_type = $(this).attr('tag_type')
-          filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
-          filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
-          console.log("search4")
-          console.log(JSON.stringify(filter))
-          $.get("/search_results", filter)
-        }
-        else {
 
-
-          dropdown_search_events($(this).attr('tag_id'))
-        }
-//        doneTyping1($(this).text());
-        $('#search_name,#search_name1').html($(this).text())
-        $('#events').show()
-        $('#related_events').hide()
-      });
       $('.icon-white-pin').on("click", function () {
         key = $(this).parent().attr('key')
         tag_id = $(this).parent().attr('tag_id')
@@ -962,15 +911,7 @@
           'facebook-share-dialog',
           'width=626,height=436');
       })
-      $('#search-tab a').on("click", function () {
-        console.log("i am here")
-        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
 
-        doneTyping2($(this).text());
-        $('#search_name,#search_name1').html($(this).text())
-        $('#events').show()
-        $('#related_events').hide()
-      });
       $('.active a').click()
       $('#events').show()
       $('#related_events').hide()
@@ -1020,15 +961,7 @@
           'facebook-share-dialog',
           'width=626,height=436');
       })
-      $('#search-tab a').on("click", function () {
-        console.log("i am here")
-        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
 
-        doneTyping2($(this).text());
-        $('#search_name,#search_name1').html($(this).text())
-        $('#events').show()
-        $('#related_events').hide()
-      });
       $('.active a').click()
       $('#events').show()
       $('#related_events').hide()
@@ -1050,13 +983,7 @@
       $('#related_events').hide();
       $('#events').show();
     })
-    $('#search-tab a').on("click", function () {
-      console.log("i am here")
-      doneTyping1($(this).text());
-      $('#search_name,#search_name1').text($(this).text())
-      $('#events').show()
-      $('#related_events').hide()
-    });
+
     $('.filter-dropdown').hide()
     $('figure').click(function () {
       var event_id = $(this).parent('article').attr('link-id')

@@ -21,7 +21,7 @@ class Occurrence < ActiveRecord::Base
     indexes :start, type: 'date', index: :not_analyzed , boost: 100
     indexes :events do
       indexes :price, type: 'integer',boost: 100
-      indexes :title, analyzer: 'snowball', boost: 700
+      indexes :title, boost: 700
       indexes :description, boost: 200
     indexes :acts do
       indexes :name ,boost: 800
@@ -31,7 +31,7 @@ class Occurrence < ActiveRecord::Base
       indexes :description, boost: 200
     end
     indexes :tags do
-      indexes :name, analyzer: 'snowball',boost: 1000
+      indexes :name, boost: 1000
     end
       index
       end
@@ -54,9 +54,7 @@ class Occurrence < ActiveRecord::Base
       query { string params[:query], default_operator: "OR"  } if params[:query].present?
       size 1000
       sort { by :start, "asc" }
-      filter :range, start: {gte: (DateTime.parse(params[:start_date]).in_time_zone rescue Time.zone.now),lte: (DateTime.parse(params[:end_date]).in_time_zone rescue Time.zone.now+1.year)}
-
-
+      filter :range, start: {gte: (DateTime.parse(params[:start_date]).in_time_zone rescue Time.zone.now),lte: (DateTime.parse(params[:end_date]).in_time_zone rescue Time.zone.now+14.days)}
     end
   end
   def to_indexed_json
