@@ -29,3 +29,5 @@
 
 /.sublime-project*
 /config/s3.yml
+
+/public/assets
