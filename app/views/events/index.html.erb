@@ -6,160 +6,19 @@
   <meta class="meta-description" property="og:description" content="Find the best events in Austin">
 <% end %>
 <% content_for :head do %>
-  <script src="/assets/cnt.js" type="text/javascript" async=""></script>
-  <script src="/assets/ga.js" async="" type="text/javascript"></script>
-  <script type="text/javascript" language="javascript" src="/assets/jquery_003.js"></script>
-  <%= javascript_include_tag "half.dynamics" %>
-  <%= javascript_include_tag "smartinfowindow.js" %>
+  <%= javascript_tag do %>
+    var user_signed_in = <%= user_signed_in? %>;
+    var params = <%= raw params.to_json %>;
+    var start_of_weekend = "<%= (Time.now.next_week-3.day).strftime('%m/%d/%Y') %>";
+    var end_of_weekend = "<%= (Time.now.next_week-1.day).strftime('%m/%d/%Y') %>";
+  <% end %>
+  <%= javascript_include_tag "half.dynamics","smartinfowindow.js" %>
   <%= stylesheet_link_tag "custom1" %>
   <% @location_page = "serach" %>
-  <script type="text/javascript" language="javascript">
-    $("document").ready(function () {
-      $('.flickr_pagination a').click(function () {
-        $("#related_events .main .inline .events,#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-      })
-      $('.flickr_pagination a').attr('data-remote', 'true');
-      $(".total_number").text("<%= @allOccurrences.count %>");
-      $('.desc_btn').hide();
-      $(".asc_btn").click(function () {
-        var sort_on = $(this).data('sort_on');
-        var sort_by = $(this).data('sort_by');
-        console.log(sort_on);
-        console.log(sort_by);
-        $(".product-list").jSort({
-          sort_by: sort_by,
-          item: '.slide-item',
-          order: 'asc',
-          sort_by_attr: true,
-          attr_name: sort_on
-        });
-
-        $('.' + $(this).data('type') + '.desc_btn').show();
-        $('.' + $(this).data('type') + '.asc_btn').hide();
-      });
-
-      $(".desc_btn").click(function () {
-        var sort_on = $(this).data('sort_on');
-        var sort_by = $(this).data('sort_by');
-        var sort_on = $(this).data('sort_on');
-        var sort_by = $(this).data('sort_by');
-        $(".product-list").jSort({
-          sort_by: sort_by,
-          item: '.slide-item',
-          order: 'desc',
-          sort_by_attr: true,
-          attr_name: sort_on
-        });
-
-        $('.' + $(this).data('type') + '.asc_btn').show();
-        $('.' + $(this).data('type') + '.desc_btn').hide();
-      });
-
-      // advertisements
-      $('.ad-details').on('click', function () {
-        var id = $(this).data('id');
-        var name = $(this).data('prop');
-        var value = $(this).data('value');
-        $.post('/admin/advertisements/update_ads_details', {pk: id, name: name, value: value })
-      });
-
-    });
-  </script>
 <% end %>
 <% content_for :code do %>
-<%# TODO: put this stuff in the controller eventually %>
-
-  <% @now = DateTime.now.change(:hour => 0)
-     @channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
 
   <script type="text/javascript">
-    //cookie redirect
-
-
-    (function ($, document, undefined) {
-
-      var pluses = /\+/g;
-
-      function raw(s) {
-        return s;
-      }
-
-      function decoded(s) {
-        return decodeURIComponent(s.replace(pluses, ' '));
-      }
-
-      var config = $.cookie = function (key, value, options) {
-
-        // write
-        if (value !== undefined) {
-          options = $.extend({}, config.defaults, options);
-
-          if (value === null) {
-            options.expires = -1;
-          }
-
-          if (typeof options.expires === 'number') {
-            var days = options.expires, t = options.expires = new Date();
-            t.setDate(t.getDate() + days);
-          }
-
-          value = config.json ? JSON.stringify(value) : String(value);
-
-          return (document.cookie = [
-            encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
-            options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-            options.path ? '; path=' + options.path : '',
-            options.domain ? '; domain=' + options.domain : '',
-            options.secure ? '; secure' : ''
-          ].join(''));
-        }
-
-        // read
-        var decode = config.raw ? raw : decoded;
-        var cookies = document.cookie.split('; ');
-        for (var i = 0, l = cookies.length; i < l; i++) {
-          var parts = cookies[i].split('=');
-          if (decode(parts.shift()) === key) {
-            var cookie = decode(parts.join('='));
-            return config.json ? JSON.parse(cookie) : cookie;
-          }
-        }
-
-        return null;
-      };
-
-      config.defaults = {};
-
-      $.removeCookie = function (key, options) {
-        if ($.cookie(key) !== null) {
-          $.cookie(key, null, options);
-          return true;
-        }
-        return false;
-      };
-
-    })(jQuery, document);
-    $(function () {
-      var COOKIE_NAME = 'splash-page';
-      var cookie = $.cookie(COOKIE_NAME);
-      if (cookie == null) {
-        $.cookie(COOKIE_NAME, true, { path: '/', expires: 9001 });
-
-        // ** Adding this check because if a new user is directly linked to a top pick or event, it sucks to be redirected to the splash page.
-        if ((window.location.pathname === "/search") || (window.location.pathname === "/picks") || (window.location.pathname === "/")) {
-          window.location = "/events/new_splash";
-        }
-      }
-      else {
-      }
-    });
-
-
-    var geocoder;
-    var map;
-    var markers = [];
-    var tags = {};
-    var channelFilters = {};
     var filter = {
       start_days: <%= params[:start_days].coalesce_to 0 %>,
       end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
@@ -182,221 +41,31 @@
       start_date: "",
       end_date: ""
     };
-
-    function initialize() {
-      //console.log("initialize");
-      //$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
-      geocoder = new google.maps.Geocoder();
-
-      var styles = [
-        {
-          "featureType": "road.highway",
-          "elementType": "geometry.stroke",
-          "stylers": [
-            { "color": "#804580" }
-          ]
-        },
-        {
-          "featureType": "road.highway",
-          "elementType": "labels.text.stroke",
-          "stylers": [
-            { "color": "#d5b5d5" }
-          ]
-        },
-        {
-          "featureType": "road.arterial",
-          "elementType": "labels.text.stroke",
-          "stylers": [
-            { "color": "#f1e6f3" }
-          ]
-        },
-        {
-          "elementType": "geometry.fill",
-          "stylers": [
-            { "gamma": 1.54 },
-            { "lightness": 12 }
-          ]
-        },
-        {
-          "featureType": "road.arterial",
-          "elementType": "geometry.fill",
-          "stylers": [
-            { "color": "#e0dae0" }
-          ]
-        },
-        {
-          "featureType": "road.arterial",
-          "elementType": "geometry.stroke",
-          "stylers": [
-            { "color": "#b8abb8" }
-          ]
-        },
-        {
-          "featureType": "road.highway",
-          "elementType": "geometry.fill",
-          "stylers": [
-            { "color": "#af96af" }
-          ]
-        },
-        {
-        }
-      ];
-
-      var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-      var myOptions = {
-        zoom: <%= @zoom %>,
-        center: latlng,
-        mapTypeId: 'map_style',
-        disableDefaultUI: true,
-        zoomControl: true,
-        scrollwheel: false,
-        zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 2 },
-        backgroundColor: '#FFFFFF'
-      };
-
-      var styledMap = new google.maps.StyledMapType(styles,
-        {name: "Styled Map"});
-
-      map = new google.maps.Map($("#map")[0], myOptions);
-
-      map.mapTypes.set('map_style', styledMap);
-      map.setMapTypeId('map_style');
-
-      var locations = [];
-
-      $("#content .main .inner .events li").each(function (index) {
-        var latitude = parseFloat($(this).find(".latitude").html());
-        var longitude = parseFloat($(this).find(".longitude").html());
-        locations.push({lat: latitude, long: longitude});
-      });
-
-      placeMarkers({points: locations});
-
-      google.maps.event.addListener(map, 'idle', boundsChanged);
-    }
-
-    function to_i(obj) {
-      return parseInt(obj);
-    }
-    $(function () {
-      <% @channels.each do |channel| %>
-      channelFilters[<%= channel.id %>] = {
-        stream_id: <%= channel.id %>,
-        start_days: <%= channel.start_days || 0 %>,
-        end_days: <%= channel.end_days || 0 %>,
-        start_seconds: <%= channel.start_seconds || "''" %>,
-        end_seconds: <%= channel.end_seconds || "''" %>,
-        day: <%= channel.day_of_week ? "'" + channel.day_of_week + "'.split(',').map(to_i)" : "[]" %>,
-        low_price: <%= channel.low_price || "''" %>,
-        high_price: <%= channel.high_price || "''" %>,
-        included_tags: <%= channel.included_tags ? "'" + channel.included_tags + "'.split(',')" : "[]" %>,
-        excluded_tags: <%= channel.excluded_tags ? "'" + channel.excluded_tags + "'.split(',')" : "[]" %>,
-        and_tags: <%= channel.and_tags ? "'" + channel.and_tags + "'.split(',')" : "[]" %>,
-        lat_min: "",
-        lat_max: "",
-        long_min: "",
-        long_max: "",
-        offset: 0,
-        search: "<%= channel.search || "" %>",
-        sort: <%= channel.sort || 0 %>,
-        name: "<%= channel.name || "" %>",
-        start_date: "<%= channel.start_date ? channel.start_date.to_s : "" %>",
-        end_date: "<%= channel.end_date ? channel.end_date.to_s : "" %>"
-      };
-      <% end %>
-
-      channelFilters[0] = {
-        stream_id: "",
-        start_days: 0,
-        end_days: 0,
-        start_seconds: '',
-        end_seconds: '',
-        day: [0, 1, 2, 3, 4, 5, 6],
-        low_price: '',
-        high_price: '',
-        included_tags: [],
-        and_tags: [],
-        excluded_tags: [],
-        lat_min: "",
-        lat_max: "",
-        long_min: "",
-        long_max: "",
-        offset: 0,
-        search: "",
-        name: "",
-        start_date: "",
-        end_date: "",
-        sort: 0 };
-
-      <% @tagCounts.each do |tagCount| %>
-      tags['<%= tagCount[:id] %>'] =
-      { name: "<%= tagCount[:name] %>",
-        parent_id: <%= tagCount[:parent] ? "'#{tagCount[:parent][:id]}'" : 'null' %>,
-        <% children = tagCount[:children].collect { |child| "'#{child[:id]}'" } * ',' %>
-        child_ids: [<%= children %>]
-      }
-      <% end %>
-
-        // var event_id =
-      <%= params[:event_id] || "null" %>;
-      var venue_id = <%= params[:venue_id] || "null" %>;
-      var act_id = <%= params[:act_id] || "null" %>;
-      var modality;
-
-      // if(event_id) {
-      // 	modality = spawn(modalities["event"],{id: event_id});
-      // 	modal(modality);
-      // }
-      if (venue_id) {
-        modality = spawn(modalities["venue"], {id: venue_id});
-        modal(modality);
-      }
-      if (act_id) {
-        modality = spawn(modalities["act"], {id: act_id});
-        modal(modality);
-      }
-
-      $('*').tooltip({ position: { my: "left+15 center", at: "right center" } });
-      $('.head-title').tooltip('disable');
-      $('.icon-check').tooltip('disable');
-      $('.icon-check-empty').tooltip('disable');
-
-    });
-    $(window).load(function () {
-      var stream_id = "<%= params['channel_id'] %>";
-      if (stream_id !== "") {
-        // $('#header').addClass('selected');
-        $(".streambar .stream[stream-id=" + stream_id + "]").addClass('selected');
-        filter.stream_id = parseInt(stream_id);
-        filter.included_tags = channelFilters[parseInt(stream_id)].included_tags;
-        updateViewFromFilter();
-      }
-    });
   </script>
 <% end %>
 <% content_for :body do %>
 
   <section class="search">
 
-  <div class="tabs">
-  <div class="container">
-    <ul class="nav nav-tabs" id="search-tab">
-      <li class="events_tab active"><a data-toggle="tab" tag_id="0" tag_type="all" href="#events">Events</a></li>
-      <% if user_signed_in? %>
-        <% @saved_search.each do |search| %>
-          <li class="related_events">
-            <a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" tag_type="<%= search.tag_type.nil? ? "nil" : search.tag_type %>" tag_id="<%= search.tag_id.nil? ? search.tag_id.to_i : search.tag_id.to_i %>" key="<%= search[:search_key] %>"><%= search[:search_key].gsub("_", " ") %>
-              <i class='icon-cross'></i></a></li>
-        <% end %>
-      <% end %>
-
-    </ul>
-  </div>
-
-  <div class="tab-content">
-  <div id="events" class="tab-pane fade in active">
-    <div class="sort-panel filter-toggle price date">
+    <div class="tabs">
       <div class="container">
+        <ul class="nav nav-tabs" id="search-tab">
+          <li class="events_tab active"><a data-toggle="tab" tag_id="0" tag_type="all" href="#events">Events</a></li>
+          <% if user_signed_in? %>
+            <% @saved_search.each do |search| %>
+              <li class="related_events">
+                <a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" tag_type="<%= search.tag_type.nil? ? "nil" : search.tag_type %>" tag_id="<%= search.tag_id.nil? ? search.tag_id.to_i : search.tag_id.to_i %>" key="<%= search[:search_key] %>"><%= search[:search_key].gsub("_", " ") %>
+                  <i class='icon-cross'></i></a></li>
+            <% end %>
+          <% end %>
+
+        </ul>
+      </div>
+
+      <div class="tab-content">
+        <div id="events" class="tab-pane fade in active">
+          <div class="sort-panel filter-toggle price date">
+            <div class="container">
         <span class="sort-item">
           <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
           <div style="width: 340px !important;" class="popover bottom">
@@ -465,7 +134,7 @@
              <table class="neighborhood_names_list table-bordered table-condensed">
                <% @all_neighborhoods.each_slice(2) do |nhs| %>
                  <tr>
-                   <% nhs.each do|nh|%>
+                   <% nhs.each do |nh| %>
                      <td width="180px" data-id="<%= nh.id %>"><%= nh.name %></td>
                    <% end %>
                  </tr>
@@ -474,159 +143,57 @@
            </div>
          </div>
         </span>
-      </div>
-
-
-    </div>
-    <div class="content main" style="padding-top:60px">
-      <div class="container inline">
-
-        <div class="container head">
-          <div class="pull-left">
-            <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.size %> </span> results for
-              <span id="search_name1">all events</span></h2>
-
-            <div>
-              <span class="text-info"><b>Date:&nbsp;&nbsp;</b><span class="date_search"></span></span><br>
-              <span class="text-info"><b>Time:&nbsp;&nbsp;</b><span class="time_search"></span></span> <br>
-              <span class="text-info"><b>Cost:&nbsp;&nbsp;</b><span class="cost_search"></span></span>
             </div>
-          </div>
-          <div class="pull-right" style="max-height: 100px !important;max-width: 550px !important;overflow: hidden !important;">
-            <% if @banner_advertisement.present? %>
-              <div class="ad-details" data-id="<%= @banner_advertisement.id %>" data-prop="clicks" data-value="<%= @banner_advertisement.clicks.to_i + 1 %>">
-                <%= link_to @banner_advertisement.target_url.present? ? @banner_advertisement.target_url : '#', target: :_blank, class: "pull-right" do %>
-                  <%= image_tag @banner_advertisement.image.full, alt: "Advertisement" %>
-                <% end %>
-              </div>
-            <% else %>
-              <img alt="" src="assets/ad.jpg" class="pull-right">
-            <% end %>
+
 
           </div>
-        </div>
+          <% cache("search_index_events", expires_in: 1.day) do %>
+            <div class="content main" style="padding-top:60px">
+              <div class="container inline">
 
-        <section class="product-list clearfix events">
-          <%= will_paginate @occurrences, previous_label: h("<"), next_label: h(">"), class: "flickr_pagination" %>
+                <div class="container head">
+                  <div class="pull-left">
+                    <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.count %> </span> results for
+                      <span id="search_name1">all events</span></h2>
 
-          <% @occurrences.each_with_index do |occurrence, index| %>
-            <% if index == 2 and !@advertisement.nil? %>
-              <%= render :partial => "events/search_ads", :locals => {:advertisement => @advertisement} %>
-            <% else %>
-              <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
-            <% end %>
-          <% end %>
-
-        </section>
-      </div>
-    </div>
-  </div>
-
-  <div id="related_events" class="tab-pane fade">
-    <div class="sort-panel filter-toggle price date">
-      <div class="container">
-        <span class="sort-item">
-          <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
-          <div style="width: 340px !important;" class="popover bottom">
-            <div class="arrow"></div>
-            <div class="popover-content clearfix">
-              <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="today">Today</a>
-              <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="tomorrow">Tomorrow</a>
-              <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="weekend">weekend</a>
-
-              <label class="ui-input-text" for="from" style="margin-top:25px;">or custom</label>
-              <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-start" id="from" name="from" style="width:115px;float:left;">
-              <label class="ui-input-text" for="to" style="float: left; text-transform: none; font-size: 120%; margin-right: 11px; margin-left: 11px;">to</label>
-              <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-end" id="to" name="to" style="width:115px;">
-            </div>
-          </div>
-        </span>
-        <span class="sort-item">
-          <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Time</a>
-          <div style="display: none;" class="popover bottom">
-            <div class="arrow"></div>
-            <div class="popover-content clearfix">
-              <label for="time" class="ui-input-text">After</label>
-              <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset timepicker" value="">
-            </div>
-          </div>
-        </span>
-        <span class="sort-item">
-          <a href="#" class="ui-link"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Cost</span></a>
-          <div style="display: none;" class="popover bottom">
-            <div class="arrow"></div>
-            <div class="popover-content clearfix">
-              <label for="cost" class="ui-input-text cvalue">Less than $50</label>
-
-              <div class="left">
-                <span class="option">Free</span>
-                <span class="option">$5</span>
-                <span class="option">$10</span>
-                <span class="option">$20</span>
-                <span class="option">$30</span>
-                <span class="option">$40</span>
-                <span class="option">$50+</span>
-              </div>
-              <div class="right">
-                <!--<div id="slider-vertical"></div>-->
-
-                <input type="number" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset ui-slider-input" style="display:none;" min="0" max="50" value="50" step="5" name="slider-step" id="slider-step" sliderorientation="vertical" data-type="range">
-              </div>
-            </div>
-          </div>
-        </span>
-        <span class="sort-item">
-          <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
-          <div style="display: none;" class="popover bottom">
-            <div class="arrow"></div>
-            <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
-            <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
-            <br>
-            <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
-            <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
-          </div>
-        </span>
-        <span class="sort-item">
-          <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Neighborhood</a>
-          <div style="display: none;width: 370px;" class="popover bottom">
-            <div class="arrow"></div>
-            <div style="max-height: 200px;overflow-y:auto">
-              <table class="neighborhood_names_list table-bordered table-condensed">
-                <% @all_neighborhoods.each_slice(2) do |nhs| %>
-                  <tr>
-                    <% nhs.each do|nh|%>
-                      <td data-id="<%= nh.id %>"><%= nh.name %></td>
+                    <div>
+                      <span class="text-info"><b>Date:&nbsp;&nbsp;</b><span class="date_search"></span></span><br>
+                      <span class="text-info"><b>Time:&nbsp;&nbsp;</b><span class="time_search"></span></span> <br>
+                      <span class="text-info"><b>Cost:&nbsp;&nbsp;</b><span class="cost_search"></span></span>
+                    </div>
+                  </div>
+                  <div class="pull-right" style="max-height: 100px !important;max-width: 550px !important;overflow: hidden !important;">
+                    <% if @banner_advertisement.present? %>
+                      <div class="ad-details" data-id="<%= @banner_advertisement.id %>" data-prop="clicks" data-value="<%= @banner_advertisement.clicks.to_i + 1 %>">
+                        <%= link_to @banner_advertisement.target_url.present? ? @banner_advertisement.target_url : '#', target: :_blank, class: "pull-right" do %>
+                          <%= image_tag @banner_advertisement.image.full, alt: "Advertisement" %>
+                        <% end %>
+                      </div>
+                    <% else %>
+                      <img alt="" src="assets/ad.jpg" class="pull-right">
                     <% end %>
-                  </tr>
-                <% end %>
-              </table>
+
+                  </div>
+                </div>
+
+                <section class="product-list clearfix events">
+                  <%= will_paginate @occurrences, previous_label: h("<"), next_label: h(">"), class: "flickr_pagination" %>
+
+                  <% @occurrences.each_with_index do |occurrence, index| %>
+                    <% if index == 2 and !@advertisement.nil? %>
+                      <%= render :partial => "events/search_ads", :locals => {:advertisement => @advertisement} %>
+                    <% else %>
+                      <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+                    <% end %>
+                  <% end %>
+
+                </section>
+              </div>
             </div>
-          </div>
-        </span>
-      </div>
-
-    </div>
-    <div class="content main">
-      <div class="container inline">
-        <img alt="" src="assets/ad.jpg" class="pull-right">
-
-        <h2 class="text-info"><span class="total_number">  </span> results for <span id="search_name"></span></h2>
-
-        <div>
-          <span class="text-info"><b>Date:&nbsp;&nbsp;</b><span class="date_search"></span></span><br>
-          <span class="text-info"><b>Time:&nbsp;&nbsp;</b><span class="time_search"></span></span> <br>
-          <span class="text-info"><b>Cost:&nbsp;&nbsp;</b><span class="cost_search"></span></span>
+          <% end %>
         </div>
-        <p class="lead text-info"></p>
-        <section class="product-list clearfix events">
-
-        </section>
       </div>
     </div>
-
-  </div>
-  </div>
-  </div>
   </section>
   <div style='display:none'>
     <div id='save_share_content' style='padding:10px; background:#fff;'>
@@ -645,364 +212,7 @@
 
   </div>
   <!-- /.modal -->
-  <script>
 
-    $(document).ready(function () {
-      // sort by time and cost
-      filter.order_time = 1
-      filter.order_cost = 1
-      $('.cost_sort').click(function () {
-        filter.cost_sort = "cost"
-        filter.time_sort = ""
-        filter.order_cost = filter.order_cost * -1
-        console.log(JSON.stringify(filter))
-        $('.active a').click()
-      })
-      $('.time_sort').click(function () {
-        filter.time_sort = "time"
-        filter.cost_sort = ""
-        filter.order_time = filter.order_time * -1
-        console.log(JSON.stringify(filter))
-        $('.active a').click()
-      })
-      $('.custom-start').val("<%= (Time.now).strftime('%m/%d/%Y') %>")
-      $('.custom-end').val("<%= (Time.now+14.days).strftime('%m/%d/%Y') %>")
-      $(".date_search").html($('.custom-start').val() + " to " + $('.custom-end').val())
-      <% if params[:key].present? and params[:tag_id].present? and params[:tag_type].present? %>
-      $(".active").attr('class', '');
-      $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>' tag_type='<%= params[:tag_type] %>' tag_id='<%= params[:tag_id] %>'><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
-      $('.icon-cross').on("click", function () {
-        $(this).parents('li').remove()
-      })
-
-
-      $('.icon-white-pin').on("click", function () {
-        key = $(this).parent().attr('key')
-        check = $(this).parent()
-        <% if user_signed_in? %>
-        $(this).hide()
-        $.get('/saved_search', {key: key}, function (data) {
-          console.log(check)
-          check.attr('key_id', data["key_id"]);
-
-        })
-        $('#share').click(function () {
-          window.open(
-            'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href),
-            'facebook-share-dialog',
-            'width=626,height=436');
-        })
-        $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
-
-        <% end %>
-      })
-      $('#search_name,#search_name1').text("<%= params[:key] %>")
-      $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-      $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-      $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-      filter.tag_id = "<%= params[:tag_id] %>"
-      filter.tag_type = "<%= params[:tag_type] %>"
-      filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
-      filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
-      console.log("search2")
-      console.log(JSON.stringify(filter))
-      $.get("/search_results", filter)
-      $('#search_name,#search_name1').html("<%= params[:key] %>")
-      <% elsif params[:key].present? and params[:tag_id].present? %>
-      <% @location_page = "serach" %>
-      $(".active").attr('class', '');
-      $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>' tag_id='<%= params[:tag_id] %>'><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
-      $('.icon-cross').on("click", function () {
-        $(this).parents('li').remove()
-      })
-
-
-      $('.icon-white-pin').on("click", function () {
-        key = $(this).parent().attr('key')
-        check = $(this).parent()
-        <% if user_signed_in? %>
-        $(this).hide()
-        $.get('/saved_search', {key: key}, function (data) {
-          console.log(check)
-          check.attr('key_id', data["key_id"]);
-
-        })
-        $('#share').click(function () {
-          window.open(
-            'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href),
-            'facebook-share-dialog',
-            'width=626,height=436');
-        })
-        $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
-
-        <% end %>
-      })
-      $('#search_name,#search_name1').text("<%= params[:key] %>")
-      $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-      $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-      $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-
-      dropdown_search_events("<%= params[:tag_id] %>")
-      $('#search_name,#search_name1').html("<%= params[:key] %>")
-      <% elsif params[:key].present? %>
-      <% @location_page = "serach" %>
-
-      $(".active").attr('class', '');
-      $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key='<%= params[:key] %>' ><%= params[:key] %> <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
-      $('.icon-cross').on("click", function () {
-        $(this).parents('li').remove()
-      })
-
-      $('.icon-white-pin').on("click", function () {
-        key = $(this).parent().attr('key')
-        check = $(this).parent()
-        <% if user_signed_in? %>
-        $(this).hide()
-        $.get('/saved_search', {key: key}, function (data) {
-          console.log(check)
-          check.attr('key_id', data["key_id"]);
-        })
-        $('#share').click(function () {
-          window.open(
-            'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href),
-            'facebook-share-dialog',
-            'width=626,height=436');
-        })
-        $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
-        <% end %>
-      })
-      $('#search_name,#search_name1').text("<%= params[:key] %>")
-      doneTyping1("<%= params[:key] %>");
-      $('#search_name,#search_name1').html("<%= params[:key] %>")
-      <% end %>
-
-      //neighborhood
-      $("table.neighborhood_names_list td").on('click', function () {
-        $("table.neighborhood_names_list td").removeClass('selected');
-        $(this).addClass('selected');
-        var id = $(this).data('id');
-        $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-        filter.neighborhood_id = id
-        filter.filter_type = 'neighborhood'
-        filter.tag_type = $('.active a').attr('tag_type')
-        $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-
-        $.get('/search_results', filter);
-      });
-
-    })
-    $('.icon-cross').on("click", function () {
-      $(this).parents('li').click()
-      $(this).parents('li').remove()
-      key_id = $(this).parent().attr('key_id')
-      if (key_id != null) {
-        <% if user_signed_in? %>
-        $.get('/delete_saved_search', {key_id: key_id})
-        <% end %>
-      }
-    })
-    $('.popover_dates').click(function () {
-      if ($(this).attr('tag_type') == 'today') {
-
-        $('.custom-start').val("<%= Time.now.strftime('%m/%d/%Y') %>")
-        $('.custom-end').val("<%= Time.now.strftime('%m/%d/%Y') %>")
-        console.log('today')
-        console.log($('.custom-start').val())
-        console.log($('.custom-end').val())
-      }
-      if ($(this).attr('tag_type') == 'tomorrow') {
-        $('.custom-start').val("<%= (Time.now+1.day).strftime('%m/%d/%Y') %>")
-        $('.custom-end').val("<%= (Time.now+1.day).strftime('%m/%d/%Y') %>")
-        console.log('tomorrow')
-        console.log($('.custom-start').val())
-        console.log($('.custom-end').val())
-      }
-      if ($(this).attr('tag_type') == 'weekend') {
-        $('.custom-start').val("<%= (Time.now.next_week-3.day).strftime('%m/%d/%Y') %>")
-        $('.custom-end').val("<%= (Time.now.next_week-1.day).strftime('%m/%d/%Y') %>")
-        console.log('weekend')
-        console.log($('.custom-start').val())
-        console.log($('.custom-end').val())
-      }
-      $(".date_search").html($('.custom-start').val() + " to " + $('.custom-end').val())
-      $('.active a').click()
-    })
-    $('.popover_dates:visible,.popover_dates:hidden').click(function () {
-      $(".date_search").html($('.custom-start').val() + " to " + $('.custom-end').val())
-    })
-    $('.dropdown-menu1 a').click(function () {
-      console.log("dropdown click")
-      $(".active").attr('class', '');
-      $('#search-tab').append("<li class='active related_events dropdown_links'><a data-toggle='tab' href='#related_events' key=" + $(this).text().replace(/\ /g, "_") + " tag_id=" + $(this).attr('tag_id') + " tag_type=" + $(this).attr('tag_type') + ">" + $(this).text() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
-      $('.icon-cross').on("click", function () {
-        $(this).parents('li').remove()
-      })
-      $('#search_name,#search_name1').html($(this).text())
-      console.log("this is tag reference:" + $(this).attr('tag_id'))
-      $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-      $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
-      $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-      if ($(this).attr('tag_id') == "0") {
-        console.log('tag_type based search')
-        filter.tag_id = "0"
-        filter.included_tags = []
-        filter.tag_type = $(this).attr('tag_type')
-        filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
-        filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
-        filter.query = null
-        console.log("search3")
-        console.log(JSON.stringify(filter))
-        $.get("/search_results", filter)
-      }
-      else {
-        console.log("tag_id based search")
-
-
-        dropdown_search_events($(this).attr('tag_id'))
-      }
-//      doneTyping1($(this).text());
-
-      $('.icon-white-pin').on("click", function () {
-        key = $(this).parent().attr('key')
-        tag_id = $(this).parent().attr('tag_id')
-        tag_type = $(this).parent().attr('tag_type')
-        check = $(this).parent()
-        <% if user_signed_in? %>
-        $(this).hide()
-        $.get('/saved_search', {key: key, tag_id: tag_id, tag_type: tag_type}, function (data) {
-          console.log(check)
-          check.attr('key_id', data["key_id"]);
-
-        })
-        $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
-        $('.active a').click();
-        <% end %>
-      })
-      $(".navbar-search #appendedInput").next(".popover").hide().removeClass("open");
-    })
-    $(".submit").on("click", function () {
-      if ($("#appendedInput").val().length >= 3) {
-        var search_key = $("#appendedInput").val().replace(/\ /g, "_")
-        $(".active").attr('class', '');
-        $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key=" + search_key + ">" + $("#appendedInput").val() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
-        <% if user_signed_in? %>
-        $('.icon-cross').on("click", function () {
-          $(this).parents('li').remove()
-          key_id = $(this).parent().attr('key_id')
-          if (key_id != null) {
-            <% if user_signed_in? %>
-            $.get('/delete_saved_search', {key_id: key_id})
-            <% end %>
-          }
-        })
-        <% else %>
-        $('.icon-cross').on("click", function () {
-          $(this).parents('li').remove()
-        })
-        <% end %>
-        $('.icon-white-pin').on("click", function () {
-          key = $(this).parent().attr('key')
-          tag_id = $(this).parent().attr('tag_id')
-          check = $(this).parent()
-          <% if user_signed_in? %>
-          $(this).hide()
-          $.get('/saved_search', {key: key, tag_id: tag_id}, function (data) {
-            console.log(check)
-            check.attr('key_id', data["key_id"]);
-          })
-          $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
-
-          <% end %>
-        })
-      }
-      $('#share').click(function () {
-        window.open(
-          'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href),
-          'facebook-share-dialog',
-          'width=626,height=436');
-      })
-
-      $('.active a').click()
-      $('#events').show()
-      $('#related_events').hide()
-      $('.popover').hide()
-    })
-    $('.navbar-search').submit(function (e) {
-      e.preventDefault();
-      $('.popover').hide()
-      if ($("#appendedInput").val().length >= 3) {
-        var search_key = $("#appendedInput").val().replace(/\ /g, "_")
-        $(".active").attr('class', '');
-        $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key=" + search_key + ">" + $("#appendedInput").val() + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
-        <% if user_signed_in? %>
-        $('.icon-cross').on("click", function () {
-          $(this).parents('li').remove()
-          key_id = $(this).parent().attr('key_id')
-          if (key_id != null) {
-            <% if user_signed_in? %>
-            $.get('/delete_saved_search', {key_id: key_id})
-            <% end %>
-          }
-        })
-        <% else %>
-        $('.icon-cross').on("click", function () {
-          $(this).parents('li').remove()
-        })
-        <% end %>
-        $('.icon-white-pin').on("click", function () {
-          key = $(this).parent().attr('key')
-          tag_id = $(this).parent().attr('tag_id')
-          check = $(this).parent()
-          <% if user_signed_in? %>
-          $(this).hide()
-          $.get('/saved_search', {key: key, tag_id: tag_id}, function (data) {
-            console.log(check)
-            check.attr('key_id', data["key_id"]);
-
-          })
-          $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
-
-          <% end %>
-        })
-      }
-      $('#share').click(function () {
-        window.open(
-          'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href),
-          'facebook-share-dialog',
-          'width=626,height=436');
-      })
-
-      $('.active a').click()
-      $('#events').show()
-      $('#related_events').hide()
-    })
-    url = window.location.href
-    if (url.contains('key:')) {
-      $(".active").attr('class', '');
-      key_array = $.trim(decodeURI(url)).split("key:");
-      key_value = key_array[1];
-      $("a:contains(" + key_value + ")").parent('li').addClass('active').click()
-      doneTyping1(key_value);
-      $('#search_name,#search_name1').html(key_value)
-    }
-    $('.events_tab').click(function () {
-      $('#related_events').hide();
-      $('#events').show();
-    })
-    $('.related_events').click(function () {
-      $('#related_events').hide();
-      $('#events').show();
-    })
-
-    $('.filter-dropdown').hide()
-    $('figure').click(function () {
-      var event_id = $(this).parent('article').attr('link-id')
-      console.log(event_id)
-      window.location.href = window.location.origin + "/events/show/" + event_id + "?fullmode=true"
-    })
-    <%if (params[:tag_id].present? or params[:tag_type].present? or params[:key].present?) %>
-    <% end %>
-  </script>
   <style>
     .cost_sort, .time_sort {
       color: #777777;
@@ -1022,7 +232,7 @@
       position: relative;
       cursor: pointer;
       float: left;
-      padding:6px;
+      padding: 6px;
     }
 
     .popover ul li {
@@ -1042,7 +252,9 @@
       z-index: 10 !important;
     }
   </style>
+  <%= javascript_include_tag "search.js" %>
 <% end %>
+
 
 
 

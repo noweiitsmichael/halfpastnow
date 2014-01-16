@@ -386,19 +386,7 @@ class EventsController < ApplicationController
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
 
     order_by = "occurrences.start"
-    if (params[:sort].to_s.empty? || params[:sort].to_i == 0)
-      # order by event score when sorting by popularity
-      order_by = "CASE events.views 
-                    WHEN 0 THEN 0
-                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
-                  END DESC"
 
-      ## Testing .. only by views
-      # order_by = "CASE events.views 
-      #               WHEN 0 THEN 0
-      #               ELSE events.clicks
-      #             END DESC"
-    end
 
     @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
     if params[:filter_type] == "neighborhood" and params[:neighborhood_id].present?
@@ -444,7 +432,7 @@ class EventsController < ApplicationController
         @tagCounts[parentTag.id][:children].push(@tagCounts[childTag.id])
       end
     end
-
+    @all_neighborhoods = []
     @allOccurrences.each do |occurrence|
       occurrence.event.tags.each do |tag|
         @tagCounts[tag.id][:count] += 1

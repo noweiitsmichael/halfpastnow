@@ -5,7 +5,8 @@
 // the compiled file.
 //
 //= require jquery
-//= require jquery-migrate-1.1.1
+//= require jquery-ui
+//= require jquery-migrate-1.2.1
 //= require jquery_ujs
 //= require jquery.Jcrop.min
 //= require underscore
@@ -18,4 +19,12 @@
 //= require h5utils
 //= require half.main
 //= require jquery.colorbox
+//= require jquery.ui.timepicker
+//= require modernizr-latest
+//= require bootstrap
+//= require jquery.carouFredSel-6.2.1-packed
+//= require jquery.touchSwipe.min
+//= require verticalSlider
+//= require custom
+
 
