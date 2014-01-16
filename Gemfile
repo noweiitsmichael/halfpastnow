@@ -23,6 +23,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-datatables-rails'
 end
+gem 'quiet_assets', :group => :development
 
 #fancy jquery stuff
 gem 'jquery-rails'

@@ -9,13 +9,14 @@
   <meta property="og:description" content="Find the best events in Austin">
   <meta property="fb:app_id" content="475386955806720"/>
   <title><%= @pageTitle || "half past now." %></title>
-  <link href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,900,700italic,900italic,700,500italic,500,400italic,300italic,100italic" rel="stylesheet" type="text/css">
-  <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic,'>
-  <link href='http://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css'>
   <link rel="shortcut icon" href="/assets/favicon.ico"/>
-  <%= javascript_include_tag "application","jquery-ui","modernizr-latest","bootstrap","jquery.touchSwipe.min","jquery-migrate-1.2.1","jquery.ui.timepicker","jquery.carouFredSel-6.2.1-packed","verticalSlider","custom" %>
-  <%= javascript_include_tag "half.dynamics" %>
-  <%= stylesheet_link_tag "styles10","bootstrap","bootstrap-responsive","custom1","media-queries" %>
+  <link href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,900,700italic,900italic,700,500italic,500,400italic,300italic,100italic|Lato:100,100italic,300,300italic,regular,italic,700,700italic,900,900italic|Permanent+Marker" rel="stylesheet" type="text/css">
+  <%= stylesheet_link_tag "home_page" %>
+  <%= javascript_tag do %>
+    var user_signed_in = <%= user_signed_in? %>;
+    var params = <%= raw params.to_json %>;
+  <% end %>
+  <%= javascript_include_tag "home_page" %>
   <%= csrf_meta_tags %>
   <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -49,206 +50,214 @@
   });
 </script>
 <header class="navbar navbar-fixed-top navbar-inverse">
-  <div class="navbar-inner">
-    <div class="container">
-      <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+<div class="navbar-inner">
+  <div class="container">
+    <!-- Responsive Navbar Part 1: Button for triggering responsive navbar (not covered in tutorial). Include responsive CSS to utilize. -->
+    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                     <span class="pull-left nb-left">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </span>
-        <span class="nb-right pull-right">menu</span>
-      </a>
-      <a class="brand" href="/"><img src="/assets/new_design/logo.png" alt="Halfpastnow"/></a>
-      <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
-      <nav class="nav-collapse collapse">
-        <ul class="nav pull-right">
+      <span class="nb-right pull-right">menu</span>
+    </a>
+    <a class="brand" href="/"><img src="/assets/new_design/logo.png" alt="Halfpastnow"/></a>
+    <!-- Responsive Navbar Part 2: Place all navbar contents you want collapsed withing .navbar-collapse.collapse. -->
+    <nav class="nav-collapse collapse">
+      <ul class="nav pull-right">
+        <li>
+          <a href="<%= (@mobileMode) ? "/events/android" : "/explorers/austin" %>" class="nav_links"><i class="icon-right-arrow"></i>Explorers</a>
+        </li>
+        <% if user_signed_in? %>
           <li>
-            <a href="<%= (@mobileMode) ? "/events/android" : "/explorers/austin" %>"  class="nav_links"><i class="icon-right-arrow"></i>Explorers</a>
-          </li>
-          <% if user_signed_in? %>
-            <li>
 
-              <ul class="nav nav_profile">
-                <li class="dark-purple">
-                  <%= image_tag current_user.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic nav-user-photo", :id =>"profile_pic",:alt => "#{current_user.firstname}'s Photo" %>
-                  <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                    <% if user_signed_in? %>
+            <ul class="nav nav_profile">
+              <li class="dark-purple">
+                <%= image_tag current_user.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic nav-user-photo", :id => "profile_pic", :alt => "#{current_user.firstname}'s Photo" %>
+                <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                  <% if user_signed_in? %>
                         <span class="user-info nav_links">
                             <small>Welcome,</small>
                           <%= current_user.firstname rescue 'Howdy' %>
                         </span>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <i class="icon-caret-down"></i>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <i class="icon-caret-down"></i>
+                  <% end %>
+                </a>
+
+                <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close" style="border-radius: 0px !important;right: 140px !important;">
+                  <li>
+                    <%= link_to profile_dashboard_index_path do %>
+                      <i class="icon-user"></i>
+                      <span class="menu-text"> Profile </span>
                     <% end %>
-                  </a>
-
-                  <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close"  style="border-radius: 0px !important;right: 140px !important;">
-                    <li>
-                      <%= link_to profile_dashboard_index_path do %>
-                        <i class="icon-user"></i>
-                        <span class="menu-text"> Profile </span>
+                  </li>
+                  <li class="divider" style="margin: 1px 1px; !important"></li>
+                  <li>
+                    <%= link_to settings_dashboard_index_path do %>
+                      <i class="icon-cog"></i>
+                      <span class="menu-text"> Settings </span>
+                    <% end %>
+                  </li>
+                  <li class="divider" style="margin: 1px 1px; !important"></li>
+                  <li>
+                    <% if user_signed_in? %>
+                      <%= link_to destroy_user_session_path, method: :delete do %>
+                        <i class="icon-off"></i>
+                        <span class="menu-text"> Logout </span>
                       <% end %>
-                    </li>
-                    <li class="divider" style="margin: 1px 1px; !important"></li>
-                    <li>
-                      <%= link_to settings_dashboard_index_path do %>
-                        <i class="icon-cog"></i>
-                        <span class="menu-text"> Settings </span>
-                      <% end %>
-                    </li>
-                    <li class="divider" style="margin: 1px 1px; !important"></li>
-                    <li>
-                      <% if user_signed_in? %>
-                        <%= link_to destroy_user_session_path, method: :delete do %>
-                          <i class="icon-off"></i>
-                          <span class="menu-text"> Logout </span>
-                        <% end %>
-                      <% end %>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          <% else %>
-            <li><a href="/join_now" class="nav_links"><i class="icon-right-arrow"></i>Join Now</a></li>
-            <li>&nbsp;</li>
-            <li><a href="/login" class="nav_links"><i class="icon-right-arrow"></i>Log In</a></li>
-          <% end %>
+                    <% end %>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        <% else %>
+          <li><a href="/join_now" class="nav_links"><i class="icon-right-arrow"></i>Join Now</a></li>
+          <li>&nbsp;</li>
+          <li><a href="/login" class="nav_links"><i class="icon-right-arrow"></i>Log In</a></li>
+        <% end %>
 
-        </ul>
-      </nav>
+      </ul>
+    </nav>
 
-      <form class="navbar-search">
-        <div class="input-append">
-          <input class="span4" id="appendedInput" type="text" value="Explore Austin" onClick="if(this.value=='Explore Austin')this.value = ''" onBlur="if(this.value=='')this.value = 'Explore Austin'">
+    <form class="navbar-search">
+      <div class="input-append">
+        <input class="span4" id="appendedInput" type="text" value="Explore Austin" onClick="if(this.value=='Explore Austin')this.value = ''" onBlur="if(this.value=='')this.value = 'Explore Austin'">
 
-          <div class="popover bottom">
-            <div class="arrow"></div>
-            <div class="popover-content clearfix">
+        <div class="popover bottom">
+          <div class="arrow"></div>
+          <div class="popover-content clearfix">
 
-              <p>TIP: Search by interest, event, date, cost</p>
+            <p>TIP: Search by interest, event, date, cost</p>
 
-              <p style="color:#4D344F; font-weight:bold;">Or, browse some popular catagories:</p>
-              <ul class="dropdown-menu1">
-                <li class="clearfix">
-                  <div>
-                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="staff" catagory="austin">Staff Picks</a><br/>
-                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="crowd">Crowd Favorites</a><br/>
-                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="today">Today's Events</a><br/>
-                    <a href="#" tag_id="104">Food &amp; Drinks</a><br/>
-                    <a href="#" tag_id="1">Live Shows</a><br/>
-                    <a href="#" tag_id="89">Art &amp; Culture</a>
-                  </div>
-                  <div class="divider-vertical pull-left"></div>
-                  <div>
-                    <a href="#" tag_id="233">UT Events</a><br/>
-                    <a href="#" tag_id="55">For Couples</a><br/>
-                    <a href="#" tag_id="38">For Kids</a><br/>
-                    <a href="#" tag_id="87">For Families</a><br/>
-                    <a href="#" tag_id="140">Freebies</a><br/>
-                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="all">All Activities</a>
-                  </div>
-                </li>
+            <p style="color:#4D344F; font-weight:bold;">Or, browse some popular catagories:</p>
+            <ul class="dropdown-menu1">
+              <li class="clearfix">
+                <div>
+                  <a href="#" tag_id="0" class="dd_menu_tags" tag_type="staff" catagory="austin">Staff Picks</a><br/>
+                  <a href="#" tag_id="0" class="dd_menu_tags" tag_type="crowd">Crowd Favorites</a><br/>
+                  <a href="#" tag_id="0" class="dd_menu_tags" tag_type="today">Today's Events</a><br/>
+                  <a href="#" tag_id="104">Food &amp; Drinks</a><br/>
+                  <a href="#" tag_id="1">Live Shows</a><br/>
+                  <a href="#" tag_id="89">Art &amp; Culture</a>
+                </div>
+                <div class="divider-vertical pull-left"></div>
+                <div>
+                  <a href="#" tag_id="233">UT Events</a><br/>
+                  <a href="#" tag_id="55">For Couples</a><br/>
+                  <a href="#" tag_id="38">For Kids</a><br/>
+                  <a href="#" tag_id="87">For Families</a><br/>
+                  <a href="#" tag_id="140">Freebies</a><br/>
+                  <a href="#" tag_id="0" class="dd_menu_tags" tag_type="all">All Activities</a>
+                </div>
+              </li>
 
-                <li style="text-align:left;"><a href="http://www.halfpastnow.com/info/about">About Us</a> | <a href="http://blog.halfpastnow.com/">Blog</a> | <a href="http://www.halfpastnow.com/info/privacy">Privacy</a> | <a href="http://www.halfpastnow.com/info/terms">Terms</a>
-                  | <a href="https://getsatisfaction.com/halfpastnow/">Feedback</a> | &copy halfpastnow 2013
-                </li>
-              </ul>
-              <style>
+              <li style="text-align:left;"><a href="http://www.halfpastnow.com/info/about">About Us</a> |
+                <a href="http://blog.halfpastnow.com/">Blog</a> |
+                <a href="http://www.halfpastnow.com/info/privacy">Privacy</a> |
+                <a href="http://www.halfpastnow.com/info/terms">Terms</a>
+                | <a href="https://getsatisfaction.com/halfpastnow/">Feedback</a> | &copy halfpastnow 2013
+              </li>
+            </ul>
+            <style>
 
-                .dropdown-menu1 .divider {
-                  margin-top: 0;
-                }
+              .dropdown-menu1 .divider {
+                margin-top: 0;
+              }
 
-                .dropdown-menu1 div {
-                  float: left;
-                  width: 47%;
-                  text-align:left;
-                }
-                *::-moz-placeholder {
-                  color: #BBBBBB;
-                }
-                .dropdown-menu1 > li {
-                  font-size: 80%;
-                }
-                .dropdown-menu1 div.divider-vertical {
-                  border-left-color: #F2F2F2;
-                  border-right: medium none;
-                  height: 172px;
-                  width: 1px;
-                }
+              .dropdown-menu1 div {
+                float: left;
+                width: 47%;
+                text-align: left;
+              }
 
+              *::-moz-placeholder {
+                color: #BBBBBB;
+              }
 
-                .dropdown-menu1 {
-                  background-clip: padding-box;
-                  background-color: #FFFFFF;
-                  float: left;
-                  left: 9px;
-                  list-style: none outside none;
-                  margin: 2px 0 0;
-                  min-width: 100%;
-                  position: relative;
-                  top:-10px;
-                  z-index: 1000;
-                }
+              .dropdown-menu1 > li {
+                font-size: 80%;
+              }
 
-                .dropdown-menu1 div > a {
-                  color: #777777;
-                  font-size: 125%;
-                  font-weight: 700;
-                  line-height: 27px;
-                  text-transform: uppercase;
-                }
-              </style>
+              .dropdown-menu1 div.divider-vertical {
+                border-left-color: #F2F2F2;
+                border-right: medium none;
+                height: 172px;
+                width: 1px;
+              }
+
+              .dropdown-menu1 {
+                background-clip: padding-box;
+                background-color: #FFFFFF;
+                float: left;
+                left: 9px;
+                list-style: none outside none;
+                margin: 2px 0 0;
+                min-width: 100%;
+                position: relative;
+                top: -10px;
+                z-index: 1000;
+              }
+
+              .dropdown-menu1 div > a {
+                color: #777777;
+                font-size: 125%;
+                font-weight: 700;
+                line-height: 27px;
+                text-transform: uppercase;
+              }
+            </style>
 
 
-            </div>
-          </div>
-          <div class="btn-group">
-            <div class="pull-left dropdown">
-              <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-              <!--</a>-->
-              <ul class="dropdown-menu">
-                <li class="clearfix">
-                  <div>
-                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="staff" catagory="austin">Staff Picks</a><br/>
-                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="crowd">Crowd Favorites</a><br/>
-                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="today">Today's Events</a><br/>
-                    <a href="#" tag_id="104">Food &amp; Drinks</a><br/>
-                    <a href="#" tag_id="1">Live Shows</a><br/>
-                    <a href="#" tag_id="89">Art &amp; Culture</a>
-                  </div>
-                  <div class="divider-vertical pull-left"></div>
-                  <div>
-                    <a href="#" tag_id="233">UT Events</a><br/>
-                    <a href="#" tag_id="55">For Couples</a><br/>
-                    <a href="#" tag_id="38">For Kids</a><br/>
-                    <a href="#" tag_id="87">For Families</a><br/>
-                    <a href="#" tag_id="140">Freebies</a><br/>
-                    <a href="#" tag_id="0" class="dd_menu_tags" tag_type="all">All Activities</a>
-                  </div>
-                </li>
-                <li class="divider"></li>
-                <li><a href="#">About Us</a> | <a href="#">Blog</a> | <a href="#">Privacy</a> | <a href="#">Terms</a> | <a href="#">Feedback</a> | &copy halfpastnow 2013</li>
-              </ul>
-            </div>
-            <input type="submit" class="submit">
           </div>
         </div>
-      </form>
-    </div>
+        <div class="btn-group">
+          <div class="pull-left dropdown">
+            <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">-->
+            <!--<span class="icon-bar"></span>-->
+            <!--<span class="icon-bar"></span>-->
+            <!--<span class="icon-bar"></span>-->
+            <!--</a>-->
+            <ul class="dropdown-menu">
+              <li class="clearfix">
+                <div>
+                  <a href="#" tag_id="0" class="dd_menu_tags" tag_type="staff" catagory="austin">Staff Picks</a><br/>
+                  <a href="#" tag_id="0" class="dd_menu_tags" tag_type="crowd">Crowd Favorites</a><br/>
+                  <a href="#" tag_id="0" class="dd_menu_tags" tag_type="today">Today's Events</a><br/>
+                  <a href="#" tag_id="104">Food &amp; Drinks</a><br/>
+                  <a href="#" tag_id="1">Live Shows</a><br/>
+                  <a href="#" tag_id="89">Art &amp; Culture</a>
+                </div>
+                <div class="divider-vertical pull-left"></div>
+                <div>
+                  <a href="#" tag_id="233">UT Events</a><br/>
+                  <a href="#" tag_id="55">For Couples</a><br/>
+                  <a href="#" tag_id="38">For Kids</a><br/>
+                  <a href="#" tag_id="87">For Families</a><br/>
+                  <a href="#" tag_id="140">Freebies</a><br/>
+                  <a href="#" tag_id="0" class="dd_menu_tags" tag_type="all">All Activities</a>
+                </div>
+              </li>
+              <li class="divider"></li>
+              <li><a href="#">About Us</a> | <a href="#">Blog</a> | <a href="#">Privacy</a> | <a href="#">Terms</a> |
+                <a href="#">Feedback</a> | &copy halfpastnow 2013
+              </li>
+            </ul>
+          </div>
+          <input type="submit" class="submit">
+        </div>
+      </div>
+    </form>
   </div>
+</div>
 </header>
 <div class="banner-slider">
   <ul id="f-carousel">
     <li class="item">
       <div class="carousel-caption">
         <h1>halfpastnow </h1>
+
         <p class="lead">Your personal guide to Austin events.</p>
         <a class="btn btn-large btn-danger" href="/join_now">Join Now</a>
       </div>
@@ -259,6 +268,7 @@
       <div class="container">
         <div class="carousel-caption">
           <h1>Featured:</h1>
+
           <p class="lead">New Years Eve Events and Parties.</p>
           <a class="btn btn-large btn-danger" href="/explorers/austin/new-years-eve-parties">See List</a>
         </div>
@@ -268,6 +278,7 @@
     <li class="item">
       <div class="carousel-caption">
         <h1>Trending in Austin</h1>
+
         <p class="lead">Explore Austin's most popular events.</p>
         <a class="btn btn-large btn-danger" href="/explorers/austin/trending-in-austin">Trending in Austin</a>
       </div>
@@ -277,8 +288,11 @@
       <div class="container">
         <div class="carousel-caption">
           <h1>Find where to go, on the go.</h1>
+
           <p class="lead">Activities tailored to your lifestyle.</p>
-          <a class="btn btn-large btn-danger" style="width:100px !important" href="https://itunes.apple.com/us/app/halfpastnow/id589530107">For iOS</a>&nbsp;&nbsp;<a class="btn btn-large btn-danger" style="width:100px !important" href="https://play.google.com/store/apps/details?id=com.halfpastnow&hl=en">For Android</a>
+          <a class="btn btn-large btn-danger" style="width:100px !important" href="https://itunes.apple.com/us/app/halfpastnow/id589530107">For
+            iOS</a>&nbsp;&nbsp;<a class="btn btn-large btn-danger" style="width:100px !important" href="https://play.google.com/store/apps/details?id=com.halfpastnow&hl=en">For
+          Android</a>
         </div>
       </div>
       <img src="/assets/images/slide2.gif" alt="">
@@ -286,46 +300,52 @@
   </ul>
   <a href="#" id="prev" title="Show previous" name="prev"></a>
   <a href="#" id="next" title="Show next" name="next"></a>
+
   <div id="pager">
   </div>
 </div>
 
-<section class="slider-wrap" id="yrhn">
-  <div class="container">
-    <div class="section-title">
-      <h2 class="text-center">It's half past...now!</h2>
-      <p class="lead text-center">Check-out events going on today.</p>
-      <a href="#"  class="see-all" ><span tag_type="today" tag_id="0" tag_title="It's halfpastnow"  class="btn btn-danger see_all_links">See All</span><i class="icon-bottom-arrow"></i></a>
-    </div>
-    <div class="section-content slider">
-      <div id="slider1">
-        <% @occurrences.each_with_index do |occurrence, index| %>
-          <% if index == 2 and !@advertisement.nil? %>
-            <%= render :partial => "events/ads", :locals => { :advertisement => @advertisement } %>
-          <% else %>
-            <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
-          <% end %>
-        <% end %>
+<!-- current user logged in vs not logged in-->
+<% if user_signed_in? %>
+
+  <section class="slider-wrap" id="yrhn">
+    <div class="container">
+      <div class="section-title">
+        <h2 class="text-center">It's half past...now!</h2>
+
+        <p class="lead text-center">Check-out events going on today.</p>
+        <a href="#" class="see-all"><span tag_type="today" tag_id="0" tag_title="It's halfpastnow" class="btn btn-danger see_all_links">See All</span><i class="icon-bottom-arrow"></i></a>
       </div>
-      <a class="prev" id="slider1_prev" href="#"><span>prev</span></a>
-      <a class="next" id="slider1_next" href="#"><span>next</span></a>
+      <div class="section-content slider">
+        <div id="slider1">
+          <% @occurrences.each_with_index do |occurrence, index| %>
+            <% if index == 2 and !@advertisement.nil? %>
+              <%= render :partial => "events/ads", :locals => {:advertisement => @advertisement} %>
+            <% else %>
+              <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+            <% end %>
+          <% end %>
+        </div>
+        <a class="prev" id="slider1_prev" href="#"><span>prev</span></a>
+        <a class="next" id="slider1_next" href="#"><span>next</span></a>
+      </div>
     </div>
-  </div>
-</section>
-<% if user_signed_in?  %>
+  </section>
+
   <% @saved_searches.each do |search| %>
     <section id="<%= search.search_key.split("_").first.downcase %>_section" class="slider-wrap" style="padding:50px; color:#4C334D;height:519px;">
       <div class="container">
         <div class="section-title">
-          <h2 class="text-center"><%= search.search_key.gsub("_"," ")%></h2>
+          <h2 class="text-center"><%= search.search_key.gsub("_", " ") %></h2>
+
           <p class="lead text-center">Check-out events going on today.</p>
-          <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
+          <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all"><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
         </div>
         <div class="section-content slider">
-          <div id="<%= search.search_key.split("_").first.downcase%>">
+          <div id="<%= search.search_key.split("_").first.downcase %>">
           </div>
-          <a class="prev" id="<%= search.search_key.split("_").first.downcase%>_prev" href="#"><span>prev</span></a>
-          <a class="next" id="<%= search.search_key.split("_").first.downcase%>_next" href="#"><span>next</span></a>
+          <a class="prev" id="<%= search.search_key.split("_").first.downcase %>_prev" href="#"><span>prev</span></a>
+          <a class="next" id="<%= search.search_key.split("_").first.downcase %>_next" href="#"><span>next</span></a>
         </div>
       </div>
     </section>
@@ -336,81 +356,103 @@
       <% if search.tag_id.nil? or search.tag_id == 0 %>
       saved_search_events("<%= search.search_key %>");
       <% else %>
-      tagged_saved_search_events("<%= search.tag_id %>",'<%= search.search_key.split("_").first.downcase %>');
+      tagged_saved_search_events("<%= search.tag_id %>", '<%= search.search_key.split("_").first.downcase %>');
       <% end %>
     </script>
   <% end %>
+
+  <section class="slider-wrap grey-area" id="fyhp">
+    <div class="container">
+      <div class="section-title">
+        <h2 class="text-center">Find Your Happy Place</h2>
+
+        <p class="lead text-center">Get your drink on - the cheap. ATX happy hours.</p>
+        <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all"><span tag_id="19" tag_title="Happy Place" class="btn btn-danger see_all_links">See All</span><i class="icon-bottom-arrow"></i></a>
+
+      </div>
+      <div class="section-content slider">
+        <div id="slider2">
+
+        </div>
+        <a class="prev" id="slider2_prev" href="#"><span>prev</span></a>
+        <a class="next" id="slider2_next" href="#"><span>next</span></a>
+      </div>
+    </div>
+  </section>
+  <section class="slider-wrap" id="gud">
+    <div class="container">
+      <div class="section-title">
+        <h2 class="text-center">Get Up &amp; Dance!</h2>
+
+        <p class="lead text-center">The live music capitol of the world.</p>
+        <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all"><span tag_id="1" tag_title="get up and dance" class="btn btn-danger see_all_links">See All</span><i class="icon-bottom-arrow"></i></a>
+
+      </div>
+      <div class="section-content slider">
+        <div id="slider3">
+
+        </div>
+        <a class="prev" id="slider3_prev" href="#"><span>prev</span></a>
+        <a class="next" id="slider3_next" href="#"><span>next</span></a>
+      </div>
+    </div>
+  </section>
+  <section class="slider-wrap grey-area" id="tat">
+    <div class="container">
+      <div class="section-title">
+        <h2 class="text-center">Tried &amp; True</h2>
+
+        <p class="lead text-center">Halfpastnow staff favorites.</p>
+        <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all"><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
+
+      </div>
+      <div class="section-content slider">
+        <div id='slider4'>
+          <% @austin_occurrences.each do |occurrence| %>
+            <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+          <% end %>
+        </div>
+        <a class="prev" id="slider4_prev" href="#"><span>prev</span></a>
+        <a class="next" id="slider4_next" href="#"><span>next</span></a>
+      </div>
+    </div>
+  </section>
+  <section class="slider-wrap" id="iffa">
+    <div class="container">
+      <div class="section-title">
+        <h2 class="text-center">It's a Free For All</h2>
+
+        <p class="lead text-center">No money, no problem.</p>
+        <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all"><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
+
+      </div>
+      <div class="section-content slider">
+        <div id="slider5">
+
+        </div>
+        <a class="prev" id="slider5_prev" href="#"><span>prev</span></a>
+        <a class="next" id="slider5_next" href="#"><span>next</span></a>
+      </div>
+    </div>
+  </section>
+
+<% else %>
+  <!-- Default occurences Section 1 -->
+  <%= Rails.cache.read(:home_page_section1) %>
+
+  <!-- happy_place_events Section 3 -->
+  <%= Rails.cache.read(:home_page_section3) %>
+
+  <!-- Dance! Section 4 -->
+  <%= Rails.cache.read(:home_page_section4) %>
+
+  <!-- austin occurrences Section 2 -->
+  <%= Rails.cache.read(:home_page_section2) %>
+
+  <!-- Free! Section 5 -->
+  <%= Rails.cache.read(:home_page_section5) %>
 <% end %>
-<section class="slider-wrap grey-area" id="fyhp">
-  <div class="container">
-    <div class="section-title">
-      <h2 class="text-center">Find Your Happy Place</h2>
-      <p class="lead text-center">Get your drink on - the cheap. ATX happy hours.</p>
-      <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span  tag_id="19" tag_title="Happy Place"  class="btn btn-danger see_all_links">See All</span><i class="icon-bottom-arrow"></i></a>
 
-    </div>
-    <div class="section-content slider">
-      <div id="slider2">
-
-      </div>
-      <a class="prev" id="slider2_prev" href="#"><span>prev</span></a>
-      <a class="next" id="slider2_next" href="#"><span>next</span></a>
-    </div>
-  </div>
-</section>
-<section class="slider-wrap" id="gud">
-  <div class="container">
-    <div class="section-title">
-      <h2 class="text-center">Get Up &amp; Dance!</h2>
-      <p class="lead text-center">The live music capitol of the world.</p>
-      <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span  tag_id="1" tag_title="get up and dance"  class="btn btn-danger see_all_links">See All</span><i class="icon-bottom-arrow"></i></a>
-
-    </div>
-    <div class="section-content slider">
-      <div id="slider3">
-
-      </div>
-      <a class="prev" id="slider3_prev" href="#"><span>prev</span></a>
-      <a class="next" id="slider3_next" href="#"><span>next</span></a>
-    </div>
-  </div>
-</section>
-<section class="slider-wrap grey-area" id="tat">
-  <div class="container">
-    <div class="section-title">
-      <h2 class="text-center">Tried &amp; True</h2>
-      <p class="lead text-center">Halfpastnow staff favorites.</p>
-      <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
-
-    </div>
-    <div class="section-content slider">
-      <div id='slider4'>
-        <% @austin_occurrences.each do |occurrence| %>
-          <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
-        <% end %>
-      </div>
-      <a class="prev" id="slider4_prev" href="#"><span>prev</span></a>
-      <a class="next" id="slider4_next" href="#"><span>next</span></a>
-    </div>
-  </div>
-</section>
-<section class="slider-wrap" id="iffa">
-  <div class="container">
-    <div class="section-title">
-      <h2 class="text-center">It's a Free For All</h2>
-      <p class="lead text-center">No money, no problem.</p>
-      <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
-
-    </div>
-    <div class="section-content slider">
-      <div id="slider5">
-
-      </div>
-      <a class="prev" id="slider5_prev" href="#"><span>prev</span></a>
-      <a class="next" id="slider5_next" href="#"><span>next</span></a>
-    </div>
-  </div>
-</section>
 <footer>
   <div class="container">
         	<span class="footer-tap">
@@ -455,58 +497,61 @@
 <!-- /.modal -->
 
 <script>
-  $('#slider2,#slider3,#slider5').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative; width:100px !important;'>");
-  happy_place_events(19,"slider2");
-  dance_events(1,"slider3");
-  free_events("slider5");
-  $('.submit').click(function(e){
+  if (user_signed_in) {
+    $('#slider2,#slider3,#slider5').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative; width:100px !important;'>");
+    happy_place_events(19, "slider2");
+    dance_events(1, "slider3");
+    free_events("slider5");
+  }
+
+  $('.submit').click(function (e) {
     e.preventDefault()
-    window.location.href = window.location.origin+"/search?key="+$('#appendedInput').val()
+    window.location.href = window.location.origin + "/search?key=" + $('#appendedInput').val()
   })
-  $('figure').click(function(){
+  $('figure').click(function () {
     var event_id = $(this).parent('article').attr('link-id')
     console.log(event_id)
-    window.location.href = window.location.origin+"/events/austin/"+event_id
+    window.location.href = window.location.origin + "/events/austin/" + event_id
 
   })
-  $('article .name a').click(function(){
+  $('article .name a').click(function () {
     var event_id = $(this).parents('article').attr('link-id')
     console.log(event_id)
-    window.location.href = window.location.origin+"/events/austin/"+event_id
+    window.location.href = window.location.origin + "/events/austin/" + event_id
 
   })
 
-  $('.brand').click(function(){
+  $('.brand').click(function () {
     window.location.href = window.location.origin
 
   })
-  $('.dropdown-menu a,.dropdown-menu1 a').click(function(){
+  $('.dropdown-menu a,.dropdown-menu1 a').click(function () {
     console.log('working')
     tag_id = $(this).attr('tag_id')
     tag_type = $(this).attr('tag_type')
-    if(tag_id == "0"){
-      window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text())+"&tag_id="+tag_id+"&tag_type="+tag_type
+    if (tag_id == "0") {
+      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent($(this).text()) + "&tag_id=" + tag_id + "&tag_type=" + tag_type
     }
-    else{
-      window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text())+"&tag_id="+tag_id
+    else {
+      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent($(this).text()) + "&tag_id=" + tag_id
     }
   })
 
-  $('.see_all_links').click(function(){
+  $('.see_all_links').click(function () {
     tag_id = $(this).attr('tag_id')
     tag_type = $(this).attr('tag_type')
     tag_title = $(this).attr('tag_title')
-    if(tag_id == "0"){
-      window.location.href = window.location.origin+"/search?key="+encodeURIComponent(tag_title)+"&tag_id="+tag_id+"&tag_type="+tag_type
+    if (tag_id == "0") {
+      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent(tag_title) + "&tag_id=" + tag_id + "&tag_type=" + tag_type
     }
-    else{
-      window.location.href = window.location.origin+"/search?key="+encodeURIComponent(tag_title)+"&tag_id="+tag_id
+    else {
+      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent(tag_title) + "&tag_id=" + tag_id
     }
   })
   $('#slider1,#slider4').append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
-    $('.before_login').click(function () {
-      window.location.href = window.location.origin + "/login"
-    })
+  $('.before_login').click(function () {
+    window.location.href = window.location.origin + "/login"
+  })
 </script>
 <% unless @page %>
   <% cookies[:url] = request.url %>
@@ -521,7 +566,7 @@
     position: relative;
   }
 
-  .navbar .nav_profile{
+  .navbar .nav_profile {
     padding-top: 0px !important;
     width: 230px;
   }
@@ -530,20 +575,25 @@
     position: relative;
     top: 50%;
   }
+
   .see-more {
     text-align: center;
   }
+
   .nav.pull-right .nav_links {
     font-size: 125%;
   }
+
   .navbar .nav {
     padding-top: 10px;
     width: 280px;
   }
+
   <% if user_signed_in? %>
   .nav.pull-right a:first-child {
     position: relative;
   }
+
   <% end %>
 
 </style>

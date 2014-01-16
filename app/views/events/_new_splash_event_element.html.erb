@@ -29,15 +29,14 @@
       <% end %>
     </div>
 
-
     <% bookmarks = [] %>
     <%
-       if (current_user)
+       if defined?(current_user) and current_user
          bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => current_user.bookmark_lists.collect(&:id))
        end
     %>
 
-    <%= link_to event_bookmark_popup_path(id: occurrence.id), class: "bookmark #{current_user ? 'bookmark_' + occurrence.id.to_s : 'before_login'}", remote: true do %>
+    <%= link_to Rails.application.routes.url_helpers.event_bookmark_popup_path(id: occurrence.id), class: "bookmark #{(defined?(current_user) and current_user) ? 'bookmark_' + occurrence.id.to_s : 'before_login'}", remote: true do %>
       <%= bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
     <% end %>
   </div>

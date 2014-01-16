@@ -688,8 +688,9 @@ $(function () {
     updateViewFromFilter();
   });
 
-  $('#body').scroll(checkInfinite);
-  $(window).resize(checkInfinite);
+  //Fixme removed unnecessary checkInfinite
+  //$('#body').scroll(checkInfinite);
+  //$(window).resize(checkInfinite);
 
 });
 
@@ -1031,7 +1032,7 @@ function updateViewFromFilter(pullEventsFlag, options) {
   }
 
   if (pullEventsFlag) {
-    pullEvents();
+    pullEvents({});
   }
   // console.log("XXXXXX Update filter XXXXXXXX");
 }
@@ -1521,6 +1522,7 @@ function loading(command) {
 }
 
 function checkInfinite() {
+  return false;
   //console.log("checkInfinite");
   //if we're near the bottom of the page and not currently pulling in events
   if ($('#body').scrollBottom() < 1000 && !pulling) {
@@ -1548,7 +1550,7 @@ function checkInfinite() {
       filter.offset = $('#content .main .inner .events li').length;
       // var status = document.getElementById("androidStatus").value;
       if (device !== "mobile") {
-        pullEvents();
+        pullEvents({});
       }
 
 

@@ -1,0 +1,24 @@
+<section class="slider-wrap grey-area" id="fyhp">
+  <div class="container">
+    <div class="section-title">
+      <h2 class="text-center">Find Your Happy Place</h2>
+
+      <p class="lead text-center">Get your drink on - the cheap. ATX happy hours.</p>
+      <a href="/search?key=Happy+Place&tag_id=19" class="see-all"><span tag_id="19" tag_title="Happy Place" class="btn btn-danger see_all_links">See All</span><i class="icon-bottom-arrow"></i></a>
+    </div>
+    <div class="section-content slider">
+      <div id="slider2">
+        <% occurrences.each_with_index do |occurrence, index| %>
+          <% if index == 0 and !advertisement.nil? %>
+            <%= render :partial => "events/ads", :locals => {:advertisement => advertisement} %>
+          <% else %>
+            <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+          <% end %>
+        <% end %>
+        <article class='slide-item product-item see-more'><a href='/search?key=Happy+Place&tag_id=19' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>
+      </div>
+      <a class="prev" id="slider2_prev" href="#"><span>prev</span></a>
+      <a class="next" id="slider2_next" href="#"><span>next</span></a>
+    </div>
+  </div>
+</section>

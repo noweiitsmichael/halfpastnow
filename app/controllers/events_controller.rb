@@ -34,27 +34,29 @@ class EventsController < ApplicationController
     params[:lat_center] = lat
     params[:long_center] = long
     params[:zoom] = zoom
-    params[:user_id] = current_user ? current_user.id : nil
-    ids = Occurrence.find_with(params)
-    occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
-    order_by = "occurrences.start"
+    if current_user
+      params[:user_id] = current_user ? current_user.id : nil
+      ids = Occurrence.find_with(params)
+      occurrence_ids = ids.collect { |e| e["occurrence_id"] }.uniq
+      order_by = "occurrences.start"
 
-    @occurrences =  Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(5)
-    @advertisement = Advertisement.where(:placement => ['home_page', 'home_search_pages'] ).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
-    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
+      @occurrences =  Occurrence.includes(:event => :tags).find(occurrence_ids, :order => order_by).take(5)
+      @advertisement = Advertisement.where(:placement => ['home_page', 'home_search_pages'] ).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
+      @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
 
-    @saved_searches = current_user.saved_searches  if user_signed_in?
-    @austin_occurrences =  BookmarkList.find(2370).bookmarked_events_root.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.take(5)
+      @saved_searches = current_user.saved_searches  if user_signed_in?
+      @austin_occurrences =  BookmarkList.find(2370).bookmarked_events_root.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.take(5)
 
-    if VenueNeighbourhoodFetch.last.nil?
-      @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
-      neighbourhood_fetch
-    elsif  VenueNeighbourhoodFetch.last.start_date != Date.today
-      @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
-      neighbourhood_fetch
-    elsif VenueNeighbourhoodFetch.last.start_date == Date.today
-      @venue_neighbourhood = VenueNeighbourhoodFetch.where(:start_date => Date.today).first
-      neighbourhood_fetch
+      if VenueNeighbourhoodFetch.last.nil?
+        @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
+        neighbourhood_fetch
+      elsif  VenueNeighbourhoodFetch.last.start_date != Date.today
+        @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
+        neighbourhood_fetch
+      elsif VenueNeighbourhoodFetch.last.start_date == Date.today
+        @venue_neighbourhood = VenueNeighbourhoodFetch.where(:start_date => Date.today).first
+        neighbourhood_fetch
+      end
     end
 
     respond_to do |format|

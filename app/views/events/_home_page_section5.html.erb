@@ -1,0 +1,21 @@
+<section class="slider-wrap" id="iffa">
+  <div class="container">
+    <div class="section-title">
+      <h2 class="text-center">It's a Free For All</h2>
+
+      <p class="lead text-center">No money, no problem.</p>
+      <a href="/search?high_price=0&tag_id=0&tag_type=all" class="see-all"><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
+
+    </div>
+    <div class="section-content slider">
+      <div id="slider5">
+        <% occurrences.each_with_index do |occurrence, index| %>
+          <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+        <% end %>
+        <article class='slide-item product-item see-more'><a href='/search?high_price=0&tag_id=0&tag_type=all' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>
+      </div>
+      <a class="prev" id="slider5_prev" href="#"><span>prev</span></a>
+      <a class="next" id="slider5_next" href="#"><span>next</span></a>
+    </div>
+  </div>
+</section>
