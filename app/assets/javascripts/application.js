@@ -26,5 +26,16 @@
 //= require jquery.touchSwipe.min
 //= require verticalSlider
 //= require custom
+//= require jquery.unveil
+//= require_self
+
+$(document).ready(function () {
+
+  //image lazy loading
+  $("img.unveil").unveil();
+  $(document).ajaxComplete(function(event,request, settings) {
+    $("img.unveil").unveil();
+  });
+});
 
 
