@@ -26,6 +26,8 @@
 //= require jquery.touchSwipe.min
 //= require custom
 //= require jquery.unveil
+//= require half.dynamics
+//= require smartinfowindow.js
 //= require_self
 
 $(document).ready(function () {

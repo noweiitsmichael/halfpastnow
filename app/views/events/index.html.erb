@@ -12,14 +12,13 @@
     var start_of_weekend = "<%= (Time.now.next_week-3.day).strftime('%m/%d/%Y') %>";
     var end_of_weekend = "<%= (Time.now.next_week-1.day).strftime('%m/%d/%Y') %>";
   <% end %>
-  <%= javascript_include_tag "half.dynamics","smartinfowindow.js" %>
-  <%= stylesheet_link_tag "custom1" %>
+  <%= stylesheet_link_tag "custom1","search" %>
   <% @location_page = "serach" %>
 <% end %>
 <% content_for :code do %>
 
   <script type="text/javascript">
-    var filter = {
+     filter = {
       start_days: <%= params[:start_days].coalesce_to 0 %>,
       end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
       start_seconds: <%= params[:start_seconds].coalesce_to "''" %>,
@@ -39,8 +38,12 @@
       sort: <%= params[:sort].coalesce_to 0 %>,
       name: "<%= params[:name].coalesce_to "" %>",
       start_date: "",
-      end_date: ""
+      end_date: "",
+      order_time: 1,
+      order_cost: 1
     };
+    console.log(filter)
+    console.log("inline script 46")
   </script>
 <% end %>
 <% content_for :body do %>
@@ -213,45 +216,7 @@
   </div>
   <!-- /.modal -->
 
-  <style>
-    .cost_sort, .time_sort {
-      color: #777777;
-      display: inline;
-      font-size: 16px;
-      font-weight: bold;
-      left: 18%;
-      position: relative;
-      cursor: pointer;
-    }
 
-    .neighborhood_names_list {
-      color: #4D344F;
-      display: inline;
-      font-size: 15px;
-      font-weight: bold;
-      position: relative;
-      cursor: pointer;
-      float: left;
-      padding: 6px;
-    }
-
-    .popover ul li {
-      padding: 2px 0;
-    }
-
-    table td.selected {
-      background-color: #777777;
-      color: #ffffff;
-    }
-
-    .popover_dates {
-      margin-left: 10px;
-    }
-
-    .modal-backdrop.fade.in {
-      z-index: 10 !important;
-    }
-  </style>
   <%= javascript_include_tag "search.js" %>
 <% end %>
 

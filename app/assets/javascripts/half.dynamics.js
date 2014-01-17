@@ -1442,6 +1442,7 @@ function dropdown_search_events(tag) {
   filter.tag_id = filter.included_tags
   filter.tag_type = null
   filter.query = null
+
   filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
   filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
   console.log("dropdown_search_events")
@@ -1449,6 +1450,8 @@ function dropdown_search_events(tag) {
   $.get("/events/index?ajax=true", filter, function (data) {
     $("#related_events .main .inline .events").html(data);
     $("#events .main .inline .events").html(data);
+    console.log(filter)
+    console.log("after ajax call 1455")
 //    $(".total_number").text($("#related_events .main .inline .events").find('article').length);
   });
 }
@@ -1590,4 +1593,5 @@ $(document).delegate('#search-tab a', 'click', function(){
   }
   $('#events').show()
   $('#related_events').hide()
+
 });

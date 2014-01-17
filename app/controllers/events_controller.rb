@@ -432,7 +432,7 @@ class EventsController < ApplicationController
         @tagCounts[parentTag.id][:children].push(@tagCounts[childTag.id])
       end
     end
-    @all_neighborhoods = []
+
     @allOccurrences.each do |occurrence|
       occurrence.event.tags.each do |tag|
         @tagCounts[tag.id][:count] += 1
@@ -440,6 +440,7 @@ class EventsController < ApplicationController
       # neighborhoods
       @all_neighborhoods = Neighborhood.all.sort_by{|k| k.name}
     end
+
     if VenueNeighbourhoodFetch.last.nil?
       @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
       neighbourhood_fetch
@@ -1038,6 +1039,7 @@ class EventsController < ApplicationController
     else
       @occurrences = @allOccurrences.paginate(:page => params[:page], :per_page => 21)
     end
+
     if VenueNeighbourhoodFetch.last.nil?
       @venue_neighbourhood = VenueNeighbourhoodFetch.create(:start_date => Date.today,:count => 0)
       neighbourhood_fetch
