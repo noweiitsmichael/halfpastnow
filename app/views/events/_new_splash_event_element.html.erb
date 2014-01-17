@@ -1,16 +1,14 @@
 <article class="slide-item product-item" link-id="<%= occurrence.id %>" style="margin: 0 18px">
   <figure><a href="/events/austin/<%= occurrence.slug %>">
     <% if occurrence.event.pictures.first %>
-      <img src="<%= occurrence.event.pictures.first.image_url(:full) %>" alt="Event picture" />
+      <img class="unveil" src="/assets/placeholder.png" data-src="<%= occurrence.event.pictures.first.image_url(:full) %>" alt="Event picture" />
     <% elsif occurrence.event.acts.length != 0 && occurrence.event.acts.first.pictures.first %>
-      <img src="<%= occurrence.event.acts.first.pictures.first.image_url(:full) %>" alt="occurrence pic"/>
+      <img class="unveil" src="/assets/placeholder.png" data-src="<%= occurrence.event.acts.first.pictures.first.image_url(:full) %>" alt="occurrence pic"/>
     <% elsif occurrence.event.venue.pictures.first %>
-      <img src="<%= occurrence.event.venue.pictures.first.image_url(:full) %>" alt="venue pic" />
+      <img class="unveil" src="/assets/placeholder.png" data-src="<%= occurrence.event.venue.pictures.first.image_url(:full) %>" alt="venue pic" />
     <% else %>
-      <img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic" />
+      <img class="unveil" src="/assets/placeholder.png" data-src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic" />
     <% end %>
-
-
 
   </a></figure>
   <div class="name"><a href="/events/austin/<%= occurrence.slug %>" target="_blank"><%= truncate(occurrence.event.title, :length => 115) %></a></div>

@@ -33,22 +33,6 @@
   </script>
 </head>
 <body>
-<script type="text/javascript">
-  $(function () {
-    var $container = $("#trendsetter-preview"),
-      $tabs = $(".tabs", $container).hide();
-
-    $(".ts-icons img", $container).hover(function () {
-      // console.log("do");
-      $tabs.removeClass("active").hide();
-      $(".ts-icons img").css("border-color", "white");
-      $(this).css("border-color", "purple");
-      $tabs.eq($(this).addClass("active").index()).fadeIn(80);
-    }, function () {
-      // console.log("not do");
-    });
-  });
-</script>
 <header class="navbar navbar-fixed-top navbar-inverse">
 <div class="navbar-inner">
   <div class="container">
@@ -160,56 +144,6 @@
                 | <a href="https://getsatisfaction.com/halfpastnow/">Feedback</a> | &copy halfpastnow 2013
               </li>
             </ul>
-            <style>
-
-              .dropdown-menu1 .divider {
-                margin-top: 0;
-              }
-
-              .dropdown-menu1 div {
-                float: left;
-                width: 47%;
-                text-align: left;
-              }
-
-              *::-moz-placeholder {
-                color: #BBBBBB;
-              }
-
-              .dropdown-menu1 > li {
-                font-size: 80%;
-              }
-
-              .dropdown-menu1 div.divider-vertical {
-                border-left-color: #F2F2F2;
-                border-right: medium none;
-                height: 172px;
-                width: 1px;
-              }
-
-              .dropdown-menu1 {
-                background-clip: padding-box;
-                background-color: #FFFFFF;
-                float: left;
-                left: 9px;
-                list-style: none outside none;
-                margin: 2px 0 0;
-                min-width: 100%;
-                position: relative;
-                top: -10px;
-                z-index: 1000;
-              }
-
-              .dropdown-menu1 div > a {
-                color: #777777;
-                font-size: 125%;
-                font-weight: 700;
-                line-height: 27px;
-                text-transform: uppercase;
-              }
-            </style>
-
-
           </div>
         </div>
         <div class="btn-group">
@@ -496,107 +430,9 @@
 </div>
 <!-- /.modal -->
 
-<script>
-  if (user_signed_in) {
-    $('#slider2,#slider3,#slider5').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative; width:100px !important;'>");
-    happy_place_events(19, "slider2");
-    dance_events(1, "slider3");
-    free_events("slider5");
-  }
-
-  $('.submit').click(function (e) {
-    e.preventDefault()
-    window.location.href = window.location.origin + "/search?key=" + $('#appendedInput').val()
-  })
-  $('figure').click(function () {
-    var event_id = $(this).parent('article').attr('link-id')
-    console.log(event_id)
-    window.location.href = window.location.origin + "/events/austin/" + event_id
-
-  })
-  $('article .name a').click(function () {
-    var event_id = $(this).parents('article').attr('link-id')
-    console.log(event_id)
-    window.location.href = window.location.origin + "/events/austin/" + event_id
-
-  })
-
-  $('.brand').click(function () {
-    window.location.href = window.location.origin
-
-  })
-  $('.dropdown-menu a,.dropdown-menu1 a').click(function () {
-    console.log('working')
-    tag_id = $(this).attr('tag_id')
-    tag_type = $(this).attr('tag_type')
-    if (tag_id == "0") {
-      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent($(this).text()) + "&tag_id=" + tag_id + "&tag_type=" + tag_type
-    }
-    else {
-      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent($(this).text()) + "&tag_id=" + tag_id
-    }
-  })
-
-  $('.see_all_links').click(function () {
-    tag_id = $(this).attr('tag_id')
-    tag_type = $(this).attr('tag_type')
-    tag_title = $(this).attr('tag_title')
-    if (tag_id == "0") {
-      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent(tag_title) + "&tag_id=" + tag_id + "&tag_type=" + tag_type
-    }
-    else {
-      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent(tag_title) + "&tag_id=" + tag_id
-    }
-  })
-  $('#slider1,#slider4').append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>")
-  $('.before_login').click(function () {
-    window.location.href = window.location.origin + "/login"
-  })
-</script>
 <% unless @page %>
   <% cookies[:url] = request.url %>
 <% end %>
-<style>
-  .nav-user-photo {
-    border: 2px solid #FFFFFF;
-    border-radius: 100%;
-    float: left;
-    margin: 0 7px 0 0;
-    max-width: 40px;
-    position: relative;
-  }
-
-  .navbar .nav_profile {
-    padding-top: 0px !important;
-    width: 230px;
-  }
-
-  .see-more a {
-    position: relative;
-    top: 50%;
-  }
-
-  .see-more {
-    text-align: center;
-  }
-
-  .nav.pull-right .nav_links {
-    font-size: 125%;
-  }
-
-  .navbar .nav {
-    padding-top: 10px;
-    width: 280px;
-  }
-
-  <% if user_signed_in? %>
-  .nav.pull-right a:first-child {
-    position: relative;
-  }
-
-  <% end %>
-
-</style>
 </body>
 </html>
 
