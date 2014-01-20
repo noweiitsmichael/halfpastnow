@@ -1,9 +1,10 @@
 $(function () {
-  var myDate = new Date();
+  var myDate = Date.today()
+  var defaultDate = Date.today().add(14).days();
+  var tomorrowDate = Date.today().add(1).days();
   var today_date = (myDate.getMonth() + 1) + '/' + (myDate.getDate()) + '/' + myDate.getFullYear();
-  var tomorrow_date = (myDate.getMonth() + 1) + '/' + (myDate.getDate() + 1) + '/' + myDate.getFullYear();
-  var default_to_date = (myDate.getMonth() + 1) + '/' + (myDate.getDate() + 14) + '/' + myDate.getFullYear();
-
+  var tomorrow_date = (tomorrowDate.getMonth() + 1) + '/' + (tomorrowDate.getDate()) + '/' + tomorrowDate.getFullYear();
+  var default_to_date = (defaultDate.getMonth() + 1) + '/' + (defaultDate.getDate()) + '/' + defaultDate.getFullYear();
   $('.flickr_pagination a').click(function () {
     $("#related_events .main .inline .events,#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
   });
