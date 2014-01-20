@@ -56,7 +56,9 @@ class Occurrence < ActiveRecord::Base
       filter :range, start: {gte: (DateTime.parse(params[:start_date]).in_time_zone rescue Time.zone.now),lte: (DateTime.parse(params[:end_date]).in_time_zone rescue Time.zone.now+14.days)}
     end
   end
-
+  def to_indexed_json
+    to_json
+  end
 
 
   # Allows you to search for users that bookmarked this event by calling "event.bookmarked_by"
