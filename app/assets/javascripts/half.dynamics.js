@@ -398,16 +398,16 @@ $(function () {
       if($('.custom-start').datepicker("getDate") > $('.custom-end').datepicker("getDate")){
         filter.end_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd")
       }
-      tag_id = parseInt($('.active a').attr('tag_id'))
+      tag_id = $('.active a').attr('tag_id')
       tag_type = $('.active a').attr('tag_type')
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
-      if (tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")) {
+      if (tag_id == undefined && (tag_type == null || tag_type == undefined)) {
          //alert("search key")
         doneTyping1($('#search-tab .active a').text());
         $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
-      } else if (tag_id == 0) {
+      } else if (tag_id == "0"&& (tag_type != null || tag_type != undefined)) {
          //alert("only tag type")
         filter.tag_id = tag_id
         filter.tag_type = tag_type
@@ -438,16 +438,16 @@ $(function () {
       filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
 
       filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
-      tag_id = parseInt($('.active a').attr('tag_id'))
+      tag_id = $('.active a').attr('tag_id')
       tag_type = $('.active a').attr('tag_type')
       $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
       $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
-      if (tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")) {
+      if (tag_id == undefined && (tag_type == null || tag_type == undefined)) {
         // alert("search key")
         doneTyping1($('#search-tab .active a').text());
         $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
-      } else if (tag_id == 0) {
+      } else if (tag_id == "0"&& (tag_type != null || tag_type != undefined)) {
         // alert("only tag type")
         filter.tag_id = tag_id
         filter.tag_type = tag_type
@@ -481,16 +481,16 @@ $(function () {
     filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd") + " " + $('.timepicker').val();
 
     filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
-    tag_id = parseInt($('.active a').attr('tag_id'))
+    tag_id = $('.active a').attr('tag_id')
     tag_type = $('.active a').attr('tag_type')
     $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
     $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
     $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
-    if (tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")) {
+    if (tag_id == undefined && (tag_type == null || tag_type == undefined)) {
       // alert("search key")
       doneTyping1($('#search-tab .active a').text());
       $('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
-    } else if (tag_id == 0) {
+    } else if (tag_id == "0"&& (tag_type != null || tag_type != undefined)) {
       // alert("only tag type")
       filter.tag_id = tag_id
       filter.tag_type = tag_type
