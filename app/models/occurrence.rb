@@ -27,8 +27,7 @@ class Occurrence < ActiveRecord::Base
       indexes :name ,boost: 800
     end
     indexes :venue do
-      indexes :name ,boost: 800
-      indexes :description, boost: 200
+      indexes :name ,boost: 500
     end
     indexes :tags do
       indexes :name, boost: 1000
