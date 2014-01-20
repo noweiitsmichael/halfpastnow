@@ -17,23 +17,23 @@ class Occurrence < ActiveRecord::Base
 
   after_touch() { tire.update_index }
   mapping do
-    indexes :_event_id, type: 'integer', index: :not_analyzed,:store => 'yes',boost: 1000
+    indexes :_event_id, type: 'integer', index: :not_analyzed,boost: 1000
     indexes :start, type: 'date', index: :not_analyzed , boost: 100
     indexes :events do
       indexes :price, type: 'integer',boost: 100
       indexes :title, boost: 700
       indexes :description, boost: 200
-    indexes :acts do
-      indexes :name ,boost: 800
-    end
-    indexes :venue do
-      indexes :name ,boost: 500
-    end
-    indexes :tags do
-      indexes :name, boost: 1000
-    end
-      index
+      indexes :acts do
+        indexes :name ,boost: 800
       end
+      indexes :venue do
+        indexes :name ,boost: 500
+      end
+      indexes :tags do
+        indexes :name, boost: 1000
+      end
+
+    end
   end
 
   def self.search(params)
@@ -56,9 +56,7 @@ class Occurrence < ActiveRecord::Base
       filter :range, start: {gte: (DateTime.parse(params[:start_date]).in_time_zone rescue Time.zone.now),lte: (DateTime.parse(params[:end_date]).in_time_zone rescue Time.zone.now+14.days)}
     end
   end
-  def to_indexed_json
-    to_json( include: { acts: { only: [:name] }, venue: { only: [:name,:description]},tags: {only: [:name]} } )
-  end
+
 
 
   # Allows you to search for users that bookmarked this event by calling "event.bookmarked_by"
