@@ -4,6 +4,7 @@
   })
   $('.flickr_pagination a').attr('data-remote', 'true');
   $(".total_number").text("<%= @allOccurrences.count %>");
+  $("img.unveil").unveil();
 
 </script>
 <%= (will_paginate @occurrences, previous_label: h("<"), next_label: h(">"),class: "flickr_pagination") if @root_page.nil?%>

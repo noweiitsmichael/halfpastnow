@@ -5,3 +5,4 @@ $("#related_events .main .inline .events").html("<%= escape_javascript render :p
 $("#events .main .inline .events").html("<%= escape_javascript render :partial => 'combo' %>");
 $('.flickr_pagination a').attr('data-remote', 'true');
 $(".total_number").text("<%= @allOccurrences.count %>");
+$("img.unveil").unveil();
