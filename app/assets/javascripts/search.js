@@ -177,6 +177,7 @@ $(function () {
         $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
       }
     })
+    $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
     $('#search_name,#search_name1').text(params["key"])
     doneTyping1(params["key"]);
     $('#search_name,#search_name1').html(params["key"])

@@ -19,24 +19,3 @@
 //= require h5utils
 //= require half.main
 //= require jquery.colorbox
-//= require jquery.ui.timepicker
-//= require modernizr-latest
-//= require bootstrap
-//= require jquery.carouFredSel-6.2.1-packed
-//= require jquery.touchSwipe.min
-//= require custom
-//= require jquery.unveil
-//= require half.dynamics
-//= require smartinfowindow.js
-//= require_self
-
-$(document).ready(function () {
-
-  //image lazy loading
-  $("img.unveil").unveil();
-  $(document).ajaxComplete(function(event,request, settings) {
-    $("img.unveil").unveil();
-  });
-});
-
-

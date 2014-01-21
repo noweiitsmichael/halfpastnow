@@ -29,17 +29,22 @@
   <link rel="shortcut icon" href="/assets/favicon.ico"/>
   <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,900,700italic,900italic,700,500italic,500,400italic,300italic,100italic">
 
+
   <%= stylesheet_link_tag "application" %>
   <% if @location == "search" %>
-    <%#= stylesheet_link_tag "jquery.mobile-1.0a3.min" %>
+    <%= stylesheet_link_tag "jquery.mobile-1.0a3.min" %>
   <% end %>
+  <%= stylesheet_link_tag "application_additional" %>
   <%#= stylesheet_link_tag "bootstrap", "bootstrap-responsive", "jquery-ui", "jquery.ui.timepicker", "media-queries" %>
 
-  <%= javascript_include_tag "application"%>
+  <%= javascript_include_tag "application" %>
   <%if @location == "search" %>
-  <%#= javascript_include_tag "jquery.mobile-1.1.0"%>
+    <%= javascript_include_tag "jquery.mobile-1.1.0"%>
   <% end %>
+  <%= javascript_include_tag "application_additional"%>
+
   <%#= javascript_include_tag "jquery.ui.timepicker","modernizr-latest", "bootstrap", "jquery.carouFredSel-6.2.1-packed","jquery.touchSwipe.min","verticalSlider", "custom" %>
+
 
   <%= csrf_meta_tags %>
   <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCeHedIsrNnYSRpUidszbfDV27gTQKJLt4&sensor=false"></script>
@@ -201,7 +206,7 @@
                   </li>
 
                   <li style="text-align:left;"><a href="http://www.halfpastnow.com/info/about">About Us</a> | <a href="http://blog.halfpastnow.com/">Blog</a> | <a href="http://www.halfpastnow.com/info/privacy">Privacy</a> | <a href="http://www.halfpastnow.com/info/terms">Terms</a>
-                    | <a href="https://getsatisfaction.com/halfpastnow/">Feedback</a> | 
+                    | <a href="https://getsatisfaction.com/halfpastnow/">Feedback</a> |
                     <br> &copy halfpastnow 2013
                   </li>
                 </ul>
