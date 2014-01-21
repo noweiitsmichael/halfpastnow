@@ -50,7 +50,7 @@ class Occurrence < ActiveRecord::Base
   end
   def self.search_on_date(params)
     tire.search(load: true) do
-      query { string params[:query], default_operator: "OR"  } if params[:query].present?
+      query { string params[:query], default_operator: "AND"  } if params[:query].present?
       size 1000
       sort { by :start, "asc" }
       filter :range, start: {gte: (DateTime.parse(params[:start_date]).in_time_zone rescue Time.zone.now),lte: (DateTime.parse(params[:end_date]).in_time_zone rescue Time.zone.now+14.days)}
