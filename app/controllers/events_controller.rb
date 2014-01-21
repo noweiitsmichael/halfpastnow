@@ -467,7 +467,7 @@ class EventsController < ApplicationController
         WHERE id IN (#{@venue_ids * ','})")
     end
      @location = "search"
-    @austin_occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
+    @austin_occurrences = BookmarkList.find(2370).all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start } if params[:root]
     respond_to do |format|
       format.html do
         unless (params[:ajax].to_s.empty?)
