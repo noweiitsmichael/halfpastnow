@@ -49,9 +49,6 @@ GEM
       rails (~> 3.0)
     ansi (1.4.3)
     arel (3.0.2)
-    asset_sync (0.5.4)
-      activemodel
-      fog
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
     cancan (1.6.9)
@@ -303,7 +300,6 @@ PLATFORMS
 DEPENDENCIES
   admin_data (>= 1.1.16)
   ajax_pagination
-  asset_sync
   cancan
   capybara!
   carrierwave
