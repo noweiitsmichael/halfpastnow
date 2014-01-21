@@ -40,6 +40,7 @@ $(document).ready(function () {
 
   $('.submit').click(function (e) {
     e.preventDefault();
+    $('.popover').hide()
     window.location.href = window.location.origin + "/search?key=" + $('#appendedInput').val();
   });
 
