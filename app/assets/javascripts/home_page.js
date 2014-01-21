@@ -20,10 +20,10 @@
 //= require jquery.touchSwipe.min
 //= require jquery.ui.timepicker
 //= require jquery.carouFredSel-6.2.1-packed
-//= require custom
 //= require half.dynamics
 //= require jquery.unveil
 //= require_self
+//= require custom
 
 $(document).ready(function () {
 
