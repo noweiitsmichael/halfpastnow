@@ -19,9 +19,9 @@ class Occurrence < ActiveRecord::Base
   mapping do
     indexes :_event_id, type: 'integer', index: :not_analyzed,:store => 'yes',boost: 1000
     indexes :start, type: 'date', index: :not_analyzed , boost: 100
-    indexes :events do
+    indexes :event do
       indexes :price, type: 'integer',boost: 100
-      indexes :title, boost: 700
+      indexes :title, analyzer: 'snowball', boost: 700
       indexes :description, boost: 200
       indexes :acts do
         indexes :name ,boost: 800
@@ -30,36 +30,34 @@ class Occurrence < ActiveRecord::Base
         indexes :name ,boost: 800
       end
       indexes :tags do
-        indexes :name, boost: 1000
+      indexes :name, analyzer: 'snowball',boost: 1000
       end
-      index
     end
   end
 
   def self.search(params)
     tire.search(load: true) do
-      query { string params[:query], default_operator: "OR",match_all: { } } if params[:query].present?
+      query { string params[:query], default_operator: "AND"} if params[:query].present?
       size 1000
       sort { by :start, "asc" }
-
       #facet('timeline') { range :start, { :ranges => [ { to: DateTime.new(2020,1,1), from: Time.now } ] } }
       filter :range, start: {gte: Time.zone.now,lte: Time.zone.now+1.year}
     end
   end
   def self.search_on_date(params)
     tire.search(load: true) do
-      query { string params[:query], default_operator: "AND"  } if params[:query].present?
+      query { string params[:query], default_operator: "AND" } if params[:query].present?
       size 1000
       sort { by :start, "asc" }
       filter :range, start: {gte: (DateTime.parse(params[:start_date]).in_time_zone rescue Time.zone.now),lte: (DateTime.parse(params[:end_date]).in_time_zone rescue Time.zone.now+14.days)}
     end
   end
   def to_indexed_json
-    to_json#( include: { acts: { only: [:name] }, venue: { only: [:name]},tags: {only: [:name]} } )
+    to_json( include: { event: { only: [:title,:price,:description] },acts: { only: [:name] }, venue: { only: [:name]},tags: {only: [:name]} } )
   end
 
 
-  # Allows you to search for users that bookmarked this event by calling "event.bookmarked_by"
+  # Allows you to searc h for users that bookmarked this event by calling "event.bookmarked_by"
   # has_many :bookmarked_by, :through => :bookmarks, :source => :user
 
   validates_presence_of :start

@@ -77,7 +77,7 @@ $(function () {
 
   if (params["key"] && params["tag_id"] && params["tag_type"]) {
     $(".active").attr('class', '');
-    $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key=" + params["key"] + " tag_type=" + params["tag_type"] + " tag_id= " + params["tag_id"] + ">" + params["key"] + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+    $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key=" + params["key"] + " tag_type=" + params["tag_type"] + " tag_id= " + params["tag_id"] + ">" + params["key"].replace(/\_/g, " ") + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
     $('.icon-cross').on("click", function () {
       $(this).parents('li').remove()
     })
@@ -103,7 +103,7 @@ $(function () {
 
       }
     })
-    $('#search_name,#search_name1').text(params["key"])
+    $('#search_name,#search_name1').text(params["key"].replace(/\_/g, " "))
     $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
     $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
     $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
@@ -114,11 +114,11 @@ $(function () {
     console.log("search2")
     console.log(JSON.stringify(filter))
     $.get("/search_results", filter)
-    $('#search_name,#search_name1').html(params["key"])
+    $('#search_name,#search_name1').html(params["key"].replace(/\_/g, " "))
   } else if (params["key"] && params["tag_id"]) {
     console.log("serach page 114")
     $(".active").attr('class', '');
-    $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key=" + params["key"] + " tag_id=" + params["tag_id"] + ">" + params["key"] + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+    $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key=" + params["key"] + " tag_id=" + params["tag_id"] + ">" + params["key"].replace(/\_/g, " ") + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
     $('.icon-cross').on("click", function () {
       $(this).parents('li').remove()
     })
@@ -144,17 +144,17 @@ $(function () {
 
       }
     })
-    $('#search_name,#search_name1').text(params["key"])
+    $('#search_name,#search_name1').text(params["key"].replace(/\_/g, " "))
     $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
     $("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
     $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
 
     dropdown_search_events(params["tag_id"])
-    $('#search_name,#search_name1').html(params["key"])
+    $('#search_name,#search_name1').html(params["key"].replace(/\_/g, " "))
   } else if (params["key"]) {
 
     $(".active").attr('class', '');
-    $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key= " + params["key"] + ">" + params["key"] + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
+    $('#search-tab').append("<li class='active related_events'><a data-toggle='tab' href='#related_events' key= " + params["key"] + ">" + params["key"].replace(/\_/g, " ") + " <i class='icon-cross'></i><i class='icon-white-pin'></i></a></li>")
     $('.icon-cross').on("click", function () {
       $(this).parents('li').remove()
     })
@@ -178,9 +178,8 @@ $(function () {
       }
     })
     $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
-    $('#search_name,#search_name1').text(params["key"])
     doneTyping1(params["key"]);
-    $('#search_name,#search_name1').html(params["key"])
+    $('#search_name,#search_name1').html(params["key"].replace(/\_/g, " "))
   }
 
   //neighborhood
@@ -259,12 +258,15 @@ $(function () {
       filter.query = null
       console.log("search3")
       console.log(JSON.stringify(filter))
+      url = "/search?key="+$(this).text()+"&tag_id=0&tag_type="+filter.tag_type
+      history.pushState(null, null, url);
       $.get("/search_results", filter)
+
     }
     else {
       console.log("tag_id based search")
-
-
+      url = "/search?key="+$(this).text()+"&tag_id="+filter.tag_id
+      history.pushState(null, null, url);
       dropdown_search_events($(this).attr('tag_id'))
     }
     //      doneTyping1($(this).text());

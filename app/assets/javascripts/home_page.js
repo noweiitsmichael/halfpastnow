@@ -41,17 +41,17 @@ $(document).ready(function () {
   $('.submit').click(function (e) {
     e.preventDefault();
     $('.popover').hide()
-    window.location.href = window.location.origin + "/search?key=" + $('#appendedInput').val();
+    window.location.href = window.location.origin+"/search?key="+$('#appendedInput').val();
   });
 
   $('figure').click(function () {
     var event_id = $(this).parent('article').attr('link-id');
-    window.location.href = window.location.origin + "/events/austin/" + event_id;
+    window.location.href = window.location.origin+"/events/austin/"+event_id;
   });
 
   $('article .name a').click(function () {
     var event_id = $(this).parents('article').attr('link-id');
-    window.location.href = window.location.origin + "/events/austin/" + event_id;
+    window.location.href = window.location.origin +"/events/austin/"+event_id;
   });
 
   $('.brand').click(function () {
@@ -62,10 +62,10 @@ $(document).ready(function () {
     tag_id = $(this).attr('tag_id');
     tag_type = $(this).attr('tag_type');
     if (tag_id == "0") {
-      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent($(this).text()) + "&tag_id=" + tag_id + "&tag_type=" + tag_type;
+      window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text().replace(/\ /g, "_"))+"&tag_id="+tag_id +"&tag_type="+tag_type;
     }
     else {
-      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent($(this).text()) + "&tag_id=" + tag_id;
+      window.location.href = window.location.origin+"/search?key="+encodeURIComponent($(this).text().replace(/\ /g, "_"))+"&tag_id="+tag_id;
     }
   });
 
@@ -74,17 +74,17 @@ $(document).ready(function () {
     tag_type = $(this).attr('tag_type');
     tag_title = $(this).attr('tag_title');
     if (tag_id == "0") {
-      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent(tag_title) + "&tag_id=" + tag_id + "&tag_type=" + tag_type;
+      window.location.href = window.location.origin+"/search?key="+encodeURIComponent(tag_title)+"&tag_id="+tag_id+"&tag_type="+tag_type;
     }
     else {
-      window.location.href = window.location.origin + "/search?key=" + encodeURIComponent(tag_title) + "&tag_id=" + tag_id;
+      window.location.href = window.location.origin+"/search?key="+ encodeURIComponent(tag_title)+"&tag_id="+tag_id;
     }
   });
 
   $('#slider1,#slider4').append("<article class='slide-item product-item see-more'><a href='/search' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>");
 
   $('.before_login').click(function () {
-    window.location.href = window.location.origin + "/login";
+    window.location.href = window.location.origin+"/login";
   });
 });
 

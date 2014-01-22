@@ -1122,13 +1122,13 @@ function doneTyping1(search) {
   filter.search = search;
   pullEvents1({update_search: false, search: "elastic"});
 
-  window.location.hash = "key:" + search;
+//  window.location.hash = "key:" + search;
 }
 function doneTyping2(search) {
   filter.search = search;
   pullEvents2({update_search: false, search: "elastic"});
 
-  window.location.hash = "key:" + search;
+//  window.location.hash = "key:" + search;
 }
 
 var boundsChangedFlag = false;
@@ -1292,7 +1292,9 @@ function pullEvents2(updateOptions, search) {
   console.log("pullEvents2")
   console.log(JSON.stringify(filter))
 
-  $.get("/search_results", filter)
+  $.get("/search_results", filter,function(data){
+
+  })
 }
 
 function tagged_saved_search_events(tag, location) {
@@ -1447,6 +1449,7 @@ function dropdown_search_events(tag) {
   filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
   console.log("dropdown_search_events")
    console.log(JSON.stringify(filter))
+
   $.get("/events/index?ajax=true", filter, function (data) {
     $("#related_events .main .inline .events").html(data);
     $("#events .main .inline .events").html(data);
@@ -1575,6 +1578,8 @@ $(document).delegate('#search-tab a', 'click', function(){
     console.log("search key filter")
 
     doneTyping2($(this).text());
+    url = '/search?key='+$(this).text()
+    history.pushState(null, null, url);
     $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
   } else if (tag_id == "0"&& (tag_type != null || tag_type != undefined)){
     console.log("tag type filter")
@@ -1586,8 +1591,12 @@ $(document).delegate('#search-tab a', 'click', function(){
     filter.query = null
     $.get("/search_results", filter)
     $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
+    url = "/search?key="+$(this).text()+"&tag_id=0&tag_type="+filter.tag_type
+    history.pushState(null, null, url);
   } else {
     console.log('tag_id filter')
+    url = "/search?key="+$(this).text()+"&tag_id="+tag_id
+    history.pushState(null, null, url);
     dropdown_search_events($(this).attr('tag_id'))
     $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
   }
