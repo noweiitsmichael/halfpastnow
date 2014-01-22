@@ -1,13 +1,13 @@
 <article class="slide-item product-item" link-id="<%= occurrence.id %>" style="margin: 0 18px">
   <figure><a href="/events/austin/<%= occurrence.slug %>">
     <% if occurrence.event.pictures.first %>
-      <img class="unveil" src="/assets/placeholder.png" data-src="<%= occurrence.event.pictures.first.image_url(:full) %>" alt="Event picture" />
+      <%= image_tag "placeholder.png", alt: "Event picture", class: "unveil", "data-src" => occurrence.event.pictures.first.image_url(:full) %>
     <% elsif occurrence.event.acts.length != 0 && occurrence.event.acts.first.pictures.first %>
-      <img class="unveil" src="/assets/placeholder.png" data-src="<%= occurrence.event.acts.first.pictures.first.image_url(:full) %>" alt="occurrence pic"/>
+      <%= image_tag "placeholder.png", alt: "Occurrence picture", class: "unveil", "data-src" => occurrence.event.acts.first.pictures.first.image_url(:full) %>
     <% elsif occurrence.event.venue.pictures.first %>
-      <img class="unveil" src="/assets/placeholder.png" data-src="<%= occurrence.event.venue.pictures.first.image_url(:full) %>" alt="venue pic" />
+      <%= image_tag "placeholder.png", alt: "Venue picture", class: "unveil", "data-src" => occurrence.event.venue.pictures.first.image_url(:full) %>
     <% else %>
-      <img class="unveil" src="/assets/placeholder.png" data-src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic" />
+      <%= image_tag "placeholder.png", alt: "Cover picture", class: "unveil", "data-src" => occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>
     <% end %>
 
   </a></figure>
@@ -23,7 +23,7 @@
     <div class="place">
       <% neighborhood = occurrence.venue.neighborhoods.first %>
       <% if neighborhood %>
-        <%= occurrence.venue.neighborhoods.first.name.truncate(35) %>
+        <%= neighborhood.name.truncate(35) %>
       <% end %>
     </div>
 

@@ -15,7 +15,7 @@
 //= require jquery.dropkick-1.0.0
 //= require galleria-1.2.8.min
 //= require jquery.form
-//= require history.min
+//= require history
 //= require h5utils
 //= require half.main
 //= require jquery.colorbox

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140103120527) do
+ActiveRecord::Schema.define(:version => 20140122103350) do
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(:version => 20140103120527) do
     t.text     "description"
     t.string   "name"
     t.string   "email"
-    t.integer  "phone"
+    t.string   "phone"
     t.string   "advertiser"
     t.string   "image"
     t.integer  "weight",      :default => 1
@@ -242,6 +242,7 @@ ActiveRecord::Schema.define(:version => 20140103120527) do
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.string   "n_id"
+    t.text     "reference"
   end
 
   create_table "neighborhoods_venues", :id => false, :force => true do |t|
@@ -363,7 +364,9 @@ ActiveRecord::Schema.define(:version => 20140103120527) do
 
   create_table "saved_searches", :force => true do |t|
     t.string   "search_key"
+    t.integer  "tag_id"
     t.integer  "user_id"
+    t.string   "tag_type"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -459,8 +462,8 @@ ActiveRecord::Schema.define(:version => 20140103120527) do
     t.float    "completion"
     t.integer  "assigned_admin"
     t.integer  "weight",         :default => 1
-    t.string   "slug"
     t.text     "hours"
+    t.string   "slug"
   end
 
   add_index "venues", ["slug"], :name => "index_venues_on_slug"

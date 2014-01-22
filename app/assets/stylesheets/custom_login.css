@@ -611,7 +611,7 @@ a.ui-slider-handle-vertical, a.ui-slider-handle-verticalInverted {
 
 .gallery{position:relative;}
 .elastislide-horizontal {position:absolute; width:100%; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; left:0; bottom:0; -webkit-box-shadow:none; -moz-box-shadow:none; box-shadow:none; background:url(/assets/im/black-trans.png) repeat;}
-.elastislide-carousel ul li a img{border:none; border-left:5px transparent solid; border-right::5px transparent solid;}
+.elastislide-carousel ul li a img{border:none; border-left:5px transparent solid; border-right:5px transparent solid;}
 	
 .event-other-details .ad-contaniner{float:none; width:100%; border:solid 1px #eeeeee; padding:8px; text-align:center; text-transform:uppercase; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box;}
 .event-other-details .ad-contaniner img{margin-bottom:8px;}

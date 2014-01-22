@@ -22,6 +22,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.2'
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-datatables-rails'
+  gem 'asset_sync'
 end
 gem 'quiet_assets'
 
@@ -32,6 +33,7 @@ gem 'jcrop-rails'
 gem 'htmlentities'
 gem 'nokogiri', '>= 1.4.4'
 gem 'sanitize'
+gem 'httparty'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
