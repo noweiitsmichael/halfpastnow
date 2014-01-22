@@ -55,7 +55,7 @@ class Occurrence < ActiveRecord::Base
     end
   end
   def to_indexed_json
-    to_json( include: { acts: { only: [:name] }, venue: { only: [:name]},tags: {only: [:name]} } )
+    to_json#( include: { acts: { only: [:name] }, venue: { only: [:name]},tags: {only: [:name]} } )
   end
 
 
