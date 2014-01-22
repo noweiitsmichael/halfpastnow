@@ -17,7 +17,7 @@ class Occurrence < ActiveRecord::Base
 
   after_touch() { tire.update_index }
   mapping do
-    indexes :_event_id, type: 'integer', index: :not_analyzed,boost: 1000
+    indexes :_event_id, type: 'integer', index: :not_analyzed,:store => 'yes',boost: 1000
     indexes :start, type: 'date', index: :not_analyzed , boost: 100
     indexes :events do
       indexes :price, type: 'integer',boost: 100
@@ -27,12 +27,12 @@ class Occurrence < ActiveRecord::Base
         indexes :name ,boost: 800
       end
       indexes :venue do
-        indexes :name ,boost: 500
+        indexes :name ,boost: 800
       end
       indexes :tags do
         indexes :name, boost: 1000
       end
-
+      index
     end
   end
 
@@ -44,8 +44,6 @@ class Occurrence < ActiveRecord::Base
 
       #facet('timeline') { range :start, { :ranges => [ { to: DateTime.new(2020,1,1), from: Time.now } ] } }
       filter :range, start: {gte: Time.zone.now,lte: Time.zone.now+1.year}
-
-
     end
   end
   def self.search_on_date(params)
@@ -57,7 +55,7 @@ class Occurrence < ActiveRecord::Base
     end
   end
   def to_indexed_json
-    to_json
+    to_json( include: { acts: { only: [:name] }, venue: { only: [:name]},tags: {only: [:name]} } )
   end
 
 
@@ -146,8 +144,8 @@ class Occurrence < ActiveRecord::Base
     #     # params[:channel_id] = 4
     # end
     unless(params[:channel_id].to_s.empty?)
-        channel = Channel.find(params[:channel_id].to_i)
-        # channel = Channel.find(4)
+      channel = Channel.find(params[:channel_id].to_i)
+      # channel = Channel.find(4)
 
       params[:option_day] ||= channel.option_day || 0
       params[:start_days] ||= channel.start_days || ""
@@ -172,7 +170,7 @@ class Occurrence < ActiveRecord::Base
     if(params[:included_tags] && params[:included_tags].is_a?(String))
       params[:included_tags] = params[:included_tags].split(",")
     end
-    
+
     if(params[:excluded_tags] && params[:excluded_tags].is_a?(String))
       params[:excluded_tags] = params[:excluded_tags].split(",")
     end
@@ -219,7 +217,7 @@ class Occurrence < ActiveRecord::Base
         where_clause = "bookmarks.user_id = #{user_id} AND bookmarks.bookmarked_type = 'Venue'"
 
       elsif(params[:bookmark_type] == "act")
-        
+
         join_clause = "INNER JOIN events ON occurrences.event_id = events.id
                        INNER JOIN venues ON events.venue_id = venues.id
                        LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
@@ -299,7 +297,7 @@ class Occurrence < ActiveRecord::Base
       if Time.now.hour < 17
         start_date_where = "'#{(Time.now - 2.hours)}'"
       else
-        start_date_where = "'#{(Time.now - 3.hours)}'" 
+        start_date_where = "'#{(Time.now - 3.hours)}'"
       end
 
 
@@ -308,17 +306,17 @@ class Occurrence < ActiveRecord::Base
         day_check = "#{event_days ? "occurrences.day_of_week IN (#{event_days})" : "TRUE" }"
       end
 
-      occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check} AND #{day_check}" 
+      occurrence_match = "#{start_date_check} AND #{end_date_check} AND #{start_time_check} AND #{end_time_check} AND #{day_check}"
 
       # puts occurrence_match
 
       # location
       if(params[:lat_min].to_s.empty? || params[:long_min].to_s.empty? || params[:lat_max].to_s.empty? || params[:long_max].to_s.empty?)
         @ZoomDelta = {
-                 11 => { :lat => 0.30250564 / 2, :long => 0.20942688 / 2 }, 
-                 13 => { :lat => 0.0756264644 / 2, :long => 0.05235672 / 2 }, 
-                 14 => { :lat => 0.037808182 / 2, :long => 0.02617836 / 2 }
-                }
+          11 => { :lat => 0.30250564 / 2, :long => 0.20942688 / 2 },
+          13 => { :lat => 0.0756264644 / 2, :long => 0.05235672 / 2 },
+          14 => { :lat => 0.037808182 / 2, :long => 0.02617836 / 2 }
+        }
 
         # 30.268093,-97.742808
         @lat = params[:lat_center] || 30.268093
@@ -414,7 +412,7 @@ class Occurrence < ActiveRecord::Base
                      INNER JOIN venues ON events.venue_id = venues.id
                      LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
                      LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id"
-        join_cache_indicator = 5
+      join_cache_indicator = 5
 
       where_clause = "#{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{tag_and_match} AND #{low_price_match} AND #{high_price_match}"
 
@@ -428,7 +426,7 @@ class Occurrence < ActiveRecord::Base
               ORDER BY events.id, occurrences.start LIMIT 1000"
 
     # puts query
-    
+
     really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{join_cache_indicator}_#{search_match}_#{occurrence_match}_#{location_match}_#{tags_cache_included}_#{tags_cache_excluded}_#{low_price_match}_#{high_price_match}_#{start_date_where}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
@@ -452,10 +450,10 @@ class Occurrence < ActiveRecord::Base
     # queryResultTag = ActiveRecord::Base.connection.select_all(queryTag)
     # puts queryResultTag
     # puts queryResultTag.to_json
-    
-    
+
+
     return queryResult
-  
+
   end
 
   def clear_cache

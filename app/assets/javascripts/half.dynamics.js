@@ -1122,13 +1122,13 @@ function doneTyping1(search) {
   filter.search = search;
   pullEvents1({update_search: false, search: "elastic"});
 
-  window.location.hash = "key:" + search;
+  //window.location.hash = "key:" + search;
 }
 function doneTyping2(search) {
   filter.search = search;
   pullEvents2({update_search: false, search: "elastic"});
 
-  window.location.hash = "key:" + search;
+ // window.location.hash = "key:" + search;
 }
 
 var boundsChangedFlag = false;
