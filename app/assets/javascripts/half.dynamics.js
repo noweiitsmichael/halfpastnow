@@ -1578,7 +1578,7 @@ $(document).delegate('#search-tab a', 'click', function(){
     console.log("search key filter")
 
     doneTyping2($(this).text());
-    url = '/search?key='+$(this).text().replace(/\ /g, "_")
+    url = '/search?key='+$(this).text()
     history.pushState(null, null, url);
     $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
   } else if (tag_id == "0"&& (tag_type != null || tag_type != undefined)){
