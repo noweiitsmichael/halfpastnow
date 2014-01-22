@@ -1578,7 +1578,7 @@ $(document).delegate('#search-tab a', 'click', function(){
     console.log("search key filter")
 
     doneTyping2($(this).text());
-    url = '/search?key='+$(this).text()
+    url = '/search?key='+$(this).text().replace(/\ /g, "_")
     history.pushState(null, null, url);
     $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
   } else if (tag_id == "0"&& (tag_type != null || tag_type != undefined)){
@@ -1591,11 +1591,11 @@ $(document).delegate('#search-tab a', 'click', function(){
     filter.query = null
     $.get("/search_results", filter)
     $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
-    url = "/search?key="+$(this).text()+"&tag_id=0&tag_type="+filter.tag_type
+    url = "/search?key="+$(this).text().replace(/\ /g, "_")+"&tag_id=0&tag_type="+filter.tag_type
     history.pushState(null, null, url);
   } else {
     console.log('tag_id filter')
-    url = "/search?key="+$(this).text()+"&tag_id="+tag_id
+    url = "/search?key="+$(this).text().replace(/\ /g, "_")+"&tag_id="+tag_id
     history.pushState(null, null, url);
     dropdown_search_events($(this).attr('tag_id'))
     $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))

@@ -102,6 +102,9 @@ $(function () {
         $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
 
       }
+      else{
+        window.location.href = window.location.origin+"/login"
+      }
     })
     $('#search_name,#search_name1').text(params["key"].replace(/\_/g, " "))
     $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
@@ -143,6 +146,9 @@ $(function () {
         $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
 
       }
+      else{
+        window.location.href = window.location.origin+"/login"
+      }
     })
     $('#search_name,#search_name1').text(params["key"].replace(/\_/g, " "))
     $("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
@@ -175,6 +181,9 @@ $(function () {
             'width=626,height=436');
         })
         $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
+      }
+      else{
+        window.location.href = window.location.origin+"/login"
       }
     })
     $(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:15px;height:15px;'>")
@@ -258,14 +267,14 @@ $(function () {
       filter.query = null
       console.log("search3")
       console.log(JSON.stringify(filter))
-      url = "/search?key="+$(this).text()+"&tag_id=0&tag_type="+filter.tag_type
+      url = "/search?key="+$(this).text().replace(/\ /g, "_")+"&tag_id=0&tag_type="+filter.tag_type
       history.pushState(null, null, url);
       $.get("/search_results", filter)
 
     }
     else {
       console.log("tag_id based search")
-      url = "/search?key="+$(this).text()+"&tag_id="+filter.tag_id
+      url = "/search?key="+$(this).text().replace(/\ /g, "_")+"&tag_id="+$(this).attr('tag_id')
       history.pushState(null, null, url);
       dropdown_search_events($(this).attr('tag_id'))
     }
@@ -285,6 +294,9 @@ $(function () {
         })
         $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
         $('.active a').click();
+      }
+      else{
+        window.location.href = window.location.origin+"/login"
       }
     })
     $(".navbar-search #appendedInput").next(".popover").hide().removeClass("open");
@@ -321,6 +333,9 @@ $(function () {
           })
           $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
 
+        }
+        else{
+          window.location.href = window.location.origin+"/login"
         }
       })
     }
@@ -371,6 +386,9 @@ $(function () {
           })
           $(this).colorbox({href: "#save_share_content", inline: true, width: "50%", height: "200px"});
 
+        }
+        else{
+          window.location.href = window.location.origin+"/login"
         }
       })
     }
