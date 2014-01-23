@@ -1580,7 +1580,7 @@ $(document).delegate('#search-tab a', 'click', function(){
     doneTyping2($(this).text());
     url = '/search?key='+$(this).text()
     history.pushState(null, null, url);
-    $('#search_name,#search_name1').html($(this).attr('key').replace(/\_/g, " "))
+    $('#search_name,#search_name1').html($(this).text())
   } else if (tag_id == "0"&& (tag_type != null || tag_type != undefined)){
     console.log("tag type filter")
     filter.tag_id = "0"
