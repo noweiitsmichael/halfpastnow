@@ -22,7 +22,7 @@ class Occurrence < ActiveRecord::Base
     indexes :event do
       indexes :price, type: 'integer',boost: 100
       indexes :title, analyzer: 'snowball', boost: 700
-      indexes :description, boost: 200
+      indexes :description, analyzer: 'snowball', boost: 200
       indexes :acts do
         indexes :name ,boost: 800
       end
