@@ -46,7 +46,7 @@ namespace :neighborhoods do
     venues = Venue.where("id > ?", vnf.count).order("id asc").limit(100)
     venues.each do |venue|
       puts venue.id
-      api_url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{venue.latitude},#{venue.longitude}&radius=500&sensor=false&key=AIzaSyCz-NFeLCS7_8hurfNFQvKOiqyfwvxtbJU"
+      api_url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{venue.latitude},#{venue.longitude}&rank=distance&radius=500&sensor=false&key=AIzaSyCz-NFeLCS7_8hurfNFQvKOiqyfwvxtbJU"
       #puts api_url
       response = HTTParty.get(api_url)
       _response_body = JSON.parse(response.body)
