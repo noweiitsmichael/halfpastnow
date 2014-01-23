@@ -302,6 +302,31 @@
       window.open(url, '_blank');
       window.focus();
     }
+    $("#recommended-list").carouFredSel({
+      responsive: true,
+      swipe: {
+        onMouse: true,
+        onTouch: true
+      },
+      infinite: true,
+      prev: {
+        button: "#recommended-list_prev",
+        key: "left"
+      },
+      next: {
+        button: "#recommended-list_next",
+        key: "right"
+      },
+      scroll: 1,
+      items: {
+        width: 225,
+        height: 198,		// optionally resize item-height
+        visible: {
+          min: 1,
+          max: 4
+        }
+      }
+    });
 
   </script>
 <% end %>
