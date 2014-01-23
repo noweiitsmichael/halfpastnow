@@ -994,6 +994,7 @@ class EventsController < ApplicationController
    if params[:tag_type] == "all"
      @occurrences = Occurrence.includes(:event => :tags).where(:id => @occurrence_ids)
    end
+    params[:root]? @occurrences = @occurrences.take(5) : @occurrences = @occurrences
    p "params:"
     p params
     if params[:query].present?

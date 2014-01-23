@@ -1299,7 +1299,7 @@ function pullEvents2(updateOptions, search) {
 
 function tagged_saved_search_events(tag, location) {
 
-  var controllerLink = "/events/index?ajax=true"
+  var controllerLink = "/events/index?ajax=true&root=true"
 
   $.get(controllerLink, {"included_tags": tag}, function (data) {
     var locations = [];
@@ -1318,7 +1318,7 @@ function tagged_saved_search_events(tag, location) {
   });
 }
 function saved_search_events(location) {
-  console.log(location)
+  console.log(location+'checking')
 
   var controllerLink = "/events/index?ajax=true&root=true"
   f1 = {"search": location}

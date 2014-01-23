@@ -267,7 +267,7 @@
   </section>
 
   <% @saved_searches.each do |search| %>
-    <section id="<%= search.search_key.split("_").first.downcase %>_section" class="slider-wrap" style="padding:50px; color:#4C334D;height:519px;">
+    <section id="<%= search.search_key.gsub(" ","_").gsub("'","").downcase %>_section" class="slider-wrap" style="padding:50px; color:#4C334D;height:519px;">
       <div class="container">
         <div class="section-title">
           <h2 class="text-center"><%= search.search_key.gsub("_", " ") %></h2>
@@ -276,21 +276,23 @@
           <a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all"><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
         </div>
         <div class="section-content slider">
-          <div id="<%= search.search_key.split("_").first.downcase %>">
+          <div id="<%= search.search_key.gsub(" ","_").gsub("'","").downcase %>">
           </div>
-          <a class="prev" id="<%= search.search_key.split("_").first.downcase %>_prev" href="#"><span>prev</span></a>
-          <a class="next" id="<%= search.search_key.split("_").first.downcase %>_next" href="#"><span>next</span></a>
+          <a class="prev" id="<%= search.search_key.gsub(" ","_").gsub("'","").downcase %>_prev" href="#"><span>prev</span></a>
+          <a class="next" id="<%= search.search_key.gsub(" ","_").gsub("'","").downcase %>_next" href="#"><span>next</span></a>
         </div>
       </div>
     </section>
     <script>
+      $('#<%= search.search_key.gsub(" ","_").gsub("'","").downcase%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: 100px !important;'>");
 
-
-      $('#<%= search.search_key.split("_").first.downcase%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: 100px !important;'>");
-      <% if search.tag_id.nil? or search.tag_id == 0 %>
-      saved_search_events("<%= search.search_key %>");
-      <% else %>
-      tagged_saved_search_events("<%= search.tag_id %>", '<%= search.search_key.split("_").first.downcase %>');
+      <% if search.tag_id.nil? and search.tag_type.nil? %>
+          saved_search_events("<%= search.search_key %>");
+      <% elsif search.tag_id != 0 and (search.tag_type.nil? or search.tag_type == "undefined")  %>
+      tagged_saved_search_events("<%= search.tag_id %>", '<%= search.search_key.gsub(" ","_").gsub("'","").downcase %>');
+      <% elsif search.tag_id == 0 and search.tag_type != nil %>
+       search_details = {tag_type:"<%= search.tag_type %>",root:true,location:"<%= search.search_key.gsub(" ","_").gsub("'","").downcase %>"}
+      $.get("/search_results", search_details)
       <% end %>
     </script>
   <% end %>

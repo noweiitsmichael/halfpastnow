@@ -302,7 +302,7 @@
       window.open(url, '_blank');
       window.focus();
     }
-    
+
 
   </script>
 <% end %>
@@ -757,76 +757,37 @@
       </div>
     </div>
   </section>
+<script>
+
+  $("#recommended-list").carouFredSel({
+    responsive: true,
+    swipe: {
+      onMouse: true,
+      onTouch: true
+    },
+    infinite: true,
+    prev: {
+      button: "#recommended-list_prev",
+      key: "left"
+    },
+    next: {
+      button: "#recommended-list_next",
+      key: "right"
+    },
+    scroll: 1,
+    items: {
+      width: 225,
+      height: 198,		// optionally resize item-height
+      visible: {
+        min: 1,
+        max: 4
+      }
+    }
+  });
+</script>
 <% end %>
 
-<script type="text/javascript">
 
-  // example how to integrate with a previewer
 
-  var current = 0,
-    $preview = $('#preview'),
-    $carouselEl = $('#carousel'),
-    $carouselItems = $carouselEl.children(),
-    carousel = $carouselEl.elastislide({
-      current: current,
-      minItems: 3,
-      onClick: function (el, pos, evt) {
 
-        changeImage(el, pos);
-        evt.preventDefault();
-
-      },
-      onReady: function () {
-
-        changeImage($carouselItems.eq(current), current);
-
-      }
-    });
-
-  function changeImage(el, pos) {
-    $preview.attr('src', el.data('preview'));
-    $carouselItems.removeClass('current-img');
-    el.addClass('current-img');
-    carousel.setCurrent(pos);
-  }
-
-$("#recommended-list").carouFredSel({
-      responsive: true,
-      swipe: {
-        onMouse: true,
-        onTouch: true
-      },
-      infinite: true,
-      prev: {
-        button: "#recommended-list_prev",
-        key: "left"
-      },
-      next: {
-        button: "#recommended-list_next",
-        key: "right"
-      },
-      scroll: 1,
-      items: {
-        width: 225,
-        height: 198,		// optionally resize item-height
-        visible: {
-          min: 1,
-          max: 4
-        }
-      }
-    });
-
-</script>
-<style>
-  .icon.icon-calendar.cal {
-    display: none;
-  }
-
-  #body {
-    overflow: visible !important;
-  }
-
-</style>
-
-</body>
 </html>
