@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(:version => 20140122103350) do
     t.text     "description"
     t.string   "name"
     t.string   "email"
-    t.string   "phone"
+    t.integer  "phone"
     t.string   "advertiser"
     t.string   "image"
     t.integer  "weight",      :default => 1
@@ -364,9 +364,7 @@ ActiveRecord::Schema.define(:version => 20140122103350) do
 
   create_table "saved_searches", :force => true do |t|
     t.string   "search_key"
-    t.integer  "tag_id"
     t.integer  "user_id"
-    t.string   "tag_type"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
@@ -462,8 +460,8 @@ ActiveRecord::Schema.define(:version => 20140122103350) do
     t.float    "completion"
     t.integer  "assigned_admin"
     t.integer  "weight",         :default => 1
-    t.text     "hours"
     t.string   "slug"
+    t.text     "hours"
   end
 
   add_index "venues", ["slug"], :name => "index_venues_on_slug"

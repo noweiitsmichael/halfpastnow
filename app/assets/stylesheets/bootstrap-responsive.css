@@ -66,6 +66,8 @@
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
+  
+  .add-event {display:none;}
   .hidden-desktop {
     display: inherit !important;
   }
@@ -81,6 +83,8 @@
 }
 
 @media (max-width: 767px) {
+
+  .add-event {display:none;}
   .hidden-desktop {
     display: inherit !important;
   }
@@ -459,6 +463,8 @@
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
+
+  .add-event {display:none;}
   .row {
     margin-left: -20px;
     *zoom: 1;
@@ -895,6 +901,8 @@
   .modal.fade.in {
     top: 20px;
   }
+
+  .add-event {display:none;}
 }
 
 @media (max-width: 480px) {
@@ -947,6 +955,8 @@
   .carousel-caption {
     position: static;
   }
+
+  .add-event {display:none;}
 }
 
 @media (max-width: 979px) {
@@ -1099,6 +1109,8 @@
     padding-right: 10px;
     padding-left: 10px;
   }
+
+  .add-event {display:none;}
 }
 
 @media (min-width: 980px) {

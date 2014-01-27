@@ -109,9 +109,13 @@
         <nav class="nav-collapse collapse">
           <ul class="nav pull-right">
             <li>
-              <a href="<%= (@mobileMode) ? "/events/android" : "/explorers/austin" %>"  class="nav_links"><i class="icon-right-arrow"></i>Explorers</a>
+              <a href="<%= (@mobileMode) ? "/events/android" : "/explorers/austin" %>"  class="nav_links"><i class="icon-right-arrow"></i>Top Lists</a>
             </li>
-
+            <% if user_signed_in? %>             
+              <li><i class="icon-right-arrow"></i><a href="/userSubmission/eventSearch">Add an Event!</a></li>
+            <% else %>           
+              <li><i class="icon-right-arrow"></i><a href="/login">Add an Event!</a></li>
+            <% end %>
             <% if user_signed_in? %>
               <li>
 

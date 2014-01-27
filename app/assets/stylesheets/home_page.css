@@ -86,3 +86,9 @@
   width: 280px;
 }
 
+li.add-event{
+  position:absolute;
+  margin: 12px 12px;
+  text-transform: none;
+}
+

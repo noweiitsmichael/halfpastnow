@@ -239,8 +239,8 @@ h1, h2, h4{color:#4C334E;}
 	position: absolute;
 	top:auto;
 	top:90%;
-	left:50%;
-	margin-left:-38px;
+	left:0%;
+	margin-left:15px;
 }
 .banner-slider #pager a {
 	border: 2px solid #fff;

@@ -4761,6 +4761,11 @@ input[type="submit"].btn.btn-mini {
   border-bottom-color: #555555;
 }
 
+.add-event {
+  position:absolute;
+  margin:12px 12px;
+}
+
 .navbar .pull-right > li > .dropdown-menu,
 .navbar .nav > li > .dropdown-menu.pull-right {
   right: 0;
