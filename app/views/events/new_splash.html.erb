@@ -298,14 +298,14 @@
       </div>
     </section>
     <script>
-      $('#<%= search.search_key.gsub(" ","_").gsub("'","").downcase%>').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative;width: 100px !important;'>");
+      $('#<%= search.search_key.gsub(" ","_").gsub("\'","").downcase%>').html("<img src='assets/ajax-loader.gif' style='left: 15%; position: relative;width: 100px !important;'>");
 
       <% if search.tag_id.nil? and search.tag_type.nil? %>
           saved_search_events("<%= search.search_key %>");
       <% elsif search.tag_id != 0 and (search.tag_type.nil? or search.tag_type == "undefined")  %>
-      tagged_saved_search_events("<%= search.tag_id %>", '<%= search.search_key.gsub(" ","_").gsub("'","").downcase %>');
+      tagged_saved_search_events("<%= search.tag_id %>", '<%= search.search_key.gsub(" ","_").gsub("\'","").downcase %>');
       <% elsif search.tag_id == 0 and search.tag_type != nil %>
-       search_details = {tag_type:"<%= search.tag_type %>", root:true, location:"<%= search.search_key.gsub(" ","_").gsub("'","").downcase %>"}
+       search_details = {tag_type:"<%= search.tag_type %>", root:true, location:"<%= search.search_key.gsub(" ","_").gsub("\'","").downcase %>"}
       $.get("/search_results", search_details)
       <% end %>
     </script>

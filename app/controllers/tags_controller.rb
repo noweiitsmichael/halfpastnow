@@ -23,4 +23,20 @@ class TagsController < ApplicationController
     tag.name = new_name
   end
 
+  def destroy_tag
+    EventsTags.where(:tag_id => params[:id]).delete_all
+    puts "Deleted all events tags for #{params[:id]}"
+
+    ActsTags.where(:tag_id => params[:id]).delete_all
+    puts "Deleted all acts tags for #{params[:id]}"
+
+    TagsVenues.where(:tag_id => params[:id]).delete_all
+    puts "Deleted all tags tags for #{params[:id]}"
+
+    @tag = Tag.find(params[:id])
+    @tag.destroy
+
+    render status: 200, nothing: true
+  end
+
 end

@@ -18,7 +18,8 @@ $(document).ready(function() {
 
 	<div class="input-tags">
 		<% @parentTags.sort { |a,b| a.name <=> b.name }.each do |tag| %>
-			<% unless tag.name == "SXSW" || tag.name == "SXSW Credentials" %>
+			<%  unless tag.name == "ACL Credentials" %>
+			<% # unless tag.name == "SXSW" || tag.name == "SXSW Credentials" %>
 				<br>
 				<div class="parent tag">
 					<%= check_box_tag @iStrName, tag.id, element.id.nil? ? false : element.tags.include?(tag), :id => (@iStrId + tag.id.to_s), :class => "parent-check-box" %>
