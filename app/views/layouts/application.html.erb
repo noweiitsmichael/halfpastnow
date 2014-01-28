@@ -111,12 +111,13 @@
             <li>
               <a href="<%= (@mobileMode) ? "/events/android" : "/explorers/austin" %>"  class="nav_links"><i class="icon-right-arrow"></i>Top Lists</a>
             </li>
-            
+
             <% if false %>
-            <% if user_signed_in? %>             
-              <li class="add-event"><i class="icon-right-arrow"></i><a href="/userSubmission/eventSearch">Add an Event!</a></li>
-            <% else %>           
-              <li class="add-event"><i class="icon-right-arrow"></i><a href="/login">Add an Event!</a></li>
+              <% if user_signed_in? %>             
+                <li class="add-event"><i class="icon-right-arrow"></i><a href="/userSubmission/eventSearch">Add an Event!</a></li>
+              <% else %>           
+                <li class="add-event"><i class="icon-right-arrow"></i><a href="/login">Add an Event!</a></li>
+              <% end %>
             <% end %>
 
             <% if user_signed_in? %>
