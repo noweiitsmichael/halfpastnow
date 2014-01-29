@@ -113,9 +113,9 @@
             </li>
 
             <% if false %>
-              <% if user_signed_in? %>             
+              <% if user_signed_in? %>
                 <li class="add-event"><i class="icon-right-arrow"></i><a href="/userSubmission/eventSearch">Add an Event!</a></li>
-              <% else %>           
+              <% else %>
                 <li class="add-event"><i class="icon-right-arrow"></i><a href="/login">Add an Event!</a></li>
               <% end %>
             <% end %>
@@ -353,6 +353,9 @@
 </script>
 <script type="text/javascript" src="http://js.addthisevent.com/atemay.js"></script>
 <script type="text/javascript">
+  if (!window.location.origin) {
+    window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+  }
   addthisevent.settings({
     license: "ac3hy61svzxtsqddkmut",
     mouse: false,

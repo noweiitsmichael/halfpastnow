@@ -29,7 +29,9 @@ $(document).ready(function () {
 
   //image lazy loading
   $("img.unveil").unveil();
-
+  if (!window.location.origin) {
+    window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+  }
   //home page
   if (user_signed_in) {
     $('#slider2,#slider3,#slider5').html("<img src='assets/ajax-loader.gif' style='left: 15%;position: relative; width:100px !important;'>");
