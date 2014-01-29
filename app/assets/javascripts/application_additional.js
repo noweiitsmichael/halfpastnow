@@ -3,7 +3,6 @@
 //= require bootstrap
 //= require jquery.carouFredSel-6.2.1-packed
 //= require jquery.touchSwipe.min
-//= require verticalSlider
 //= require custom
 //= require jquery.unveil
 //= require half.dynamics

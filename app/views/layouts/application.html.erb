@@ -36,7 +36,7 @@
   <%= stylesheet_link_tag "application_additional" %>
   <%= javascript_include_tag "application" %>
   <%if @location == "search" %>
-    <%= javascript_include_tag "jquery.mobile-1.1.0"%>
+    <%= javascript_include_tag "jquery.mobile-1.1.0", "verticalSlider"%>
   <% end %>
   <%= javascript_include_tag "application_additional"%>
   <%= csrf_meta_tags %>
@@ -353,6 +353,7 @@
 </script>
 <script type="text/javascript" src="http://js.addthisevent.com/atemay.js"></script>
 <script type="text/javascript">
+  //for IE
   if (!window.location.origin) {
     window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
   }
