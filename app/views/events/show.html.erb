@@ -464,7 +464,7 @@
         <input type="hidden" id="id" value="<%= @occurrence.id %>"/>
         <% if !@event.ticket_url.blank? %>
           <a href="<%= @event.ticket_url %>" target="_blank" class="btn btn-large btn-danger <%= current_user ? "attending" : "" %> <%= @attendingId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
-            <%= @attendingId.nil? ? "Tickets" : "Already Going" %>
+            <%= @attendingId.nil? ? "Get Tickets" : "Already Going" %>
           </a>
 
           <div class="rsvp-center" style="text-align:center; vertical-align:text-top;">
@@ -476,8 +476,8 @@
           </span>
         <% end %>
       <% end %>
-      <% if @event.ticket_url %>
-        <a href="#" class="btn btn-large btn-danger">Get Tickets</a>
+      <% if @event.event_url %>
+        <a href="<%= @event.event_url %>" class="btn btn-large btn-danger">Event Site</a>
       <% end %>
     </div>
   </div>
