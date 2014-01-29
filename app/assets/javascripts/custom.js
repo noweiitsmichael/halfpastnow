@@ -1,20 +1,6 @@
 !function ($) {
   $(function () {
-    /*$('#f-carousel').carouFredSel({
-     width: '100%',
-     items: 3,
-     scroll: {
-     items: 1,
-     duration: 1000,
-     pauseDuration: 3000
-     },
-     prev: '#prev',
-     next: '#next',
-     pagination: {
-     container: '#pager'
 
-     }
-     });*/
     $('#f-carousel').carouFredSel({
       responsive: true,
       scroll: {
