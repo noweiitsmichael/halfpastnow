@@ -42,7 +42,7 @@ namespace :neighborhoods do
 
   desc "Getting venue locations"
   task :populate => :environment do
-    vnf = VenueNeighbourhoodFetch.where(start_date: "1983-09-23").first_or_initialize(count: 0)
+    vnf = VenueNeighbourhoodFetch.where(start_date: "2014-01-28").first_or_initialize(count: 0)
     venues = Venue.where("id > ?", vnf.count).order("id asc").limit(100)
     venues.each do |venue|
       puts venue.id
@@ -64,9 +64,9 @@ namespace :neighborhoods do
             n_id: result["id"],
             reference: result["reference"]
           )
-          neighborhood.venues << venue
-          neighborhood.save
         end
+        neighborhood.venues << venue
+        neighborhood.save
         vnf.count = venue.id
         vnf.save
       end
