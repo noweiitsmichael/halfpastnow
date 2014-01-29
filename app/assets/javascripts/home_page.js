@@ -29,6 +29,7 @@ $(document).ready(function () {
 
   //image lazy loading
   $("img.unveil").unveil();
+  //for IE
   if (!window.location.origin) {
     window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
   }
