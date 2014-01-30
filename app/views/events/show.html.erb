@@ -175,7 +175,7 @@
             console.log("new attending bookmark");
             that.removeClass('add').addClass('remove');
             that.text("Planning on Attending");
-            $(".re-rsvp").text("Visit RSVP Site Again");
+            $(".re-rsvp").text("Visit Ticketing Site Again");
             attending_id = data;
           });
         }
@@ -426,20 +426,37 @@
       <h4>Dates &amp; Times</h4>
       <ul>
         <% @occurrence.event.recurrences.each do |rec| %>
-          <li><%= "Every " + ((rec.every_other.nil? || rec.every_other == 0) ? "" : ((rec.every_other == 1) ? "other" : to_ordinal(rec.every_other))) %>
-            <%= (rec.day_of_week && rec.week_of_month) ? to_ordinal(rec.week_of_month) + " " + @week[rec.day_of_week] : (rec.day_of_month ? to_ordinal(rec.day_of_month) : (rec.day_of_week ? @week[rec.day_of_week] : "day")) %>
+
+          <% if (rec.interval == 0) && (rec.every_other.nil? || rec.every_other == 0) %>
+            <% if rec.range_end %>
+                <span><%= rec.range_start.to_time.strftime("%b. %d") %> </span>
+                <span>to <%= rec.range_end.to_time.strftime("%b. %d") %>, </span>
+              <% else %>
+                <span>Starting <%= rec.range_start.to_time.strftime("%b. %d") %>, </span>
+            <% end %>
+
             <% if rec.end %>
               <span>, <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
               <span>to <%= rec.end.to_time.strftime("%-l:%M%P") %></span>
             <% else %>
               <span>, <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
             <% end %>
-          </li>
+          <% else %>
+            <li><%= "Every " + ((rec.every_other.nil? || rec.every_other == 0) ? "" : ((rec.every_other == 1) ? "other" : to_ordinal(rec.every_other))) %>
+              <%= (rec.day_of_week && rec.week_of_month) ? to_ordinal(rec.week_of_month) + " " + @week[rec.day_of_week] : (rec.day_of_month ? to_ordinal(rec.day_of_month) : (rec.day_of_week ? @week[rec.day_of_week] : "day")) %>
+              <% if rec.end %>
+                <span>, <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
+                <span>to <%= rec.end.to_time.strftime("%-l:%M%P") %></span>
+              <% else %>
+                <span>, <%= rec.start.to_time.strftime("%-l:%M%P") %></span>
+              <% end %>
+            </li>
+          <% end %>
         <% end %>
         <% if @occurrence.event.recurrences.empty? %>
           <li>
 
-            <%= @occurrence.start.to_date.strftime("%a, %d/%b/%Y")  rescue nil %>
+            <%= @occurrence.start.to_date.strftime("%a, %b. %d, %Y")  rescue nil %>
             <span>, <%= @occurrence.start.to_time.strftime("%-l:%M%P") rescue nil %></span>
             <span><%= "to #{@occurrence.end.to_time.strftime("%-l:%M%P")}" rescue nil %></span>
 
@@ -469,7 +486,7 @@
 
           <div class="rsvp-center" style="text-align:center; vertical-align:text-top;">
             <a href='<%= @event.ticket_url %>' target='_blank' class='re-rsvp' style="font-size:16px;"><%= @attendingId.nil? ? "" : "Visit Ticketing Site Again" %></a>
-          </div>
+          </div><br>
         <% else %>
           <span class="btn btn-large btn-danger <%= current_user ? "attending" : "" %> <%= @attendingId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
             <%= @attendingId.nil? ? "I'm Going!" : "Planning on Attending" %>
