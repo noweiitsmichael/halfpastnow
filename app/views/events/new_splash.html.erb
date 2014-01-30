@@ -321,7 +321,7 @@
   <% end %>
   <% if @saved_searches.count < 5 %>
     <!-- Staff Picks Section 2 -->
-    <%= Rails.cache.read(:home_page_section2) %>
+    <%=  Rails.cache.read(:home_page_section2) %>
 
     <!-- happy hours Section 3 -->
     <%= Rails.cache.read(:home_page_section3) %>
@@ -335,18 +335,23 @@
 
 <% else %>
   <!-- Staff Picks Section 2 -->
+  <% home_page_section2 if Rails.cache.read(:home_page_section2).nil?  %>
   <%= Rails.cache.read(:home_page_section2) %>
 
   <!-- today's events Section 1 -->
+  <% home_page_section1 if Rails.cache.read(:home_page_section1).nil?  %>
   <%= Rails.cache.read(:home_page_section1) %>
 
   <!-- happy hours Section 3 -->
+  <% home_page_section3 if Rails.cache.read(:home_page_section3).nil?  %>
   <%= Rails.cache.read(:home_page_section3) %>
 
   <!-- live music Section 4 -->
+  <% home_page_section4 if Rails.cache.read(:home_page_section4).nil?  %>
   <%= Rails.cache.read(:home_page_section4) %>
 
   <!-- Free stuff Section 5 -->
+  <% home_page_section5 if Rails.cache.read(:home_page_section5).nil?  %>
   <%= Rails.cache.read(:home_page_section5) %>
 <% end %>
 
