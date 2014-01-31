@@ -429,10 +429,10 @@
 
           <% if (rec.interval == 0) && (rec.every_other.nil? || rec.every_other == 0) %>
             <% if rec.range_end %>
-                <span><%= rec.range_start.to_time.strftime("%b. %d") %> </span>
-                <span>to <%= rec.range_end.to_time.strftime("%b. %d") %>, </span>
+                <span><%= rec.range_start.to_time.strftime("%B %e") %> </span>
+                <span>to <%= rec.range_end.to_time.strftime("%B %e") %> </span>
               <% else %>
-                <span>Starting <%= rec.range_start.to_time.strftime("%b. %d") %>, </span>
+                <span>Starting <%= rec.range_start.to_time.strftime("%B %e") %> </span>
             <% end %>
 
             <% if rec.end %>
@@ -456,7 +456,7 @@
         <% if @occurrence.event.recurrences.empty? %>
           <li>
 
-            <%= @occurrence.start.to_date.strftime("%a, %b. %d, %Y")  rescue nil %>
+            <%= @occurrence.start.to_date.strftime("%a, %B %e, %Y")  rescue nil %>
             <span>, <%= @occurrence.start.to_time.strftime("%-l:%M%P") rescue nil %></span>
             <span><%= "to #{@occurrence.end.to_time.strftime("%-l:%M%P")}" rescue nil %></span>
 
