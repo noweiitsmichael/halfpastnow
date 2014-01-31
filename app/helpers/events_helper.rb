@@ -53,7 +53,7 @@ module EventsHelper
 
     params = {}
     params[:start_date] = Date.today().to_s(:db)
-    params[:end_date] = (Date.today()+14.days).to_s(:db)
+    params[:end_date] = (Date.today()+7.days).to_s(:db)
     params[:lat_center] = lat
     params[:long_center] = long
     params[:zoom] = zoom
@@ -96,7 +96,7 @@ module EventsHelper
     @ids = Occurrence.find_with(params)
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).order(order_by).limit(5)
+    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.limit(5)
 
     app = Myapp::Application
     app.routes.default_url_options = {:host => 'www.halfpastnow.com'}
@@ -118,7 +118,7 @@ module EventsHelper
 
     params = {}
     params[:start_date] = Date.today().to_s(:db)
-    params[:end_date] = (Date.today()+14.days).to_s(:db)
+    params[:end_date] = (Date.today()+7.days).to_s(:db)
     params[:lat_center] = lat
     params[:long_center] = long
     params[:zoom] = zoom
@@ -127,7 +127,7 @@ module EventsHelper
     @ids = Occurrence.find_with(params)
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).order(order_by).limit(5)
+    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.limit(5)
 
     app = Myapp::Application
     app.routes.default_url_options = {:host => 'www.halfpastnow.com'}
