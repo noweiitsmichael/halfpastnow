@@ -67,7 +67,7 @@ namespace :home_page do
     @ids = Occurrence.find_with(params)
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).order(order_by).limit(5)
+    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).order(order_by).take(5)
 
     #ads
     @advertisement = Advertisement.where(:adv_type => ["featured_venue", "featured_event", "featured_artist"]).where(:placement => ['search_results', 'home_search_pages']).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
@@ -103,7 +103,7 @@ namespace :home_page do
     @ids = Occurrence.find_with(params)
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.limit(5)
+    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.take(5)
 
     app = Myapp::Application
     app.routes.default_url_options = {:host => 'www.halfpastnow.com'}
@@ -136,7 +136,7 @@ namespace :home_page do
     @ids = Occurrence.find_with(params)
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.limit(5)
+    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.take(5)
 
     app = Myapp::Application
     app.routes.default_url_options = {:host => 'www.halfpastnow.com'}
@@ -202,7 +202,7 @@ namespace :home_page do
     @ids = Occurrence.find_with(params)
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).order(order_by).limit(5)
+    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).order(order_by).take(5)
 
     #ads
     @advertisement = Advertisement.where(:adv_type => ["featured_venue", "featured_event", "featured_artist"]).where(:placement => ['search_results', 'home_search_pages']).where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
@@ -222,7 +222,7 @@ namespace :home_page do
     @ids = Occurrence.find_with(params)
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.limit(5)
+    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.take(5)
 
     html_str = view.render partial: 'events/home_page_section4', locals: {occurrences: @occurrences}
     Rails.cache.write(:home_page_section4, html_str)
@@ -239,7 +239,7 @@ namespace :home_page do
     @ids = Occurrence.find_with(params)
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.limit(5)
+    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.take(5)
 
     html_str = view.render partial: 'events/home_page_section5', locals: {occurrences: @occurrences}
     Rails.cache.write(:home_page_section5, html_str)
