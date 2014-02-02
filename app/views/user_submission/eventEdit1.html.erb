@@ -456,11 +456,6 @@
 			</div>
 
 			<%= render :partial => "tags", :locals => { :element => @event, :type => "event" } %>
-      <div class="field">
-        <h5><%= e.label :weight %></h5>
-        <%= e.select :weight, Advertisement::ADV_WEIGHTS,{ include_blank: true} %>
-
-      </div>
 			<div class="actions">
 	    		<%= e.submit "Save / Add Pictures >", :class => "nice-button form-submit"%>
 	  		</div>
