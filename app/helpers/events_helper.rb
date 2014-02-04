@@ -96,7 +96,7 @@ module EventsHelper
     @ids = Occurrence.find_with(params)
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.limit(5)
+    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.take(5)
 
     app = Myapp::Application
     app.routes.default_url_options = {:host => 'www.halfpastnow.com'}
@@ -127,7 +127,7 @@ module EventsHelper
     @ids = Occurrence.find_with(params)
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.limit(5)
+    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.take(5)
 
     app = Myapp::Application
     app.routes.default_url_options = {:host => 'www.halfpastnow.com'}

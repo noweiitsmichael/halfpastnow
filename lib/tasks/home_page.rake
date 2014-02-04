@@ -183,12 +183,14 @@ namespace :home_page do
 
     html_str = view.render partial: 'events/home_page_section1', locals: {advertisement: @advertisement, occurrences: @occurrences}
     Rails.cache.write(:home_page_section1, html_str)
+    puts "***home_page_section1"
 
     Rails.logger.debug "home_page_section2 austin occurrences"
     @austin_occurrences =  BookmarkList.find(2370).bookmarked_events_root.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }.take(5)
 
     html_str = view.render partial: 'events/home_page_section2', locals: {austin_occurrences: @austin_occurrences}
     Rails.cache.write(:home_page_section2, html_str)
+    puts "***home_page_section2"
 
     Rails.logger.debug "home_page_section3 Happy Place"
     params = {}
@@ -209,6 +211,7 @@ namespace :home_page do
 
     html_str = view.render partial: 'events/home_page_section3', locals: {advertisement: @advertisement, occurrences: @occurrences}
     Rails.cache.write(:home_page_section3, html_str)
+    puts "***home_page_section3"
 
     Rails.logger.debug "home_page_section4"
     params = {}
@@ -222,10 +225,11 @@ namespace :home_page do
     @ids = Occurrence.find_with(params)
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.limit(5)
+    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.take(5)
 
     html_str = view.render partial: 'events/home_page_section4', locals: {occurrences: @occurrences}
     Rails.cache.write(:home_page_section4, html_str)
+    puts "***home_page_section4"
 
     Rails.logger.debug "home_page_section5"
     params = {}
@@ -239,9 +243,10 @@ namespace :home_page do
     @ids = Occurrence.find_with(params)
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
     order_by = "occurrences.start"
-    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.limit(5)
+    @occurrences = Occurrence.includes(:event => :tags).where(id: @occurrence_ids).sort{|a,b| ((b.clicks/b.views)*b.weight*b.venue.weight rescue 0) <=> ((a.clicks/a.views)*a.weight*a.venue.weight rescue 0)}.take(5)
 
     html_str = view.render partial: 'events/home_page_section5', locals: {occurrences: @occurrences}
     Rails.cache.write(:home_page_section5, html_str)
+    puts "***home_page_section5"
   end
 end
