@@ -426,9 +426,13 @@ class EventsController < ApplicationController
       occurrence.event.tags.each do |tag|
         @tagCounts[tag.id][:count] += 1
       end
-      # neighborhoods
-      @all_neighborhoods = Neighborhood.all.sort_by{|k| k.name}
     end
+
+    # neighborhoods
+    unless params[:root]
+      @all_neighborhoods = Neighborhood.order("name asc")
+    end
+
 
     @parentTags.each do |parentTag|
       @tagCounts[parentTag.id][:children] = @tagCounts[parentTag.id][:children].sort_by { |tagCount| tagCount[:count] }.reverse
