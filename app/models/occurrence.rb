@@ -17,20 +17,20 @@ class Occurrence < ActiveRecord::Base
 
   after_touch() { tire.update_index }
   mapping do
-    indexes :_event_id, type: 'integer', index: :not_analyzed,:store => 'yes',boost: 1000
-    indexes :start, type: 'date', index: :not_analyzed , boost: 100
+    indexes :_event_id, type: 'integer', index: :not_analyzed, :store => 'yes', boost: 1000
+    indexes :start, type: 'date', index: :not_analyzed, boost: 100
     indexes :event do
-      indexes :price, type: 'integer',boost: 100
+      indexes :price, type: 'float', boost: 100
       indexes :title, analyzer: 'snowball', boost: 700
       indexes :description, analyzer: 'snowball', boost: 200
       indexes :acts do
-        indexes :name ,boost: 800
+        indexes :name, boost: 800
       end
       indexes :venue do
-        indexes :name ,boost: 800
+        indexes :name, boost: 800
       end
       indexes :tags do
-      indexes :name, analyzer: 'snowball',boost: 1000
+        indexes :name, analyzer: 'snowball', boost: 1000
       end
     end
   end
