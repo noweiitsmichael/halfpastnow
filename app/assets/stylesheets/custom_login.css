@@ -14,6 +14,7 @@ body {
 figure{
 	margin:0;
 	padding:0;
+	position:relative;
 }
 
 input, button, select, textarea {

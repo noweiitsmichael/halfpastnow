@@ -325,8 +325,10 @@
                 </script>
               <% else %>
                 <a href="#">
-                  <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarks.empty? ? "add" : "add-more"%>" <%= current_user ? "" : "linkto='shunt'" %>>
-                    <%= @bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
+                  <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarks.empty? ? "add" : "add-more"%>" <%= current_user ? "" : "linkto='shunt'" %>>     
+                    <%= current_user ? "" : "<a href='/login'>" %>
+                      <%= @bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
+                    <%= current_user ? "" : "</a>" %>
 	                </span>
                 </a>
               <% end %>

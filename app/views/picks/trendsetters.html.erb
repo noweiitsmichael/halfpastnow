@@ -122,8 +122,8 @@
 <section class="main-container">
   <div class="container">
     <div class="section-title">
-      <h2 class="text-center">Meet Our Explorers</h2>
-      <p class="lead text-center">They came, they saw, they conqured.</p>
+      <h2 class="text-center">Our Top Guides</h2>
+      <p class="lead text-center">Our explorers came, saw, and conqured. This is what they found.</p>
     </div>
     <% def insert_picklist(picklist,currentUserIsFollowing,hidden) %>
       <article class="member">
@@ -135,7 +135,7 @@
         <div class="member-share">
           <a href="#" class="follow btn btn-mid btn-danger"  picklist-id="<%= picklist.id %>" <%= raw hidden if currentUserIsFollowing %> >FOLLOW</a>
           <a href="#" class="unfollow btn btn-mid btn-danger"  picklist-id="<%= picklist.id %>" <%= raw hidden unless currentUserIsFollowing %> >FOLLOWING</a>
-          <a href="/explorers/austin/<%= picklist.slug %>" class="btn btn-mid btn-danger pull-right">PROFILE</a>
+          <a href="/explorers/austin/<%= picklist.slug %>" class="btn btn-mid btn-danger pull-right">SEE LIST</a>
         </div>
       </article>
 

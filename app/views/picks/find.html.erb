@@ -174,13 +174,7 @@
       <%= render :partial => "events/event_list",:locals => { :occurrences => [],:venues_lists => @bookmarkList_venues,:bookmarkList => @bookmarkList } %>
        <% if results.nil? %>
         <li class="no-results">
-          <h3>There aren't any events going on in this area matching your filters.</h3>
-          Suggestions:
-          <ul class="no-results-suggestions">
-            <li>Try zooming out on the map.</li>
-            <li>Try a different location on the map.</li>
-            <li><a href="/">Clear out</a> your current filters.</li>
-          </ul>
+          <h3>Uh oh there are no events for this list right now! Check back later or <a href="/explorers">see our other lists</a></h3>
         </li>
       <% end %>
     </section>

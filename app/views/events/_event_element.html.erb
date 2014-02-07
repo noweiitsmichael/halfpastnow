@@ -1,5 +1,5 @@
 <article class="product-item" link-id="<%= occurrence.id %>">
-  <figure><a href="#">
+  <figure><a href="/events/austin/<%= occurrence.slug %>">
     <!--<img src="<%#= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>"/>-->
     <% if occurrence.event.pictures.first %>
       <img src="<%= occurrence.event.pictures.first.image_url(:full) %>" alt="Event picture" />
@@ -12,7 +12,7 @@
     <% end %>
 
   </a></figure>
-  <div class="name"><a href="/events/austin/<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
+  <div class="name"><a href="/events/austin/<%= occurrence.slug %>"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
   <div class="info clearfix">
     <span class="time pull-left"><%= occurrence.start.to_time.strftime("%B %-d, %-l:%M%P") %></span>
     <span class="value pull-right">
