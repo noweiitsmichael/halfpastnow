@@ -58,6 +58,6 @@ module Myapp
     config.assets.version = '1.0'
     config.cache_store = [:dalli_store, {:size => 26214400}]
 
-    Tire.configure { logger 'log/elasticsearch.log', :level => 'debug' }
+    # Tire.configure { logger 'log/elasticsearch.log', :level => 'debug' }
   end
 end
