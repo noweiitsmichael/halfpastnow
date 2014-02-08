@@ -709,7 +709,7 @@
         <div class="accordion-inner product-list clearfix">
           <% @near_by_occurrences.each do |occ| %>
             <article class="product-item" link-id=<%= occ.id %>>
-              <figure><a href="#">
+              <figure><a href="/events/austin/<%= occ.slug.nil?? occ.id : occ.slug  %>">
                 <% if occ.event.pictures.first %>
                   <img src="<%= occ.event.pictures.first.image_url(:full) %>" alt="Event picture"/>
                 <% elsif occ.event.acts.length != 0 && occ.event.acts.first.pictures.first %>

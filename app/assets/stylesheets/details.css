@@ -675,7 +675,7 @@ border-bottom:solid 1px #eeeeee;
 .popover ul li a{color:#777777;}
 .popover ul li a:hover, .navbar-search .dropdown-menu div > a:hover{color:#d24743;}
 #neighbourhood figure,.slide-item figure{
-  width:204px !important;
+  width:224px !important;
   height:136px !important;
   overflow-y:hidden;
 }
