@@ -242,7 +242,6 @@ class VenuesController < ApplicationController
     # pp params
     @event = @venue.events.build()
     @event.user_id = current_user.id
-    # y params
     @event.update_attributes!(params[:event])
     unless params[:bookmark_lists_add].blank?
       Bookmark.create(:bookmarked_type => "Occurrence", :bookmarked_id => @event.nextOccurrence.id, :bookmark_list_id => params[:bookmark_lists_add] )
