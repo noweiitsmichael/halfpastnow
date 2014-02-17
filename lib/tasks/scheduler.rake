@@ -44,6 +44,24 @@ namespace :m do
 	# Event.find(:all).each {|d| d.completion = d.completedness; d.save!;}
 
 
+
+	desc "backfill default lists"
+	task :default_lists => :environment do
+		User.find_each do |u|
+			puts "Adding default lists for #{u.firstname}"
+
+			if u.bookmark_lists.where(:name => "Bookmarks").first == nil
+		    	BookmarkList.create(:name => "Bookmarks", :description => "Bookmarks", :public => false, 
+                    :featured => false, :main_bookmarks_list => true, :user_id => u.id)
+		    end
+
+		    if u.bookmark_lists.where(:name => "Attending").first == nil
+		    BookmarkList.create(:name => "Attending", :description => "Attending", :public => false, 
+		                        :featured => false, :main_bookmarks_list => false, :user_id => u.id)
+			end
+	  	end
+	end
+
 	desc "backfill new default channels"
 	task :default_channels => :environment do
 		User.find_each do |u|

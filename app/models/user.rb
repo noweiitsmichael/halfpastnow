@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
 
   after_create :send_welcome_email
   # after_create :send_contest_entry_email
-  # after_create :create_default_list
+  after_create :create_default_list
 
 
   # Cropping function
@@ -247,11 +247,11 @@ class User < ActiveRecord::Base
 
 
   def create_default_list
-    puts "to email list"
-    e=Email.new
-    e.email=self.email
+    # puts "Adding to weekly to email list"
+    e = Email.new
+    e.email = self.email
     e.save
-    puts "creating default list"
+    # puts "creating default list"
 
     BookmarkList.create(:name => "Bookmarks", :description => "Bookmarks", :public => false, 
                         :featured => false, :main_bookmarks_list => true, :user_id => self.id)
@@ -260,9 +260,9 @@ class User < ActiveRecord::Base
                         :featured => false, :main_bookmarks_list => false, :user_id => self.id)
 
     # Follow all top picks lists
-    BookmarkList.where(:featured => true).find_each do |top_list|
-      BookmarkListsUsers.create(:bookmark_list_id => top_list.id, :user_id => self.id)
-    end
+    # BookmarkList.where(:featured => true).find_each do |top_list|
+    #   BookmarkListsUsers.create(:bookmark_list_id => top_list.id, :user_id => self.id)
+    # end
   end
 
 
