@@ -7,14 +7,14 @@ class ActsController < ApplicationController
   def show
     params[:fullmode]=true
     @fullmode = !params[:fullmode].to_s.empty?
-    if(@mobileMode)
-        unless params[:format].to_s.eql? "mobile"
-          redirect_to :action => "android"  
-        else
-          return
-        end
+    # if(@mobileMode)
+    #     unless params[:format].to_s.eql? "mobile"
+    #       redirect_to :action => "android"  
+    #     else
+    #       return
+    #     end
         
-    end
+    # end
     @modeType = "act"
 
     #ads

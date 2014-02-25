@@ -323,15 +323,15 @@ class EventsController < ApplicationController
      # redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
 
-    if (@mobileMode)
-      @switch ="advance"
-      unless params[:format].to_s.eql? "mobile"
-        redirect_to :action => "android", :type => "advance"
-      else
-        return
-      end
+    # if (@mobileMode)
+    #   @switch ="advance"
+    #   unless params[:format].to_s.eql? "mobile"
+    #     redirect_to :action => "android", :type => "advance"
+    #   else
+    #     return
+    #   end
 
-    end
+    # end
 
     @tags = Tag.includes(:parentTag, :childTags).all
     @parentTags = @tags.select { |tag| tag.parentTag.nil? }
@@ -797,15 +797,15 @@ class EventsController < ApplicationController
     unless (params[:act_id].to_s.empty?)
       redirect_to :action => "show", :controller => "acts", :id => params[:act_id].to_i, :fullmode => true
     end
-    if (@mobileMode)
-      puts "in SXSW controller & @mobileMode"
-      puts params[:format].to_s
-      @switch ="sxsw"
+    # if (@mobileMode)
+    #   puts "in SXSW controller & @mobileMode"
+    #   puts params[:format].to_s
+    #   @switch ="sxsw"
 
-      redirect_to :action => "android", :type => "sxsw"
-      return
+    #   redirect_to :action => "android", :type => "sxsw"
+    #   return
 
-    end
+    # end
     @tags = Tag.includes(:parentTag, :childTags).all
     @parentTags = @tags.select { |tag| tag.parentTag.nil? }
 

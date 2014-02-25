@@ -479,8 +479,10 @@
           </div><br>
         <% else %>
            <span class="btn btn-large btn-danger <%= current_user ? "attending" : "" %> <%= @attendingId.nil? ? "add" : "remove" %>" >
+
              <%= @attendingId.nil? ? "I'm Going!" : "Planning on Attending" %>
            </span>
+
         <% end %>
       <% else %>
               <a href="/join_now" class="before_login btn btn-large btn-danger">I'm Going</a>
