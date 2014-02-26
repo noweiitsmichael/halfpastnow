@@ -471,7 +471,7 @@
         <input type="hidden" id="id" value="<%= @occurrence.id %>"/>
         <% if !@event.ticket_url.blank? %>
           <a href="<%= @event.ticket_url %>" target="_blank" class="btn btn-large btn-danger <%= current_user ? "attending" : "" %> <%= @attendingId.nil? ? "add" : "remove" %>">
-              <%= @attendingId.nil? ? "Get Tickets" : "Already Going" %>
+              <%= @attendingId.nil? ? (@event.tags.select { |t| t.id == 163 || t.id == 262}.empty? ? "Get Tickets" : "RSVP") : "Already Going" %>
           </a>
 
           <div class="rsvp-center" style="text-align:center; vertical-align:text-top;">
@@ -485,7 +485,9 @@
 
         <% end %>
       <% else %>
-              <a href="/join_now" class="before_login btn btn-large btn-danger">I'm Going</a>
+              <a href="/join_now" class="before_login btn btn-large btn-danger">
+                <%= @event.tags.select { |t| t.id == 163 || t.id == 262}.empty? ? "Get Tickets" : "RSVP" %>
+              </a>
       <% end %>
 
       <% if @event.event_url %>
