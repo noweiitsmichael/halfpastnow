@@ -276,8 +276,10 @@ class VenuesController < ApplicationController
       @event.completion = @event.completedness
       @event.save
       @event.occurrences.each do |occ|
-        occ.slug = "#{occ.event.title.truncate(40)}-at-#{occ.event.venue.name.truncate(40)}" rescue "#{occ.id}"
-        occ.save
+        if occ.slug == nil
+          occ.slug = "#{occ.event.title.truncate(40)}-at-#{occ.event.venue.name.truncate(40)}" rescue "#{occ.id}"
+          occ.save
+        end
       end
       render json: {:event_id => @event.occurrences.first.id, :event_title => @event.title}
     else
@@ -419,8 +421,10 @@ class VenuesController < ApplicationController
         @event.completion = @event.completedness
         @event.save
         @event.occurrences.each do |occ|
-          occ.slug = "#{occ.event.title.truncate(40)}-at-#{occ.event.venue.name.truncate(40)}" rescue "#{occ.id}"
-          occ.save
+          if occ.slug == nil
+            occ.slug = "#{occ.event.title.truncate(40)}-at-#{occ.event.venue.name.truncate(40)}" rescue "#{occ.id}"
+            occ.save
+          end
         end
         format.html { redirect_to :action => :list_events, :id => @venue.id }
         format.json { render json: { :from => "eventEdit", :result => true } }

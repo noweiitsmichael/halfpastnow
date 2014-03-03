@@ -352,6 +352,11 @@ helper :content
 	    @url = 'http://www.halfpastnow.com/picks/find/'+params[:id]
 		@occurrences = @bookmarkList.all_bookmarked_events.select{ |o| o.start.strftime('%a, %d %b %Y %H:%M:%S').to_time >= Date.today.strftime('%a, %d %b %Y %H:%M:%S').to_time }.sort_by { |o| o.start }
     @bookmarkList_venues = @bookmarkList.bookmarks.collect{|k| k.bookmarked_id if k.bookmarked_type="Venue"}.collect{|k| (Venue.find k) rescue nil}.compact
+
+    #ads
+    @advertisement = Advertisement.where(:placement => 'sidebar').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
+    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
+
   end
 
 	def sxsw

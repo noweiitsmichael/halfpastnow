@@ -197,6 +197,9 @@ $(document).ready(function () {
     }else if(sel_option == 'details'){
       $('span.type_help_txt').show();
       $('span.img_dimensions').text("540 x 400")
+    }else if(sel_option == 'sidebar'){
+      $('span.type_help_txt').show();
+      $('span.img_dimensions').text("335 x 625")
     }else{
       $('span.type_help_txt').hide();
     }

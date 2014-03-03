@@ -39,8 +39,10 @@ helper :content
 	    @event.completion = @event.completedness
 	    @event.save!
         @event.occurrences.each do |occ|
-      	  occ.slug = "#{occ.event.title.truncate(40)}-at-#{occ.event.venue.name.truncate(40)}" rescue "#{occ.id}"
-	      occ.save
+        	if occ.slug == nil
+      	  		occ.slug = "#{occ.event.title.truncate(40)}-at-#{occ.event.venue.name.truncate(40)}" rescue "#{occ.id}"
+	      		occ.save
+	      	end
 	    end
 	    redirect_to :action => :eventEdit2, :id => @event.id
 	end

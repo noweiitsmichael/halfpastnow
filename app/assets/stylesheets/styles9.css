@@ -15,6 +15,11 @@ figure, .adv-figure {
   position: relative
 }
 
+.sidebar-ad{
+  margin-top:50px;
+  text-align: center;
+}
+
 img
 {  border-style: none;
 }

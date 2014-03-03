@@ -346,6 +346,7 @@ task :update_occurrences => :environment do
 		# end
 	end
 end
+
 task :update_occurrences_slug => :environment do
   occurrences = Occurrence.where(:slug => nil)
   occurrences.each do |occ|
@@ -353,6 +354,7 @@ task :update_occurrences_slug => :environment do
     occ.save
   end
 end
+
 desc "Send weekly_email"
 task :send_emails => :environment do
 	puts "send_emails"

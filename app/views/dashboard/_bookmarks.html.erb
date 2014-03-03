@@ -81,7 +81,7 @@
             <th>Name</th>
             <th>Type</th>
             <th>Comments</th>
-            <th><i class="icon-time bigger-110 hidden-480"></i> Created</th>
+            <th><i class="icon-time bigger-110 hidden-480"></i>Event Date</th>
             <th></th>
           </tr>
           </thead>
@@ -110,7 +110,7 @@
               </td>
               <td><%= bookmark.bookmarked_type == "Occurrence" ? "Event" : bookmark.bookmarked_type %></td>
               <td><%= bookmark.comment %></td>
-              <td><%= bookmark.created_at.to_date.strftime('%m/%d/%Y') %></td>
+              <td><%= bookmark.bookmarked_type == "Occurrence" ? Occurrence.find(bookmark.bookmarked_id).start.to_date.strftime('%m/%d/%Y') rescue nil : ""%></td>
               <td><%= link_to bookmark_path(id: bookmark.id), method: :delete, remote: true, onClick: "$(this).parents('tr').hide()" do %>
                   <i class="icon-trash"> Delete</i>
                 <% end %>
