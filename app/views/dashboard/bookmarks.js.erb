@@ -1,1 +1,15 @@
 $("#my-list-inner-main-content").html("<%= escape_javascript render :partial => 'bookmarks', locals: {bookmark_list: @bookmark_list, bookmarks: @bookmarks} %>");
+
+
+$(document).ready(function() {
+	$('#sample-table-2').dataTable( {
+		"aaSorting": [[ 4, "desc" ]],
+		"aoColumns": [
+			null,
+			null,
+			null,
+			null,
+			null
+		]
+	} );
+} );
