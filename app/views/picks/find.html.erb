@@ -1,13 +1,14 @@
 <% content_for :meta do %>
-     <meta property="og:type"                 content="halfpastnow:toppick"/> 
-     <meta property="og:url"                  content="http://www.halfpastnow.com/picks/find/<%=@bookmarkList.id%>"/>
-     <meta property="og:site_name"            content="halfpastnow"/>
-     <meta property="og:image"                content="<%=@bookmarkList.picture_url%>"/>
-     <meta property="og:title"                content="<%=@bookmarkList.name%>">
-     <meta property="og:description"          content="<%=@bookmarkList.description%>"/> 
+  <meta property="og:type"                 content="halfpastnow:toppick"/>
+  <meta property="og:url"                  content="http://www.halfpastnow.com/picks/find/<%=@bookmarkList.id%>"/>
+  <meta property="og:site_name"            content="halfpastnow"/>
+  <meta property="og:image"                content="<%=@bookmarkList.picture_url%>"/>
+  <meta property="og:title"                content="<%=@bookmarkList.name%>">
+  <meta property="og:description"          content="<%=@bookmarkList.description%>"/>
 <% end %>
 <% content_for :code do %>
 <%# TODO: put this stuff in the controller eventually %>
+<<<<<<< HEAD
 	<% 	@now = DateTime.now.change(:hour => 0)
 		@channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
 <script type="text/javascript">
@@ -128,17 +129,158 @@
 			return parseInt(obj);
 		}
 	</script>
+=======
+  <% 	@now = DateTime.now.change(:hour => 0)
+      @channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
+
+  <script type="text/javascript">
+
+    var geocoder;
+    var map;
+    var markers = [];
+
+    function initialize() {
+      //$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
+      geocoder = new google.maps.Geocoder();
+
+      var styles = [
+        {
+          stylers: [
+            { saturation: 0 },
+            { invert_lightness: false },
+            { gamma: 1 },
+            { lightness: 0 }
+          ]
+        }];
+
+      var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+      var myOptions = {
+        zoom: <%= @zoom %>,
+        center: latlng,
+        mapTypeId: 'map_style',
+        disableDefaultUI: true,
+        zoomControl: true,
+        scrollwheel: false,
+        zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 3 }
+      };
+
+      var styledMap = new google.maps.StyledMapType(styles,
+        {name: "Styled Map"});
+
+      map = new google.maps.Map($("#map")[0], myOptions);
+
+      map.mapTypes.set('map_style', styledMap);
+      map.setMapTypeId('map_style');
+
+      var locations = [];
+
+      $("#content .main .inner .events li").each(function(index) {
+        var latitude = parseFloat($(this).find(".latitude").html());
+        var longitude = parseFloat($(this).find(".longitude").html());
+        locations.push({lat: latitude, long: longitude});
+      });
+
+      placeMarkers({points: locations});
+
+      //google.maps.event.addListener(map, 'idle', boundsChanged);
+    }
+
+    function to_i(obj) {
+      return parseInt(obj);
+    }
+
+    // advertisements
+    $(function () {
+      $('.ad-contaniner .ad-details').on('click',function(){
+        var id = $(this).data('id');
+        var name = $(this).data('prop');
+        var value = $(this).data('value');
+        $.post('/admin/advertisements/update_ads_details',{pk: id, name: name, value: value })
+      });
+    });
+
+    $(function() {
+
+      window.fbAsyncInit = function() {
+        console.log("Loaded FB 222");
+        FB.init({
+          appId      : '475386955806720', // App ID
+          status     : true, // check login status
+          cookie     : true, // enable cookies to allow the server to access the session
+          xfbml      : true  // parse XFBML
+        });
+      };
+
+      // Load the SDK Asynchronously
+      (function(d){
+        var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        d.getElementsByTagName('head')[0].appendChild(js);
+      }(document));// delete below
+    });
+
+    $(function() {
+      $('.follow').click(function() {
+
+        var $that = $(this);
+        var listID = $that.attr('picklist-id');
+
+        var url = 'http://www.halfpastnow.com/picks/find/'+listID
+        console.log('test fowlling'+url);
+
+        FB.api(
+          '/me/halfpastnow:subscribe',
+          'post',
+          { toppick: url },
+          function(response) {
+
+          });
+        $.getJSON('/users/followBookmarkList/' + listID, function(data) {
+          if(data.success) {
+            $that.hide();
+            $that.siblings('.unfollow').show();
+          } else {
+            console.log(data.error);
+          }
+        });
+      });
+
+      $('.unfollow').click(function() {
+        var $that = $(this);
+        var listID = $that.attr('picklist-id');
+        $.getJSON('/users/unfollowBookmarkList/' + listID, function(data) {
+          if(data.success) {
+            $that.hide();
+            $that.siblings('.follow').show();
+          } else {
+            console.log(data.error);
+          }
+        });
+      });
+
+      $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
+      $('.head-title').tooltip('disable');
+      $('.icon-check').tooltip('disable');
+      $('.icon-check-empty').tooltip('disable');
+    });
+
+  </script>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 <% end %>
 
 <% content_for :header do %>
-	<div class="titlebar">
-		<div class="stay-on-target">
-			<%= render :partial => "title", :locals => { :page_action => params[:action], :bookmark_list_name => @bookmarkList ? @bookmarkList.name : nil } %>
-		</div>
-	</div>
+  <%= stylesheet_link_tag "custom_login" %>
+  <div class="titlebar">
+    <div class="stay-on-target">
+      <%#= render :partial => "title", :locals => { :page_action => params[:action], :bookmark_list_name => @bookmarkList ? @bookmarkList.name : nil } %>
+    </div>
+  </div>
+
 <% end %>
 
 <% content_for :body do %>
+<<<<<<< HEAD
 	<div id="content" style="margin-top: 18px;" class="pick-content">
 		<div id="map-wrapper" style="margin-top: 175px;">
 			<% if(@isFollowedLists) %>
@@ -175,4 +317,68 @@
 			</div>
 		</div>
 	</div>
+=======
+  <br>
+<section class="profile main-container">
+  <div class="container">
+    <% unless @isMyBookmarksList || @isFollowedLists %>
+      <% currentUserIsFollowing = current_user && current_user.followedLists.exists?(@bookmarkList.id)
+         hidden = "style=\"display:none;\"" %>
+    <article class="profileholder">
+      <figure><a href="#"><%= image_tag @bookmarkList.picture_url(:thumb) || "/assets/picklist-placeholder.png", :class => "img-circle" %></a></figure>
+      <div class="name"><%= @bookmarkList.name %></div>
+      <p><%= raw @bookmarkList.description %></p>
+      <span class="featured-text">
+        <% if current_user %>
+             <a href="#" class="follow btn btn-mid btn-danger" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden if currentUserIsFollowing %> >FOLLOW</a>
+             <a href="#" class="unfollow btn btn-mid btn-danger" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden unless currentUserIsFollowing %> >following</a>
+          &nbsp;&nbsp;
+        <% end %>
+        <a href="http://twitter.com/intent/tweet?url=http://www.halfpastnow.com/explorers/austin/<%= @bookmarkList.slug %>&text=Austin events @halfpastnow" target="_blank" title="Share on Twitter" class="tips" data-placement="top"><img src="/assets/images/icon-twitter.png" alt=""/></a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=http://www.halfpastnow.com/explorers/austin/<%= @bookmarkList.slug %>" target="_blank" title="Share on Facebook" data-toggle="tooltip" class="tips" data-placement="top"><img src="/assets/images/icon-facebook.png" alt=""/></a>
+      </span>
+      <div class="sidebar-ad">
+        <span class="muted" style="text-align:center;">Advertisement</span>
+        <% if @advertisement.present? %>
+          <div class="ad-details" data-id = "<%= @advertisement.id %>" data-prop = "clicks" data-value = "<%= @advertisement.clicks.to_i + 1 %>">
+            <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank do %>
+              <%= image_tag @advertisement.image.full, alt: "Advertisement" %>
+            <% end %>
+          </div>
+        <% else %>
+          <a href="www.halfpastnow.com">woaw</a>
+        <% end %>
+        <br>
+      </div>
+    </article>
+    <% end %>
+    <section class="product-list inner clearfix">
+      <h1><%= @bookmarkList.name %></h1>
+      <% (@occurrences.size <=0 and @bookmarkList_venues.size <= 0) ? results = nil : results = 1 %>
+      <%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences, :venues_lists => [],:bookmarkList => @bookmarkList } %>
+      <%= render :partial => "events/event_list",:locals => { :occurrences => [],:venues_lists => @bookmarkList_venues,:bookmarkList => @bookmarkList } %>
+       <% if results.nil? %>
+        <li class="no-results">
+          <h3>Uh oh there are no events for this list right now! Check back later or <a href="/explorers">see our other lists</a></h3>
+        </li>
+      <% end %>
+    </section>
+  </div>
+</section>
+  <!-- Modal -->
+  <div class="modal fade hide" id="bookmark_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+  </div>
+  <!-- /.modal -->
+<style>
+  .product-list figure{
+    width:300px !important;
+    height:201px !important;
+  }
+  .profileholder figure{
+    width:100px !important;
+    height:101px !important;
+  }
+</style>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 <% end %>

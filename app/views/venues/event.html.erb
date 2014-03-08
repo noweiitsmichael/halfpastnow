@@ -119,6 +119,12 @@
 	    <%= render :partial => "embeds", :locals => { :type => 'event', :obj => @event, :type_ind => '' } %>
 	    </div>
 
+	    <div class="field">
+        	<h5><%= e.label :weight %></h5>
+        	<%= e.select :weight, Advertisement::ADV_WEIGHTS,{ include_blank: true} %>
+
+      	</div>
+
 		<div class="actions">
     		<%= e.submit %>
     		<a href="#anchor<%=@event.nextOccurrence.id%>">  Top  </a>

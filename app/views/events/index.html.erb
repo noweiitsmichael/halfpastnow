@@ -1,17 +1,22 @@
 <% content_for :meta do %>
-  <meta class="meta-type"          property="og:type"                 content="website"> 
-  <meta class="meta-url"           property="og:url"                  content="http://www.halfpastnow.com"> 
-  <meta class="meta-image"         property="og:image"                content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png">
-  <meta class="meta-title"         property="og:title"                content="half past now | your couch will miss you">
-  <meta class="meta-description"   property="og:description"          content="Find the best events in Austin"> 
+  <meta class="meta-type" property="og:type" content="website">
+  <meta class="meta-url" property="og:url" content="http://www.halfpastnow.com">
+  <meta class="meta-image" property="og:image" content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png">
+  <meta class="meta-title" property="og:title" content="half past now | your couch will miss you">
+  <meta class="meta-description" property="og:description" content="Find the best events in Austin">
 <% end %>
-
 <% content_for :head do %>
-  <%= javascript_include_tag "half.dynamics" %>
-  <%= javascript_include_tag "smartinfowindow.js" %>
+  <%= javascript_tag do %>
+    var user_signed_in = <%= user_signed_in? %>;
+    var params = <%= raw params.to_json %>;
+    var start_of_weekend = "<%= (Time.now.next_week-3.day).strftime('%m/%d/%Y') %>";
+    var end_of_weekend = "<%= (Time.now.next_week-1.day).strftime('%m/%d/%Y') %>";
+  <% end %>
+  <%= stylesheet_link_tag "custom1","search" %>
+  <% @location_page = "serach" %>
 <% end %>
-
 <% content_for :code do %>
+<<<<<<< HEAD
 <%# TODO: put this stuff in the controller eventually %>
 
 	<% 	@now = DateTime.now.change(:hour => 0)
@@ -138,188 +143,41 @@
 			//console.log("initialize");
 			//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
 			geocoder = new google.maps.Geocoder();
+=======
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 
-			var styles = [
-							  {
-							    "featureType": "road.highway",
-							    "elementType": "geometry.stroke",
-							    "stylers": [
-							      { "color": "#804580" }
-							    ]
-							  },{
-							    "featureType": "road.highway",
-							    "elementType": "labels.text.stroke",
-							    "stylers": [
-							      { "color": "#d5b5d5" }
-							    ]
-							  },{
-							    "featureType": "road.arterial",
-							    "elementType": "labels.text.stroke",
-							    "stylers": [
-							      { "color": "#f1e6f3" }
-							    ]
-							  },{
-							    "elementType": "geometry.fill",
-							    "stylers": [
-							      { "gamma": 1.54 },
-							      { "lightness": 12 }
-							    ]
-							  },{
-							    "featureType": "road.arterial",
-							    "elementType": "geometry.fill",
-							    "stylers": [
-							      { "color": "#e0dae0" }
-							    ]
-							  },{
-							    "featureType": "road.arterial",
-							    "elementType": "geometry.stroke",
-							    "stylers": [
-							      { "color": "#b8abb8" }
-							    ]
-							  },{
-							    "featureType": "road.highway",
-							    "elementType": "geometry.fill",
-							    "stylers": [
-							      { "color": "#af96af" }
-							    ]
-							  },{
-							  }
-							];
-
-			var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
-			var myOptions = {
-				zoom: <%= @zoom %>,
-				center: latlng,
-				mapTypeId: 'map_style',
-				disableDefaultUI: true,
-				zoomControl: true,
-				scrollwheel: false,
-				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 2 },
-    			backgroundColor: '#FFFFFF'
-			};
-
-			var styledMap = new google.maps.StyledMapType(styles,
-    			{name: "Styled Map"});
-
-			map = new google.maps.Map($("#map")[0], myOptions);
-
-			map.mapTypes.set('map_style', styledMap);
-  			map.setMapTypeId('map_style');
-
-			var locations = [];
-			
-			$("#content .main .inner .events li").each(function(index) {
-				var latitude = parseFloat($(this).find(".latitude").html());
-				var longitude = parseFloat($(this).find(".longitude").html());
-				locations.push({lat: latitude, long: longitude});
-			});
-			
-			placeMarkers({points: locations});
-
-			google.maps.event.addListener(map, 'idle', boundsChanged);
-		}
-
-		function to_i(obj) {
-			return parseInt(obj);
-		}
-
-		$(function() {
-			<% @channels.each do |channel| %>
-				channelFilters[<%= channel.id %>] = {
-				  stream_id: <%= channel.id %>,
-				  start_days: <%= channel.start_days || 0 %>,
-				  end_days: <%= channel.end_days || 0 %>,
-				  start_seconds: <%= channel.start_seconds || "''" %>,
-				  end_seconds: <%= channel.end_seconds || "''" %>,
-				  day: <%= channel.day_of_week ? "'" + channel.day_of_week + "'.split(',').map(to_i)" : "[]" %>,
-				  low_price: <%= channel.low_price || "''" %>,
-				  high_price: <%= channel.high_price || "''" %>,
-				  included_tags: <%= channel.included_tags ? "'" + channel.included_tags + "'.split(',')" : "[]" %>,
-				  excluded_tags: <%= channel.excluded_tags ? "'" + channel.excluded_tags + "'.split(',')" : "[]" %>,
-				  and_tags: <%= channel.and_tags ? "'" + channel.and_tags + "'.split(',')" : "[]" %>,
-				  lat_min: "",
-				  lat_max: "",
-				  long_min: "",
-				  long_max: "",
-				  offset: 0,
-				  search: "<%= channel.search || "" %>",
-				  sort: <%= channel.sort || 0 %>,
-				  name: "<%= channel.name || "" %>",
-				  start_date: "<%= channel.start_date ? channel.start_date.to_s : "" %>",
-				  end_date: "<%= channel.end_date ? channel.end_date.to_s : "" %>"
-				};
-			<% end %>
-
-    		channelFilters[0] = { 
-    			  stream_id: "",
-				  start_days: 0,
-				  end_days: 0,
-				  start_seconds: '',
-				  end_seconds: '',
-				  day: [0,1,2,3,4,5,6],
-				  low_price: '',
-				  high_price: '',
-				  included_tags: [],
-				  and_tags: [],
-				  excluded_tags: [],
-				  lat_min: "",
-				  lat_max: "",
-				  long_min: "",
-				  long_max: "",
-				  offset: 0,
-				  search: "",
-				  name: "",
-				  start_date: "",
-				  end_date: "",
-				  sort: 0 };
-
-			<% @tagCounts.each do |tagCount| %>
-			tags['<%= tagCount[:id] %>'] = 
-				{ name: "<%= tagCount[:name] %>",
-				  parent_id: <%= tagCount[:parent] ? "'#{tagCount[:parent][:id]}'" : 'null' %>,
-				  <% children = tagCount[:children].collect { |child| "'#{child[:id]}'" } * ',' %>
-				  child_ids: [<%= children %>]
-				}
-			<% end %>
-
-			// var event_id = <%= params[:event_id] || "null" %>;
-			var venue_id = <%= params[:venue_id] || "null" %>;
-			var act_id = <%= params[:act_id] || "null" %>;
-			var modality;
-
-			// if(event_id) {
-			// 	modality = spawn(modalities["event"],{id: event_id});
-			// 	modal(modality);
-			// }
-			if(venue_id) {
-				modality = spawn(modalities["venue"],{id: venue_id});
-				modal(modality);
-			}
-			if(act_id) {
-				modality = spawn(modalities["act"],{id: act_id});
-				modal(modality);   
-			}
-
-	      $( '*' ).tooltip({ position: { my: "left+15 center", at: "right center" } });
-	      $('.head-title').tooltip('disable');
-	      $('.icon-check').tooltip('disable');
-	      $('.icon-check-empty').tooltip('disable');
-
-		});
-
-		$(window).load(function() {
-			var stream_id = "<%= params['channel_id'] %>";
-			if(stream_id !== "") {
-				// $('#header').addClass('selected');
-				$(".streambar .stream[stream-id=" + stream_id + "]").addClass('selected');
-				filter.stream_id = parseInt(stream_id);
-				filter.included_tags = channelFilters[parseInt(stream_id)].included_tags;
-				updateViewFromFilter();
-			}
-		});
-	</script>
+  <script type="text/javascript">
+     filter = {
+      start_days: <%= params[:start_days].coalesce_to 0 %>,
+      end_days: isNaN(parseInt("<%= params[:end_days] || 0 %>")) ? "<%= params[:end_days] %>" : <%= params[:end_days].coalesce_to 0 %>,
+      start_seconds: <%= params[:start_seconds].coalesce_to "''" %>,
+      end_seconds: <%= params[:end_seconds].coalesce_to "''" %>,
+      day: [0, 1, 2, 3, 4, 5, 6],
+      low_price: <%= params[:low_price].coalesce_to "''" %>,
+      high_price: <%= params[:high_price].coalesce_to "''" %>,
+      included_tags: <%= params[:included_tags] ? "[" + (params[:included_tags] * ",") + "]" : "[]" %>,
+      excluded_tags: <%= params[:excluded_tags] ? "[" + (params[:excluded_tags] * ",") + "]" : "[]" %>,
+      and_tags: <%= params[:and_tags] ? "[" + (params[:and_tags] * ",") + "]" : "[]" %>,
+      lat_min: "",
+      lat_max: "",
+      long_min: "",
+      long_max: "",
+      offset: 0,
+      search: "",
+      sort: <%= params[:sort].coalesce_to 0 %>,
+      name: "<%= params[:name].coalesce_to "" %>",
+      start_date: "",
+      end_date: "",
+      order_time: 1,
+      order_cost: 1
+    };
+    console.log(filter)
+    console.log("inline script 46")
+  </script>
 <% end %>
+<% content_for :body do %>
 
+<<<<<<< HEAD
 <% content_for :header do %>
 	<%#= render :partial => "layouts/font_select" %>
 
@@ -557,38 +415,182 @@
 		</div>
 	</div> -->
 
+=======
+  <section class="search">
+
+    <div class="tabs">
+      <div class="container">
+        <ul class="nav nav-tabs" id="search-tab">
+          <li class="events_tab active"><a data-toggle="tab" tag_id="0" tag_type="all" href="#events">Events</a></li>
+          <% if user_signed_in? %>
+            <% @saved_search.each do |search| %>
+              <li class="related_events">
+                <a data-toggle='tab' href="#related_events" key_id="<%= search.id %>" tag_type="<%= search.tag_type.nil? ? "nil" : search.tag_type %>" tag_id="<%= search.tag_id.nil? ? search.tag_id.to_i : search.tag_id.to_i %>" key="<%= search[:search_key] %>"><%= search[:search_key].gsub("_", " ") %>
+                  <i class='icon-cross'></i></a></li>
+            <% end %>
+          <% end %>
+
+        </ul>
+      </div>
+
+      <div class="tab-content">
+        <div id="events" class="tab-pane fade in active">
+          <div class="sort-panel filter-toggle price date">
+            <div class="container">
+        <span class="sort-item">
+          <a href="#"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Date</span></a>
+          <div style="width: 340px !important;" class="popover bottom">
+            <div class="arrow"></div>
+            <div class="popover-content clearfix">
+              <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="today">Today</a>
+              <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="tomorrow">Tomorrow</a>
+              <a class="btn btn-danger popover_dates" href="#" tag_id="0" tag_type="weekend">weekend</a>
+
+              <label class="ui-input-text" for="from" style="margin-top:25px;">or custom</label>
+              <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-start" id="from" name="from" style="width:115px;float:left;">
+              <label class="ui-input-text" for="to" style="float: left; text-transform: none; font-size: 120%; margin-right: 11px; margin-left: 11px;">to</label>
+              <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset custom-end" id="to" name="to" style="width:115px;">
+            </div>
+          </div>
+        </span>
+        <span class="sort-item">
+          <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Time</a>
+          <div style="display: none;" class="popover bottom">
+            <div class="arrow"></div>
+            <div class="popover-content clearfix">
+              <label for="time" class="ui-input-text">After</label>
+              <input type="text" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset timepicker" value="">
+            </div>
+          </div>
+        </span>
+        <span class="sort-item">
+          <a href="#" class="ui-link"><span class="filter-text" id=""><i class="icon-bottom-arrow"></i>Cost</span></a>
+          <div style="display: none;" class="popover bottom">
+            <div class="arrow"></div>
+            <div class="popover-content clearfix">
+              <label for="cost" class="ui-input-text cvalue">Less than $50</label>
+
+              <div class="left">
+                <span class="option">Free</span>
+                <span class="option">$5</span>
+                <span class="option">$10</span>
+                <span class="option">$20</span>
+                <span class="option">$30</span>
+                <span class="option">$40</span>
+                <span class="option">$50+</span>
+              </div>
+              <div class="right">
+                <!--<div id="slider-vertical"></div>-->
+                <input type="number" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset ui-slider-input" style="display:none;" min="0" max="50" value="50" step="5" name="slider-step" id="slider-step" sliderorientation="vertical" data-type="range">
+              </div>
+            </div>
+          </div>
+        </span>
+        <span class="sort-item">
+          <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Sort</a>
+          <div style="display: none;" class="popover bottom">
+            <div class="arrow"></div>
+            <label class="cost_sort asc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-up"></span>COST</label>
+            <label class="cost_sort desc_btn" data-type="cost_sort" data-sort_on="price" data-sort_by="span.value"><span class="icon-hand-down"></span>COST</label>
+            <br>
+            <label class="time_sort asc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-up"></span>TIME</label>
+            <label class="time_sort desc_btn" data-type="time_sort" data-sort_on="time" data-sort_by="span.time"><span class="icon-hand-down"></span>TIME</label>
+          </div>
+        </span>
+        <span class="sort-item">
+          <a href="#" class="ui-link"><i class="icon-bottom-arrow"></i>Neighborhood</a>
+         <div style="display: none;width: 400px;" class="popover bottom">
+           <div class="arrow"></div>
+           <div style="max-height: 200px;overflow-y:auto">
+             <table class="neighborhood_names_list table-bordered table-condensed">
+               <% @all_neighborhoods.each_slice(2) do |nhs| %>
+                 <tr>
+                   <% nhs.each do |nh| %>
+                     <td width="180px" data-id="<%= nh.id %>"><%= nh.name %></td>
+                   <% end %>
+                 </tr>
+               <% end %>
+             </table>
+           </div>
+         </div>
+        </span>
+            </div>
+
+
+          </div>
+          <% cache("search_index_events", expires_in: 1.day) do %>
+            <div class="content main" style="padding-top:60px">
+              <div class="container inline">
+
+                <div class="container head">
+                  <div class="pull-left">
+                    <h2 class="text-info"><span class="total_number"> <%= @allOccurrences.count %> </span> results for
+                      <span id="search_name1">all events</span></h2>
+
+                    <div>
+                      <span class="text-info"><b>Date:&nbsp;&nbsp;</b><span class="date_search"></span></span><br>
+                      <span class="text-info"><b>Time:&nbsp;&nbsp;</b><span class="time_search"></span></span> <br>
+                      <span class="text-info"><b>Cost:&nbsp;&nbsp;</b><span class="cost_search"></span></span>
+                    </div>
+                  </div>
+                  <div class="pull-right" style="max-height: 100px !important;max-width: 550px !important;overflow: hidden !important;">
+                    <% if @banner_advertisement.present? %>
+                      <div class="ad-details" data-id="<%= @banner_advertisement.id %>" data-prop="clicks" data-value="<%= @banner_advertisement.clicks.to_i + 1 %>">
+                        <%= link_to @banner_advertisement.target_url.present? ? @banner_advertisement.target_url : '#', target: :_blank, class: "pull-right" do %>
+                          <%= image_tag @banner_advertisement.image.full, alt: "Advertisement" %>
+                        <% end %>
+                      </div>
+                    <% else %>
+                      <img alt="" src="assets/ad.jpg" class="pull-right">
+                    <% end %>
+
+                  </div>
+                </div>
+
+                <section class="product-list clearfix events">
+                  <%= will_paginate @occurrences, previous_label: h("<"), next_label: h(">"), class: "flickr_pagination" %>
+
+                  <% @occurrences.each_with_index do |occurrence, index| %>
+                    <% if index == 2 and !@advertisement.nil? %>
+                      <%= render :partial => "events/search_ads", :locals => {:advertisement => @advertisement} %>
+                    <% else %>
+                      <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+                    <% end %>
+                  <% end %>
+
+                </section>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div style='display:none'>
+    <div id='save_share_content' style='padding:10px; background:#fff;'>
+      <p class="text-center">
+
+      <h3>Your search is saved successfully</h3></p>
+
+      <p><a id="share" href="#" class='btn btn-primary'>Click Me</a>&nbsp; If you wish to share this search</p>
+
+
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade hide" id="bookmark_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index:11 !important;top:20% !important;">
+
+  </div>
+  <!-- /.modal -->
+
+
+  <%= javascript_include_tag "search.js" %>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 <% end %>
 
-<% content_for :body do %>
-	<div id="content">
-		<% unless @mobileMode %>
-		<div id="map-wrapper">
-			<div id="map"></div>
-			<div class="map-move">
-				<strong>zoom and move around the map to see events</strong><br />
-				redo search based on map move + zoom<input type="checkbox" checked id="unnecessarily-long-id-for-toggling-search-on-map-move-and-zoom"/>
-			</div>
-		</div>
-		<% end %>
 
-		<%= render :partial => "/layouts/footer" %>
-		<div class="main">
-			<% if (@mobileMode) %> </center> <% end %>
-			<div class="inner">
-				<div class="filter-summary">
-					<span class="end-block"></span> <span class="num-events"><%= @allOccurrences.size %></span> <span class="filter price" style="display:none;"></span> </span> <span class="filter andtags" style="display:none;"></span> <span class="filter tags" style="display:none;"></span> <span class="filter search" style="display:none;"></span> events <span class="filter datetime">today</span> <span class="sort-type" style="display:none;">[by popularity/<span class="sort date">date</span>]</span> 
-				</div>
-				<ul class="events">
-					<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
-				</ul>
-				<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
-			</div>
-			<% if (@mobileMode) %> <center> <% end %>
-			<img id="loading" src="/assets/ajax-loader.gif" />
-		</div>
-		<%#= render :partial => "layouts/grid" %>
-	</div>
-
+<<<<<<< HEAD
 <!-- crazy egg -->
 <script type="text/javascript">
 setTimeout(function(){var a=document.createElement("script");
@@ -607,4 +609,7 @@ a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
 		</div>
 	</div>
 <% end %>
+=======
+
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 

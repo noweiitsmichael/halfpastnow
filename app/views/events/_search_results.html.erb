@@ -1,0 +1,12 @@
+<script>
+  $('.flickr_pagination a').click(function(){
+    $("#related_events .main .inline .events,#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+  })
+  $('.flickr_pagination a').attr('data-remote', 'true');
+</script>
+<%= will_paginate @occurrences, previous_label: h("<"), next_label: h(">"),class: "flickr_pagination" %>
+
+<% @occurrences.each_with_index do |occurrence, index| %>
+  <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+<% end %>
+

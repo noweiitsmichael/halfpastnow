@@ -14,8 +14,8 @@
 	var toggle = false;
 	console.log(id+' '+bookmark_id)
 	$(function() {
-		 	
-		    
+
+
 
 		    window.fbAsyncInit = function() {
 			        console.log("Loaded FB 2");
@@ -36,20 +36,20 @@
 			        }(document));// delete below
 
 	});
-	
-	
+
+
 	$(function() {
 		console.log("Loaded share stuff");
 
-	
+
 		// The "bookmark" class won't be here if a user isn't logged in
 		$('.bookmark-share .bookmark').click(function() {
 			console.log("Fullmode bookmark");
 			var that = $(this);
 			if(that.hasClass('add')) {
 				var bookmarked_type = "";
-				// var lnk = 'http://www.halfpastnow.com/mobile/og/'+id; 
-				var lnk = 'http://www.halfpastnow.com/events/show/'+id+'?fullmode=true'; 
+				// var lnk = 'http://www.halfpastnow.com/mobile/og/'+id;
+				var lnk = 'http://www.halfpastnow.com/events/show/'+id+'?fullmode=true';
         		console.log("Bookmarks: "+lnk);
 				switch(type) {
 					case "event":
@@ -80,7 +80,7 @@
 					that.text("In Bookmarks");
 					bookmark_id = data;
 				});
-			} 
+			}
 			else if(that.hasClass('remove')) {
 				// $.getJSON('/bookmarks/destroy/', { id: bookmark_id }, function(data) {
 				// 	that.addClass('add').removeClass('remove');
@@ -91,13 +91,13 @@
 		        });
 			}
 		});
-		
+
 		// This "attending" class won't be here if the user isn't logged in
 		$('.bookmark-share .attending').click(function(e) {
 			var that = $(this);
 			if(that.hasClass('add')) {
 				var bookmarked_type = "Occurrence";
-				var lnk = 'http://www.halfpastnow.com/events/show/'+id+'?fullmode=true'; 
+				var lnk = 'http://www.halfpastnow.com/events/show/'+id+'?fullmode=true';
         		console.log("Attend: "+lnk);
         		FB.api(
 				            '/me/halfpastnow:attend',
@@ -118,7 +118,7 @@
 					$(".re-rsvp").text("Visit RSVP Site Again");
 					attending_id = data;
 				});
-			} 
+			}
 			else if(that.hasClass('remove')) {
     			 e.preventDefault();
 				 $.getJSON('/bookmarks/destroy/' + attending_id, function(data) {
@@ -128,7 +128,7 @@
 		        });
 			}
 		});
-		
+
 		$('.bookmark-share').click(function() {
 			console.log("Anything?????");
 		});
@@ -138,18 +138,18 @@
 	      	window.open(url, '_blank');
 	      	window.focus();
 		});
-		
-		$('.bookmark-share .facebook').click(function() {      
+
+		$('.bookmark-share .facebook').click(function() {
 
 			var url = "http://www.facebook.com/sharer.php?u=" + facebook_url;
 			window.open(url, '_blank');
 			window.focus();
 		});
-		
+
 		$('.bookmark-share .twitter').click(function() {
 			// var url = 'https://twitter.com/intent/tweet?text=' + link;
 			<% if type == "event" %>
-				var title = "<%= event.title  %>";			
+				var title = "<%= event.title  %>";
 			<% elsif type == "venue" %>
 				var title = "<%= @venue.name  %>"
 			<% elsif type == "act" %>
@@ -158,7 +158,7 @@
 				var title = ""
 			<% end %>
    		    var url = 'http://twitter.com/intent/tweet?text=' + title.replace(/(<([^>]+|)>)/ig,"").replace("&amp;","and").substring(0,50) + ' ' + link + ' @halfpastnow %23discoveraustin';
-      
+
 			window.open(url, '_blank');
 			window.focus();
 		});
@@ -177,13 +177,13 @@
 				else{
 					$('.popup-box-1').show();
 				}
-				
+
 			}
 			toggle = !toggle;
 		});
 	});
 	function submit_comment()
-      {	
+      {
       	var text = $('.comment-text').val();
       	$('.popup-box').hide();
       	that = $('.add-tp');
@@ -192,12 +192,12 @@
       	$.getJSON('/bookmarks/add_to_featuredlist', { bookmark: { "type": "Occurrence", "id": <%= id  %>, "comment":text } }, function(data) {
 					bookmark_id = data;
 				});
-      
+
       	$(".comment-text-1").val(text);
       }
     function deleteTP()
-      {	
-      	
+      {
+
       	$('.popup-box-1').hide();
       	toggle = !toggle;
       	that = $('.add-tp');
@@ -206,14 +206,14 @@
 		        });
       }
 	function edit_comment()
-	{	
+	{
 		$('.popup-box-1').hide();
 		toggle = !toggle;
 		var text = $('.comment-text-1').val();
 		console.log("Edit comment"+text);
 	$.getJSON('/bookmarks/update_comment', { bookmark: { "type": "Occurrence", "id": bookmarkList_id, "comment": text } }, function(data) {
 	      bookmark_id = data;
-	      
+
 	});
 	}
 </script>
@@ -261,21 +261,27 @@
 		<input type="hidden" id="event" value="<%= event %>" />
 		<input type="hidden" id="id" value ="<%= occurrence.id %>"/>
 		<% if !event.ticket_url.blank? %>
-		<a href="<%= event.ticket_url %>" target="_blank" class="nice-button attending-button <%= current_user ? "attending" : "" %> <%= attendingId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
+		<a href="<%= event.ticket_url %>" target="_blank" class="nice-button attending-button <%= current_user ? "attending" : "" %> <%= attendingId.nil? ? "add" : "remove" %>" >
+			<%= current_user ? "" : "<a href='/login'>" %>
 			<%= attendingId.nil? ? "Tickets" : "Already Going" %>
+			<%= current_user ? "" : "</a>" %>
 		</a>
 		<div class="rsvp-center" style="text-align:center; vertical-align:text-top;"><a href='<%= event.ticket_url %>' target='_blank' class='re-rsvp' style="font-size:16px;"><%= attendingId.nil? ? "" : "Visit Ticketing Site Again" %></a></div>
 		<% else %>
-		<span class="nice-button attending-button <%= current_user ? "attending" : "" %> <%= attendingId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
+		<span class="nice-button attending-button <%= current_user ? "attending" : "" %> <%= attendingId.nil? ? "add" : "remove" %>" >
+			<%= current_user ? "" : "<a href='/login'>" %>
 			<%= attendingId.nil? ? "I'm attending!" : "Planning on Attending" %>
+			<%= current_user ? "" : "</a>" %>
 		</span>
 		<% end %>
 	<% end %>
-	<span class="nice-button bookmark-button <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>>
-		<i class="icon-bookmark"></i>
+	<span class="nice-button bookmark-button <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>" >
+		<%= current_user ? "" : "<a href='/login'>" %>
+			<i class="icon-bookmark"></i>
+		<%= current_user ? "" : "</a>" %>
 		<%= bookmarkId.nil? ? "Bookmark it" : "In Bookmarks" %>
 	</span>
-<!-- 	<span class="icon icon-bookmark bookmark <%= current_user ? "bookmark" : "" %> <%= bookmarkId.nil? ? "add" : "remove" %>"  <%= current_user ? "" : "linkto='shunt'" %>></span> -->
+
 	<% if type == 'event' %>
 	<a href="http://www.halfpastnow.com/events/show/<%=id%>?fullmode=true" title="Add to Calendar" class="addthisevent">
 	    <span class="icon icon-calendar cal"></span>
@@ -302,7 +308,7 @@
 				</div>
 				<div class="popup-box-1">
 					<label> Edit comment (Optional)</label>
-					<% featured_list = current_user.featured_list 
+					<% featured_list = current_user.featured_list
 					   comment = (featured_list.nil?) ? '' : (@occurrence.event_bookmarks_with_comments(featured_list.id).first.nil? ) ? '' : @occurrence.event_bookmarks_with_comments(featured_list.id).first.comment
 					%>
 					<textarea class="comment-text-1" style="color:black;" placeholder="Comment"><%= comment %></textarea>

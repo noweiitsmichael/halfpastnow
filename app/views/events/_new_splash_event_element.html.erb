@@ -1,0 +1,41 @@
+<article class="slide-item product-item" link-id="<%= occurrence.id %>" style="margin: 0 18px">
+  <figure><a href="/events/austin/<%= occurrence.slug %>">
+    <% if occurrence.event.pictures.first %>
+      <%= image_tag "placeholder.png", alt: "Event picture", class: "unveil", "data-src" => occurrence.event.pictures.first.image_url(:full) %>
+    <% elsif occurrence.event.acts.length != 0 && occurrence.event.acts.first.pictures.first %>
+      <%= image_tag "placeholder.png", alt: "Occurrence picture", class: "unveil", "data-src" => occurrence.event.acts.first.pictures.first.image_url(:full) %>
+    <% elsif occurrence.event.venue.pictures.first %>
+      <%= image_tag "placeholder.png", alt: "Venue picture", class: "unveil", "data-src" => occurrence.event.venue.pictures.first.image_url(:full) %>
+    <% else %>
+      <%= image_tag "placeholder.png", alt: "Cover picture", class: "unveil", "data-src" => occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>
+    <% end %>
+
+  </a></figure>
+  <div class="name"><a href="/events/austin/<%= occurrence.slug %>" target="_blank"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
+  <div class="info clearfix">
+    <span class="time pull-left" time="<%= occurrence.start.to_i %>"><%= occurrence.start.to_time.strftime("%B %-d @ %-l:%M%P") %></span>
+    <span class="value pull-right" price="<%= occurrence.event.price.to_f %>"><%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price, :unit => "$").to_s + " " : "FREE ") : "FREE" %></span>
+  </div>
+  <div class="additional-info">
+    <div class="place">
+      <%= link_to occurrence.venue.name.truncate(35),"/venues/austin/#{occurrence.event.venue.slug}",:style => "color:#4C334D" %>
+    </div>
+    <div class="place">
+      <% neighborhood = occurrence.venue.neighborhoods.first %>
+      <% if neighborhood %>
+        <%= neighborhood.name.truncate(35) %>
+      <% end %>
+    </div>
+
+    <% bookmarks = [] %>
+    <%
+       if defined?(current_user) and current_user
+         bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => current_user.bookmark_lists.collect(&:id))
+       end
+    %>
+
+    <%= link_to Rails.application.routes.url_helpers.event_bookmark_popup_path(id: occurrence.id), class: "bookmark #{(defined?(current_user) and current_user) ? 'bookmark_' + occurrence.id.to_s : 'before_login'}", remote: true do %>
+      <%= bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
+    <% end %>
+  </div>
+</article>

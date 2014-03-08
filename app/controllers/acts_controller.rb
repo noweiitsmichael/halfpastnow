@@ -5,10 +5,15 @@ class ActsController < ApplicationController
   layout "venues"
 
   def show
+<<<<<<< HEAD
 
     @fullmode = (!params[:fullmode].to_s.empty?) || (@mobileMode)
 
     # @fullmode = !params[:fullmode].to_s.empty?
+=======
+    params[:fullmode]=true
+    @fullmode = !params[:fullmode].to_s.empty?
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
     # if(@mobileMode)
     #     unless params[:format].to_s.eql? "mobile"
     #       redirect_to :action => "android"  
@@ -18,6 +23,10 @@ class ActsController < ApplicationController
         
     # end
     @modeType = "act"
+
+    #ads
+    @advertisement = Advertisement.where(:placement => 'details').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
+    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
 
     @act = Act.find(params[:id])
     @pageTitle = @act.name + " | half past now."

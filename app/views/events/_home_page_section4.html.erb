@@ -1,0 +1,23 @@
+<section class="slider-wrap" id="gud">
+  <div class="container">
+    <div class="section-title">
+      <h2 class="text-center">Live Music</h2>
+
+      <p class="lead text-center">There's something for everyone in the live music capitol of the world.</p>
+      <a href="/search?key=get+up+and+dance&tag_id=1" class="see-all"><span tag_id="1" tag_title="get up and dance" class="btn btn-danger see_all_links">See All</span><i class="icon-bottom-arrow"></i></a>
+
+    </div>
+    <div class="section-content slider">
+      <div id="slider3">
+        <% occurrences.each_with_index do |occurrence, index| %>
+
+          <%= render :partial => "events/new_splash_event_element", :locals => {:occurrence => occurrence} %>
+
+        <% end %>
+        <article class='slide-item product-item see-more'><a href='/search?key=get+up+and+dance&tag_id=1' class='see-more' ><span class='btn btn-large btn-danger'>See More</span></a></article>
+      </div>
+      <a class="prev" id="slider3_prev" href="#"><span>prev</span></a>
+      <a class="next" id="slider3_next" href="#"><span>next</span></a>
+    </div>
+  </div>
+</section>

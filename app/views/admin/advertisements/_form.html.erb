@@ -1,0 +1,125 @@
+<%= form_for @advertisement, url: "/admin/advertisements", html: {class: 'form-horizontal', role: 'form'} do |f| %>
+
+  <div class="form-group">
+    <%= f.label :adv_type, 'Type', class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9">
+      <%= f.select :adv_type, Advertisement::ADV_TYPES,{ include_blank: true}, class: 'col-xs-10 col-sm-5' %>
+      <span class="help-inline col-xs-12 col-sm-7">
+        <span class="middle type_help_txt">Image dimensions are <span class="label label-lg label-purple arrowed img_dimensions"></span></span>
+      </span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :title, class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9">
+      <%= f.text_field :title, class: 'col-xs-10 col-sm-5' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description, class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9">
+      <%= f.text_area :description, class: 'col-xs-10 col-sm-5', rows: 5 %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :name, class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9">
+      <%= f.text_field :name, class: 'col-xs-10 col-sm-5' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :email, class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9">
+      <%= f.email_field :email, class: 'col-xs-10 col-sm-5' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :phone, class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9 input-group">
+      <%= f.text_field :phone, class: 'col-xs-10 col-sm-5 ' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :advertiser, class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9">
+      <%= f.text_field :advertiser, class: 'col-xs-10 col-sm-5' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :weight, class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9">
+      <%= f.select :weight, Advertisement::ADV_WEIGHTS,{ include_blank: true}, class: 'col-xs-10 col-sm-5' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :placement, class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9">
+      <%= f.select :placement, [],{ include_blank: true}, class: 'col-xs-10 col-sm-5' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :start,"Start Date", class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9">
+      <%= text_field_tag :start_date_display_field,'', class: 'col-xs-10 col-sm-5 has_date_picker', id: 'adv_start_date' %>
+      <%= f.hidden_field :start, class: 'col-xs-10 col-sm-5' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :end, "End Date", class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9">
+      <%= text_field_tag :end_date_display_field,'', class: 'col-xs-10 col-sm-5 has_date_picker', id: 'adv_end_date' %>
+      <%= f.hidden_field :end, class: 'col-xs-10 col-sm-5' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :target_url, class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9">
+      <%= f.text_field :target_url, class: 'col-xs-10 col-sm-5' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :image,"Picture", class: 'col-sm-3 control-label no-padding-right' %>
+
+    <div class="col-sm-9">
+      <%= f.file_field :image, class: 'col-xs-10 col-sm-5' %>
+    </div>
+  </div>
+
+  <div class="clearfix form-actions">
+    <div class="col-md-offset-4 col-md-8">
+      <button class="btn btn-purple" type="submit">
+        <i class="icon-ok bigger-110"></i>
+        Submit
+      </button>
+    </div>
+  </div>
+
+<% end %>
+
+<%= javascript_tag do %>
+  var placement_options = <%= (Advertisement::ADV_PLACEMENTS).to_json.html_safe %>
+<% end %>

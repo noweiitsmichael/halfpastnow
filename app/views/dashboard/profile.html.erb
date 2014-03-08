@@ -1,0 +1,103 @@
+<% unless @user.nil? %>
+  <div class="page-content">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="page-header">
+      <h1><%= @user.firstname %> Profile</h1>
+    </div>
+    <div class="page-body">
+    <div class="row">
+      <div id="dashboard-profile">
+        <div class="col-sm-3 center">
+          <!-- Profile picture -->
+        <span class="profile-picture">
+           <%= image_tag @user.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic nav-user-photo", :alt => "#{@user.firstname}'s Photo", style: "display: block;", class: "editable img-responsive editable-click editable-empty", id: 'avatar' %>
+        </span>
+
+          <div class="space-4"></div>
+
+          <div class="width-80 label label-purple label-xlg arrowed-in arrowed-in-right">
+            <div class="inline position-relative">
+              <span class="white"><%= @user.firstname %>&nbsp;<%= @user.lastname %></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <!-- Profile info -->
+          <div class="profile-user-info">
+            <%= link_to my_list_dashboard_index_path, class: "btn btn-info btn-lg", style: "border-radius: 10px" do %>
+              <span class="line-height-1 bigger-170"> <%= @user.bookmarked_events.count %> </span>
+              <br>
+              <span class="line-height-1 smaller-90"> Bookmarked <br> Events </span>
+            <% end %>
+
+            <%= link_to my_list_dashboard_index_path, class: "btn btn-purple btn-lg", style: "border-radius: 10px" do %>
+              <span class="line-height-1 bigger-170 "> <%= @user.bookmarked_venues.count %> </span>
+              <br>
+              <span class="line-height-1 smaller-90"> Bookmarked <br> Venues </span>
+            <% end %>
+
+            <%= link_to my_list_dashboard_index_path, class: "btn btn-pink btn-lg", style: "border-radius: 10px" do %>
+              <span class="line-height-1 bigger-170 "> <%= @user.bookmarked_acts.count %> </span>
+              <br>
+              <span class="line-height-1 smaller-90"> Bookmarked <br> Artists </span>
+            <% end %>
+          </div>
+
+          <div class="space-4"></div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> First Name</div>
+
+              <div class="profile-info-value">
+                <%= link_to @user.firstname,'#', id: "firstname", "data-pk" => @user.id %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Last Name</div>
+
+              <div class="profile-info-value">
+                <%= link_to @user.lastname,'#', id: "lastname", "data-pk" => @user.id %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Email</div>
+
+              <div class="profile-info-value">
+                <span><%= @user.email %></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Joined</div>
+
+              <div class="profile-info-value">
+                <span><%= @user.created_at.strftime("%d - %b - %Y") %></span>
+              </div>
+            </div>
+          </div>
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Last Online</div>
+
+              <div class="profile-info-value">
+                <span><%= time_ago_in_words(@user.last_sign_in_at) %> ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+<% else %>
+  <h1 class="text-center text-danger"> Something is Wrong</h1>
+<% end %>

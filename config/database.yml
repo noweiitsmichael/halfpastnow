@@ -51,7 +51,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: myapp_production
+  database: myapp_produciton
   pool: 5
   username: myapp
   password: myapp

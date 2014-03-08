@@ -1,0 +1,38 @@
+
+.cost_sort, .time_sort {
+  color: #777777;
+  display: inline;
+  font-size: 16px;
+  font-weight: bold;
+  left: 18%;
+  position: relative;
+  cursor: pointer;
+}
+
+.neighborhood_names_list {
+  color: #4D344F;
+  display: inline;
+  font-size: 15px;
+  font-weight: bold;
+  position: relative;
+  cursor: pointer;
+  float: left;
+  padding: 6px;
+}
+
+.popover ul li {
+  padding: 2px 0;
+}
+
+table td.selected {
+  background-color: #777777;
+  color: #ffffff;
+}
+
+.popover_dates {
+  margin-left: 10px;
+}
+
+.modal-backdrop.fade.in {
+  z-index: 10 !important;
+}

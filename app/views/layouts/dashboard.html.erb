@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta property="fb:app_id" content="475386955806720"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- custom styles -->
+  <%= stylesheet_link_tag "dashboard" %>
+
+  <!-- basic styles -->
+  <%= stylesheet_link_tag "ace/bootstrap.min", "ace/font-awesome.min" %>
+  <!--[if IE 7]>
+    <%= stylesheet_link_tag "ace/font-awesome-ie7.min" %>
+  <![endif]-->
+
+  <!-- page specific plugin styles -->
+  <%= stylesheet_link_tag "ace/jquery-ui-1.10.3.custom.min", "ace/jquery.gritter", "ace/select2", "ace/bootstrap-editable" %>
+
+  <!-- fonts -->
+  <%= stylesheet_link_tag "ace/ace-fonts" %>
+
+  <!-- ace styles -->
+  <%= stylesheet_link_tag "ace/ace.min", "ace/ace-rtl.min", "ace/ace-skins.min" %>
+
+  <!--[if lte IE 8]>
+    <%= stylesheet_link_tag "ace/ace-ie.min" %>
+  <![endif]-->
+
+  <!-- inline styles related to this page -->
+
+  <!-- ace settings handler -->
+
+  <%= javascript_include_tag "ace/ace-extra.min" %>
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+  <!--[if lt IE 9]>
+    <%= javascript_include_tag "ace/html5shiv" %>
+    <%= javascript_include_tag "ace/respond.min" %>
+  <![endif]-->
+  <%= csrf_meta_tags %>
+</head>
+
+<body id="body">
+<div class="navbar navbar-default" id="navbar">
+<script type="text/javascript">
+  try {
+    ace.settings.check('navbar', 'fixed')
+  } catch (e) {
+  }
+</script>
+
+<div class="navbar-container" id="navbar-container">
+<div class="navbar-header pull-left">
+  <%= link_to "/", class: "navbar-brand" do %>
+    <%= image_tag '/assets/new_design/logo.png' %>
+  <% end %><!-- /.brand -->
+</div>
+<!-- /.navbar-header -->
+
+<div class="navbar-header pull-right" role="navigation">
+<ul class="nav ace-nav">
+<li class="dark-purple">
+  <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+    <% if user_signed_in? %>
+      <%= image_tag current_user.profilepic_url(:thumb) || "/assets/profile.png", :class => "profile-pic nav-user-photo", :alt => "#{current_user.firstname}'s Photo" %>
+        <span class="user-info">
+          <small>Welcome,</small>
+          <%= current_user.firstname rescue 'Howdy' %>
+        </span>
+      <i class="icon-caret-down"></i>
+    <% end %>
+  </a>
+
+  <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+
+    <li>
+      <%= link_to '/' do %>
+        <i class="icon-home"></i>
+        <span class="menu-text"> Home </span>
+      <% end %>
+    </li>
+
+    <li class="divider"></li>
+
+    <li>
+      <%= link_to profile_dashboard_index_path do %>
+        <i class="icon-user"></i>
+        <span class="menu-text"> Profile </span>
+      <% end %>
+    </li>
+    <li>
+      <%= link_to settings_dashboard_index_path do %>
+        <i class="icon-cog"></i>
+        <span class="menu-text"> Settings </span>
+      <% end %>
+    </li>
+
+    <li class="divider"></li>
+
+    <li>
+      <% if user_signed_in? %>
+        <%= link_to destroy_user_session_path, method: :delete do %>
+          <i class="icon-off"></i>
+          <span class="menu-text"> Logout </span>
+        <% end %>
+      <% end %>
+    </li>
+  </ul>
+</li>
+</ul>
+<!-- /.ace-nav -->
+</div>
+<!-- /.navbar-header -->
+</div>
+<!-- /.container -->
+</div>
+
+<div class="main-container" id="main-container">
+  <script type="text/javascript">
+    try {
+      ace.settings.check('main-container', 'fixed')
+    } catch (e) {
+    }
+  </script>
+
+  <div class="main-container-inner">
+    <a class="menu-toggler" id="menu-toggler" href="#">
+      <span class="menu-text"></span>
+    </a>
+
+    <div class="sidebar" id="sidebar">
+      <script type="text/javascript">
+        try {
+          ace.settings.check('sidebar', 'fixed')
+        } catch (e) {
+        }
+      </script>
+
+      <ul class="nav nav-list">
+        <% if current_user and current_user.is_admin? %>
+          <li class="<%= @selected_sidebar_li == 'ads' ? 'active' : ''%>">
+            <%= link_to admin_dashboard_index_path do %>
+              <i class="icon-briefcase"></i>
+              <span class="menu-text"> Ads </span>
+            <% end %>
+          </li>
+        <% end %>
+        <li class="<%= @selected_sidebar_li == 'profile' ? 'active' : ''%>">
+          <%= link_to profile_dashboard_index_path do %>
+            <i class="icon-user"></i>
+            <span class="menu-text"> Profile </span>
+          <% end %>
+        </li>
+        <li class="<%= @selected_sidebar_li == 'settings' ? 'active' : ''%>">
+          <%= link_to settings_dashboard_index_path do %>
+            <i class="icon-cog"></i>
+            <span class="menu-text"> Settings </span>
+          <% end %>
+        </li>
+        <li class="<%= @selected_sidebar_li == 'my_list' ? 'active' : ''%>">
+          <%= link_to my_list_dashboard_index_path do %>
+            <i class="icon-th-list"></i>
+            <span class="menu-text"> My Lists </span>
+          <% end %>
+        </li>
+        <li class="<%= @selected_sidebar_li == 'preferences' ? 'active' : ''%>">
+          <%= link_to preferences_dashboard_index_path do %>
+            <i class="icon-th"></i>
+            <span class="menu-text"> My Preferences </span>
+          <% end %>
+        </li>
+      </ul>
+      <!-- /.nav-list -->
+
+      <script type="text/javascript">
+        try {
+          ace.settings.check('sidebar', 'collapsed')
+        } catch (e) {
+        }
+      </script>
+    </div>
+
+    <div class="main-content">
+      <%= yield %>
+    </div>
+    <!-- /.main-content -->
+
+    <!-- basic scripts -->
+
+    <!--[if !IE]> -->
+
+    <script type="text/javascript">
+      window.jQuery || document.write("<script src='/assets/ace/jquery-2.0.3.min.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+
+    <!--[if IE]>
+    <script type="text/javascript">
+      window.jQuery || document.write("<script src='/assets/ace/jquery-1.10.2.min.js'>" + "<" + "/script>");
+    </script>
+    <![endif]-->
+    <%= javascript_include_tag "jquery_ujs" %>
+
+    <script type="text/javascript">
+      if ("ontouchend" in document) document.write("<script src='/assets/ace/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+
+    <%= javascript_include_tag "ace/bootstrap.min.js" %>
+    <%= javascript_include_tag "ace/typeahead-bs2.min.js" %>
+
+    <!-- page specific plugin scripts -->
+
+    <!--[if lte IE 8]>
+    <%= javascript_include_tag "ace/excanvas.min.js" %>
+    <![endif]-->
+
+    <%= javascript_include_tag "ace/jquery-ui-1.10.3.custom.min.js" %>
+    <%= javascript_include_tag "ace/jquery.ui.touch-punch.min.js" %>
+    <%= javascript_include_tag "ace/jquery.gritter.min.js" %>
+    <%= javascript_include_tag "ace/bootbox.min.js" %>
+    <%= javascript_include_tag "ace/jquery.slimscroll.min.js" %>
+    <%= javascript_include_tag "ace/jquery.easy-pie-chart.min.js" %>
+    <%= javascript_include_tag "ace/jquery.hotkeys.min.js" %>
+    <%= javascript_include_tag "ace/bootstrap-wysiwyg.min.js" %>
+    <%= javascript_include_tag "ace/bootstrap-datepicker.min.js" %>
+    <%= javascript_include_tag "ace/bootstrap-editable.min.js" %>
+    <%= javascript_include_tag "ace/ace-editable.min.js" %>
+    <%= javascript_include_tag "ace/jquery.maskedinput.min.js" %>
+
+    <!-- ace scripts -->
+
+    <%= javascript_include_tag "ace/ace-elements.min.js" %>
+    <%= javascript_include_tag "ace/ace.min.js" %>
+
+    <!-- inline scripts related to this page -->
+    <%= javascript_include_tag "dashboard" %>
+    <%= javascript_include_tag "jquery-dateFormat" %>
+    <%= yield :footer_js %>
+  </div>
+</div>
+
+<% unless @page %>
+  <% cookies[:url] = request.url %>
+<% end %>
+</body>
+</html>

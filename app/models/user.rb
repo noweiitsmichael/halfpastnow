@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   attr_accessible :firstname, :lastname, :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :fb_access_token
-  attr_accessible :profilepic, :remote_profilepic_url, :crop_x, :crop_y, :crop_w, :crop_h
+  attr_accessible :profilepic, :remote_profilepic_url, :crop_x, :crop_y, :crop_w, :crop_h, :auto_share
   mount_uploader :profilepic, ProfilepicUploader
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   after_update :crop_profilepic
@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   # Allows you to search for bookmarked venues/events/acts by calling "user.bookmarked_type"
   has_and_belongs_to_many :followedLists, :class_name => "BookmarkList", :join_table => "bookmark_lists_users"
   has_many :bookmark_lists
-  # has_many :bookmarks  
+   has_many :bookmarks
   # has_many :bookmarked_venues, :through => :bookmarks, :source => :bookmarked, :source_type => "Venue"
   # has_many :bookmarked_events, :through => :bookmarks, :source => :bookmarked, :source_type => "Occurrence"
   # has_many :bookmarked_acts, :through => :bookmarks, :source => :bookmarked, :source_type => "Act"
@@ -31,9 +31,20 @@ class User < ActiveRecord::Base
   has_many :friendships
   has_many :friends, :through => :friendships
 
+  #serch based on key words
+  has_many :saved_searches
+
+  #serch based on key words
+  has_many :advertisements
+
   ROLES = %w[admin super_admin]
 
+
   after_create :send_welcome_email
+<<<<<<< HEAD
+=======
+  # after_create :send_contest_entry_email
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
   after_create :create_default_list
 
 
@@ -97,6 +108,9 @@ class User < ActiveRecord::Base
     end
   end
 
+  def is_admin?
+    return (self.role == "admin") || (self.role == "super_admin")
+  end
 
   def self.new(attributes = nil, options = {})
     user = super
@@ -229,11 +243,11 @@ class User < ActiveRecord::Base
   end
 
   def create_default_list
-    puts "to email list"
-    e=Email.new
-    e.email=self.email
+    # puts "Adding to weekly to email list"
+    e = Email.new
+    e.email = self.email
     e.save
-    puts "creating default list"
+    # puts "creating default list"
 
     BookmarkList.create(:name => "Bookmarks", :description => "Bookmarks", :public => false, 
                         :featured => false, :main_bookmarks_list => true, :user_id => self.id)
@@ -242,9 +256,9 @@ class User < ActiveRecord::Base
                         :featured => false, :main_bookmarks_list => false, :user_id => self.id)
 
     # Follow all top picks lists
-    BookmarkList.where(:featured => true).find_each do |top_list|
-      BookmarkListsUsers.create(:bookmark_list_id => top_list.id, :user_id => self.id)
-    end
+    # BookmarkList.where(:featured => true).find_each do |top_list|
+    #   BookmarkListsUsers.create(:bookmark_list_id => top_list.id, :user_id => self.id)
+    # end
   end
 
 

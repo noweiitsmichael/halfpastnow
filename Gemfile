@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
+
 gem 'rails', '3.2.3'
 
 # Bundle edge Rails instead:
@@ -8,12 +9,13 @@ gem 'rails', '3.2.3'
 gem 'pg'
 gem 'thin'
 gem 'newrelic_rpm'
-
+gem 'friendly_id'
+gem 'tire'
 # gem 'thinking-sphinx', '2.0.11'
 # gem 'flying-sphinx',   '0.6.4'
 
 gem 'admin_data', '>= 1.1.16'
-
+gem "geocoder"
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -21,7 +23,9 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.2'
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-datatables-rails'
+  gem 'asset_sync'
 end
+gem 'quiet_assets'
 
 #fancy jquery stuff
 gem 'jquery-rails'
@@ -30,6 +34,7 @@ gem 'jcrop-rails'
 gem 'htmlentities'
 gem 'nokogiri', '>= 1.4.4'
 gem 'sanitize'
+gem 'httparty'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -76,6 +81,8 @@ gem 'delayed_job_active_record'
 
 gem 'therubyracer'
 gem 'will_paginate'
+gem 'ajax_pagination'
+gem 'will_paginate-bootstrap'
 gem 'oink' #memory logging
 # gem "librato-metrics" #logging/error reporting to Liberato add-on
 
@@ -86,6 +93,7 @@ gem 'dalli'
 # Email via mandrill
 gem 'mandrill-api'
 
+<<<<<<< HEAD
 gem 'quiet_assets'
 
 gem 'mechanize'
@@ -99,6 +107,10 @@ group :development do
 end
 
 
+=======
+#yelp
+gem 'yelpster'
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 
 # gem 'eventfulapi'
 # gem 'eventbrite-client'

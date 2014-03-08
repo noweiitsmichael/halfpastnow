@@ -22,6 +22,9 @@
 every 1.day, :at => '12:00 am' do 
 	rake "update_occurrences"
 end
+every 1.day, :at => '11:00 am' do
+  rake "update_occurrences_slug"
+end
 
 # every :monday, :at => '12:00 am' do
 # 	rake "send_emails" 

@@ -1,23 +1,25 @@
-<div>
-	<div id="combo_event_list">	
-		<%= render :partial => "event_list", :locals => { :occurrences => @occurrences, :offset => @offset } %>
-	</div>
+<script>
+  $('.flickr_pagination a').click(function(){
+    $("#related_events .main .inline .events,#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+  })
+  $('.flickr_pagination a').attr('data-remote', 'true');
+  $(".total_number").text("<%= @allOccurrences.count %>");
+  $("img.unveil").unveil();
 
-	<div id="combo_tag_list">
-		<%# render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => nil } %>
-		<%= render :partial => "tag_list", :locals => { :tagCounts => @tagCounts, :parentTags => @parentTags } %>
-	</div>
+</script>
+<%= (will_paginate @occurrences, previous_label: h("<"), next_label: h(">"),class: "flickr_pagination") if @root_page.nil?%>
 
-	<div id="combo_advanced_tag_list">
-		<%# render :partial => "tag_list", :locals => { :occurringTags => @occurringTags, :parentTags => @parentTags } %>
-		<%= render :partial => "tag_list", :locals => { :tagCounts => @tagCounts, :parentTags => @parentTags } %>
-	</div>
+<% if params[:type].present? and params[:type] == 'ads' %>
+  <% @occurrences.each_with_index do |occurrence, index| %>
+    <% if index == 0 and !@advertisement.nil? %>
+      <%= render :partial => "events/ads", :locals => { :advertisement => @advertisement } %>
+    <% else %>
+      <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
+    <% end %>
+  <% end %>
+<% else %>
+  <% @occurrences.each_with_index do |occurrence, index| %>
+    <%= render :partial => "events/new_splash_event_element", :locals => { :occurrence => occurrence } %>
+  <% end %>
 
-	<div id="combo_andtag_list">
-		<%= render :partial => "andtags_list", :locals => { :tagCounts => @tagCounts } %>
-	</div>
-
-	<div id="combo_total_occurrences">
-		<%= @allOccurrences.size %>
-	</div>
-</div>
+<% end %>

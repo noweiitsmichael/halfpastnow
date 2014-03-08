@@ -11,7 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20131211230326) do
+=======
+ActiveRecord::Schema.define(:version => 20140122103350) do
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 
   create_table "acts", :force => true do |t|
     t.string   "name"
@@ -55,6 +59,7 @@ ActiveRecord::Schema.define(:version => 20131211230326) do
   add_index "acts_tags", ["tag_id"], :name => "index_acts_tags_on_tag_id"
 
   create_table "advertisements", :force => true do |t|
+<<<<<<< HEAD
     t.string   "type"
     t.datetime "start"
     t.datetime "end"
@@ -71,6 +76,26 @@ ActiveRecord::Schema.define(:version => 20131211230326) do
     t.integer  "phone"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+=======
+    t.integer  "user_id"
+    t.string   "adv_type"
+    t.string   "title"
+    t.text     "description"
+    t.string   "name"
+    t.string   "email"
+    t.integer  "phone"
+    t.string   "advertiser"
+    t.string   "image"
+    t.integer  "weight",      :default => 1
+    t.string   "placement"
+    t.datetime "start"
+    t.datetime "end"
+    t.integer  "views"
+    t.integer  "clicks"
+    t.string   "target_url"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
   end
 
   create_table "bookmark_lists", :force => true do |t|
@@ -229,6 +254,25 @@ ActiveRecord::Schema.define(:version => 20131211230326) do
     t.datetime "updated_at",    :null => false
   end
 
+  create_table "neighborhoods", :force => true do |t|
+    t.string   "city"
+    t.string   "name"
+    t.string   "state"
+    t.string   "state_code"
+    t.string   "country"
+    t.string   "country_code"
+    t.string   "url"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "n_id"
+    t.text     "reference"
+  end
+
+  create_table "neighborhoods_venues", :id => false, :force => true do |t|
+    t.integer "neighborhood_id"
+    t.integer "venue_id"
+  end
+
   create_table "occurrences", :force => true do |t|
     t.datetime "start"
     t.datetime "end"
@@ -373,8 +417,8 @@ ActiveRecord::Schema.define(:version => 20131211230326) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "email",                  :default => "",   :null => false
+    t.string   "encrypted_password",     :default => "",   :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -396,6 +440,7 @@ ActiveRecord::Schema.define(:version => 20131211230326) do
     t.string   "role"
     t.string   "ref"
     t.boolean  "subscribe"
+    t.boolean  "auto_share",             :default => true
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
@@ -407,6 +452,13 @@ ActiveRecord::Schema.define(:version => 20131211230326) do
   end
 
   add_index "users_roles", ["user_id", "role_id"], :name => "index_users_roles_on_user_id_and_role_id"
+
+  create_table "venue_neighbourhood_fetches", :force => true do |t|
+    t.date     "start_date"
+    t.integer  "count"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "venues", :force => true do |t|
     t.string   "name"

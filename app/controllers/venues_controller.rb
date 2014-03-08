@@ -56,10 +56,15 @@ class VenuesController < ApplicationController
   # GET /venues/1
   # GET /venues/1.json
   def show
+<<<<<<< HEAD
 
     @fullmode = (!params[:fullmode].to_s.empty?) || (@mobileMode)
 
     # @fullmode = !params[:fullmode].to_s.empty?
+=======
+    params[:fullmode]=true
+    @fullmode = !params[:fullmode].to_s.empty?
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
     # if(@mobileMode)
     #     unless params[:format].to_s.eql? "mobile"
     #       redirect_to :action => "android"  
@@ -70,14 +75,19 @@ class VenuesController < ApplicationController
     # end
     @modeType = "venue"
 
+    #ads
+    @advertisement = Advertisement.where(:placement => 'details').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
+    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
+
     @venue = Venue.find(params[:id])
     @pageTitle = @venue.name + " | half past now."
 
     @venue.clicks += 1
     @venue.save
     if(current_user)
-      bookmark = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => @venue.id, :bookmark_list_id => current_user.main_bookmark_list.id).first
-      @bookmarkId = bookmark.nil? ? nil : bookmark.id
+      @bookmarks = Bookmark.where(:bookmarked_type => 'Venue', :bookmarked_id => @venue.id, :bookmark_list_id => current_user.bookmark_lists.collect(&:id))
+      @bookmark_lists_ids = @bookmarks.empty? ? [0] : @bookmarks.collect(&:bookmark_list_id)
+      #@bookmarkId = bookmark.nil? ? nil : bookmark.id
     else
       @bookmarkId = nil
     end
@@ -237,10 +247,9 @@ class VenuesController < ApplicationController
   def fromRaw
     @venue = Venue.find(params[:id])
     puts "creating from raw......."
-    pp params
+    # pp params
     @event = @venue.events.build()
     @event.user_id = current_user.id
-    y params
     @event.update_attributes!(params[:event])
     unless params[:bookmark_lists_add].blank?
       Bookmark.create(:bookmarked_type => "Occurrence", :bookmarked_id => @event.nextOccurrence.id, :bookmark_list_id => params[:bookmark_lists_add] )
@@ -274,6 +283,12 @@ class VenuesController < ApplicationController
       @raw_event.save
       @event.completion = @event.completedness
       @event.save
+      @event.occurrences.each do |occ|
+        if occ.slug == nil
+          occ.slug = "#{occ.event.title.truncate(40)}-at-#{occ.event.venue.name.truncate(40)}" rescue "#{occ.id}"
+          occ.save
+        end
+      end
       render json: {:event_id => @event.occurrences.first.id, :event_title => @event.title}
     else
       render json: {:event_id => nil}
@@ -413,6 +428,12 @@ class VenuesController < ApplicationController
       if @event.save!
         @event.completion = @event.completedness
         @event.save
+        @event.occurrences.each do |occ|
+          if occ.slug == nil
+            occ.slug = "#{occ.event.title.truncate(40)}-at-#{occ.event.venue.name.truncate(40)}" rescue "#{occ.id}"
+            occ.save
+          end
+        end
         format.html { redirect_to :action => :list_events, :id => @venue.id }
         format.json { render json: { :from => "eventEdit", :result => true } }
       else

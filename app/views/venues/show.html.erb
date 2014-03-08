@@ -1,15 +1,321 @@
-<% content_for :meta do %>
-     <meta property="og:type"                 content="halfpastnow:event"/> 
-     <meta property="og:url"                  content="http://www.halfpastnow.com/venues/show/<%= @venue.id%>?fullmode=true"/>
-     <meta property="og:site_name"            content="halfpastnow"/>
-     <meta property="og:image"                content="<%=@venue.pictures.first ? @venue.pictures.first.image_url(:large) : ""%>"/>
-     <meta property="og:title"                content="<%=@venue.name%> on halfpastnow.com">
-     <meta property="og:description"          content="<%=strip_tags(@venue.description)%>"/> 
-<% end %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Halfpastnow - Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,900,700italic,900italic,700,500italic,500,400italic,300italic,100italic' rel='stylesheet' type='text/css'>
+  <% content_for :meta do %>
+    <meta property="og:type" content="halfpastnow:event"/>
+    <meta property="og:url" content="http://www.halfpastnow.com/venues/show/<%= @venue.id %>?fullmode=true"/>
+    <meta property="og:site_name" content="halfpastnow"/>
+    <meta property="og:image" content="<%= @venue.pictures.first ? @venue.pictures.first.image_url(:large) : "" %>"/>
+    <meta property="og:title" content="<%= @venue.name %> on halfpastnow.com">
+    <meta property="og:description" content="<%= strip_tags(@venue.description) %>"/>
+  <% end %>
+</head>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "elastislide", "details" %>
+  <%= javascript_include_tag "jquery.elastislide" %>
+  <script type="text/javascript">
+    var id = "<%= @venue.id  %>";
+    var slug =  "<%= @venue.slug  %>"
+    var type = "venue";
+    var root_url = "http://www.halfpastnow.com/";
+    var link = root_url + 'events/austin/' + slug
+    var facebook_url = root_url + 'events/austin/' + slug
+    var app_id = "475386955806720";
+    var redirect = "http://www.halfpastnow.com";
+    //var bookmark_id = "<#%= @bookmarkId.to_s %>";
+    var attending_id = "<%= @attendingId.to_s %>";
+    var bookmarkList_id = id;
+    var auto_share = "<%= current_user ? current_user.auto_share : false %>";
+    var toggle = false;
+   // console.log(id + ' ' + bookmark_id)
+    $(function () {
 
+
+      window.fbAsyncInit = function () {
+        console.log("Loaded FB 2");
+        FB.init({
+          appId: '475386955806720', // App ID
+          status: true, // check login status
+          cookie: true, // enable cookies to allow the server to access the session
+          xfbml: true  // parse XFBML
+        });
+      };
+
+      // Load the SDK Asynchronously
+      (function (d) {
+        var js, id = 'facebook-jssdk';
+        if (d.getElementById(id)) {
+          return;
+        }
+        js = d.createElement('script');
+        js.id = id;
+        js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        d.getElementsByTagName('head')[0].appendChild(js);
+      }(document));// delete below
+
+    });
+
+    // advertisements
+    $(function () {
+      $('.ad-contaniner .ad-details').on('click',function(){
+        var id = $(this).data('id');
+        var name = $(this).data('prop');
+        var value = $(this).data('value');
+        $.post('/admin/advertisements/update_ads_details',{pk: id, name: name, value: value })
+      });
+    });
+
+    $(function () {
+      console.log("Loaded share stuff");
+
+      // The "bookmark" class won't be here if a user isn't logged in
+      $('.bookmark-share .bookmark').click(function () {
+        console.log("Fullmode bookmark");
+        var that = $(this);
+        if (that.hasClass('add')) {
+          $('#bookmark_list_collection').prop('selectedIndex', -1);
+          $('#bookmark_modal').modal('show')
+        }
+        else if (that.hasClass('add-more')) {
+          $('#bookmark_list_collection').prop('selectedIndex', -1);
+          $('#bookmark_modal').modal('show');
+        }
+      });
+
+      // The "bookmark popup"
+      $('.bookmark-share .bookmark_popup').click(function () {
+        console.log("bookmark popup");
+        var bookmarked_type = "";
+        var bookmark_list_id = $('#bookmark_list_collection').val();
+        var bookmarked_comments = $('#bookmark_group_comment').val();
+        // var lnk = 'http://www.halfpastnow.com/mobile/og/'+id;
+        var lnk = 'http://www.halfpastnow.com/events/show/' + id + '?fullmode=true';
+        console.log("Bookmarks: " + lnk);
+        console.log("bookmark_list_id : " + bookmark_list_id);
+        console.log("Bookmark comment: " + bookmarked_comments);
+        switch (type) {
+          case "event":
+            (bookmarked_type = "Occurrence") || (bookmarked_type = "Recurrence");
+            if(auto_share == "true"){
+              console.log("inside:" + auto_share);
+              FB.api(
+                '/me/halfpastnow:bookmark',
+                'post',
+                { event: lnk },
+                function (response) {
+                  if (!response || response.error) {
+                    // alert('Error occured'+response);
+                  } else {
+                    // alert('Post event was successful! Action ID: ' + response.id);
+                  }
+                });
+            }
+            break;
+          case "venue":
+            bookmarked_type = "Venue";
+            break;
+          case "act":
+            bookmarked_type = "Act";
+            break;
+        }
+        ;
+        $.getJSON('/bookmarks/custom_create', { bookmark: { "type": bookmarked_type, "id": id, "bookmark_list_id": bookmark_list_id, "comment": bookmarked_comments } }, function (data) {
+          $('#bookmark_modal').modal('hide');
+          $("select#bookmark_list_collection option[value= "+ data +"]").hide();
+          $('.bookmark-share .bookmark').addClass('add-more').removeClass('add');
+          $('.bookmark-share .bookmark').html("<img src='/assets/images/icon-bookmark-add-more-large.png'/>");
+        });
+      });
+
+      // adding new bookmark group in popup
+      $('#add_new_bookmark_group_btn').click(function () {
+        var name = $('#new_bookmark_group_field').val();
+        console.log(name);
+        $.get('/bookmarks/create_bookmark_group', { "name": name });
+      });
+
+      // This "attending" class won't be here if the user isn't logged in
+      $('.attending').click(function (e) {
+        console.log("checking....")
+        var that = $(this);
+        if (that.hasClass('add')) {
+          var bookmarked_type = "Occurrence";
+          var lnk = 'http://www.halfpastnow.com/events/show/' + id + '?fullmode=true';
+          console.log("Attend: " + lnk);
+          FB.api(
+            '/me/halfpastnow:attend',
+            'post',
+            { event: lnk },
+            function (response) {
+              // if (!response || response.error) {
+              //    alert('Error occured'+response);
+              // } else {
+              //    alert('Post event was successful! Action ID: ' + response.id);
+              // }
+            });
+
+          $.getJSON('/bookmarks/attending_create', { bookmark: { "type": bookmarked_type, "id": id } }, function (data) {
+            console.log("new attending bookmark");
+            that.removeClass('add').addClass('remove');
+            that.text("Planning on Attending");
+            $(".re-rsvp").text("Visit RSVP Site Again");
+            attending_id = data;
+          });
+        }
+        else if (that.hasClass('remove')) {
+          e.preventDefault();
+          $.getJSON('/bookmarks/destroy/' + attending_id, function (data) {
+            that.addClass('add').removeClass('remove');
+            that.text("No longer attending (click again to attend!)");
+            $(".re-rsvp").text("");
+          });
+        }
+      });
+
+      $('.bookmark-share').click(function () {
+        console.log("Anything?????");
+      });
+
+      $('.bookmark-share .email').click(function () {
+        var url = 'mailto:?body=' + link;
+        window.open(url, '_blank');
+        window.focus();
+      });
+
+      $('.bookmark-share .facebook').click(function () {
+
+        var url = "http://www.facebook.com/sharer.php?u=" + facebook_url;
+        window.open(url, '_blank');
+        window.focus();
+      });
+      $('.act-name').click(function () {
+
+<<<<<<< HEAD
 	
+=======
+        console.log($(this).attr('act_id'))
+        window.location.href = window.location.origin + "/acts/show/" + $(this).attr('act_id')
+      })
+
+      $('.bookmark-share .twitter').click(function () {
+        // var url = 'https://twitter.com/intent/tweet?text=' + link;
+        var title = "<%= @venue.name  %>";
+
+        var url = 'http://twitter.com/intent/tweet?text=' + title.replace(/(<([^>]+|)>)/ig, "").replace("&amp;", "and").substring(0, 50) + ' ' + link + ' @halfpastnow %23discoveraustin';
+
+        window.open(url, '_blank');
+        window.focus();
+      });
+
+      $('.bookmark-share .comment-tp .add-tp').click(function () {
+        var that = $('.add-tp');
+        if (toggle) {
+          $('.popup-box').hide();
+          $('.popup-box-1').hide();
+        }
+        else {
+          if (that.hasClass('add')) {
+            submit_comment();
+            $('.popup-box').show();
+          }
+          else {
+            $('.popup-box-1').show();
+          }
+
+        }
+        toggle = !toggle;
+      });
+    });
+    function submit_comment() {
+      var text = $('.comment-text').val();
+      $('.popup-box').hide();
+      that = $('.add-tp');
+      toggle = !toggle;
+      that.removeClass('add').addClass('remove');
+      $.getJSON('/bookmarks/add_to_featuredlist', { bookmark: { "type": "Occurrence", "id": <%= @venue.id  %>, "comment": text } }, function (data) {
+      //  bookmark_id = data;
+      });
+
+      $(".comment-text-1").val(text);
+    }
+    function deleteTP() {
+
+      $('.popup-box-1').hide();
+      toggle = !toggle;
+      that = $('.add-tp');
+      $.getJSON('/bookmarks/destroyBookmarkedList/' + bookmarkList_id, function (data) {
+        that.removeClass('remove').addClass('add');
+      });
+    }
+    function edit_comment() {
+      $('.popup-box-1').hide();
+      toggle = !toggle;
+      var text = $('.comment-text-1').val();
+      console.log("Edit comment" + text);
+      $.getJSON('/bookmarks/update_comment', { bookmark: { "type": "Occurrence", "id": bookmarkList_id, "comment": text } }, function (data) {
+      //  bookmark_id = data;
+
+      });
+    }
+  </script>
+
+  <script>
+    function postList() {
+      FB.api(
+        '/me/halfpastnow:subscribe',
+        'post',
+        { toppick: "<%= @url %>" },
+        function (response) {
+          if (!response || response.error) {
+            // alert('Error occured'+response);
+          } else {
+            // alert('Post list was successful! Action ID: ' + response.id);
+          }
+        });
+    }
 
 
+    function likeit() {
+      console.log("<%= @url1 %>")
+      FB.api(
+        '/me/og.likes',
+        'post',
+        { object: "<%= @url1 %>" },
+        function (response) {
+          if (!response || response.error) {
+            // alert('Error occured'+response);
+          } else {
+            // alert('Successfully post on your timeline');
+          }
+        });
+      window.open(url, '_blank');
+      window.focus();
+    }
+
+  </script>
+<% end %>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
+
+<% content_for :body do %>
+
+  <section class="details">
+    <section class="recommend-events">
+      <div class="container">
+
+      </div>
+    </section>
+    <div class="container">
+      <div class="event-main">
+        <h2>Venue: <%= @venue.name %></h2>
+
+        <div class="row">
+
+<<<<<<< HEAD
 <% content_for :mode_body do %>
 <%= javascript_include_tag "galleria-1.2.8.min" %>
 	<div class="col-1">
@@ -56,14 +362,228 @@
             <% @venue.pictures.each do |pic| %>
 			    <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @venue.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
 		    <% end %>
+=======
+          <div class="right">
+            <div class="share bookmark-share">
+              <span onmouseover='$(this).tooltip()' data-toggle="tooltip" title="Bookmark">
+              <% unless user_signed_in? %>
+                <%= image_tag("images/icon-bookmark-large.png", :class => "before_login") %> &nbsp;
+                <script>
+                  $(window).load(function () {
+                    $('.before_login').click(function () {
+                      window.location.href = window.location.origin + "/login"
+                    })
+                  })
+                </script>
+              <% else %>
+                <a href="#">
+                  <span class="bookmark-button <%= current_user ? "bookmark" : "" %> <%= @bookmarks.empty? ? "add" : "add-more"%>" <%= current_user ? "" : "linkto='shunt'" %>>     
+                    <%= current_user ? "" : "<a href='/login'>" %>
+                      <%= @bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
+                    <%= current_user ? "" : "</a>" %>
+	                </span>
+                </a>
+              <% end %>
+                </span>
+              <span onmouseover='$(this).tooltip()' data-toggle="tooltip" title="Invite Friends">
+                <a href="#" class="twitter"><img src="/assets/images/icon-twitter.png" alt=""/></a>
+                <a href="#" class="facebook"><img src="/assets/images/icon-facebook.png" alt=""/></a>
+              </span>
+              <!-- Modal -->
+              <div class="modal fade hide" id="bookmark_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myModalLabel">Bookmark This Activity</h4>
+                    </div>
+                    <div class="modal-body">
+                      <!--<h2><%#= @event.title %></h2>-->
+                      <!--<hr>-->
+
+                      <div class="form-group">
+                        <%= label_tag :bookmark_group, class: 'control-label' do %>
+                          <span>Add to My List:</span>
+                          <span class="pull-right"><%= link_to "Create New", '#', onClick: "$('#new_bookmarklist_block').show();" %></span>
+                        <% end %>
+                        <div class="form-group hide" id="new_bookmarklist_block" style="display:none">
+                          <form class="form-inline">
+                            <%= text_field_tag :new_bookmark_group_field, '', placeholder: "New", style: 'width:65%' %>
+                            <%= link_to "Add", "#", class: 'btn btn-danger', id: "add_new_bookmark_group_btn", style: "margin-bottom:0" %>
+                          </form>
+                        </div>
+                        <% bookmarks_list = current_user ? current_user.bookmark_lists.where("(description <> 'Attending' or description is null) and bookmark_lists.id not in (?)", @bookmark_lists_ids).collect { |bl| [bl.name, bl.id] } : [] %>
+                        <%= select_tag :bookmark_list_collection, options_for_select(bookmarks_list), class: 'input-block-level' %>
+                      </div>
+                      <div class="form-group">
+                        <%= label_tag :bookmark_group_comment, 'Add comments:', class: 'control-label' %>
+                        <%= text_field_tag :bookmark_group_comment, '', class: 'input-block-level', placeholder: "Comments" %>
+                      </div>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal" onClick="$('#new_bookmarklist_block').hide();">Cancel</button>
+                      <button type="button" class="btn btn-danger bookmark_popup ">Bookmark It</button>
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+              <!-- /.modal -->
+            </div>
+          </div>
         </div>
-        <% end %>
-        <script type="text/javascript">
-            Galleria.loadTheme('/assets/galleria.classic.min.js');
-            Galleria.run('#galleria');
-        </script>
-        
-      	<div style="text-align:right;padding-top:10px;"><a href="/venues/edit/<%=@venue.id%>" target="_blank">edit</a> </div>
-	</div>
-	<div class="clear"></div>
+        <div class="clearfix">
+          <div class="left">
+            <address>
+              <h4><%= @venue.name %></h4>
+              <%= @venue.address %>
+              <br>
+              <%= @venue.city + ", " + @venue.state + " " + @venue.zip.to_s %>
+              <br>
+              <% unless @venue.phonenumber.to_s.empty? && @venue.url.to_s.empty? %>
+                <br/>
+              <% end %>
+              <%= @venue.phonenumber %>
+              <br>
+            </address>
+            <h4>Dates &amp; Times</h4>
+            <ul>
+              <%= raw @venue.hours %>
+            </ul>
+          </div>
+        </div>
+        <div class="accordion" id="details-container">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#details-container" href="#details">Details
+              <i class="caret pull-right"></i></a>
+          </div>
+          <div id="details" class="accordion-body collapse in">
+            <div class="accordion-inner">
+              <%= raw(@venue.description) %>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="accordion" id="calender-container">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#calender-container" href="#neighbourhood">Calender
+              <i class="caret pull-right"></i></a>
+          </div>
+          <div id="neighbourhood" class="accordion-body collapse in">
+            <div class="accordion-inner product-list clearfix">
+              <% unless @occurrences.length == 0 && @recurrences.length == 0 %>
+                <%= render :partial => "events/calendar", :locals => {:occurrences => @occurrences, :recurrences => @recurrences, :options => {:fullmode => @fullmode, :venue => true}} %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="event-other-details">
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#photos">Photos</a></li>
+
+        </ul>
+        <div class="tab-content">
+          <div id="photos" class="tab-pane fade in active">
+            <div class="gallery">
+
+              <div class="image-preview">
+                <% unless (@venue.fb_picture.blank? && @venue.pictures.nil?) %>
+                  <div id="galleria" style="height:367px;width:550px;">
+                    <% unless @venue.fb_picture.blank? %>
+                      <img src="<%= @venue.fb_picture %>" data-title="<%= @venue.name %>">
+                    <% end %>
+                    <% @venue.pictures.each do |pic| %>
+                      <a href="<%= pic.image_url(:large).to_s %>"><img src="<%= pic.image_url(:tiny).to_s %>" data-title="<%= @venue.name %>" data-big="<%= pic.image_url(:full).to_s %>"></a>
+                    <% end %>
+                  </div>
+                <% end %>
+                <script type="text/javascript">
+                  Galleria.loadTheme('/assets/galleria.classic.min.js');
+                  Galleria.run('#galleria');
+
+                </script>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="accordion" id="map-container">
+          <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#map-container" href="#map"><%= @venue.name %>
+              <i class="caret pull-right"></i></a>
+          </div>
+          <div id="map" class="accordion-body collapse in">
+            <div class="accordion-inner">
+              <% location = CGI::escape("#{@venue.name},#{@venue.address},#{@venue.city},#{@venue.state},#{@venue.zip.to_s}") %>
+
+              <a class="map-link" href="http://maps.google.com/maps?q=<%= location %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=550x300&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @venue.latitude %>,<%= @venue.longitude %>&sensor=false"/></a>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="ad-contaniner">
+          <% if @advertisement.present? %>
+            <div class="ad-details" data-id = "<%= @advertisement.id %>" data-prop = "clicks" data-value = "<%= @advertisement.clicks.to_i + 1 %>">
+              <%= link_to @advertisement.target_url.present? ? @advertisement.target_url : '#', target: :_blank do %>
+                <%= image_tag @advertisement.image.full, alt: "Advertisement" %>
+              <% end %>
+            </div>
+          <% else %>
+            <img src="/assets/images/ad02.gif" alt=""/>
+          <% end %>
+          <br>
+          <span class="muted">Advertisement</span>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
+        </div>
+      </div>
+    </div>
+  </section>
+  <% if user_signed_in?  %>
+    <% if current_user.role == "admin" or current_user.role == "super_admin" %>
+      <div style="text-align:center;padding-top:10px;"><a href="/venues/edit/<%=@venue.id%>" target="_blank">edit</a> </div>
+    <% end %>
+  <% end %>
 <% end %>
+
+<script type="text/javascript">
+
+  // example how to integrate with a previewer
+
+  var current = 0,
+    $preview = $('#preview'),
+    $carouselEl = $('#carousel'),
+    $carouselItems = $carouselEl.children(),
+    carousel = $carouselEl.elastislide({
+      current: current,
+      minItems: 3,
+      onClick: function (el, pos, evt) {
+
+        changeImage(el, pos);
+        evt.preventDefault();
+
+      },
+      onReady: function () {
+
+        changeImage($carouselItems.eq(current), current);
+
+      }
+    });
+
+  function changeImage(el, pos) {
+    $preview.attr('src', el.data('preview'));
+    $carouselItems.removeClass('current-img');
+    el.addClass('current-img');
+    carousel.setCurrent(pos);
+  }
+
+
+</script>
+
+</body>
+</html>

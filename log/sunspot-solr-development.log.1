@@ -1,0 +1,78 @@
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.SolrResourceLoader locateSolrHome
+INFO: JNDI not configured for solr (NoInitialContextEx)
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.SolrResourceLoader locateSolrHome
+INFO: using system property solr.solr.home: /Users/michael/Sites/myapp/solr
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.SolrResourceLoader <init>
+INFO: Solr home set to '/Users/michael/Sites/myapp/solr/'
+Dec 10, 2013 11:58:16 AM org.apache.solr.servlet.SolrDispatchFilter init
+INFO: SolrDispatchFilter.init()
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.SolrResourceLoader locateSolrHome
+INFO: JNDI not configured for solr (NoInitialContextEx)
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.SolrResourceLoader locateSolrHome
+INFO: using system property solr.solr.home: /Users/michael/Sites/myapp/solr
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.CoreContainer$Initializer initialize
+INFO: looking for solr.xml: /Users/michael/Sites/myapp/solr/solr.xml
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.SolrResourceLoader locateSolrHome
+INFO: JNDI not configured for solr (NoInitialContextEx)
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.SolrResourceLoader locateSolrHome
+INFO: using system property solr.solr.home: /Users/michael/Sites/myapp/solr
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.CoreContainer <init>
+INFO: New CoreContainer: solrHome=/Users/michael/Sites/myapp/solr/ instance=1382875200
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.SolrResourceLoader <init>
+INFO: Solr home set to '/Users/michael/Sites/myapp/solr/'
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.SolrResourceLoader <init>
+INFO: Solr home set to '/Users/michael/Sites/myapp/solr/./'
+Dec 10, 2013 11:58:16 AM org.apache.solr.common.SolrException log
+SEVERE: java.lang.RuntimeException: Can't find resource 'solrconfig.xml' in classpath or '/Users/michael/Sites/myapp/solr/./conf/', cwd=/Users/michael/.rvm/gems/ruby-1.9.3-p0@rails313/gems/sunspot_solr-2.0.0/solr
+	at org.apache.solr.core.SolrResourceLoader.openResource(SolrResourceLoader.java:268)
+	at org.apache.solr.core.SolrResourceLoader.openConfig(SolrResourceLoader.java:234)
+	at org.apache.solr.core.Config.<init>(Config.java:141)
+	at org.apache.solr.core.SolrConfig.<init>(SolrConfig.java:131)
+	at org.apache.solr.core.CoreContainer.create(CoreContainer.java:435)
+	at org.apache.solr.core.CoreContainer.load(CoreContainer.java:316)
+	at org.apache.solr.core.CoreContainer$Initializer.initialize(CoreContainer.java:133)
+	at org.apache.solr.servlet.SolrDispatchFilter.init(SolrDispatchFilter.java:94)
+	at org.mortbay.jetty.servlet.FilterHolder.doStart(FilterHolder.java:97)
+	at org.mortbay.component.AbstractLifeCycle.start(AbstractLifeCycle.java:50)
+	at org.mortbay.jetty.servlet.ServletHandler.initialize(ServletHandler.java:713)
+	at org.mortbay.jetty.servlet.Context.startContext(Context.java:140)
+	at org.mortbay.jetty.webapp.WebAppContext.startContext(WebAppContext.java:1282)
+	at org.mortbay.jetty.handler.ContextHandler.doStart(ContextHandler.java:518)
+	at org.mortbay.jetty.webapp.WebAppContext.doStart(WebAppContext.java:499)
+	at org.mortbay.component.AbstractLifeCycle.start(AbstractLifeCycle.java:50)
+	at org.mortbay.jetty.handler.HandlerCollection.doStart(HandlerCollection.java:152)
+	at org.mortbay.jetty.handler.ContextHandlerCollection.doStart(ContextHandlerCollection.java:156)
+	at org.mortbay.component.AbstractLifeCycle.start(AbstractLifeCycle.java:50)
+	at org.mortbay.jetty.handler.HandlerCollection.doStart(HandlerCollection.java:152)
+	at org.mortbay.component.AbstractLifeCycle.start(AbstractLifeCycle.java:50)
+	at org.mortbay.jetty.handler.HandlerWrapper.doStart(HandlerWrapper.java:130)
+	at org.mortbay.jetty.Server.doStart(Server.java:224)
+	at org.mortbay.component.AbstractLifeCycle.start(AbstractLifeCycle.java:50)
+	at org.mortbay.xml.XmlConfiguration.main(XmlConfiguration.java:985)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.mortbay.start.Main.invokeMain(Main.java:194)
+	at org.mortbay.start.Main.start(Main.java:534)
+	at org.mortbay.start.Main.start(Main.java:441)
+	at org.mortbay.start.Main.main(Main.java:119)
+
+Dec 10, 2013 11:58:16 AM org.apache.solr.servlet.SolrDispatchFilter init
+INFO: user.dir=/Users/michael/.rvm/gems/ruby-1.9.3-p0@rails313/gems/sunspot_solr-2.0.0/solr
+Dec 10, 2013 11:58:16 AM org.apache.solr.servlet.SolrDispatchFilter init
+INFO: SolrDispatchFilter.init() done
+Dec 10, 2013 11:58:16 AM org.apache.solr.servlet.SolrServlet init
+INFO: SolrServlet.init()
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.SolrResourceLoader locateSolrHome
+INFO: JNDI not configured for solr (NoInitialContextEx)
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.SolrResourceLoader locateSolrHome
+INFO: using system property solr.solr.home: /Users/michael/Sites/myapp/solr
+Dec 10, 2013 11:58:16 AM org.apache.solr.servlet.SolrServlet init
+INFO: SolrServlet.init() done
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.SolrResourceLoader locateSolrHome
+INFO: JNDI not configured for solr (NoInitialContextEx)
+Dec 10, 2013 11:58:16 AM org.apache.solr.core.SolrResourceLoader locateSolrHome
+INFO: using system property solr.solr.home: /Users/michael/Sites/myapp/solr
+Dec 10, 2013 11:58:16 AM org.apache.solr.servlet.SolrUpdateServlet init
+INFO: SolrUpdateServlet.init() done

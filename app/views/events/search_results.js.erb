@@ -1,0 +1,12 @@
+var results = "<%= escape_javascript render :partial => "search_results" %>"
+<% if params[:root] %>
+ $("#<%= params[:location] %>").html(results)
+slider_arrows(location)
+<% else %>
+ $("#related_events .main .inline .events").html("<br>"+results);
+$("#events .main .inline .events").html("<br>"+results)
+//$(".total_number").text($("#related_events .main .inline .events").find('article').length);
+$(".total_number").text("<%= @allOccurrences.count %>");
+$("img.unveil").unveil();
+<% end %>
+

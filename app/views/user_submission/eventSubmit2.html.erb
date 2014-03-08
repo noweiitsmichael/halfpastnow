@@ -1,4 +1,5 @@
 <% content_for :header do %>
+  <%= stylesheet_link_tag  "details" %>
 	<div class="titlebar">
 		<div class="stay-on-target">
 			<h5>Event created successfully!</h5>
@@ -10,7 +11,11 @@
 <div id="info-content" class="padded">
 	Thanks for submitting the event! Your event is now live - you can preview your event here:
 	<br><br>
+<<<<<<< HEAD
 	<a href="/?event_id=<%= @event.nextOccurrence.id %>">http://www.halfpastnow.com/events/show/<%= @event.nextOccurrence.id %>?fullmode=true</a>
+=======
+	<a href="/events/austin/<%= @event.nextOccurrence.slug %>">http://www.halfpastnow.com/events/austin/<%= @event.nextOccurrence.slug %></a>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 </div>
 
 <% end %>

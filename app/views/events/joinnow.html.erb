@@ -1,0 +1,57 @@
+<% content_for :meta do %>
+  <meta class="meta-type"          property="og:type"                 content="website">
+  <meta class="meta-url"           property="og:url"                  content="http://www.halfpastnow.com">
+  <meta class="meta-image"         property="og:image"                content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png">
+  <meta class="meta-title"         property="og:title"                content="half past now | your couch will miss you">
+  <meta class="meta-description"   property="og:description"          content="Find the best events in Austin">
+<% end %>
+<% content_for :head do %>
+
+  <%= stylesheet_link_tag "custom_login" %>
+<% end %>
+<% content_for :code do %>
+
+<% end %>
+<% content_for :body do %>
+  <div id="fb-root"></div>
+  <% @footer = "no" %>
+  <% @page = "login" %>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=475386955806720";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+  <section class="login">
+    <div class="container">
+      <div class="section-title">
+        <h2 class="text-center">Friends with Benefits</h2>
+        <p class="lead text-center">Join now and receive event info tailored to your lifestyle, bookmark stuff you like, and get suggestions from our ATX explorers.</p>
+      </div>
+      <div class="clearfix">
+        <div class="span5 inline">
+          <h4>LOGIN UP VIA FACEBOOK</h4>
+        </div>
+        <div class="span1 inline"><h4>OR</h4></div>
+        <div class="span5 inline"><h4>CREATE AN ACCOUNT</h4></div>
+        <div class="left-pan"><a href="/users/auth/facebook"><img src="assets/fb.jpg" alt=""></a></div>
+        <div class="right-pan">
+          <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :validate => true,:html =>{:class => "signup"}) do |f| %>
+            <%= devise_error_messages! %>
+            <%= f.email_field :email, :placeholder=>"EMAIL" %>
+            <%= f.text_field :firstname, :placeholder=>"FIRST NAME" %>
+            <%= f.text_field :lastname, :placeholder=>"LAST NAME" %>
+            <%= f.password_field :password, :placeholder=>"PASSWORD" %>
+            <%= f.password_field :password_confirmation, :placeholder=>"CONFIRM PASSWORD" %>
+            <div class="clr"></div>
+            <%= f.submit "Join Now",:class => "btn-danger" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+
+

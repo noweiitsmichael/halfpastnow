@@ -18,6 +18,10 @@ class BookmarkListsController < ApplicationController
   def show
     @bookmarklist = BookmarkList.find(params[:id])
 
+    #ads
+    @advertisement = Advertisement.where(:placement => 'sidebar').where("start <= '#{Date.today}' AND advertisements.end >= '#{Date.today}'").order('weight ' 'desc').first
+    @advertisement.update_attributes(views: (@advertisement.views.to_i + 1)) unless @advertisement.nil?
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @bookmarklist }
@@ -98,4 +102,5 @@ class BookmarkListsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
 end

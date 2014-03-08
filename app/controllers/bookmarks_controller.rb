@@ -29,15 +29,11 @@ class BookmarksController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @bookmark = Bookmark.find(params[:id])
-    
-    respond_to do |format|
-	    if @bookmark.destroy
-	      format.html { redirect_to :back }
-	      format.json { head :no_content }
-	    else 
-	      format.html { redirect_to :back }
-		  format.json { render json: @bookmark.errors, status: :unprocessable_entity }
-		end
+    @bookmark.destroy
+    if request.xhr?
+      render json: 200
+    else
+      redirect_to :back
     end
   end
 
@@ -59,10 +55,13 @@ class BookmarksController < ApplicationController
   def custom_create
   	# puts params
 
+    bookmark_list_id = params[:bookmark][:bookmark_list_id]
   	id = params[:bookmark][:id]
   	type = params[:bookmark][:type]
+    comment = params[:bookmark][:comment]
 
-  	unless(Bookmark.where(:bookmarked_type => type, :bookmarked_id => id, :bookmark_list_id => current_user.main_bookmark_list.id).first.nil?)
+  	#unless(Bookmark.where(:bookmarked_type => type, :bookmarked_id => id, :bookmark_list_id => current_user.main_bookmark_list.id).first.nil?)
+    unless(Bookmark.where(:bookmarked_type => type, :bookmarked_id => id, :bookmark_list_id => bookmark_list_id).first.nil?)
   		puts "fail1"
   		respond_to do |format|
   			format.json {
@@ -71,22 +70,39 @@ class BookmarksController < ApplicationController
   		end
   	end
 
-  	@bookmark = current_user.main_bookmark_list.bookmarks.build
-  	@bookmark.bookmarked_id = id
+    if bookmark_list_id
+      bookmark_list = current_user.bookmark_lists.find bookmark_list_id
+      @bookmark = bookmark_list.bookmarks.build
+    else
+      @bookmark = current_user.main_bookmark_list.bookmarks.build
+    end
+
+    @bookmark.bookmarked_id = id
   	@bookmark.bookmarked_type = type
+    @bookmark.comment = comment
 
   	# pp @bookmark
 
   	respond_to do |format|
   		format.json {
 			if @bookmark.save!
-	      		render json: @bookmark.id
+	      		render json: bookmark_list_id ? bookmark_list_id : @bookmark.id
 			else 
 				puts "fail2"
 				render json: @bookmark.errors, status: :unprocessable_entity
 			end
 		}
     end
+  end
+
+  def create_bookmark_group
+    @bookmark_list = current_user.bookmark_lists.create(
+                                                        name: params[:name],
+                                                        public: false,
+                                                        featured: false,
+                                                        main_bookmarks_list: false
+                                                        )
+    #render json: "ok"
   end
 
   

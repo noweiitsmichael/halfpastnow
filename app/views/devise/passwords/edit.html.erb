@@ -1,20 +1,48 @@
-<% content_for :content do %>
 
-<h2>Change your password</h2>
 
-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
-  <%= devise_error_messages! %>
-  <%= f.hidden_field :reset_password_token %>
 
-  <div><%= f.label :password, "New password" %><br />
-  <%= f.password_field :password %></div>
-
-  <div><%= f.label :password_confirmation, "Confirm new password" %><br />
-  <%= f.password_field :password_confirmation %></div>
-
-  <div><%= f.submit "Change my password" %></div>
+<% content_for :meta do %>
+  <meta class="meta-type"          property="og:type"                 content="website">
+  <meta class="meta-url"           property="og:url"                  content="http://www.halfpastnow.com">
+  <meta class="meta-image"         property="og:image"                content="http://www.halfpastnow.com/assets/halfpastnow_final-square.png">
+  <meta class="meta-title"         property="og:title"                content="half past now | your couch will miss you">
+  <meta class="meta-description"   property="og:description"          content="Find the best events in Austin">
 <% end %>
-
-<%= render "links" %>
+<% content_for :head do %>
+  <% @page = "login" %>
+  <%= stylesheet_link_tag "custom_login" %>
+<% end %>
+<% content_for :code do %>
 
 <% end %>
+<% content_for :body do %>
+   <span id="reset_password_block">
+  <h2>Change your password</h2>
+
+  <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
+    <%= devise_error_messages! %>
+    <%= f.hidden_field :reset_password_token %>
+
+    <div><%= f.label :password, "New password" %><br />
+      <%= f.password_field :password %></div>
+
+    <div><%= f.label :password_confirmation, "Confirm new password" %><br />
+      <%= f.password_field :password_confirmation %></div>
+
+    <div><%= f.submit "Change my password" %></div>
+  <% end %>
+
+  <%= render "links" %>
+     </span>
+  <style>
+
+    #reset_password_block {
+      left: 30%;
+      position: relative;
+    }
+  </style>
+
+<% end %>
+
+
+

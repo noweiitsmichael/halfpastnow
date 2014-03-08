@@ -1,4 +1,6 @@
 class BookmarkList < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :name,use: :slugged
 	has_and_belongs_to_many :followingUsers, :class_name => "User", :join_table => "bookmark_lists_users"
 	belongs_to :user
 	# Bi-directional bookmarks association (find a user's bookmarked performers, and users who have bookmarked this performer)
@@ -14,8 +16,17 @@ class BookmarkList < ActiveRecord::Base
 	mount_uploader :picture, PictureUploader
 	attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   	after_update :crop_picture
+   after_create :update_slug
 
-  	# Cropping function
+  #def to_param
+  #  [slug,"by", self.user.firstname, self.user.lastname].join("-")
+  #end
+
+  def update_slug
+    self.update_attributes(slug: self.to_param)
+  end
+
+	# Cropping function
 	def crop_picture
 		# might need this line for S3?
 		# profilepic.cache_stored_file!
@@ -95,6 +106,19 @@ class BookmarkList < ActiveRecord::Base
 
     end
     return @bookmarked_events.compact
+  end
+  def bookmarked_events_root
+    @bookmarked_events = Bookmark.where(:bookmark_list_id => self.id, :bookmarked_type => "Occurrence")
+    @count = 0
+    results = []
+    @bookmarked_events.each do |b|
+        break if @count == 5
+        unless b.bookmarked_event.nil?
+        @count+=1
+        results.push b.bookmarked_event
+        end
+    end
+   results
   end
   def first_bookmarked_event
     @bookmarked_events = self.bookmarks.where(:bookmarked_type => "Occurrence")

@@ -34,11 +34,15 @@
 <div id="events">
 <% @venue.events.select { |oc| oc.nextOccurrence ? (oc.nextOccurrence.start > Time.now) && (oc.nextOccurrence.deleted != true) : nil}.sort_by { |event| event.nextOccurrence ? event.nextOccurrence.start : DateTime.new(1970,1,1) }.each do |event| %>
 	<% if event.id %>
-		<% occ_id = event.nextOccurrence.id %>
-		<div class="compact event-element" objectID="<%= event.id %>" id="anchor<%= occ_id %>">
+		<% occ = event.nextOccurrence %>
+		<div class="compact event-element" objectID="<%= event.id %>" id="anchor<%= occ.id %>">
 			<div class="time"><%= event.nextOccurrence.start.to_time.strftime("%b %-d @ %-I:%M%P") %></div>
 			<div class="title"><%= event.title %></div>
+<<<<<<< HEAD
 			<a class="live-link" href="/events/show/<%= occ_id %>?fullmode=true" target="_blank">Live Page</a>
+=======
+			<a class="live-link" href="/events/austin/<%= occ.slug %>" target="_blank">Live Page</a>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 			<div class="description"><%= truncate(strip_tags(event.description), :length => 300)  %></div>
 			<a href="" class="toggler">+</a>
 		</div>

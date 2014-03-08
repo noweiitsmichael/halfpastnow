@@ -13,8 +13,9 @@
 		input[type=text] { width: 500px; }
 		input#event_price { width: 100px; }
 	</style>
+  <%= stylesheet_link_tag  "details" %>
 
-	<%= javascript_include_tag "jquery.cleditor.min" %>
+  <%= javascript_include_tag "jquery.cleditor.min" %>
 	<%= javascript_include_tag "jquery.validate" %>
 	<%= javascript_include_tag "jquery-ui-timepicker-addon" %>
   	<%= stylesheet_link_tag    "jquery.cleditor" %>
@@ -455,7 +456,6 @@
 			</div>
 
 			<%= render :partial => "tags", :locals => { :element => @event, :type => "event" } %>
-
 			<div class="actions">
 	    		<%= e.submit "Save / Add Pictures >", :class => "nice-button form-submit"%>
 	  		</div>

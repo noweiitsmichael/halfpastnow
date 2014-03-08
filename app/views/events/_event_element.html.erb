@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 <li link-id="<%= occurrence.id %>"> <!--linkto="event"-->
@@ -216,3 +217,65 @@
 			<img src="/assets/markers/marker_hover_<%= (index + 1) % 100 %>.png" />
 		</div>
 	</li>
+=======
+<article class="product-item" link-id="<%= occurrence.id %>">
+  <figure><a href="/events/austin/<%= occurrence.slug %>">
+    <!--<img src="<%#= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>"/>-->
+    <% if occurrence.event.pictures.first %>
+      <img src="<%= occurrence.event.pictures.first.image_url(:full) %>" alt="Event picture" />
+    <% elsif occurrence.event.acts.length != 0 && occurrence.event.acts.first.pictures.first %>
+      <img src="<%= occurrence.event.acts.first.pictures.first.image_url(:full) %>" alt="occurrence pic"/>
+    <% elsif occurrence.event.venue.pictures.first %>
+      <img src="<%= occurrence.event.venue.pictures.first.image_url(:full) %>" alt="venue pic" />
+    <% else %>
+      <img src="<%= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" alt="cover pic" />
+    <% end %>
+
+  </a></figure>
+  <div class="name"><a href="/events/austin/<%= occurrence.slug %>"><%= truncate(occurrence.event.title, :length => 115) %></a></div>
+  <div class="info clearfix">
+    <span class="time pull-left"><%= occurrence.start.to_time.strftime("%B %-d, %-l:%M%P") %></span>
+    <span class="value pull-right">
+      <% if occurrence.event.price %>
+      <%= occurrence.event.price ? ((occurrence.event.price != 0) ? number_to_currency(occurrence.event.price, :unit => "$").to_s + " " : "FREE ") : "" %>
+  <% end %>
+     </span>
+  </div>
+  <div class="additional-info">
+    <div class="place">
+      <!--<a href="/?venue_id=<%#= occurrence.event.venue.id %>">-->
+        <span class="venue" link-id="<%= occurrence.event.venue.id %>" linkto="venue">@
+          <span class="venue-inner"><%= occurrence.event.venue.name %></span>
+        </span>
+      <!--</a>-->
+      <% bookmarks = [] %>
+      <%
+         if (current_user)
+           bookmarks = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => current_user.bookmark_lists.collect(&:id))
+         end
+      %>
+
+      <%= link_to event_bookmark_popup_path(id: occurrence.id), class: "bookmark #{current_user ? 'bookmark_' + occurrence.id.to_s : 'before_login'}", remote: true do %>
+        <%= bookmarks.empty? ? image_tag("images/icon-bookmark-large.png") : image_tag("images/icon-bookmark-add-more-large.png") %>
+      <% end %>
+
+    </div>
+
+    <div class="place">
+      <% bookmark = Bookmark.where(:bookmarked_type => 'Occurrence', :bookmarked_id => occurrence.id, :bookmark_list_id => bookmarkList.id).first %>
+
+      <% if bookmark and !bookmark.comment.nil? %>
+        <%= bookmark.comment.truncate(200) rescue ''%>
+      <% end %>
+    </div>
+
+  </div>
+</article>
+
+<script>
+
+  $('.before_login').click(function () {
+    window.location.href = window.location.origin + "/login"
+  })
+</script>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf

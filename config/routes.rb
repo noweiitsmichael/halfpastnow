@@ -1,4 +1,5 @@
 Myapp::Application.routes.draw do
+<<<<<<< HEAD
   
   # Below did not work when it was just root :to 'unofficialacl#index', with or without carrot in front of host def.
   # constraints(:host => /^unofficialacl.com/) do 
@@ -21,6 +22,30 @@ Myapp::Application.routes.draw do
       get :details
       get :show_venue
       get :show_artist
+=======
+
+  namespace :admin do
+    resources :dashboard
+    resources :advertisements do
+      collection do
+        post :update_ads_details
+        post :update_ads_pic
+      end
+    end
+  end
+  
+  resources :dashboard do
+    collection do
+      get :profile
+      get :settings
+      get :my_list
+      get :preferences
+      get :bookmarks
+      post :update_profile
+      post :update_profile_pic
+      post :update_bookmark_list
+      post :update_bookmark_list_picture
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
     end
   end
 
@@ -38,6 +63,7 @@ Myapp::Application.routes.draw do
   resources :bookmark_lists
 
   match 'bookmarks/custom_create' => 'bookmarks#custom_create'
+  match 'bookmarks/create_bookmark_group' => 'bookmarks#create_bookmark_group'
   match 'bookmarks/attending_create' => 'bookmarks#attending_create'
   match 'bookmarks/add_to_featuredlist' => 'bookmarks#add_to_featuredlist'
   match 'bookmarks/update_comment' => 'bookmarks#update_comment'
@@ -50,7 +76,11 @@ Myapp::Application.routes.draw do
   get "info/privacy"
   get "info/terms"
 
-  devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"}
+  devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"} do
+    get "join_now", :to => "registrations#new"
+    get "login", :to => "devise/sessions#new"
+    post "/update_password", :to => "registrations#update_password"
+  end
   get "tag/index"
 
   # namespace :admin do
@@ -111,6 +141,7 @@ Myapp::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
+<<<<<<< HEAD
   authenticated :user do
     root :to => 'events#index'
   end
@@ -119,6 +150,13 @@ Myapp::Application.routes.draw do
   # map.connect "", :controller => "unofficialacl", :conditions => { :host => "www.unofficialacl.com" }
 
 
+=======
+  #authenticated :user do
+  #  root :to => 'events#index'
+  #end
+  
+  root :to => 'events#new_splash'
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 
   # See how all your routes lay out with "rake routes"
 
@@ -135,11 +173,28 @@ Myapp::Application.routes.draw do
   match 'feedbacks' => 'feedbacks#index'
   match 'users' => 'users#index', :as => "user"
   match 'users/friends' => 'users#friends'
+  match 'users/change_share_status' => 'users#change_share_status'
   match '/search' => 'events#index'
   match '/sxsw' => 'events#sxsw'
+<<<<<<< HEAD
   match '/unofficialacl' => 'unofficialacl#index'
 
+=======
+  match '/saved_search' => 'events#saved_search'
+  match '/search_results' => 'events#search_results'
+  match '/saved_searches_index' => 'events#saved_searches_index'
+  match '/delete_saved_search' => 'events#delete_saved_search'
+  match '/details' => 'events#details'
+  #match '/login' => 'events#login'
+  #match '/join_now' => 'events#joinnow'
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
   match '/auth/:provider/callback' => 'authentications#create'
-
+  match '/explorers/austin' => 'picks#trendsetters'
+  match '/explorers/austin/:id' => 'picks#find'
+  match '/venues/austin/:id' => 'venues#show'
+  match 'artists/:id' => 'acts#show'
+  match 'events/austin/:id' => 'events#show'
   match ':controller(/:action(/:id(.:format)))'
+  match '/events/bookmark_popup' => "events#bookmark_popup", as: "event_bookmark_popup"
+  match '/events/venue_bookmark_popup' => "events#bookmark_popup", as: "venue_bookmark_popup"
 end

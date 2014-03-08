@@ -1,0 +1,29 @@
+<section id="<%= params[:key]%>_section" class="slider-wrap">
+  <div class="container">
+    <div class="section-title">
+      <h2 class="text-center"><%= params[:key]%></h2>
+      <p class="lead text-center">Check-out events going on today.</p>
+      <a href="#" class="see-all"><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
+      <!--<a href="<%= (@mobileMode) ? "/events/android" : "/search" %>" class="see-all" ><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>-->
+      <a href="/search" class="see-all" ><span class="btn btn-danger">See All</span><i class="icon-bottom-arrow"></i></a>
+    </div>
+    <div class="section-content slider">
+      <div id="<%= params[:key]%>">
+
+
+      </div>
+
+      <a class="prev" id="<%= params[:key]%>_prev" href="#"><span>prev</span></a>
+      <a class="next" id="<%= params[:key]%>_next" href="#"><span>next</span></a>
+
+    </div>
+
+  </div>
+
+   </section>
+<script>
+
+
+  saved_search_events("<%= params[:key]%>")
+
+</script>

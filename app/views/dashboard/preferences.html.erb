@@ -1,0 +1,119 @@
+<% unless @user.nil? %>
+  <div class="page-content">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="page-header">
+      <h1>Choose your categories for your personalized email</h1>
+    </div>
+    <div class="page-body">
+      <div class="preferences <%= (params[:email].nil?) ? "" : "selected" %>">
+        <% if current_user.ref.nil? %>
+          <% c = Channel.new %>
+          <!-- Change to approriate tag ids for Production -->
+          <% c.included_tags = "1,134,43,141,29,87,55,192,104" %>
+          <% c.save %>
+          <% current_user.ref = c.id.to_s %>
+          <% current_user.save %>
+          <% email = Email.find_by_email(current_user.email) %>
+          <% fields = [{name: 'Live Music', value: 'Music', image: 'music_beamed_note.png'},
+                       {name: 'Fitness', value: 'Fitness', image: 'weights.png'},
+                       {name: 'Tech', value: 'Tech', image: 'terminal2.png'},
+                       {name: 'Non-Profit', value: 'Charity / Non-Profit', image: 'hand_handshake.png'},
+                       {name: 'Arts', value: 'Art', image: 'palette.png'},
+                       {name: 'Kid Friendly', value: 'Kid Friendly', image: 'teddy_bear.png'},
+                       {name: 'Romantic', value: 'Romantic', image: 'heart.png'},
+                       {name: 'LGBT', value: 'LGBT', image: 'color.png'},
+                       {name: 'Food/Drinks Special', value: 'Food/Drink Specials', image: 'cocktail.png'}
+          ] %>
+          <div class="row">
+            <div class="col-xs-6 col-sm-offset-2">
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover" id="preferences_table">
+                  <thead>
+                  <tr>
+                    <th class="center">
+                      <label>
+                        <input type="checkbox" class="ace" data-email="<%= current_user.email%>" data-id="<%= current_user.ref%>">
+                        <span class="lbl"></span>
+                      </label>
+                    </th>
+                    <th class="center">Name</th>
+                    <th class="center"></th>
+                  </tr>
+                  </thead>
+
+                  <tbody>
+                  <% fields.each do|field| %>
+                    <tr class="center">
+                      <td>
+                        <label>
+                          <input class="ace preferences_chk" type="checkbox" value="<%=Tag.find_by_name("#{field[:value]}").id%>"  <%= ( email.nil?) ? "checked" : "" %> data-id = "<%= current_user.ref %>">
+                          <span class="lbl"></span>
+                        </label>
+                      </td>
+                      <td><%= field[:name] %></td>
+                      <td><%= image_tag field[:image], width: '13%' %></td>
+                    </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /span -->
+          </div>
+        <% else %>
+          <% @refincluded_tags = Channel.find(current_user.ref.to_i).included_tags %>
+          <% fields = [{name: 'Live Music', value: 'Music', image: 'music_beamed_note.png'},
+                       {name: 'Fitness', value: 'Fitness', image: 'weights.png'},
+                       {name: 'Tech', value: 'Tech', image: 'terminal2.png'},
+                       {name: 'Non-Profit', value: 'Charity / Non-Profit', image: 'hand_handshake.png'},
+                       {name: 'Arts', value: 'Art', image: 'palette.png'},
+                       {name: 'Kid Friendly', value: 'Kid Friendly', image: 'teddy_bear.png'},
+                       {name: 'Romantic', value: 'Romantic', image: 'heart.png'},
+                       {name: 'LGBT', value: 'LGBT', image: 'color.png'},
+                       {name: 'Food/Drinks Special', value: 'Food/Drink Specials', image: 'cocktail.png'}
+                      ] %>
+          <div class="row">
+            <div class="col-xs-4 col-sm-offset-1">
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover" id="preferences_table">
+                  <thead>
+                  <tr class="center">
+                      <th class="center" style="width: 15%">
+                        <label>
+                          <input type="checkbox" class="ace" data-email="<%= current_user.email%>" data-id="<%= current_user.ref%>">
+                          <span class="lbl"></span>
+                        </label>
+                      </th>
+                      <th class="center">Name</th>
+                      <th class="center" style="width: 15%"></th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                  <% fields.each do|field| %>
+                    <tr class="center">
+                      <td>
+                        <label>
+                          <input class="ace preferences_chk" type="checkbox" value="<%=Tag.find_by_name("#{field[:value]}").id%>"  <%= (@refincluded_tags.include? Tag.find_by_name("#{field[:value]}").id.to_s) ? "checked" : "" %> data-id = "<%= current_user.ref %>">
+                          <span class="lbl"></span>
+                        </label>
+                      </td>
+                      <td><%= field[:name] %></td>
+                      <td><%= image_tag field[:image], width: '70%' %></td>
+                    </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /span -->
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <h1 class="text-center text-danger"> Something is Wrong</h1>
+<% end %>

@@ -100,8 +100,8 @@ class ChannelsController < ApplicationController
 	  		e = Email.new
 		  	e.email = current_user.email
 		  	e.save 	
-	  	end 
-	  	
+	  	end
+    render json: "success"
 	end
 
   def destroy

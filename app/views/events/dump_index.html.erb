@@ -1,0 +1,109 @@
+mapping do
+indexes :_event_id, type: 'integer', index: :not_analyzed,:store => 'yes',boost: 1000
+indexes :start, type: 'date', index: :not_analyzed , boost: 100
+indexes :events do
+indexes :price, type: 'integer',boost: 100
+indexes :title, analyzer: 'snowball', boost: 700
+indexes :description, boost: 200
+indexes :acts do
+indexes :name ,boost: 800
+end
+indexes :venue do
+indexes :name ,boost: 800
+indexes :description, boost: 200
+end
+indexes :tags do
+indexes :name, analyzer: 'snowball',boost: 1000
+end
+index
+end
+end
+
+def self.search(params)
+tire.search(load: true) do
+query { string params[:query], default_operator: "OR",match_all: { } } if params[:query].present?
+size 1000
+sort { by :start, "asc" }
+
+#facet('timeline') { range :start, { :ranges => [ { to: DateTime.new(2020,1,1), from: Time.now } ] } }
+filter :range, start: {gte: Time.zone.now,lte: Time.zone.now+1.year}
+
+
+end
+end
+def self.search_on_date(params)
+tire.search(load: true) do
+query { string params[:query], default_operator: "OR"  } if params[:query].present?
+size 1000
+sort { by :start, "asc" }
+filter :range, start: {gte: (DateTime.parse(params[:start_date]).in_time_zone rescue Time.zone.now),lte: (DateTime.parse(params[:end_date]).in_time_zone rescue Time.zone.now+14.days)}
+end
+end
+def to_indexed_json
+to_json( include: { acts: { only: [:name] }, venue: { only: [:name,:description]},tags: {only: [:name]} } )
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$('.timepicker').timepicker({
+showPeriod: true,
+showLeadingZero: true
+});
+$('.timepicker').change(function(){
+filter.low_price = "";
+filter.high_price = ($('#slider-step').val() === MAX_PRICE) ? "" : $('#slider-step').val();
+filter.start_date = $('.custom-start').datepicker("getDate").toString("yyyy-MM-dd")+ " "+$(this).val();
+filter.end_date = $('.custom-end').datepicker("getDate").toString("yyyy-MM-dd");
+tag_id = parseInt($('.active a').attr('tag_id'))
+tag_type = $('.active a').attr('tag_type')
+$("#related_events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+$("#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+$(".total_number").html("<img src='/assets/ajax-loader.gif' style='width:10px;height:10px;'>")
+if(tag_id == 0 && (tag_type == "nil" || tag_type == "undefined")){
+// alert("search key")
+doneTyping1($('#search-tab .active a').text());
+$('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+}else if(tag_id == 0){
+// alert("only tag type")
+filter.tag_id = tag_id
+filter.tag_type = tag_type
+//alert(JSON.stringify(filter))
+$.get("/search_results",filter)
+$('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+}else{
+// alert("only key")
+dropdown_search_events($(this).attr('tag_id'))
+$('#search_name,#search_name1').html($('.active a').attr('key').replace(/\_/g, " "))
+}
+
+
+})

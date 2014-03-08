@@ -1,0 +1,171 @@
+<% content_for :footer_js do %>
+  <%= javascript_include_tag "admin/advertisements" %>
+<% end %>
+
+<% unless @advertisement.nil? %>
+  <div class="page-content">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="page-header">
+      <h1><%= @advertisement.name %> Details</h1>
+    </div>
+    <div class="page-body">
+      <div class="row">
+        <div class="list_details col-sm-7 col-sm-offset-1">
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Image</div>
+
+              <div class="profile-info-value">
+                <%= image_tag @advertisement.image.thumb || "/assets/profile.png", :alt => "#{@advertisement.name}'s Photo", style: "display: block;", class: "editable img-responsive editable-click editable-empty", id: 'advertisement-image', "data-id" => @advertisement.id %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Type</div>
+
+              <div class="profile-info-value">
+                <%= link_to @advertisement.adv_type, '#', id: "advertisement-adv_type", "data-pk" => @advertisement.id, 'data-type' => 'select', 'data-source' => Advertisement::ADV_TYPES_SHOW %>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Name</div>
+
+              <div class="profile-info-value">
+                <%= link_to @advertisement.name,'#', id: "advertisement-name", "data-pk" => @advertisement.id %>
+              </div>
+            </div>
+          </div>
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Title</div>
+
+              <div class="profile-info-value">
+                <%= link_to @advertisement.title,'#', id: "advertisement-title", "data-pk" => @advertisement.id %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Description</div>
+
+              <div class="profile-info-value">
+                <%= link_to @advertisement.description,'#', id: "advertisement-description", "data-pk" => @advertisement.id, 'data-type' => 'textarea' %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Advertiser</div>
+
+              <div class="profile-info-value">
+                <%= link_to @advertisement.advertiser,'#', id: "advertisement-advertiser", "data-pk" => @advertisement.id %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Email</div>
+
+              <div class="profile-info-value">
+                <%= link_to @advertisement.email,'#', id: "advertisement-email", "data-pk" => @advertisement.id %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Phone</div>
+
+              <div class="profile-info-value">
+                <%= link_to @advertisement.phone,'#', id: "advertisement-phone", "data-pk" => @advertisement.id %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Weight</div>
+
+              <div class="profile-info-value">
+                <%= link_to @advertisement.weight,'#', id: "advertisement-weight", "data-pk" => @advertisement.id , 'data-type' => 'select', 'data-source' => Advertisement::ADV_WEIGHTS_SHOW %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Placement</div>
+
+              <div class="profile-info-value">
+                <%= link_to @advertisement.placement,'#', id: "advertisement-placement", "data-pk" => @advertisement.id %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Start Date</div>
+
+              <div class="profile-info-value">
+                <%= link_to @advertisement.start.to_date.strftime('%m/%d/%Y'),'#', id: "advertisement-start", "data-pk" => @advertisement.id, 'data-viewformat' => 'mm/dd/yyyy', "data-type" => 'date' %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> End Date</div>
+
+              <div class="profile-info-value">
+                <%= link_to @advertisement.end.to_date.strftime('%m/%d/%Y'),'#', id: "advertisement-end", "data-pk" => @advertisement.id, 'data-viewformat' => 'mm/dd/yyyy', "data-type" => 'date' %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Target URL</div>
+
+              <div class="profile-info-value">
+                <%= link_to @advertisement.target_url,'#', id: "advertisement-target", "data-pk" => @advertisement.id %>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Views</div>
+
+              <div class="profile-info-value">
+                <span><%= @advertisement.views %>&nbsp;</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Clicks</div>
+
+              <div class="profile-info-value">
+                <span><%= @advertisement.clicks.to_i %></span>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <h1 class="text-center text-danger"> Something is Wrong</h1>
+<% end %>

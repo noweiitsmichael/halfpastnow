@@ -1,11 +1,23 @@
-html, body
-{
-  margin: 0;
-  padding: 0;
-  font-size: 13px;
-  width:100%;
-  height:100%;
-  overflow:hidden;
+
+figure img, .adv-figure img {
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+figure, .adv-figure {
+  margin:0;
+  padding:0;
+  /*new css*/
+  position: relative
+}
+
+.sidebar-ad{
+  margin-top:50px;
+  text-align: center;
 }
 
 img
@@ -15,7 +27,7 @@ img
 #body {
   width:100%;
   height:100%;
-  overflow:auto;
+  /*overflow:auto;*/
   position:relative;
   background: rgba(255, 255, 255, .6);
 }
@@ -61,9 +73,9 @@ H6
   z-index: 1000;
 }
 
-label { 
-  display:block; 
-  margin-top:5px; 
+label {
+  display:block;
+  margin-top:5px;
 }
 
 .hidden {
@@ -158,7 +170,7 @@ label.error {
   border: 1px solid #ccc;
   -webkit-box-shadow: 1px 1px 4px rgba(0,0,0, 0.1);
   -webkit-border-bottom-right-radius: 60px 5px;
-  
+
 }
 .box10:before{
   content: '';
@@ -249,7 +261,7 @@ label.error {
     -moz-box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.6) ;
     box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.6) ;
 }
- 
+
 /* In this pseudo class we create the fold for the bottom side of the box */
 .box6:before{
   z-index:2;
@@ -278,7 +290,7 @@ label.error {
                         skew(-40deg,-3deg)
                         translate(-13px,-13px);
 }
- 
+
 #sxsw-banner {
 
 /*position: fixed;
@@ -308,7 +320,7 @@ z-index: 100;*/
   background-repeat: no-repeat;
   background-position: center center;/*
   background-attachment: fixed;*/
-  height: 620px; 
+  height: 620px;
   overflow: hidden;
 -webkit-background-size: cover;
 -khtml-background-size: cover;
@@ -352,7 +364,7 @@ background-size: cover;
   -webkit-filter: grayscale(1);
   background-repeat: no-repeat;
   background-position: center center;
-  height: 420px; 
+  height: 420px;
   overflow: hidden;
 -webkit-background-size: cover;
 -khtml-background-size: cover;
@@ -432,8 +444,8 @@ background-size: cover;
 #email-hero .fb-login-button a:active {color:#0000FF;}  /* selected link */
 
 #splash-actions {
-  font-weight: 300; 
-  text-align: center; 
+  font-weight: 300;
+  text-align: center;
   font-size: 20px;
   position:relative;
   width: 945px;
@@ -442,7 +454,7 @@ background-size: cover;
   height:200px
 }
 
-#splash-actions .left-column { 
+#splash-actions .left-column {
   margin-top:30px;
   float: left;
   width: 420px;
@@ -452,7 +464,7 @@ background-size: cover;
   margin-top:30px;
   float: right;
   width: 420px;
-  
+
 }
 
 
@@ -559,7 +571,7 @@ background-size: cover;
 
 .splash-signup {
   text-align: left;
-  font-weight: 300; 
+  font-weight: 300;
   font-size: 20px;
   width: 945px;
   margin: 0 auto;
@@ -706,9 +718,9 @@ background-size: cover;
 }
 
 #header .profile-menu li a {
-    color:#FFFFFF; 
-    text-decoration:none; 
-    padding:10px; 
+    color:#FFFFFF;
+    text-decoration:none;
+    padding:10px;
     display:block;
 }
 
@@ -741,7 +753,7 @@ background-size: cover;
   margin-left: -2px;
 }
 
-#header > .one a 
+#header > .one a
 {
   text-decoration:none;
   color: white;
@@ -930,7 +942,7 @@ input::-webkit-input-placeholder
 }
 .titlebar span {
     font-weight: 900;
-  
+
 }
 .titlebar em {
   margin:0 10px;
@@ -943,7 +955,7 @@ input::-webkit-input-placeholder
 .titlebar a {
   text-decoration:none;
   color: rgb(143, 71, 143);
-  
+
   border-bottom: 1px dotted;
   display: inline-block;
   height: 20px;
@@ -1083,7 +1095,7 @@ input::-webkit-input-placeholder
 
 .channels .actions {
     padding: 0 3px;
-  
+
 }
 
 .channels .actions span {
@@ -1101,7 +1113,7 @@ input::-webkit-input-placeholder
 }
 
 .channels .actions .new {
-  } 
+  }
 .channels .actions .save {
   }
 .channels .actions .rename {
@@ -1176,7 +1188,7 @@ input::-webkit-input-placeholder
   height: 25px;
 }
 
-.tags-menu li .toggler, .tags-menu li .no-toggler { 
+.tags-menu li .toggler, .tags-menu li .no-toggler {
   width:9px;
   display:inline-block;
   float:left;
@@ -1222,7 +1234,7 @@ input::-webkit-input-placeholder
   text-shadow:none;
 }
 
-.tags-menu li .include.selected, .tags-menu li .include:hover {   
+.tags-menu li .include.selected, .tags-menu li .include:hover {
 }
 
 .child-tags-menu {
@@ -1280,7 +1292,7 @@ input::-webkit-input-placeholder
   -ms-user-select: none;
   user-select: none;
 }
-#header .filterbar .inner .filter.day SPAN.selected, #header .filterbar .inner .filter.price SPAN.selected, #header .filterbar .inner .filter.date SPAN.selected 
+#header .filterbar .inner .filter.day SPAN.selected, #header .filterbar .inner .filter.price SPAN.selected, #header .filterbar .inner .filter.date SPAN.selected
 {
   background-color: rgba(19, 19, 58, .25);
   color: #13133A;
@@ -1302,7 +1314,7 @@ input::-webkit-input-placeholder
   padding-top: 10px;
 }
 
-#header .filter.date 
+#header .filter.date
 {
     width: 376px;
 }
@@ -1335,7 +1347,7 @@ input::-webkit-input-placeholder
 {
   display:block;
 }
-#header .filter.date .custom-select INPUT 
+#header .filter.date .custom-select INPUT
 {
 }
 #header .filter.date .day-of-week > div {
@@ -1626,7 +1638,7 @@ input::-webkit-input-placeholder
     margin-left: 3px;
     font-family:'FontAwesome';
     position:relative;
-    
+
     top: 1px;
 }
 
@@ -1648,7 +1660,7 @@ input::-webkit-input-placeholder
   padding: 0;
   z-index: 800;
   position: relative;
-} 
+}
 
 #header .filter-toggle.channels {
   font-family: PTSansNarrowBold;
@@ -1670,7 +1682,7 @@ input::-webkit-input-placeholder
   margin-bottom: 0;
   padding-top: 10px;
   padding-bottom: 10px;
-}   
+}
 
 #header .filter-toggle.channels .text {
     color: #342B34;
@@ -1710,8 +1722,8 @@ input::-webkit-input-placeholder
 }
 
 #header .filter-toggle.selected {
-  display: inline-block; zoom: 1;    overflow: visible;  white-space: nowrap; 
-  color: white;       
+  display: inline-block; zoom: 1;    overflow: visible;  white-space: nowrap;
+  color: white;
   z-index: 900;
   background: white;
   border-bottom: none;
@@ -1725,7 +1737,7 @@ input::-webkit-input-placeholder
   padding: 10px 8px;
   cursor: pointer;
   z-index: 700;
-  
+
 }
 
 #header .filter-toggle .text-inner {
@@ -1848,12 +1860,12 @@ input::-webkit-input-placeholder
 }
 
 #content .main .inner .events LI
-{ 
-    padding: 0;  
+{
+    padding: 0;
      overflow: visible;
     position: relative;
-  
-     
+
+
     margin: 0 0 12px 0;
     border-bottom: 9px solid #F6F6F6;
     border-top: 0;
@@ -2082,7 +2094,7 @@ input::-webkit-input-placeholder
   position: relative;
   padding: 10px;
   font-size: 16px;
- 
+
   font-family: PTSansNarrowBold;
   height: 19px;
   position: absolute;
@@ -2222,7 +2234,7 @@ input::-webkit-input-placeholder
 
 .mode .window {
   overflow: hidden;
-  width: 990px; margin: 24px auto; 
+  width: 990px; margin: 24px auto;
   background: white;  position: relative; z-index: 1000;
 }
 
@@ -2231,7 +2243,7 @@ input::-webkit-input-placeholder
   background:white;
 }
 
-.mode .window.lite .field-selector { 
+.mode .window.lite .field-selector {
     float:left;
     clear:left;
     margin-right: 13px;
@@ -2428,19 +2440,19 @@ input::-webkit-input-placeholder
 }
 
 .mode .window .h1under {
-  position: absolute; 
-  border-bottom: 10px solid transparent; 
-  border-top: 10px solid transparent; 
+  position: absolute;
+  border-bottom: 10px solid transparent;
+  border-top: 10px solid transparent;
   top: 50px;
 }
 
 .mode .window .h1under.left {
-  border-right: 15px solid rgb(0, 0, 0); 
-  left: -15px; 
+  border-right: 15px solid rgb(0, 0, 0);
+  left: -15px;
 }
 
 .mode .window .h1under.right {
-  border-left: 15px solid rgb(0, 0, 0); 
+  border-left: 15px solid rgb(0, 0, 0);
   right: -15px;
 }
 
@@ -2627,7 +2639,7 @@ text-decoration: none;
 }
 .mode .window .bookmark-share span.add-tp {
     background-color: #444;
-    
+
     color: white;
     font-size: 16px;
     height: 26px;
@@ -2648,11 +2660,11 @@ text-decoration: none;
 }
 
 .mode .window .bookmark-share .comment-tp {
-    
+
     display:inline-block;
     position:relative;
 }
-.mode .window .bookmark-share .comment-tp .popup-box, 
+.mode .window .bookmark-share .comment-tp .popup-box,
 .mode .window .bookmark-share .comment-tp .popup-box-1 {
     display:none;
     position:absolute;
@@ -2666,7 +2678,7 @@ text-decoration: none;
 .mode .window .bookmark-share .comment-tp .popup-box label {
    font-size: 16px;
    color:white;
-   margin-left:10px; 
+   margin-left:10px;
 }
 .mode .window .bookmark-share .comment-tp .popup-box button {
     margin-right:10px;
@@ -2676,14 +2688,14 @@ text-decoration: none;
 .mode .window .bookmark-share .comment-tp .popup-box-1 label {
    font-size: 16px;
    color:white;
-   margin-left:10px; 
+   margin-left:10px;
 }
 
-.mode .window .bookmark-share .comment-tp .popup-box textarea, 
+.mode .window .bookmark-share .comment-tp .popup-box textarea,
 .mode .window .bookmark-share .comment-tp .popup-box-1 textarea {
    color:white;
    margin-left:10px;
-   width:270px; 
+   width:270px;
    height: 100px;
 }
 
@@ -2717,7 +2729,7 @@ text-decoration: none;
 }
 
 .mode .window .menu {
-  clear:both; 
+  clear:both;
 }
 
 .mode .window .menu .tabs ul {
@@ -2819,7 +2831,7 @@ text-decoration: none;
 }
 
 .occurrence-wrapper {
- padding: 10px;   
+ padding: 10px;
  background: #ddd;
  margin-top: 8px;
  margin-bottom: 4px;
@@ -2981,10 +2993,10 @@ text-decoration: none;
   overflow:hidden;
 }
 
-.field.tags label { 
-  display:inline; 
-  margin:0; 
-  cursor:pointer; 
+.field.tags label {
+  display:inline;
+  margin:0;
+  cursor:pointer;
 }
 
 .piclabel {
@@ -3079,11 +3091,11 @@ text-decoration: none;
 .tag-thing.selected {
   background:#eee;
 }
-.tag-thing { 
-  cursor: pointer; 
-  margin: 6px 25px 4px 2px; 
+.tag-thing {
+  cursor: pointer;
+  margin: 6px 25px 4px 2px;
 }
-.tag-thing.tag-bold { 
+.tag-thing.tag-bold {
   background: #ddf;
   font-weight: bold;
 }
@@ -3104,8 +3116,8 @@ text-decoration: none;
 }
 
 .preview-wrapper {
-  float: left;  
-  height:100%; 
+  float: left;
+  height:100%;
   overflow:hidden;
   position:relative;
 }
@@ -3117,8 +3129,8 @@ text-decoration: none;
   height:120px;
 }
 
-.arrow-inner-wrapper { 
-  top: 25px; 
+.arrow-inner-wrapper {
+  top: 25px;
   position: absolute;
 }
 
@@ -3144,12 +3156,12 @@ text-decoration: none;
   border: 1px solid #ccc;
 }
 
-#list-cat-wrapper, .picks-cats { 
-  padding:12px; 
-  background:white; 
-  box-shadow: 1px 1px 3px rgba(0,0,0,.6); 
-  margin-left:1px; 
-  margin-right:3px; 
+#list-cat-wrapper, .picks-cats {
+  padding:12px;
+  background:white;
+  box-shadow: 1px 1px 3px rgba(0,0,0,.6);
+  margin-left:1px;
+  margin-right:3px;
 }
 
 .list-cat-heading {
@@ -3229,7 +3241,7 @@ text-decoration: none;
     left: 77px;
 }
 #content .main .inner .events li {
-    padding: 0 10px 0 219px; 
+    padding: 0 10px 0 219px;
     min-height: 120px;
     font-size: 13px;
     color: #303030;
@@ -3252,13 +3264,13 @@ text-decoration: none;
     margin-right: 1px;
 }
 
-.events li .bookmark-comment:before, 
+.events li .bookmark-comment:before,
 .events li .bookmark-comment:after {
 }
 
 .events li .bookmark-comment:before {
     content:"\201C";
-    
+
 }
 
 .events li .bookmark-comment:after {
@@ -3294,11 +3306,11 @@ text-decoration: none;
     box-shadow: 3px 3px 10px rgba(0,0,0,.3);
 }
 #content .events li .title {
-    float: left; 
-    font-size: 16px;  
+    float: left;
+    font-size: 16px;
     text-align: left;
-    line-height: 21px;  
-    max-height: 42px; 
+    line-height: 21px;
+    max-height: 42px;
     max-width: 370px;
     overflow: hidden;
     position: relative;
@@ -3320,11 +3332,11 @@ text-decoration: none;
     font-variant: small-caps;
     text-transform: lowercase;
 }
-#content .events li .venue-inner { 
-    font-size: 16px;  
+#content .events li .venue-inner {
+    font-size: 16px;
     position:relative;
     top: 0px;
-    display:inline-block;  
+    display:inline-block;
 }
 #content .events li.hover .venue {
     color:#1F9FC9;
@@ -3374,8 +3386,8 @@ text-decoration: none;
 }
 
 .picklists .popup-comment {
-    position: absolute; background-color: gray; bottom: 41px; left: 0px; color: white; display: none; opacity: 0.9; padding: 6px; 
-    width: 381px; 
+    position: absolute; background-color: gray; bottom: 41px; left: 0px; color: white; display: none; opacity: 0.9; padding: 6px;
+    width: 381px;
 }
 
 .picklists .picklist-picture {
@@ -3397,7 +3409,7 @@ text-decoration: none;
     float: left;
     margin-left: 5px;
     font-weight: 700;
-    
+
 }
 
 #content .events li .price:before {
@@ -3528,7 +3540,7 @@ text-decoration: none;
 }
 
 .tags-menu > li {
-  border: 0; 
+  border: 0;
   margin: 0;
   padding: 0;
   padding: 0px 0;
@@ -3570,7 +3582,7 @@ background-position: 0 11px;
 
 html, body {
   /*background: #f3f3f3;*/
-  font-family: Lato,Tahoma,sans-serif; font-style: normal; 
+  font-family: Lato,Tahoma,sans-serif; font-style: normal;
   font-weight: 400;
   background: url("creampaper.png");
 }
@@ -3597,7 +3609,7 @@ html, body {
 #header > .one .menu-element.pic {
     position:relative;
     padding-right: 34px;
-}    
+}
 
 #header > .one .logo {
   margin-top: 2px;
@@ -3627,7 +3639,7 @@ html, body {
 }
 
 #header .streambar .stream.bookmark .icon {
-    margin-left: 9px;    
+    margin-left: 9px;
     font-size: 16px;
     position: relative;
     top: 0px;
@@ -3692,7 +3704,7 @@ html, body {
 }
 
 #header .stream.bookmark .icon {
-    margin-right: 9px;    
+    margin-right: 9px;
     position: relative;
     top: 0px;
 }
@@ -3787,11 +3799,11 @@ html, body {
 #header .filter-toggle .filter-text {
 
     padding: 0px 12px 0;
-    
+
 
     margin: 0;
     height: 29px;
-    
+
 }
 
 #header .filter-toggle.search .filter-text {
@@ -3860,7 +3872,7 @@ html, body {
   cursor: pointer;
   overflow: visible;
   text-decoration: none;
-  white-space: nowrap;  /* Fix bleeding */  
+  white-space: nowrap;  /* Fix bleeding */
   border: none;
   text-shadow: none;
   text-transform: lowercase;
@@ -3899,7 +3911,7 @@ html, body {
 }
 
 #header .filter-toggle.selected .pre-text {
-  
+
     color: #1F9FC9;
     text-shadow: none;
 }
@@ -3914,31 +3926,31 @@ html, body {
 }
 
 .subbar-wrapper {
-    position: fixed; 
+    position: fixed;
     top: -7px; width: 990px; margin-top: 134px;
-  
+
 }
 
-.subbar {  
-    
-        
+.subbar {
+
+
 
       color: white;
       z-index: 400;
       position: relative;
-      
+
       margin-top: 0px;
       font-weight: bold;
-      
-                    
+
+
       padding: 4px 0 9px;
-      
-                    
+
+
                     overflow: hidden;
-                    
+
       width: 990px;
                     margin: 0 auto;
-                    
+
       font-size: 18px;
 }
 
@@ -3961,7 +3973,7 @@ html, body {
 }
 
 .sort-type {
-  
+
   font-style: italic;
   display:inline-block;
   border-bottom:1px dotted white;
@@ -4109,7 +4121,7 @@ html, body {
 
 .picklist-sidebar .picture {
     width: 150px;
-    
+
     display: block;
 }
 
@@ -4197,15 +4209,15 @@ html, body {
 
 .picklist-events li.see-more, li.see-more {
     min-height: auto;
-   
+
 }
 
 .picklist-events li.see-more a, li.see-more a {
     font-size: 13px;
     color:black;
     text-decoration:none;
-    text-align: right; font-weight: bold; cursor: auto; border-top: none; 
-    padding-top: 0px; 
+    text-align: right; font-weight: bold; cursor: auto; border-top: none;
+    padding-top: 0px;
     padding-bottom: 0px;
     display: block;
 }
@@ -4275,7 +4287,7 @@ html, body {
 }
 
 .picks-details .description {
-     margin-top:4px;   
+     margin-top:4px;
      clear: both;
 }
 
@@ -4322,7 +4334,7 @@ html, body {
   font-weight:lighter;
 }
 
-.list { 
+.list {
   width: 320px;
   float: left;
   margin-right: 12px;
@@ -4335,7 +4347,7 @@ html, body {
   margin-left: 1px;
 }
 
-.trendsetter{ 
+.trendsetter{
   width: 486px;
   float: left;
   margin-right: 12px;
@@ -4348,7 +4360,7 @@ html, body {
 
 #list-cat{
     margin: 0;
- 
+
     font-size: 16px;
     background: transparent;
     cursor: pointer;
@@ -4364,7 +4376,7 @@ html, body {
 }
 .edit-add-tp{
     background-color: #444;
-    
+
     color: white;
     font-size: 16px;
     height: 36px;
@@ -4384,7 +4396,7 @@ html, body {
 }
 .delete-tp{
     background-color: #444;
-    
+
     color: white;
     font-size: 9px;
     height: 36px;
@@ -4398,7 +4410,7 @@ html, body {
     left: 44px;
 }
 .edit-comment-tp {
-    
+
     display:inline-block;
     position:relative;
 }
@@ -4759,7 +4771,7 @@ padding-top: 0px;
     text-decoration: underline;
 }
 #getsat-widget-4765 a.widget-link {
-    position: absolute;    
+    position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
@@ -4801,7 +4813,7 @@ padding-top: 0px;
 .flickr_pagination {
   text-align: center;
   padding: 0.3em;
-  cursor: default; 
+  cursor: default;
 }
   .flickr_pagination a, .flickr_pagination span, .flickr_pagination em {
     padding: 0.2em 0.5em; }

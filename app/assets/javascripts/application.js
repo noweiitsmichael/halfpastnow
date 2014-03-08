@@ -5,9 +5,9 @@
 // the compiled file.
 //
 //= require jquery
-//= require jquery-migrate-1.1.1
+//= require jquery-ui
+//= require jquery-migrate-1.2.1
 //= require jquery_ujs
-//= require jquery-ui-1.10.0.custom.min
 //= require jquery.Jcrop.min
 //= require underscore
 //= require viewport
@@ -15,7 +15,11 @@
 //= require jquery.dropkick-1.0.0
 //= require galleria-1.2.8.min
 //= require jquery.form
-//= require history.min
+//= require history
 //= require h5utils
 //= require half.main
+<<<<<<< HEAD
 
+=======
+//= require jquery.colorbox
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf

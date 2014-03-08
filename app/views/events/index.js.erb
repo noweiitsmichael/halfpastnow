@@ -1,0 +1,8 @@
+$('.flickr_pagination a').click(function(){
+  $("#related_events .main .inline .events,#events .main .inline .events").html("<center><img src='/assets/ajax-loader.gif'></center>");
+  })
+$("#related_events .main .inline .events").html("<%= escape_javascript render :partial => 'combo' %>");
+$("#events .main .inline .events").html("<%= escape_javascript render :partial => 'combo' %>");
+$('.flickr_pagination a').attr('data-remote', 'true');
+$(".total_number").text("<%= @allOccurrences.count %>");
+$("img.unveil").unveil();

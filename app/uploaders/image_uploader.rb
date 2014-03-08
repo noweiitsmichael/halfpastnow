@@ -55,6 +55,7 @@ class ImageUploader < CarrierWave::Uploader::Base
     process :resize_to_limit => [1000, 1000]
   end
 
+
   def crop
     puts "cropping..."
     if model.crop_x.present?

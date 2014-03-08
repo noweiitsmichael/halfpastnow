@@ -45,6 +45,24 @@ namespace :m do
 	# Event.find(:all).each {|d| d.completion = d.completedness; d.save!;}
 
 
+
+	desc "backfill default lists"
+	task :default_lists => :environment do
+		User.find_each do |u|
+			puts "Adding default lists for #{u.firstname}"
+
+			if u.bookmark_lists.where(:name => "Bookmarks").first == nil
+		    	BookmarkList.create(:name => "Bookmarks", :description => "Bookmarks", :public => false, 
+                    :featured => false, :main_bookmarks_list => true, :user_id => u.id)
+		    end
+
+		    if u.bookmark_lists.where(:name => "Attending").first == nil
+		    BookmarkList.create(:name => "Attending", :description => "Attending", :public => false, 
+		                        :featured => false, :main_bookmarks_list => false, :user_id => u.id)
+			end
+	  	end
+	end
+
 	desc "backfill new default channels"
 	task :default_channels => :environment do
 		User.find_each do |u|
@@ -331,6 +349,7 @@ task :update_occurrences => :environment do
 	end
 end
 
+<<<<<<< HEAD
 # This function was re-written in attempt to get rid of memory allocation errors. however, this function ends up deleting all occurrences of non-recurring events.
 task :update_occurrences_test_BROKEN => :environment do
 
@@ -350,6 +369,14 @@ task :update_occurrences_test_BROKEN => :environment do
   recurrence_ids=Occurrence.find(:all,:select => "recurrence_id",:group => "recurrence_id",:having => "count(id) = 1").collect(&:recurrence_id)
   Occurrence.delete_all(['recurrence_id in (?)',recurrence_ids])
   Recurrence.delete_all(['id in (?)',recurrence_ids])
+=======
+task :update_occurrences_slug => :environment do
+  occurrences = Occurrence.where(:slug => nil)
+  occurrences.each do |occ|
+    occ.slug = "#{occ.event.title.truncate(40)}-at-#{occ.event.venue.name.truncate(40)}" rescue "#{occ.id}"
+    occ.save
+  end
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 end
 
 desc "Send weekly_email"

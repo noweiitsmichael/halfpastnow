@@ -8,7 +8,7 @@ var toggleTime = false;
 var toggleSort = false;
 
 $.fn.hasScrollBar = function() {
-    return this.get(0).scrollHeight > this.innerHeight();
+    return this.get(0).scrollHeight > this.get(0).innerHeight();
 }
 
 $.fn.scrollBottom = function() {

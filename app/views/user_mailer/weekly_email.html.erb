@@ -24,7 +24,7 @@
 
                                                 <td height="50">
 
-                                                    <a href="http://www.halfpastnow.com" target="_blank"><img style="float:left" width="250" height="44" alt="See event picks in the categories you like" src="http://www.halfpastnow.com/assets/halfpastnow_final_300.png"></a>
+                                                    <a href="http://www.halfpastnow.com" target="_blank"><img style="float:left" width="250" height="44" alt="See event picks in the categories you like" src="http://www.halfpastnow.com/assets/halfpastnow_new_logo_300.png"></a>
 
                                                 </td>
                                                 <td height="50" width="125"></td>
@@ -103,7 +103,7 @@
 
 
 
-                    <a href="http://www.halfpastnow.com/events/show/<%= occurrence.id %>?fullmode=true" style="text-decoration:none;color:#4f2740" target="_blank">
+                    <a href="http://www.halfpastnow.com/events/austin/<%= occurrence.slug %>" style="text-decoration:none;color:#4f2740" target="_blank">
 
                         
 
@@ -175,7 +175,7 @@
             <td  style="background-color:#f2f2f2;border-top:1px solid #c0c0c0;border-left:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;width: 198px;
     height: 125px;overflow-y: hidden;overflow-x: hidden;">
 
-                <a href="http://www.halfpastnow.com/events/show/<%= occurrence.id %>?fullmode=true" target="_blank">
+                <a href="http://www.halfpastnow.com/events/austin/<%= occurrence.slug %>" target="_blank">
                     
                     <div style="width:198px; height:125px; border: solid thin gray;overflow:hidden;">
                         <img src="<%=occurrence.event.cover_image_url%>" alt="<%=occurrence.event.title%>" width="250px" height="125px"  >
@@ -185,7 +185,7 @@
                 </a>
 
             </td>
-            <td width="356" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;"><%= truncate(strip_tags(occurrence.event.description), :length => 100) %>... <a style="color:#4f2740;text-decoration:none" href="http://www.halfpastnow.com/events/show/<%= occurrence.id %>?fullmode=true" target="_blank"><b>Read More»</b></a>
+            <td width="356" height="75" valign="top" style="background-color:#f2f2f2;padding:10px 10px 0px 10px;font-size:13px;line-height:16px; border-right:1px solid #c0c0c0;border-top:1px solid #c0c0c0;border-bottom:1px solid #c0c0c0;"><%= truncate(strip_tags(occurrence.event.description), :length => 100) %>... <a style="color:#4f2740;text-decoration:none" href="http://www.halfpastnow.com/events/austin/<%= occurrence.slug %>" target="_blank"><b>Read More»</b></a>
                 
                 <div >
                     <table>
@@ -204,7 +204,7 @@
                                 </i>
                             </td>
                             <td with="82px">
-                                 <a href="http://www.halfpastnow.com/events/show/<%= occurrence.id %>?fullmode=true" target="_blank" style="border: 1px solid #9C8FAD;
+                                 <a href="http://www.halfpastnow.com/events/austin/<%= occurrence.slug %>" target="_blank" style="border: 1px solid #9C8FAD;
                                                             font-size: 14px;
                                                             background-color: #a700a7;
                                                             color: white;
@@ -364,7 +364,7 @@
 
                             
 
-                            <a href="http://www.halfpastnow.com/events/show/<%=occurrence.id%>?fullmode=true" target="_blank">
+                            <a href="http://www.halfpastnow.com/events/austin/<%= occurrence.slug %>" target="_blank">
                                <div style="width:170px; height:65px; border: solid thin gray;overflow:hidden;">
                                     <img src="<%=occurrence.event.cover_image_url%>" alt="<%=occurrence.event.title%>" width="250px" height="125px"  >
                                 </div>  
@@ -374,7 +374,7 @@
 
                             <div style="padding:2px">
 
-                                <a style="text-decoration:none" href="http://www.halfpastnow.com/events/show/<%=occurrence.id%>?fullmode=true" target="_blank">
+                                <a style="text-decoration:none" href="http://www.halfpastnow.com/events/austin/<%= occurrence.slug %>" target="_blank">
 
                                     <div style="font-size:13px;color:#4f2740"><%= truncate(occurrence.event.title, :length => 47) %></div>
 
@@ -444,7 +444,7 @@
 
                     <div style="min-height:130px;padding:0;background-color:#f2f2f2">
 
-                        <a href="http://www.halfpastnow.com/events/show/<%=occurrence.id%>?fullmode=true" target="_blank">
+                        <a href="http://www.halfpastnow.com/events/austin/<%= occurrence.slug %>" target="_blank">
 
                            
 
@@ -462,7 +462,7 @@
 
                         <div style="padding:2px">
 
-                            <a style="text-decoration:none" href="http://www.halfpastnow.com/events/show/<%=occurrence.id%>?fullmode=true" target="_blank">
+                            <a style="text-decoration:none" href="http://www.halfpastnow.com/events/austin/<%= occurrence.slug %>" target="_blank">
 
                                 <div style="font-size:13px;color:#4f2740"><%= truncate(occurrence.event.title, :length => 47) %></div>
                                
