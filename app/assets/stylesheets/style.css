@@ -737,7 +737,7 @@ and (max-width : 568px) {
 	
 	.cbp-so-side img {text-align: center; opacity: 1;}
 	
-	.cbp-so-side-video, .cbp-so-side-img {display: none; opacity: 1;}
+	/*.cbp-so-side-video, .cbp-so-side-img {display: none; opacity: 1;}*/
 	
 	.cbp-so-side-left img { float: none; }
 
