@@ -107,29 +107,7 @@
 	
 		<div class="six columns cbp-so-side-img  cbp-so-side-right">
 		
-			<div id="slider-wrapper" style="margin-top:80px">
-			
-				<div class="inner-wrapper">
-
-					<!-- Bullets --> 
-					
-					<input checked type="radio" name="slide" class="control" id="Slide1"/>
-					<label for="Slide1" id="s1"></label>
-					
-					<input type="radio" name="slide" class="control" id="Slide2"/>
-					<label for="Slide2" id="s2"></label>
-					
-					<ul class="overflow-wrapper">
-					
-						<li class="slide"><%= image_tag "images/venues-two-phones.png" %></li>
-						
-						<li class="slide"><%= image_tag "images/events-two-phones.png" %></li>
-						
-					</ul>
-					
-				</div>
-				
-			</div>
+			<div style="margin-top:80px"><%= image_tag "images/venues-two-phones.png" %></div>
 		
 		</div>
 
@@ -137,13 +115,6 @@
 
 </section>
 </div> <!-- end of container -->
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="/assets/jquery-1.9.1.min.js?body=1"><\/script>')</script>
-
-<%= javascript_include_tag "plugins" %>
-<%= javascript_include_tag "jquery.flexslider" %>
-<%= javascript_include_tag "classie" %>
 
 </body>
 </html>
