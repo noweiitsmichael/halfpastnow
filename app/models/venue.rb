@@ -64,4 +64,5 @@ class Venue < ActiveRecord::Base
     end
     return complete_elements.to_f / total_elements.to_f
   end
+
 end

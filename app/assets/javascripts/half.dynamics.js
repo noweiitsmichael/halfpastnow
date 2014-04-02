@@ -26,8 +26,13 @@ function pushFilterTag(tag_id, tag_type) {
     if (filter.included_tags.indexOf(tag_id) === -1) {
       filter.included_tags.push(tag_id);
     }
+<<<<<<< HEAD
+  } else if (tag_type === "andtags"){
+    if(filter.and_tags.indexOf(tag_id) === -1) {
+=======
   } else if (tag_type === "and_tags") {
     if (filter.and_tags.indexOf(tag_id) === -1) {
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
       filter.and_tags.push(tag_id);
     }
   } else {
@@ -45,9 +50,15 @@ function popFilterTag(tag_id, tag_type) {
     if (filter.included_tags.indexOf(tag_id) != -1) {
       filter.included_tags.splice(filter.included_tags.indexOf(tag_id), 1);
     }
+<<<<<<< HEAD
+  } else if (tag_type === "andtags"){
+    if(filter.and_tags.indexOf(tag_id) != -1) {
+      filter.and_tags.splice(filter.and_tags.indexOf(tag_id),1);
+=======
   } else if (tag_type === "and_tags") {
     if (filter.and_tags.indexOf(tag_id) != -1) {
       filter.and_tags.splice(filter.and_tags.indexOf(tag_id), 1);
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
     }
   } else {
     if (filter.excluded_tags.indexOf(tag_id) != -1) {
@@ -60,7 +71,11 @@ function inFilterTag(tag_id, tag_type) {
   tag_type = defaultTo(tag_type, "included_tags");
   if (tag_type === "included_tags") {
     return !(typeof filter.included_tags === 'undefined' || filter.included_tags.indexOf(tag_id) === -1);
+<<<<<<< HEAD
+  } else if (tag_type === "andtags"){
+=======
   } else if (tag_type === "and_tags") {
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
     return !(typeof filter.and_tags === 'undefined' || filter.and_tags.indexOf(tag_id) === -1);
   } else {
     return !(typeof filter.excluded_tags === 'undefined' || filter.excluded_tags.indexOf(tag_id) === -1);
@@ -179,6 +194,7 @@ $(function () {
     if ($(this).hasClass('selected')) {
       popFilterTag(tagID);
     } else {
+
       pushFilterTag(tagID);
     }
 
@@ -603,12 +619,36 @@ $(function () {
     updateBoundsFlag = $(this).prop("checked");
   });
 
+<<<<<<< HEAD
+    //on keyup, start the countdown
+    var timer_is_on = 0
+    //on keyup, start the countdown
+    $('.search-input').keyup(function () {
+        if (!timer_is_on) {
+            timer_is_on = 1;
+            if($(this).val().length >= 3){
+                //console.log("keyup");
+                typingTimer = setTimeout(doneTyping , doneTypingInterval);
+                //console.log(typingTimer)
+            }
+        }
+    });
+=======
   //on keyup, start the countdown
   var timer_is_on = 0
   //on keyup, start the countdown
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 
   $('.search-input').keyup(function () {
 
+<<<<<<< HEAD
+        //console.log("keydown");
+        clearTimeout(typingTimer);
+        timer_is_on = 0
+        //console.log("key down" + typingTimer)
+    });
+=======
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 
   });
 
@@ -1112,6 +1152,19 @@ function streamSelector() {
 }
 
 //user is "finished typing," do something
+<<<<<<< HEAD
+function doneTyping () {
+    filter.search = $('.search-input').val();
+
+    //if they type in a search term, the default "today" term is removed? This should only happen the user has not selected any other filter options
+    if(filter.excluded_tags.length == 0 && filter.included_tags.length == 0 && filter.high_price == ''){
+        filter.end_days = -1;
+    }
+
+
+    pullEvents({update_search: false});
+
+=======
 function doneTyping() {
   $('#events').show()
   $('#related_events').hide()
@@ -1129,6 +1182,7 @@ function doneTyping2(search) {
   pullEvents2({update_search: false, search: "elastic"});
 
 //  window.location.hash = "key:" + search;
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 }
 
 var boundsChangedFlag = false;

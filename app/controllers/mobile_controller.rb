@@ -83,6 +83,9 @@ class MobileController < ApplicationController
         return
       else
         if @user.valid_password?(params[:password])
+          if @user.name.nil?
+            @user.name =""
+          end
           respond_to do |format|
           format.html # index.html.erb
           format.json { render json: {:code=>"1",user:@user } }
@@ -1754,6 +1757,130 @@ def FacebookLoginAndroid
             }
             # #puts esinfo.to_json
 
+
+           
+
+            query= "SELECT DISTINCT ON (recurrences.id,events.id) events.event_url AS url, events.ticket_url AS tix,occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, recurrences.start AS rec_start, recurrences.end AS rec_end, recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            FROM occurrences
+              INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
+              INNER JOIN events ON occurrences.event_id = events.id
+              INNER JOIN venues ON events.venue_id = venues.id
+              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
+              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
+              INNER JOIN recurrences ON events.id = recurrences.event_id
+              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id 
+              INNER JOIN bookmark_lists ON  bookmarks.bookmark_list_id = bookmark_lists.id
+           WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.name ='Attending' AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NOT NULL AND  occurrences.start >= '#{Date.today()}'
+            UNION
+            SELECT DISTINCT ON (events.id,events.id) events.event_url AS url,events.ticket_url AS tix,occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            FROM occurrences
+              INNER JOIN bookmarks ON occurrences.id = bookmarks.bookmarked_id
+              INNER JOIN events ON occurrences.event_id = events.id
+              INNER JOIN venues ON events.venue_id = venues.id
+              LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
+              LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
+              LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
+              LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
+              INNER JOIN bookmark_lists ON  bookmarks.bookmark_list_id = bookmark_lists.id
+            WHERE bookmark_lists.user_id = #{ @user.id } AND bookmark_lists.name ='Attending' AND bookmarks.bookmarked_type = 'Occurrence'  AND occurrences.recurrence_id IS NULL AND  occurrences.start >= '#{Date.today()}'
+            "
+            @RSVP =[]
+         
+           # #puts queryResult
+           queryResult = ActiveRecord::Base.connection.select_all(query)
+           @eventIDs =  queryResult.collect { |e| e["event_id"] }.uniq
+
+           # #puts @eventIDs#puts
+            
+            @eventIDs.each{ |id|
+              # #puts id
+              # #puts "SET"
+              set =  queryResult.select{ |r| r["event_id"] == id.to_s }
+               # act = set.collect { |s| { :act_name => s["actor"],:act_id => s["act_id"] }.values}.uniq 
+               e = Event.find(id)
+              acts = e.acts
+              act = []
+              acts.each{ |a|
+                tag_item = []
+                tags = a.tags.collect { |tag| tag.name}
+                unless a.pictures.first.nil?
+                  tag_item  << a.name << a.id << tags << a.pictures.first.image.large.url
+                else
+                  tag_item  << a.name << a.id << tags << ""
+                end
+                
+                act << tag_item
+
+              }
+               # act = set.collect { |s| { s["actor"],s["act_id"] }}.uniq 
+              # Find the uniq recurrence id
+              rec_ids = set.collect { |e| e["rec_id"] }.uniq
+               rec = set.collect { |s| { 
+                :every_other => s["every_other"], # 0
+                :day_of_week => s["day_of_week"], # 1
+                :week_of_month => s["week_of_month"], # 2 
+                :day_of_month => s["day_of_month"],  # 3
+                :rec_start => s["rec_start"],  # 4
+                :rec_end => s["rec_end"]  # 5
+                }.values
+                }.uniq 
+                # #puts rec
+              # rec = set.collect { |s| {  s["every_other"], s["day_of_week"],s["week_of_month"],  s["day_of_month"] }}.uniq 
+              
+              s = set.first
+              really_long_cache_name = "event_find_#{id}"
+              tags = Rails.cache.read(really_long_cache_name)
+              if (tags==nil)
+                #puts "**************** No cache found for search event -id  ****************"
+                tags  = Event.find(id).tags.collect{ |t| {:id => t.id, :name =>t.name}.values}
+                Rails.cache.write(really_long_cache_name, tags)
+                #puts "**************** Cache Set for search Query ****************"
+              else
+                #puts "**************** Cache FOUND for search query - event ids !!! ****************" 
+              end
+              item = {
+                :act => act, # 0
+                :rec => rec , # 1
+                :description => s["description"], # 2
+                :title => s["title"], # 3
+                :occurrence_id => s["occurrence_id"], #4
+                :cover => s["cover"] , #5
+                :venue_name => s["venue_name"], #6
+                :address => s["address"] , #7
+                :zip => s["zip"] , #8
+                :city => s["city"], #9
+                :state => s["state"] , #10
+                :phone => s["phone"], # 11
+                :lat => s["latitude"], # 12
+                :long => s["longitude"], #13
+                :venue_id => s["venue_id"], # 14
+                :price => s["price"] , #15
+                :views => s["views"],  #16
+                :clicks => s["clicks"], #17
+                :tags  => tags , # 18
+                :event_id => s["event_id"], #19
+                :start => s["occurrence_start"] , #20
+                :end => s["end"], #21,
+                :user => [], #22
+                :tps =>  [], #23
+                :tix => s["tix"],
+                :url => s["url"]
+              }.values
+              # item = {:act => act, :rec => rec , s["occurrence_start"] , s["end"] , s["cover"] , s["phone"],  s["description"],
+              # s["title"], s["venue_name"], s["longitude"],s["latitude"], s["event_id"],  s["venue_id"],
+              #  s["occurrence_id"], s["price"] ,  s["address"] ,  s["zip"] ,  s["city"],  s["state"] , s["clicks"],
+              # s["views"], :tags  => Event.find(id).tags.collect{ |t| {t.id, t.name}}  }
+
+              @RSVP << item
+            }
+
+
+
+
+
+
+
             @channels =  @channels.collect{|s| 
           {
 
@@ -1832,7 +1959,7 @@ def FacebookLoginAndroid
         format.json { render json: {:events=>esinfo} }
       else
         
-         format.json { render json: {code:"9", user:@user, channels: [],:bookmarked=>@bmEvents, :events => esinfo,:acts=>@acts, :venues=>@venues, :listids=> @followedLists } }
+         format.json { render json: {code:"9", user:@user, channels: [],:bookmarked=>@bmEvents,:RSVP =>@RSVP, :events => esinfo,:acts=>@acts, :venues=>@venues, :listids=> @followedLists } }
          # format.json { render json: {user:@user, channels: @channels,:bookmarked =>@eventinfo,:events=>@esinfo,:acts=>@user.bookmarked_acts, :venues=>@user.bookmarked_venues, :listids=>@user.followedLists.collect { |list| list.id }.flatten }} 
         # format.json { render json: {tag:@tags, user:@user, channels: @channels, :bookmarked =>  @events.to_json(:include => [:venue, :recurrences, :occurrences, :tags]),:events=>@occurrences.collect { |occ| occ.event }.to_json(:include => [:occurrences, :venue, :recurrences, :tags]) } } 
       
@@ -2064,11 +2191,11 @@ def FacebookLogin
                     ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
                   END DESC"
     elsif ( params[:sort].to_i == 1)
-       order_by = "occurrences.start  ASC"
+       order_by = "occurrences.start"
     elsif (params[:sort].to_i == 2) # Distance
-       order_by = "ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(0.0174532925*#{longitude}-0.0174532925*venues.longitude)  ) ASC"
+       order_by = "ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(0.0174532925*#{longitude}-0.0174532925*venues.longitude)  )"
     elsif (params[:sort].to_i == 3)
-         order_by = "events.price ASC"
+         order_by = "events.price"
                    
     end
     tmp ="0"
@@ -2078,7 +2205,7 @@ def FacebookLogin
     puts "order_by"
     puts order_by
     
-    query = "SELECT DISTINCT ON (recurrences.id,users.id,bookmark_lists.id) occurrences.id AS occurrence_id, occurrences.start AS start 
+    query = "SELECT DISTINCT ON (recurrences.id,users.id,bookmark_lists.id) occurrences.id AS occurrence_id, occurrences.start AS start, venues.latitude AS latitude, venues.longitude AS longitude
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
@@ -2090,9 +2217,9 @@ def FacebookLogin
               LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
               INNER JOIN recurrences ON events.id = recurrences.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE #{distance_check} AND #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL AND recurrences.end >= '#{Date.today()}'
+            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL AND recurrences.end >= '#{Date.today()}' 
             UNION
-            SELECT DISTINCT ON (events.id,users.id,bookmark_lists.id) occurrences.id AS occurrence_id, occurrences.start AS start
+            SELECT DISTINCT ON (events.id,users.id,bookmark_lists.id) occurrences.id AS occurrence_id, occurrences.start AS start, venues.latitude AS latitude, venues.longitude AS longitude
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
@@ -2103,9 +2230,9 @@ def FacebookLogin
               INNER JOIN venues ON events.venue_id = venues.id
               LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE #{distance_check} AND #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
+            WHERE  #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
             UNION
-            SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.id AS occurrence_id, occurrences.start AS start
+            SELECT DISTINCT ON (recurrences.id,acts.id) occurrences.id AS occurrence_id, occurrences.start AS start, venues.latitude AS latitude, venues.longitude AS longitude
             FROM occurrences 
               INNER JOIN events ON occurrences.event_id = events.id
               INNER JOIN venues ON events.venue_id = venues.id
@@ -2114,9 +2241,9 @@ def FacebookLogin
               LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
               INNER JOIN recurrences ON events.id = recurrences.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE #{distance_check} AND #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL AND recurrences.end >= '#{Date.today()}'
+            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND occurrences.recurrence_id IS NOT NULL AND recurrences.end >= '#{Date.today()}' 
             UNION
-            SELECT DISTINCT ON (events.id,acts.id) occurrences.id AS occurrence_id, occurrences.start AS start
+            SELECT DISTINCT ON (events.id,acts.id) occurrences.id AS occurrence_id, occurrences.start AS start, venues.latitude AS latitude, venues.longitude AS longitude
             FROM occurrences 
               INNER JOIN events ON occurrences.event_id = events.id
               LEFT OUTER JOIN acts_events ON events.id = acts_events.event_id
@@ -2124,7 +2251,7 @@ def FacebookLogin
               INNER JOIN venues ON events.venue_id = venues.id
               LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE #{distance_check} AND #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
+            WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
            "
     
      # query = "SELECT occurrences.id AS occurrence_id, occurrences.start AS start
@@ -2138,11 +2265,41 @@ def FacebookLogin
      #        WHERE #{search_match} AND #{occurrence_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match}
      #       ORDER BY #{order_by}"
    
-    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    
+
+
+
+
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}_#{distance_check}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult == nil)
       #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
+
+      if (!params[:distance].to_s.empty?)
+      d = params[:distance]
+      unless d.to_i == 77777
+        # distance_check ="ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(0.0174532925*#{longitude}-0.0174532925*venues.longitude)  )<= #{d}"
+        temp_result =[]
+        latitude = latitude.to_f*0.0174532925
+        longitude = longitude.to_f*0.0174532925
+       
+
+        queryResult.each{ |r|
+          venue_lat = r["latitude"].to_f*0.0174532925
+          venue_log = r["longitude"].to_f*0.0174532925
+          if Math.acos( Math.sin(latitude)*Math.sin(venue_lat) +Math.cos(latitude)*Math.cos(venue_lat)*Math.cos(longitude-venue_log)  )<= d.to_f
+            temp_result << r
+          end
+        }
+        queryResult = temp_result
+
+
+      end 
+    end
+
+
+
       Rails.cache.write(really_long_cache_name, queryResult)
       #puts "**************** Cache Set for search Query ****************"
     else
@@ -3340,6 +3497,14 @@ def homeEvents
     else
       event_start_date = Date.today().advance(:days => (params[:start_days].to_s.empty? ? 0 : params[:start_days].to_i))
     end
+
+    # if(params[:channel_id].to_s.empty?)
+    #   event_end_date = Date.today().advance(:days => 2)
+    # else
+    #   event_end_date = Date.today().advance(:days => 14)
+    # end
+
+
     if(!params[:end_date].to_s.empty?)
       event_end_date = Date.parse(params[:end_date]).advance(:days => 1)
     else
@@ -3518,6 +3683,7 @@ def homeEvents
                     WHEN 0 THEN 0
                     ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
                   END DESC"
+    # order_by = "events.views"
 
     ttmp = queryResult.uniq{|x| x["occurrence_id"]}
     # ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
@@ -3529,11 +3695,21 @@ def homeEvents
     size = ttmp.size
    
 
-    ttttmp = ttmp.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 14)}
-    occurrenceIDs =  ttttmp.collect { |e| e["occurrence_id"].to_i }.uniq
+    if(params[:channel_id].to_s.empty?)
+      ttttmp = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 2)}
+    elsif (params[:channel_id].to_i == 3579)
+      ttttmp = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 30)}
+    elsif (params[:channel_id].to_i == 264)
+      ttttmp = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 365)}
+    else
+      ttttmp = queryResult.select{|e| e["start"].to_datetime > Time.now && e["start"].to_datetime < Date.today().advance(:days => 14)}
+    end
+
+
+    occurrenceIDs =  ttttmp.collect { |e| e["occurrence_id"].to_i }
     # ttttmp = queryResult.sort_by{ |hsh| hsh["start"].to_datetime }
     @allOccurrences = Occurrence.includes(:event => :venue).find(occurrenceIDs, :order => order_by)
-    occurrenceIDs =  @allOccurrences.collect { |e| e.id.to_i }.uniq.take(5)
+    occurrenceIDs =  @allOccurrences.collect { |e| e.id.to_i }.take(5)
    
     # today_events = queryResult.select{|e| e["start"].to_datetime < Date.today().advance(:days => 1)}.take(2)
     # tomorrow_events = queryResult.select{|e| e["start"].to_datetime > Date.today().advance(:days => 1)}.take(2)
@@ -4682,7 +4858,7 @@ def gettpevents
     tmp1 ="o"
     
 
-    query = "SELECT DISTINCT ON (recurrences.id) events.event_url AS url,events.ticket_url AS tix, bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+    query = "SELECT DISTINCT ON (recurrences.id) events.event_url AS url,events.ticket_url AS tix, bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end, events.cover_image_url AS cover, venues.phonenumber AS phone, venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor, venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city,  recurrences.start AS rec_start, recurrences.end AS rec_end,recurrences.every_other AS every_other,recurrences.day_of_week AS day_of_week,recurrences.week_of_month AS week_of_month,recurrences.day_of_month AS day_of_month ,occurrences.id AS occurrence_id, recurrences.id AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, venues.longitude AS longitude, venues.latitude AS latitude
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
@@ -4694,9 +4870,9 @@ def gettpevents
               LEFT OUTER JOIN acts ON acts.id = acts_events.act_id
               INNER JOIN recurrences ON events.id = recurrences.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE bookmark_lists.featured IS NOT FALSE AND #{distance_check} AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND #{days_check} AND occurrences.recurrence_id IS NOT NULL AND (recurrences.range_end >= '#{Date.today()}' OR recurrences.range_end IS NULL)
+            WHERE bookmark_lists.featured IS NOT FALSE AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{low_price_match} AND #{high_price_match} AND #{days_check} AND occurrences.recurrence_id IS NOT NULL AND (recurrences.range_end >= '#{Date.today()}' OR recurrences.range_end IS NULL)
             UNION
-            SELECT DISTINCT ON (events.id) events.event_url AS url,events.ticket_url AS tix,bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start
+            SELECT DISTINCT ON (events.id) events.event_url AS url,events.ticket_url AS tix,bookmark_lists.id AS listid, bookmark_lists.picture AS pix, users.id AS user_id, occurrences.end AS end,events.cover_image_url AS cover,venues.phonenumber AS phone,venues.id AS v_id, events.price AS price, events.views AS views, events.clicks AS clicks, acts.id AS act_id, acts.name AS actor,venues.address AS address, venues.state AS state,venues.zip AS zip, venues.city AS city, occurrences.start AS rec_start, occurrences.end AS rec_end, #{tmp} AS every_other, #{tmp} AS day_of_week, #{tmp} AS week_of_month, #{tmp} AS day_of_month,occurrences.id AS occurrence_id, #{tmp} AS rec_id, events.description AS description, events.title AS title, venues.name AS venue_name, venues.longitude AS longitude, venues.latitude AS latitude, events.id AS event_id, venues.id AS venue_id, occurrences.start AS occurrence_start, venues.longitude AS longitude, venues.latitude AS latitude
             FROM users
               INNER JOIN bookmark_lists ON users.id = bookmark_lists.user_id
               INNER JOIN bookmarks ON bookmark_lists.id =bookmarks.bookmark_list_id 
@@ -4707,14 +4883,40 @@ def gettpevents
               INNER JOIN venues ON events.venue_id = venues.id
               LEFT OUTER JOIN events_tags ON events.id = events_tags.event_id
               LEFT OUTER JOIN tags ON tags.id = events_tags.tag_id
-            WHERE bookmark_lists.featured IS NOT FALSE AND #{distance_check} AND occurrences.start >= '#{Date.today()}' AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{days_check} AND #{low_price_match} AND #{high_price_match}
+            WHERE bookmark_lists.featured IS NOT FALSE AND occurrences.start >= '#{Date.today()}' AND #{search_match} AND #{location_match} AND #{tag_include_match} AND #{tag_exclude_match} AND #{days_check} AND #{low_price_match} AND #{high_price_match}
             "
 
-    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}")
+    really_long_cache_name = Digest::SHA1.hexdigest("search_for_#{query}_#{distance_check}")
     queryResult = Rails.cache.read(really_long_cache_name)
     if (queryResult==nil)
       #puts "**************** No cache found for search query ****************"
       queryResult = ActiveRecord::Base.connection.select_all(query)
+
+
+      if (!params[:distance].to_s.empty?)
+        d = params[:distance]
+        unless d.to_i == 77777
+          # distance_check ="ACOS( SIN(0.0174532925*#{latitude})*SIN(0.0174532925*venues.latitude) +COS(0.0174532925*#{latitude})*COS(0.0174532925*venues.latitude)*COS(0.0174532925*#{longitude}-0.0174532925*venues.longitude)  )<= #{d}"
+          temp_result =[]
+          latitude1 = latitude.to_f*0.0174532925
+          longitude1 = longitude.to_f*0.0174532925
+         
+
+          queryResult.each{ |r|
+            venue_lat = r["latitude"].to_f*0.0174532925
+            venue_log = r["longitude"].to_f*0.0174532925
+            if Math.acos( Math.sin(latitude1)*Math.sin(venue_lat) +Math.cos(latitude1)*Math.cos(venue_lat)*Math.cos(longitude1-venue_log)  )<= d.to_f
+              temp_result << r
+            end
+          }
+          queryResult = temp_result
+
+
+        end 
+      end
+
+
+
       Rails.cache.write(really_long_cache_name, queryResult)   
       #puts "**************** Cache Set for search Query ****************"
     else
@@ -4776,11 +4978,14 @@ def gettpevents
       ttttmp = ttmp.sort_by{ |hsh| hsh["occurrence_start"].to_datetime }
     elsif (params[:sort].to_i == 2) # Distance
       temp = []
+      latitude1 = latitude.to_f*0.0174532925
+      longitude1 = longitude.to_f*0.0174532925
       ttttmp.each{ |item|
         log = item["longitude"].to_f*0.0174532925
         lat = item["latitude"].to_f*0.0174532925
-        d = Math.acos( Math.sin(latitude*0.0174532925)*Math.sin(lat) +Math.cos(latitude*0.0174532925)*Math.cos(lat)*Math.cos(longitude*0.0174532925-log))
-        item.merge({"distance"=>d})
+        d = Math.acos( Math.sin(latitude1)*Math.sin(lat) +Math.cos(latitude1)*Math.cos(lat)*Math.cos(longitude1-log))
+        item=item.merge({"distance"=>d})
+       
         temp << item
       }
       ttttmp = temp.sort_by{ |hsh| hsh["distance"]} 
@@ -4792,28 +4997,30 @@ def gettpevents
         if ((!item["price"].to_s.empty?) && (!item["price"].nil?) && (!item["price"].to_s.eql?("")) &&( !item["price"].blank? ))
           p = item["price"].to_f 
         end
-        item.merge({"p"=>p})
+        item = item.merge({"p"=>p})
+        
         temp << item
 
       }
       ttttmp = temp.sort_by{ |hsh| hsh["p"] }            
     end
 
-    if (!params[:distance].to_s.empty?)
-      d = params[:distance]
-      unless d.to_i == 77777
-      temp = []
-      ttttmp.each{ |item|
-        log = item["longitude"].to_f*0.0174532925
-        lat = item["latitude"].to_f*0.0174532925
-        k = Math.acos( Math.sin(latitude*0.0174532925)*Math.sin(lat) +Math.cos(latitude*0.0174532925)*Math.cos(lat)*Math.cos(longitude*0.0174532925-log))
-        item.merge({"cadistance"=>k})
-        temp << item
-      }
-      ttttmp = temp.select{|item| item["cadistance"].to_f <= d.to_f}
+    # if (!params[:distance].to_s.empty?)
+    #   d = params[:distance]
+    #   unless d.to_i == 77777
+    #   temp = []
+    #   ttttmp.each{ |item|
+    #     log = item["longitude"].to_f*0.0174532925
+    #     lat = item["latitude"].to_f*0.0174532925
+    #     k = Math.acos( Math.sin(latitude*0.0174532925)*Math.sin(lat) +Math.cos(latitude*0.0174532925)*Math.cos(lat)*Math.cos(longitude*0.0174532925-log))
+    #     item.merge({"cadistance"=>k})
 
-      end 
-    end
+    #     temp << item
+    #   }
+    #   ttttmp = temp.select{|item| item["cadistance"].to_f <= d.to_f}
+
+    #   end 
+    # end
 
 
     
@@ -5818,7 +6025,7 @@ def SX
       start_time_check = "#{occurrence_start_time} >= #{event_start_time}"
       end_time_check = "#{occurrence_start_time} <= #{event_end_time}"
     end
-    days_check = "TRUE"
+
     unless(params[:day].to_s.empty?)
       # event_days = params[:day].to_s.empty? ? nil : params[:day].collect { |day| day.to_i } * ','
       event_days = params[:day].to_s.empty? ? nil : params[:day].to_s

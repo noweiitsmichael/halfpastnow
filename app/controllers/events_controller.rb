@@ -14,16 +14,30 @@ class ZoomDelta
 end
 
 class EventsController < ApplicationController
+<<<<<<< HEAD
+  layout "new_design"
+helper :content
+def splash
+  respond_to do |format|
+    format.html { render :layout => false }
+=======
   helper :content
 
   def splash
     respond_to do |format|
       format.html { render :layout => false }
     end
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
   end
 
+<<<<<<< HEAD
+def new_splash
+  respond_to do |format|
+    format.html { render :layout => false }
+=======
   def filter
 
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
   end
 
   def new_splash
@@ -203,10 +217,11 @@ class EventsController < ApplicationController
     order_by = "occurrences.start"
     if (params[:sort].to_s.empty? || params[:sort].to_i == 0)
       # order by event score when sorting by popularity
-      order_by = "CASE events.views 
-                    WHEN 0 THEN 0
-                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
-                  END DESC"
+      #order_by = "CASE events.views
+      #              WHEN 0 THEN 0
+      #              ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+      #            END DESC"
+      order_by = "events.escore"
     end
     @tags = Tag.includes(:parentTag, :childTags).all
     @parentTags = @tags.select { |tag| tag.parentTag.nil? }
@@ -374,6 +389,7 @@ class EventsController < ApplicationController
     params[:zoom] = @zoom
 
     params[:user_id] = current_user ? current_user.id : nil
+
     @ids = Occurrence.find_with(params)
 
     @occurrence_ids = @ids.collect { |e| e["occurrence_id"] }.uniq
@@ -381,6 +397,17 @@ class EventsController < ApplicationController
     @venue_ids = @ids.collect { |e| e["venue_id"] }.uniq
 
     order_by = "occurrences.start"
+<<<<<<< HEAD
+    if(params[:sort].to_s.empty? || params[:sort].to_i == 0)
+      # order by event score when sorting by popularity
+      #order_by = "CASE events.views
+      #              WHEN 0 THEN 0
+      #              ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+      #            END DESC"
+      ## Testing .. only by score
+      order_by = "events.escore"
+=======
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 
 
     @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)
@@ -471,7 +498,11 @@ class EventsController < ApplicationController
       end
       format.json { render json: @occurrences.to_json(:include => {:event => {:include => [:tags, :venue, :acts]}}) }
       format.mobile
+<<<<<<< HEAD
+
+=======
       format.js
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
     end
 
   end
@@ -845,10 +876,11 @@ class EventsController < ApplicationController
     order_by = "occurrences.start"
     if (params[:sort].to_s.empty? || params[:sort].to_i == 0)
       # order by event score when sorting by popularity
-      order_by = "CASE events.views 
-                    WHEN 0 THEN 0
-                    ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
-                  END DESC"
+      #order_by = "CASE events.views
+      #              WHEN 0 THEN 0
+      #              ELSE (LEAST((events.clicks*1.0)/(events.views),1) + 1.96*1.96/(2*events.views) - 1.96 * SQRT((LEAST((events.clicks*1.0)/(events.views),1)*(1-LEAST((events.clicks*1.0)/(events.views),1))+1.96*1.96/(4*events.views))/events.views))/(1+1.96*1.96/events.views)
+      #            END DESC"
+      order_by = "events.escore"
     end
 
     @allOccurrences = Occurrence.includes(:event => :tags).find(@occurrence_ids, :order => order_by)

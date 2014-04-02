@@ -7,6 +7,7 @@ class Event < ActiveRecord::Base
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :acts
 
+
   has_many :recurrences, :dependent => :destroy
   has_many :occurrences, :dependent => :destroy
   has_many :bookmarks, :through => :occurrences
@@ -48,6 +49,32 @@ class Event < ActiveRecord::Base
     return true
   end
 
+  searchable do
+    text :title, :boost => 5
+    text :description
+    text :venue_name, :boost => 4 do
+      venue.name if venue.present?
+    end
+    text :venue_description do
+      venue.description if venue.present?
+    end
+    #text :artists do
+    #  acts.map(&:name)
+    #end
+    #string :tag_names, multiple: true, stored: true do
+    #  tags.map(&:name)
+    #end
+    #string :price_search do
+    #  price.downcase.gsub(/^(an?|the)\b/, '')
+    #end
+    integer :price
+  end
+
+  def price_search
+    #price.strftime("%B %Y")
+  end
+
+
   def score
     if self.views == 0
       return 0
@@ -56,7 +83,15 @@ class Event < ActiveRecord::Base
     p = self.clicks
     z = 1.96
     phat = [1.0*p/n,1].min
-    return (phat + z*z/(2*n) - z * Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)
+    event_score = (phat + z*z/(2*n) - z * Math.sqrt((phat*(1-phat)+z*z/(4*n))/n))/(1+z*z/n)
+
+    tags_weights = self.tags.collect(&:weight)
+    acts_weights = self.acts.collect(&:weight)
+    tags_weight = tags_weights.empty? ? 1 : tags_weights.sum/tags_weights.size.to_f
+    acts_weight = acts_weights.empty? ? 1 : acts_weights.max
+
+    event_score =  event_score * self.weight * self.venue.weight * tags_weight * acts_weight
+    return event_score
   end
 
   def completedness

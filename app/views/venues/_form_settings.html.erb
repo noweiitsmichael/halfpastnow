@@ -74,7 +74,11 @@
   <% end %>
 <% end %>
 <br><br>
+<<<<<<< HEAD
+<div class="venue-link"><a href="/venues/<%=@venue.id%>?fullmode=true" target="_blank">Live Page</a></div>
+=======
 <div class="venue-link"><a href="/venues/austin/<%=@venue.slug%>" target="_blank">Live Page</a></div>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 
 <%= form_for @venue, :url => @venue.id ? "/venues/update/" + @venue.id.to_s : "/venues/create", :html => { :id => "venue_settings", :multipart => true } do |f| %>
    <div class="main settings">
@@ -100,6 +104,11 @@
     <div class="field">
       <%= f.label :description %>
       <%= f.text_area :description, :class => 'cleditor' %>
+    </div>
+
+    <div class="field">
+      <%= f.label :hours %>
+      <%= f.text_area :hours, :class => 'cleditor' %>
     </div>
     <div class="field">
       <%= f.label :hours %>
@@ -128,6 +137,10 @@
     <div class="field">
       <%= f.label :zip %>
       <%= f.text_field :zip, :class => 'location required' %>
+    </div>
+    <div class="field">
+      <%= f.label :weight %>
+      <%= f.text_field :weight, :class => 'location required' %>
     </div>
 
     <% unless @venue.fb_picture.nil? %>

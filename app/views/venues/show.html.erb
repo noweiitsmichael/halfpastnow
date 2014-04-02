@@ -195,6 +195,9 @@
       });
       $('.act-name').click(function () {
 
+<<<<<<< HEAD
+	
+=======
         console.log($(this).attr('act_id'))
         window.location.href = window.location.origin + "/acts/show/" + $(this).attr('act_id')
       })
@@ -296,6 +299,7 @@
 
   </script>
 <% end %>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 
 <% content_for :body do %>
 
@@ -311,6 +315,54 @@
 
         <div class="row">
 
+<<<<<<< HEAD
+<% content_for :mode_body do %>
+<%= javascript_include_tag "galleria-1.2.8.min" %>
+	<div class="col-1">
+		<h2><%= @venue.name %></h2>
+		<% unless @venue.description.to_s.empty? %>
+			<div class="description block">
+				<h2>Details</h2>
+				<div class="block-inner">
+					<%= raw(@venue.description) %>
+				</div>
+			</div>
+		<% end %>
+		<% unless @occurrences.length == 0 && @recurrences.length == 0 %>
+			<div class="calendar block">
+				<h2>Calendar</h2>
+				<div class="block-inner">
+					<%= render :partial => "events/calendar", :locals => { :occurrences => @occurrences, :recurrences => @recurrences, :options => { :venue => false, :fullmode => @fullmode  } } %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<div class="col-2">		
+		<div class="block">
+			<div class="block-inner">
+				<%= render :partial => "layouts/share_bookmark", :locals => { :type => 'venue', :id => @venue.id, :bookmarkId => @bookmarkId} %>
+			</div>
+		</div>
+		<div class="block">
+			<a class="map-link" href="http://maps.google.com/maps?q=<%= @venue.latitude %>,<%= @venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @venue.latitude %>,<%= @venue.longitude %>&sensor=false"/></a>
+			<div class="block-inner">
+				<div><strong><%= @venue.name %></strong></div>				
+				<div><%= @venue.address %></div>
+				<div><%= @venue.city + ", " + @venue.state + " " + @venue.zip.to_s %></div>
+				<% unless @venue.phonenumber.to_s.empty? && @venue.url.to_s.empty? %><br /><% end %>
+				<div><%= @venue.phonenumber %></div>
+				<div><a href="<%= @venue.url %>"><%= @venue.url %></a></div>
+			</div>
+		</div>
+		<% unless (@venue.fb_picture.blank? && @venue.pictures.nil?) %>
+		<div id="galleria">
+			<% unless @venue.fb_picture.blank?%>
+				<img src="<%= @venue.fb_picture%>" data-title="<%= @venue.name %>" >
+			<% end %>
+            <% @venue.pictures.each do |pic| %>
+			    <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @venue.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+		    <% end %>
+=======
           <div class="right">
             <div class="share bookmark-share">
               <span onmouseover='$(this).tooltip()' data-toggle="tooltip" title="Bookmark">
@@ -487,6 +539,7 @@
           <% end %>
           <br>
           <span class="muted">Advertisement</span>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
         </div>
       </div>
     </div>

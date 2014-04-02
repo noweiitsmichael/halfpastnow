@@ -1,0 +1,113 @@
+
+<!-- tab offical ACL -->
+
+
+  <% displayed_events = 0 %>
+  <% @occurrences.each_with_index do |occurrence, count| %>
+
+      <!-- Big things: column left -->
+       <% if (0..4).include?(count) %>
+
+          <% if count == 0 %>
+            <div class="row <%= count %>"><!--Row tag for first 19 elements -->
+              <div class="large-6 columns leftCol ptm stretch"><!--(0..4) events left -->
+          <% end %>
+             <div class="big-event-container clearfix">
+               <div class="event-image">
+                 <!--<img src="<%#= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />-->
+                 <% if occurrence.event.pictures.first %>
+                     <img src="<%= occurrence.event.pictures.first.image_url(:large) %>" />
+                 <% elsif occurrence.event.acts.length != 0 && occurrence.event.acts.first.pictures.first %>
+                     <img src="<%= occurrence.event.acts.first.pictures.first.image_url(:large) %>" />
+                 <% else %>
+                     <img src="<%= occurrence.event.venue.pictures.first ? occurrence.event.venue.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />
+                  <% end %>
+
+               </div>
+               <div class="text antialiased">
+
+                 <a class="event-title" href="/unofficialacl/event/show/<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 42) %></a>
+                 <p class="event-tags event-date">
+                    <%= occurrence.start.to_time.strftime("%A, %b %e, %l:%M %p") %>
+                 </p>
+                 <p class="event-tags">
+                   <% if occurrence.event.tags.count > 0 %>
+                       <% names = occurrence.event.tags.collect {|tag| tag.name} %>
+                       <% exclude_tag_names = ["Festival","Music"] %>
+                       <% names = names - exclude_tag_names %>
+                       <span><%= names[0..2].join(', ') %></span>
+                   <% end %>
+                 </p>
+               </div>
+             </div>
+             <% puts "count = #{count}"%>
+             <% puts "displayed events = #{displayed_events}"%>
+
+
+          <% if (count == @occurrences.length - 1) || (count == 4) %>
+            </div>
+          <% end %>
+
+        <!-- Small things: column right -->
+       <% elsif (5..18).include?(count) %>
+
+          <% if count == 5 %>
+            <div class="large-6 columns rightCol ptm stretch">   <!--(5..18) events right -->
+              <ul class="small-block-grid-2">
+          <% end %>
+             <li class="mix freedrink">
+                 <div class="small-event-container">
+                   <div class="event-image">
+                     <!--<img src="<%#= occurrence.event.cover_image_url ? occurrence.event.cover_image_url : "/assets/placeholder.png" %>" />-->
+                     <% if occurrence.event.pictures.first %>
+                         <img src="<%= occurrence.event.pictures.first.image_url(:cover) %>" />
+                     <% elsif occurrence.event.acts.length != 0 && occurrence.event.acts.first.pictures.first %>
+                         <img src="<%= occurrence.event.acts.first.pictures.first.image_url(:cover) %>" />
+                     <% else %>
+                         <img src="<%= occurrence.event.venue.pictures.first ? occurrence.event.venue.pictures.first.image_url(:cover) : "/assets/placeholder.png" %>" />
+                     <% end %>
+                     <!--<img src="<%#= occurrence.event.pictures.first ? occurrence.event.pictures.first.image_url(:large) : "/assets/placeholder.png" %>" />-->
+                   </div>
+                   <div class="text antialiased">
+                     <a class="event-title" href="/unofficialacl/event/show/<%= occurrence.id %>"><%= truncate(occurrence.event.title, :length => 42) %></a>
+                     <p class="event-tags event-date">
+                        <%= occurrence.start.to_time.strftime("%A, %b %e, %l:%M %p") %>
+                     </p>
+                     <p class="event-tags">
+                       <% if occurrence.event.tags.count > 0 %>
+                           <% names = occurrence.event.tags.collect {|tag| tag.name} %>
+                           <% exclude_tag_names = ["Festival","Music", "SXSW Artist"] %>
+                           <% names = names - exclude_tag_names %>
+                           <span><%= names[0..2].join(', ') %></span>
+                       <% end %>
+                     </p>
+                   </div>
+                 </div>
+             </li>
+          <% if (count == @occurrences.length - 1) || (count == 18) %>
+               </ul>
+             </div>  <!--End of (5..18) events right -->
+            </div> <!--End of Row tag for 19 elements -->
+              <!--scrolling code
+               <div class="by-center">Scroll Down to See More!
+               <div id="triangle-down"></div>
+             </div>
+             -->
+          <% end %>
+       <% end %> <!--End if condition 0..19 -->
+
+
+    <div class="map_latlang" style="display:none;">
+      <div class="latitude"><%= occurrence.event.venue.latitude %></div>
+      <div class="longitude"><%= occurrence.event.venue.longitude %></div>
+    </div>
+
+    <% count = 0 if count == 18 %>
+    <% displayed_events = displayed_events + 1 %>
+  <% end %> <!--End of main occurrences loop -->
+
+
+
+<!--Scroll top btn -->
+<a href="#" class="scrollup pull-right">Scroll</a>
+

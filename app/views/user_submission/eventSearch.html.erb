@@ -55,7 +55,7 @@
 	            	} else {
 	            		topPicksButton = "<a class='nice-button picks remove-from-picks' href='' bookmark-id='" + this.id + "'>Remove Pick</a>"
 	            	}
-	            	$("<li style='overflow:hidden'><div class='result-element-actions'><a href='/userSubmission/eventEdit1/" + this.event.id + "'>[edit]</a><% if user_signed_in? %><% if (current_user.role == 'admin') || (current_user.role == 'super_admin') %>" + topPicksButton + "<% end %><% end %></div><div class='result-element'><h5><a href='/?event_id=" + this.id + "' target='_blank' class='resultEventName'>"+ this.event.title + "</a></h5><span>" + this.event.venue.name + "</span></div></li>").appendTo('#event-results');
+	            	$("<li style='overflow:hidden'><div class='result-element-actions'><a href='/userSubmission/eventEdit1/" + this.event.id + "'>[edit]</a><% if user_signed_in? %><% if (current_user.role == 'admin') || (current_user.role == 'super_admin') %>" + topPicksButton + "<% end %><% end %></div><div class='result-element'><h5><a href='/events/show/" + this.id + "?fullmode=true' target='_blank' class='resultEventName'>"+ this.event.title + "</a></h5><span>" + this.event.venue.name + "</span></div></li>").appendTo('#event-results');
 	            });
 	        });
 			

@@ -1,4 +1,26 @@
 Myapp::Application.routes.draw do
+  
+  # Below did not work when it was just root :to 'unofficialacl#index', with or without carrot in front of host def.
+  # constraints(:host => /^unofficialacl.com/) do 
+  #      root :to => 'unofficialacl#index'
+  #      # match '/*path', :to => redirect {|params| "http://www.unofficialacl.com/#{params[:path]}"} 
+  # end 
+
+  root :to => 'unofficialacl#index', :constraints => { :domain => "unofficialacl.com" }
+
+  #root :to => 'events#new_splash'
+  # root :to => 'picks#index'
+  # root :to => 'unofficialacl#index'
+
+  match "unofficialacl/search/:tags" => "unofficialacl#search", :as => "unofficialacl_search"
+  match "unofficialacl/:type/show/:id" => "unofficialacl#details", :as => "unofficialacl_detail"
+
+  resources :unofficialacl do
+    collection do
+      post :search
+      get :details
+      get :show_venue
+      get :show_artist
 
   namespace :admin do
     resources :dashboard
@@ -50,7 +72,6 @@ Myapp::Application.routes.draw do
   get "info/contact"
   get "info/privacy"
   get "info/terms"
-  get "info/contest_rules"
 
   devise_for :users, :controllers => {:registrations => "registrations", :omniauth_callbacks => "omniauth_callbacks"} do
     get "join_now", :to => "registrations#new"
@@ -117,6 +138,11 @@ Myapp::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
+  authenticated :user do
+    root :to => 'events#petparent'
+  end
+
+  # map.connect "", :controller => "unofficialacl", :conditions => { :host => "www.unofficialacl.com" }
   #authenticated :user do
   #  root :to => 'events#index'
   #end
@@ -141,6 +167,7 @@ Myapp::Application.routes.draw do
   match 'users/change_share_status' => 'users#change_share_status'
   match '/search' => 'events#index'
   match '/sxsw' => 'events#sxsw'
+  match '/unofficialacl' => 'unofficialacl#index'
   match '/saved_search' => 'events#saved_search'
   match '/search_results' => 'events#search_results'
   match '/saved_searches_index' => 'events#saved_searches_index'

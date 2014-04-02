@@ -2,7 +2,12 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<<<<<<< HEAD
+  <meta property="fb:app_id" content="475386955806720" /> 
+  
+=======
   <meta property="fb:app_id" content="475386955806720"/>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
   <% if @pick %>
     <meta property="og:type" content="halfpastnow:toppick"/>
   <% else %>
@@ -88,6 +93,30 @@
   <%= yield :head %>
 
 </head>
+<<<<<<< HEAD
+<body>
+  <%= yield :code %>
+
+  <div id="body">
+    <div id="header">
+      <div class="one">
+        <div>
+          <div class="stay-on-target">
+            <a href="/"><img class="logo" src="/assets/halfpastnow_final_beta-dark-header.png" /></a>
+            <ul id="nav">
+              <li class="nav-item">
+                  <a class="main menu-element <%= params[:controller] == "events" && params[:action] != "sxsw" ? "selected" : "" %>" href="/search">Search</a>
+              </li>
+              <li class="nav-item">
+                  <a class="main menu-element <%= params[:controller] == "picks" ? "selected" : "" %>" href="/picks">Top Picks</a>
+              </li>
+            </ul>
+            <span class="divider"></span>
+            
+              
+            
+            <% if false %><% end %>
+=======
 <body id="body">
 <%= yield :code %>
 
@@ -121,6 +150,7 @@
               <% end %>
             <% end %>
 
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
             <% if user_signed_in? %>
               <li>
 
@@ -153,6 +183,12 @@
                         <% end %>
                       </li>
 
+<<<<<<< HEAD
+            <% if user_signed_in? %>             
+              <div class="menu-element right nice-button" id ="add-event-button"><a href="/userSubmission/eventSearch">Add an Event!</a></div>
+            <% else %>           
+              <div class="menu-element right nice-button" id ="add-event-button"><a href="#" linkto="shunt">Add an Event!</a></div>
+=======
                       <li class="divider" style="margin: 1px 1px; !important"></li>
 
                       <li>
@@ -171,6 +207,7 @@
               <li><a href="/join_now" class="nav_links"><i class="icon-right-arrow"></i>Join Now</a></li>
               <li>&nbsp;</li>
               <li><a href="/login" class="nav_links"><i class="icon-right-arrow"></i>Log In</a></li>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
             <% end %>
 
           </ul>

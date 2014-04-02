@@ -41,7 +41,10 @@ class User < ActiveRecord::Base
 
 
   after_create :send_welcome_email
+<<<<<<< HEAD
+=======
   # after_create :send_contest_entry_email
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
   after_create :create_default_list
 
 
@@ -238,13 +241,6 @@ class User < ActiveRecord::Base
       UserMailer.welcome_email(self).deliver
     end
   end
-
-   def send_contest_entry_email
-    unless self.email.include?('@halfpastnow.com') && Rails.env != 'test'
-      UserMailer.contest_entry_email(self).deliver
-    end
-  end
-
 
   def create_default_list
     # puts "Adding to weekly to email list"

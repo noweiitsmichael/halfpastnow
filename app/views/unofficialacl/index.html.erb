@@ -1,0 +1,80 @@
+
+
+  <%= render 'row_header', locals: {occurrences: @occurrences} %>
+  <div class="content tab search_content" id="tab-1">
+  <%= render 'default_venues' %>
+  <%#= render 'results', locals: {occurrences: @occurrences} %>
+  </div>
+
+
+
+<%= hidden_field_tag :and_tags, params[:and_tags] %>
+<%= hidden_field_tag :next_page, @occurrences.next_page %>
+<%= hidden_field_tag :total_pages, @occurrences.total_pages %>
+<%= hidden_field_tag :two_pages, "true" %>
+
+<style>
+    .scrollup{
+        width:40px;
+        height:40px;
+        /*opacity:0.3;*/
+        position:fixed;
+        bottom:50px;
+        right:100px;
+        display:none;
+        text-indent:-9999px;
+        background: url('/assets/acl/icon_top.png') no-repeat;
+    }
+</style>
+
+<script>
+
+
+    $(window).scroll(function () {
+
+        if ($(this).scrollTop() > 100) {
+            $('.scrollup').fadeIn();
+        } else {
+            $('.scrollup').fadeOut();
+        }
+
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+
+            var next_page = $('#next_page').val();
+            next_page = parseInt(next_page);
+            var total_pages = $('#total_pages').val();
+            total_pages = parseInt(total_pages);
+            var and_tags = $('#and_tags').val();
+
+            if((total_pages==2) && ($('#two_pages').val()=="true"))
+            {
+                append_data(next_page,and_tags);
+                $('#two_pages').val("false");
+            }
+
+            if (next_page < total_pages) {
+                $('#loaderImage').show();
+                $('#footer_text').show();
+                append_data(next_page,and_tags);
+            } else{
+                $('#loaderImage').hide();
+                $('#footer_text').hide();
+            }
+        }
+
+    });
+
+    function append_data(page,and_tags) {
+
+        $.post('/unofficialacl/search', {page: page,and_tags: and_tags},
+                function () {
+                }, 'script');
+        return false;
+    }
+
+    $('.scrollup').on('click',function(){
+        $("html, body").animate({scrollTop: '0px' }, 1500);
+        return false;
+    });
+</script>
+

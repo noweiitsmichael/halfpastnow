@@ -1,0 +1,113 @@
+<% content_for :meta do %>
+  <meta property="og:type"                 content="website"/> 
+  <meta property="og:url"                  content="http://www.unofficialacl.com"/> 
+  <meta property="og:image"                content="http://www.unofficialacl.com/assets/acl/layout/logo-glow.png"/>
+  <meta property="og:title"                content="Unofficial ACL | Your Unofficial ACL events resource"/>
+  <meta property="og:description"          content="Find out about unofficial and official ACL events"/> 
+<% end %>
+
+<%# params[:included_tags] = params[:included_tags].present? ? params[:included_tags] : '25'   %>
+<% params[:and_tags] = params[:and_tags].present? ? params[:and_tags] : '232'   %>
+
+<%= form_tag "/unofficialacl/search"  do %>
+<div id="sticker">
+  <div class="pink-banner">
+    <div class="wrapper row">
+      <div class="large-9 columns">
+        <a class="callout" tabindex="1" href="http://www.halfpastnow.com">
+          <img src="/assets/acl/layout/hpn-marker.png">
+          <p>Sponsored: See all of Austin's <span class="rotate">Live Music, Happy Hour, Outdoor, Fitness, Business, Tech, Arts, Exhibition</span> events at halfpastnow.com!</p>
+        </a>
+
+        <div class="comments">
+          <div class="ear left"></div>
+          <i class="icon-chevron-right"></i> Go On!
+        </div>
+      </div>
+      <div class="large-3 columns ptx">
+        <div class="text-rounded dark">
+              <%= text_field_tag :search,params[:search], placeholder: "Search", "tabindex" => "2" %>
+              <%= submit_tag "",class: "search-button", "tabindex" => "6" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="toolbar">
+    <div class="wrapper row">
+      <div class="large-3 small-4 columns">
+        <div class="ptx prm left"><h3>Map is: </h3></div>
+        <div class="commutator <%= (params[:and_tags].include? '247') ? "on" : "off" %>" id="map-onoff">
+          <div class="is on">
+            On
+            <div class="is off">
+              Off
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="large-3 small-4 large-offset-2 columns by-right">
+        <h3 class="ptx">Choose a Date: </h3>
+      </div>
+      <div class="large-4 small-4 columns">
+        <%= select_tag "time_search",
+                       options_for_select([['All days', 'everything'], ['ACL First Weekend (Oct 4-6)', 'first'],
+                                           ['Unofficial Week (Oct 7-10)', 'unofficial'], ['ACL Second Weekend (Oct 11-13)', 'second'],
+                                           ['Today', 'today'], ['Tomorrow', 'tomorrow']], params[:time_search]),
+                        { :class => 'select js-select',:onchange => "this.form.submit();" }%>
+        <!--<select class="select js-select" name="time_search" onchange= "this.form.submit();" >-->
+          <!--<option></option>-->
+          <!--<option value="everything">Show me everything</option>-->
+          <!--<option value="first">ACL First Weekend (Oct 4-6)</option>-->
+          <!--<option value="unofficial">Unofficial Week (Oct 7-10)</option>-->
+          <!--<option value="second">ACL Second Weekend (Oct 11-13)</option>-->
+          <!--<option value="today">Today</option>-->
+          <!--<option value="tomorrow">Tomorrow</option>-->
+        <!--</select>-->
+      </div>
+    </div>
+  </div>
+
+<% end %>
+<div class="row" id="map">
+  <div id="googleMap"></div>
+</div>
+
+    <div class="wrapper row header">
+      <div class="large-8 columns">
+        <nav>
+          <a id="menu-icon"><i class="icon-reorder"></i></a>
+          <ul id="tab-anchors" class="header-navigation">
+            <li id="tab-anchor-3" class = <%= (params[:and_tags].include? '232') ? "current" : "" %>>
+              <a href="http://www.unofficialacl.com">Unofficial ACL</a>
+            </li>          
+            <li id="tab-anchor-2" class = <%= (params[:and_tags].include? '247') ? "current" : "" %>>
+              <%= link_to "Official Late Night Shows", unofficialacl_search_path(tags: "Official Late Night Shows"), method: :post %>
+            </li>
+            <li  id="tab-anchor-1" class = <%= (params[:and_tags].include? '230') ? "current" : "" %>>
+              <%= link_to "Official ACL", unofficialacl_search_path(tags: "Official ACL"), method: :post %>
+            </li>
+            <li id="tab-anchor-4" class = <%= (params[:and_tags].include? '15') ? "current" : "" %>>
+              <a href="http://unofficialacl.wordpress.com">Local Recommendations</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="large-4 columns">
+        <div class="small-navbar-note">Show me events with:</div>
+        <div id="small-navbar">
+          <ul>
+            <li class="filter"><%= link_to "Free drinks", unofficialacl_search_path(tags: "Free drinks"), method: :post, class: (params[:and_tags].include? '256') ? "active" : "" %></li>
+            <li class="filter"><%= link_to "party", unofficialacl_search_path(tags: "party"), method: :post, class: (params[:and_tags].include? '253') ? "active" : "" %></li>
+            <li class="filter"><%= link_to "no cover", unofficialacl_search_path(tags: "no cover"), method: :post, class: (params[:and_tags].include? '254') ? "active" : "" %></li>
+            <li class="filter"><%= link_to "RSVP", unofficialacl_search_path(tags: "RSVP"), method: :post, class: (params[:and_tags].include? '255') ? "active" : "" %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+</div>
+
+<style>
+    .select-search{display: none}
+</style>
+

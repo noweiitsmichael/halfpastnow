@@ -18,4 +18,8 @@
 //= require history
 //= require h5utils
 //= require half.main
+<<<<<<< HEAD
+
+=======
 //= require jquery.colorbox
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf

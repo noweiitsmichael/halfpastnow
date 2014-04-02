@@ -1,0 +1,41 @@
+<header style="background: none repeat scroll 0 0 #ffffff;z-index: 900;position: relative;">
+  <div class="grid-container">
+    <div class="grid-40 mobile-grid-100">
+      <a href="/"><img class="logo" src="/assets/new_design/logo.png"></a>
+    </div>
+    <div class="grid-60 mobile-grid-100">
+      <menu class="menu-container">
+        <div>
+          <p><a class="menuitem <%= params[:controller] == "picks" && params[:action] == "index" ? "current-page" : "" %>" href="/picks">Top Picks</a></p>
+          <p class="menu-tagline">See the best selections from our Trendsetters team</p>
+        </div>
+        <div>
+          <p><a class="menuitem <%= params[:controller] == "events" && params[:action] == "index" ? "current-page" : "" %>" href="/search">Search</a></p>
+          <p class="menu-tagline">We have Austn's most comprehensive database</p>
+        </div>
+        <div>
+          <p><a class="menuitem <%= params[:controller] == "picks" && params[:action] == "trendsetters" ? "current-page" : "" %>" href="/picks/trendsetters">Trendsetters</a></p>
+          <p class="menu-tagline">Get to know our team of Austin trendsetters</p>
+        </div>
+      </menu>
+    </div>
+  </div>
+
+<% if user_signed_in? %>  
+  <div class="add-event"><a href="/user_submission/eventSearch">Add an Event!</a></div>
+<% else %>
+  <div class="add-event"><a href="#" linkto="shunt">Add an Event!</a></div>
+<% end %>
+  <div class="login-container">
+    <div>
+      <% if user_signed_in? %>
+        <p><%= link_to(current_user.firstname + " " + current_user.lastname, edit_user_registration_path, :class => "button-member") %></p>
+        <p class="member-login"><%= link_to image_tag(current_user.profilepic_url(:mini) || "/assets/profile.png", :class => "top-profile-pic", :style => "position: relative;"), edit_user_registration_path %> <span><a href="/users/edit"><i class="icon-user"></i> Logout</a></span></p>
+      <% else %>
+        <p><a class="button-member" href="#" linkto="shunt">Become a member</a></p>
+        <p class="member-login">Already a Member? <span><a href="#" linkto="shunt"><i class="icon-user"></i> Login</a></span></p>
+      <% end %>
+    </div>
+  </div>
+
+</header>

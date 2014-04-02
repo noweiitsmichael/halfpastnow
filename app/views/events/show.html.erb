@@ -1,3 +1,121 @@
+<<<<<<< HEAD
+<% content_for :meta do %>
+     <meta property="og:type"                 content="halfpastnow:event"/> 
+     <meta property="og:url"                  content="http://www.halfpastnow.com/events/show/<%= @occurrence.id%>?fullmode=true"/>
+     <meta property="og:site_name"            content="halfpastnow"/>
+     <meta property="og:image"                content="<%=@event.cover_image_url%>"/>
+     <meta property="og:title"                content="<%=@event.title%> at <%=@event.venue.name%> on halfpastnow.com">
+     <meta property="og:description"          content="<%=strip_tags(@event.description)%>"/> 
+<% end %>
+<% content_for :mode_title do %>
+<% end %>
+
+<% content_for :mode_body do %>
+	<div class="col-1">
+		<h2><%= @event.title %></h2>
+		<ul class="sub-header">
+			<li class="datetime"><span class="icon icon-time"></span><%= @occurrence.start.to_time.strftime("%a %B %d at %I:%M%p") %></li>
+			<% if @event.price %>
+				<li class="price"><span class="icon icon-credit-card"></span><%= @event.price != 0 ? "$" + number_with_precision(@event.price, :precision => 2) : "FREE" %></li>
+			<% end %>
+			<% unless @event.tags.length == 0 %>
+				<li class="tags"><span class="icon icon-tags"></span><%= @event.tags.collect { |tag| tag.name } * " / " %></li>
+			<% end %>
+		</ul>
+		<% unless @event.description.to_s.empty? %>
+			<div class="description block">
+				<h2>Details</h2>
+				<div class="block-inner">
+					<%= raw(@event.description) %>
+				</div>
+			</div>
+		<% end %>
+		<% unless @event.acts.length == 0 %>
+			<div class="featuring block">
+				<h2>Featuring</h2>
+				<div class="block-inner">
+					<% @event.acts.each_with_index do |act,index| %>
+						<% if @fullmode %>
+							<a href="/acts/show/<%= act.id %>?fullmode=true" class="act-name"><%= act.name %></a><%= (index != @event.acts.length - 1) ? ", " : "" %>
+						<% else %>
+							<span link-id="<%= act.id %>" linkto="act" class="act-name"><%= act.name %></span><%= (index != @event.acts.length - 1) ? ", " : "" %>
+						<% end %>
+					<% end %>
+					<div class="embeds">
+					<% @event.acts.each do |act| %>
+						<% act.embeds.select { |e| e.primary }.each do |embed| %>
+							<div class="embed-act-name"><%= act.name %></div>
+							<%= raw(embed.source) %>
+						<% end %>
+					<% end %>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<div class="col-2">
+		<div class="block">
+			<div class="block-inner">
+				<%= render :partial => "layouts/share_bookmark", :locals => { :type => 'event', :id => @occurrence.id, :occurrence => @occurrence, :event => @event, :bookmarkId => @bookmarkId, :attendingId => @attendingId , :fullmode => @fullmode} %>
+			</div>
+		</div>
+		<div id="getsat-widget-4765"><a href="#" class="gs-replacement-link">Wrong info? RSVP sold out? Tell us!</a></div>
+		<% unless @mobileMode %>
+			<script type="text/javascript" src="https://loader.engage.gsfn.us/loader.js"></script>
+		<% end %>
+		<script type="text/javascript">
+			if (typeof GSFN !== "undefined") { GSFN.loadWidget(4765,{"containerId":"getsat-widget-4765"}); }
+		</script>
+		<div class="block">
+			<a class="map-link" href="http://maps.google.com/maps?q=<%= @event.venue.latitude %>,<%= @event.venue.longitude %>" style="float: left;" target="_blank"><img class="map" src="http://maps.googleapis.com/maps/api/staticmap?size=358x358&zoom=15&maptype=roadmap&markers=color:gray%7C<%= @event.venue.latitude %>,<%= @event.venue.longitude %>&sensor=false"/></a>
+			<div class="block-inner">
+				<div class="website">
+					<h5>More Info:</h5>
+					<div class="block-inner">
+						<a href='<%= @event.event_url %>' target="_blank"><%= @event.event_url %></a>
+					</div>
+				</div>
+				<br>
+				<div class="venue">
+					<h2>Venue</h2>
+					<% if @fullmode %>
+						<a href="/venues/<%= @event.venue.id %>?fullmode=true"><%= @event.venue.name %></a>
+					<% else %>
+						<a linkto="venue" link-id="<%= @event.venue.id %>" href="#"><%= @event.venue.name %></a>
+					<% end %>
+				</div>
+				<div class="address one"><%= @event.venue.address %></div>
+				<% unless @event.venue.city.blank? %>
+				<div class="address two"><%= @event.venue.city + ", " + @event.venue.state + " " + @event.venue.zip.to_s %></div>
+				<% end %>
+			</div>
+		</div>
+		<% unless (@event.venue.fb_picture.blank? && @event.fb_picture.blank? && @event.pictures.nil? && @event.acts.nil? )%>
+		<div id="galleria" style="height:358px;width:358px;">
+			<% unless @event.venue.fb_picture.blank?%>
+				<img src="<%=@event.venue.fb_picture%>" data-title="<%= @event.venue.name %>" >
+			<% end %>
+            <% @event.venue.pictures.each do |pic| %>
+			    <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @event.venue.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+		    <% end %>
+
+		    <% unless @event.fb_picture.blank?%>
+				<img src="<%=@event.fb_picture%>" data-title="<%= @event.title %>" >
+			<% end %>
+		    <% @event.pictures.each do |pic| %>
+				<a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @event.title.first(25) %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+		    <% end %>
+
+		    <% @event.acts.each do |artists| %>
+			    <% unless artists.fb_picture.blank?%>
+					<img src="<%= artists.fb_picture %>" data-title="<%= artists.name %>" >
+				<% end %>
+		    	<% artists.pictures.each do |pic| %>
+		    		<a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= artists.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+		    	<% end %>
+		    	<br>
+		    <% end %>
+=======
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -403,6 +521,7 @@
             <!-- /.modal-content -->
           </div>
           <!-- /.modal-dialog -->
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
         </div>
         <!-- /.modal -->
 

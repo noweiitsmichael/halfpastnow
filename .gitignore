@@ -7,6 +7,9 @@
 # Ignore bundler config
 /.bundle
 /Gemfile.lock
+/.idea
+/solr
+/log
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
@@ -29,5 +32,8 @@
 
 /.sublime-project*
 /config/s3.yml
+<<<<<<< HEAD
+=======
 
 /public/assets
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf

@@ -8,6 +8,128 @@
 <% end %>
 <% content_for :code do %>
 <%# TODO: put this stuff in the controller eventually %>
+<<<<<<< HEAD
+	<% 	@now = DateTime.now.change(:hour => 0)
+		@channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
+<script type="text/javascript">
+	var id = "<%= @bookmarkList.id  %>";
+	var root_url = "http://www.halfpastnow.com/";
+	var link = root_url + "picks/find/" + id;
+    var facebook_url = "http://www.halfpastnow.com/picks/find/" + id;
+    var app_id = "475386955806720";
+    var redirect = "http://www.halfpastnow.com";
+	var bookmarkList_id = "<%= @bookmarkList.id %>";
+	var toggle = false;
+
+	$(function() {
+	    window.fbAsyncInit = function() {
+		        console.log("Loaded FB 2");
+		          FB.init({
+		            appId      : '475386955806720', // App ID
+		            status     : true, // check login status
+		            cookie     : true, // enable cookies to allow the server to access the session
+		            xfbml      : true  // parse XFBML
+		          });
+		        };
+
+		        // Load the SDK Asynchronously
+		        (function(d){
+		          var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+		          js = d.createElement('script'); js.id = id; js.async = true;
+		          js.src = "//connect.facebook.net/en_US/all.js";
+		          d.getElementsByTagName('head')[0].appendChild(js);
+		        }(document));// delete below
+	});
+	
+	
+	$(function() {
+		console.log("Loaded share stuff");
+		
+		$('.bookmark-share').click(function() {
+			console.log("Anything?????");
+		});
+
+		$('.bookmark-share .email').click(function() {
+			var url = 'mailto:?body=' + link;
+	      	window.open(url, '_blank');
+	      	window.focus();
+		});
+		
+		$('.bookmark-share .facebook').click(function() {      
+
+			var url = "http://www.facebook.com/sharer.php?u=" + facebook_url;
+			window.open(url, '_blank');
+			window.focus();
+		});
+		
+		$('.bookmark-share .twitter').click(function() {
+			var title = "<%= @bookmarkList.name   %>";			
+   		    var url = 'http://twitter.com/intent/tweet?text=' + title.replace(/(<([^>]+|)>)/ig,"").replace("&amp;","and").substring(0,50) + ' ' + link + ' @halfpastnow %23discoveraustin';
+      
+			window.open(url, '_blank');
+			window.focus();
+		});
+
+	});
+</script>
+
+	<script type="text/javascript">
+
+		var geocoder;
+		var map;
+		var markers = [];
+
+		function initialize() {
+			//$("#map").height($(window).height() - $("#map").offset().top - 2 * parseInt($("#map").css("border-top-width")));
+			geocoder = new google.maps.Geocoder();
+
+			var styles = [
+			    {
+			      stylers: [
+			        { saturation: 0 },
+			        { invert_lightness: false },
+			        { gamma: 1 },
+			        { lightness: 0 }
+			      ]
+			    }];
+
+			var latlng = new google.maps.LatLng(<%= @lat %>, <%= @long %>);
+			var myOptions = {
+				zoom: <%= @zoom %>,
+				center: latlng,
+				mapTypeId: 'map_style',
+				disableDefaultUI: true,
+				zoomControl: true,
+				scrollwheel: false,
+				zoomControlOptions: { position: google.maps.ControlPosition.TOP_RIGHT, style: 3 }
+			};
+
+			var styledMap = new google.maps.StyledMapType(styles,
+    			{name: "Styled Map"});
+
+			map = new google.maps.Map($("#map")[0], myOptions);
+
+			map.mapTypes.set('map_style', styledMap);
+  			map.setMapTypeId('map_style');
+
+			var locations = [];
+			
+			$("#content .main .inner .events li").each(function(index) {
+				var latitude = parseFloat($(this).find(".latitude").html());
+				var longitude = parseFloat($(this).find(".longitude").html());
+				locations.push({lat: latitude, long: longitude});
+			});
+			
+			placeMarkers({points: locations});
+
+			//google.maps.event.addListener(map, 'idle', boundsChanged);
+		}
+
+		function to_i(obj) {
+			return parseInt(obj);
+		}
+	</script>
+=======
   <% 	@now = DateTime.now.change(:hour => 0)
       @channels = current_user ? current_user.channels.sort_by { |channel| channel.created_at } : Channel.default_channels %>
 
@@ -144,6 +266,7 @@
     });
 
   </script>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 <% end %>
 
 <% content_for :header do %>
@@ -157,6 +280,44 @@
 <% end %>
 
 <% content_for :body do %>
+<<<<<<< HEAD
+	<div id="content" style="margin-top: 18px;" class="pick-content">
+		<div id="map-wrapper" style="margin-top: 175px;">
+			<% if(@isFollowedLists) %>
+				<div style="float: left;position: relative;margin-top: -5px;font-weight: 700;margin-bottom: 11px;font-size: 16px;"><a href="/picks/followed">List View</a> | Event Views</div>
+			<% end %>
+			<div id="map"></div>
+		</div>
+		<div class="main">
+			<div class="inner">
+				<% unless @isMyBookmarksList || @isFollowedLists %>
+				<% currentUserIsFollowing = current_user && current_user.followedLists.exists?(@bookmarkList.id)
+				hidden = "style=\"display:none;\"" %>
+					<div class="picks-info">
+						<%= image_tag @bookmarkList.picture_url(:thumb) || "/assets/picklist-placeholder.png", :class => "picture" %>
+						<div class="picks-details">
+							<div class="title"><%= @bookmarkList.name %></div>
+							<% if current_user %>
+								<div class="follow button nice-button" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden if currentUserIsFollowing %> >follow</div>
+								<div class="unfollow button nice-button" picklist-id="<%= @bookmarkList.id %>" <%= raw hidden unless currentUserIsFollowing %> >following</div>
+							<% end %>
+							<div class="description"><%= raw @bookmarkList.description %></div>
+							<div class="bookmark-share" </div>	
+								<span class="icon icon-facebook-sign facebook" style="font-size:200%; cursor: pointer; cursor:hand;"></span>
+								<span class="icon icon-twitter-sign twitter" style="font-size:200%; cursor: pointer; cursor:hand;"></span>
+							</div>
+						</div>						
+					</div>
+
+				<% end %>
+				<ul class="events">
+					<%= render :partial => "events/event_list", :locals => { :occurrences => @occurrences, :bookmarkList => @bookmarkList } %>
+				</ul>
+				<img src="/assets/infinite-loader.gif" id="infinite-loader" style="display:none;" />
+			</div>
+		</div>
+	</div>
+=======
   <br>
 <section class="profile main-container">
   <div class="container">
@@ -219,4 +380,5 @@
     height:101px !important;
   }
 </style>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 <% end %>

@@ -120,6 +120,59 @@
     }
 
 
+<<<<<<< HEAD
+<% content_for :mode_title do %>
+<% end %>
+
+<% content_for :mode_body do %>
+<%= javascript_include_tag "galleria-1.2.8.min" %>
+	<div class="col-1">
+	<h2>Performer: <%= @act.name %></h2>
+		<ul class="sub-header">
+			<% unless @act.tags.length == 0 %>
+				<li class="tags"><span class="icon icon-tags"></span><%= @act.tags.collect { |tag| tag.name } * " / " %></li>
+			<% end %>
+		</ul>
+		<% unless @act.description.to_s.empty? %>
+			<div class="description block">
+				<h2>Details</h2>
+				<div class="block-inner">
+					<%= raw(@act.description) %>
+					<% unless @act.bio.blank? %>
+						<br><br>
+						<h4>Bio</h4>
+						<%= raw(@act.description) %>
+						<% end %>
+
+				</div>
+			</div>
+		<% end %>
+		<% unless @act.embeds.length == 0 %>
+			<div class="embeds block">
+				<div class="block-inner">
+					<% @act.embeds.select { |e| e.primary }.each do |embed| %>
+						<%= raw(embed.source) %>
+					<% end %>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	<div class="col-2">
+
+		<div class="block">
+			<div class="block-inner">
+				<%= render :partial => "layouts/share_bookmark", :locals => { :type => 'act', :id => @act.id, :bookmarkId => @bookmarkId } %>
+			</div>
+		</div>
+		<% unless (@act.fb_picture.blank? && @act.pictures.nil?) %>
+		<div id="galleria">
+			<% unless @act.fb_picture.blank?%>
+				<img src="<%= @act.fb_picture%>" data-title="<%= @act.name %>" >
+			<% end %>
+            <% @act.pictures.each do |pic| %>
+			    <a href="<%=pic.image_url(:large).to_s%>"><img src="<%=pic.image_url(:tiny).to_s%>" data-title="<%= @act.name %>" data-big="<%=pic.image_url(:full).to_s%>" ></a>
+		    <% end %>
+=======
     function likeit() {
       console.log("<%= @url1 %>")
       FB.api(
@@ -413,6 +466,7 @@
 
             </script>
           </div>
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
         </div>
       </div>
       <div id="videos" class="tab-pane fade in">

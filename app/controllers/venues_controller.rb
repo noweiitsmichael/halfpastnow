@@ -56,8 +56,15 @@ class VenuesController < ApplicationController
   # GET /venues/1
   # GET /venues/1.json
   def show
+<<<<<<< HEAD
+
+    @fullmode = (!params[:fullmode].to_s.empty?) || (@mobileMode)
+
+    # @fullmode = !params[:fullmode].to_s.empty?
+=======
     params[:fullmode]=true
     @fullmode = !params[:fullmode].to_s.empty?
+>>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
     # if(@mobileMode)
     #     unless params[:format].to_s.eql? "mobile"
     #       redirect_to :action => "android"  
@@ -102,6 +109,7 @@ class VenuesController < ApplicationController
     respond_to do |format|
       if @fullmode
         format.html { render :layout => "fullmode" }
+        format.mobile
       else
         format.html { render :layout => "mode" }
       end
