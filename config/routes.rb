@@ -121,7 +121,7 @@ Myapp::Application.routes.draw do
   #  root :to => 'events#index'
   #end
   
-  root :to => 'events#new_splash'
+  root :to => 'events#petparent'
 
   # See how all your routes lay out with "rake routes"
 

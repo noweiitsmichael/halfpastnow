@@ -53,6 +53,12 @@ class EventsController < ApplicationController
     end
   end
 
+  def petparent
+    respond_to do |format|
+      format.html { render :layout => false }
+    end
+  end
+
   def new_email
     respond_to do |format|
       format.html { render :layout => false }

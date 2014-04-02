@@ -1,0 +1,839 @@
+/*
+
+	01. Key Frames & Font Face
+	02. Generals Settings
+	03. Header Section Settings
+	04. Container Section Settings
+	05. Testimonial Section Settings
+	06. Join us Section Settings
+	07. Sign In Section Settings
+	08. Footer Section Settings
+	09. Mobile Menu Settings
+	10. Media Queries for Mobile Settings
+	11. Media Queries for iPad/Tablet Settings
+			
+*/
+
+
+
+
+
+/* 01. FONT FACE ================================================== */
+
+
+@font-face {
+    font-family: 'latoregular';
+    src: url('../fonts/lato/lato-reg-webfont.eot');
+    src: url('../fonts/lato/lato-reg-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/lato/lato-reg-webfont.woff') format('woff'),
+         url('../fonts/lato/lato-reg-webfont.ttf') format('truetype'),
+         url('../fonts/lato/lato-reg-webfont.svg#latoregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'latolight';
+    src: url('../fonts/lato/lato-lig-webfont.eot');
+    src: url('../fonts/lato/lato-lig-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/lato/lato-lig-webfont.woff') format('woff'),
+         url('../fonts/lato/lato-lig-webfont.ttf') format('truetype'),
+         url('../fonts/lato/lato-lig-webfont.svg#latolight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'latobold';
+    src: url('../fonts/lato/lato-bol-webfont.eot');
+    src: url('../fonts/lato/lato-bol-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/lato/lato-bol-webfont.woff') format('woff'),
+         url('../fonts/lato/lato-bol-webfont.ttf') format('truetype'),
+         url('../fonts/lato/lato-bol-webfont.svg#latobold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+	
+/* 02. GENERALS SETTINGS ================================================== */
+
+
+
+/* Selected text Color */
+
+::-moz-selection{background:#615089;color:white}
+::selection{background:#615089;color:white}
+
+
+body, html { 
+	width:100%;
+	height: 100%;
+	min-height: 100%;
+	background-color:#FFF;
+	position:absolute;
+	top:0px;
+	left:0px;
+	bottom:0px;
+	font-family: 'latoregular', sans-serif; }
+
+.centered {text-align: center;}
+
+.clear {padding: 10px 0;}
+
+b { font-family: 'latoregular', sans-serif;}
+
+strong { font-family: 'latobold', sans-serif; }
+
+h1 {
+	font-size:30px;
+	line-height: 1.3em;
+  	font-family: 'latolight', sans-serif;
+  	margin-top: 0.33em;}
+
+h2 {
+	font-size:30px;
+	line-height: 1.3em;
+  	font-family: 'latolight', sans-serif;
+  	margin-top: 0.33em;}
+  
+h3 {    
+	color: #303333;
+	font:30px 'latolight', sans-serif;
+/*	text-transform: uppercase;
+*/	padding-bottom: 10px;
+	padding-top: 0px;}
+
+h4 {    
+	color: #303333;
+	font:1.2em 'latobold', sans-serif;
+	text-transform: uppercase;}
+
+
+span {
+	color: #303333;
+	font:1.5em 'latobold', sans-serif;
+	opacity: 0.4;
+	padding-top: 0px;}
+
+/* Lead Text */
+	
+.lead {font-size:18px; font-family: 'latolight'; color:#777;}
+
+
+/* Link */
+
+a {
+  	color: #303333;
+  	text-decoration: none;}
+
+a:hover {
+	color: #34495e;}  
+	
+/* Paragrah */
+
+p {
+	font-family: 'latolight', sans-serif;
+	color: #858C91;}
+
+p a {
+	color:#303333;
+	border-bottom: 1px dotted #888;
+	-webkit-transition: all 0.5s ease-out;
+  	-moz-transition: all 0.5s ease-out;
+  	-o-transition: all 0.5s ease-out;
+  	transition: all 0.5s ease-out;}
+
+p a:hover {
+	color:#111;}
+
+
+/* Button */
+
+.button {
+	border-radius: 7px;
+	border: 1px solid rgba(255,255,255,0.53);
+    color: #FFF;
+    font-family: 'latolight', sans-serif;
+    text-transform: uppercase;
+    padding:15px 20px;
+    font-size: 16px;
+    min-width: 150px;
+    line-height: 90px;
+    text-align: center;}
+
+.button:hover {
+	color:#FFF;
+	border:1px solid #FFF;
+	 -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;}
+    
+    
+/* Button */
+
+.button2 {
+    font-family: 'latolight', sans-serif;
+    text-transform: uppercase;
+    padding:15px 20px;
+    background-color: #28ADB9;
+    font-size: 16px;
+    background-image: linear-gradient(to bottom, #2DC2CF, #329CA5);
+    background-repeat: repeat-x;
+    width:100%;
+    cursor: pointer;
+    border-radius: 7px;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: #FFFFFF;
+}
+
+.button2:hover {
+	background-color: #329CA5;
+    color: #FFFFFF;
+    background-position: 0 -15px;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;}    
+	
+	
+/* FOR FADING : DON'T REMOVE IT */
+
+.fade1,.fade2,.fade3{  
+    display:none;}
+
+	
+/* 03. HEADER SECTION ================================================== */
+
+
+nav #logo {
+	float:left;
+	z-index: 99999;}
+	
+nav {
+	z-index: 999;
+	width: 100%;
+	height: 80px;}
+
+
+/* Some stylesheet reset */
+
+#nav, #nav ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;}
+
+/* The main navigation bar */
+
+#nav {
+	width: 100%; /* The menu will take the width of its container */}
+
+#nav>li {
+	float: right;
+	position: relative;
+	padding: 10px 0;}
+
+/* The main navigation links */
+
+#nav>li>a {
+	/* Layout */
+	display: block;
+	padding: 0px 0px 0 30px;
+
+	/* Typography */
+	font-family: 'latolight', sans-serif;
+	font-size: 16px;
+	color: #999;
+	text-decoration: none;
+	
+	/* Transitions */
+	-webkit-transition: color .2s ease-in, border-top-color .2s ease-in;
+	-ms-transition: color .2s ease-in, border-top-color .2s ease-in;
+	-moz-transition: color .2s ease-in, border-top-color .2s ease-in;
+	-o-transition: color .2s ease-in, border-top-color .2s ease-in;
+	transition: color .2s ease-in, border-top-color .2s ease-in;}
+
+/* The hover state of the links */
+
+#nav li:hover a, #nav li .selected {
+	color: #1f2325;}
+
+ 
+/* Navigation Fixed */ 
+ 
+.cbp-af-header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background: #FFF;
+	z-index: 999999;
+	height: 0px;
+	border-bottom: 0px solid #e5e5e5;
+	overflow: hidden;
+	-webkit-transition: height 0.6s;
+	-moz-transition: height 0.6s;
+	transition: height 0.6s;}
+
+
+/* FOR REDUCING THE HEIGHT OF THE NAVIGATION */
+
+.cbp-af-header #logo {
+	padding:25px 20px 0px 0px; 
+	width:160px;}
+
+.cbp-af-header #nav a {
+	line-height: 60px;}
+
+.cbp-af-header.cbp-af-header-shrink #logo { 
+	padding:25px 20px 0px 0px; 
+	width:230px;}
+
+/* Transitions and class for reduced height */
+
+.cbp-af-header #logo,
+.cbp-af-header #nav a {
+	-webkit-transition: all 0.6s;
+	-moz-transition: all 0.6s;
+	transition: all 0.6s;}
+
+.cbp-af-header.cbp-af-header-shrink {
+	height: 80px;
+	border-bottom: 1px solid #e5e5e5;}
+
+.cbp-af-header.cbp-af-header-shrink #nav a {
+	line-height: 60px;}
+
+
+/* Header Generals  */
+
+#header {
+	width:100%;
+	height:600px;
+	color:#FFF;
+	background:url('../img/pp_new.jpg')  #363f48 fixed; 
+    z-index: 999998;
+    position: relative;
+    background-size: cover;}
+
+#header .appname {
+	font-family: 'Leckerli One', cursive;
+	font-size: 72px;
+}
+#header .twelve.columns { 
+	margin-top:10%; 
+	text-align: left; }
+
+#header .logo { 
+	width: 100%; 
+	padding-top: 75px; }
+#header h1 {
+	padding:20px 0 0 0; }
+#header h2 {
+	padding:20px 0; }
+
+/* Social Share Button  */
+
+.social-stuff {
+	padding:20px 0;}
+
+	
+/* 04. CONTAINER SECTION ================================================== */
+
+
+/* Thumbsnail ( simple as 1-2-3 )  */
+
+.thumbs {
+	background: #FFF; 
+	border-top:1px solid #EEE;}
+
+/* Section 1 */
+
+.work1 {
+	background: #F8f8f8; 
+	border-top:1px solid #EEE; }
+
+/* Section 2  */
+
+.work2 { 
+	background-color: #FFF; 
+	border-top:1px solid #EEE; }
+
+
+/* Container  */
+
+.container {	
+	z-index: 99999; /* IMPORTANT */
+	position: relative;
+	background: #FFF;}
+
+
+.cbp-so-scroller {
+	overflow: hidden;
+	z-index: 9999;
+	position: relative;}
+
+
+/* Clear floats of children */
+.cbp-so-section:before,
+.cbp-so-section:after {
+	content: " ";
+	display: table;
+	padding:30px 0;}
+
+.cbp-so-section p {
+	margin-top: 10px;}
+
+.cbp-so-section:after {
+	clear: both;}
+
+/* Sides */
+.cbp-so-side {
+	width: 100%;
+	margin: 0;
+	padding: 3em 2%;
+	overflow: hidden;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-perspective: 1000;
+	perspective: 1000;
+	-webkit-transition: -webkit-transform 0.5s, opacity 0.5s;
+	-moz-transition: -moz-transform 0.5s, opacity 0.5s;
+	transition: transform 0.5s, opacity 0.5s;}
+
+.cbp-so-side-video {
+	width: 100%;
+	margin: 0;
+	padding: 2.5em 0%;
+	z-index: 9999999;
+	overflow: hidden;
+	opacity: 0;
+	-webkit-transition: -webkit-transform 0.5s, opacity 0.5s;
+	-moz-transition: -moz-transform 0.5s, opacity 0.5s;
+	transition: transform 0.5s, opacity 0.5s;}
+
+.cbp-so-side-img {
+	width: 100%;
+	margin: 0;
+	padding:0em 0% 0em 0%;
+	overflow: hidden;
+	opacity: 0;
+	-webkit-transition: -webkit-transform 0.5s, opacity 0.5s;
+	-moz-transition: -moz-transform 0.5s, opacity 0.5s;
+	transition: transform 0.5s, opacity 0.5s;}
+
+
+/* Clear floats of children */
+.cbp-so-side:before,
+.cbp-so-side:after {
+	content: " ";
+	display: table;}
+
+.cbp-so-side:after {
+	clear: both;}
+
+.cbp-so-side-right {
+	text-align: left;}
+
+.cbp-so-side-left {
+	text-align: left;}
+
+.cbp-so-side-right img {
+	float: left;}
+
+.cbp-so-side-left img {
+	float: right;}
+
+/* Initial state (hidden or anything else) */
+.cbp-so-init .cbp-so-side {
+	opacity: 0;}
+
+.cbp-so-init .cbp-so-side-left {
+	-webkit-transform: translateX(-80px);
+	-moz-transform: translateX(-80px);
+	transform: translateX(-80px);}
+
+.cbp-so-init .cbp-so-side-right {
+	-webkit-transform: translateX(80px);
+	-moz-transform: translateX(80px);
+	transform: translateX(80px);}
+
+/* Animated state */
+/* add you final states (transition) or your effects (animations) for each side */
+.cbp-so-section.cbp-so-animate .cbp-so-side-left,
+.cbp-so-section.cbp-so-animate .cbp-so-side-right {
+	-webkit-transform: translateX(0px);
+	-moz-transform: translateX(0px);
+	transform: translateX(0px);
+	opacity: 1;}
+
+.cbp-so-init .cbp-so-side-top {
+	-webkit-transform: translateY(-80px);
+	-moz-transform: translateY(-80px);
+	transform: translateY(-80px);}
+
+.cbp-so-section .cbp-so-animate .cbp-so-side-top {
+	-webkit-transform: translateY(0px);
+	-moz-transform: translateY(0px);
+	transform: translateY(0px);
+	opacity: 1;}
+
+
+/* Download Button */
+	
+.download-button {float:left;}
+.download-button img {padding-right: 5px;}
+
+
+
+/* 05. TESTIMONIAL SECTION ================================================== */
+
+#testimonial { 
+	padding:60px 0 10px 0; 
+	z-index: 999; 
+	position: relative; 
+	background: #FFF; 
+	border-top:1px solid #eee; }
+
+
+/* 06. JOIN US TEXT SECTION ================================================== */
+
+
+#joinus { 	
+    left: 0;
+    padding: 60px 0 60px;
+    position: relative;
+    width: 100%;
+    z-index: 999;
+    display: block;
+    background: #F5F5F5; 
+    border-top:1px solid #eee;
+    border-bottom: 1px solid #eee; }
+
+
+
+	
+/* 07. SIGN IN SECTION ================================================== */
+
+
+/* Sign up General */
+
+#signup {
+	background: url('../img/debut_dark.png'); 
+	padding:50px 0 30px 0; 
+	position: fixed; 
+	bottom:130px; 
+	z-index: 9; 
+	width:100%;}
+	
+form {
+	overflow: hidden;}
+	
+/* Mail Input Send */
+
+#signup input {
+	font-family: 'latolight', sans-serif;
+	-moz-transition:all .3s ease-in-out;
+	-ms-transition:all .3s ease-in-out;
+	-o-transition:all .3s ease-in-out;
+	-webkit-transition:all .3s ease-in-out;
+	border-radius: 3px;
+	border:none;
+	margin-top:2px;
+	color: #333;
+	height:50px;
+	resize: none;
+	font-size:14px;
+	letter-spacing:1px;
+	padding: 9px 10px 8px;
+	transition:all .3s ease-in-out;
+	width:100%;}
+
+
+/* Promise we do not spam */
+
+#signup .spam {
+	padding:21px 0 0 0;
+	font-family: 'latolight', sans-serif;
+	color: #BBB;}
+
+/* Message if it's ok */
+
+#signup .msg-ok {
+	font-family: 'latolight', sans-serif;
+	color: #FFF;}
+
+
+	
+/* 08. FOOTER SECTION ================================================== */
+
+
+
+
+/* Make it Fixed */
+
+#footerSpacer {
+    background-color: rgba(0, 0, 0, 0) !important;
+    display: block;
+    min-height: 310px;}
+
+/* Footer General */
+
+#footer {
+	bottom: 0;
+    left: 0;
+    padding: 40px 0 40px;
+    position: fixed;
+    width: 100%;
+    font-size:14px;
+    z-index: 1;
+	background: #FFF;}
+
+/* The navigation bar on the left */
+#navfirst {
+	width: 100%; /* The menu will take the width of its container */}
+
+#navfirst>li {
+	float: right;
+	position: relative;}
+
+#navfirst>li>a {
+	/* Layout */
+	display: block;
+	padding: 15px 0px 0 30px;
+
+	/* Typography */
+	font-family: 'latolight', sans-serif;
+	font-size: 14px;
+	color: #858C91;
+	text-decoration: none;
+	
+	/* Transitions */
+	-webkit-transition: color .2s ease-in, border-top-color .2s ease-in;
+	-ms-transition: color .2s ease-in, border-top-color .2s ease-in;
+	-moz-transition: color .2s ease-in, border-top-color .2s ease-in;
+	-o-transition: color .2s ease-in, border-top-color .2s ease-in;
+	transition: color .2s ease-in, border-top-color .2s ease-in;}
+
+/* The hover state of the links */
+#navfirst li:hover a, #navfirst li .selected {
+	color: #333;}
+
+
+
+
+/* 09. MOBILE MENU SETTINGS ================================================== */
+
+
+
+/* Mobile Menu */
+
+.mobile-menu {
+	display:none;
+	background: #222;
+	width:100%;
+	text-align: center;
+	z-index: 99999999;
+	position: absolute;
+	top:0;}
+	
+
+.mobile-menu .row {
+	background: #F1F1F1;
+	padding-top:10px;
+	padding-bottom: 20px;}
+	
+
+.mobile-menu-inner .nav-mobile li {
+	color: #4D4C4C;
+	display: block;
+	width: 100%;
+	cursor: pointer;
+	margin-top: 2%;
+	background-color: #fFF;
+	padding: 6px 20px 5px;
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-ms-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;	}
+	
+
+.mobile-menu-inner .nav-mobile li:hover {
+	background-color: #333;	}
+	
+
+.mobile-menu-inner .nav-mobile li:hover a {
+	color: #fFF;	}
+	
+
+.mobile-menu-inner .nav-mobile li a {
+	display: block;
+	width:100%;
+	color: #4D4C4C;
+	text-transform:uppercase;
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-ms-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+	transition: all 0.2s ease-in-out;	}
+	
+
+#collapse {
+	display:none;}
+
+
+
+	
+/* 10. MEDIA QUERIES FOR MOBILE SETTINGS ================================================== */
+
+
+
+/* Styling for mobile devices */
+
+@media only screen 
+and (min-width : 320px) 
+and (max-width : 568px) {
+
+	/* Display the mobile menu */
+	
+	.mobile-menu {display:block; position: relative;}	
+	
+	.cbp-af-header {display: none;}
+
+	#header {background:url('../img/pp_bg.jpg') #222; height:450px;}
+	#header {background-position: 50% 0 !important;}
+	#header .logo {text-align: center; padding-top: 25px ;}
+	#header h1 {font-size: 20px;}	
+	#header h2 {text-align: center; color:#725290; padding: 0px;}
+
+  	.thumbs .tiles.three_up > li {width:100%; padding-bottom: 20px;}
+  	
+  	#joinus {position: relative; bottom: auto;} 
+  	
+  	#signup {position: relative; bottom: auto;} 
+  	
+  	#footer {position: relative; bottom: auto;}
+  	
+  	.social-stuff {display: none;}
+  	
+  	.social {display:none;}
+  	
+  	#footerSpacer {display: none;}
+  	
+  	.download-button {text-align: center; float: inherit;  margin: 0 auto; }
+		
+	#header .button, .button2 {font-size:12px; color:#725290; border-color: #725290;}
+	
+	#header .twelve.columns { margin-top:30px; text-align: center;  }
+		
+	.cbp-so-side {text-align: center; padding: 4% 0;}
+	
+	.cbp-so-side img {text-align: center; opacity: 1;}
+	
+	.cbp-so-side-video, .cbp-so-side-img {display: none; opacity: 1;}
+	
+	.cbp-so-side-left img { float: none; }
+
+	h2 {font-size:1.5em}
+	
+	h3 {font-size:1.5em;}
+	
+	span {font-size:1.1em;}
+	
+	#slider-wrapper{display: none;}
+		
+	#signup form {overflow: hidden;}
+	
+	#signup input {border-radius: 0px; margin-bottom: 20px;}
+	
+	#signup .submit {width:100%;}
+	
+	#signup .spam {padding-top:20px;}
+	
+	#footer p {text-align: center; padding:10px 0;}
+	
+	#footer .social {text-align: center;}
+
+}
+
+/* 11. MEDIA QUERIES FOR TABLET SETTINGS ================================================== */
+
+
+
+
+@media only screen 
+and (min-width : 768px) 
+and (max-width : 1024px) {
+
+
+	/* Display the mobile menu */
+	
+	.mobile-menu {display:block; position: relative; }	
+	
+	.cbp-af-header {display: none;}
+
+	#header {background-position: 50% 0 !important;}
+	#header .logo {padding: 0;}
+
+	#header h1 {color: #aaa; padding: 0;}
+
+  	#header {background:url('../img/pp_small.jpg') #222; height:500px;}
+  	
+	#header .twelve.columns { margin-top:5%; text-align: center;  }
+	
+	#header h2 {font-size:2em; color:#725290; padding: 6px;}
+	
+	#header .button {font-size:16px;color:#725290; border-color: #725290;}
+
+  	#joinus {position: relative; bottom: auto;} 
+  	
+  	#signup {position: relative; bottom: auto;} 
+  	
+  	#footer {position: relative; bottom: auto;}
+  		
+  	.download-button {padding-top: 150px !important; float:center;}
+
+  	.social {display:block;}
+  	
+  	.social-stuff {display: none;}
+  	 
+  	#footerSpacer {display: none;}
+  	
+	.cbp-so-side img {text-align: center; opacity: 1;}
+	
+	.cbp-so-side-video, .cbp-so-side-img {display: block; opacity: 1;}
+	
+	.cbp-so-section.cbp-so-animate .cbp-so-side-left,
+.cbp-so-section.cbp-so-animate .cbp-so-side-right {display: block; opacity: 1;}
+	
+	.cbp-so-side-left img { float: right; }
+		
+	.cbp-so-side h3 {font-size:1.5em;}
+	
+	.cbp-so-side-right { text-align: left;}
+
+	.cbp-so-side-left {text-align: left;}
+	
+	#signup h2 {font-size:2em;}
+	
+	#signup form {overflow: hidden;}
+	
+	#signup input {border-radius: 0px;}
+	
+	#signup .submit {width:100%;}
+	
+	#signup .spam {padding-top:50px;}
+	
+	#footer p {text-align: left; padding:10px 0;}
+	
+	#footer .social {text-align: center;}
+		
+}
+
