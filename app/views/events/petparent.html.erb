@@ -8,7 +8,7 @@
 
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>halfpastnow - Events in Austin, catered to you. Your couch will miss you.</title>
+  <title>halfpastnow is now PetParent</title>
 
   <meta name="description" content="Get the free halfpastnow app. halfpastnow brings out the best of Austin, catered to you. Search for events around you or look through recommendations from local experts and explorers" />
 
@@ -48,19 +48,13 @@
 
   <!-- Stylesheets /-->
   
-  <link rel="stylesheet" href="/assets/gumby">
+  <link rel="stylesheet" href="/assets/gumby.css">
   <%= stylesheet_link_tag "style" %>
   <%= stylesheet_link_tag "component" %>
   
   
   <script src="js/modernizr-2.6.2.min.js"></script>  <!-- Modernizr /-->
 
-  <script>
-	  $( document ).ready(function() { 
-	  	new cbpScroller( document.getElementById( 'cbp-so-scroller' ) );
-	  });
-  </script>
-  
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-36312888-1']);
@@ -84,16 +78,18 @@
 <section class="cbp-so-section work1">
 
 	<div class="row">
+		<div class="twelve columns centered">
+			<a href="http://www.halfpastnow.com/events/new_splash"><%= image_tag "halfpastnow_new_logo_300.png" %></a><h3 style="padding:5px 0px;">is now</h3><a href="http://petparent.me"><%= image_tag "images/pet_parent_logo.png" %></a><span style="font-size:28px; color:black; padding:0px 10px;">
+	</div>
+
+	<div class="row">
 		
 		<div class="five columns cbp-so-side cbp-so-side-left">
-		
-			<!-- Title --> 
-		
-			<h3>Always take your best friend with you!</h3>
-						
-			<!-- Content --> 
 			
-			<p>We've pulled the best pet-friendly venues, restaurants, and businesses all into one place. Whether you're looking go grab a bite with your pet, or looking for an exercise in the park, or best grooming place, we've got you covered. <b>Never</b> leave your pet behind again.</p>
+			<p>Dear friends and users, </p>
+			<p>We are no longer running Half Past Now in Austin, but remain true to our vision of helping people find fun and authentic things to do!  We cannot thank the Austin community enough for their love and support. It was through your advice, feedback, and event searches that we discovered the need for PetParent and hope that you use our new service and share it with other PetParents!</p>
+
+			<p>Our team is hard at work expanding PetParent, a national platform that helps PetParents discover great pet friendly events, venues, meet-ups, and pet businesses. Visit <a href="http://petparent.me">petparent.me</a> and check out our app!</p>
 			
 			
 			<div class="clear"></div>
@@ -101,9 +97,9 @@
 			
 			<div class="download-button" style="padding-top:30px;display:inline-block;text-align:center;">
 			
-				<a href="https://play.google.com/store/apps/details?id=com.petparent" target="_blank" rel-"nofollow"><img src="img/gplay.png" alt="PetParent on Google Play Store"></a>
+				<a href="https://play.google.com/store/apps/details?id=com.petparent" target="_blank" rel-"nofollow"><%= image_tag "images/gplay.png" %></a>
 			
-				<a href="https://itunes.apple.com/us/app/pet-parent/id775708282?mt=8" target="_blank" rel="nofollow"><img src="img/appstore.png" alt="Pet Parent on Apple App Store"></a>
+				<a href="https://itunes.apple.com/us/app/pet-parent/id775708282?mt=8" target="_blank" rel="nofollow"><%= image_tag "images/appstore.png" %></a>
 			
 			</div>
 		
@@ -113,7 +109,7 @@
 	
 		<div class="seven columns cbp-so-side-img  cbp-so-side-right">
 		
-			<div id="slider-wrapper">
+			<div id="slider-wrapper" style="margin-top:80px">
 			
 				<div class="inner-wrapper">
 
@@ -125,18 +121,11 @@
 					<input type="radio" name="slide" class="control" id="Slide2"/>
 					<label for="Slide2" id="s2"></label>
 					
-<!-- 					<input type="radio" name="slide" class="control" id="Slide3"/>
-					<label for="Slide3" id="s3"></label> -->
-					
-					<!-- Images --> 
-					
 					<ul class="overflow-wrapper">
 					
-						<li class="slide"><img src="img/venues-two-phones.png" alt="Venues"></li>
+						<li class="slide"><%= image_tag "images/venues-two-phones.png" %></li>
 						
-						<li class="slide"><img src="img/events-two-phones.png" alt="Events"></li>
-						
-<!-- 						<li class="slide"><img src="http://www.placehold.it/600x350" alt="EXEMPLE"></li> -->
+						<li class="slide"><%= image_tag "images/events-two-phones.png" %></li>
 						
 					</ul>
 					
@@ -151,13 +140,12 @@
 </section>
 </div> <!-- end of container -->
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="js/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/jquery-1.9.1.min.js?body=1"><\/script>')</script>
 
-	<%= javascript_include_tag "main" %>
-	<%= javascript_include_tag "plugins" %>
-	<%= javascript_include_tag "cbpScroller" %>
+<%= javascript_include_tag "plugins" %>
+<%= javascript_include_tag "cbpScroller" %>
+<%= javascript_include_tag "classie" %>
 
-  </body>
-  
+</body>
 </html>
