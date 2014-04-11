@@ -78,10 +78,7 @@ def initial_blogs_set_up():
 			while (blogs_data["count"] > 0):
 				page = page +1
 				url = base_url+str(page)
-				# print url
-				
 				blogs_data = get_blogs_from_cat(url)
-				# print blogs_data["count"]
 				posts = blogs_data["posts"]
 				for post in posts:
 					get_elements_from_post(post,category)
@@ -94,10 +91,6 @@ def initial_blogs_set_up():
 
 def runCloudCode():
 	date_object = datetime.strptime("2014-02-16 12:12:12", '%Y-%m-%d  %H:%M:%S')
-	# blog = Blog(title="Test Blog",slug="test-blog",category="test category", date=date_object,url="yahoo.com",cover_url="http://petparent.me/blog/wp-content/uploads/2014/01/Oreja_de_Cerdo_Madrid_2010_0710.jpg",blog_id=1200,photo=None)
-	# hello_world_func = Function("hello")
-	# ret = hello_world_func()
-	# print ret
 	blog.save()
 
 
