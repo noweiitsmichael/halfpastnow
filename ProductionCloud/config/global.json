@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "Pet Parent": {
+            "applicationId": "4LJ8r1x6bT34iJcAH360QBrvrjtomkOEnw6V2ODD", 
+            "masterKey": "UqgvyrSCULDh21QQbENL6lBkOSTGRfIb50owJpiI"
+        }, 
+        "_default": {
+            "link": "Pet Parent"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.12"
+    }
+}
