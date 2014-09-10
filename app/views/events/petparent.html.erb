@@ -53,7 +53,7 @@
   <%= stylesheet_link_tag "component" %>
   
   
-  <script src="js/modernizr-2.6.2.min.js"></script>  <!-- Modernizr /-->
+<%= javascript_include_tag "modernizr-2.6.2.min.js" %>  <!-- Modernizr /-->
 
   <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -79,21 +79,19 @@
 
 	<div class="row">
 		<div class="twelve columns centered">
-			<a href="http://www.halfpastnow.com/events/new_splash"><%= image_tag "halfpastnow_new_logo_300.png" %></a><h3 style="padding:5px 0px;">is now</h3><a href="http://petparent.me"><%= image_tag "images/pet_parent_logo.png" %></a><span style="font-size:28px; color:black; padding:0px 10px;">
+			<a href="http://www.halfpastnow.com/events/new_splash"><%= image_tag "halfpastnow_new_logo_300.png" %></a><h3 style="color:#666">is now</h3><a href="http://petparent.me" style="margin-left:-12px"><%= image_tag "images/petparent_logo_45.png" %></a>
 	</div>
 
 	<div class="row">
 		
-		<div class="five columns cbp-so-side cbp-so-side-left">
+		<div class="six columns cbp-so-side cbp-so-side-left">
 			
 			<p>Dear friends and users, </p>
-			<p>We are no longer running Half Past Now in Austin, but remain true to our vision of helping people find fun and authentic things to do!  We cannot thank the Austin community enough for their love and support. It was through your advice, feedback, and event searches that we discovered the need for PetParent and hope that you use our new service and share it with other PetParents!</p>
+			<p style="font-size: 14px;">We are no longer running Half Past Now in Austin, but remain true to our vision of helping people find fun and authentic things to do!  We cannot thank the Austin community enough for their love and support. It was through your advice, feedback, and event searches that we discovered the need for PetParent and hope that you use our new service and share it with other PetParents!</p>
 
-			<p>Our team is hard at work expanding PetParent, a national platform that helps PetParents discover great pet friendly events, venues, meet-ups, and pet businesses. Visit <a href="http://petparent.me">petparent.me</a> and check out our app!</p>
+			<p style="font-size: 14px;">Our team is hard at work expanding PetParent, a national platform that helps PetParents discover great pet friendly events, venues, meet-ups, and pet businesses. Visit <a href="http://petparent.me" style="font-size:18px">petparent.me</a> and check out our app!</p>
 			
-			
-			<div class="clear"></div>
-			<div class="clear"></div>
+		
 			
 			<div class="download-button" style="padding-top:30px;display:inline-block;text-align:center;">
 			
@@ -107,7 +105,7 @@
 	
 		<!-- Slider from right --> 
 	
-		<div class="seven columns cbp-so-side-img  cbp-so-side-right">
+		<div class="six columns">
 		
 			<div id="slider-wrapper" style="margin-top:80px">
 			
@@ -123,9 +121,9 @@
 					
 					<ul class="overflow-wrapper">
 					
-						<li class="slide"><%= image_tag "images/venues-two-phones.png" %></li>
+						<li class="slide"><a href="http://petparent.me"><%= image_tag "images/venues-two-phones.png" %></a></li>
 						
-						<li class="slide"><%= image_tag "images/events-two-phones.png" %></li>
+						<li class="slide"><a href="http://petparent.me"><%= image_tag "images/events-two-phones.png" %></a></li>
 						
 					</ul>
 					
@@ -145,6 +143,7 @@
 
 <%= javascript_include_tag "plugins" %>
 <%= javascript_include_tag "cbpScroller" %>
+<%= javascript_include_tag "jquery.flexslider" %>
 <%= javascript_include_tag "classie" %>
 
 </body>
