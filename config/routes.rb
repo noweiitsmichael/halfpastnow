@@ -6,9 +6,9 @@ Myapp::Application.routes.draw do
   #      # match '/*path', :to => redirect {|params| "http://www.unofficialacl.com/#{params[:path]}"} 
   # end 
 
-  root :to => 'unofficialacl#index', :constraints => { :domain => "unofficialacl.com" }
+  #root :to => 'unofficialacl#index', :constraints => { :domain => "unofficialacl.com" }
 
-  #root :to => 'events#new_splash'
+  root :to => 'events#petparent'
   # root :to => 'picks#index'
   # root :to => 'unofficialacl#index'
 
