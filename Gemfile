@@ -93,7 +93,6 @@ gem 'dalli'
 # Email via mandrill
 gem 'mandrill-api'
 
-<<<<<<< HEAD
 gem 'quiet_assets'
 
 gem 'mechanize'
@@ -106,11 +105,6 @@ group :development do
   gem 'sunspot_solr'
 end
 
-
-=======
-#yelp
-gem 'yelpster'
->>>>>>> 059bcf5a2945f2bcb1c9b17be77b5f4f3d6f6acf
 
 # gem 'eventfulapi'
 # gem 'eventbrite-client'
